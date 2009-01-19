@@ -1,0 +1,167 @@
+" Vim configuration
+" Wouter Bolsterlee <uws@xs4all.nl>
+
+
+" This is the 21st century. Thank you.
+set nocompatible
+
+
+
+"
+" Text display  {{{1
+"
+
+" Show as much text as possible, and show strange characters in a useful way
+set display=lastline,uhex
+
+" Always keep some context around the cursor
+set scrolloff=5 sidescrolloff=5
+
+" Always show a status line, and show position information
+set laststatus=2 ruler
+
+" Try to use explicit fold markers by default
+set foldmethod=marker
+
+" Briefly show matching brackets
+set showmatch
+
+" FIXME: is this needed?
+"colorscheme default
+
+
+
+"
+" Text editing  {{{1
+"
+
+" No annoying limitations when moving the cursor around
+set backspace=2
+set whichwrap=b,s,h,l,<,>,[,]
+
+" Use ctrl-key plus cursor movenemt to move visually instead of logically
+map <C-h> h
+map <C-j> gj
+map <C-k> gk
+map <C-l> l
+map <Down> gj
+map <Up> gk
+
+" Vim tip #956: Quote motions for operators, e.g. da" will delete a quoted string.
+omap i" :normal vT"ot"<CR>
+omap a" :normal vF"of"<CR>
+omap i' :normal vT'ot'<CR>
+omap a' :normal vF'of'<CR> 
+omap i` :normal vT`ot`<CR>
+omap a` :normal vF`of`<CR> 
+
+" Quickly move to end of line in insert mode
+imap <C-L> <C-O>A
+
+" Make "repeat last action" also work in Visual mode
+vnoremap . :normal .<CR>
+
+" p replaces selected text in visual mode
+vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
+
+
+
+"
+" Whitespace, wrapping, newlines, indentation and tabs  {{{1
+"
+
+" Automatic indentation
+set autoindent smartindent
+
+" Indentation steps
+set shiftwidth=4 tabstop=4
+
+" Display
+set listchars=eol:$,trail:_,extends:>,precedes:<,tab:>.
+silent! set listchars+=tab:»·
+map <silent> ,l :set list!<CR>
+
+" Wordwrap toggling
+map <silent> ,w :set wrap!<CR>
+
+" Easy paragraph formatting
+noremap Q gqap
+
+" Line breaks
+set linebreak
+set showbreak=...
+set nojoinspaces
+
+" Removes whitespace (after an abbreviation)
+function! EatWhitespace()
+	let c = nr2char(getchar())
+	return (c =~ '\s') ? '' : c
+endfunction
+
+
+
+"
+" Search and replace  {{{1
+"
+
+" Be smart about text case
+set ignorecase smartcase
+
+" Visual feedback
+set hlsearch incsearch
+map <silent> <F5> :nohlsearch<CR>
+nohlsearch
+
+" Replace all matches by default
+set gdefault
+
+
+
+"
+" Multiple files, file types  {{{1
+"
+
+" Buffer behaviour and easy switching
+set hidden
+map ,j :bnext<CR>
+map ,k :bprevious<CR>
+map ,, :bnext<CR>
+map ,. :buffer #<CR>
+
+" FIXME: is the if-statement needed?
+set autochdir
+"if exists('+autochdir')
+"	set autochdir
+"else
+"	autocmd BufEnter * silent! lcd %:p:h:gs/ /\\ /
+"endif
+
+
+" Some file types we're not likely to open
+set suffixes+=.aux
+set suffixes+=.bbl
+set suffixes+=.blg
+set suffixes+=.dvi
+set suffixes+=.idx
+set suffixes+=.log
+set suffixes+=.out
+set suffixes+=.pdf
+set suffixes+=.toc
+set suffixes+=.pyc
+set suffixes+=.pyo
+
+" Enable filetype-specific configuration and enable syntax highlighting
+filetype on
+filetype plugin on
+filetype indent on
+syntax on
+
+
+
+" 
+" Development  {{{1
+"
+
+" Make invocations
+nnoremap <F9> :make<CR>
+inoremap <F9> <C-O>:make<CR>

@@ -1,0 +1,57 @@
+" Vim configuration, GUI
+" Wouter Bolsterlee <uws@xs4all.nl>
+
+
+
+"
+" Interface appearance  {{{1
+"
+
+" No menubar, no toolbar, but show left scrollbar for vertically split windows
+set guioptions-=m guioptions-=T guioptions+=L
+
+" No blinking cursor
+set guicursor=a:blinkon0 
+
+" Colors
+colorscheme desert
+silent! colorscheme taqua
+silent! colorscheme kib_darktango
+
+" Fonts
+if has("gui_gtk2")
+	" GTK interface
+	if (exists("$GNOME_DESKTOP_SESSION_ID"))
+		" Use the system-wide monospace font when running in a Gnome session
+		let &guifont = substitute(system("gconftool --get /desktop/gnome/interface/monospace_font_name"), "\n", "", "")
+	else
+		" Set a sensible default and try to override it using fonts that may
+		" not be available.
+		set guifont=Monospace\ 10
+		silent! set guifont=Consolas\ 10
+	endif
+elseif has("gui_win32")
+	" Windows interface
+	set guifont=Lucida_Console:h10:cANSI
+	silent! set guifont=Bitstream_Vera_Sans_Mono:h9:cANSI
+endif
+
+
+
+"
+" Keyboard and mouse shortcuts  {{{1
+"
+
+" Save using Ctrl-S
+noremap <C-s> :update<CR>
+inoremap <C-s> <C-O>:update<CR>
+
+" Switch buffers using the mouse
+noremap <C-MouseDown> :bprevious<CR>
+inoremap <C-MouseDown> <C-O>:bprevious<CR>
+noremap <C-MouseUp> :bnext<CR>
+inoremap <C-MouseUp> <C-O>:bnext<CR>
+
+" Keyboard shortcuts to change the text size
+map <silent> <F6> :call SmallerFont()<CR>
+map <silent> <F7> :call LargerFont()<CR>
