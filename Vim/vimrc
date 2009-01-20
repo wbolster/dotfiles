@@ -40,12 +40,20 @@ set backspace=2
 set whichwrap=b,s,h,l,<,>,[,]
 
 " Use ctrl-key plus cursor movenemt to move visually instead of logically
-map <C-h> h
-map <C-j> gj
-map <C-k> gk
-map <C-l> l
-map <Down> gj
-map <Up> gk
+noremap <C-h> h
+noremap <C-j> gj
+noremap <C-k> gk
+noremap <C-l> l
+
+" Move visually with cursor
+noremap <Down> gj
+noremap <Up> gk
+
+" Use space and backspace for scrolling (holding Shift reverses the direction)
+map <Space> <C-D>
+map <S-Space> <C-U>
+map <Backspace> <C-U>
+map <S-Backspace> <C-D>
 
 " Vim tip #956: Quote motions for operators, e.g. da" will delete a quoted string.
 omap i" :normal vT"ot"<CR>
