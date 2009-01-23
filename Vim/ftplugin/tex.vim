@@ -30,10 +30,12 @@ nnoremap k gk
 vnoremap j gj
 vnoremap k gk
 
+" Fancy quotes
+inoremap <buffer> <C-Space>` ‘
+inoremap <buffer> <C-Space>' ’
+
 " Abbreviations
 inoreabbrev <buffer> ... …
-inoreabbrev <buffer> ``` ‘
-inoreabbrev <buffer> ''' ’
 inoreabbrev <buffer> \i \item
 inoreabbrev <buffer> \c \chapter{}<Left><C-R>=EatWhitespace()<Enter>
 inoreabbrev <buffer> \s \section{}<Left><C-R>=EatWhitespace()<Enter>
