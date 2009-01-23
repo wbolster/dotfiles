@@ -58,20 +58,21 @@ map <S-Backspace> <C-D>
 " Quickly move to end of line in insert mode
 imap <C-L> <C-O>A
 
-" Make "repeat last action" also work in Visual mode
-vnoremap . :normal .<CR>
-
 " Add different types of quotes around the current word 
 nnoremap <buffer> ,` mxgewi`<Esc>ea`<Esc>`xl
 nnoremap <buffer> ,' mxgewi'<Esc>ea'<Esc>`xl
 nnoremap <buffer> ," mxgewi"<Esc>ea"<Esc>`xl
 
-" p replaces selected text in visual mode
+" Make "repeat last action" also work in visual mode
+vnoremap . :normal .<CR>
+
+" Pressing p should replace selected text in visual mode
 vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
 
 " Switch between spelling languages
-command! SpellDutch setlocal spelllang=nl
-command! SpellEnglish setlocal spelllang=en
+command! SpellDutch   setlocal spell spelllang=nl
+command! SpellEnglish setlocal spell spelllang=en
+command! SpellNone    setlocal nospell
 
 
 "
