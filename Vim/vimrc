@@ -55,14 +55,6 @@ map <S-Space> <C-U>
 map <Backspace> <C-U>
 map <S-Backspace> <C-D>
 
-" Vim tip #956: Quote motions for operators, e.g. da" will delete a quoted string.
-omap i" :normal vT"ot"<CR>
-omap a" :normal vF"of"<CR>
-omap i' :normal vT'ot'<CR>
-omap a' :normal vF'of'<CR> 
-omap i` :normal vT`ot`<CR>
-omap a` :normal vF`of`<CR> 
-
 " Quickly move to end of line in insert mode
 imap <C-L> <C-O>A
 
