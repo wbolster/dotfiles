@@ -1,19 +1,13 @@
 " Smooth Scroll
 "
-" Remamps 
-"  <C-U>
-"  <C-D>
-"  <C-F>
-"  <C-B>
+" Allow smooth scrolling of the window when certain movement commands are
+" used. This helps keeping track of the text.
 "
-" to allow smooth scrolling of the window. I find that quick changes of
-" context don't allow my eyes to follow the action properly.
+" Originally written by Brad Phelan, 2006, http://xtargets.com
+" Adapted by by Wouter Bolsterlee, 2009
 "
 " The global variable g:scroll_factor changes the scroll speed.
 "
-"
-" Written by Brad Phelan, 2006, http://xtargets.com
-" Adapted by Wouter Bolsterlee, 2009
 
 let g:scroll_factor = 5000
 function! SmoothScroll(dir, windiv, factor)
@@ -37,4 +31,28 @@ function! SmoothScroll(dir, windiv, factor)
    endwhile
 endfunction
 
-" Note: mappings are conditionally set in gvimrc
+
+" Functions to enable and disable the keyboard mappings. This will remap or
+" unmap <C-U>, <C-D>, <C-F>, and <C-B>.
+
+function! SmoothScrolling()
+	map <C-D> :call SmoothScroll("d", 2, 2)<CR>
+	map <C-U> :call SmoothScroll("u", 2, 2)<CR>
+	map <C-F> :call SmoothScroll("d", 1, 1)<CR>
+	map <C-B> :call SmoothScroll("u", 1, 1)<CR>
+endfunction
+
+function! NoSmoothScrolling()
+	unmap <C-D>
+	unmap <C-U>
+	unmap <C-F>
+	unmap <C-B>
+endfunction
+
+
+" Commands to call the functions, so that one can type
+"   :SmoothScrolling<Enter>    to enable smooth scrolling, and
+"   :NoSmoothScrolling<Enter>  to disable smooth scrolling, and
+
+command! SmoothScrolling call SmoothScrolling()
+command! NoSmoothScrolling call NoSmoothScrolling()
