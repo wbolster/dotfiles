@@ -6,7 +6,6 @@
 set nocompatible
 
 
-
 "
 " Text display  {{{1
 "
@@ -25,6 +24,9 @@ set foldmethod=marker
 
 " Briefly show matching brackets
 set showmatch
+
+" See what we're doing
+set showcmd
 
 " FIXME: is this needed?
 "colorscheme default
