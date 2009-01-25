@@ -33,6 +33,8 @@ vnoremap k gk
 " Fancy quotes
 inoremap <buffer> <C-Space>` ‘
 inoremap <buffer> <C-Space>' ’
+inoremap <buffer> `` ‘
+inoremap <buffer> '' ’
 
 " Abbreviations
 inoreabbrev <buffer> ... …
