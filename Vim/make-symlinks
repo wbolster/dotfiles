@@ -1,0 +1,10 @@
+
+test ! -e ~/.vim
+test ! -e ~/.vimrc
+test ! -e ~/.gvimrc
+
+ln -s $(readlink -f .) ~/.vim
+ln -s $(readlink -f vimrc) ~/.vimrc
+ln -s $(readlink -f gvimrc) ~/.gvimrc
+
+ls -al ~/.vim* ~/.gvimrc
