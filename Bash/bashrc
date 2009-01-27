@@ -126,6 +126,7 @@ if [ "$PS1" ]; then
 	alias :e='$EDITOR'
 	if [ `which vim 2>/dev/null` ]; then
 		export EDITOR=vim
+		alias vi=vim
 	fi
 
 	# Development
