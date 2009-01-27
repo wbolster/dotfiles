@@ -1,0 +1,10 @@
+# inputrc for readline
+# Wouter Bolsterlee <uws@xs4all.nl>
+
+set mark-symlinked-directories on
+set completion-ignore-case on
+
+"\C-p":         history-search-backward
+"\C-n":         history-search-forward
+"\e[5~":        history-search-backward
+"\e[6~":        history-search-forward
