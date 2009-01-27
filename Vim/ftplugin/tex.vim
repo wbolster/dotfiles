@@ -38,6 +38,7 @@ inoremap <buffer> '' ’
 
 " Abbreviations
 inoreabbrev <buffer> ... …
+inoreabbrev <buffer> ---- \hline
 inoreabbrev <buffer> \i \item
 inoreabbrev <buffer> \c \chapter{}<Left><C-R>=EatWhitespace()<Enter>
 inoreabbrev <buffer> \s \section{}<Left><C-R>=EatWhitespace()<Enter>
