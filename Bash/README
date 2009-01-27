@@ -1,0 +1,5 @@
+
+Symlinks to be made:
+
+  ~/.bashrc       => bashrc
+  ~/.bash_profile => bash_profile
