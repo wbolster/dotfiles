@@ -1,0 +1,189 @@
+# Bash Configuration
+# Wouter Bolsterlee <uws@xs4all.nl>
+
+
+#
+# General  {{{1
+#
+
+# Some personal settings
+export EMAIL="Wouter Bolsterlee <uws@xs4all.nl>"
+
+
+# Make sure we always have a $HOSTNAME variable, since it's used
+# later in this file
+test -z "${HOSTNAME}" && export HOSTNAME=`hostname`
+
+
+#
+# Files and Paths  {{{1
+#
+
+# Keep new files and directories private by default
+umask 077
+
+# Preprend some directories inside ~ to $PATH
+test -d ~/bin         && PATH=~/bin:"${PATH}"
+test -d ~/.system/bin && PATH=~/.system/bin:"${PATH}"
+
+
+#
+# Locale Settings {{{1
+#
+
+if [ `which locale 2>/dev/null` ]; then
+
+	# English, please...
+	if $(locale -a |grep -q '^en_GB\.utf8$'); then
+		export LANG=en_GB.UTF-8
+	# ...or American English as a fallback
+	else
+		export LANG=en_US.UTF-8
+	fi
+
+	# Easy locale switching for interactive shells
+	if [ "$PS1" ]; then
+		alias locale-none='unset LANG'
+		alias locale-en='export LANG=en_US.UTF-8'
+		alias locale-nl='export LANG=nl_NL.UTF-8'
+	fi
+fi
+
+
+#
+# Interactive Shells  {{{1
+#
+
+if [ "$PS1" ]; then
+
+	# Terminal title
+	case $TERM in
+	xterm|rxvt*)
+		PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
+		;;
+	*)
+		;;
+	esac
+
+	# Prompt appearance:
+	# - specify defaults
+	# - possibly override defaults
+	# - set $PS1
+	# - clean up
+	PROMPT_HOST_CHARS=3
+	PROMPT_PRIMARY_COLOR=35
+	PROMPT_SECONDARY_COLOR=31
+	test -f ~/.bash-prompt-$HOSTNAME && source ~/.bash-prompt-$HOSTNAME
+	test -n "${BASH}" && PS1="\[\e[$PROMPT_PRIMARY_COLOR;1m\]${HOSTNAME:0:$PROMPT_HOST_CHARS}:\w \[\e[$PROMPT_SECONDARY_COLOR;1m\]> \[\e[0m\]"
+	unset PROMPT_HOST_CHARS
+	unset PROMPT_PRIMARY_COLOR
+	unset PROMPT_SECONDARY_COLOR
+
+	# Shell history
+	export HISTCONTROL=ignoredups
+	export HISTSIZE=100000
+	export HISTFILESIZE=100000
+	alias h='unset HISTFILE'
+
+	# Tab completion
+	test -n "$BASH" && test -f /etc/bash_completion   && source /etc/bash_completion
+	test -n "$BASH" && test -f $HOME/.bash_completion && source $HOME/.bash_completion
+
+	# Require confirmation for possibly destructive operations
+	alias cp='cp -i'
+	alias mv='mv -i'
+	alias rm='rm -i'
+
+	# File listings
+	alias ls='ls --color=auto'
+	alias l='ls -lF'
+	alias ll='ls -AlF'
+	test -f ~/.dircolorsrc && eval `dircolors -b ~/.dircolorsrc`
+
+	# Show colors in grep output
+	alias grep='grep --color=auto'
+	alias rgrep='grep --recursive --color=auto'
+
+	# Navigation
+	alias ..='cd "$OLDPWD"'
+
+	# Process listings
+	alias psg='ps auxww |grep -i '
+	test -z "$BASH" || complete -F _killall psg
+
+	# Recursive chmod
+	alias rchmod-current-dir-public='chmod -R u=rwX,go=rX .'
+	alias rchmod-current-dir-public-with-group='chmod -R ug=rwX,o=rX .'
+	alias rchmod-current-dir-private='chmod -R u=rwX,go= .'
+	alias rchmod-current-dir-private-with-group='chmod -R ug=rwX,o= .'
+
+	# Alias expansion also after these commands
+	alias sudo='sudo '
+	alias nice='nice '
+
+	# Vim
+	alias :q='exit'
+	alias :e='$EDITOR'
+	if [ `which vim 2>/dev/null` ]; then
+		export EDITOR=vim
+	fi
+
+	# Development
+	alias m=make
+	test -z "$BASH" || complete -F _make m
+
+	# Bazaar
+	if [ `which bzr 2>/dev/null` ]; then
+		alias b=bzr
+		test -z "$BASH" || complete -F _bzr -o default b
+		alias 'bzrl'='bzr last'
+	fi
+
+	# Subversion
+	if [ `which svn 2>/dev/null` ]; then
+		alias s=svn
+		test -z "$BASH" || complete -F _svn -o default s
+	fi
+
+	# Jhbuild
+	if [ `which jhbuild 2>/dev/null` ]; then
+		alias 'jhr'='jhbuild run'
+		alias 'jhbo'='jhbuild buildone'
+		alias 'jhboa'='jhbuild buildone -a'
+		alias 'jhboac'='jhbuild buildone -a -c'
+		alias 'jhs'='jhbuild shell'
+	fi
+
+	# GUI applications
+	if [ ! -z "$DISPLAY" ]; then
+		alias g='gnome-open '
+		alias n='nautilus '
+		alias nb='nautilus --browser' 
+		test -z "$BASH" || complete -F _cd n nb
+	fi
+
+	# Debian-specific
+	if test -f /etc/debian_version; then
+		alias apt-get='sudo apt-get '
+		alias ac='apt-cache show '
+		alias acs='apt-cache search '
+		alias i='sudo apt-get install -V'
+		alias u='sudo apt-get update && sudo apt-get upgrade -V'
+	fi
+
+	# Misc
+	alias sc='screen -UxRR'
+	alias lessr='less -R'
+fi
+
+
+#
+# Host-specific Configuration  {{{1
+#
+# Machine-specific configuration (not kept in version control). The
+# bashrc-$HOSTNAME variant is useful for machine specific configuration
+# if the home directory is shared over NFS.
+#
+
+test -f ~/.bashrc-local     && source ~/.bashrc-local
+test -f ~/.bashrc-$HOSTNAME && source ~/.bashrc-$HOSTNAME
