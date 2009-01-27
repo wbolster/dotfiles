@@ -73,6 +73,7 @@ if [ "$PS1" ]; then
 	PROMPT_HOST_CHARS=3
 	PROMPT_PRIMARY_COLOR=35
 	PROMPT_SECONDARY_COLOR=31
+	test -f ~/.bash-prompt           && source ~/.bash-prompt
 	test -f ~/.bash-prompt-$HOSTNAME && source ~/.bash-prompt-$HOSTNAME
 	test -n "${BASH}" && PS1="\[\e[$PROMPT_PRIMARY_COLOR;1m\]${HOSTNAME:0:$PROMPT_HOST_CHARS}:\w \[\e[$PROMPT_SECONDARY_COLOR;1m\]> \[\e[0m\]"
 	unset PROMPT_HOST_CHARS
