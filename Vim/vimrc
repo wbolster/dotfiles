@@ -60,7 +60,7 @@ map <S-Backspace> <C-D>
 " Quickly move to end of line in insert mode
 imap <C-L> <C-O>A
 
-" Add different types of quotes around the current word 
+" Add different types of quotes around the current word
 nnoremap <buffer> ,` mxgewi`<Esc>ea`<Esc>`xl
 nnoremap <buffer> ,' mxgewi'<Esc>ea'<Esc>`xl
 nnoremap <buffer> ," mxgewi"<Esc>ea"<Esc>`xl
@@ -109,6 +109,8 @@ function! EatWhitespace()
 	return (c =~ '\s') ? '' : c
 endfunction
 
+" Strip trailing whitespace (and keep the cursor position)
+command! StripTrailingWhitespace normal mx<Enter>:%s/\s\+$//<Enter>`x
 
 
 "
@@ -169,7 +171,7 @@ syntax on
 
 
 
-" 
+"
 " Development  {{{1
 "
 
