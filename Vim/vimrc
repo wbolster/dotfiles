@@ -23,8 +23,10 @@ set laststatus=2 ruler
 " Try to use explicit fold markers by default
 set foldmethod=marker
 
-" Briefly show matching brackets
+" Briefly show matching brackets, but disable annoying MatchParen highlighting
 set showmatch
+let loaded_matchparen = 1
+
 
 " See what we're doing
 set showcmd
