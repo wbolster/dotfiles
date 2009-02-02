@@ -6,6 +6,7 @@
 set nocompatible
 
 
+
 "
 " Text display  {{{1
 "
@@ -74,6 +75,7 @@ command! SpellEnglish setlocal spell spelllang=en
 command! SpellNone    setlocal nospell
 
 
+
 "
 " Whitespace, wrapping, newlines, indentation and tabs  {{{1
 "
@@ -110,6 +112,7 @@ endfunction
 command! StripTrailingWhitespace normal mx<Enter>:%s/\s\+$//<Enter>`x
 
 
+
 "
 " Search and replace  {{{1
 "
@@ -138,14 +141,8 @@ map ,k :bprevious<CR>
 map ,, :bnext<CR>
 map ,. :buffer #<CR>
 
-" FIXME: is the if-statement needed?
+" Automatically change working directory
 set autochdir
-"if exists('+autochdir')
-"	set autochdir
-"else
-"	autocmd BufEnter * silent! lcd %:p:h:gs/ /\\ /
-"endif
-
 
 " Some file types we're not likely to open
 set suffixes+=.aux
