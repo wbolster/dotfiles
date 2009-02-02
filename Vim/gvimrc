@@ -13,9 +13,7 @@ set guioptions-=m guioptions-=T guioptions+=L
 set guicursor=a:blinkon0 
 
 " Colors
-colorscheme desert
-silent! colorscheme taqua
-silent! colorscheme kib_darktango
+colorscheme kib_darktango
 
 " Fonts
 if has("gui_gtk2")
