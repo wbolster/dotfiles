@@ -9,7 +9,7 @@
 " The global variable g:scroll_factor changes the scroll speed.
 "
 
-let g:scroll_factor = 5000
+let g:scroll_factor = 2000
 function! SmoothScroll(dir, windiv, factor)
    let wh=winheight(0)
    let i=0
