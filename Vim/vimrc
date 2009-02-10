@@ -89,8 +89,7 @@ set autoindent smartindent
 set shiftwidth=4 tabstop=4
 
 " Display
-set listchars=eol:$,trail:_,extends:>,precedes:<,tab:>.
-silent! set listchars+=tab:»·
+set listchars=eol:$,trail:_,extends:»,precedes:«,tab:»·,nbsp:~
 map <silent> ,l :set list!<CR>
 
 " Wordwrap toggling
@@ -101,8 +100,9 @@ noremap Q gqap
 
 " Line breaks
 set linebreak
-set showbreak=...
+let &showbreak="↪ "
 set nojoinspaces
+map <silent> ,n :set number!<CR>
 
 " Removes whitespace (after an abbreviation)
 function! EatWhitespace()
