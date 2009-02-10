@@ -111,7 +111,9 @@ function! EatWhitespace()
 endfunction
 
 " Strip trailing whitespace (and keep the cursor position)
-command! StripTrailingWhitespace normal mx<Enter>:%s/\s\+$//<Enter>`x
+command! StripTrailingWhitespace normal mx<Enter>:%s/\s\+$//<Enter>:nohlsearch<Enter>`x
+nnoremap <F12> :StripTrailingWhitespace<CR>
+inoremap <F12> <C-O>:StripTrailingWhitespace<CR>
 
 
 
