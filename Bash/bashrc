@@ -118,10 +118,10 @@ if [ "$PS1" ]; then
 	test -z "$BASH" || complete -F _killall psg
 
 	# Recursive chmod
-	alias rchmod-current-dir-public='chmod -R u=rwX,go=rX .'
-	alias rchmod-current-dir-public-with-group='chmod -R ug=rwX,o=rX .'
-	alias rchmod-current-dir-private='chmod -R u=rwX,go= .'
-	alias rchmod-current-dir-private-with-group='chmod -R ug=rwX,o= .'
+	alias rchmod-public='chmod -R u=rwX,go=rX'
+	alias rchmod-public-with-group='chmod -R ug=rwX,o=rX'
+	alias rchmod-private='chmod -R u=rwX,go='
+	alias rchmod-private-with-group='chmod -R ug=rwX,o='
 
 	# Alias expansion also after these commands
 	alias sudo='sudo '
