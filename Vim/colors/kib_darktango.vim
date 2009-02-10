@@ -1,8 +1,10 @@
 " Vim color file
 " Name: kib_darktango
-" Maintainer: Kib² <kib2@free.fr>
+" Maintainer: KibÂ² <kib2@free.fr>
 " Version: 0.3
 " Last Time Modified: 01.01.2007
+"
+" Minor changes by Wouter Bolsterlee, 20080210
 
 " Couleur du fond d'ecran
 set background=dark
@@ -48,7 +50,7 @@ hi Float guifg=#c1c144  " a floating point constant: 2.3e10
 hi Identifier	guifg=#f57900   " function name (also: methods for classes)
 
 " ===== Statements : Les mots cles de chaque language
-hi Statement	guifg=#729fcf " par défaut
+hi Statement	guifg=#729fcf " par dÃ©faut
 hi Conditional guifg=#4e9a06 " if, then, else, endif, switch, etc.
 hi Repeat guifg=#73d216 " boucles for, do, while, etc.
 hi Label guifg=#8ae234 " case, default, etc.
@@ -61,7 +63,7 @@ hi PreProc	guifg=#eeeeec " generic Preprocessor
 hi Include guifg=#eeeeec  " preprocessor #include
 hi Define guifg=#eeeeec  " preprocessor #define
 hi Macro guifg=#eeeeec  " same as Define
-hi PreCondit guifg=#eeeeec  " preprocessor #if, #else, #endif, etc.
+hi PreCondit guifg=#4e9a06  " preprocessor #if, #else, #endif, etc.
 
 " ==== Types : int, long, char, etc.
 hi Type		guifg=#ffffff   " int, long, char, etc.
