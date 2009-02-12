@@ -68,7 +68,7 @@ if exists(':tab') == 2
 	set guitablabel=%t\ %m
 
 	" Some commands to manipulate tabs
-	command! TabForEachBuffer tab sball
+	command! TabForEachBuffer tabonly | tab sball
 	command! TabMoveLeft normal :tabmove <C-R>=tabpagenr()-2<Enter><Enter>
 	command! TabMoveRight normal :tabmove <C-R>=tabpagenr()<Enter><Enter>
 	command! TA TabForEachBuffer " easy to type
@@ -78,6 +78,7 @@ if exists(':tab') == 2
 	nnoremap <C-T>n :tabnew<Return>
 	nnoremap <C-T>a :TabForEachBuffer<Return>
 	nnoremap <C-T>c :tabclose<Return>
+	nnoremap <C-T>o :tabonly<Return>
 	nmap <C-T><C-n> <C-T>n
 	nmap <C-T><C-a> <C-T>a
 
