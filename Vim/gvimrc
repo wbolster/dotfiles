@@ -16,21 +16,24 @@ set guicursor=a:blinkon0
 colorscheme kib_darktango
 
 " Fonts
-if has("gui_gtk2")
-	" GTK interface
-	if (exists("$GNOME_DESKTOP_SESSION_ID"))
-		" Use the system-wide monospace font when running in a Gnome session
-		let &guifont = substitute(system("gconftool --get /desktop/gnome/interface/monospace_font_name"), "\n", "", "")
-	else
-		" Set a sensible default and try to override it using fonts that may
-		" not be available.
-		set guifont=Monospace\ 10
-		silent! set guifont=Consolas\ 10
+if !exists("g:fontInitialized")
+	let g:fontInitialized = 1
+	if has("gui_gtk2")
+		" GTK interface
+		if (exists("$GNOME_DESKTOP_SESSION_ID"))
+			" Use the system-wide monospace font when running in a Gnome session
+			let &guifont = substitute(system("gconftool --get /desktop/gnome/interface/monospace_font_name"), "\n", "", "")
+		else
+			" Set a sensible default and try to override it using fonts that may
+			" not be available.
+			set guifont=Monospace\ 10
+			silent! set guifont=Consolas\ 10
+		endif
+	elseif has("gui_win32")
+		" Windows interface
+		set guifont=Lucida_Console:h10:cANSI
+		silent! set guifont=Bitstream_Vera_Sans_Mono:h9:cANSI
 	endif
-elseif has("gui_win32")
-	" Windows interface
-	set guifont=Lucida_Console:h10:cANSI
-	silent! set guifont=Bitstream_Vera_Sans_Mono:h9:cANSI
 endif
 
 
