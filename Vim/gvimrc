@@ -70,26 +70,29 @@ if exists(':tab') == 2
 	command! TabMoveRight normal :tabmove <C-R>=tabpagenr()<Enter><Enter>
 	command! TA TabForEachBuffer " easy to type
 
-	" Ctrl-T <something-else> mappings, inspired by Ctrl-W <something-else>
+	" Mappings to manipulate tabs. Some of those are Ctrl-T <something-else>
+	" mappings, inspired by Ctrl-W <something-else>
 	nnoremap <C-T>n :tabnew<Return>
-	nnoremap <C-T>c :tabclose<Return>
 	nnoremap <C-T>a :TabForEachBuffer<Return>
+	nnoremap <C-T>c :tabclose<Return>
+	nmap <C-T><C-n> <C-T>n
+	nmap <C-T><C-a> <C-T>a
+
 	nnoremap <C-T>h :tabprevious<Return>
 	nnoremap <C-T>j :tabnext<Return>
 	nnoremap <C-T>k :tabprevious<Return>
 	nnoremap <C-T>l :tabnext<Return>
+
 	nnoremap <C-T>H :TabMoveLeft<Return>
 	nnoremap <C-T>J :TabMoveRight<Return>
 	nnoremap <C-T>K :TabMoveLeft<Return>
 	nnoremap <C-T>L :TabMoveRight<Return>
-	nmap <C-T><C-n> <C-T>n
-	nmap <C-T><C-a> <C-T>a
-	nmap <C-T><C-h> <C-T>h
-	nmap <C-T><C-k> <C-T>j
-	nmap <C-T><C-j> <C-T>k
-	nmap <C-T><C-h> <C-T>l
 
-	" Some more mappings
+	nmap <C-T><C-h> <C-T>h
+	nmap <C-T><C-j> <C-T>j
+	nmap <C-T><C-k> <C-T>k
+	nmap <C-T><C-l> <C-T>l
+
 	nmap <M-j> <C-T>l
 	nmap <M-k> <C-T>h
 
