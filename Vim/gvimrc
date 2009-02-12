@@ -75,6 +75,7 @@ if exists(':tab') == 2
 
 	" Mappings to manipulate tabs. Some of those are Ctrl-T <something-else>
 	" mappings, inspired by Ctrl-W <something-else>
+	nnoremap <C-T> <Nop>
 	nnoremap <C-T>n :tabnew<Return>
 	nnoremap <C-T>a :TabForEachBuffer<Return>
 	nnoremap <C-T>c :tabclose<Return>
