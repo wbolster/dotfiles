@@ -1,7 +1,7 @@
 " Vim configuration for LaTeX
 " Wouter Bolsterlee <uws@xs4all.nl>
 
-setlocal textwidth=76
+setlocal textwidth=9999999
 setlocal shiftwidth=2
 setlocal tabstop=2
 setlocal formatoptions=tcq
