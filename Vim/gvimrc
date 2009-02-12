@@ -57,3 +57,71 @@ inoremap <C-MouseUp> <C-O>:bnext<Enter>
 " Keyboard shortcuts to change the text size
 map <silent> <F6> :SmallerFont<Enter>
 map <silent> <F7> :LargerFont<Enter>
+
+" Tabs
+if exists(':tab') == 2
+
+	" Show tab filename and modified state in label
+	set guitablabel=%t\ %m
+
+	" Some commands to manipulate tabs
+	command! TabForEachBuffer tab sball
+	command! TabMoveLeft normal :tabmove <C-R>=tabpagenr()-2<Enter><Enter>
+	command! TabMoveRight normal :tabmove <C-R>=tabpagenr()<Enter><Enter>
+	command! TA TabForEachBuffer " easy to type
+
+	" Ctrl-T <something-else> mappings, inspired by Ctrl-W <something-else>
+	nnoremap <C-T>n :tabnew<Return>
+	nnoremap <C-T>c :tabclose<Return>
+	nnoremap <C-T>a :TabForEachBuffer<Return>
+	nnoremap <C-T>h :tabprevious<Return>
+	nnoremap <C-T>j :tabnext<Return>
+	nnoremap <C-T>k :tabprevious<Return>
+	nnoremap <C-T>l :tabnext<Return>
+	nnoremap <C-T>H :TabMoveLeft<Return>
+	nnoremap <C-T>J :TabMoveRight<Return>
+	nnoremap <C-T>K :TabMoveLeft<Return>
+	nnoremap <C-T>L :TabMoveRight<Return>
+	nmap <C-T><C-n> <C-T>n
+	nmap <C-T><C-a> <C-T>a
+	nmap <C-T><C-h> <C-T>h
+	nmap <C-T><C-k> <C-T>j
+	nmap <C-T><C-j> <C-T>k
+	nmap <C-T><C-h> <C-T>l
+
+	" Some more mappings
+	nmap <M-j> <C-T>l
+	nmap <M-k> <C-T>h
+
+	" Tab Switching using alt-N in normal mode, visual mode, and insert mode
+	nnoremap <M-1> 1gt
+	nnoremap <M-2> 2gt
+	nnoremap <M-3> 3gt
+	nnoremap <M-4> 4gt
+	nnoremap <M-5> 5gt
+	nnoremap <M-6> 6gt
+	nnoremap <M-7> 7gt
+	nnoremap <M-8> 8gt
+	nnoremap <M-9> 9gt
+	nnoremap <M-0> 10gt
+	vnoremap <M-1> <Esc>1gt
+	vnoremap <M-2> <Esc>2gt
+	vnoremap <M-3> <Esc>3gt
+	vnoremap <M-4> <Esc>4gt
+	vnoremap <M-5> <Esc>5gt
+	vnoremap <M-6> <Esc>6gt
+	vnoremap <M-7> <Esc>7gt
+	vnoremap <M-8> <Esc>8gt
+	vnoremap <M-9> <Esc>9gt
+	vnoremap <M-0> <Esc>10gt
+	inoremap <M-1> <Esc>1gt
+	inoremap <M-2> <Esc>2gt
+	inoremap <M-3> <Esc>3gt
+	inoremap <M-4> <Esc>4gt
+	inoremap <M-5> <Esc>5gt
+	inoremap <M-6> <Esc>6gt
+	inoremap <M-7> <Esc>7gt
+	inoremap <M-8> <Esc>8gt
+	inoremap <M-9> <Esc>9gt
+	inoremap <M-0> <Esc>10gt
+endif
