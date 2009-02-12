@@ -2,8 +2,7 @@
 " Wouter Bolsterlee <uws@xs4all.nl>
 
 setlocal textwidth=9999999
-setlocal shiftwidth=2
-setlocal tabstop=2
+setlocal shiftwidth=2 tabstop=2 expandtab
 setlocal formatoptions=tcq
 setlocal spell
 setlocal cinwords=
