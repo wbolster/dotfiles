@@ -89,7 +89,7 @@ set autoindent smartindent
 set shiftwidth=4 tabstop=4
 
 " Display
-set listchars=eol:$,trail:_,extends:»,precedes:«,tab:»·,nbsp:~
+silent! set listchars=eol:$,trail:_,extends:»,precedes:«,tab:»·,nbsp:~
 map <silent> ,l :set list!<CR>
 
 " Wordwrap toggling
