@@ -146,7 +146,13 @@ map ,, :bnext<CR>
 map ,. :buffer #<CR>
 
 " Automatically change working directory
-set autochdir
+if exists('+autochdir')
+  set autochdir
+else
+  " For Vim < 7
+   autocmd BufEnter * silent! lcd %:p:h:gs/ /\\ /
+endif
+
 
 " Some file types we're not likely to open
 set suffixes+=.aux
