@@ -1,9 +1,9 @@
 " Vim configuration for (My)SQL
 " Wouter Bolsterlee <uws@xs4all.nl>
 
-setlocal foldlevel=1
-setlocal foldmethod=indent
 setlocal formatoptions=croqnl1
+setlocal tabstop=2 shiftwidth=2 expandtab
+setlocal foldmethod=indent foldlevel=1
 
 " Abbreviations
 inoreabbrev <buffer> bool BOOLEAN
