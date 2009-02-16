@@ -44,7 +44,7 @@ nnoremap <buffer> ," mxgewi"<Esc>ea"<Esc>`xl
 inoremap <buffer> <C-Enter> <Esc>f$a
 
 " Abbreviations for control structures
-inoreabbrev <buffer> if() if () {<CR>}<Up><C-O>f)<C-R>=EatWhitespace()<CR>
+inoreabbrev <buffer> if() if ()<Cr>{<CR>}<Up><Up><C-O>f)<C-R>=EatWhitespace()<CR>
 inoreabbrev <buffer> for() for ()<CR>{<CR>}<Up><Up><C-O>f)<C-R>=EatWhitespace()<CR>
 inoreabbrev <buffer> while() while ()<Cr>{<CR>}<Up><Up><C-O>f)<C-R>=EatWhitespace()<CR>
 inoreabbrev <buffer> foreach() foreach ($ as $)<CR>{<CR>}<Up><Up><C-O>2f <C-R>=EatWhitespace()<CR>
