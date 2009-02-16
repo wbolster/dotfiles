@@ -40,6 +40,9 @@ nnoremap <buffer> ,` mxgewi`<Esc>ea`<Esc>`xl
 nnoremap <buffer> ,' mxgewi'<Esc>ea'<Esc>`xl
 nnoremap <buffer> ," mxgewi"<Esc>ea"<Esc>`xl
 
+" Quickly jump to the next variable
+inoremap <buffer> <C-Enter> <Esc>f$a
+
 " Abbreviations for control structures
 inoreabbrev <buffer> if() if () {<CR>}<Up><C-O>f)<C-R>=EatWhitespace()<CR>
 inoreabbrev <buffer> for() for ()<CR>{<CR>}<Up><Up><C-O>f)<C-R>=EatWhitespace()<CR>
