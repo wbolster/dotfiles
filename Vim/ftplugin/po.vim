@@ -12,27 +12,28 @@ noremap <buffer> <F9> :!msgfmt --check --statistics -o /dev/null %<CR>
 noremap <buffer> <F10> ?^msgid<CR>V/msgstr<CR>kyjpkdd:s/^msgid/msgstr/<CR>:nohlsearch<CR>
 
 function! RevisionDate()
-	/"PO-Revision-Date: 
-	normal ddk
-	read!date '+"PO-Revision-Date: \%Y-\%m-\%d \%H:\%M\%z\n"'
+  /"PO-Revision-Date: 
+  normal ddk
+  read!date '+"PO-Revision-Date: \%Y-\%m-\%d \%H:\%M\%z\n"'
 endfunction
 command! RevisionDate call RevisionDate()
 
 function! LastTranslator()
-	/"Last-Translator: 
-	normal dd
-	normal O"Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
-	normal 0
+  /"Last-Translator: /
+  normal dd
+  normal O"Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
+  normal 0
 endfunction
 command! LastTranslator call LastTranslator()
 
 function! FuzzyDel()
-   ?, fuzzy
+   ?^msgid
+   normal k
    let line = getline(".")
    if line =~ '^#, fuzzy$'
-      exe "normal! dd"
+     exe "normal! dd"
    else
-      exe 's/, fuzzy//'
+     exe 's/, fuzzy//'
    endif
    normal }
 endfunction
