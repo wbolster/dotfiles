@@ -4,7 +4,17 @@
 set mark-symlinked-directories on
 set completion-ignore-case on
 
-"\C-p":         history-search-backward
-"\C-n":         history-search-forward
-"\e[5~":        history-search-backward
-"\e[6~":        history-search-forward
+# Ctrl-P and Ctrl-N
+"\C-p":    history-search-backward
+"\C-n":    history-search-forward
+
+# PageUp and PageDown
+"\e[5~":   history-search-backward
+"\e[6~":   history-search-forward
+
+# Ctrl-Left and Ctrl-Right
+"\e[5C":   forward-word
+"\e[5D":   backward-word
+"\e\e[C":  forward-word
+"\e\e[D":  backward-word
+
