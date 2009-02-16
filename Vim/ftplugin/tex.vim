@@ -24,10 +24,10 @@ if (exists("$GNOME_DESKTOP_SESSION_ID"))
 endif
 
 " Simplify long line handling
-nnoremap j gj
-nnoremap k gk
-vnoremap j gj
-vnoremap k gk
+noremap <buffer> j gj
+noremap <buffer> k gk
+noremap <buffer> 0 g0
+noremap <buffer> $ g$
 
 " Fancy quotes
 inoremap <buffer> <C-Space>` ‘
