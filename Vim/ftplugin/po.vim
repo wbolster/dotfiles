@@ -6,7 +6,7 @@ inoremap <buffer> `` ‘
 inoremap <buffer> '' ’
 
 noremap <buffer> <F6> :FuzzyDel<CR>
-noremap <buffer> <F7> /, fuzzy<CR>/msgstr "/e+1<CR>:nohlsearch<CR>
+noremap <buffer> <F7> /, fuzzy<CR>/msgstr\(\[\d\]\)\? "/e+1<CR>:nohlsearch<CR>
 noremap <buffer> <F8> /\([^\\]\\|^\)""\n\n/b+2<CR>:nohlsearch<CR>
 noremap <buffer> <F9> :!msgfmt --check --statistics -o /dev/null %<CR>
 noremap <buffer> <F10> ?^msgid<CR>V/msgstr<CR>kyjpkdd:s/^msgid/msgstr/<CR>:nohlsearch<CR>
@@ -27,7 +27,7 @@ endfunction
 command! LastTranslator call LastTranslator()
 
 function! FuzzyDel()
-   ?^msgid
+   ?^msgid "?
    normal k
    let line = getline(".")
    if line =~ '^#, fuzzy$'
