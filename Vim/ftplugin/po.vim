@@ -27,14 +27,28 @@ endfunction
 command! LastTranslator call LastTranslator()
 
 function! FuzzyDel()
-   ?^msgid "?
-   normal k
-   let line = getline(".")
-   if line =~ '^#, fuzzy$'
-     exe "normal! dd"
-   else
-     exe 's/, fuzzy//'
-   endif
-   normal }
+  " Find previous msgid line
+  ?^msgid "?
+
+  " Go one line up and get the line content
+  normal k
+  let line = getline(".")
+
+  " If this a msgctxt line, we go one line further up
+  if line =~ '^msgctxt "'
+    normal k
+    let line = getline(".")
+  endif
+
+  " If the line only contains fuzzy, remove it altogether
+  if line =~ '^#, fuzzy$'
+    exe "normal! dd"
+  " Otherwise only remove the fuzzy marker
+  else
+    exe 's/, fuzzy//'
+  endif
+
+  " Move to the next message (next paragraph)
+  normal }
 endfunction
 command! FuzzyDel call FuzzyDel()
