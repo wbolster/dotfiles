@@ -31,21 +31,21 @@ function! FuzzyDel()
   ?^msgid "?
 
   " Go one line up and get the line content
-  normal k
+  -1
   let line = getline(".")
 
   " If this a msgctxt line, we go one line further up
   if line =~ '^msgctxt "'
-    normal k
+    -1
     let line = getline(".")
   endif
 
   " If the line only contains fuzzy, remove it altogether
   if line =~ '^#, fuzzy$'
-    exe "normal! dd"
+    delete
   " Otherwise only remove the fuzzy marker
   else
-    exe 's/, fuzzy//'
+    substitute/, fuzzy//
   endif
 
   " Move to the next message (next paragraph)
