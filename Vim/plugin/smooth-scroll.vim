@@ -36,17 +36,17 @@ endfunction
 " unmap <C-U>, <C-D>, <C-F>, and <C-B>.
 
 function! SmoothScrolling()
-	map <C-D> :call SmoothScroll("d", 2, 2)<CR>
-	map <C-U> :call SmoothScroll("u", 2, 2)<CR>
-	map <C-F> :call SmoothScroll("d", 1, 1)<CR>
-	map <C-B> :call SmoothScroll("u", 1, 1)<CR>
+	nmap <C-D> :call SmoothScroll("d", 2, 2)<CR>
+	nmap <C-U> :call SmoothScroll("u", 2, 2)<CR>
+	nmap <C-F> :call SmoothScroll("d", 1, 1)<CR>
+	nmap <C-B> :call SmoothScroll("u", 1, 1)<CR>
 endfunction
 
 function! NoSmoothScrolling()
-	unmap <C-D>
-	unmap <C-U>
-	unmap <C-F>
-	unmap <C-B>
+	nunmap <C-D>
+	nunmap <C-U>
+	nunmap <C-F>
+	nunmap <C-B>
 endfunction
 
 
