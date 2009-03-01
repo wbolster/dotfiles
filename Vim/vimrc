@@ -71,10 +71,10 @@ vnoremap . :normal .<CR>
 " Pressing p should replace selected text in visual mode
 vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
 
-" Switch between spelling languages
+" Switch between commonly used languages
 command! SpellDutch   setlocal spell spelllang=nl
 command! SpellEnglish setlocal spell spelllang=en
-command! SpellNone    setlocal nospell
+command! NoSpell      setlocal nospell
 
 
 
