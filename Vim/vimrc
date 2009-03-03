@@ -47,7 +47,7 @@ noremap <C-j> gj
 noremap <C-k> gk
 noremap <C-l> l
 
-" Move visually with cursor
+" Move visually, nog logically with cursor keys
 noremap <Down> gj
 noremap <Up> gk
 
@@ -67,6 +67,10 @@ nnoremap <buffer> ," mxgewi"<Esc>ea"<Esc>`xl
 
 " Make "repeat last action" also work in visual mode
 vnoremap . :normal .<CR>
+
+" Break undo sequence before executing Ctrl-U, since that might delete more
+" then intended and it cannot be undone.
+inoremap <C-U> <C-G>u<C-U>
 
 " Pressing p should replace selected text in visual mode
 vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
