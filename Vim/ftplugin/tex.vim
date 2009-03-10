@@ -3,7 +3,7 @@
 
 setlocal textwidth=9999999
 setlocal shiftwidth=2 tabstop=2 expandtab
-setlocal formatoptions=tcq
+setlocal formatoptions=tcqor
 setlocal spell
 setlocal cinwords=
 
@@ -19,7 +19,7 @@ else
 endif
 
 " Preview pdf files
-if (exists("$GNOME_DESKTOP_SESSION_ID"))
+if (g:gnome_active)
 	noremap <buffer> <F10> :silent! !gnome-open <C-R>=expand('%:p:r:gs/ /\\ /')<Enter>.pdf<Enter><Enter>
 endif
 
