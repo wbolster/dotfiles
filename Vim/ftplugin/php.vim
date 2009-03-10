@@ -28,7 +28,7 @@ setlocal foldmethod=indent
 setlocal nofoldenable
 
 " Open the manual for the current keyword
-if (exists("$GNOME_DESKTOP_SESSION_ID"))
+if (g:gnome_active)
 	nnoremap <buffer> K :!gnome-open http://www.php.net/<C-R><C-W><Cr><Cr>
 endif
 
