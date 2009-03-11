@@ -80,6 +80,8 @@ command! SpellDutch   setlocal spell spelllang=nl
 command! SpellEnglish setlocal spell spelllang=en
 command! NoSpell      setlocal nospell
 
+" Active Gnome session?
+let g:gnome_active = exists("$GNOME_DESKTOP_SESSION_ID")
 
 
 "

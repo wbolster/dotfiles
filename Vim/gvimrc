@@ -15,9 +15,6 @@ set guicursor=a:blinkon0
 " Colors
 colorscheme kib_darktango
 
-" Active Gnome session?
-let g:gnome_active = exists("$GNOME_DESKTOP_SESSION_ID")
-
 " Fonts
 if !exists("g:font_initialized")
 	let g:font_initialized = 1
