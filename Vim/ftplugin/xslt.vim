@@ -2,7 +2,7 @@
 " Wouter Bolsterlee <uws@xs4all.nl>
 
 
-set iskeyword+=:  " needed for abbreviations
+setlocal iskeyword+=:  " needed for abbreviations
 
 
 " Abbreviations for templates
