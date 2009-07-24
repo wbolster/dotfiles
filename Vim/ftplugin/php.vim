@@ -8,9 +8,9 @@ setlocal formatoptions=croqnl1
 setlocal include=^\s\+(require\|require_once\|include\|include_once)
 setlocal tags=tags;/
 
-" Make sure the global ftplugin/php.vim doesn't add back the $ character to
-" iskeyword setting, without using a ~/vim/after/ftplugin/php.vim file.
-autocmd Filetype php setlocal iskeyword-=$
+" The global ftplugin/php.vim includes the ftplugin/html.vim, which causes a
+" few settings to be messed up. Undo that.
+autocmd Filetype php setlocal iskeyword-=$ comments&
 
 " Indentation
 setlocal cindent
