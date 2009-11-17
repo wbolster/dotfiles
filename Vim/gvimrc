@@ -6,6 +6,9 @@
 " Interface appearance  {{{1
 "
 
+" Larger window size upon startup
+set lines=60 columns=120
+
 " No menubar, no toolbar, but show left scrollbar for vertically split windows
 set guioptions-=m guioptions-=T guioptions+=L
 
