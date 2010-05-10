@@ -63,6 +63,10 @@ inoremap <C-MouseUp> <C-O>:bnext<Enter>
 " Keyboard shortcuts to change the text size
 map <silent> <F6> :SmallerFont<Enter>
 map <silent> <F7> :LargerFont<Enter>
+map <silent> <C--> :SmallerFont<Enter>
+map <silent> <C-+> :LargerFont<Enter>
+map <silent> <C-kMinus> :SmallerFont<Enter>
+map <silent> <C-kPlus> :LargerFont<Enter>
 
 " Tabs
 if exists(':tab') == 2
