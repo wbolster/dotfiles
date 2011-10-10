@@ -122,7 +122,7 @@ if [ "$PS1" ]; then
 	if type bzr &>/dev/null; then
 		alias b=bzr
 		test -z "$BASH" || complete -F _bzr -o default b
-		alias 'bzrl'='bzr last'
+		alias 'bzrl'='bzr sl'
 	fi
 
 	# Subversion
