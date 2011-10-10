@@ -10,6 +10,7 @@ setlocal tags=tags;/
 
 " The global ftplugin/php.vim includes the ftplugin/html.vim, which causes a
 " few settings to be messed up. Undo that.
+let b:did_ftplugin = 1
 autocmd Filetype php setlocal iskeyword-=$ comments&
 
 " Indentation
