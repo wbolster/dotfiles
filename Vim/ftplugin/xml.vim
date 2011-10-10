@@ -1,12 +1,9 @@
 " Vim configuration for XML
 " Wouter Bolsterlee <uws@xs4all.nl>
 
+setlocal shiftwidth=2 tabstop=2 expandtab
+setlocal foldmethod=indent nofoldenable
 setlocal matchpairs+=<:>
-setlocal noexpandtab
-setlocal shiftwidth=2
-setlocal tabstop=2
-setlocal foldmethod=indent
-setlocal nofoldenable
 setlocal iskeyword+=: " useful for namespace prefixes
 setlocal iskeyword+=- " useful for xslt
 
