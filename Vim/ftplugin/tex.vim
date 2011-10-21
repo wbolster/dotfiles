@@ -15,7 +15,7 @@ if (filereadable("Makefile"))
 	setlocal makeprg&
 else
 	" use rubber -d to generate pdf files
-	setlocal makeprg=rubber\ -v\ -d\ %
+	setlocal makeprg=rubber\ -v\ -m\ xelatex\ %
 endif
 
 " Preview pdf files
