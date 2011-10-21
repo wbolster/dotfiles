@@ -175,8 +175,8 @@ if [ "$PS1" ]; then
 		alias apt-get='sudo apt-get '
 		alias ac='apt-cache show '
 		alias acs='apt-cache search '
-		alias i='sudo apt-get install -V'
-		alias u='sudo apt-get update && sudo apt-get upgrade -V'
+		alias i='sudo $(which apt-get) install -V'
+		alias u='sudo $(which apt-get) update && sudo $(which apt-get) upgrade -V'
 	fi
 
 	# Misc
