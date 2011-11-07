@@ -93,7 +93,8 @@ if [ "$PS1" ]; then
 	alias h='unset HISTFILE'
 
 	# Tab completion
-	test -n "$BASH" && test -f /etc/bash_completion   && source /etc/bash_completion
+	test -n "$BASH" && test -f /etc/bash_completion && source /etc/bash_completion
+	test -n "$BASH" && test -f /usr/share/bash-completion/bash_completion && source /usr/share/bash-completion/bash_completion 
 	test -n "$BASH" && test -f $HOME/.bash_completion && source $HOME/.bash_completion
 
 	# Require confirmation for possibly destructive operations
