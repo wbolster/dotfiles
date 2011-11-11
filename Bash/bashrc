@@ -132,7 +132,7 @@ if [ "$PS1" ]; then
 	# Vim
 	alias :q='exit'
 	alias :e='$EDITOR'
-	if [ `which vim 2>/dev/null` ]; then
+	if [ `type vim &>/dev/null` ]; then
 		export EDITOR=vim
 		alias vi=vim
 	fi
@@ -142,20 +142,20 @@ if [ "$PS1" ]; then
 	test -z "$BASH" || complete -F _make m
 
 	# Bazaar
-	if [ `which bzr 2>/dev/null` ]; then
+	if type bzr &>/dev/null; then
 		alias b=bzr
 		test -z "$BASH" || complete -F _bzr -o default b
 		alias 'bzrl'='bzr last'
 	fi
 
 	# Subversion
-	if [ `which svn 2>/dev/null` ]; then
+	if type svn &>/dev/null; then
 		alias s=svn
 		test -z "$BASH" || complete -F _svn -o default s
 	fi
 
 	# Jhbuild
-	if [ `which jhbuild 2>/dev/null` ]; then
+	if type jhbuild &>/dev/null; then
 		alias 'jhr'='jhbuild run'
 		alias 'jhbo'='jhbuild buildone'
 		alias 'jhboa'='jhbuild buildone -a'
