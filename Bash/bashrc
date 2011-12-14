@@ -29,29 +29,6 @@ test -d ~/.system/bin && PATH=~/.system/bin:"${PATH}"
 
 
 #
-# Locale Settings {{{1
-#
-
-if [ `which locale 2>/dev/null` ]; then
-
-	# English, please...
-	if $(locale -a |grep -q '^en_GB\.utf8$'); then
-		export LANG=en_GB.UTF-8
-	# ...or American English as a fallback
-	else
-		export LANG=en_US.UTF-8
-	fi
-
-	# Easy locale switching for interactive shells
-	if [ "$PS1" ]; then
-		alias locale-none='unset LANG'
-		alias locale-en='export LANG=en_GB.UTF-8'
-		alias locale-nl='export LANG=nl_NL.UTF-8'
-	fi
-fi
-
-
-#
 # Interactive Shells  {{{1
 #
 
@@ -170,6 +147,11 @@ if [ "$PS1" ]; then
 		alias nb='nautilus --browser' 
 		test -z "$BASH" || complete -F _cd n nb
 	fi
+
+	# Locale
+	alias locale-none='unset LANG'
+	alias locale-en='export LANG=en_GB.UTF-8'
+	alias locale-nl='export LANG=nl_NL.UTF-8'
 
 	# Debian-specific
 	if test -f /etc/debian_version; then
