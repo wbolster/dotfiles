@@ -37,6 +37,8 @@ set showcmd
 " Text editing  {{{1
 "
 
+set nofsync swapsync=
+
 " No annoying limitations when moving the cursor around
 set backspace=2
 set whichwrap=b,s,h,l,<,>,[,]
