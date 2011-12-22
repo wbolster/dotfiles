@@ -102,7 +102,7 @@ if [ "$PS1" ]; then
 
 	# File listings
 	alias ls='ls --color=auto'
-	alias l='ls -lF'
+	alias l='ls -lFh'
 	alias ll='ls -AlF'
 	test -f ~/.dircolorsrc && eval `dircolors -b ~/.dircolorsrc`
 
