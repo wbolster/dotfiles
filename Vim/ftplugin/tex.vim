@@ -14,8 +14,7 @@ match Todo /^\s\+$/
 if (filereadable("Makefile"))
 	setlocal makeprg&
 else
-	" use rubber -d to generate pdf files
-	setlocal makeprg=rubber\ -v\ -f\ -m\ xelatex\ %
+	setlocal makeprg=latexmk\ %
 endif
 
 " Preview pdf files
