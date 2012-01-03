@@ -146,6 +146,9 @@ set gdefault
 " Multiple files, file types  {{{1
 "
 
+" Don't sync swap files
+set nofsync swapsync=
+
 " Buffer behaviour and easy switching
 set hidden
 map ,j :bnext<CR>

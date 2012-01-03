@@ -1,6 +1,9 @@
 " Vim configuration for PO-style translation files
 " Wouter Bolsterlee <uws@xs4all.nl>
 
+setlocal spell
+setlocal spelllang=nl
+
 inoremap <buffer> ... …
 inoremap <buffer> `` ‘
 inoremap <buffer> '' ’

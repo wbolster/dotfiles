@@ -18,6 +18,9 @@ inoremap <buffer> # X#
 " PEP8 checker
 setlocal makeprg=pep8\ --repeat\ --ignore=E501\ %
 
+" PEP8 checker
+setlocal makeprg=pep8\ --repeat\ %
+
 " Abbreviations
 inoreabbrev <buffer> ifmain if __name__ == '__main__':<Cr><C-R>=EatWhitespace()<Cr>
 inoreabbrev <buffer> defm def (self):<C-O>F(<C-R>=EatWhitespace()<Cr>
