@@ -107,12 +107,14 @@ if [ "$PS1" ]; then
 	alias nice='nice '
 
 	# Vim
-	alias :q='exit'
-	alias :e='$EDITOR'
 	if [ `type vim &>/dev/null` ]; then
 		export EDITOR=vim
 		alias vi=vim
+	else
+		export EDITOR=vi
 	fi
+	alias :q='exit'
+	alias :e='$EDITOR'
 
 	# Development
 	alias m=make
