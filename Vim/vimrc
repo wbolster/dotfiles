@@ -48,7 +48,7 @@ function! EatWhitespace()
 	return (c =~ '\s') ? '' : c
 endfunction
 command! StripTrailingWhitespace normal mx<Enter>:%s/\s\+$//<Enter>:nohlsearch<Enter>`x
-nnoremap <F12> :StripTrailingWhitespace<CR>
+nnoremap <F12> :StripTrailingWhitespace<Return>
 
 " Easy paragraph formatting
 noremap Q gqap
@@ -78,25 +78,38 @@ set autochdir
 set suffixes+=.aux,.bbl,.blg,.dvi,.idx,.log,.out,.pdf,.toc,.pyc,.pyo
 
 " File type specific configuration and enable syntax highlighting
-filetype on
-filetype plugin on
-filetype indent on
+filetype plugin indent on
 syntax on
 
 " Active Gnome session?
 let g:gnome_active = exists("$GNOME_DESKTOP_SESSION_ID")
 
 " Development
-nnoremap <F9> :make<CR>
+nnoremap <F9> :make<Return>
 setlocal tags=tags;/
+
+" Concealing
+function! ToggleConceal()
+  if &conceallevel != '0'
+    set conceallevel=0
+  else
+    set conceallevel=2
+  endif
+endfunction
 
 " Miscellaneous shortcuts
 let mapleader = ","
-map <Leader>l :set list!<CR>
-map <Leader>w :set wrap!<CR>
-map <Leader>n :set number!<CR>
-map <Leader>/ :nohlsearch<CR>
+map <silent> <Leader>l :set list!<Return>
+map <silent> <Leader>w :set wrap!<Return>
+map <silent> <Leader>n :set number!<Return>
+map <silent> <Leader>/ :nohlsearch<Return>
+map <silent> <Leader>c :call ToggleConceal()<Return>
 
 " FIXME: does the repeat.vim plugin cover this?
 "" Make "repeat last action" also work in visual mode
-"vnoremap . :normal .<CR>
+"vnoremap . :normal .<Return>
+
+" Load plugins using pathogen
+runtime bundle/external/pathogen/autoload/pathogen.vim
+call pathogen#infect()
+call pathogen#infect('external')
