@@ -5,7 +5,7 @@ set nocompatible
 " Display
 set display=lastline,uhex laststatus=2 ruler
 set showmatch
-set backspace=2 whichwrap=b,s,<,>,[,]
+set backspace=2 whichwrap=b,s,h,l,<,>,[,]
 set nofoldenable foldmethod=marker
 silent! set listchars=eol:$,trail:_,extends:»,precedes:«,tab:»·,nbsp:~
 
