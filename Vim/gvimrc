@@ -1,142 +1,35 @@
-" Vim configuration, GUI
-" Wouter Bolsterlee <uws@xs4all.nl>
+" Vim configuration (gvim)
 
-
-"
-" Interface appearance  {{{1
-"
-
-" Larger window size upon startup
 set lines=60 columns=120
-
-" No menubar, no toolbar, but show left scrollbar for vertically split windows
 set guioptions-=m guioptions-=T guioptions+=L
-
-" No blinking cursor
 set guicursor=a:blinkon0 
 
-" Colors
-colorscheme kib_darktango
+colorscheme mustang
+
+" Smooth scrolling (and try to avoid over SSH)
+if (stridx(expand("$DISPLAY"), ":") == 0)
+  SmoothScrolling
+endif
 
 " Fonts
 if !exists("g:font_initialized")
-	let g:font_initialized = 1
-
-  " GTK interface. Use the system-wide monospace font when running in a
-  " Gnome session. Otherwise set a sensible default and try to override
-  " it using fonts that may not be available.
-	if has("gui_gtk2")
-		if (g:gnome_active)
-			let &guifont = substitute(system("gconftool --get /desktop/gnome/interface/monospace_font_name"), "\n", "", "")
-		else
-			set guifont=Monospace\ 10
-			silent! set guifont=Consolas\ 10
-		endif
-
-  " Windows interface
-	elseif has("gui_win32")
-		set guifont=Lucida_Console:h10:cANSI
-	endif
+  let g:font_initialized = 1
+  if has("gui_gtk2")
+    if (g:gnome_active)
+      "let &guifont = substitute(system("gconftool --get /desktop/gnome/interface/monospace_font_name"), "\n", "", "")
+      let &guifont = substitute(substitute(system("dconf read /org/gnome/desktop/interface/monospace-font-name"), "\n", "", ""), "'", "", "g")
+    else
+      set guifont=Monospace\ 10
+    endif
+  endif
 endif
-
-
-" Smooth scrolling, but try to avoid this when running over SSH
-if (stridx(expand("$DISPLAY"), ":") == 0)
-	SmoothScrolling
-endif
-
-
-"
-" Keyboard and mouse shortcuts  {{{1
-"
 
 " Save using Ctrl-S
-noremap <C-s> :update<Enter>
-inoremap <C-s> <C-O>:update<Enter>
-
-" Switch buffers using the mouse
-noremap <C-MouseDown> :bprevious<Enter>
-inoremap <C-MouseDown> <C-O>:bprevious<Enter>
-noremap <C-MouseUp> :bnext<Enter>
-inoremap <C-MouseUp> <C-O>:bnext<Enter>
+noremap <C-s> :update<Return>
+inoremap <C-s> <C-O>:update<Return>
 
 " Keyboard shortcuts to change the text size
-map <silent> <F6> :SmallerFont<Enter>
-map <silent> <F7> :LargerFont<Enter>
-map <silent> <C--> :SmallerFont<Enter>
-map <silent> <C-+> :LargerFont<Enter>
-map <silent> <C-kMinus> :SmallerFont<Enter>
-map <silent> <C-kPlus> :LargerFont<Enter>
-
-" Tabs
-if exists(':tab') == 2
-
-	" Show tab filename and modified state in label
-	set guitablabel=%t\ %m
-
-	" Some commands to manipulate tabs
-	command! TabForEachBuffer tabonly | tab sball
-	command! TabMoveLeft normal :tabmove <C-R>=tabpagenr()-2<Enter><Enter>
-	command! TabMoveRight normal :tabmove <C-R>=tabpagenr()<Enter><Enter>
-	command! TA TabForEachBuffer " easy to type
-
-	" Mappings to manipulate tabs. Some of those are Ctrl-T <something-else>
-	" mappings, inspired by Ctrl-W <something-else>
-	nnoremap <C-T> <Nop>
-	nnoremap <C-T>n :tabnew<Return>
-	nnoremap <C-T>a :TabForEachBuffer<Return>
-	nnoremap <C-T>c :tabclose<Return>
-	nnoremap <C-T>o :tabonly<Return>
-	nmap <C-T><C-n> <C-T>n
-	nmap <C-T><C-a> <C-T>a
-
-	nnoremap <C-T>h :tabprevious<Return>
-	nnoremap <C-T>j :tabnext<Return>
-	nnoremap <C-T>k :tabprevious<Return>
-	nnoremap <C-T>l :tabnext<Return>
-
-	nnoremap <C-T>H :TabMoveLeft<Return>
-	nnoremap <C-T>J :TabMoveRight<Return>
-	nnoremap <C-T>K :TabMoveLeft<Return>
-	nnoremap <C-T>L :TabMoveRight<Return>
-
-	nmap <C-T><C-h> <C-T>h
-	nmap <C-T><C-j> <C-T>j
-	nmap <C-T><C-k> <C-T>k
-	nmap <C-T><C-l> <C-T>l
-
-	nmap <M-j> <C-T>l
-	nmap <M-k> <C-T>h
-
-	" Tab Switching using alt-N in normal mode, visual mode, and insert mode
-	nnoremap <M-1> 1gt
-	nnoremap <M-2> 2gt
-	nnoremap <M-3> 3gt
-	nnoremap <M-4> 4gt
-	nnoremap <M-5> 5gt
-	nnoremap <M-6> 6gt
-	nnoremap <M-7> 7gt
-	nnoremap <M-8> 8gt
-	nnoremap <M-9> 9gt
-	nnoremap <M-0> 10gt
-	vnoremap <M-1> <Esc>1gt
-	vnoremap <M-2> <Esc>2gt
-	vnoremap <M-3> <Esc>3gt
-	vnoremap <M-4> <Esc>4gt
-	vnoremap <M-5> <Esc>5gt
-	vnoremap <M-6> <Esc>6gt
-	vnoremap <M-7> <Esc>7gt
-	vnoremap <M-8> <Esc>8gt
-	vnoremap <M-9> <Esc>9gt
-	vnoremap <M-0> <Esc>10gt
-	inoremap <M-1> <Esc>1gt
-	inoremap <M-2> <Esc>2gt
-	inoremap <M-3> <Esc>3gt
-	inoremap <M-4> <Esc>4gt
-	inoremap <M-5> <Esc>5gt
-	inoremap <M-6> <Esc>6gt
-	inoremap <M-7> <Esc>7gt
-	inoremap <M-8> <Esc>8gt
-	inoremap <M-9> <Esc>9gt
-	inoremap <M-0> <Esc>10gt
-endif
+noremap <C-kMinus> :SmallerFont<Return>
+noremap <C-kPlus> :LargerFont<Return>
+noremap <C-ScrollWheelDown> :SmallerFont<Return>
+noremap <C-ScrollWheelUp> :LargerFont<Return>

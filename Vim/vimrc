@@ -1,195 +1,102 @@
 " Vim configuration
-" Wouter Bolsterlee <uws@xs4all.nl>
 
-
-" This is the 21st century. Thank you.
 set nocompatible
 
-
-
-"
-" Text display  {{{1
-"
-
-" Show as much text as possible, and show strange characters in a useful way
-set display=lastline,uhex
-
-" Always keep some context around the cursor
-set scrolloff=5 sidescrolloff=5
-
-" Always show a status line, and show position information
-set laststatus=2 ruler
-
-" Try to use explicit fold markers by default
-set foldmethod=marker
-
-" Briefly show matching brackets, but disable annoying MatchParen highlighting
+" Display
+set display=lastline,uhex laststatus=2 ruler
 set showmatch
-let loaded_matchparen = 1
+set backspace=2 whichwrap=b,s,<,>,[,]
+set nofoldenable foldmethod=marker
+silent! set listchars=eol:$,trail:_,extends:»,precedes:«,tab:»·,nbsp:~
 
-
-" See what we're doing
-set showcmd
-
-
-
-"
-" Text editing  {{{1
-"
-
-set nofsync swapsync=
-
-" No annoying limitations when moving the cursor around
-set backspace=2
-set whichwrap=b,s,h,l,<,>,[,]
-
-" Use ctrl-key plus cursor movenemt to move visually instead of logically
+" Movement
 noremap <C-h> h
 noremap <C-j> gj
 noremap <C-k> gk
 noremap <C-l> l
-
-" Move visually, nog logically with cursor keys
 noremap <Down> gj
 noremap <Up> gk
 
-" Use space and backspace for scrolling (holding Shift reverses the direction)
+" Scrolling
+set scrolloff=5 sidescrolloff=5
 map <Space> <C-D>
 map <S-Space> <C-U>
 map <Backspace> <C-U>
 map <S-Backspace> <C-D>
 
+" Encoding
+set encoding=utf-8
+
+" Indentation
+set expandtab shiftwidth=4 tabstop=4
+set autoindent smartindent
+
+" Wrapping
+set linebreak nojoinspaces
+let &showbreak="↪ "
+set colorcolumn=+1
+
+" Search/replace
+set ignorecase smartcase
+set hlsearch incsearch
+nohlsearch
+set gdefault
+
+" Whitespace (after an abbreviation)
+function! EatWhitespace()
+	let c = nr2char(getchar())
+	return (c =~ '\s') ? '' : c
+endfunction
+command! StripTrailingWhitespace normal mx<Enter>:%s/\s\+$//<Enter>:nohlsearch<Enter>`x
+nnoremap <F12> :StripTrailingWhitespace<CR>
+
+" Easy paragraph formatting
+noremap Q gqap
+
 " Quickly move to end of line in insert mode
-imap <C-L> <C-O>A
+inoremap <C-L> <C-O>A
 
-" Add different types of quotes around the current word
-nnoremap <buffer> ,` mxgewi`<Esc>ea`<Esc>`xl
-nnoremap <buffer> ,' mxgewi'<Esc>ea'<Esc>`xl
-nnoremap <buffer> ," mxgewi"<Esc>ea"<Esc>`xl
-
-" Make "repeat last action" also work in visual mode
-vnoremap . :normal .<CR>
-
-" Break undo sequence before executing Ctrl-U, since that might delete more
+" Break undo sequence before killing the line
 " then intended and it cannot be undone.
 inoremap <C-U> <C-G>u<C-U>
 
 " Pressing p should replace selected text in visual mode
 vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
 
-" Switch between commonly used languages
+" Spell checking
 command! SpellDutch   setlocal spell spelllang=nl
 command! SpellEnglish setlocal spell spelllang=en
 command! NoSpell      setlocal nospell
 
-" Active Gnome session?
-let g:gnome_active = exists("$GNOME_DESKTOP_SESSION_ID")
-
-
-"
-" Whitespace, wrapping, newlines, indentation and tabs  {{{1
-"
-
-" Automatic indentation
-set autoindent smartindent
-
-" Indentation steps
-set shiftwidth=4 tabstop=4
-
-" Display
-silent! set listchars=eol:$,trail:_,extends:»,precedes:«,tab:»·,nbsp:~
-map <silent> ,l :set list!<CR>
-
-" Wordwrap toggling
-map <silent> ,w :set wrap!<CR>
-
-" Easy paragraph formatting
-noremap Q gqap
-
-" Line breaks
-set linebreak
-let &showbreak="↪ "
-set nojoinspaces
-map <silent> ,n :set number!<CR>
-
-" Removes whitespace (after an abbreviation)
-function! EatWhitespace()
-	let c = nr2char(getchar())
-	return (c =~ '\s') ? '' : c
-endfunction
-
-" Strip trailing whitespace (and keep the cursor position)
-command! StripTrailingWhitespace normal mx<Enter>:%s/\s\+$//<Enter>:nohlsearch<Enter>`x
-nnoremap <F12> :StripTrailingWhitespace<CR>
-inoremap <F12> <C-O>:StripTrailingWhitespace<CR>
-
-
-
-"
-" Search and replace  {{{1
-"
-
-" Be smart about text case
-set ignorecase smartcase
-
-" Visual feedback
-set hlsearch incsearch
-map <silent> <F5> :nohlsearch<CR>
-nohlsearch
-
-" Replace all matches by default
-set gdefault
-
-
-
-"
-" Multiple files, file types  {{{1
-"
-
-" Don't sync swap files
+" No sync I/O and avoid local cruft; we have VCS'es to keep files safe
 set nofsync swapsync=
+set directory-=.
 
-" Buffer behaviour and easy switching
+" Opening/switching files
 set hidden
-map ,j :bnext<CR>
-map ,k :bprevious<CR>
-map ,, :bnext<CR>
-map ,. :buffer #<CR>
+set autochdir
+set suffixes+=.aux,.bbl,.blg,.dvi,.idx,.log,.out,.pdf,.toc,.pyc,.pyo
 
-" Automatically change working directory
-if exists('+autochdir')
-  set autochdir
-else
-  " For Vim < 7
-   autocmd BufEnter * silent! lcd %:p:h:gs/ /\\ /
-endif
-
-
-" Some file types we're not likely to open
-set suffixes+=.aux
-set suffixes+=.bbl
-set suffixes+=.blg
-set suffixes+=.dvi
-set suffixes+=.idx
-set suffixes+=.log
-set suffixes+=.out
-set suffixes+=.pdf
-set suffixes+=.toc
-set suffixes+=.pyc
-set suffixes+=.pyo
-
-" Enable filetype-specific configuration and enable syntax highlighting
+" File type specific configuration and enable syntax highlighting
 filetype on
 filetype plugin on
 filetype indent on
 syntax on
 
+" Active Gnome session?
+let g:gnome_active = exists("$GNOME_DESKTOP_SESSION_ID")
 
-
-"
-" Development  {{{1
-"
-
-" Make invocations
+" Development
 nnoremap <F9> :make<CR>
-inoremap <F9> <C-O>:make<CR>
+setlocal tags=tags;/
+
+" Miscellaneous shortcuts
+let mapleader = ","
+map <Leader>l :set list!<CR>
+map <Leader>w :set wrap!<CR>
+map <Leader>n :set number!<CR>
+map <Leader>/ :nohlsearch<CR>
+
+" FIXME: does the repeat.vim plugin cover this?
+"" Make "repeat last action" also work in visual mode
+"vnoremap . :normal .<CR>
