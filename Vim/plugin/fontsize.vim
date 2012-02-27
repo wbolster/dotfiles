@@ -4,7 +4,7 @@
 
 " Minimum and maximum font size
 let s:minfontsize = 6
-let s:maxfontsize = 24
+let s:maxfontsize = 48
 
 
 " Function to adjust the font size with a given amount
