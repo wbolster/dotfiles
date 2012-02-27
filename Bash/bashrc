@@ -155,8 +155,8 @@ if [ "$PS1" ]; then
 	alias locale-en='export LANG=en_GB.UTF-8'
 	alias locale-nl='export LANG=nl_NL.UTF-8'
 
-	# Debian-specific
-	if test -f /etc/debian_version; then
+    # Debian and Ubuntu
+	if type apt-get &>/dev/null; then
 		alias apt-get='sudo apt-get '
 		alias ac='apt-cache show '
 		alias acs='apt-cache search '
