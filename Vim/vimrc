@@ -77,10 +77,6 @@ set hidden
 set autochdir
 set suffixes+=.aux,.bbl,.blg,.dvi,.idx,.log,.out,.pdf,.toc,.pyc,.pyo
 
-" File type specific configuration and enable syntax highlighting
-filetype plugin indent on
-syntax on
-
 " Active Gnome session?
 let g:gnome_active = exists("$GNOME_DESKTOP_SESSION_ID")
 
@@ -112,4 +108,8 @@ map <silent> <Leader>c :call ToggleConceal()<Return>
 " Load plugins using pathogen
 runtime bundle/external/pathogen/autoload/pathogen.vim
 call pathogen#infect()
-call pathogen#infect('external')
+call pathogen#runtime_append_all_bundles('bundle/external')
+"
+" File type specific configuration and enable syntax highlighting
+filetype plugin indent on
+syntax on
