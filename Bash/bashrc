@@ -86,8 +86,7 @@ if [ "$PS1" ]; then
 	test -f ~/.dircolorsrc && eval `dircolors -b ~/.dircolorsrc`
 
 	# Show colors in grep output
-	alias grep='grep --color=auto'
-	alias rgrep='grep --recursive --color=auto'
+	export GREP_OPTIONS='--color=auto'
 
 	# Navigation
 	alias ..='cd "$OLDPWD"'
