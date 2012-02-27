@@ -4,6 +4,7 @@ set -e
 set -x
 
 cd external/
+
 git clone https://github.com/tpope/vim-abolish.git abolish
 git clone https://github.com/tpope/vim-commentary.git commentary
 git clone https://github.com/laurentb/vim-cute-php.git vim-cute-php
@@ -15,3 +16,5 @@ git clone https://github.com/msanders/snipmate.vim.git snipmate
 git clone https://github.com/tpope/vim-surround.git surround
 git clone https://github.com/scrooloose/syntastic.git syntastic
 git clone https://github.com/tpope/vim-unimpaired.git unimpaired
+
+find . -name .git -print0 |xargs -0 rm -fr
