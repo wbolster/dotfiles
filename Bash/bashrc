@@ -143,10 +143,7 @@ if [ "$PS1" ]; then
 
 	# GUI applications
 	if [ ! -z "$DISPLAY" ]; then
-		alias g='gnome-open '
-		alias n='nautilus '
-		alias nb='nautilus --browser' 
-		test -z "$BASH" || complete -F _cd n nb
+		alias g='xdg-open '
 	fi
 
 	# Locale
