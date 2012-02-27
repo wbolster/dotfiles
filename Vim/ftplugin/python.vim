@@ -1,25 +1,13 @@
 " Vim configuration for Python
-" Wouter Bolsterlee <uws@xs4all.nl>
 
-setlocal tabstop=4 shiftwidth=4 expandtab
-setlocal smarttab
-
+setlocal tabstop=4 shiftwidth=4 expandtab smarttab
 setlocal foldmethod=indent
-setlocal nofoldenable
-
-setlocal tags=tags;/
 
 " Fix comments
 inoremap <buffer> # X#
 
-" Highlight leading tabs in the source code
-" match Todo /^\(\s\)*\t\+/
-
 " PEP8 checker
 setlocal makeprg=pep8\ --repeat\ --ignore=E501\ %
-
-" PEP8 checker
-setlocal makeprg=pep8\ --repeat\ %
 
 " Abbreviations
 inoreabbrev <buffer> ifmain if __name__ == '__main__':<Cr><C-R>=EatWhitespace()<Cr>
