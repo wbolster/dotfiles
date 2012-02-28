@@ -112,6 +112,6 @@ runtime bundle/external/pathogen/autoload/pathogen.vim
 call pathogen#infect('~/.vim/bundle/external')
 call pathogen#runtime_append_all_bundles('bundle')
 
-" File type specific configuration and enable syntax highlighting
+" File type configuration and syntax highlighting (set after loading pathogen)
 filetype plugin indent on
 syntax on
