@@ -1,2 +1,3 @@
 ./Vim/spell/*
 ./Vim/.netrwhist
+./Vim/**/doc/tags
