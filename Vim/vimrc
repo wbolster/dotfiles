@@ -48,7 +48,6 @@ function! EatWhitespace()
 	return (c =~ '\s') ? '' : c
 endfunction
 command! StripTrailingWhitespace normal mx<Enter>:%s/\s\+$//<Enter>:nohlsearch<Enter>`x
-nnoremap <F12> :StripTrailingWhitespace<Return>
 
 " Easy paragraph formatting
 noremap Q gqap
@@ -62,6 +61,9 @@ inoremap <C-U> <C-G>u<C-U>
 
 " Pressing p should replace selected text in visual mode
 vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
+
+" Make "repeat last action" also work in visual mode
+vnoremap . :normal .<Return>
 
 " Spell checking
 command! SpellDutch   setlocal spell spelllang=nl
@@ -81,7 +83,6 @@ set suffixes+=.aux,.bbl,.blg,.dvi,.idx,.log,.out,.pdf,.toc,.pyc,.pyo
 let g:gnome_active = exists("$GNOME_DESKTOP_SESSION_ID")
 
 " Development
-nnoremap <F9> :make<Return>
 setlocal tags=tags;/
 
 " Concealing
@@ -95,19 +96,21 @@ endfunction
 
 " Miscellaneous shortcuts
 let mapleader = ","
-map <silent> <Leader>l :set list!<Return>
-map <silent> <Leader>w :set wrap!<Return>
-map <silent> <Leader>n :set number!<Return>
-map <silent> <Leader>/ :nohlsearch<Return>
 map <silent> <Leader>c :call ToggleConceal()<Return>
-
-" Make "repeat last action" also work in visual mode
-vnoremap . :normal .<Return>
+map <silent> <Leader>j :bnext<Return>
+map <silent> <Leader>k :bprevious<Return>
+map <silent> <Leader><Leader> :bnext<Return>
+map <silent> <Leader>l :set list!<Return>
+map <silent> <Leader>m :make<Return>
+map <silent> <Leader>/ :nohlsearch<Return>
+map <silent> <Leader>n :set number!<Return>
+map <silent> <Leader>s :StripTrailingWhitespace<Return>
+map <silent> <Leader>w :set wrap!<Return>
 
 " Load plugins using pathogen
 runtime bundle/external/pathogen/autoload/pathogen.vim
-call pathogen#infect()
-call pathogen#runtime_append_all_bundles('bundle/external')
+call pathogen#infect('bundle/external')
+call pathogen#runtime_append_all_bundles('bundle')
 "
 " File type specific configuration and enable syntax highlighting
 filetype plugin indent on
