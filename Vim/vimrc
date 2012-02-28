@@ -47,7 +47,7 @@ function! EatWhitespace()
 	let c = nr2char(getchar())
 	return (c =~ '\s') ? '' : c
 endfunction
-command! StripTrailingWhitespace normal mx<Enter>:%s/\s\+$//<Enter>:nohlsearch<Enter>`x
+command! StripTrailingWhitespace silent! normal mx<Enter>:%s/\s\+$//<Enter>:nohlsearch<Enter>`x
 
 " Easy paragraph formatting
 noremap Q gqap
@@ -111,7 +111,7 @@ map <silent> <Leader>w :set wrap!<Return>
 runtime bundle/external/pathogen/autoload/pathogen.vim
 call pathogen#infect('bundle/external')
 call pathogen#runtime_append_all_bundles('bundle')
-"
+
 " File type specific configuration and enable syntax highlighting
 filetype plugin indent on
 syntax on
