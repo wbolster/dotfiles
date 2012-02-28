@@ -101,9 +101,8 @@ map <silent> <Leader>n :set number!<Return>
 map <silent> <Leader>/ :nohlsearch<Return>
 map <silent> <Leader>c :call ToggleConceal()<Return>
 
-" FIXME: does the repeat.vim plugin cover this?
-"" Make "repeat last action" also work in visual mode
-"vnoremap . :normal .<Return>
+" Make "repeat last action" also work in visual mode
+vnoremap . :normal .<Return>
 
 " Load plugins using pathogen
 runtime bundle/external/pathogen/autoload/pathogen.vim
