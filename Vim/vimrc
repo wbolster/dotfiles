@@ -109,7 +109,7 @@ map <silent> <Leader>w :set wrap!<Return>
 
 " Load plugins using pathogen
 runtime bundle/external/pathogen/autoload/pathogen.vim
-call pathogen#infect('bundle/external')
+call pathogen#infect('~/.vim/bundle/external')
 call pathogen#runtime_append_all_bundles('bundle')
 
 " File type specific configuration and enable syntax highlighting
