@@ -1,4 +1,2 @@
 # Bash profile
-# Wouter Bolsterlee <uws@xs4all.nl>
-
 test -f ~/.bashrc && source ~/.bashrc

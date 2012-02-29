@@ -1,23 +1,4 @@
 # Bash Configuration
-# Wouter Bolsterlee <uws@xs4all.nl>
-
-
-#
-# General  {{{1
-#
-
-# Some personal settings
-export EMAIL="Wouter Bolsterlee <uws@xs4all.nl>"
-
-
-# Make sure we always have a $HOSTNAME variable, since it's used
-# later in this file
-test -z "${HOSTNAME}" && export HOSTNAME=`hostname`
-
-
-#
-# Files and Paths  {{{1
-#
 
 # Keep new files and directories private by default
 umask 077
@@ -27,11 +8,7 @@ test -d ~/bin         && PATH=~/bin:"${PATH}"
 test -d ~/.local/bin  && PATH=~/.local/bin:"${PATH}"
 test -d ~/.system/bin && PATH=~/.system/bin:"${PATH}"
 
-
-#
-# Interactive Shells  {{{1
-#
-
+# Interactive Shells
 if [ "$PS1" ]; then
 
 	# Terminal title
@@ -42,6 +19,9 @@ if [ "$PS1" ]; then
 	*)
 		;;
 	esac
+
+	# Make $HOSTNAME is set
+	test -z "${HOSTNAME}" && export HOSTNAME=`hostname`
 
 	# Prompt appearance
 	#
@@ -151,7 +131,7 @@ if [ "$PS1" ]; then
 	alias locale-en='export LANG=en_GB.UTF-8'
 	alias locale-nl='export LANG=nl_NL.UTF-8'
 
-    # Debian and Ubuntu
+	# Debian and Ubuntu
 	if type apt-get &>/dev/null; then
 		alias apt-get='sudo apt-get '
 		alias ac='apt-cache show '
@@ -167,7 +147,7 @@ fi
 
 
 #
-# Host-specific Configuration  {{{1
+# Host-specific Configuration
 #
 # Machine-specific configuration (not kept in version control). The
 # bashrc-$HOSTNAME variant is useful for machine specific configuration
