@@ -3,7 +3,7 @@
 
 
 setlocal textwidth=80
-setlocal tabstop=4 shiftwidth=4
+setlocal noexpandtab tabstop=4 shiftwidth=4
 setlocal formatoptions=croqnl1
 setlocal include=^\s\+(require\|require_once\|include\|include_once)
 setlocal tags=tags;/
