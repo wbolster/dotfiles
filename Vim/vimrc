@@ -3,7 +3,7 @@
 set nocompatible
 
 " Display
-set display=lastline,uhex laststatus=2 ruler
+set display=lastline,uhex laststatus=2 ruler showcmd
 set showmatch
 set backspace=2 whichwrap=b,s,h,l,<,>,[,]
 set nofoldenable foldmethod=marker
