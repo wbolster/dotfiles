@@ -28,9 +28,11 @@ if !exists("g:syntastic_phpcs_disable")
     let g:syntastic_phpcs_disable = 0
 endif
 
-function! SyntaxCheckers_php_Term(item)
+function! SyntaxCheckers_php_GetHighlightRegex(item)
     let unexpected = matchstr(a:item['text'], "unexpected '[^']\\+'")
-    if len(unexpected) < 1 | return '' | end
+    if len(unexpected) < 1
+        return ''
+    endif
     return '\V'.split(unexpected, "'")[1]
 endfunction
 
@@ -38,15 +40,13 @@ function! SyntaxCheckers_php_GetLocList()
 
     let errors = []
 
-    let makeprg = "php -l ".shellescape(expand('%'))
+    let makeprg = "php -l -d error_reporting=E_PARSE -d display_errors=0 -d error_log='' ".shellescape(expand('%'))
     let errorformat='%-GNo syntax errors detected in%.%#,PHP Parse error: %#syntax %trror\, %m in %f on line %l,PHP Fatal %trror: %m in %f on line %l,%-GErrors parsing %.%#,%-G\s%#,Parse error: %#syntax %trror\, %m in %f on line %l,Fatal %trror: %m in %f on line %l'
     let errors = SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat })
 
     if empty(errors) && !g:syntastic_phpcs_disable && executable("phpcs")
         let errors = errors + s:GetPHPCSErrors()
     endif
-
-    call SyntasticHighlightErrors(errors, function('SyntaxCheckers_php_Term'))
 
     return errors
 endfunction
