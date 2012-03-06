@@ -5,9 +5,9 @@ set -x
 
 cd external/
 
-git clone https://github.com/ehamberg/vim-cute-python vim-cute-python
+git clone https://github.com/ehamberg/vim-cute-python cute-python
 git clone https://github.com/jimf/vim-pep8-text-width.git pep8-text-width
-git clone https://github.com/laurentb/vim-cute-php.git vim-cute-php
+git clone https://github.com/laurentb/vim-cute-php.git cute-php
 git clone https://github.com/msanders/snipmate.vim.git snipmate
 git clone https://github.com/scrooloose/syntastic.git syntastic
 git clone https://github.com/tpope/vim-abolish.git abolish
