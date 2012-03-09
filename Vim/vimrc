@@ -62,6 +62,14 @@ inoremap <C-U> <C-G>u<C-U>
 " Pressing p should replace selected text in visual mode
 vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
 
+" Move lines around using Alt-[jk]
+noremap <A-j> :move +<Return>
+noremap <A-k> :move -2<Return>
+inoremap <A-j> <C-O>:move +<Return>
+inoremap <A-k> <C-O>:move -2<Return>
+vnoremap <A-j> :move '> +<Return>gv
+vnoremap <A-k> :move -2<Return>gv
+
 " Make "repeat last action" also work in visual mode
 vnoremap . :normal .<Return>
 
