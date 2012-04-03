@@ -10,40 +10,40 @@ test -d ~/.system/bin && PATH=~/.system/bin:"${PATH}"
 
 # Interactive Shells
 if [ "$PS1" ]; then
-
-	# Terminal title
-	case $TERM in
-	xterm|rxvt*)
-		PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
-		;;
-	*)
-		;;
-	esac
-
-	# Make $HOSTNAME is set
+	# Make sure $HOSTNAME is set
 	test -z "${HOSTNAME}" && export HOSTNAME=`hostname`
 
-	# Prompt appearance
-	#
-	# Specify defaults and allow local config to override it.
-	# Then set $PS1 and clean up.
+	# Prompt and terminal title
 	#
 	# Color format: "background;attribute;foreground"
 	# Background:   40-47
 	# Foreground:   30-37
 	# No color:     00
 	# Attributes:   0 is normal, 1 is bold, 4 is underline, 7 is inverse
+	PROMPT_DIRTRIM=3
 	PROMPT_HOST_CHARS="8"
 	PROMPT_PRIMARY_COLOR="00;4;32"
 	PROMPT_SECONDARY_COLOR="00;1;32"
 	test -f ~/.bash-prompt           && source ~/.bash-prompt
 	test -f ~/.bash-prompt-$HOSTNAME && source ~/.bash-prompt-$HOSTNAME
-	test -n "${BASH}" && PS1="\[\e[${PROMPT_PRIMARY_COLOR}m\]${HOSTNAME:0:${PROMPT_HOST_CHARS}}:\w\[\e[0m\] \[\e[${PROMPT_SECONDARY_COLOR}m\]\\$\[\e[0m\] "
+	if [ "$BASH" ]; then
+		case $TERM in
+		xterm|rxvt*)
+			PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
+			TERMINAL_TITLE='\e]2;\w\a'
+			;;
+		*)
+			TERMINAL_TITLE=''
+			;;
+		esac
+		PS1="\[${TERMINAL_TITLE}\e[${PROMPT_PRIMARY_COLOR}m\]${HOSTNAME:0:${PROMPT_HOST_CHARS}}:\w\[\e[0m\] \[\e[${PROMPT_SECONDARY_COLOR}m\]\\$\[\e[0m\] "
+	fi
+	unset TERMINAL_TITLE
 	unset PROMPT_HOST_CHARS
 	unset PROMPT_PRIMARY_COLOR
 	unset PROMPT_SECONDARY_COLOR
 
-	# Shell history
+	# History
 	export HISTCONTROL=ignoredups
 	export HISTSIZE=100000
 	export HISTFILESIZE=100000
