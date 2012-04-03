@@ -2,6 +2,7 @@
 
 setlocal tabstop=4 shiftwidth=4 expandtab smarttab
 setlocal foldmethod=indent
+setlocal formatoptions=croqnl1
 
 " Fix comments
 inoremap <buffer> # X#
