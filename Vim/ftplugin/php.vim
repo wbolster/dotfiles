@@ -1,12 +1,10 @@
 " Vim configuration for PHP
 " Wouter Bolsterlee <uws@xs4all.nl>
 
-
 setlocal textwidth=80
 setlocal noexpandtab tabstop=4 shiftwidth=4
 setlocal formatoptions=croqnl1
 setlocal include=^\s\+(require\|require_once\|include\|include_once)
-setlocal tags=tags;/
 
 " The global ftplugin/php.vim includes the ftplugin/html.vim, which causes a
 " few settings to be messed up. Undo that.

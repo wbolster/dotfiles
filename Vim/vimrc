@@ -80,20 +80,20 @@ command! SpellDutch   setlocal spell spelllang=nl
 command! SpellEnglish setlocal spell spelllang=en
 command! NoSpell      setlocal nospell
 
+" Active Gnome session?
+let g:gnome_active = exists("$GNOME_DESKTOP_SESSION_ID")
+
 " No sync I/O and avoid local cruft; we have VCS'es to keep files safe
 set nofsync swapsync=
 set directory-=.
 
-" Opening/switching files
+" Multiple files
 set hidden
 set autochdir
 set suffixes+=.aux,.bbl,.blg,.dvi,.idx,.log,.out,.pdf,.toc,.pyc,.pyo
 
-" Active Gnome session?
-let g:gnome_active = exists("$GNOME_DESKTOP_SESSION_ID")
-
-" Development
-setlocal tags=tags;/
+" Misc
+set tags=tags;/
 
 " Concealing
 function! ToggleConceal()
