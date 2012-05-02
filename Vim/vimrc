@@ -67,10 +67,6 @@ noremap <A-h> :<<Return>
 noremap <A-j> :move +<Return>
 noremap <A-k> :move -2<Return>
 noremap <A-l> :><Return>
-inoremap <A-h> <C-D>
-inoremap <A-j> <C-O>:move +<Return>
-inoremap <A-k> <C-O>:move -2<Return>
-inoremap <A-l> <C-T>
 vnoremap <A-h> :<<Return>gv
 vnoremap <A-j> :move '> +<Return>gv
 vnoremap <A-k> :move -2<Return>gv
