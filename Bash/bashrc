@@ -38,7 +38,7 @@ if [ "$PS1" ]; then
 	PROMPT_SECONDARY_COLOR="00;1;32"
 	test -f ~/.bash-prompt           && source ~/.bash-prompt
 	test -f ~/.bash-prompt-$HOSTNAME && source ~/.bash-prompt-$HOSTNAME
-	test -n "${BASH}" && PS1="\[\e[${PROMPT_PRIMARY_COLOR}m\]${HOSTNAME:0:${PROMPT_HOST_CHARS}}:\w\[\e[0m\] \[\e[${PROMPT_SECONDARY_COLOR}m\]\\$\[\e[0m\] "
+	test -n "${BASH}" && PS1="\[\033[G\e[${PROMPT_PRIMARY_COLOR}m\]${HOSTNAME:0:${PROMPT_HOST_CHARS}}:\w\[\e[0m\] \[\e[${PROMPT_SECONDARY_COLOR}m\]\\$\[\e[0m\] "
 	unset PROMPT_HOST_CHARS
 	unset PROMPT_PRIMARY_COLOR
 	unset PROMPT_SECONDARY_COLOR
