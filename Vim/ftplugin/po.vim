@@ -1,18 +1,20 @@
-" Vim configuration for PO-style translation files
-" Wouter Bolsterlee <uws@xs4all.nl>
+" Vim configuration for PO translation files
 
-setlocal spell
-setlocal spelllang=nl
+setlocal spell spelllang=nl
+setlocal makeprg=msgfmt\ --check\ --statistics\ -o\ /dev/null\ %
+setlocal scrolloff=10
 
 inoremap <buffer> ... …
 inoremap <buffer> `` ‘
 inoremap <buffer> '' ’
 
-noremap <buffer> <F6> :FuzzyDel<CR>
-noremap <buffer> <F7> /, fuzzy<CR>/msgstr\(\[\d\]\)\? "/e+1<CR>:nohlsearch<CR>
-noremap <buffer> <F8> /\([^\\]\\|^\)""\n\n/b+2<CR>:nohlsearch<CR>
-noremap <buffer> <F9> :!msgfmt --check --statistics -o /dev/null %<CR>
-noremap <buffer> <F10> ?^msgid<CR>V/msgstr<CR>kyjpkdd:s/^msgid/msgstr/<CR>:nohlsearch<CR>
+noremap <buffer> <leader>uu /\([^\\]\\|^\)""\n\n/b+2<CR>:nohlsearch<CR>
+noremap <buffer> <leader>ff /, fuzzy<CR>/msgstr\(\[\d\]\)\? "/e+1<CR>:nohlsearch<CR>
+noremap <buffer> <leader>df :FuzzyDel<CR>
+noremap <buffer> <leader>cm ?^msgid<CR>V/msgstr<CR>kyjpkdd:s/^msgid/msgstr/<CR>:nohlsearch<CR>
+nmap <Return> <leader>uu
+nmap <C-Return> <leader>ff
+nmap <C-S-Return> <leader>df
 
 function! RevisionDate()
   /"PO-Revision-Date: 
