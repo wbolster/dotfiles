@@ -1,0 +1,4 @@
+#!/bin/sh
+test ! -e ~/.tmux.conf
+ln -s $(readlink -f tmux.conf) ~/.tmux.conf
+ls -al ~/.tmux.conf
