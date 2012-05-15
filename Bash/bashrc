@@ -63,7 +63,6 @@ if [ "$PS1" ]; then
 	alias ls='ls --color=auto'
 	alias l='ls -lFh'
 	alias ll='ls -AlF'
-	test -f ~/.dircolorsrc && eval `dircolors -b ~/.dircolorsrc`
 
 	# Show colors in grep output
 	export GREP_OPTIONS='--color=auto'
