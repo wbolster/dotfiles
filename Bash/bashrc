@@ -68,9 +68,6 @@ if [ "$PS1" ]; then
 	# Show colors in grep output
 	export GREP_OPTIONS='--color=auto'
 
-	# Navigation
-	alias ..='cd "$OLDPWD"'
-
 	# Process listings
 	alias psg='ps auxww |grep -i '
 	test -z "$BASH" || complete -F _killall psg
