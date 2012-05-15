@@ -99,19 +99,6 @@ if [ "$PS1" ]; then
 	alias m=make
 	test -z "$BASH" || complete -F _make m
 
-	# Bazaar
-	if type bzr &>/dev/null; then
-		alias b=bzr
-		test -z "$BASH" || complete -F _bzr -o default b
-		alias 'bzrl'='bzr sl'
-	fi
-
-	# Subversion
-	if type svn &>/dev/null; then
-		alias s=svn
-		test -z "$BASH" || complete -F _svn -o default s
-	fi
-
 	# Jhbuild
 	if type jhbuild &>/dev/null; then
 		alias 'jhr'='jhbuild run'
