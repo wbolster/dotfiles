@@ -86,7 +86,7 @@ if [ "$PS1" ]; then
 	alias nice='nice '
 
 	# Vim
-	if [ `type vim &>/dev/null` ]; then
+	if type vim &>/dev/null; then
 		export EDITOR=vim
 		alias vi=vim
 	else
