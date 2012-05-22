@@ -125,3 +125,7 @@ call pathogen#runtime_append_all_bundles('bundle')
 " File type configuration and syntax highlighting (set after loading pathogen)
 filetype plugin indent on
 syntax on
+
+" Undo vim-surround mapping
+xnoremap s s
+
