@@ -1,3 +1,4 @@
 ./Vim/spell/*
 ./Vim/.netrwhist
+./Vim/bundle/external.old/
 ./Vim/**/doc/tags
