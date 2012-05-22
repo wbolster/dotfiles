@@ -509,6 +509,8 @@ function! s:opfunc(type,...) " {{{1
   let &clipboard = cb_save
   if a:type =~ '^\d\+$'
     silent! call repeat#set("\<Plug>Y".(a:0 && a:1 ? "S" : "s")."surround".char.s:tag,a:type)
+  else
+    silent! call repeat#set("\<Plug>SurroundRepeat".char.s:tag)
   endif
 endfunction
 
@@ -532,6 +534,7 @@ function! s:closematch(str) " {{{1
   endif
 endfunction " }}}1
 
+nnoremap <silent> <Plug>SurroundRepeat .
 nnoremap <silent> <Plug>Dsurround  :<C-U>call <SID>dosurround(<SID>inputtarget())<CR>
 nnoremap <silent> <Plug>Csurround  :<C-U>call <SID>changesurround()<CR>
 nnoremap <silent> <Plug>Yssurround :<C-U>call <SID>opfunc(v:count1)<CR>
@@ -554,9 +557,9 @@ if !exists("g:surround_no_mappings") || ! g:surround_no_mappings
   nmap ySS <Plug>YSsurround
   xmap S   <Plug>VSurround
   xmap gS  <Plug>VgSurround
-  "if maparg('s', 'x') ==# ''
-  "  xnoremap <silent> s :<C-U>echoerr 'surround.vim: Visual mode s has been removed in favor of S'<CR>
-  "endif
+  if maparg('s', 'x') ==# ''
+    xnoremap <silent> s :<C-U>echoerr 'surround.vim: Visual mode s has been removed in favor of S'<CR>
+  endif
   if !hasmapto("<Plug>Isurround","i") && "" == mapcheck("<C-S>","i")
     imap    <C-S> <Plug>Isurround
   endif
