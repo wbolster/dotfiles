@@ -1,5 +1,4 @@
 " Vim configuration for LaTeX
-" Wouter Bolsterlee <uws@xs4all.nl>
 
 setlocal textwidth=9999999
 setlocal shiftwidth=2 tabstop=2 expandtab
@@ -7,19 +6,13 @@ setlocal formatoptions=tcqor
 setlocal spell
 setlocal cinwords=
 
-" Highlight whitespace-only lines
-match Todo /^\s\+$/
-
-" Compilation (if no Makefile is present)
-if (filereadable("Makefile"))
-	setlocal makeprg&
-else
+if (!filereadable("Makefile"))
 	setlocal makeprg=latexmk\ %
 endif
 
 " Preview pdf files
 if (g:gnome_active)
-	noremap <buffer> <F10> :silent! !gnome-open <C-R>=expand('%:p:r:gs/ /\\ /')<Enter>.pdf<Enter><Enter>
+  noremap <silent> <Leader>p :silent! !xdg-open <C-R>=expand('%:p:r:gs/ /\\ /')<C-R>.pdf<C-R><C-R>
 endif
 
 " Simplify long line handling
@@ -54,3 +47,4 @@ inoremap <buffer> <C-K><C-K> <Esc>"xyiwi\begin{<Esc>ea}<Enter>\end{<C-R>x}<C-O>O
 
 " Close the currently open environment
 inoremap <buffer> <C-B> <Esc>mx?\\begin{<Enter>f{l"xyt}`xa\end{<C-r>x}<C-O>:nohlsearch<Enter>
+
