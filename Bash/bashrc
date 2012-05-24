@@ -94,6 +94,8 @@ if [ "$PS1" ]; then
 	# Development
 	alias m=make
 	test -z "$BASH" || complete -F _make m
+	export PIP_DOWNLOAD_CACHE=~/.cache/pip/
+	export PYTHONDONTWRITEBYTECODE=1
 
 	# Jhbuild
 	if type jhbuild &>/dev/null; then
