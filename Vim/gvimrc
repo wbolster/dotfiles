@@ -6,8 +6,8 @@ set guicursor=a:blinkon0
 
 colorscheme mustang
 
-" Smooth scrolling (and try to avoid over SSH)
-if (stridx(expand("$DISPLAY"), ":") == 0)
+" Smooth scrolling (but not over SSH)
+if (strlen($SSH_CLIENT) == 0)
   SmoothScrolling
 endif
 
