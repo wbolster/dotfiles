@@ -2,3 +2,4 @@
 ./Vim/bundle/external.old/
 ./Vim/**/.netrwhist
 ./Vim/**/doc/tags
+./Vim/**/*.cache
