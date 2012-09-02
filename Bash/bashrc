@@ -68,7 +68,6 @@ if [ "$PS1" ]; then
 		}
 		PROMPT_COMMAND=set_prompt_command
 	fi
-	unset _PS1_HOST_CHARS
 
 	# History
 	export HISTCONTROL=ignoredups
