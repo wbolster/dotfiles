@@ -10,171 +10,171 @@ test -d ~/.system/bin && PATH=~/.system/bin:"${PATH}"
 
 # Interactive Shells
 if [ "$PS1" ]; then
-	# Make sure $HOSTNAME is set
-	test -z "${HOSTNAME}" && export HOSTNAME=`hostname`
+    # Make sure $HOSTNAME is set
+    test -z "${HOSTNAME}" && export HOSTNAME=`hostname`
 
-	# Prompt and terminal title
-	PROMPT_DIRTRIM=3
-	COLOR_NORMAL="\[\e[0m\]"
-	COLOR_BLACK="\[\e[0;30m\]"
-	COLOR_BLACK_BOLD="\[\e[1;30m\]"
-	COLOR_RED="\[\e[0;31m\]"
-	COLOR_RED_BOLD="\[\e[1;31m\]"
-	COLOR_GREEN="\[\e[0;32m\]"
-	COLOR_GREEN_BOLD="\[\e[1;32m\]"
-	COLOR_YELLOW="\[\e[0;33m\]"
-	COLOR_YELLOW_BOLD="\[\e[1;33m\]"
-	COLOR_BLUE="\[\e[0;34m\]"
-	COLOR_BLUE_BOLD="\[\e[1;34m\]"
-	COLOR_PURPLE="\[\e[0;35m\]"
-	COLOR_PURPLE_BOLD="\[\e[1;35m\]"
-	COLOR_CYAN="\[\e[0;36m\]"
-	COLOR_CYAN_BOLD="\[\e[1;36m\]"
-	COLOR_WHITE="\[\e[0;37m\]"
-	COLOR_WHITE_BOLD="\[\e[1;37m\]"
+    # Prompt and terminal title
+    PROMPT_DIRTRIM=3
+    COLOR_NORMAL="\[\e[0m\]"
+    COLOR_BLACK="\[\e[0;30m\]"
+    COLOR_BLACK_BOLD="\[\e[1;30m\]"
+    COLOR_RED="\[\e[0;31m\]"
+    COLOR_RED_BOLD="\[\e[1;31m\]"
+    COLOR_GREEN="\[\e[0;32m\]"
+    COLOR_GREEN_BOLD="\[\e[1;32m\]"
+    COLOR_YELLOW="\[\e[0;33m\]"
+    COLOR_YELLOW_BOLD="\[\e[1;33m\]"
+    COLOR_BLUE="\[\e[0;34m\]"
+    COLOR_BLUE_BOLD="\[\e[1;34m\]"
+    COLOR_PURPLE="\[\e[0;35m\]"
+    COLOR_PURPLE_BOLD="\[\e[1;35m\]"
+    COLOR_CYAN="\[\e[0;36m\]"
+    COLOR_CYAN_BOLD="\[\e[1;36m\]"
+    COLOR_WHITE="\[\e[0;37m\]"
+    COLOR_WHITE_BOLD="\[\e[1;37m\]"
 
-	PREV_EXIT_CODE=0
-	if [ "$BASH" ]; then
-		function set_prompt_command {
-			# Exit code from previous command
-			PREV_EXIT_CODE=$?
-			if [ $PREV_EXIT_CODE -ne 0 ]; then
-				EXIT_STATUS=$PREV_EXIT_CODE
-				if [ $PREV_EXIT_CODE -gt 128 ]; then
-					EXIT_STATUS=$((128-PREV_EXIT_CODE))" "$(kill -l $PREV_EXIT_CODE 2>/dev/null || echo -n '?')
-				fi
-				_PS1_ERR="${COLOR_RED}${EXIT_STATUS} "
-			else
-				_PS1_ERR=""
-			fi
-			unset EXIT_STATUS
-			unset PREV_EXIT_CODE
+    PREV_EXIT_CODE=0
+    if [ "$BASH" ]; then
+        function set_prompt_command {
+            # Exit code from previous command
+            PREV_EXIT_CODE=$?
+            if [ $PREV_EXIT_CODE -ne 0 ]; then
+                EXIT_STATUS=$PREV_EXIT_CODE
+                if [ $PREV_EXIT_CODE -gt 128 ]; then
+                    EXIT_STATUS=$((128-PREV_EXIT_CODE))" "$(kill -l $PREV_EXIT_CODE 2>/dev/null || echo -n '?')
+                fi
+                _PS1_ERR="${COLOR_RED}${EXIT_STATUS} "
+            else
+                _PS1_ERR=""
+            fi
+            unset EXIT_STATUS
+            unset PREV_EXIT_CODE
 
-			# Host name
-			_PS1_HOSTNAME="${HOSTNAME:0:8}"
+            # Host name
+            _PS1_HOSTNAME="${HOSTNAME:0:8}"
 
-			# Git
-			GIT_PS1_SHOWUPSTREAM=1
-			if declare -F __git_ps1 > /dev/null; then
-				_PS1_GIT="$(__git_ps1)"
-			else
-				_PS1_GIT=""
-			fi
+            # Git
+            GIT_PS1_SHOWUPSTREAM=1
+            if declare -F __git_ps1 > /dev/null; then
+                _PS1_GIT="$(__git_ps1)"
+            else
+                _PS1_GIT=""
+            fi
 
-			# Virtualenv
-			if [ -n "$VIRTUAL_ENV" ]; then
-				_PS1_VENV='['$(basename ${VIRTUAL_ENV})'] '
-			else
-				_PS1_VENV=""
-			fi
+            # Virtualenv
+            if [ -n "$VIRTUAL_ENV" ]; then
+                _PS1_VENV='['$(basename ${VIRTUAL_ENV})'] '
+            else
+                _PS1_VENV=""
+            fi
 
-			# Terminal title (embedded in $PS1)
-			case $TERM in
-				xterm|rxvt*)
-					_PS1_TERM_TITLE="\[\e]0;${_PS1_VENV}${PWD}${_PS1_GIT}\a\]"
-					;;
-				*)
-					_PS1_TERM_TITLE=""
-					;;
-			esac
+            # Terminal title (embedded in $PS1)
+            case $TERM in
+                xterm|rxvt*)
+                    _PS1_TERM_TITLE="\[\e]0;${_PS1_VENV}${PWD}${_PS1_GIT}\a\]"
+                    ;;
+                *)
+                    _PS1_TERM_TITLE=""
+                    ;;
+            esac
 
-			PS1="${_PS1_TERM_TITLE}${_PS1_VENV}${COLOR_GREEN}${_PS1_HOSTNAME}:\w${COLOR_GREEN_BOLD}${_PS1_GIT} ${_PS1_ERR}${COLOR_GREEN_BOLD}\\$ ${COLOR_NORMAL}"
+            PS1="${_PS1_TERM_TITLE}${_PS1_VENV}${COLOR_GREEN}${_PS1_HOSTNAME}:\w${COLOR_GREEN_BOLD}${_PS1_GIT} ${_PS1_ERR}${COLOR_GREEN_BOLD}\\$ ${COLOR_NORMAL}"
 
-			unset _PS1_ERR
-			unset _PS1_HOSTNAME
-			unset _PS1_GIT
-			unset _PS1_VENV
-			unset _PS1_TERM_TITLE
-		}
-		PROMPT_COMMAND=set_prompt_command
-	fi
+            unset _PS1_ERR
+            unset _PS1_HOSTNAME
+            unset _PS1_GIT
+            unset _PS1_VENV
+            unset _PS1_TERM_TITLE
+        }
+        PROMPT_COMMAND=set_prompt_command
+    fi
 
-	# History
-	export HISTCONTROL=ignoredups
-	export HISTSIZE=100000
-	export HISTFILESIZE=100000
-	alias h='unset HISTFILE'
+    # History
+    export HISTCONTROL=ignoredups
+    export HISTSIZE=100000
+    export HISTFILESIZE=100000
+    alias h='unset HISTFILE'
 
-	# Tab completion
-	test -n "$BASH" && test -f /etc/bash_completion && source /etc/bash_completion
-	test -n "$BASH" && test -f /usr/share/bash-completion/bash_completion && source /usr/share/bash-completion/bash_completion 
-	test -n "$BASH" && test -f $HOME/.bash_completion && source $HOME/.bash_completion
+    # Tab completion
+    test -n "$BASH" && test -f /etc/bash_completion && source /etc/bash_completion
+    test -n "$BASH" && test -f /usr/share/bash-completion/bash_completion && source /usr/share/bash-completion/bash_completion 
+    test -n "$BASH" && test -f $HOME/.bash_completion && source $HOME/.bash_completion
 
-	# Require confirmation for possibly destructive operations
-	alias cp='cp -i'
-	alias mv='mv -i'
-	alias rm='rm -i'
+    # Require confirmation for possibly destructive operations
+    alias cp='cp -i'
+    alias mv='mv -i'
+    alias rm='rm -i'
 
-	# File listings
-	alias ls='ls --color=auto'
-	alias l='ls -lFh'
-	alias ll='ls -AlF'
+    # File listings
+    alias ls='ls --color=auto'
+    alias l='ls -lFh'
+    alias ll='ls -AlF'
 
-	# Show colors in grep output
-	export GREP_OPTIONS='--color=auto'
+    # Show colors in grep output
+    export GREP_OPTIONS='--color=auto'
 
-	# Process listings
-	alias psg='ps auxww |grep -i '
-	test -z "$BASH" || complete -F _killall psg
+    # Process listings
+    alias psg='ps auxww |grep -i '
+    test -z "$BASH" || complete -F _killall psg
 
-	# Recursive chmod
-	alias rchmod-public='chmod -R u=rwX,go=rX'
-	alias rchmod-public-with-group='chmod -R ug=rwX,o=rX'
-	alias rchmod-private='chmod -R u=rwX,go='
-	alias rchmod-private-with-group='chmod -R ug=rwX,o='
+    # Recursive chmod
+    alias rchmod-public='chmod -R u=rwX,go=rX'
+    alias rchmod-public-with-group='chmod -R ug=rwX,o=rX'
+    alias rchmod-private='chmod -R u=rwX,go='
+    alias rchmod-private-with-group='chmod -R ug=rwX,o='
 
-	# Alias expansion also after these commands
-	alias sudo='sudo '
-	alias nice='nice '
+    # Alias expansion also after these commands
+    alias sudo='sudo '
+    alias nice='nice '
 
-	# Vim
-	if type vim &>/dev/null; then
-		export EDITOR=vim
-		alias vi=vim
-	else
-		export EDITOR=vi
-	fi
-	alias :q='exit'
-	alias :e='$EDITOR'
+    # Vim
+    if type vim &>/dev/null; then
+        export EDITOR=vim
+        alias vi=vim
+    else
+        export EDITOR=vi
+    fi
+    alias :q='exit'
+    alias :e='$EDITOR'
 
-	# Development
-	alias m=make
-	test -z "$BASH" || complete -F _make m
-	export PIP_DOWNLOAD_CACHE=~/.cache/pip/
-	export PYTHONDONTWRITEBYTECODE=1
+    # Development
+    alias m=make
+    test -z "$BASH" || complete -F _make m
+    export PIP_DOWNLOAD_CACHE=~/.cache/pip/
+    export PYTHONDONTWRITEBYTECODE=1
 
-	# Jhbuild
-	if type jhbuild &>/dev/null; then
-		alias 'jhr'='jhbuild run'
-		alias 'jhbo'='jhbuild buildone'
-		alias 'jhboa'='jhbuild buildone -a'
-		alias 'jhboac'='jhbuild buildone -a -c'
-		alias 'jhs'='jhbuild shell'
-	fi
+    # Jhbuild
+    if type jhbuild &>/dev/null; then
+        alias 'jhr'='jhbuild run'
+        alias 'jhbo'='jhbuild buildone'
+        alias 'jhboa'='jhbuild buildone -a'
+        alias 'jhboac'='jhbuild buildone -a -c'
+        alias 'jhs'='jhbuild shell'
+    fi
 
-	# GUI applications
-	if [ ! -z "$DISPLAY" ]; then
-		alias g='xdg-open '
-	fi
+    # GUI applications
+    if [ ! -z "$DISPLAY" ]; then
+        alias g='xdg-open '
+    fi
 
-	# Locale
-	alias locale-none='unset LANG'
-	alias locale-en='export LANG=en_GB.UTF-8'
-	alias locale-nl='export LANG=nl_NL.UTF-8'
+    # Locale
+    alias locale-none='unset LANG'
+    alias locale-en='export LANG=en_GB.UTF-8'
+    alias locale-nl='export LANG=nl_NL.UTF-8'
 
-	# Debian and Ubuntu
-	if type apt-get &>/dev/null; then
-		alias apt-get='sudo apt-get '
-		alias aptitude='sudo aptitude '
-		alias ac='apt-cache show '
-		alias acs='apt-cache search '
-		alias i='sudo $(which apt-get) install -V'
-		alias u='sudo $(which apt-get) update && sudo $(which apt-get) upgrade -V'
-	fi
+    # Debian and Ubuntu
+    if type apt-get &>/dev/null; then
+        alias apt-get='sudo apt-get '
+        alias aptitude='sudo aptitude '
+        alias ac='apt-cache show '
+        alias acs='apt-cache search '
+        alias i='sudo $(which apt-get) install -V'
+        alias u='sudo $(which apt-get) update && sudo $(which apt-get) upgrade -V'
+    fi
 
-	# Misc
-	alias sc='screen -UxRR'
-	alias lessr='less -R'
+    # Misc
+    alias sc='screen -UxRR'
+    alias lessr='less -R'
 fi
 
 
