@@ -15,7 +15,6 @@ if [ "$PS1" ]; then
 
 	# Prompt and terminal title
 	PROMPT_DIRTRIM=3
-	_PS1_HOST_CHARS="8"
 	COLOR_NORMAL="\[\e[0m\]"
 	COLOR_BLACK="\[\e[0;30m\]"
 	COLOR_BLACK_BOLD="\[\e[1;30m\]"
@@ -52,7 +51,7 @@ if [ "$PS1" ]; then
 			unset PREV_EXIT_CODE
 
 			# Host name
-			_PS1_HOSTNAME="${HOSTNAME:0:${_PS1_HOST_CHARS}}"
+			_PS1_HOSTNAME="${HOSTNAME:0:8}"
 
 			# Git
 			if declare -F __git_ps1 > /dev/null; then
