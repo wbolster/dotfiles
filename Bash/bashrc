@@ -87,6 +87,14 @@ if [ "$PS1" ]; then
             unset _PS1_TERM_TITLE
         }
         PROMPT_COMMAND=set_prompt_command
+
+        # Completion
+        if [ -f /usr/share/bash-completion/bash_completion ]; then
+            source /usr/share/bash-completion/bash_completion
+        elif [ -f /etc/bash_completion ]; then
+            source /etc/bash_completion
+        fi
+        test -f $HOME/.bash_completion && source $HOME/.bash_completion
     fi
 
     # History
@@ -95,10 +103,6 @@ if [ "$PS1" ]; then
     export HISTFILESIZE=100000
     alias h='unset HISTFILE'
 
-    # Tab completion
-    test -n "$BASH" && test -f /etc/bash_completion && source /etc/bash_completion
-    test -n "$BASH" && test -f /usr/share/bash-completion/bash_completion && source /usr/share/bash-completion/bash_completion 
-    test -n "$BASH" && test -f $HOME/.bash_completion && source $HOME/.bash_completion
 
     # Require confirmation for possibly destructive operations
     alias cp='cp -i'
