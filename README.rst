@@ -11,7 +11,7 @@ In case you wonder how I use this repository, this is how:
   e.g. in ~/Configuration/ or in ~/dotfiles/
 
 * My home directory contains various symlinks to the files and directories in
-  this repository, e.g. ~/.vimrc points to ~/Configuration/
+  this repository, e.g. ~/.vimrc points to ~/Configuration/Vim/vimrc
 
 * To manage these symlinks, I use a straight-forward 'update-symlinks' script
   (written in Python) to install (or update) the required symlinks, based on the
