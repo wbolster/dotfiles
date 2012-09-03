@@ -54,6 +54,7 @@ if [ "$PS1" ]; then
 			_PS1_HOSTNAME="${HOSTNAME:0:8}"
 
 			# Git
+			GIT_PS1_SHOWUPSTREAM=1
 			if declare -F __git_ps1 > /dev/null; then
 				_PS1_GIT="$(__git_ps1)"
 			else
