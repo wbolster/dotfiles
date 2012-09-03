@@ -1,6 +1,0 @@
-
-test ! -e ~/.inputrc
-
-ln -s $(readlink -f inputrc) ~/.inputrc
-
-ls -al ~/.inputrc

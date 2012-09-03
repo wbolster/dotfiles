@@ -1,8 +1,0 @@
-
-test ! -e ~/.bashrc
-test ! -e ~/.bash_profile
-
-ln -s $(readlink -f bashrc) ~/.bashrc
-ln -s $(readlink -f bash_profile) ~/.bash_profile
-
-ls -al ~/.bash*
