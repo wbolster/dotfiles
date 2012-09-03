@@ -1,5 +1,4 @@
 " Vim configuration for mail
-" Wouter Bolsterlee <uws@xs4all.nl>
 
 setlocal textwidth=76
 setlocal tabstop=2 shiftwidth=2 expandtab

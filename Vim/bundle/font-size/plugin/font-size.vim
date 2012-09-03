@@ -1,6 +1,4 @@
 " Vim font size plugin
-" Wouter Bolsterlee <uws@xs4all.nl>
-
 
 " Minimum and maximum font size
 let s:minfontsize = 6

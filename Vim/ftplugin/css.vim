@@ -1,5 +1,4 @@
 " Vim configuration for CSS
-" Wouter Bolsterlee <uws@xs4all.nl>
 
 setlocal ts=1 sw=1 expandtab
 

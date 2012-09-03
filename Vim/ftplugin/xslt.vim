@@ -1,5 +1,4 @@
 " Vim configuration for XSLT
-" Wouter Bolsterlee <uws@xs4all.nl>
 
 
 setlocal iskeyword+=:  " needed for abbreviations

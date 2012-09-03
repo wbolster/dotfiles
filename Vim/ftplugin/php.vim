@@ -1,5 +1,4 @@
 " Vim configuration for PHP
-" Wouter Bolsterlee <uws@xs4all.nl>
 
 setlocal textwidth=80
 setlocal noexpandtab tabstop=4 shiftwidth=4

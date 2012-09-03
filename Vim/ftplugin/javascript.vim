@@ -1,5 +1,4 @@
 " Vim configuration for JavaScript
-" Wouter Bolsterlee <uws@xs4all.nl>
 
 setlocal cindent
 setlocal formatoptions=croqnl1

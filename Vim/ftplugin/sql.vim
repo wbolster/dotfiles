@@ -1,5 +1,4 @@
 " Vim configuration for (My)SQL
-" Wouter Bolsterlee <uws@xs4all.nl>
 
 setlocal formatoptions=croqnl1
 setlocal tabstop=2 shiftwidth=2 expandtab

@@ -1,5 +1,4 @@
 # inputrc for readline
-# Wouter Bolsterlee <uws@xs4all.nl>
 
 set mark-symlinked-directories on
 set completion-ignore-case on

@@ -4,7 +4,7 @@
 " Last Change:	2002 Nov 12
 " Remark:	First version.
 "
-" This files was updated by Wouter Bolsterlee <uws@xs4all.nl>, 2007
+" This file was updated by Wouter Bolsterlee <uws@xs4all.nl>, 2007
 
 " Setup
 if version >= 600

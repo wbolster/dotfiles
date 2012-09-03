@@ -1,6 +1,4 @@
 " Vim configuration for BibTeX
-" Wouter Bolsterlee <uws@xs4all.nl>
-
 
 setlocal textwidth=0
 setlocal shiftwidth=2

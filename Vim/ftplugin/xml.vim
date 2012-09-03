@@ -1,5 +1,4 @@
 " Vim configuration for XML
-" Wouter Bolsterlee <uws@xs4all.nl>
 
 setlocal shiftwidth=2 tabstop=2 expandtab
 setlocal foldmethod=indent nofoldenable
