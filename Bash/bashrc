@@ -16,39 +16,43 @@ if [ "$PS1" ]; then
 	# Prompt and terminal title
 	PROMPT_DIRTRIM=3
 	_PS1_HOST_CHARS="8"
-	COLOR_NORMAL='\e[0m'
-	COLOR_BLACK='\e[0;30m'
-	COLOR_BLACK_BOLD='\e[1;30m'
-	COLOR_RED='\e[0;31m'
-	COLOR_RED_BOLD='\e[1;31m'
-	COLOR_GREEN='\e[0;32m'
-	COLOR_GREEN_BOLD='\e[1;32m'
-	COLOR_YELLOW='\e[0;33m'
-	COLOR_YELLOW_BOLD='\e[1;33m'
-	COLOR_BLUE='\e[0;34m'
-	COLOR_BLUE_BOLD='\e[1;34m'
-	COLOR_PURPLE='\e[0;35m'
-	COLOR_PURPLE_BOLD='\e[1;35m'
-	COLOR_CYAN='\e[0;36m'
-	COLOR_CYAN_BOLD='\e[1;36m'
-	COLOR_WHITE='\e[0;37m'
-	COLOR_WHITE_BOLD='\e[1;37m'
+	COLOR_NORMAL="\[\e[0m\]"
+	COLOR_BLACK="\[\e[0;30m\]"
+	COLOR_BLACK_BOLD="\[\e[1;30m\]"
+	COLOR_RED="\[\e[0;31m\]"
+	COLOR_RED_BOLD="\[\e[1;31m\]"
+	COLOR_GREEN="\[\e[0;32m\]"
+	COLOR_GREEN_BOLD="\[\e[1;32m\]"
+	COLOR_YELLOW="\[\e[0;33m\]"
+	COLOR_YELLOW_BOLD="\[\e[1;33m\]"
+	COLOR_BLUE="\[\e[0;34m\]"
+	COLOR_BLUE_BOLD="\[\e[1;34m\]"
+	COLOR_PURPLE="\[\e[0;35m\]"
+	COLOR_PURPLE_BOLD="\[\e[1;35m\]"
+	COLOR_CYAN="\[\e[0;36m\]"
+	COLOR_CYAN_BOLD="\[\e[1;36m\]"
+	COLOR_WHITE="\[\e[0;37m\]"
+	COLOR_WHITE_BOLD="\[\e[1;37m\]"
 
+	PREV_EXIT_CODE=0
 	if [ "$BASH" ]; then
 		function set_prompt_command {
+			# Exit code from previous command
+			PREV_EXIT_CODE=$?
+			if [ $PREV_EXIT_CODE -ne 0 ]; then
+				EXIT_STATUS=$PREV_EXIT_CODE
+				if [ $PREV_EXIT_CODE -gt 128 ]; then
+					EXIT_STATUS=$((128-PREV_EXIT_CODE))" "$(kill -l $PREV_EXIT_CODE 2>/dev/null || echo -n '?')
+				fi
+				_PS1_ERR="${COLOR_RED}${EXIT_STATUS} "
+			else
+				_PS1_ERR=""
+			fi
+			unset EXIT_STATUS
+			unset PREV_EXIT_CODE
+
 			# Host name
 			_PS1_HOSTNAME="${HOSTNAME:0:${_PS1_HOST_CHARS}}"
-
-			# Terminal title (embedded in $PS1 for the '\w' expansion)
-			case $TERM in
-				xterm|rxvt*)
-					TERMINAL_TITLE="\e]0;\w\a"
-					TERMINAL_TITLE=""
-					;;
-				*)
-					TERMINAL_TITLE=""
-					;;
-			esac
 
 			# Git
 			if declare -F __git_ps1 > /dev/null; then
@@ -64,7 +68,23 @@ if [ "$PS1" ]; then
 				_PS1_VENV=""
 			fi
 
-			PS1="${TERMINAL_TITLE}${_PS1_VENV}${COLOR_GREEN}${_PS1_HOSTNAME}:\w${COLOR_GREEN_BOLD}${_PS1_GIT} \\$ ${COLOR_NORMAL}"
+			# Terminal title (embedded in $PS1)
+			case $TERM in
+				xterm|rxvt*)
+					_PS1_TERM_TITLE="\[\e]0;${_PS1_VENV}${PWD}${_PS1_GIT}\a\]"
+					;;
+				*)
+					_PS1_TERM_TITLE=""
+					;;
+			esac
+
+			PS1="${_PS1_TERM_TITLE}${_PS1_VENV}${COLOR_GREEN}${_PS1_HOSTNAME}:\w${COLOR_GREEN_BOLD}${_PS1_GIT} ${_PS1_ERR}${COLOR_GREEN_BOLD}\\$ ${COLOR_NORMAL}"
+
+			unset _PS1_ERR
+			unset _PS1_HOSTNAME
+			unset _PS1_GIT
+			unset _PS1_VENV
+			unset _PS1_TERM_TITLE
 		}
 		PROMPT_COMMAND=set_prompt_command
 	fi
@@ -168,3 +188,6 @@ fi
 
 test -f ~/.bashrc-local     && source ~/.bashrc-local
 test -f ~/.bashrc-$HOSTNAME && source ~/.bashrc-$HOSTNAME
+
+# Force $? to be 0 (for the initial PS1)
+true
