@@ -1,6 +1,0 @@
-
-Symlinks to be made:
-
-  ~/.vimrc  => vimrc
-  ~/.gvimrc => gvimrc
-  ~/.vim/   => ./
