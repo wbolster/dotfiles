@@ -56,11 +56,11 @@ if __name__ == '__main__':
         symlink_to_full = os.path.relpath(os.path.join(config_dir, symlink_to), HOME_DIR)
 
         should_link = True
-        if os.path.exists(symlink_from_full):
+        if os.path.lexists(symlink_from_full):
             if not os.path.islink(symlink_from_full):
                 bailout("'%s' exists; move it out of the way first", symlink_from)
 
-            if os.path.samefile(os.path.realpath(symlink_from_full), symlink_to_full):
+            if os.path.exists(symlink_from_full) and os.path.samefile(os.path.realpath(symlink_from_full), symlink_to_full):
                 logger.info("%s already setup correctly", symlink_from_full)
                 should_link = False
             else:
@@ -69,6 +69,6 @@ if __name__ == '__main__':
 
         if should_link:
             logger.info("Linking %s -> %s", symlink_from, symlink_to_full)
-            if os.path.exists(symlink_from_full):
+            if os.path.lexists(symlink_from_full):
                 os.unlink(symlink_from_full)
             os.symlink(symlink_to_full, symlink_from_full)
