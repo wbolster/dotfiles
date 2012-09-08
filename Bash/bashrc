@@ -33,58 +33,44 @@ if [ "$PS1" ]; then
     COLOR_WHITE="\[\e[0;37m\]"
     COLOR_WHITE_BOLD="\[\e[1;37m\]"
 
-    PREV_EXIT_CODE=0
     if [ "$BASH" ]; then
         function set_prompt_command {
             # Exit code from previous command
-            PREV_EXIT_CODE=$?
-            if [ $PREV_EXIT_CODE -ne 0 ]; then
-                EXIT_STATUS=$PREV_EXIT_CODE
-                if [ $PREV_EXIT_CODE -gt 128 ]; then
-                    EXIT_STATUS=$((128-PREV_EXIT_CODE))" "$(kill -l $PREV_EXIT_CODE 2>/dev/null || echo -n '?')
+            local prev_exit_code=$?
+            local ps1_err=""
+            if [ ${prev_exit_code} -ne 0 ]; then
+                local exit_status=${prev_exit_code}
+                if [ ${prev_exit_code} -gt 128 ]; then
+                    exit_status=$((128-prev_exit_code))" "$(kill -l ${prev_exit_code} 2>/dev/null || echo -n '?')
                 fi
-                _PS1_ERR="${COLOR_RED}${EXIT_STATUS} "
-            else
-                _PS1_ERR=""
+                ps1_err="${COLOR_RED}${exit_status} "
             fi
-            unset EXIT_STATUS
-            unset PREV_EXIT_CODE
 
             # Host name
-            _PS1_HOSTNAME="${HOSTNAME:0:8}"
+            local ps1_hostname="${HOSTNAME:0:8}"
 
             # Git
             GIT_PS1_SHOWUPSTREAM=1
+            local ps1_git=""
             if declare -F __git_ps1 > /dev/null; then
-                _PS1_GIT="$(__git_ps1)"
-            else
-                _PS1_GIT=""
+                ps1_git="$(__git_ps1)"
             fi
 
             # Virtualenv
+            local ps1_venv=""
             if [ -n "$VIRTUAL_ENV" ]; then
-                _PS1_VENV='['$(basename ${VIRTUAL_ENV})'] '
-            else
-                _PS1_VENV=""
+                ps1_venv='['$(basename ${VIRTUAL_ENV})'] '
             fi
 
             # Terminal title (embedded in $PS1)
+            local ps1_term_title=""
             case $TERM in
                 xterm|rxvt*)
-                    _PS1_TERM_TITLE="\[\e]0;${_PS1_VENV}${PWD}${_PS1_GIT}\a\]"
-                    ;;
-                *)
-                    _PS1_TERM_TITLE=""
+                    ps1_term_title="\[\e]0;${ps1_venv}${PWD}${ps1_git}\a\]"
                     ;;
             esac
 
-            PS1="${_PS1_TERM_TITLE}${_PS1_VENV}${COLOR_GREEN}${_PS1_HOSTNAME}:\w${COLOR_GREEN_BOLD}${_PS1_GIT} ${_PS1_ERR}${COLOR_GREEN_BOLD}\\$ ${COLOR_NORMAL}"
-
-            unset _PS1_ERR
-            unset _PS1_HOSTNAME
-            unset _PS1_GIT
-            unset _PS1_VENV
-            unset _PS1_TERM_TITLE
+            PS1="${ps1_term_title}${ps1_venv}${COLOR_GREEN}${ps1_hostname}:\w${COLOR_GREEN_BOLD}${ps1_git} ${ps1_err}${COLOR_GREEN_BOLD}\\$ ${COLOR_NORMAL}"
         }
         PROMPT_COMMAND=set_prompt_command
 
