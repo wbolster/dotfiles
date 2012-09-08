@@ -80,7 +80,9 @@ if [ "$PS1" ]; then
         elif [ -f /etc/bash_completion ]; then
             source /etc/bash_completion
         fi
-        test -f $HOME/.bash_completion && source $HOME/.bash_completion
+        if [ -f $HOME/.bash_completion ]; then
+            source $HOME/.bash_completion
+        fi
     fi
 
     # History
