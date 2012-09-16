@@ -40,7 +40,9 @@ if [ "$PS1" ]; then
             local ps1_err=""
             if [ ${prev_exit_code} -ne 0 ]; then
                 local exit_status=${prev_exit_code}
-                if [ ${prev_exit_code} -gt 128 ]; then
+                # Lookup signal numbers between 0 and 64; these are returned as
+                # exit codes between 128 and 192
+                if [ ${prev_exit_code} -gt 128 -a ${prev_exit_code} -lt 192 ]; then
                     exit_status=$((128-prev_exit_code))" "$(kill -l ${prev_exit_code} 2>/dev/null || echo -n '?')
                 fi
                 ps1_err="${COLOR_RED}${exit_status} "
