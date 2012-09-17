@@ -55,7 +55,7 @@ if [ "$PS1" ]; then
             GIT_PS1_SHOWUPSTREAM=1
             local ps1_git=""
             if declare -F __git_ps1 > /dev/null; then
-                ps1_git="$(__git_ps1)"
+                ps1_git="$(__git_ps1 '(%s) ')"
             fi
 
             # Virtualenv
@@ -72,7 +72,7 @@ if [ "$PS1" ]; then
                     ;;
             esac
 
-            PS1="${ps1_term_title}${ps1_venv}${COLOR_GREEN}${ps1_hostname}:\w${COLOR_GREEN_BOLD}${ps1_git} ${ps1_err}${COLOR_GREEN_BOLD}\\$ ${COLOR_NORMAL}"
+            PS1="${ps1_term_title}${COLOR_GREEN_BOLD}${ps1_venv}${ps1_git}${COLOR_GREEN}${ps1_hostname}:\w ${ps1_err}${COLOR_GREEN_BOLD}\\$ ${COLOR_NORMAL}"
         }
         PROMPT_COMMAND=set_prompt_command
 
