@@ -1,0 +1,45 @@
+# screen configuration
+
+#
+# General settings
+#
+
+defnonblock 5
+deflog off
+deflogin off
+defmonitor off
+defutf8 on
+defbce on
+term screen-bce
+
+
+#
+# Display options
+#
+
+hardstatus on
+hardstatus alwayslastline "%{= kR}%-Lw%{= WB}%50>%n%f* %t%{-}%+Lw%< %=%l"
+msgwait 3
+shelltitle 'shell'
+
+
+#
+# Keybindings
+#
+
+# regions
+bind j focus down
+bind ^j focus down
+bind k focus top
+bind ^k focus top
+bind + resize +1
+bind - resize -1
+bind w split
+
+# window navigation
+bind l next
+bind h prev
+
+# rebind the {} keys
+bind } hardcopy
+bind { log
