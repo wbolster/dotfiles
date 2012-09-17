@@ -34,7 +34,7 @@ set autoindent smartindent
 " Wrapping
 set linebreak nojoinspaces
 let &showbreak="↪ "
-set colorcolumn=+1
+silent! set colorcolumn=+1
 
 " Search/replace
 set ignorecase smartcase
