@@ -64,14 +64,15 @@ if [ "$PS1" ]; then
                 ps1_venv='['$(basename ${VIRTUAL_ENV})'] '
             fi
 
-            # Terminal title (embedded in $PS1)
+            # Terminal title (execution/echoing embedded in $PS1)
             local ps1_term_title=""
             case $TERM in
                 xterm|rxvt*)
-                    ps1_term_title="\[\e]0;${ps1_venv}${PWD}${ps1_git}\a\]"
+                    ps1_term_title="\[\e]0;${PWD} ${ps1_venv}${ps1_git}\a\]"
                     ;;
             esac
 
+            # Primary prompt
             PS1="${ps1_term_title}${COLOR_GREEN_BOLD}${ps1_venv}${ps1_git}${COLOR_GREEN}${ps1_hostname}:\w ${ps1_err}${COLOR_GREEN_BOLD}\\$ ${COLOR_NORMAL}"
         }
         PROMPT_COMMAND=set_prompt_command
