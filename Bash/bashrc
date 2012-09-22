@@ -34,6 +34,30 @@ if [ "$PS1" ]; then
     COLOR_WHITE_BOLD="\[\e[1;37m\]"
 
     if [ "$BASH" ]; then
+
+        # Cursor column detection
+        _can_detect_cursor_column=0;
+        if [ x"$(tput u7)" != x"" ]; then
+            _can_detect_cursor_column=1;
+            function _cursor_column() {
+                exec < /dev/tty
+                local stty_save=$(stty -g)
+                stty raw -echo min 0
+                tput u7 > /dev/tty  # u7 (User string #7) is "\e[6n" for xterm
+                stty "$stty_save"
+                local curcol
+                read -s -d R curcol
+                curcol="${curcol##*;}"
+                echo -n "$curcol"
+            }
+        else
+            echo -e "\e[1;31mWarning: terminal does not support cursor column detection; newline detection disabled"
+        fi
+
+        # Define the initial $ps1_nl to an empty string so that new terminal
+        # windows don't have a empty line at the top.
+        ps1_nl=''
+
         function set_prompt_command {
             # Exit code from previous command
             local prev_exit_code=$?
@@ -72,8 +96,17 @@ if [ "$PS1" ]; then
                     ;;
             esac
 
+            # Warning when output does not have a trailing newline
+            local ps1_nl_warning=""
+            if [ ${_can_detect_cursor_column} -eq 1 -a "$(_cursor_column)" -ne 1 ]; then
+                ps1_nl_warning="\n${COLOR_RED}!nl "
+            fi
+
             # Primary prompt
-            PS1="${ps1_term_title}${COLOR_GREEN_BOLD}${ps1_venv}${ps1_git}${COLOR_GREEN}${ps1_hostname}:\w ${ps1_err}${COLOR_GREEN_BOLD}\\$ ${COLOR_NORMAL}"
+            PS1="${ps1_term_title}${ps1_nl}${ps1_nl_warning}${COLOR_GREEN_BOLD}${ps1_venv}${ps1_git}${COLOR_GREEN}${ps1_hostname}:\w ${ps1_err}${COLOR_GREEN_BOLD}\\$ ${COLOR_NORMAL}"
+
+            # Set ps1_nl to a newline for subsequent prompts
+            ps1_nl='\n'
         }
         PROMPT_COMMAND=set_prompt_command
 
