@@ -74,7 +74,7 @@ if [ "$PS1" ]; then
         if [ -z "$SSH_CLIENT" ]; then
             ps1_hostname+="${COLOR_GREEN}"
         else
-            ps1_hostname+="${COLOR_PURPLE}"
+            ps1_hostname+="${COLOR_BLUE_BOLD}"
         fi
         ps1_hostname+="${HOSTNAME:0:8}"
 
@@ -134,7 +134,6 @@ if [ "$PS1" ]; then
         PS1="${ps1_term_title}"
         PS1+="\n"
         PS1+="${ps1_nl_warning}"
-        PS1+="${COLOR_GREEN}"
         PS1+="${ps1_hostname}"
         PS1+="${ps1_venv}"
         PS1+="${ps1_wd}"
