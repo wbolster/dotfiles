@@ -126,6 +126,9 @@ if [ "$PS1" ]; then
             PS1="${PS1}${COLOR_GREEN_BOLD}\\$ "
             PS1="${PS1}${COLOR_NORMAL}"
 
+            # Secondary prompt (continuation lines)
+            PS2="${COLOR_GREEN}> ${COLOR_NORMAL}"
+
             # Set ps1_nl to a newline for subsequent prompts
             ps1_nl='\n'
         }
