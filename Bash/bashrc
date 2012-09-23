@@ -103,6 +103,21 @@ if [ "$PS1" ]; then
                 ps1_nl_warning="\n${COLOR_RED}!nl "
             fi
 
+            # Background jobs
+            local ps1_jobs=""
+            local n_jobs="$(jobs -p | wc -w)"
+            if [ ${n_jobs} -ne 0 ]; then
+                local n_jobs_suspended="$(jobs -p -s | wc -w)"
+                local n_jobs_running="$(jobs -p -r | wc -w)"
+                ps1_jobs="${COLOR_BLUE_BOLD}"
+                if [ ${n_jobs_suspended} -ne 0 ]; then
+                    ps1_jobs="${ps1_jobs} ${n_jobs_suspended}^Z"
+                fi
+                if [ ${n_jobs_running} -ne 0 ]; then
+                    ps1_jobs="${ps1_jobs} ${n_jobs_running}&"
+                fi
+            fi
+
             # Terminal title (execution/echoing embedded in $PS1)
             local ps1_term_title=""
             case $TERM in
@@ -120,6 +135,7 @@ if [ "$PS1" ]; then
             PS1="${PS1}${ps1_venv}"
             PS1="${PS1}${ps1_wd}"
             PS1="${PS1}${ps1_git}"
+            PS1="${PS1}${ps1_jobs}"
             PS1="${PS1}${ps1_err}"
             PS1="${PS1}${COLOR_GREEN_BOLD} \\$ "
             PS1="${PS1}${COLOR_NORMAL}"
