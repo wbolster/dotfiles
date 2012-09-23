@@ -105,7 +105,15 @@ if [ "$PS1" ]; then
             fi
 
             # Primary prompt
-            PS1="${ps1_term_title}${ps1_nl}${ps1_nl_warning}${COLOR_GREEN_BOLD}${ps1_venv}${ps1_git}${COLOR_GREEN}${ps1_hostname}:\w ${ps1_err}${COLOR_GREEN_BOLD}\\$ ${COLOR_NORMAL}"
+            PS1="${ps1_term_title}"
+            PS1="${PS1}${ps1_nl}"
+            PS1="${PS1}${ps1_nl_warning}"
+            PS1="${PS1}${COLOR_GREEN_BOLD}${ps1_venv}"
+            PS1="${PS1}${COLOR_GREEN_BOLD}${ps1_git}"
+            PS1="${PS1}${COLOR_GREEN}${ps1_hostname}:\w "
+            PS1="${PS1}${ps1_err}"
+            PS1="${PS1}${COLOR_GREEN_BOLD}\\$ "
+            PS1="${PS1}${COLOR_NORMAL}"
 
             # Set ps1_nl to a newline for subsequent prompts
             ps1_nl='\n'
