@@ -128,17 +128,17 @@ if [ "$PS1" ]; then
 
             # Primary prompt
             PS1="${ps1_term_title}"
-            PS1="${PS1}\n"
-            PS1="${PS1}${ps1_nl_warning}"
-            PS1="${PS1}${COLOR_GREEN}"
-            PS1="${PS1}${ps1_hostname}"
-            PS1="${PS1}${ps1_venv}"
-            PS1="${PS1}${ps1_wd}"
-            PS1="${PS1}${ps1_git}"
-            PS1="${PS1}${ps1_jobs}"
-            PS1="${PS1}${ps1_err}"
-            PS1="${PS1}${COLOR_GREEN_BOLD} \\$ "
-            PS1="${PS1}${COLOR_NORMAL}"
+            PS1+="\n"
+            PS1+="${ps1_nl_warning}"
+            PS1+="${COLOR_GREEN}"
+            PS1+="${ps1_hostname}"
+            PS1+="${ps1_venv}"
+            PS1+="${ps1_wd}"
+            PS1+="${ps1_git}"
+            PS1+="${ps1_jobs}"
+            PS1+="${ps1_err}"
+            PS1+="${COLOR_GREEN_BOLD} \\$ "
+            PS1+="${COLOR_NORMAL}"
 
             # Secondary prompt (continuation lines)
             PS2="${COLOR_GREEN}> ${COLOR_NORMAL}"
