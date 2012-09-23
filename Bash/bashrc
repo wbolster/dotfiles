@@ -4,9 +4,9 @@
 umask 077
 
 # Preprend some directories inside ~ to $PATH
-test -d ~/bin         && PATH=~/bin:"${PATH}"
-test -d ~/.local/bin  && PATH=~/.local/bin:"${PATH}"
-test -d ~/.system/bin && PATH=~/.system/bin:"${PATH}"
+test -d ~/bin && PATH="~/bin:${PATH}"
+test -d ~/.local/bin && PATH="~/.local/bin:${PATH}"
+test -d ~/.system/bin && PATH="~/.system/bin:${PATH}"
 
 # Interactive Shells
 if [ "$PS1" ]; then
@@ -251,7 +251,7 @@ fi
 # if the home directory is shared over NFS.
 #
 
-test -f ~/.bashrc-local     && source ~/.bashrc-local
+test -f ~/.bashrc-local && source ~/.bashrc-local
 test -f ~/.bashrc-$HOSTNAME && source ~/.bashrc-$HOSTNAME
 
 # Force $? to be 0 (for the initial PS1)
