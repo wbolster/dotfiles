@@ -70,10 +70,16 @@ if [ "$PS1" ]; then
         fi
 
         # Host name
-        local ps1_hostname="${COLOR_GREEN}${HOSTNAME:0:8}"
+        local ps1_hostname=""
+        if [ -z "$SSH_CLIENT" ]; then
+            ps1_hostname+="${COLOR_GREEN}"
+        else
+            ps1_hostname+="${COLOR_PURPLE}"
+        fi
+        ps1_hostname+="${HOSTNAME:0:8}"
 
         # Working directory
-        local ps1_wd=":\w"
+        local ps1_wd="${COLOR_GREEN}:\w"
 
         # Git
         local ps1_git=""
