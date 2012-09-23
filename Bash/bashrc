@@ -35,6 +35,9 @@ if [ "$PS1" ]; then
 
     if [ "$BASH" ]; then
 
+        # __git_ps1() defaults
+        GIT_PS1_SHOWUPSTREAM=1
+
         # Cursor column detection
         _can_detect_cursor_column=0;
         if [ x"$(tput u7)" != x"" ]; then
@@ -76,7 +79,6 @@ if [ "$PS1" ]; then
             local ps1_hostname="${HOSTNAME:0:8}"
 
             # Git
-            GIT_PS1_SHOWUPSTREAM=1
             local ps1_git=""
             if declare -F __git_ps1 > /dev/null; then
                 ps1_git="$(__git_ps1 '(%s) ')"
