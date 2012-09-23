@@ -80,29 +80,35 @@ if [ "$PS1" ]; then
 
             # Git
             local ps1_git=""
+            local tt_git=""
             if declare -F __git_ps1 > /dev/null; then
-                ps1_git="$(__git_ps1 '(%s) ')"
+                local _git_ps1_output="$(__git_ps1 '%s')"
+                ps1_git="(${_git_ps1_output}) "
+                tt_git=" (${_git_ps1_output})"
             fi
 
             # Virtualenv
             local ps1_venv=""
+            local tt_venv=""
             if [ -n "$VIRTUAL_ENV" ]; then
-                ps1_venv='['$(basename ${VIRTUAL_ENV})'] '
+                local venv_name=$(basename ${VIRTUAL_ENV})
+                ps1_venv="[${venv_name}] "
+                tt_venv=" [${venv_name}]"
             fi
-
-            # Terminal title (execution/echoing embedded in $PS1)
-            local ps1_term_title=""
-            case $TERM in
-                xterm|rxvt*)
-                    ps1_term_title="\[\e]0;${PWD} ${ps1_venv}${ps1_git}\a\]"
-                    ;;
-            esac
 
             # Warning when output does not have a trailing newline
             local ps1_nl_warning=""
             if [ ${_can_detect_cursor_column} -eq 1 -a "$(_cursor_column)" -ne 1 ]; then
                 ps1_nl_warning="\n${COLOR_RED}!nl "
             fi
+
+            # Terminal title (execution/echoing embedded in $PS1)
+            local ps1_term_title=""
+            case $TERM in
+                xterm|rxvt*)
+                    ps1_term_title="\[\e]0;${PWD}${tt_venv}${tt_git}\a\]"
+                    ;;
+            esac
 
             # Primary prompt
             PS1="${ps1_term_title}"
