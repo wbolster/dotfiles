@@ -83,7 +83,7 @@ if [ "$PS1" ]; then
             local tt_git=""
             if declare -F __git_ps1 > /dev/null; then
                 local _git_ps1_output="$(__git_ps1 '%s')"
-                ps1_git="(${_git_ps1_output}) "
+                ps1_git="${COLOR_GREEN_BOLD}(${_git_ps1_output}) "
                 tt_git=" (${_git_ps1_output})"
             fi
 
@@ -92,7 +92,7 @@ if [ "$PS1" ]; then
             local tt_venv=""
             if [ -n "$VIRTUAL_ENV" ]; then
                 local venv_name=$(basename ${VIRTUAL_ENV})
-                ps1_venv="[${venv_name}] "
+                ps1_venv="${COLOR_GREEN_BOLD}[${venv_name}] "
                 tt_venv=" [${venv_name}]"
             fi
 
@@ -114,8 +114,8 @@ if [ "$PS1" ]; then
             PS1="${ps1_term_title}"
             PS1="${PS1}${ps1_nl}"
             PS1="${PS1}${ps1_nl_warning}"
-            PS1="${PS1}${COLOR_GREEN_BOLD}${ps1_venv}"
-            PS1="${PS1}${COLOR_GREEN_BOLD}${ps1_git}"
+            PS1="${PS1}${ps1_venv}"
+            PS1="${PS1}${ps1_git}"
             PS1="${PS1}${COLOR_GREEN}${ps1_hostname}:\w "
             PS1="${PS1}${ps1_err}"
             PS1="${PS1}${COLOR_GREEN_BOLD}\\$ "
