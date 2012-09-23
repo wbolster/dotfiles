@@ -68,7 +68,7 @@ if [ "$PS1" ]; then
                 if [ ${prev_exit_code} -gt 128 -a ${prev_exit_code} -lt 192 ]; then
                     exit_status=$((128-prev_exit_code))" "$(kill -l ${prev_exit_code} 2>/dev/null || echo -n '?')
                 fi
-                ps1_err="${COLOR_RED}${exit_status} "
+                ps1_err=" ${COLOR_RED}${exit_status}"
             fi
 
             # Host name
@@ -121,7 +121,7 @@ if [ "$PS1" ]; then
             PS1="${PS1}${ps1_wd}"
             PS1="${PS1}${ps1_git}"
             PS1="${PS1}${ps1_err}"
-            PS1="${PS1}${COLOR_GREEN_BOLD}\\$ "
+            PS1="${PS1}${COLOR_GREEN_BOLD} \\$ "
             PS1="${PS1}${COLOR_NORMAL}"
 
             # Secondary prompt (continuation lines)
