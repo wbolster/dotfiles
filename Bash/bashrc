@@ -33,127 +33,124 @@ if [ "$PS1" ]; then
     COLOR_WHITE="\[\e[0;37m\]"
     COLOR_WHITE_BOLD="\[\e[1;37m\]"
 
-    if [ "$BASH" ]; then
+    # __git_ps1() defaults
+    GIT_PS1_SHOWUPSTREAM=1
 
-        # __git_ps1() defaults
-        GIT_PS1_SHOWUPSTREAM=1
-
-        # Cursor column detection
-        _can_detect_cursor_column=0;
-        if [ x"$(tput u7)" != x"" ]; then
-            _can_detect_cursor_column=1;
-            function _cursor_column() {
-                exec < /dev/tty
-                local stty_save=$(stty -g)
-                stty raw -echo min 0
-                tput u7 > /dev/tty  # u7 (User string #7) is "\e[6n" for xterm
-                stty "$stty_save"
-                local curcol
-                read -s -d R curcol
-                curcol="${curcol##*;}"
-                echo -n "$curcol"
-            }
-        else
-            echo -e "\e[1;31mWarning: terminal does not support cursor column detection; newline detection disabled"
-        fi
-
-        function set_prompt_command {
-            # Exit code from previous command
-            local prev_exit_code=$?
-            local ps1_err=""
-            if [ ${prev_exit_code} -ne 0 ]; then
-                local exit_status=${prev_exit_code}
-                # Lookup signal numbers between 0 and 64; these are returned as
-                # exit codes between 128 and 192
-                if [ ${prev_exit_code} -gt 128 -a ${prev_exit_code} -lt 192 ]; then
-                    exit_status=$((128-prev_exit_code))" "$(kill -l ${prev_exit_code} 2>/dev/null || echo -n '?')
-                fi
-                ps1_err=" ${COLOR_RED}${exit_status}"
-            fi
-
-            # Host name
-            local ps1_hostname="${COLOR_GREEN}${HOSTNAME:0:8}"
-
-            # Working directory
-            local ps1_wd=":\w"
-
-            # Git
-            local ps1_git=""
-            local tt_git=""
-            if declare -F __git_ps1 > /dev/null; then
-                local _git_ps1_output="$(__git_ps1 '%s')"
-                if [ -n "${_git_ps1_output}" ]; then
-                    ps1_git="${COLOR_GREEN_BOLD}:${_git_ps1_output}"
-                    tt_git=" (${_git_ps1_output})"
-                fi
-            fi
-
-            # Virtualenv
-            local ps1_venv=""
-            local tt_venv=""
-            if [ -n "$VIRTUAL_ENV" ]; then
-                local venv_name=$(basename ${VIRTUAL_ENV})
-                ps1_venv="${COLOR_GREEN}:${venv_name}"
-                tt_venv=" [${venv_name}]"
-            fi
-
-            # Warning when output does not have a trailing newline
-            local ps1_nl_warning=""
-            if [ ${_can_detect_cursor_column} -eq 1 -a "$(_cursor_column)" -ne 1 ]; then
-                ps1_nl_warning="\n${COLOR_RED}!nl "
-            fi
-
-            # Background jobs
-            local ps1_jobs=""
-            local n_jobs="$(jobs -p | wc -w)"
-            if [ ${n_jobs} -ne 0 ]; then
-                local n_jobs_running="$(jobs -p -r | wc -w)"
-                local n_jobs_suspended="$(jobs -p -s | wc -w)"
-                ps1_jobs="${COLOR_BLUE_BOLD}"
-                if [ ${n_jobs_running} -ne 0 ]; then
-                    ps1_jobs+=" ${n_jobs_running}&"
-                fi
-                if [ ${n_jobs_suspended} -ne 0 ]; then
-                    ps1_jobs+=" ${n_jobs_suspended}^Z"
-                fi
-            fi
-
-            # Terminal title (execution/echoing embedded in $PS1)
-            local ps1_term_title=""
-            case $TERM in
-                xterm|rxvt*)
-                    ps1_term_title="\[\e]0;${PWD}${tt_venv}${tt_git}\a\]"
-                    ;;
-            esac
-
-            # Primary prompt
-            PS1="${ps1_term_title}"
-            PS1+="\n"
-            PS1+="${ps1_nl_warning}"
-            PS1+="${COLOR_GREEN}"
-            PS1+="${ps1_hostname}"
-            PS1+="${ps1_venv}"
-            PS1+="${ps1_wd}"
-            PS1+="${ps1_git}"
-            PS1+="${ps1_jobs}"
-            PS1+="${ps1_err}"
-            PS1+="${COLOR_GREEN_BOLD} \\$ "
-            PS1+="${COLOR_NORMAL}"
-
-            # Secondary prompt (continuation lines)
-            PS2="${COLOR_GREEN}> ${COLOR_NORMAL}"
+    # Cursor column detection
+    _can_detect_cursor_column=0;
+    if [ x"$(tput u7)" != x"" ]; then
+        _can_detect_cursor_column=1;
+        function _cursor_column() {
+            exec < /dev/tty
+            local stty_save=$(stty -g)
+            stty raw -echo min 0
+            tput u7 > /dev/tty  # u7 (User string #7) is "\e[6n" for xterm
+            stty "$stty_save"
+            local curcol
+            read -s -d R curcol
+            curcol="${curcol##*;}"
+            echo -n "$curcol"
         }
-        PROMPT_COMMAND=set_prompt_command
+    else
+        echo -e "\e[1;31mWarning: terminal does not support cursor column detection; newline detection disabled"
+    fi
 
-        # Completion
-        if [ -f /usr/share/bash-completion/bash_completion ]; then
-            source /usr/share/bash-completion/bash_completion
-        elif [ -f /etc/bash_completion ]; then
-            source /etc/bash_completion
+    function set_prompt_command {
+        # Exit code from previous command
+        local prev_exit_code=$?
+        local ps1_err=""
+        if [ ${prev_exit_code} -ne 0 ]; then
+            local exit_status=${prev_exit_code}
+            # Lookup signal numbers between 0 and 64; these are returned as
+            # exit codes between 128 and 192
+            if [ ${prev_exit_code} -gt 128 -a ${prev_exit_code} -lt 192 ]; then
+                exit_status=$((128-prev_exit_code))" "$(kill -l ${prev_exit_code} 2>/dev/null || echo -n '?')
+            fi
+            ps1_err=" ${COLOR_RED}${exit_status}"
         fi
-        if [ -f $HOME/.bash_completion ]; then
-            source $HOME/.bash_completion
+
+        # Host name
+        local ps1_hostname="${COLOR_GREEN}${HOSTNAME:0:8}"
+
+        # Working directory
+        local ps1_wd=":\w"
+
+        # Git
+        local ps1_git=""
+        local tt_git=""
+        if declare -F __git_ps1 > /dev/null; then
+            local _git_ps1_output="$(__git_ps1 '%s')"
+            if [ -n "${_git_ps1_output}" ]; then
+                ps1_git="${COLOR_GREEN_BOLD}:${_git_ps1_output}"
+                tt_git=" (${_git_ps1_output})"
+            fi
         fi
+
+        # Virtualenv
+        local ps1_venv=""
+        local tt_venv=""
+        if [ -n "$VIRTUAL_ENV" ]; then
+            local venv_name=$(basename ${VIRTUAL_ENV})
+            ps1_venv="${COLOR_GREEN}:${venv_name}"
+            tt_venv=" [${venv_name}]"
+        fi
+
+        # Warning when output does not have a trailing newline
+        local ps1_nl_warning=""
+        if [ ${_can_detect_cursor_column} -eq 1 -a "$(_cursor_column)" -ne 1 ]; then
+            ps1_nl_warning="\n${COLOR_RED}!nl "
+        fi
+
+        # Background jobs
+        local ps1_jobs=""
+        local n_jobs="$(jobs -p | wc -w)"
+        if [ ${n_jobs} -ne 0 ]; then
+            local n_jobs_running="$(jobs -p -r | wc -w)"
+            local n_jobs_suspended="$(jobs -p -s | wc -w)"
+            ps1_jobs="${COLOR_BLUE_BOLD}"
+            if [ ${n_jobs_running} -ne 0 ]; then
+                ps1_jobs+=" ${n_jobs_running}&"
+            fi
+            if [ ${n_jobs_suspended} -ne 0 ]; then
+                ps1_jobs+=" ${n_jobs_suspended}^Z"
+            fi
+        fi
+
+        # Terminal title (execution/echoing embedded in $PS1)
+        local ps1_term_title=""
+        case $TERM in
+            xterm|rxvt*)
+                ps1_term_title="\[\e]0;${PWD}${tt_venv}${tt_git}\a\]"
+                ;;
+        esac
+
+        # Primary prompt
+        PS1="${ps1_term_title}"
+        PS1+="\n"
+        PS1+="${ps1_nl_warning}"
+        PS1+="${COLOR_GREEN}"
+        PS1+="${ps1_hostname}"
+        PS1+="${ps1_venv}"
+        PS1+="${ps1_wd}"
+        PS1+="${ps1_git}"
+        PS1+="${ps1_jobs}"
+        PS1+="${ps1_err}"
+        PS1+="${COLOR_GREEN_BOLD} \\$ "
+        PS1+="${COLOR_NORMAL}"
+
+        # Secondary prompt (continuation lines)
+        PS2="${COLOR_GREEN}> ${COLOR_NORMAL}"
+    }
+    PROMPT_COMMAND=set_prompt_command
+
+    # Completion
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        source /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        source /etc/bash_completion
+    fi
+    if [ -f $HOME/.bash_completion ]; then
+        source $HOME/.bash_completion
     fi
 
     # History
