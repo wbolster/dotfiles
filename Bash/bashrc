@@ -57,10 +57,6 @@ if [ "$PS1" ]; then
             echo -e "\e[1;31mWarning: terminal does not support cursor column detection; newline detection disabled"
         fi
 
-        # Define the initial $ps1_nl to an empty string so that new terminal
-        # windows don't have a empty line at the top.
-        ps1_nl=''
-
         function set_prompt_command {
             # Exit code from previous command
             local prev_exit_code=$?
@@ -115,7 +111,7 @@ if [ "$PS1" ]; then
 
             # Primary prompt
             PS1="${ps1_term_title}"
-            PS1="${PS1}${ps1_nl}"
+            PS1="${PS1}\n"
             PS1="${PS1}${ps1_nl_warning}"
             PS1="${PS1}${COLOR_GREEN}"
             PS1="${PS1}${ps1_hostname}"
@@ -128,9 +124,6 @@ if [ "$PS1" ]; then
 
             # Secondary prompt (continuation lines)
             PS2="${COLOR_GREEN}> ${COLOR_NORMAL}"
-
-            # Set ps1_nl to a newline for subsequent prompts
-            ps1_nl='\n'
         }
         PROMPT_COMMAND=set_prompt_command
 
