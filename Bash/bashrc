@@ -36,15 +36,17 @@ if [ "$PS1" ]; then
     # __git_ps1() defaults
     GIT_PS1_SHOWUPSTREAM=1
 
-    # Cursor column detection
+    # Cursor column detection. The "\e[6n" escape sequence seems roughly
+    # equivalent to "tput u7" (user string #7) for xterm. The escape sequence
+    # seems to work with screen(1), while the 'tput u7' one does not.
     _can_detect_cursor_column=0;
-    if [ x"$(tput u7)" != x"" ]; then
+    if [ x"$(echo -en "\e[6n")" != x"" ]; then
         _can_detect_cursor_column=1;
         function _cursor_column() {
             exec < /dev/tty
             local stty_save=$(stty -g)
             stty raw -echo min 0
-            tput u7 > /dev/tty  # u7 (User string #7) is "\e[6n" for xterm
+            echo -en "\e[6n" > /dev/tty
             stty "$stty_save"
             local curcol
             read -s -d R curcol
@@ -103,8 +105,10 @@ if [ "$PS1" ]; then
 
         # Warning when output does not have a trailing newline
         local ps1_nl_warning=""
-        if [ ${_can_detect_cursor_column} -eq 1 -a "$(_cursor_column)" -ne 1 ]; then
-            ps1_nl_warning="\n${COLOR_RED}!nl "
+        if [ ${_can_detect_cursor_column} -eq 1 ]; then
+            if [ "$(_cursor_column)" -ne 1 ]; then
+                ps1_nl_warning="\n${COLOR_RED}!nl "
+            fi
         fi
 
         # Background jobs
