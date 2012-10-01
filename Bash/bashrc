@@ -112,7 +112,7 @@ if [ "$PS1" ]; then
         fi
 
         # Warning when output does not have a trailing newline
-        local ps1_newlin_warning=""
+        local ps1_newline_warning=""
         if [ ${_ps1_newline_warning_enabled} -eq 1 ]; then
             if [ "$(_cursor_column)" -ne 1 ]; then
                 ps1_newline_warning="\n${COLOR_RED}!nl "
