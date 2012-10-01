@@ -36,26 +36,34 @@ if [ "$PS1" ]; then
     # __git_ps1() defaults
     GIT_PS1_SHOWUPSTREAM=1
 
-    # Cursor column detection. The "\e[6n" escape sequence seems roughly
-    # equivalent to "tput u7" (user string #7) for xterm. The escape sequence
-    # seems to work with screen(1), while the 'tput u7' one does not.
-    _can_detect_cursor_column=0;
-    if [ x"$(echo -en "\e[6n")" != x"" ]; then
-        _can_detect_cursor_column=1;
-        function _cursor_column() {
-            exec < /dev/tty
-            local stty_save=$(stty -g)
-            stty raw -echo min 0
-            echo -en "\e[6n" > /dev/tty
-            stty "$stty_save"
-            local curcol
-            read -s -d R curcol
-            curcol="${curcol##*;}"
-            echo -n "$curcol"
-        }
-    else
-        echo -e "\e[1;31mWarning: terminal does not support cursor column detection; newline detection disabled"
-    fi
+    # Trailing newline warning using cursor column detection
+    #
+    # The "tput u7" (user string #7) for xterm results in the required "\e[6n"
+    # escape sequence, but this user string is not available for all terminal
+    # types. (The "screen" term does not have it, for example.)
+    _ps1_newline_warning_enabled=0;
+    function _ps1_enable_newline_warning() {
+        if [ x"$(echo -en "\e[6n")" != x"" ]; then
+            _ps1_newline_warning_enabled=1;
+            function _cursor_column() {
+                exec < /dev/tty
+                local stty_save=$(stty -g)
+                stty raw -echo min 0
+                echo -en "\e[6n" > /dev/tty
+                stty "$stty_save"
+                local curcol
+                read -s -d R curcol
+                curcol="${curcol##*;}"
+                echo -n "$curcol"
+            }
+        else
+            _ps1_newline_warning_enabled=0;
+            echo -e "\e[1;31mWarning: terminal does not support cursor column detection; newline detection disabled"
+        fi
+    }
+    function _ps1_disable_newline_warning() {
+        _ps1_newline_warning_enabled=0;
+    }
 
     function set_prompt_command {
         # Exit code from previous command
@@ -104,10 +112,10 @@ if [ "$PS1" ]; then
         fi
 
         # Warning when output does not have a trailing newline
-        local ps1_nl_warning=""
-        if [ ${_can_detect_cursor_column} -eq 1 ]; then
+        local ps1_newlin_warning=""
+        if [ ${_ps1_newline_warning_enabled} -eq 1 ]; then
             if [ "$(_cursor_column)" -ne 1 ]; then
-                ps1_nl_warning="\n${COLOR_RED}!nl "
+                ps1_newline_warning="\n${COLOR_RED}!nl "
             fi
         fi
 
@@ -137,7 +145,7 @@ if [ "$PS1" ]; then
         # Primary prompt
         PS1="${ps1_term_title}"
         PS1+="\n"
-        PS1+="${ps1_nl_warning}"
+        PS1+="${ps1_newline_warning}"
         PS1+="${ps1_hostname}"
         PS1+="${ps1_venv}"
         PS1+="${ps1_wd}"
