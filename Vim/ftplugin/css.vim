@@ -1,6 +1,6 @@
 " Vim configuration for CSS
 
-setlocal ts=1 sw=1 expandtab
+setlocal ts=2 sw=2 expandtab
 
 " Sort declaration block alphabetically
 noremap <buffer> ,s mxViB:!sort<Cr>`x
