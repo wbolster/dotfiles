@@ -1,4 +1,4 @@
 " Vim configuration for ReStructured TExt
 
-setlocal tabstop=3 shiftwidth=3 expandtab
+setlocal tabstop=4 shiftwidth=4 expandtab
 setlocal textwidth=80
