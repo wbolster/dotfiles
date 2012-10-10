@@ -23,7 +23,11 @@ command! -bar -nargs=1 -bang -complete=file Rename :
       \ setlocal modified |
       \ keepalt saveas<bang> <args> |
       \ if s:file !=# expand('%:p') |
-      \   call delete(s:file) |
+      \   if delete(s:file) |
+      \     echoerr 'Failed to delete "'.s:file.'"' |
+      \   else |
+      \     execute 'bwipe '.fnameescape(s:file) |
+      \   endif |
       \ endif |
       \ unlet s:file
 
