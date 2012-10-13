@@ -13,7 +13,9 @@ mv external external.old
 mkdir external
 cd external/
 
+git clone https://github.com/altercation/vim-colors-solarized.git colors-solarized
 git clone https://github.com/jimf/vim-pep8-text-width.git pep8-text-width
+git clone https://github.com/Lokaltog/vim-powerline.git powerline
 git clone https://github.com/msanders/snipmate.vim.git snipmate
 git clone https://github.com/scrooloose/syntastic.git syntastic
 git clone https://github.com/tpope/vim-abolish.git abolish
@@ -23,7 +25,6 @@ git clone https://github.com/tpope/vim-pathogen.git pathogen
 git clone https://github.com/tpope/vim-repeat.git repeat
 git clone https://github.com/tpope/vim-surround.git surround
 git clone https://github.com/tpope/vim-unimpaired.git unimpaired
-git clone https://github.com/Lokaltog/vim-powerline.git powerline
 
 find . -name .git -print0 |xargs -0 rm -fr
 find . -name .gitignore -delete
