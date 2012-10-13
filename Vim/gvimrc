@@ -1,10 +1,13 @@
 " Vim configuration (gvim)
 
+" Window layout
 set lines=60 columns=120
 set guioptions-=m guioptions-=T guioptions+=L
 set guicursor=a:blinkon0 
 
-colorscheme mustang
+" Colors
+set background=dark
+colorscheme solarized
 
 " Smooth scrolling (but not over SSH)
 if (strlen($SSH_CLIENT) == 0)
