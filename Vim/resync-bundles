@@ -2,16 +2,16 @@
 
 set -e
 
-if [ -d "external.old/" ]; then
-    echo "The directory external.old/ already exists. Remove it first."
+if [ -d "bundle.old/" ]; then
+    echo "The directory bundle.old/ already exists. Remove it first."
     exit 1
 fi
 
 set -x
 
-mv external external.old
-mkdir external
-cd external/
+mv bundle bundle.old
+mkdir bundle
+cd bundle/
 
 git clone https://github.com/altercation/vim-colors-solarized.git colors-solarized
 git clone https://github.com/groenewege/vim-less.git less
