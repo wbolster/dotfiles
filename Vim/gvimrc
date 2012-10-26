@@ -31,8 +31,9 @@ endif
 noremap <C-s> :update<Return>
 inoremap <C-s> <C-O>:update<Return>
 
-" Keyboard shortcuts to change the text size
-noremap <C-kMinus> :SmallerFont<Return>
-noremap <C-kPlus> :LargerFont<Return>
-noremap <C-ScrollWheelDown> :SmallerFont<Return>
-noremap <C-ScrollWheelUp> :LargerFont<Return>
+" Keyboard shortcuts to change the text size (fontzoom plugin)
+let g:fontzoom_no_default_key_mappings = 1
+silent! nmap <unique> <silent> <C-kPlus> <Plug>(fontzoom-larger)
+silent! nmap <unique> <silent> <C-kMinus> <Plug>(fontzoom-smaller)
+silent! nmap <unique> <silent> <C-ScrollWheelUp> <Plug>(fontzoom-larger)
+silent! nmap <unique> <silent> <C-ScrollWheelDown> <Plug>(fontzoom-smaller)
