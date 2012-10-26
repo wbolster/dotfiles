@@ -1,0 +1,30 @@
+PEP8 Text Width
+===============
+
+This plugin sets textwidth for python files as specified by the [PEP8 style guide](http://www.python.org/dev/peps/pep-0008/). Namely, textwidth is set to 79 for code, and 72 for comments.
+
+Inspiration for this plugin from http://stackoverflow.com/questions/4027222/vim-use-shorter-textwidth-in-comments-and-docstrings.
+
+Installation
+------------
+
+Use tpope's [pathogen.vim](https://github.com/tpope/vim-pathogen).
+
+Requirements
+------------
+
+Vim 7.0+
+
+Configuration
+-------------
+
+The behavior of this plugin can be tweaked by modifying the following
+variables:
+
+    let g:pep8_text_width = 79           " Default 79
+    let g:pep8_comment_text_width = 72   " Default 72
+
+License
+-------
+
+GPL2+
