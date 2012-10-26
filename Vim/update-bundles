@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+GIT_SUBTREE="git subtree"
+BUNDLES_PREFIX="Vim/bundle/"
+BUNDLES_CONF="bundles.conf"
+
+cat $BUNDLES_CONF | while read URL REV LOCAL_NAME; do
+    echo "Updating ${URL} (${REV}) into ${BUNDLES_PREFIX}${LOCAL_NAME}"
+    cmd="${GIT_SUBTREE} pull --prefix ${BUNDLES_PREFIX}${LOCAL_NAME}/ --squash ${URL} ${REV}"
+    (cd ./$(git rev-parse --show-cdup) && set -x && $cmd)
+    echo
+done
