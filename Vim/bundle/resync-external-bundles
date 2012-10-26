@@ -19,6 +19,7 @@ git clone https://github.com/jimf/vim-pep8-text-width.git pep8-text-width
 git clone https://github.com/Lokaltog/vim-powerline.git powerline
 git clone https://github.com/msanders/snipmate.vim.git snipmate
 git clone https://github.com/scrooloose/syntastic.git syntastic
+git clone https://github.com/thinca/vim-fontzoom.git fontzoom
 git clone https://github.com/tpope/vim-abolish.git abolish
 git clone https://github.com/tpope/vim-commentary.git commentary
 git clone https://github.com/tpope/vim-eunuch.git eunuch
