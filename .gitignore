@@ -3,3 +3,4 @@
 /Vim/bundle/*/*/.netrwhist
 /Vim/**/doc/tags
 *.cache
+.netrwhist
