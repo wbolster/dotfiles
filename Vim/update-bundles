@@ -6,9 +6,21 @@ GIT_SUBTREE="git subtree"
 BUNDLES_PREFIX="Vim/bundle/"
 BUNDLES_CONF="bundles.conf"
 
+GIT_ROOT="$(git rev-parse --show-toplevel)"
+
 cat $BUNDLES_CONF | while read URL REV LOCAL_NAME; do
     echo "Updating ${URL} (${REV}) into ${BUNDLES_PREFIX}${LOCAL_NAME}"
-    cmd="${GIT_SUBTREE} pull --prefix ${BUNDLES_PREFIX}${LOCAL_NAME}/ --squash ${URL} ${REV}"
-    (cd ./$(git rev-parse --show-cdup) && set -x && $cmd)
+
+    if [ -d "${GIT_ROOT}/${BUNDLES_PREFIX}${LOCAL_NAME}" ]; then
+        subtree_cmd="pull"
+        commit_msg="[vim] Update external bundle '${LOCAL_NAME}'"
+    else
+        subtree_cmd="add"
+        commit_msg="[vim] Add external bundle '${LOCAL_NAME}'"
+    fi
+    cmd="${GIT_SUBTREE} ${subtree_cmd} --prefix ${BUNDLES_PREFIX}${LOCAL_NAME}/ --message='${commit_msg}' --squash ${URL} ${REV}"
+
+    echo "${cmd}"
+    (cd ./$(git rev-parse --show-cdup) && eval $cmd)
     echo
 done
