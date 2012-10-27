@@ -107,7 +107,7 @@ if [ "$PS1" ]; then
         local tt_venv=""
         if [ -n "$VIRTUAL_ENV" ]; then
             local venv_name=$(basename ${VIRTUAL_ENV})
-            ps1_venv="${COLOR_GREEN}:${venv_name}"
+            ps1_venv=":${COLOR_GREEN_BOLD}${venv_name}"
             tt_venv=" [${venv_name}]"
         fi
 
