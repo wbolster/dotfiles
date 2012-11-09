@@ -18,7 +18,7 @@ cat $BUNDLES_CONF | while read URL REV LOCAL_NAME; do
         subtree_cmd="add"
         commit_msg="[vim] Add external bundle '${LOCAL_NAME}'"
     fi
-    cmd="${GIT_SUBTREE} ${subtree_cmd} --prefix ${BUNDLES_PREFIX}${LOCAL_NAME}/ --message='${commit_msg}' --squash ${URL} ${REV}"
+    cmd="${GIT_SUBTREE} ${subtree_cmd} --prefix ${BUNDLES_PREFIX}${LOCAL_NAME} --message='${commit_msg}' --squash ${URL} ${REV}"
 
     echo "${cmd}"
     (cd ./$(git rev-parse --show-cdup) && eval $cmd)
