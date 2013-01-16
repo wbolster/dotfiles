@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+
+from os.path import dirname, expanduser, join, relpath
+import subprocess
+
+include_path = join(relpath(dirname(__file__), expanduser('~')), 'config')
+
+subprocess.check_call([
+    'git',
+    'config',
+    '--global',
+    '--replace-all',
+    'include.path',
+    include_path,
+    '^%s$' % include_path,
+])
