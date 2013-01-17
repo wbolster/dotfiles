@@ -11,7 +11,7 @@ test -d ~/.system/bin && PATH=~/.system/bin:${PATH}
 # Interactive Shells
 if [ "$PS1" ]; then
     # Make sure $HOSTNAME is set
-    test -z "${HOSTNAME}" && export HOSTNAME=`hostname`
+    test -z "${HOSTNAME}" && export HOSTNAME=$(hostname)
 
     # Prompt and terminal title
     PROMPT_DIRTRIM=3
