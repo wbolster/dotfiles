@@ -8,6 +8,9 @@
 	defaultToUpstream = true
 	log = true
 
+[push]
+	default = current
+
 [log]
 	decorate = short
 	date = relative
