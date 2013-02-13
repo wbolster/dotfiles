@@ -2,7 +2,7 @@
                   / \,,_  .'|
                ,{{| /}}}}/_.'            _____________________________________________
               }}}}` '{{'  '.            /                                             \
-            {{{{{    _   ;, \          /                Gentlemen,                     \
+            {{{{{    _   ;, \          /            Ladies and Gentlemen,              \
          ,}}}}}}    /o`\  ` ;)        |                                                |
         {{{{{{   /           (        |                 this is ...                    |
         }}}}}}   |            \       |                                                |
@@ -105,11 +105,35 @@ A. The most likely reason is that the syntax checker that it requires isn't inst
 
 Another reason it could fail is that the error output for the syntax checker may have changed. In this case, make sure you have the latest version of the syntax checker installed. If it still fails then create an issue - or better yet, create a pull request.
 
+__Q. Syntastic supports several checkers for my filetype - how do I tell it which one(s) to use?__
+
+A. Stick a line like this in your vimrc:
+
+`let g:syntastic_<filetype>_checkers=['<checker-name>']`
+
+To see the list of checkers for your filetype, look in `syntax_checkers/<filetype>/`.
+
+e.g. Python has the following checkers: `flake8`, `pyflakes`, `pylint` and a native `python` checker.
+
+To tell syntastic to use `pylint`, you would use this setting:
+
+`let g:syntastic_python_checkers=['pylint']`
+
+Some filetypes, like PHP, have style checkers as well as syntax checkers. These can be chained together like this:
+
+`let g:syntastic_php_checkers=['php', 'phpcs', 'phpmd']`
+
+This is telling syntastic to run the `php` checker first, and if no errors are found, run `phpcs`, and then `phpmd`.
+
 __Q. How can I jump between the different errors without using the location list at the bottom of the window?__
 
 A. Vim provides several built in commands for this. See `:help :lnext` and `:help :lprev`.
 
 If you use these commands a lot then you may want to add shortcut mappings to your vimrc, or install something like [unimpaired](https://github.com/tpope/vim-unimpaired) - which provides such mappings (among other things).
+
+__Q. A syntax checker is giving me unwanted/strange style tips??__
+
+A. Some filetypes (e.g. php) have style checkers as well as syntax checkers. You can usually configure the options that are passed to the style checkers, or just disable them. Take a look at the syntax checker integration file (e.g. `syntax_checkers/php.vim`) to see what options are available.
 
 Changelog
 ---------
