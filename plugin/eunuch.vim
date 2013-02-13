@@ -7,6 +7,10 @@ if exists('g:loaded_eunuch') || &cp || v:version < 700
 endif
 let g:loaded_eunuch = 1
 
+function! s:separator()
+  return !exists('+shellslash') || &shellslash ? '/' : '\\'
+endfunction
+
 command! -bar -bang Unlink :
       \ let v:errmsg = '' |
       \ let s:file = fnamemodify(bufname(<q-args>),':p') |
@@ -22,8 +26,10 @@ command! -bar -nargs=1 -bang -complete=file Move :
       \ let s:src = expand('%:p') |
       \ let s:dst = expand(<q-args>) |
       \ if isdirectory(s:dst) |
-      \   let s:dst .= '/' . fnamemodify(s:src, ':t') |
+      \   let s:dst .= (s:dst[-1:-1] =~# '[\\/]' ? '' : s:separator()) .
+      \     fnamemodify(s:src, ':t') |
       \ endif |
+      \ let s:dst = substitute(simplify(s:dst), '^\.\'.s:separator(), '', '') |
       \ if <bang>1 && filereadable(s:dst) |
       \   exe 'keepalt saveas '.fnameescape(s:dst) |
       \ elseif rename(s:src, s:dst) |
@@ -38,7 +44,17 @@ command! -bar -nargs=1 -bang -complete=file Move :
       \ unlet s:src |
       \ unlet s:dst
 
-command! -bar -nargs=1 -bang -complete=file Rename :Move<bang> <args>
+function! s:Rename_complete(A, L, P) abort
+  let sep = s:separator()
+  let prefix = expand('%:p:h').sep
+  let files = split(glob(prefix.a:A.'*'), "\n")
+  call filter(files, 'simplify(v:val) !=# simplify(expand("%:p"))')
+  call map(files, 'v:val[strlen(prefix) : -1] . (isdirectory(v:val) ? sep : "")')
+  return join(files + ['..'.s:separator()], "\n")
+endfunction
+
+command! -bar -nargs=1 -bang -complete=custom,s:Rename_complete Rename
+      \ Move<bang> %:h/<args>
 
 command! -bar -nargs=1 Chmod :
       \ echoerr split(system('chmod '.<q-args>.' -- '.shellescape(expand('%'))), "\n")[0] |
@@ -65,7 +81,7 @@ endfunction
 
 command! -bar SudoWrite :
       \ setlocal nomodified |
-      \ silent exe 'write !sudo tee % >/dev/null' |
+      \  exe (has('gui_running') ? '' : 'silent') 'write !sudo tee % >/dev/null' |
       \ let &modified = v:shell_error
 
 command! -bar W :call s:W()
@@ -77,7 +93,7 @@ function! s:W() abort
     let seen[bufnr('')] = 1
     write
   endif
-  tabdo windo if !&readonly && expand('%') !=# '' && !has_key(seen, bufnr('')) | silent write | let seen[bufnr('')] = 1 | endif
+  tabdo windo if !&readonly && &buftype =~# '^\%(acwrite\)\=$' && expand('%') !=# '' && !has_key(seen, bufnr('')) | silent write | let seen[bufnr('')] = 1 | endif
   execute 'tabnext '.tab
   execute win.'wincmd w'
 endfunction
