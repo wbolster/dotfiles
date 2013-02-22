@@ -64,6 +64,11 @@
 "
 "   let g:syntastic_objc_errorformat = '%f:%l:%c: %trror: %m'
 
+if exists("g:loaded_syntastic_objc_gcc_checker")
+    finish
+endif
+let g:loaded_syntastic_objc_gcc_checker=1
+
 let s:save_cpo = &cpo
 set cpo&vim
 
@@ -77,7 +82,7 @@ endif
 
 function! SyntaxCheckers_objc_gcc_IsAvailable()
     return executable('gcc')
-endif
+endfunction
 
 function! SyntaxCheckers_objc_gcc_GetLocList()
     let makeprg = 'gcc -fsyntax-only -lobjc'
