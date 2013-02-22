@@ -9,6 +9,11 @@
 "             See http://sam.zoy.org/wtfpl/COPYING for more details.
 "
 "============================================================================
+if exists("g:loaded_syntastic_lisp_clisp_checker")
+    finish
+endif
+let g:loaded_syntastic_lisp_clisp_checker=1
+
 function! SyntaxCheckers_lisp_clisp_IsAvailable()
     return executable("clisp")
 endfunction
@@ -16,7 +21,7 @@ endfunction
 function! SyntaxCheckers_lisp_clisp_GetLocList()
     let makeprg = syntastic#makeprg#build({
                 \ 'exe': 'clisp',
-                \ 'args': '-c'
+                \ 'args': '-c',
                 \ 'tail': '-o /tmp/clisp-vim-compiled-file' })
     let efm  = '%-G;%.%#,'
     let efm .= '%W%>WARNING:%.%#line %l : %m,%C  %#%m,'
