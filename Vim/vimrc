@@ -128,3 +128,6 @@ syntax on
 " Undo vim-surround mapping
 xnoremap s s
 
+" Syntastic
+let g:syntastic_html_checkers=['tidy']
+let g:syntastic_python_checkers=['flake8']
