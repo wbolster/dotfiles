@@ -33,3 +33,5 @@
 
 [rebase]
 	stat = true
+
+# vim: filetype=gitconfig
