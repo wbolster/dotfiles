@@ -165,6 +165,7 @@ function! s:UpdateErrors(auto_invoked, ...)
 
     let loclist = s:LocList()
     if g:syntastic_auto_jump && loclist.hasErrorsOrWarningsToDisplay()
+        call setloclist(0, loclist.toRaw())
         silent! ll
     endif
 
@@ -273,11 +274,30 @@ function! s:ModeMapAllowsAutoChecking()
 endfunction
 
 if g:syntastic_enable_signs
+    if !hlexists('SyntasticErrorSign')
+        highlight link SyntasticErrorSign error
+    endif
+    if !hlexists('SyntasticWarningSign')
+        highlight link SyntasticWarningSign todo
+    endif
+    if !hlexists('SyntasticStyleErrorSign')
+        highlight link SyntasticStyleErrorSign SyntasticErrorSign
+    endif
+    if !hlexists('SyntasticStyleWarningSign')
+        highlight link SyntasticStyleWarningSign SyntasticWarningSign
+    endif
+    if !hlexists('SyntasticStyleErrorLine')
+        highlight link SyntasticStyleErrorLine SyntasticErrorLine
+    endif
+    if !hlexists('SyntasticStyleWarningLine')
+        highlight link SyntasticStyleWarningLine SyntasticWarningLine
+    endif
+
     "define the signs used to display syntax and style errors/warns
-    exe 'sign define SyntasticError text='.g:syntastic_error_symbol.' texthl=error'
-    exe 'sign define SyntasticWarning text='.g:syntastic_warning_symbol.' texthl=todo'
-    exe 'sign define SyntasticStyleError text='.g:syntastic_style_error_symbol.' texthl=error'
-    exe 'sign define SyntasticStyleWarning text='.g:syntastic_style_warning_symbol.' texthl=todo'
+    exe 'sign define SyntasticError text='.g:syntastic_error_symbol.' texthl=SyntasticErrorSign linehl=SyntasticErrorLine'
+    exe 'sign define SyntasticWarning text='.g:syntastic_warning_symbol.' texthl=SyntasticWarningSign linehl=SyntasticWarningLine'
+    exe 'sign define SyntasticStyleError text='.g:syntastic_style_error_symbol.' texthl=SyntasticStyleErrorSign linehl=SyntasticStyleErrorLine'
+    exe 'sign define SyntasticStyleWarning text='.g:syntastic_style_warning_symbol.' texthl=SyntasticStyleWarningSign linehl=SyntasticStyleWarningLine'
 endif
 
 "start counting sign ids at 5000, start here to hopefully avoid conflicting
@@ -362,13 +382,9 @@ endfunction
 
 "highlight the current errors using matchadd()
 "
-"The function `Syntastic_{&ft}_GetHighlightRegex` is used to get the regex to
-"highlight errors that do not have a 'col' key (and hence cant be done
-"automatically). This function must take one arg (an error item) and return a
-"regex to match that item in the buffer.
-"
-"If the 'force_highlight_callback' key is set for an error item, then invoke
-"the callback even if it can be highlighted automatically.
+"The function `Syntastic_{filetype}_{checker}_GetHighlightRegex` is used
+"to override default highlighting.  This function must take one arg (an
+"error item) and return a regex to match that item in the buffer.
 function! s:HighlightErrors()
     call s:ClearErrorHighlights()
     let loclist = s:LocList()
@@ -377,22 +393,17 @@ function! s:HighlightErrors()
     for ft in split(fts, '\.')
 
         for item in loclist.toRaw()
-
-            let force_callback = has_key(item, 'force_highlight_callback') && item['force_highlight_callback']
-
             let group = item['type'] == 'E' ? 'SyntasticError' : 'SyntasticWarning'
-            if get( item, 'col' ) && !force_callback
+
+            if exists('*SyntaxCheckers_'. ft . '_' . item['checker'] .'_GetHighlightRegex')
+                let term = SyntaxCheckers_{ft}_{item['checker']}_GetHighlightRegex(item)
+                if len(term) > 0
+                    call matchadd(group, '\%' . item['lnum'] . 'l' . term)
+                endif
+            elseif get(item, 'col')
                 let lastcol = col([item['lnum'], '$'])
                 let lcol = min([lastcol, item['col']])
                 call matchadd(group, '\%'.item['lnum'].'l\%'.lcol.'c')
-            else
-
-                if exists("*SyntaxCheckers_". ft ."_GetHighlightRegex")
-                    let term = SyntaxCheckers_{ft}_GetHighlightRegex(item)
-                    if len(term) > 0
-                        call matchadd(group, '\%' . item['lnum'] . 'l' . term)
-                    endif
-                endif
             endif
         endfor
     endfor
@@ -498,19 +509,6 @@ function! s:uname()
     return s:uname
 endfunction
 
-"the args must be arrays of the form [major, minor, macro]
-function SyntasticIsVersionAtLeast(installed, required)
-    if a:installed[0] != a:required[0]
-        return a:installed[0] > a:required[0]
-    endif
-
-    if a:installed[1] != a:required[1]
-        return a:installed[1] > a:required[1]
-    endif
-
-    return a:installed[2] >= a:required[2]
-endfunction
-
 "return a string representing the state of buffer according to
 "g:syntastic_stl_format
 "
@@ -606,12 +604,12 @@ function! SyntasticMake(options)
     endif
 
     if has_key(a:options, 'defaults')
-        call SyntasticAddToErrors(errors, a:options['defaults'])
+        call g:SyntasticAddToErrors(errors, a:options['defaults'])
     endif
 
     " Add subtype info if present.
     if has_key(a:options, 'subtype')
-        call SyntasticAddToErrors(errors, {'subtype': a:options['subtype']})
+        call g:SyntasticAddToErrors(errors, {'subtype': a:options['subtype']})
     endif
 
     return errors
@@ -626,7 +624,7 @@ function! SyntasticErrorBalloonExpr()
 endfunction
 
 "take a list of errors and add default values to them from a:options
-function! SyntasticAddToErrors(errors, options)
+function! g:SyntasticAddToErrors(errors, options)
     for i in range(0, len(a:errors)-1)
         for key in keys(a:options)
             if !has_key(a:errors[i], key) || empty(a:errors[i][key])
