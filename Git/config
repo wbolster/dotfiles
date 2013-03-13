@@ -17,7 +17,7 @@
 
 [alias]
 	amend = commit --amend
-	au = add --update
+	au = add --update :/
 	cav = commit --all --verbose
 	cdiff = diff --cached
 	cv = commit --verbose
