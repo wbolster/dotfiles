@@ -19,17 +19,20 @@
 	amend = commit --amend
 	au = add --update :/
 	cav = commit --all --verbose
-	cdiff = diff --cached
+	cdiff = diff --cached --find-renames
+	cwdiff = diff --cached --word-diff
 	cv = commit --verbose
+	fixup = commit --amend --no-edit
 	ff = merge --ff-only
 	missing = !sh -c 'git log --oneline --left-right HEAD...$1' -
 	plagiarize = filter-branch --env-filter "'export GIT_AUTHOR_NAME=\"$(git config user.name)\"; export GIT_AUTHOR_EMAIL=\"$(git config user.email)\"; export GIT_COMMITTER_NAME=\"$(git config user.name)\"; export GIT_COMMITTER_EMAIL=\"$(git config user.email)\"'"
 	psuh = push
 	puhs = push
-	sdiff = diff --ignore-all-space
+	sdiff = diff --ignore-all-space --find-renames
 	sl = log --oneline --graph
 	st = status
 	uncommit = reset --soft HEAD^
+	wdiff = diff --word-diff
 
 [rebase]
 	stat = true
