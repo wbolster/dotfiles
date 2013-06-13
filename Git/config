@@ -9,7 +9,7 @@
 	log = true
 
 [push]
-	default = upstream
+	default = simple
 
 [log]
 	decorate = short
