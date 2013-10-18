@@ -21,11 +21,20 @@ endfunction
 
 function! SyntaxCheckers_cucumber_cucumber_GetLocList()
     let makeprg = syntastic#makeprg#build({
-                \ 'exe': 'cucumber',
-                \ 'args': '--dry-run --quiet --strict --format pretty' })
-    let errorformat =  '%f:%l:%c:%m,%W      %.%# (%m),%-Z%f:%l:%.%#,%-G%.%#'
+        \ 'exe': 'cucumber',
+        \ 'args': '--dry-run --quiet --strict --format pretty',
+        \ 'filetype': 'cucumber',
+        \ 'subchecker': 'cucumber' })
 
-    return SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat })
+    let errorformat =
+        \ '%f:%l:%c:%m,' .
+        \ '%W      %.%# (%m),' .
+        \ '%-Z%f:%l:%.%#,'.
+        \ '%-G%.%#'
+
+    return SyntasticMake({
+        \ 'makeprg': makeprg,
+        \ 'errorformat': errorformat })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
