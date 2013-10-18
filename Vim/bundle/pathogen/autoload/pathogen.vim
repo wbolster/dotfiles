@@ -5,7 +5,7 @@
 " Install in ~/.vim/autoload (or ~\vimfiles\autoload).
 "
 " For management of individually installed plugins in ~/.vim/bundle (or
-" ~\vimfiles\bundle), adding `call pathogen#infect()` to the top of your
+" ~\vimfiles\bundle), adding `execute pathogen#infect()` to the top of your
 " .vimrc is the only other setup necessary.
 "
 " The API is documented inline below.  For maximum ease of reading,
@@ -17,11 +17,9 @@ endif
 let g:loaded_pathogen = 1
 
 function! s:warn(msg)
-  if &verbose
-    echohl WarningMsg
-    echomsg a:msg
-    echohl NONE
-  endif
+  echohl WarningMsg
+  echomsg a:msg
+  echohl NONE
 endfunction
 
 " Point of entry for basic default usage.  Give a relative path to invoke
@@ -223,7 +221,7 @@ function! pathogen#helptags() abort " {{{1
   for glob in pathogen#split(&rtp)
     for dir in split(glob(glob), "\n")
       if (dir.sep)[0 : strlen($VIMRUNTIME)] !=# $VIMRUNTIME.sep && filewritable(dir.sep.'doc') == 2 && !empty(filter(split(glob(dir.sep.'doc'.sep.'*'),"\n>"),'!isdirectory(v:val)')) && (!filereadable(dir.sep.'doc'.sep.'tags') || filewritable(dir.sep.'doc'.sep.'tags'))
-        helptags `=dir.'/doc'`
+        silent! execute 'helptags' pathogen#fnameescape(dir.'/doc')
       endif
     endfor
   endfor
