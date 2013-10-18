@@ -243,7 +243,7 @@ function! s:repo_bare() dict abort
     return 0
   else
     return self.configured_tree() ==# ''
-  endtry
+  endif
 endfunction
 
 function! s:repo_translate(spec) dict abort
@@ -717,11 +717,11 @@ function! s:stage_info(lnum) abort
   endwhile
   if !lnum
     return ['', '']
-  elseif getline(lnum+1) =~# '^# .*"git \%(reset\|rm --cached\) ' || getline(lnum) ==# '# Changes to be committed:'
+  elseif getline(lnum+1) =~# '^# .*\<git \%(reset\|rm --cached\) ' || getline(lnum) ==# '# Changes to be committed:'
     return [matchstr(filename, colon.' *\zs.*'), 'staged']
-  elseif getline(lnum+2) =~# '^# .*"git checkout ' || getline(lnum) ==# '# Changes not staged for commit:'
+  elseif getline(lnum+2) =~# '^# .*\<git checkout ' || getline(lnum) ==# '# Changes not staged for commit:'
     return [matchstr(filename, colon.' *\zs.*'), 'unstaged']
-  elseif getline(lnum+1) =~# '^# .*"git add/rm ' || getline(lnum) ==# '# Unmerged paths:'
+  elseif getline(lnum+1) =~# '^# .*\<git add/rm ' || getline(lnum) ==# '# Unmerged paths:'
     return [matchstr(filename, colon.' *\zs.*'), 'unmerged']
   else
     return [filename, 'untracked']
@@ -761,9 +761,9 @@ endfunction
 function! s:StageDiff(diff) abort
   let [filename, section] = s:stage_info(line('.'))
   if filename ==# '' && section ==# 'staged'
-    return 'Git! diff --cached'
+    return 'Git! diff --no-ext-diff --cached'
   elseif filename ==# ''
-    return 'Git! diff'
+    return 'Git! diff --no-ext-diff'
   elseif filename =~# ' -> '
     let [old, new] = split(filename,' -> ')
     execute 'Gedit '.s:fnameescape(':0:'.new)
@@ -781,7 +781,7 @@ function! s:StageDiffEdit() abort
   let [filename, section] = s:stage_info(line('.'))
   let arg = (filename ==# '' ? '.' : filename)
   if section ==# 'staged'
-    return 'Git! diff --cached '.s:shellesc(arg)
+    return 'Git! diff --no-ext-diff --cached '.s:shellesc(arg)
   elseif section ==# 'untracked'
     let repo = s:repo()
     call repo.git_chomp_in_tree('add','--intent-to-add',arg)
@@ -796,11 +796,14 @@ function! s:StageDiffEdit() abort
     endif
     return ''
   else
-    return 'Git! diff '.s:shellesc(arg)
+    return 'Git! diff --no-ext-diff '.s:shellesc(arg)
   endif
 endfunction
 
 function! s:StageToggle(lnum1,lnum2) abort
+  if a:lnum1 == 1 && a:lnum2 == 1
+    return 'Gedit /.git|call search("^index$", "wc")'
+  endif
   try
     let output = ''
     for lnum in range(a:lnum1,a:lnum2)
@@ -953,7 +956,7 @@ function! s:Commit(args) abort
     else
       let errors = readfile(errorfile)
       let error = get(errors,-2,get(errors,-1,'!'))
-      if error =~# '\<false''\=\.$'
+      if error =~# 'false''\=\.$'
         let args = a:args
         let args = s:gsub(args,'%(%(^| )-- )@<!%(^| )@<=%(-[es]|--edit|--interactive|--signoff)%($| )','')
         let args = s:gsub(args,'%(%(^| )-- )@<!%(^| )@<=%(-F|--file|-m|--message)%(\s+|\=)%(''[^'']*''|"%(\\.|[^"])*"|\\.|\S)*','')
@@ -1373,17 +1376,22 @@ function! s:diff_window_count()
   return c
 endfunction
 
+function! s:diff_restore()
+  let restore = 'setlocal nodiff noscrollbind'
+        \ . ' scrollopt=' . &l:scrollopt
+        \ . (&l:wrap ? ' wrap' : ' nowrap')
+        \ . ' foldmethod=' . &l:foldmethod
+        \ . ' foldcolumn=' . &l:foldcolumn
+        \ . ' foldlevel=' . &l:foldlevel
+  if has('cursorbind')
+    let restore .= (&l:cursorbind ? ' ' : ' no') . 'cursorbind'
+  endif
+  return restore
+endfunction
+
 function! s:diffthis()
   if !&diff
-    let w:fugitive_diff_restore = 'setlocal nodiff noscrollbind'
-    let w:fugitive_diff_restore .= ' scrollopt=' . &l:scrollopt
-    let w:fugitive_diff_restore .= &l:wrap ? ' wrap' : ' nowrap'
-    let w:fugitive_diff_restore .= ' foldmethod=' . &l:foldmethod
-    let w:fugitive_diff_restore .= ' foldcolumn=' . &l:foldcolumn
-    let w:fugitive_diff_restore .= ' foldlevel=' . &l:foldlevel
-    if has('cursorbind')
-      let w:fugitive_diff_restore .= (&l:cursorbind ? ' ' : ' no') . 'cursorbind'
-    endif
+    let w:fugitive_diff_restore = s:diff_restore()
     diffthis
   endif
 endfunction
@@ -1434,16 +1442,16 @@ endfunction
 call s:add_methods('buffer',['compare_age'])
 
 function! s:Diff(bang,...)
-  let split = a:bang ? 'split' : 'vsplit'
+  let vert = a:bang ? '' : 'vertical '
   if exists(':DiffGitCached')
     return 'DiffGitCached'
   elseif (!a:0 || a:1 == ':') && s:buffer().commit() =~# '^[0-1]\=$' && s:repo().git_chomp_in_tree('ls-files', '--unmerged', '--', s:buffer().path()) !=# ''
     let nr = bufnr('')
-    execute 'leftabove '.split.' `=fugitive#buffer().repo().translate(s:buffer().expand('':2''))`'
+    execute 'leftabove '.vert.'split `=fugitive#buffer().repo().translate(s:buffer().expand('':2''))`'
     execute 'nnoremap <buffer> <silent> dp :diffput '.nr.'<Bar>diffupdate<CR>'
     call s:diffthis()
     wincmd p
-    execute 'rightbelow '.split.' `=fugitive#buffer().repo().translate(s:buffer().expand('':3''))`'
+    execute 'rightbelow '.vert.'split `=fugitive#buffer().repo().translate(s:buffer().expand('':3''))`'
     execute 'nnoremap <buffer> <silent> dp :diffput '.nr.'<Bar>diffupdate<CR>'
     call s:diffthis()
     wincmd p
@@ -1476,9 +1484,9 @@ function! s:Diff(bang,...)
     let spec = s:repo().translate(file)
     let commit = matchstr(spec,'\C[^:/]//\zs\x\+')
     if s:buffer().compare_age(commit) < 0
-      execute 'rightbelow '.split.' '.s:fnameescape(spec)
+      execute 'rightbelow '.vert.'split '.s:fnameescape(spec)
     else
-      execute 'leftabove '.split.' '.s:fnameescape(spec)
+      execute 'leftabove '.vert.'split '.s:fnameescape(spec)
     endif
     call s:diffthis()
     wincmd p
@@ -1496,7 +1504,7 @@ function! s:Move(force,destination)
   if a:destination =~# '^/'
     let destination = a:destination[1:-1]
   else
-    let destination = fnamemodify(s:sub(a:destination,'[%#]%(:\w)*','\=expand(submatch(0))'),':p')
+    let destination = s:shellslash(fnamemodify(s:sub(a:destination,'[%#]%(:\w)*','\=expand(submatch(0))'),':p'))
     if destination[0:strlen(s:repo().tree())] ==# s:repo().tree('')
       let destination = destination[strlen(s:repo().tree('')):-1]
     endif
@@ -2144,7 +2152,7 @@ function! s:BufWriteIndexFile()
     endif
     let info = old_mode.' '.sha1.' '.stage."\t".path
     call writefile([info],tmp)
-    if has('win32')
+    if &shell =~# 'cmd'
       let error = system('type '.s:gsub(tmp,'/','\\').'|'.s:repo().git_command('update-index','--index-info'))
     else
       let error = system(s:repo().git_command('update-index','--index-info').' < '.tmp)
