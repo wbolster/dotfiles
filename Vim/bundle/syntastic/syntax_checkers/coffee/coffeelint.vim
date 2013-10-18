@@ -20,11 +20,22 @@ endfunction
 
 function! SyntaxCheckers_coffee_coffeelint_GetLocList()
     let makeprg = syntastic#makeprg#build({
-                \ 'exe': 'coffeelint',
-                \ 'subchecker': 'coffeelint',
-                \ 'args': '--csv' })
-    let efm = '%f\,%l\,%trror\,%m'
-    return SyntasticMake({ 'makeprg': makeprg, 'errorformat': efm, 'subtype': 'Style' })
+        \ 'exe': 'coffeelint',
+        \ 'args': '--csv',
+        \ 'filetype': 'coffee',
+        \ 'subchecker': 'coffeelint' })
+
+    let errorformat =
+        \ '%f\,%l\,%\d%#\,%trror\,%m,' .
+        \ '%f\,%l\,%trror\,%m,' .
+        \ '%f\,%l\,%\d%#\,%tarn\,%m,' .
+        \ '%f\,%l\,%tarn\,%m'
+
+    return SyntasticMake({
+        \ 'makeprg': makeprg,
+        \ 'errorformat': errorformat,
+        \ 'subtype': 'Style',
+        \ 'returns': [0, 1] })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({

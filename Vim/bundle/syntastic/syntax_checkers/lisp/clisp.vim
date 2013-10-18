@@ -20,14 +20,26 @@ endfunction
 
 function! SyntaxCheckers_lisp_clisp_GetLocList()
     let makeprg = syntastic#makeprg#build({
-                \ 'exe': 'clisp',
-                \ 'args': '-c',
-                \ 'tail': '-o /tmp/clisp-vim-compiled-file' })
-    let efm  = '%-G;%.%#,'
-    let efm .= '%W%>WARNING:%.%#line %l : %m,%C  %#%m,'
-    let efm .= '%E%>The following functions were %m,%Z %m,'
-    let efm .= '%-G%.%#'
-    return SyntasticMake({ 'makeprg': makeprg, 'errorformat': efm })
+        \ 'exe': 'clisp',
+        \ 'args': '-q -c',
+        \ 'tail': '-o /tmp/clisp-vim-compiled-file',
+        \ 'filetype': 'lisp',
+        \ 'subchecker': 'clisp' })
+
+    let errorformat  =
+        \ '%-G;%.%#,' .
+        \ '%W%>WARNING:%.%#line %l : %m,' .
+        \ '%Z  %#%m,' .
+        \ '%W%>WARNING:%.%#lines %l..%\d\# : %m,' .
+        \ '%Z  %#%m,' .
+        \ '%E%>The following functions were %m,' .
+        \ '%Z %m,' .
+        \ '%-G%.%#'
+
+    return SyntasticMake({
+        \ 'makeprg': makeprg,
+        \ 'errorformat': errorformat,
+        \ 'defaults': {'bufnr': bufnr('')} })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({

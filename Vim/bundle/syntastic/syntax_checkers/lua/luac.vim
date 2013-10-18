@@ -44,12 +44,18 @@ endfunction
 
 
 function! SyntaxCheckers_lua_luac_GetLocList()
-    let makeprg = syntastic#makeprg#build({ 'exe': 'luac', 'args': '-p' })
+    let makeprg = syntastic#makeprg#build({
+        \ 'exe': 'luac',
+        \ 'args': '-p',
+        \ 'filetype': 'lua',
+        \ 'subchecker': 'luac' })
+
     let errorformat =  'luac: %#%f:%l: %m'
 
-    return SyntasticMake({ 'makeprg': makeprg,
-                         \ 'errorformat': errorformat,
-                         \ 'defaults': { 'bufnr': bufnr(''), 'type': 'E' } })
+    return SyntasticMake({
+        \ 'makeprg': makeprg,
+        \ 'errorformat': errorformat,
+        \ 'defaults': { 'bufnr': bufnr(''), 'type': 'E' } })
 
 endfunction
 

@@ -39,18 +39,23 @@ endfunction
 
 function! SyntaxCheckers_perl_perlcritic_GetLocList()
     let makeprg = syntastic#makeprg#build({
-                \ 'exe': 'perlcritic',
-                \ 'post_args': '--quiet --nocolor --verbose "\%s:\%f:\%l:\%c:(\%s) \%m (\%e)\n"',
-                \ 'subchecker': 'perlcritic' })
-    let errorformat='%t:%f:%l:%c:%m'
-    let loclist = SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat, 'subtype': 'Style' })
+        \ 'exe': 'perlcritic',
+        \ 'post_args': '--quiet --nocolor --verbose "\%s:\%f:\%l:\%c:(\%s) \%m (\%e)\n"',
+        \ 'filetype': 'perl',
+        \ 'subchecker': 'perlcritic' })
+
+    let errorformat = '%t:%f:%l:%c:%m'
+
+    let loclist = SyntasticMake({
+        \ 'makeprg': makeprg,
+        \ 'errorformat': errorformat,
+        \ 'returns': [0, 2],
+        \ 'subtype': 'Style' })
 
     " change error types according to the prescribed threshold
-    let n = len(loclist) - 1
-    while n >= 0
+    for n in range(len(loclist))
         let loclist[n]['type'] = loclist[n]['type'] < g:syntastic_perl_perlcritic_thres ? 'W' : 'E'
-        let n -= 1
-    endwhile
+    endfor
 
     return loclist
 endfunction

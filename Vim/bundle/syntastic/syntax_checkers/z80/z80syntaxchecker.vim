@@ -24,10 +24,16 @@ function! SyntaxCheckers_z80_z80syntaxchecker_IsAvailable()
 endfunction
 
 function! SyntaxCheckers_z80_z80syntaxchecker_GetLocList()
-    let makeprg = syntastic#makeprg#build({ 'exe': 'z80_syntax_checker.py' })
-    let errorformat =  '%f:%l %m' 
-    let loclist = SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat })
-    return loclist
+    let makeprg = syntastic#makeprg#build({
+        \ 'exe': 'z80_syntax_checker.py',
+        \ 'filetype': 'z80',
+        \ 'subchecker': 'z80syntaxchecker' })
+
+    let errorformat =  '%f:%l %m'
+
+    return SyntasticMake({
+        \ 'makeprg': makeprg,
+        \ 'errorformat': errorformat })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({

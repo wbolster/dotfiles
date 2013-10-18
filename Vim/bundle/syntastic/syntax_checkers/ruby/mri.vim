@@ -23,6 +23,15 @@ function! SyntaxCheckers_ruby_mri_IsAvailable()
     return executable(expand(g:syntastic_ruby_exec))
 endfunction
 
+function! SyntaxCheckers_ruby_mri_GetHighlightRegex(i)
+    if match(a:i['text'], 'assigned but unused variable') > -1
+        let term = split(a:i['text'], ' - ')[1]
+        return '\V\<'.term.'\>'
+    endif
+
+    return ''
+endfunction
+
 function! SyntaxCheckers_ruby_mri_GetLocList()
     let exe = expand(g:syntastic_ruby_exec)
     if !has('win32')
@@ -30,9 +39,10 @@ function! SyntaxCheckers_ruby_mri_GetLocList()
     endif
 
     let makeprg = syntastic#makeprg#build({
-                \ 'exe': exe,
-                \ 'args': '-w -T1 -c',
-                \ 'subchecker': 'mri' })
+        \ 'exe': exe,
+        \ 'args': '-w -T1 -c',
+        \ 'filetype': 'ruby',
+        \ 'subchecker': 'mri' })
 
     "this is a hack to filter out a repeated useless warning in rspec files
     "containing lines like
@@ -41,16 +51,25 @@ function! SyntaxCheckers_ruby_mri_GetLocList()
     "
     "Which always generate the warning below. Note that ruby >= 1.9.3 includes
     "the word "possibly" in the warning
-    let errorformat = '%-G%.%#warning: %\(possibly %\)%\?useless use of == in void context'
+    let errorformat = '%-G%.%#warning: %\(possibly %\)%\?useless use of == in void context,'
 
     " filter out lines starting with ...
     " long lines are truncated and wrapped in ... %p then returns the wrong
     " column offset
-    let errorformat .= ',%-G%\%.%\%.%\%.%.%#'
+    let errorformat .= '%-G%\%.%\%.%\%.%.%#,'
 
-    let errorformat .= ',%-GSyntax OK,%E%f:%l: syntax error\, %m'
-    let errorformat .= ',%Z%p^,%W%f:%l: warning: %m,%Z%p^,%W%f:%l: %m,%-C%.%#'
-    return SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat })
+    let errorformat .=
+        \ '%-GSyntax OK,'.
+        \ '%E%f:%l: syntax error\, %m,'.
+        \ '%Z%p^,'.
+        \ '%W%f:%l: warning: %m,'.
+        \ '%Z%p^,'.
+        \ '%W%f:%l: %m,'.
+        \ '%-C%.%#'
+
+    return SyntasticMake({
+        \ 'makeprg': makeprg,
+        \ 'errorformat': errorformat })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
