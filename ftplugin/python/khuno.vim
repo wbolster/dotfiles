@@ -7,6 +7,10 @@
 "
 "============================================================================
 
+" Older versions do not support some of the stuff we use
+if exists('g:loaded_mark') || (v:version == 701 && ! exists('*matchadd')) || (v:version < 701)
+  finish
+endif
 
 if exists("g:loaded_khuno") || &cp
   finish
@@ -248,6 +252,21 @@ endfunction
 
 
 function! s:Flake()
+  if !exists('b:khuno_debug')
+    let b:khuno_debug = {}
+  endif
+
+  " Attempt to remove previous run temporary files
+  if has_key(b:khuno_debug, 'temp_file')
+    call delete(b:khuno_debug.temp_file)
+  endif
+  if has_key(b:khuno_debug, 'temp_python_file')
+    call delete(b:khuno_debug.temp_python_file)
+  endif
+  if has_key(b:khuno_debug, 'temp_error')
+    call delete(b:khuno_debug.temp_error)
+  endif
+
   if exists("g:khuno_builtins")
     let s:khuno_builtins_opt=" --builtins=".g:khuno_builtins
   else
@@ -271,8 +290,9 @@ function! s:Flake()
   " Write to a temp path so that unmodified contents are parsed
   " correctly, regardless.
   let tmp_path = tempname()
-  silent! execute "w " . tmp_path
+  silent! execute "keepalt w " . tmp_path
   let cmd = cmd . " ". tmp_path
+  let b:khuno_debug.temp_python_file = tmp_path
   call s:AsyncCmd(cmd)
 endfunction
 
@@ -419,7 +439,6 @@ function! s:AsyncCmd(cmd)
   let command = "! " . a:cmd . " > " . s:khuno_temp_file . " 2> " . s:khuno_temp_error_file . " &"
   silent execute command
   let b:khuno_called_async = 1
-  let b:khuno_debug = {}
   let b:khuno_debug.temp_file = s:khuno_temp_file
   let b:khuno_debug.temp_error = s:khuno_temp_error_file
   let b:khuno_debug.cmd = command
