@@ -117,7 +117,9 @@ map <silent> <Leader>n :set number!<Return>
 map <silent> <Leader>s :StripTrailingWhitespace<Return>
 map <silent> <Leader>w :set wrap!<Return>
 
-" Load plugins using pathogen
+
+" Load bundles using pathogen, and set some flags before loading
+let g:fontzoom_no_default_key_mappings = 1
 runtime bundle/pathogen/autoload/pathogen.vim
 call pathogen#infect()
 
