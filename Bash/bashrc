@@ -219,6 +219,21 @@ if [ "$PS1" ]; then
     export PIP_DOWNLOAD_CACHE=~/.cache/pip/
     export PYTHONDONTWRITEBYTECODE=1
 
+    function pyprof {
+        local PROG="$1"
+        shift
+        if [ -z "$PROG" ]; then
+            echo "Error: no Python program specified. Usage: pyprof some-program --some-args" > /dev/stderr
+            return
+        fi
+        local PROFILE=$(mktemp 'profile-XXXXXX.prof')
+        python -m cProfile -o $PROFILE "$(which "$PROG")" "$@"
+        echo > /dev/stderr
+        echo -e 'sort cumulative\nstats 30' | python -m pstats "$PROFILE" 1>&2
+        echo > /dev/stderr
+        echo "Profile stored in $PROFILE" > /dev/stderr
+    }
+
     # Jhbuild
     if type jhbuild &>/dev/null; then
         alias 'jhr'='jhbuild run'
