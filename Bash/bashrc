@@ -176,7 +176,6 @@ if [ "$PS1" ]; then
     export HISTFILESIZE=100000
     alias h='unset HISTFILE'
 
-
     # Require confirmation for possibly destructive operations
     alias cp='cp -i'
     alias mv='mv -i'
@@ -244,6 +243,7 @@ if [ "$PS1" ]; then
         alias apt-get='sudo apt-get '
         alias aptitude='sudo aptitude '
         alias ac='apt-cache show '
+        alias acp='apt-cache policy '
         alias acs='apt-cache search '
         alias i='sudo $(which apt-get) install -V'
         alias u='sudo $(which apt-get) update && sudo $(which apt-get) upgrade -V'
