@@ -173,6 +173,11 @@ if [ "$PS1" ]; then
         source $HOME/.bash_completion
     fi
 
+    # Create and cd into a directory
+    function md() {
+        mkdir --verbose --parents "$1" && cd "$1"
+    }
+
     # History
     export HISTCONTROL=ignoredups
     export HISTSIZE=100000
