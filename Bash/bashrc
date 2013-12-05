@@ -65,6 +65,24 @@ if [ "$PS1" ]; then
         _ps1_newline_warning_enabled=0;
     }
 
+    # Time range formatting
+    function _fmt_seconds_elapsed {
+        local n=$1
+        local output=""
+        local h=$(($n / 3600))
+        test $h -gt 0 && output+="${h}h"
+        n=$(($n % 3600))
+        local m=$(($n / 60))
+        test $m -gt 0 && output+="${m}m"
+        s=$(($n % 60))
+        output+="${s}s"
+        echo "${output}"
+    }
+
+    # Use a DEBUG trap to store timer information before a command is executed.
+    # The _timer_start variable is cleared in the prompt command function.
+    trap 'test -z $_timer_start && _timer_start=${SECONDS}' DEBUG
+
     function set_prompt_command {
         # Exit code from previous command
         local prev_exit_code=$?
@@ -77,6 +95,17 @@ if [ "$PS1" ]; then
                 exit_status=$((128-prev_exit_code))" "$(kill -l ${prev_exit_code} 2>/dev/null || echo -n '?')
             fi
             ps1_err=" ${COLOR_RED}${exit_status}"
+        fi
+
+        # Time since previous command
+        local ps1_timer
+        if [ -n "${_timer_start}" ]; then
+            local seconds_elapsed=$(($SECONDS - $_timer_start))
+            if [ $seconds_elapsed -ge 10 ]; then
+                seconds_elapsed=$(_fmt_seconds_elapsed ${seconds_elapsed})
+                ps1_timer+="${COLOR_GREEN}[${seconds_elapsed} elapsed]\n\n"
+            fi
+            _timer_start=""
         fi
 
         # Host name
@@ -145,6 +174,7 @@ if [ "$PS1" ]; then
         # Primary prompt
         PS1="${ps1_term_title}"
         PS1+="\n"
+        PS1+="${ps1_timer}"
         PS1+="${ps1_newline_warning}"
         PS1+="${ps1_hostname}"
         PS1+="${ps1_venv}"
