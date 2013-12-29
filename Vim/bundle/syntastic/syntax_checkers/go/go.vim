@@ -17,20 +17,18 @@ if exists("g:loaded_syntastic_go_go_checker")
 endif
 let g:loaded_syntastic_go_go_checker=1
 
-function! SyntaxCheckers_go_go_IsAvailable()
-    return executable('go')
+function! SyntaxCheckers_go_go_IsAvailable() dict
+    return executable('go') && executable('gofmt')
 endfunction
 
-function! SyntaxCheckers_go_go_GetLocList()
+function! SyntaxCheckers_go_go_GetLocList() dict
     " Check with gofmt first, since `go build` and `go test` might not report
     " syntax errors in the current file if another file with syntax error is
     " compiled first.
-    let makeprg = syntastic#makeprg#build({
+    let makeprg = self.makeprgBuild({
         \ 'exe': 'gofmt',
         \ 'args': '-l',
-        \ 'tail': '1>' . syntastic#util#DevNull(),
-        \ 'filetype': 'go',
-        \ 'subchecker': 'go' })
+        \ 'tail': '> ' . syntastic#util#DevNull() })
 
     let errorformat =
         \ '%f:%l:%c: %m,' .
@@ -46,7 +44,7 @@ function! SyntaxCheckers_go_go_GetLocList()
 
     " Test files, i.e. files with a name ending in `_test.go`, are not
     " compiled by `go build`, therefore `go test` must be called for those.
-    if match(expand('%'), '_test.go$') == -1
+    if match(expand('%'), '\m_test\.go$') == -1
         let makeprg = 'go build ' . syntastic#c#NullOutput()
     else
         let makeprg = 'go test -c ' . syntastic#c#NullOutput()

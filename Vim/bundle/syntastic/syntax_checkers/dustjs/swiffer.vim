@@ -15,19 +15,18 @@ endif
 
 let g:loaded_syntastic_dustjs_swiffer_checker = 1
 
-function! SyntaxCheckers_dustjs_swiffer_IsAvailable()
-    return executable("swiffer")
+function! SyntaxCheckers_dustjs_swiffer_IsAvailable() dict
+    return executable('swiffer')
 endfunction
 
-function! SyntaxCheckers_dustjs_swiffer_GetLocList()
-      let makeprg = syntastic#makeprg#build({
-                  \ 'exe': 'swiffer',
-                  \ 'subchecker': 'swiffer',
-                  \ 'filetype': 'dustjs' })
-      let errorformat = '%E%f - Line %l\, Column %c: %m'
-      let loclist = SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat })
+function! SyntaxCheckers_dustjs_swiffer_GetLocList() dict
+    let makeprg = self.makeprgBuild({})
 
-      return loclist
+    let errorformat = '%E%f - Line %l\, Column %c: %m'
+
+    return SyntasticMake({
+        \ 'makeprg': makeprg,
+        \ 'errorformat': errorformat })
  endfunction
 
 call SyntasticRegistry.CreateAndRegisterChecker({

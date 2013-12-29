@@ -19,13 +19,13 @@ if !exists("g:syntastic_ruby_exec")
     let g:syntastic_ruby_exec = "ruby"
 endif
 
-function! SyntaxCheckers_eruby_ruby_IsAvailable()
+function! SyntaxCheckers_eruby_ruby_IsAvailable() dict
     return executable(expand(g:syntastic_ruby_exec))
 endfunction
 
-function! SyntaxCheckers_eruby_ruby_GetLocList()
+function! SyntaxCheckers_eruby_ruby_GetLocList() dict
     let exe = expand(g:syntastic_ruby_exec)
-    if !has('win32')
+    if !syntastic#util#isRunningWindows()
         let exe = 'RUBYOPT= ' . exe
     endif
 

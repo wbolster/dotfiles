@@ -19,8 +19,8 @@ if !exists('g:syntastic_objc_compiler')
     let g:syntastic_objc_compiler = 'gcc'
 endif
 
-function! SyntaxCheckers_objc_gcc_IsAvailable()
-    return executable(g:syntastic_objc_compiler)
+function! SyntaxCheckers_objc_gcc_IsAvailable() dict
+    return executable(expand(g:syntastic_objc_compiler))
 endfunction
 
 let s:save_cpo = &cpo
@@ -30,7 +30,7 @@ if !exists('g:syntastic_objc_compiler_options')
     let g:syntastic_objc_compiler_options = '-std=gnu99'
 endif
 
-function! SyntaxCheckers_objc_gcc_GetLocList()
+function! SyntaxCheckers_objc_gcc_GetLocList() dict
     return syntastic#c#GetLocList('objc', 'gcc', {
         \ 'errorformat':
         \     '%-G%f:%s:,' .
@@ -46,7 +46,7 @@ function! SyntaxCheckers_objc_gcc_GetLocList()
         \     '%f:%l: %m',
         \ 'main_flags': '-x objective-c -fsyntax-only',
         \ 'header_flags': '-x objective-c-header -lobjc',
-        \ 'header_names': '\.h$' })
+        \ 'header_names': '\m\.h$' })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({

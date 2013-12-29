@@ -23,14 +23,10 @@ if !exists("g:syntastic_java_checkstyle_conf_file")
     let g:syntastic_java_checkstyle_conf_file = 'sun_checks.xml'
 endif
 
-function! SyntaxCheckers_java_checkstyle_IsAvailable()
-    return executable('java')
-endfunction
-
 function! SyntaxCheckers_java_checkstyle_Preprocess(errors)
     let out = copy(a:errors)
     for n in range(len(out))
-        let parts = matchlist(out[n], '\(.*<file name="\)\([^"]\+\)\(">.*\)')
+        let parts = matchlist(out[n], '\m\(.*<file name="\)\([^"]\+\)\(">.*\)')
         if len(parts) >= 4
             let parts[2] = syntastic#util#decodeXMLEntities(parts[2])
             let out[n] = join(parts[1:3], '')
@@ -39,22 +35,19 @@ function! SyntaxCheckers_java_checkstyle_Preprocess(errors)
     return out
 endfunction
 
-function! SyntaxCheckers_java_checkstyle_GetLocList()
+function! SyntaxCheckers_java_checkstyle_GetLocList() dict
 
     let fname = syntastic#util#shescape( expand('%:p:h') . '/' . expand('%:t') )
 
     if has('win32unix')
-        let fname = substitute(system('cygpath -m ' . fname), '\%x00', '', 'g')
+        let fname = substitute(system('cygpath -m ' . fname), '\m\%x00', '', 'g')
     endif
 
-    let makeprg = syntastic#makeprg#build({
-        \ 'exe': 'java',
+    let makeprg = self.makeprgBuild({
         \ 'args': '-cp ' . g:syntastic_java_checkstyle_classpath .
         \         ' com.puppycrawl.tools.checkstyle.Main -c ' . g:syntastic_java_checkstyle_conf_file .
         \         ' -f xml',
-        \ 'fname': fname,
-        \ 'filetype': 'java',
-        \ 'subchecker': 'checkstyle' })
+        \ 'fname': fname })
 
     let errorformat =
         \ '%P<file name="%f">,' .
@@ -76,4 +69,5 @@ endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
     \ 'filetype': 'java',
-    \ 'name': 'checkstyle'})
+    \ 'name': 'checkstyle',
+    \ 'exec': 'java'})
