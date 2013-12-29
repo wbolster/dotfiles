@@ -13,26 +13,19 @@ if exists("g:loaded_syntastic_handlebars_handlebars_checker")
 endif
 let g:loaded_syntastic_handlebars_handlebars_checker=1
 
-function! SyntaxCheckers_handlebars_handlebars_IsAvailable()
-    return executable('handlebars')
-endfunction
-
-function! SyntaxCheckers_handlebars_handlebars_GetLocList()
-    let makeprg = syntastic#makeprg#build({
-        \ 'exe': 'handlebars',
-        \ 'filetype': 'handlebars',
-        \ 'subchecker': 'handlebars' })
+function! SyntaxCheckers_handlebars_handlebars_GetLocList() dict
+    let makeprg = self.makeprgBuild({ 'args': '-f ' . syntastic#util#DevNull() })
 
     let errorformat =
-        \ 'Error: %m on line %l:,'.
-        \ '%-Z%p^,' .
-        \ "Error: %m,".
-        \ '%-Z%p^,' .
-        \ '%-G'
+        \ '%EError: %m on line %l:,'.
+        \ "%EError: %m,".
+        \ '%Z%p^,' .
+        \ '%-G%.%#'
 
     return SyntasticMake({
         \ 'makeprg': makeprg,
-        \ 'errorformat': errorformat })
+        \ 'errorformat': errorformat,
+        \ 'defaults': {'bufnr': bufnr("")} })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({

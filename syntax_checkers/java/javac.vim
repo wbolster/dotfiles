@@ -41,7 +41,7 @@ if !exists("g:syntastic_java_javac_delete_output")
 endif
 
 function! s:CygwinPath(path)
-    return substitute(system("cygpath -m ".a:path), '\%x00', '', 'g')
+    return substitute(system("cygpath -m " . a:path), '\n', '', 'g')
 endfunction
 
 if !exists("g:syntastic_java_javac_temp_dir")
@@ -161,22 +161,22 @@ function! s:GetMavenProperties()
     let pom = findfile("pom.xml", ".;")
     if s:has_maven && filereadable(pom)
         if !has_key(g:syntastic_java_javac_maven_pom_properties, pom)
-            let mvn_cmd = g:syntastic_java_maven_executable . ' -f ' . pom
+            let mvn_cmd = expand(g:syntastic_java_maven_executable) . ' -f ' . pom
             let mvn_is_managed_tag = 1
             let mvn_settings_output = split(system(mvn_cmd . ' help:effective-pom'), "\n")
             let current_path = 'project'
             for line in mvn_settings_output
-                let matches = matchlist(line, '^\s*<\([a-zA-Z0-9\-\.]\+\)>\s*$')
+                let matches = matchlist(line, '\m^\s*<\([a-zA-Z0-9\-\.]\+\)>\s*$')
                 if mvn_is_managed_tag && !empty(matches)
                     let mvn_is_managed_tag = index(g:syntastic_java_javac_maven_pom_tags, matches[1]) >= 0
                     let current_path .= '.' . matches[1]
                 else
-                    let matches = matchlist(line, '^\s*</\([a-zA-Z0-9\-\.]\+\)>\s*$')
+                    let matches = matchlist(line, '\m^\s*</\([a-zA-Z0-9\-\.]\+\)>\s*$')
                     if !empty(matches)
                         let mvn_is_managed_tag = index(g:syntastic_java_javac_maven_pom_tags, matches[1]) < 0
-                        let current_path  = substitute(current_path, '\.' . matches[1] . "$", '', '')
+                        let current_path  = substitute(current_path, '\m\.' . matches[1] . "$", '', '')
                     else
-                        let matches = matchlist(line, '^\s*<\([a-zA-Z0-9\-\.]\+\)>\(.\+\)</[a-zA-Z0-9\-\.]\+>\s*$')
+                        let matches = matchlist(line, '\m^\s*<\([a-zA-Z0-9\-\.]\+\)>\(.\+\)</[a-zA-Z0-9\-\.]\+>\s*$')
                         if mvn_is_managed_tag && !empty(matches)
                             let mvn_properties[current_path . '.' . matches[1]] = matches[2]
                         endif
@@ -196,7 +196,7 @@ function! s:GetMavenClasspath()
     let pom = findfile("pom.xml", ".;")
     if s:has_maven && filereadable(pom)
         if !has_key(g:syntastic_java_javac_maven_pom_ftime, pom) || g:syntastic_java_javac_maven_pom_ftime[pom] != getftime(pom)
-            let mvn_cmd = g:syntastic_java_maven_executable . ' -f ' . pom
+            let mvn_cmd = expand(g:syntastic_java_maven_executable) . ' -f ' . pom
             let mvn_classpath_output = split(system(mvn_cmd . ' dependency:build-classpath'), "\n")
             let mvn_classpath = ''
             let class_path_next = 0
@@ -206,7 +206,7 @@ function! s:GetMavenClasspath()
                     let mvn_classpath = s:RemoveCarriageReturn(line)
                     break
                 endif
-                if match(line,'Dependencies classpath:') >= 0
+                if stridx(line,'Dependencies classpath:') >= 0
                     let class_path_next = 1
                 endif
             endfor
@@ -233,9 +233,9 @@ function! s:GetMavenClasspath()
     return ''
 endfunction
 
-function! SyntaxCheckers_java_javac_IsAvailable()
-    let s:has_maven = executable(g:syntastic_java_maven_executable)
-    return executable(g:syntastic_java_javac_executable)
+function! SyntaxCheckers_java_javac_IsAvailable() dict
+    let s:has_maven = executable(expand(g:syntastic_java_maven_executable))
+    return executable(expand(g:syntastic_java_javac_executable))
 endfunction
 
 function! s:MavenOutputDirectory()
@@ -246,13 +246,13 @@ function! s:MavenOutputDirectory()
         if has_key(mvn_properties, 'project.properties.build.dir')
             let output_dir = mvn_properties['project.properties.build.dir']
         endif
-        if match(expand( '%:p:h' ), "src.main.java") >= 0
+        if stridx(expand( '%:p:h' ), "src.main.java") >= 0
             let output_dir .= '/target/classes'
             if has_key(mvn_properties, 'project.build.outputDirectory')
                 let output_dir = mvn_properties['project.build.outputDirectory']
             endif
         endif
-        if match(expand( '%:p:h' ), "src.test.java") >= 0
+        if stridx(expand( '%:p:h' ), "src.test.java") >= 0
             let output_dir .= '/target/test-classes'
             if has_key(mvn_properties, 'project.build.testOutputDirectory')
                 let output_dir = mvn_properties['project.build.testOutputDirectory']
@@ -267,7 +267,7 @@ function! s:MavenOutputDirectory()
     return '.'
 endfunction
 
-function! SyntaxCheckers_java_javac_GetLocList()
+function! SyntaxCheckers_java_javac_GetLocList() dict
 
     let javac_opts = g:syntastic_java_javac_options
 
@@ -330,13 +330,10 @@ function! SyntaxCheckers_java_javac_GetLocList()
         let fname =  s:CygwinPath(fname)
     endif
 
-    let makeprg = syntastic#makeprg#build({
-        \ 'exe': g:syntastic_java_javac_executable,
+    let makeprg = self.makeprgBuild({
         \ 'args': javac_opts,
         \ 'fname': fname,
-        \ 'tail': '2>&1',
-        \ 'filetype': 'java',
-        \ 'subchecker': 'javac' })
+        \ 'tail': '2>&1' })
 
     " unashamedly stolen from *errorformat-javac* (quickfix.txt) and modified to include error types
     let errorformat =

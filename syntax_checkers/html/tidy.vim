@@ -42,10 +42,6 @@ if !exists('g:syntastic_html_tidy_empty_tags')
     let g:syntastic_html_tidy_empty_tags = []
 endif
 
-function! SyntaxCheckers_html_tidy_IsAvailable()
-    return executable('tidy')
-endfunction
-
 " TODO: join this with xhtml.vim for DRY's sake?
 function! s:TidyEncOptByFenc()
     let tidy_opts = {
@@ -68,7 +64,7 @@ endfunction
 let s:ignore_errors = [
                 \ "<table> lacks \"summary\" attribute",
                 \ "not approved by W3C",
-                \ "attribute \"placeholder\"",
+                \ "<input> proprietary attribute \"placeholder\"",
                 \ "<meta> proprietary attribute \"charset\"",
                 \ "<meta> lacks \"content\" attribute",
                 \ "inserting \"type\" attribute",
@@ -76,9 +72,45 @@ let s:ignore_errors = [
                 \ "missing <!DOCTYPE> declaration",
                 \ "inserting implicit <body>",
                 \ "inserting missing 'title' element",
-                \ "attribute \"[+",
                 \ "unescaped & or unknown entity",
-                \ "<input> attribute \"type\" has invalid value \"search\""
+                \ "<input> attribute \"type\" has invalid value",
+                \ "proprietary attribute \"role\"",
+                \ "proprietary attribute \"aria-activedescendant\"",
+                \ "proprietary attribute \"aria-atomic\"",
+                \ "proprietary attribute \"aria-autocomplete\"",
+                \ "proprietary attribute \"aria-busy\"",
+                \ "proprietary attribute \"aria-checked\"",
+                \ "proprietary attribute \"aria-controls\"",
+                \ "proprietary attribute \"aria-describedby\"",
+                \ "proprietary attribute \"aria-disabled\"",
+                \ "proprietary attribute \"aria-dropeffect\"",
+                \ "proprietary attribute \"aria-expanded\"",
+                \ "proprietary attribute \"aria-flowto\"",
+                \ "proprietary attribute \"aria-grabbed\"",
+                \ "proprietary attribute \"aria-haspopup\"",
+                \ "proprietary attribute \"aria-hidden\"",
+                \ "proprietary attribute \"aria-invalid\"",
+                \ "proprietary attribute \"aria-label\"",
+                \ "proprietary attribute \"aria-labelledby\"",
+                \ "proprietary attribute \"aria-level\"",
+                \ "proprietary attribute \"aria-live\"",
+                \ "proprietary attribute \"aria-multiline\"",
+                \ "proprietary attribute \"aria-multiselectable\"",
+                \ "proprietary attribute \"aria-orientation\"",
+                \ "proprietary attribute \"aria-owns\"",
+                \ "proprietary attribute \"aria-posinset\"",
+                \ "proprietary attribute \"aria-pressed\"",
+                \ "proprietary attribute \"aria-readonly\"",
+                \ "proprietary attribute \"aria-relevant\"",
+                \ "proprietary attribute \"aria-relevant\"",
+                \ "proprietary attribute \"aria-required\"",
+                \ "proprietary attribute \"aria-selected\"",
+                \ "proprietary attribute \"aria-setsize\"",
+                \ "proprietary attribute \"aria-sort\"",
+                \ "proprietary attribute \"aria-valuemax\"",
+                \ "proprietary attribute \"aria-valuemin\"",
+                \ "proprietary attribute \"aria-valuenow\"",
+                \ "proprietary attribute \"aria-valuetext\""
                 \ ]
 
 let s:blocklevel_tags = [
@@ -86,7 +118,6 @@ let s:blocklevel_tags = [
                 \ "section",
                 \ "article",
                 \ "aside",
-                \ "hgroup",
                 \ "header",
                 \ "footer",
                 \ "nav",
@@ -130,7 +161,7 @@ function! s:NewTags(name)
     return syntastic#util#shescape(join( s:{a:name} + g:syntastic_html_tidy_{a:name}, ',' ))
 endfunction
 
-function s:Args()
+function! s:Args()
     let args = s:TidyEncOptByFenc() .
         \ ' --new-blocklevel-tags ' . s:NewTags('blocklevel_tags') .
         \ ' --new-inline-tags ' . s:NewTags('inline_tags') .
@@ -139,13 +170,10 @@ function s:Args()
     return args
 endfunction
 
-function! SyntaxCheckers_html_tidy_GetLocList()
-    let makeprg = syntastic#makeprg#build({
-        \ 'exe': 'tidy',
+function! SyntaxCheckers_html_tidy_GetLocList() dict
+    let makeprg = self.makeprgBuild({
         \ 'args': s:Args(),
-        \ 'tail': '2>&1',
-        \ 'filetype': 'html',
-        \ 'subchecker': 'tidy' })
+        \ 'tail': '2>&1' })
 
     let errorformat =
         \ '%Wline %l column %v - Warning: %m,' .
@@ -159,9 +187,9 @@ function! SyntaxCheckers_html_tidy_GetLocList()
         \ 'returns': [0, 1, 2] })
 
     " filter out valid HTML5 from the errors
-    for n in range(len(loclist))
-        if loclist[n]['valid'] && s:IgnoreError(loclist[n]['text']) == 1
-            let loclist[n]['valid'] = 0
+    for e in loclist
+        if e['valid'] && s:IgnoreError(e['text']) == 1
+            let e['valid'] = 0
         endif
     endfor
 

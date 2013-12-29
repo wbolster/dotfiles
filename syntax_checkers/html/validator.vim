@@ -45,10 +45,8 @@ if !exists('g:syntastic_html_validator_nsfilter')
     let g:syntastic_html_validator_nsfilter = ''
 endif
 
-let s:decoder = 'awk -f ' . syntastic#util#shescape(expand('<sfile>:p:h') . '/validator_decode.awk')
-
-function! SyntaxCheckers_html_validator_IsAvailable()
-    return executable('curl') && executable('awk')
+function! SyntaxCheckers_html_validator_IsAvailable() dict
+    return executable('curl')
 endfunction
 
 function! SyntaxCheckers_html_validator_Preprocess(errors)
@@ -58,15 +56,15 @@ function! SyntaxCheckers_html_validator_Preprocess(errors)
         if len(parts) >= 3
             " URL decode, except leave alone any "+"
             let parts[1] = substitute(parts[1], '\m%\(\x\x\)', '\=nr2char("0x".submatch(1))', 'g')
-            let parts[1] = substitute(parts[1], '\\"', '"', 'g')
-            let parts[1] = substitute(parts[1], '\\\\', '\\', 'g')
+            let parts[1] = substitute(parts[1], '\m\\"', '"', 'g')
+            let parts[1] = substitute(parts[1], '\m\\\\', '\\', 'g')
             call add(out, '"' . parts[1] . '"' . parts[2])
         endif
     endfor
     return out
 endfunction
 
-function! SyntaxCheckers_html_validator_GetLocList()
+function! SyntaxCheckers_html_validator_GetLocList() dict
     let fname = syntastic#util#shexpand('%')
     let makeprg = 'curl -s --compressed -F out=gnu -F asciiquotes=yes' .
         \ (!empty(g:syntastic_html_validator_parser) ? ' -F parser=' . g:syntastic_html_validator_parser : '') .
