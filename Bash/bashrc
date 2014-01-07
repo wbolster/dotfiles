@@ -306,6 +306,15 @@ if [ "$PS1" ]; then
         alias acs='apt-cache search '
         alias i='sudo $(which apt-get) install -V'
         alias u='sudo $(which apt-get) update && sudo $(which apt-get) upgrade -V'
+
+        function _apt_get_packages {
+            local cur
+            cur=${COMP_WORDS[COMP_CWORD]}
+            COMPREPLY=( $( apt-cache --no-generate pkgnames "$cur" \
+                2> /dev/null ) )
+            return 0
+        }
+        complete -F _apt_get_packages i ac acp
     fi
 
     # Misc
