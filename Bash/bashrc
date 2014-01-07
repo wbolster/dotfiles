@@ -203,9 +203,12 @@ if [ "$PS1" ]; then
         source $HOME/.bash_completion
     fi
 
-    # Create and cd into a directory
-    function md() {
+    # Directory changing (and creation)
+    function mcd() {
         mkdir --verbose --parents "$1" && cd "$1"
+    }
+    function cdp {
+        cd $(dirname "$1")
     }
 
     # History
