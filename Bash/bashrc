@@ -241,7 +241,7 @@ if [ "$PS1" ]; then
     alias sudo='sudo '
     alias nice='nice '
 
-    # Vim
+    # Editor
     if type vim &>/dev/null; then
         export EDITOR=vim
         alias vi=vim
@@ -254,9 +254,15 @@ if [ "$PS1" ]; then
     # Development
     alias m=make
     complete -F _make m
+    if type git &>/dev/null; then
+        function cdgitroot {
+            cd "$(git rev-parse --show-toplevel)"
+        }
+    fi
+
+    # Python stuff
     export PIP_DOWNLOAD_CACHE=~/.cache/pip/
     export PYTHONDONTWRITEBYTECODE=1
-
     function pyprof {
         local PROG="$1"
         shift
