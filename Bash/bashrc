@@ -230,9 +230,12 @@ if [ "$PS1" ]; then
     # Show colors in grep output
     export GREP_OPTIONS='--color=auto'
 
-    # Process listings
+    # Process listings and process control
     alias psg='ps auxww |grep -i '
     complete -F _killall psg
+    alias k1='kill %1'
+    alias k2='kill %2'
+    alias k3='kill %3'
 
     # Recursive chmod
     alias rchmod-public='chmod -R u=rwX,go=rX'
