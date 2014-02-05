@@ -13,7 +13,7 @@
 
 [log]
 	decorate = short
-	date = relative
+	date = iso8601
 
 [alias]
 	amend = commit --amend
