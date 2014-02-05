@@ -30,7 +30,7 @@
 	puhs = push
 	sdiff = diff --ignore-all-space --find-renames
 	sl = log --oneline --graph
-	st = status
+	st = status --short --branch
 	uncommit = reset --soft HEAD^
 	wdiff = diff --word-diff
 
