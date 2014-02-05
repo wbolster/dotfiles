@@ -1,43 +1,43 @@
 [color]
-	ui = auto
+ui = auto
 
 [branch]
-	autosetuprebase = always
+autosetuprebase = always
 
 [merge]
-	defaultToUpstream = true
-	log = true
+defaultToUpstream = true
+log = true
 
 [push]
-	default = simple
+default = simple
 
 [log]
-	decorate = short
-	date = iso8601
+decorate = short
+date = iso8601
 
 [alias]
-	amend = commit --amend
-	au = add --update :/
-	cav = commit --all --verbose
-	cdiff = diff --cached --find-renames
-	cwdiff = diff --cached --word-diff
-	cv = commit --verbose
-	fixup = commit --amend --no-edit
-	ff = merge --ff-only
-	missing = !sh -c 'git log --oneline --left-right HEAD...$1' -
-	plagiarize = filter-branch --env-filter "'export GIT_AUTHOR_NAME=\"$(git config user.name)\"; export GIT_AUTHOR_EMAIL=\"$(git config user.email)\"; export GIT_COMMITTER_NAME=\"$(git config user.name)\"; export GIT_COMMITTER_EMAIL=\"$(git config user.email)\"'"
-	psuh = push
-	puhs = push
-	sdiff = diff --ignore-all-space --find-renames
-	sl = log --oneline --graph
-	st = status --short --branch
-	uncommit = reset --soft HEAD^
-	wdiff = diff --word-diff
+amend = commit --amend
+au = add --update :/
+cav = commit --all --verbose
+cdiff = diff --cached --find-renames
+cwdiff = diff --cached --word-diff
+cv = commit --verbose
+fixup = commit --amend --no-edit
+ff = merge --ff-only
+missing = !sh -c 'git log --oneline --left-right HEAD...$1' -
+plagiarize = filter-branch --env-filter "'export GIT_AUTHOR_NAME=\"$(git config user.name)\"; export GIT_AUTHOR_EMAIL=\"$(git config user.email)\"; export GIT_COMMITTER_NAME=\"$(git config user.name)\"; export GIT_COMMITTER_EMAIL=\"$(git config user.email)\"'"
+psuh = push
+puhs = push
+sdiff = diff --ignore-all-space --find-renames
+sl = log --oneline --graph
+st = status --short --branch
+uncommit = reset --soft HEAD^
+wdiff = diff --word-diff
 
 [rebase]
-	stat = true
+stat = true
 
 [diff "po"]
-	textconv=msgcat --no-location --no-wrap --sort-output
+textconv=msgcat --no-location --no-wrap --sort-output
 
 # vim: filetype=gitconfig
