@@ -14,12 +14,12 @@ if exists('g:loaded_syntastic_actionscript_mxmlc_checker')
 endif
 let g:loaded_syntastic_actionscript_mxmlc_checker = 1
 
-let s:save_cpo = &cpo
-set cpo&vim
-
 if !exists('g:syntastic_actionscript_mxmlc_conf')
     let g:syntastic_actionscript_mxmlc_conf = ''
 endif
+
+let s:save_cpo = &cpo
+set cpo&vim
 
 function! SyntaxCheckers_actionscript_mxmlc_GetHighlightRegex(item)
     let term = ''
@@ -41,18 +41,19 @@ function! SyntaxCheckers_actionscript_mxmlc_GetHighlightRegex(item)
 
     endif
 
-    return strlen(term) ? '\V\<' . term . '\>' : ''
+    return term != '' ? '\V\<' . term . '\>' : ''
 endfunction
 
 function! SyntaxCheckers_actionscript_mxmlc_GetLocList() dict
     let makeprg = self.makeprgBuild({
-        \ 'args': '-output=' . syntastic#util#DevNull() .
-        \   !empty(g:syntastic_actionscript_mxmlc_conf) ?
-        \   ' -load-config+=' . g:syntastic_actionscript_mxmlc_conf : '' })
+        \ 'args_before': (g:syntastic_actionscript_mxmlc_conf != '' ?
+        \   ' -load-config+=' . g:syntastic_actionscript_mxmlc_conf : ''),
+        \ 'args_after': '-output=' . syntastic#util#DevNull() })
 
     let errorformat =
         \ '%f(%l): col: %c %trror: %m,' .
         \ '%f(%l): col: %c %tarning: %m,' .
+        \ '%f: %trror: %m,' .
         \ '%-G%.%#'
 
     return SyntasticMake({
@@ -66,3 +67,5 @@ call g:SyntasticRegistry.CreateAndRegisterChecker({
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
+
+" vim: set et sts=4 sw=4:

@@ -8,10 +8,14 @@
 "             Want To Public License, Version 2, as published by Sam Hocevar.
 "             See http://sam.zoy.org/wtfpl/COPYING for more details.
 "============================================================================
+
 if exists("g:loaded_syntastic_dart_dartanalyzer_checker")
     finish
 endif
 let g:loaded_syntastic_dart_dartanalyzer_checker = 1
+
+let s:save_cpo = &cpo
+set cpo&vim
 
 function! SyntaxCheckers_dart_dartanalyzer_GetHighlightRegex(error)
     if a:error['len']
@@ -26,7 +30,7 @@ function! SyntaxCheckers_dart_dartanalyzer_GetHighlightRegex(error)
 endfunction
 
 function! SyntaxCheckers_dart_dartanalyzer_GetLocList() dict
-    let makeprg = self.makeprgBuild({ 'post_args': '--machine' })
+    let makeprg = self.makeprgBuild({ 'args_after': '--machine' })
 
     " Machine readable format looks like:
     " SEVERITY|TYPE|ERROR_CODE|FILENAME|LINE_NUMBER|COLUMN|LENGTH|MESSAGE
@@ -65,3 +69,8 @@ endfunction
 call g:SyntasticRegistry.CreateAndRegisterChecker({
     \ 'filetype': 'dart',
     \ 'name': 'dartanalyzer' })
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
+
+" vim: set et sts=4 sw=4:

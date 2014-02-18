@@ -45,9 +45,8 @@ if !exists('g:syntastic_html_validator_nsfilter')
     let g:syntastic_html_validator_nsfilter = ''
 endif
 
-function! SyntaxCheckers_html_validator_IsAvailable() dict
-    return executable('curl')
-endfunction
+let s:save_cpo = &cpo
+set cpo&vim
 
 function! SyntaxCheckers_html_validator_Preprocess(errors)
     let out = []
@@ -66,9 +65,9 @@ endfunction
 
 function! SyntaxCheckers_html_validator_GetLocList() dict
     let fname = syntastic#util#shexpand('%')
-    let makeprg = 'curl -s --compressed -F out=gnu -F asciiquotes=yes' .
-        \ (!empty(g:syntastic_html_validator_parser) ? ' -F parser=' . g:syntastic_html_validator_parser : '') .
-        \ (!empty(g:syntastic_html_validator_nsfilter) ? ' -F nsfilter=' . g:syntastic_html_validator_nsfilter : '') .
+    let makeprg = self.getExecEscaped() . ' -s --compressed -F out=gnu -F asciiquotes=yes' .
+        \ (g:syntastic_html_validator_parser != '' ? ' -F parser=' . g:syntastic_html_validator_parser : '') .
+        \ (g:syntastic_html_validator_nsfilter != '' ? ' -F nsfilter=' . g:syntastic_html_validator_nsfilter : '') .
         \ ' -F doc=@' . fname . '\;type=text/html\;filename=' . fname . ' ' . g:syntastic_html_validator_api
 
     let errorformat =
@@ -94,4 +93,10 @@ endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
     \ 'filetype': 'html',
-    \ 'name': 'validator'})
+    \ 'name': 'validator',
+    \ 'exec': 'curl' })
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
+
+" vim: set et sts=4 sw=4:

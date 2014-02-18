@@ -28,9 +28,7 @@ function! g:SyntasticHighlightingNotifier.New()
 endfunction
 
 function! g:SyntasticHighlightingNotifier.enabled()
-    return
-        \ s:has_highlighting &&
-        \ (exists('b:syntastic_enable_highlighting') ? b:syntastic_enable_highlighting : g:syntastic_enable_highlighting)
+    return s:has_highlighting && syntastic#util#var('enable_highlighting')
 endfunction
 
 " Sets error highlights in the cuirrent window
@@ -39,7 +37,7 @@ function! g:SyntasticHighlightingNotifier.refresh(loclist)
         call self.reset(a:loclist)
         call syntastic#log#debug(g:SyntasticDebugNotifications, 'highlighting: refresh')
         let buf = bufnr('')
-        let issues = filter(a:loclist.filteredRaw(), 'v:val["bufnr"] == buf')
+        let issues = filter(a:loclist.copyRaw(), 'v:val["bufnr"] == buf')
         for item in issues
             let group = item['type'] ==? 'E' ? 'SyntasticError' : 'SyntasticWarning'
 
@@ -47,13 +45,15 @@ function! g:SyntasticHighlightingNotifier.refresh(loclist)
             " used to override default highlighting.
             if has_key(item, 'hl')
                 call matchadd(group, '\%' . item['lnum'] . 'l' . item['hl'])
-            elseif get(item, 'col')
-                let lastcol = col([item['lnum'], '$'])
+            elseif get(item, 'col', 0)
+                if get(item, 'vcol', 0)
+                    let lastcol = virtcol([item['lnum'], '$'])
+                    let coltype = 'v'
+                else
+                    let lastcol = col([item['lnum'], '$'])
+                    let coltype = 'c'
+                endif
                 let lcol = min([lastcol, item['col']])
-
-                " a bug in vim can sometimes cause there to be no 'vcol' key,
-                " so check for its existence
-                let coltype = has_key(item, 'vcol') && item['vcol'] ? 'v' : 'c'
 
                 call matchadd(group, '\%' . item['lnum'] . 'l\%' . lcol . coltype)
             endif
@@ -62,6 +62,7 @@ function! g:SyntasticHighlightingNotifier.refresh(loclist)
 endfunction
 
 " Remove all error highlights from the window
+" @vimlint(EVL103, 1, a:loclist)
 function! g:SyntasticHighlightingNotifier.reset(loclist)
     if s:has_highlighting
         call syntastic#log#debug(g:SyntasticDebugNotifications, 'highlighting: reset')
@@ -72,6 +73,7 @@ function! g:SyntasticHighlightingNotifier.reset(loclist)
         endfor
     endif
 endfunction
+" @vimlint(EVL103, 0, a:loclist)
 
 " Private methods {{{1
 

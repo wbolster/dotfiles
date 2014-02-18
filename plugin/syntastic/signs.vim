@@ -48,9 +48,7 @@ function! g:SyntasticSignsNotifier.New()
 endfunction
 
 function! g:SyntasticSignsNotifier.enabled()
-    return
-        \ has('signs') &&
-        \ exists('b:syntastic_enable_signs') ? b:syntastic_enable_signs : g:syntastic_enable_signs
+    return has('signs') && syntastic#util#var('enable_signs')
 endfunction
 
 function! g:SyntasticSignsNotifier.refresh(loclist)
@@ -102,14 +100,12 @@ endfunction
 " Place signs by all syntax errors in the buffer
 function! g:SyntasticSignsNotifier._signErrors(loclist)
     let loclist = a:loclist
-    if loclist.hasErrorsOrWarningsToDisplay()
+    if !loclist.isEmpty()
 
         " errors some first, so that they are not masked by warnings
         let buf = bufnr('')
         let issues = copy(loclist.errors())
-        if !loclist.quietWarnings()
-            call extend(issues, loclist.warnings())
-        endif
+        call extend(issues, loclist.warnings())
         call filter(issues, 'v:val["bufnr"] == buf')
         let seen = {}
 
