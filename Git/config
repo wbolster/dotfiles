@@ -45,6 +45,7 @@ wdiff = diff --word-diff
 missing = !sh -c 'git log --oneline --left-right HEAD...$1' -
 sl = log --oneline --graph
 st = status --short --branch
+today = log --all --graph --since=0am
 topology = log --oneline --graph --all --simplify-by-decoration
 
 # Typos
