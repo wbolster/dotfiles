@@ -8,15 +8,19 @@
 "             See http://sam.zoy.org/wtfpl/COPYING for more details.
 "
 "============================================================================
+
 if exists("g:loaded_syntastic_ruby_macruby_checker")
     finish
 endif
-let g:loaded_syntastic_ruby_macruby_checker=1
+let g:loaded_syntastic_ruby_macruby_checker = 1
+
+let s:save_cpo = &cpo
+set cpo&vim
 
 function! SyntaxCheckers_ruby_macruby_GetLocList() dict
     let makeprg = self.makeprgBuild({
-        \ 'exe': 'RUBYOPT= ' . self.getExec(),
-        \ 'args': '-W1 -c' })
+        \ 'exe': 'RUBYOPT= ' . self.getExecEscaped(),
+        \ 'args_after': '-W1 -c' })
 
     let errorformat =
         \ '%-GSyntax OK,'.
@@ -35,3 +39,8 @@ endfunction
 call g:SyntasticRegistry.CreateAndRegisterChecker({
     \ 'filetype': 'ruby',
     \ 'name': 'macruby'})
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
+
+" vim: set et sts=4 sw=4:

@@ -17,11 +17,11 @@ function! g:SyntasticCursorNotifier.New()
 endfunction
 
 function! g:SyntasticCursorNotifier.enabled()
-    return exists('b:syntastic_echo_current_error') ? b:syntastic_echo_current_error : g:syntastic_echo_current_error
+    return syntastic#util#var('echo_current_error')
 endfunction
 
 function! g:SyntasticCursorNotifier.refresh(loclist)
-    if self.enabled() && a:loclist.hasErrorsOrWarningsToDisplay()
+    if self.enabled() && !a:loclist.isEmpty()
         call syntastic#log#debug(g:SyntasticDebugNotifications, 'cursor: refresh')
         let b:syntastic_messages = copy(a:loclist.messages(bufnr('')))
         let b:oldLine = -1
@@ -30,12 +30,14 @@ function! g:SyntasticCursorNotifier.refresh(loclist)
     endif
 endfunction
 
+" @vimlint(EVL103, 1, a:loclist)
 function! g:SyntasticCursorNotifier.reset(loclist)
     call syntastic#log#debug(g:SyntasticDebugNotifications, 'cursor: reset')
     autocmd! syntastic CursorMoved
     unlet! b:syntastic_messages
     let b:oldLine = -1
 endfunction
+" @vimlint(EVL103, 0, a:loclist)
 
 " Private methods {{{1
 

@@ -13,10 +13,13 @@
 if exists("g:loaded_syntastic_puppet_puppet_checker")
     finish
 endif
-let g:loaded_syntastic_puppet_puppet_checker=1
+let g:loaded_syntastic_puppet_puppet_checker = 1
+
+let s:save_cpo = &cpo
+set cpo&vim
 
 function! SyntaxCheckers_puppet_puppet_GetLocList() dict
-    let ver = syntastic#util#getVersion(self.getExec() . ' --version 2>' . syntastic#util#DevNull())
+    let ver = syntastic#util#getVersion(self.getExecEscaped() . ' --version 2>' . syntastic#util#DevNull())
 
     if syntastic#util#versionIsAtLeast(ver, [2,7,0])
         let args = 'parser validate --color=false'
@@ -24,7 +27,7 @@ function! SyntaxCheckers_puppet_puppet_GetLocList() dict
         let args = '--color=false --parseonly'
     endif
 
-    let makeprg = self.makeprgBuild({ 'args': args })
+    let makeprg = self.makeprgBuild({ 'args_before': args })
 
     let errorformat =
         \ '%-Gerr: Try ''puppet help parser validate'' for usage,' .
@@ -40,3 +43,8 @@ endfunction
 call g:SyntasticRegistry.CreateAndRegisterChecker({
     \ 'filetype': 'puppet',
     \ 'name': 'puppet'})
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
+
+" vim: set et sts=4 sw=4:

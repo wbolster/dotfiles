@@ -13,7 +13,10 @@
 if exists("g:loaded_syntastic_puppet_puppetlint_checker")
     finish
 endif
-let g:loaded_syntastic_puppet_puppetlint_checker=1
+let g:loaded_syntastic_puppet_puppetlint_checker = 1
+
+let s:save_cpo = &cpo
+set cpo&vim
 
 if exists("g:syntastic_puppet_lint_arguments")
     let g:syntastic_puppet_puppetlint_args = g:syntastic_puppet_lint_arguments
@@ -23,15 +26,14 @@ endif
 function! SyntaxCheckers_puppet_puppetlint_IsAvailable() dict
     return
         \ executable("puppet") &&
-        \ executable("puppet-lint") &&
-        \ syntastic#util#versionIsAtLeast(syntastic#util#getVersion('puppet-lint --version 2>' .
-        \     syntastic#util#DevNull()), [0,1,10])
+        \ executable(self.getExec()) &&
+        \ syntastic#util#versionIsAtLeast(syntastic#util#getVersion(
+        \       self.getExecEscaped() . ' --version 2>' . syntastic#util#DevNull()), [0,1,10])
 endfunction
 
 function! SyntaxCheckers_puppet_puppetlint_GetLocList() dict
     let makeprg = self.makeprgBuild({
-        \ 'exe': 'puppet-lint',
-        \ 'post_args': '--log-format "%{KIND} [%{check}] %{message} at %{fullpath}:%{linenumber}"' })
+        \ 'args_after': '--log-format "%{KIND} [%{check}] %{message} at %{fullpath}:%{linenumber}"' })
 
     let errorformat = '%t%*[a-zA-Z] %m at %f:%l'
 
@@ -44,3 +46,8 @@ call g:SyntasticRegistry.CreateAndRegisterChecker({
     \ 'filetype': 'puppet',
     \ 'name': 'puppetlint',
     \ 'exec': 'puppet-lint'})
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
+
+" vim: set et sts=4 sw=4:

@@ -13,13 +13,16 @@
 if exists("g:loaded_syntastic_sh_sh_checker")
     finish
 endif
-let g:loaded_syntastic_sh_sh_checker=1
+let g:loaded_syntastic_sh_sh_checker = 1
+
+let s:save_cpo = &cpo
+set cpo&vim
 
 function! s:GetShell()
     if !exists('b:shell') || b:shell == ''
         let b:shell = ''
         let shebang = getbufline(bufnr('%'), 1)[0]
-        if len(shebang) > 0
+        if shebang != ''
             if stridx(shebang, 'bash') >= 0
                 let b:shell = 'bash'
             elseif stridx(shebang, 'zsh') >= 0
@@ -66,7 +69,7 @@ function! SyntaxCheckers_sh_sh_GetLocList() dict
 
     let makeprg = self.makeprgBuild({
         \ 'exe': s:GetShell(),
-        \ 'args': '-n' })
+        \ 'args_after': '-n' })
 
     let errorformat = '%f: line %l: %m'
 
@@ -78,3 +81,8 @@ endfunction
 call g:SyntasticRegistry.CreateAndRegisterChecker({
     \ 'filetype': 'sh',
     \ 'name': 'sh' })
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
+
+" vim: set et sts=4 sw=4:

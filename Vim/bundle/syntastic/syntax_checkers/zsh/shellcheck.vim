@@ -1,7 +1,7 @@
 "============================================================================
-"File:        ycm.vim
+"File:        shellcheck.vim
 "Description: Syntax checking plugin for syntastic.vim
-"Maintainer:  Val Markovic <val at markovic dot io>
+"Maintainer:  LCD 47 <lcd047 at gmail dot com>
 "License:     This program is free software. It comes without any warranty,
 "             to the extent permitted by applicable law. You can redistribute
 "             it and/or modify it under the terms of the Do What The Fuck You
@@ -10,18 +10,16 @@
 "
 "============================================================================
 
-if exists("g:loaded_syntastic_objc_ycm_checker")
+if exists("g:loaded_syntastic_zsh_shellcheck_checker")
     finish
 endif
-let g:loaded_syntastic_objc_ycm_checker = 1
+let g:loaded_syntastic_zsh_shellcheck_checker = 1
 
-runtime! syntax_checkers/c/*.vim
-
-if !exists('g:loaded_youcompleteme')
-    finish
-endif
+runtime! syntax_checkers/sh/*.vim
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
-    \ 'filetype': 'objc',
-    \ 'name': 'ycm',
-    \ 'redirect': 'c/ycm'})
+    \ 'filetype': 'zsh',
+    \ 'name': 'shellcheck',
+    \ 'redirect': 'sh/shellcheck'})
+
+" vim: set et sts=4 sw=4:
