@@ -14,19 +14,37 @@ function! s:fnameescape(file) abort
   endif
 endfunction
 
-let s:hide = ',\(^\|\s\s\)\zs\.\S\+'
-let s:escape = 'substitute(escape(v:val, ".*$~"), "*", ".*", "g")'
-let g:netrw_sort_sequence = '[\/]$,*,\%(' . join(map(split(&suffixes, ','), s:escape), '\|') . '\)[*@]\=$'
+let g:netrw_sort_sequence = '[\/]$,*,\%(' . join(map(split(&suffixes, ','), 'escape(v:val, ".*$~")'), '\|') . '\)[*@]\=$'
+let s:escape = 'substitute(escape(v:val, ".$~"), "*", ".*", "g")'
 let g:netrw_list_hide = join(map(split(&wildignore, ','), '"^".' . s:escape . '. "$"'), ',') . ',^\.\.\=/\=$'
 let g:netrw_banner = 0
+let s:netrw_up = ''
 
-nnoremap <Plug>VinegarUp :if empty(expand('%'))<Bar>edit .<Bar>else<Bar>edit %:h<Bar>call <SID>seek(expand('%:t'))<Bar>endif<CR>
+nnoremap <silent> <Plug>VinegarUp :call <SID>opendir('edit')<CR>
 if empty(maparg('-', 'n'))
   nmap - <Plug>VinegarUp
 endif
 
+nnoremap <silent> <Plug>VinegarSplitUp :call <SID>opendir('split')<CR>
+nnoremap <silent> <Plug>VinegarVerticalSplitUp :call <SID>opendir('vsplit')<CR>
+
+function! s:opendir(cmd)
+  if &filetype ==# 'netrw'
+    let currdir = fnamemodify(b:netrw_curdir, ':t')
+    execute s:netrw_up
+    call <SID>seek(currdir)
+  else
+    if empty(expand('%'))
+      execute a:cmd '.'
+    else
+      execute a:cmd '%:h'
+      call s:seek(expand('#:t'))
+    endif
+  endif
+endfunction
+
 function! s:seek(file)
-  let pattern = '^'.escape(expand('#:t'), '.*[]~\').'[/*|@=]\=\%($\|\t\)'
+  let pattern = '^'.escape(a:file, '.*[]~\').'[/*|@=]\=\%($\|\t\)'
   call search(pattern, 'wc')
   return pattern
 endfunction
@@ -44,14 +62,22 @@ function! s:escaped(first, last) abort
 endfunction
 
 function! s:setup_vinegar() abort
+  if empty(s:netrw_up)
+    " save netrw mapping
+    let s:netrw_up = maparg('-', 'n')
+    " saved string is like this:
+    " :exe "norm! 0"|call netrw#LocalBrowseCheck(<SNR>172_NetrwBrowseChgDir(1,'../'))<CR>
+    " remove <CR> at the end (otherwise raises "E488: Trailing characters")
+    let s:netrw_up = strpart(s:netrw_up, 0, strlen(s:netrw_up)-4)
+  endif
   nmap <buffer> - <Plug>VinegarUp
   nnoremap <buffer> ~ :edit ~/<CR>
   nnoremap <buffer> . :<C-U> <C-R>=<SID>escaped(line('.'), line('.') - 1 + v:count1)<CR><Home>
   xnoremap <buffer> . <Esc>: <C-R>=<SID>escaped(line("'<"), line("'>"))<CR><Home>
   nmap <buffer> ! .!
   xmap <buffer> ! .!
-  nnoremap <silent> cd :exe 'keepjumps cd ' .<SID>fnameescape(b:netrw_curdir)<CR>
-  nnoremap <silent> cl :exe 'keepjumps lcd '.<SID>fnameescape(b:netrw_curdir)<CR>
+  nnoremap <buffer> <silent> cd :exe 'keepjumps cd ' .<SID>fnameescape(b:netrw_curdir)<CR>
+  nnoremap <buffer> <silent> cl :exe 'keepjumps lcd '.<SID>fnameescape(b:netrw_curdir)<CR>
   exe 'syn match netrwSuffixes =\%(\S\+ \)*\S\+\%('.join(map(split(&suffixes, ','), s:escape), '\|') . '\)[*@]\=\S\@!='
   hi def link netrwSuffixes SpecialKey
 endfunction
