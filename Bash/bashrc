@@ -6,7 +6,6 @@ umask 077
 # Preprend some directories inside ~ to $PATH
 test -d ~/bin && PATH=~/bin:${PATH}
 test -d ~/.local/bin && PATH=~/.local/bin:${PATH}
-test -d ~/.system/bin && PATH=~/.system/bin:${PATH}
 
 # Interactive Shells
 if [ "$PS1" ]; then
