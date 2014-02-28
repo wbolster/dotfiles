@@ -32,6 +32,7 @@ cav = commit --all --verbose
 cv = commit --verbose
 cvp = commit --verbose --patch
 fixup = commit --amend --no-edit
+uncommit = reset --soft HEAD^
 
 # Adding
 ap = add --patch
@@ -57,6 +58,5 @@ puhs = push
 # Misc
 ff = merge --ff-only
 plagiarize = filter-branch --env-filter "'export GIT_AUTHOR_NAME=\"$(git config user.name)\"; export GIT_AUTHOR_EMAIL=\"$(git config user.email)\"; export GIT_COMMITTER_NAME=\"$(git config user.name)\"; export GIT_COMMITTER_EMAIL=\"$(git config user.email)\"'"
-uncommit = reset --soft HEAD^
 
 # vim: filetype=gitconfig
