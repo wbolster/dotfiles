@@ -17,10 +17,6 @@ if exists("g:loaded_khuno") || &cp
 endif
 
 
-if !exists(tempname())
-  let temp_location = fnamemodify(tempname(),":p:h:")
-  execute ":! mkdir " . temp_location
-endif
 let g:loaded_khuno = 1
 
 
@@ -260,17 +256,6 @@ function! s:Flake()
     let b:khuno_debug = {}
   endif
 
-  " Attempt to remove previous run temporary files
-  if has_key(b:khuno_debug, 'temp_file')
-    call delete(b:khuno_debug.temp_file)
-  endif
-  if has_key(b:khuno_debug, 'temp_python_file')
-    call delete(b:khuno_debug.temp_python_file)
-  endif
-  if has_key(b:khuno_debug, 'temp_error')
-    call delete(b:khuno_debug.temp_error)
-  endif
-
   if exists("g:khuno_builtins")
     let s:khuno_builtins_opt=" --builtins=".g:khuno_builtins
   else
@@ -438,6 +423,14 @@ function! s:AsyncCmd(cmd)
   if !exists('b:khuno_error_files')
     let b:khuno_error_files = []
   endif
+  let temp_dir_location = fnamemodify(tempname(),":p:h:")
+
+  " If the directory for the temp files does not exist go
+  " ahead and create one for us
+  if !exists(temp_dir_location)
+    call system('mkdir ' . temp_dir_location)
+  endif
+
   let s:khuno_temp_file = tempname()
   let s:khuno_temp_error_file = tempname()
   let command = "! " . a:cmd . " > " . s:khuno_temp_file . " 2> " . s:khuno_temp_error_file . " &"
