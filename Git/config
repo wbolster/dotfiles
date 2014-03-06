@@ -9,6 +9,7 @@
 [merge]
     defaultToUpstream = true
     log = true
+    tool = gvimdiff
 
 [push]
     default = simple
@@ -22,9 +23,6 @@
 
 [diff "po"]
     textconv=msgcat --no-location --no-wrap --sort-output
-
-[merge]
-    tool = gvimdiff
 
 [interactive]
     singlekey = true
