@@ -1,0 +1,3 @@
+This is a manually downloaded netrw release, since the Vim provided netrw
+version in Debian/Ubuntu suffers from the issue described at
+http://stackoverflow.com/questions/8782511/why-is-window-splitting-forcing-readonly
