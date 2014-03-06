@@ -24,6 +24,9 @@ textconv=msgcat --no-location --no-wrap --sort-output
 [merge]
 tool = gvimdiff
 
+[interactive]
+singlekey = true
+
 [alias]
 
 # Committing
