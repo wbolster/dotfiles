@@ -1,66 +1,66 @@
+# vim: filetype=gitconfig
+
 [color]
-ui = auto
+    ui = auto
 
 [branch]
-autosetuprebase = always
+    autosetuprebase = always
 
 [merge]
-defaultToUpstream = true
-log = true
+    defaultToUpstream = true
+    log = true
 
 [push]
-default = simple
+    default = simple
 
 [log]
-decorate = short
-date = iso8601
+    decorate = short
+    date = iso8601
 
 [rebase]
-stat = true
+    stat = true
 
 [diff "po"]
-textconv=msgcat --no-location --no-wrap --sort-output
+    textconv=msgcat --no-location --no-wrap --sort-output
 
 [merge]
-tool = gvimdiff
+    tool = gvimdiff
 
 [interactive]
-singlekey = true
+    singlekey = true
 
 [alias]
 
-# Committing
-amend = commit --amend
-cav = commit --all --verbose
-cv = commit --verbose
-cvp = commit --verbose --patch
-fixup = commit --amend --no-edit
-uncommit = reset --soft HEAD^
+    # Committing
+    amend = commit --amend
+    cav = commit --all --verbose
+    cv = commit --verbose
+    cvp = commit --verbose --patch
+    fixup = commit --amend --no-edit
+    uncommit = reset --soft HEAD^
 
-# Adding
-ap = add --patch
-au = add --update :/
+    # Adding
+    ap = add --patch
+    au = add --update :/
 
-# Diff
-cdiff = diff --cached --find-renames
-cwdiff = diff --cached --word-diff
-sdiff = diff --ignore-all-space --find-renames
-wdiff = diff --word-diff
+    # Diff
+    cdiff = diff --cached --find-renames
+    cwdiff = diff --cached --word-diff
+    sdiff = diff --ignore-all-space --find-renames
+    wdiff = diff --word-diff
 
-# Log
-missing = !sh -c 'git log --oneline --left-right HEAD...$1' -
-mylog = !git log --all --author="$(git config user.email)" --date-order --graph --format='%C(yellow)[%h] %ai (%ar)%C(auto)%d%n%n%C(reset)%s %n%+b'
-sl = log --oneline --graph --format='%C(yellow)%h%C(auto)%C(reset)%C(auto)%d %s %C(cyan)— %aN, %ai (%ar)'
-st = status --short --branch
-today = log --all --graph --since=0am
-topology = log --oneline --graph --all --simplify-by-decoration
+    # Log
+    missing = !sh -c 'git log --oneline --left-right HEAD...$1' -
+    mylog = !git log --all --author="$(git config user.email)" --date-order --graph --format='%C(yellow)[%h] %ai (%ar)%C(auto)%d%n%n%C(reset)%s %n%+b'
+    sl = log --oneline --graph --format='%C(yellow)%h%C(auto)%C(reset)%C(auto)%d %s %C(cyan)— %aN, %ai (%ar)'
+    st = status --short --branch
+    today = log --all --graph --since=0am
+    topology = log --oneline --graph --all --simplify-by-decoration
 
-# Typos
-psuh = push
-puhs = push
+    # Typos
+    psuh = push
+    puhs = push
 
-# Misc
-ff = merge --ff-only
-plagiarize = filter-branch --env-filter "'export GIT_AUTHOR_NAME=\"$(git config user.name)\"; export GIT_AUTHOR_EMAIL=\"$(git config user.email)\"; export GIT_COMMITTER_NAME=\"$(git config user.name)\"; export GIT_COMMITTER_EMAIL=\"$(git config user.email)\"'"
-
-# vim: filetype=gitconfig
+    # Misc
+    ff = merge --ff-only
+    plagiarize = filter-branch --env-filter "'export GIT_AUTHOR_NAME=\"$(git config user.name)\"; export GIT_AUTHOR_EMAIL=\"$(git config user.email)\"; export GIT_COMMITTER_NAME=\"$(git config user.name)\"; export GIT_COMMITTER_EMAIL=\"$(git config user.email)\"'"
