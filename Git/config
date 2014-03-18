@@ -1,35 +1,5 @@
 # vim: filetype=gitconfig
 
-[color]
-    ui = auto
-
-[branch]
-    autosetuprebase = always
-
-[diff]
-	tool = gvimdiff
-
-[merge]
-    defaultToUpstream = true
-    log = true
-    tool = gvimdiff
-
-[push]
-    default = simple
-
-[log]
-    decorate = short
-    date = iso8601
-
-[rebase]
-    stat = true
-
-[diff "po"]
-    textconv=msgcat --no-location --no-wrap --sort-output
-
-[interactive]
-    singlekey = true
-
 [alias]
 
     # Committing
@@ -68,3 +38,33 @@
 
     # Rewriting history
     plagiarize = filter-branch --env-filter "'export GIT_AUTHOR_NAME=\"$(git config user.name)\"; export GIT_AUTHOR_EMAIL=\"$(git config user.email)\"; export GIT_COMMITTER_NAME=\"$(git config user.name)\"; export GIT_COMMITTER_EMAIL=\"$(git config user.email)\"'"
+
+[branch]
+    autosetuprebase = always
+
+[color]
+    ui = auto
+
+[diff]
+	tool = gvimdiff
+
+[diff "po"]
+    textconv=msgcat --no-location --no-wrap --sort-output
+
+[interactive]
+    singlekey = true
+
+[log]
+    decorate = short
+    date = iso8601
+
+[merge]
+    defaultToUpstream = true
+    log = true
+    tool = gvimdiff
+
+[push]
+    default = simple
+
+[rebase]
+    stat = true
