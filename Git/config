@@ -6,6 +6,9 @@
 [branch]
     autosetuprebase = always
 
+[diff]
+	tool = gvimdiff
+
 [merge]
     defaultToUpstream = true
     log = true
