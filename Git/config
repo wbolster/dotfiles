@@ -2,77 +2,77 @@
 
 [alias]
 
-    # Committing
-    amend = commit --amend
-    cav = commit --all --verbose
-    cv = commit --verbose
-    cvp = commit --verbose --patch
-    fixup = commit --amend --no-edit
-    uncommit = reset --soft HEAD^
+# Committing
+amend = commit --amend
+cav = commit --all --verbose
+cv = commit --verbose
+cvp = commit --verbose --patch
+fixup = commit --amend --no-edit
+uncommit = reset --soft HEAD^
 
-    # Adding
-    ap = add --patch
-    au = add --update :/
+# Adding
+ap = add --patch
+au = add --update :/
 
-    # Diff
-    cdiff = diff --cached --find-renames
-    cwdiff = diff --cached --word-diff
-    sdiff = diff --ignore-all-space --find-renames
-    wdiff = diff --word-diff
+# Diff
+cdiff = diff --cached --find-renames
+cwdiff = diff --cached --word-diff
+sdiff = diff --ignore-all-space --find-renames
+wdiff = diff --word-diff
 
-    # Log
-    missing = !sh -c 'git log --oneline --left-right HEAD...$1' -
-    mylog = !git log --all --author="$(git config user.email)" --date-order --graph --format='%C(yellow)[%h] %ai (%ar)%C(auto)%d%n%n%C(reset)%s %n%+b'
-    sl = log --oneline --graph --format='%C(yellow)%h%C(auto)%C(reset)%C(auto)%d %s %C(cyan)— %aN, %ai (%ar)'
-    st = status --short --branch
-    today = log --all --graph --since=0am
-    topology = log --oneline --graph --all --simplify-by-decoration
+# Log
+missing = !sh -c 'git log --oneline --left-right HEAD...$1' -
+mylog = !git log --all --author="$(git config user.email)" --date-order --graph --format='%C(yellow)[%h] %ai (%ar)%C(auto)%d%n%n%C(reset)%s %n%+b'
+sl = log --oneline --graph --format='%C(yellow)%h%C(auto)%C(reset)%C(auto)%d %s %C(cyan)— %aN, %ai (%ar)'
+st = status --short --branch
+today = log --all --graph --since=0am
+topology = log --oneline --graph --all --simplify-by-decoration
 
-    # Typos
-    psuh = push
-    puhs = push
+# Typos
+psuh = push
+puhs = push
 
-    # Merging and updating
-    ff = merge --ff-only
-    up = "!git fetch -p; git merge --ff-only @{u}"
+# Merging and updating
+ff = merge --ff-only
+up = "!git fetch -p; git merge --ff-only @{u}"
 
-    # Rewriting history
-    plagiarize = filter-branch --env-filter "'export GIT_AUTHOR_NAME=\"$(git config user.name)\"; export GIT_AUTHOR_EMAIL=\"$(git config user.email)\"; export GIT_COMMITTER_NAME=\"$(git config user.name)\"; export GIT_COMMITTER_EMAIL=\"$(git config user.email)\"'"
+# Rewriting history
+plagiarize = filter-branch --env-filter "'export GIT_AUTHOR_NAME=\"$(git config user.name)\"; export GIT_AUTHOR_EMAIL=\"$(git config user.email)\"; export GIT_COMMITTER_NAME=\"$(git config user.name)\"; export GIT_COMMITTER_EMAIL=\"$(git config user.email)\"'"
 
 [branch]
-    autosetuprebase = always
+autosetuprebase = always
 
 [color]
-    ui = auto
+ui = auto
 
 [diff]
-    tool = gvimdiff
+tool = gvimdiff
 
 [diff "po"]
-    textconv=msgcat --no-location --no-wrap --sort-output
+textconv=msgcat --no-location --no-wrap --sort-output
 
 [interactive]
-    singlekey = true
+singlekey = true
 
 [log]
-    decorate = short
-    date = iso8601
+decorate = short
+date = iso8601
 
 [merge]
-    defaultToUpstream = true
-    log = true
-    tool = gvimdiff
+defaultToUpstream = true
+log = true
+tool = gvimdiff
 
 [pull]
-    ff = only
-    rebase = preserve
+ff = only
+rebase = preserve
 
 [push]
-    default = simple
+default = simple
 
 [rebase]
-    stat = true
+stat = true
 
 [user]
-    name = Wouter Bolsterlee
-    email = uws@xs4all.nl
+name = Wouter Bolsterlee
+email = uws@xs4all.nl
