@@ -46,7 +46,7 @@
     ui = auto
 
 [diff]
-	tool = gvimdiff
+    tool = gvimdiff
 
 [diff "po"]
     textconv=msgcat --no-location --no-wrap --sort-output
@@ -74,5 +74,5 @@
     stat = true
 
 [user]
-	name = Wouter Bolsterlee
-	email = uws@xs4all.nl
+    name = Wouter Bolsterlee
+    email = uws@xs4all.nl
