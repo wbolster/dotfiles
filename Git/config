@@ -68,3 +68,7 @@
 
 [rebase]
     stat = true
+
+[user]
+	name = Wouter Bolsterlee
+	email = uws@xs4all.nl
