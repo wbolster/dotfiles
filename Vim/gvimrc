@@ -2,7 +2,7 @@
 
 " Window layout
 set lines=60 columns=120
-set guioptions-=m guioptions-=T guioptions+=L
+set guioptions-=m go-=r go-=L go-=T
 set guicursor=a:blinkon0 
 
 " Colors
