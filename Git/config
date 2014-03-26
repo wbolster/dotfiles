@@ -28,12 +28,13 @@ st = status --short --branch
 today = log --all --graph --since=0am
 topology = log --oneline --graph --all --simplify-by-decoration
 
-# Typos
-psuh = push
-puhs = push
-
 # Merging and updating
 ff = merge --ff-only
+
+# Updating from and pushing to remotes
+fpush = push --force-with-lease
+psuh = push
+puhs = push
 up = "!git fetch -p; git merge --ff-only @{u}"
 
 # Rewriting history
