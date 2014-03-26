@@ -37,8 +37,11 @@ psuh = push
 puhs = push
 up = "!git fetch -p; git merge --ff-only @{u}"
 
-# Rewriting history
+# Rebasing, rewriting history, and so on
 plagiarize = filter-branch --env-filter "'export GIT_AUTHOR_NAME=\"$(git config user.name)\"; export GIT_AUTHOR_EMAIL=\"$(git config user.email)\"; export GIT_COMMITTER_NAME=\"$(git config user.name)\"; export GIT_COMMITTER_EMAIL=\"$(git config user.email)\"'"
+rba = rebase --abort
+rbc = rebase --continue
+rbi = rebase --interactive
 
 [branch]
 autosetuprebase = always
