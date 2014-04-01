@@ -47,6 +47,8 @@ rbi = rebase --interactive
 igrep = grep -i
 fgrep = grep -F
 figrep = grep -F -i
+stashk = stash save --keep-index
+stashp = stash pop
 
 [branch]
 autosetuprebase = always
