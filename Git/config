@@ -30,6 +30,8 @@ topology = log --oneline --graph --all --simplify-by-decoration
 
 # Merging and updating
 ff = merge --ff-only
+merge-feature = merge --no-ff --edit
+merge-issue = merge --no-ff --edit
 
 # Updating from and pushing to remotes
 fpush = push --force-with-lease
