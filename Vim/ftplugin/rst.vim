@@ -3,7 +3,7 @@
 setlocal tabstop=4 shiftwidth=4 expandtab
 setlocal textwidth=80
 setlocal spell
-setlocal comments=b:..
+autocmd Filetype rst setlocal comments=b:..  " overwrite system setting
 
 " Special characters. Use triple backtick to avoid clashing with the
 " ``literal`` syntax.
