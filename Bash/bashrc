@@ -211,6 +211,30 @@ if [ "$PS1" ]; then
         cd $(dirname "$1")
     }
 
+    # Magic typo corrector
+    function command_not_found_handle() {
+        local cmd="$1"
+
+        # Handle typos like "gitp ush" and "gitpu sh"
+        local autocorrect_cmds="bzr git svn"
+        for prefix in $autocorrect_cmds; do
+            if [ "${cmd#$prefix}" == "$cmd" ]; then
+                # prefix is not a prefix of the typed command
+                continue
+            fi
+
+            cmd_corrected="$prefix ${cmd#$prefix}$2"
+            shift 2
+            echo "$cmd_corrected $@" >&2
+            $cmd_corrected "$@"
+            return
+        done
+
+        # Too bad
+        printf "%s: command not found\n" "$1" >&2
+        return 127
+    }
+
     # History
     export HISTCONTROL=ignoredups
     export HISTSIZE=100000
