@@ -73,7 +73,7 @@ date = iso8601
 
 [merge]
 defaultToUpstream = true
-log = true
+log = 100
 tool = gvimdiff
 
 [pull]
