@@ -8,6 +8,7 @@ cav = commit --all --verbose
 cv = commit --verbose
 cvp = commit --verbose --patch
 fixup = commit --amend --no-edit
+recommit = commit --amend --no-edit --reset-author
 uncommit = reset --soft HEAD^
 
 # Adding
