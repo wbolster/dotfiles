@@ -7,6 +7,14 @@ umask 077
 test -d ~/bin && PATH=~/bin:${PATH}
 test -d ~/.local/bin && PATH=~/.local/bin:${PATH}
 
+# On OSX with Homebrew, get the coreutils into the path using their normal names
+if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
+    brew_prefix=$(brew --prefix)
+    PATH="${brew_prefix}/opt/coreutils/libexec/gnubin:$PATH"
+    MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman:$MANPATH"
+    unset brew_prefix
+fi
+
 # Interactive Shells
 if [ "$PS1" ]; then
     # Make sure $HOSTNAME is set
