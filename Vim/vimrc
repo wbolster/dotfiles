@@ -62,7 +62,7 @@ inoremap <C-U> <C-G>u<C-U>
 " Pressing p should replace selected text in visual mode
 vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
 
-" Move lines around using Alt-[hjkl]
+" Move lines around using Alt-[hjkl]; second block is for Mac OSX
 noremap <A-h> :<<Return>
 noremap <A-j> :move +<Return>
 noremap <A-k> :move -2<Return>
@@ -71,6 +71,16 @@ vnoremap <A-h> :<<Return>gv
 vnoremap <A-j> :move '> +<Return>gv
 vnoremap <A-k> :move -2<Return>gv
 vnoremap <A-l> :><Return>gv
+if has("gui_macvim")
+  noremap ˙ :<Return>
+  noremap ∆ :move +<Return>
+  noremap ˚ :move -2<Return>
+  noremap ¬ :><Return>
+  vnoremap ˙ :<Return>gv
+  vnoremap ∆ :move '> +<Return>gv
+  vnoremap ˚ :move -2<Return>gv
+  vnoremap ¬ :><Return>gv
+endif
 
 " Make "repeat last action" also work in visual mode
 vnoremap . :normal .<Return>
