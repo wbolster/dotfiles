@@ -16,6 +16,7 @@ ap = add --patch
 au = add --update :/
 
 # Diff
+dif = diff
 cdiff = diff --cached --find-renames
 cwdiff = diff --cached --word-diff
 sdiff = diff --ignore-all-space --find-renames
