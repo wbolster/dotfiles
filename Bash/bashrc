@@ -328,7 +328,9 @@ if [ "$PS1" ]; then
     fi
 
     # GUI applications
-    if [ ! -z "$DISPLAY" ]; then
+    if [[ "$OSTYPE" == darwin* ]]; then
+        alias g='open '
+    elif [ ! -z "$DISPLAY" ]; then
         alias g='xdg-open '
     fi
 
