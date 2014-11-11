@@ -72,11 +72,11 @@ vnoremap <A-j> :move '> +<Return>gv
 vnoremap <A-k> :move -2<Return>gv
 vnoremap <A-l> :><Return>gv
 if has("gui_macvim")
-  noremap ˙ :<Return>
+  noremap ˙ :<<Return>
   noremap ∆ :move +<Return>
   noremap ˚ :move -2<Return>
   noremap ¬ :><Return>
-  vnoremap ˙ :<Return>gv
+  vnoremap ˙ :<<Return>gv
   vnoremap ∆ :move '> +<Return>gv
   vnoremap ˚ :move -2<Return>gv
   vnoremap ¬ :><Return>gv
