@@ -2,6 +2,9 @@
 
 [alias]
 
+# Identity
+personal-repo = "!f() { /bin/echo -n 'Old value: '; git config user.email; git config user.email uws@xs4all.nl; /bin/echo -n 'New value: '; git config user.email; }; f"
+
 # Committing
 ci = commit
 amend = commit --amend
