@@ -3,6 +3,7 @@
 [alias]
 
 # Committing
+ci = commit
 amend = commit --amend
 cav = commit --all --verbose
 cv = commit --verbose
@@ -22,7 +23,8 @@ cwdiff = diff --cached --word-diff
 sdiff = diff --ignore-all-space --find-renames
 wdiff = diff --word-diff
 
-# Log
+# Inspecting
+ls = ls-files
 missing = !sh -c 'git log --oneline --left-right HEAD...$1' -
 mylog = !git log --all --author="$(git config user.email)" --date-order --graph --format='%C(yellow)[%h] %ai (%ar)%C(auto)%d%n%n%C(reset)%s %n%+b'
 sl = log --oneline --graph --format='%C(yellow)%h%C(auto)%C(reset)%C(auto)%d %s %C(cyan)— %aN, %ai (%ar)'
@@ -30,10 +32,13 @@ st = status --short --branch
 today = log --all --graph --since=0am
 topology = log --oneline --graph --all --simplify-by-decoration
 
-# Merging and updating
+# Branching, merging, and updating
+co = checkout
+delete-unused-branches = "!f() { git branch | xargs git branch -d; }; f"
 ff = merge --ff-only
 merge-feature = merge --no-ff --edit
 merge-issue = merge --no-ff --edit
+missing = "!f() { echo \"Only in $1:\"; git sl ..$1; echo; echo 'Only in HEAD:'; git sl $1..; }; f"
 
 # Updating from and pushing to remotes
 fpush = push --force-with-lease
