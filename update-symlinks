@@ -53,7 +53,8 @@ if __name__ == '__main__':
             symlink_from = symlink_from[:-1]
 
         symlink_from_full = os.path.expanduser(symlink_from)
-        symlink_to_full = os.path.relpath(os.path.join(config_dir, symlink_to), HOME_DIR)
+        symlink_to_start = os.path.realpath(os.path.dirname(symlink_from_full))
+        symlink_to_full = os.path.relpath(os.path.join(config_dir, symlink_to), symlink_to_start)
 
         should_link = True
         if os.path.lexists(symlink_from_full):
