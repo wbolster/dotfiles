@@ -10,3 +10,7 @@ inoremap <buffer> # X#
 " Source code checking (flake8, pyflakes, pep8)
 setlocal makeprg=pep8\ --repeat\ --ignore=E501\ %
 let g:syntastic_python_checker_args = "--ignore=E501"
+
+" Debugging
+inoreabbrev <buffer> pdb import pdb; pdb.set_trace()
+inoreabbrev <buffer> ipdb import ipdb; ipdb.set_trace()
