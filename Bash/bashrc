@@ -262,7 +262,7 @@ if [ "$PS1" ]; then
     alias ll='ls -AlF'
 
     # Show colors in grep output
-    export GREP_OPTIONS='--color=auto'
+    alias grep='grep --color=auto'
 
     # Process listings and process control
     alias psg='ps auxww |grep -i '
