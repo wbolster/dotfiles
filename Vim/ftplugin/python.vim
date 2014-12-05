@@ -12,5 +12,6 @@ setlocal makeprg=pep8\ --repeat\ --ignore=E501\ %
 let g:syntastic_python_checker_args = "--ignore=E501"
 
 " Debugging
-inoreabbrev <buffer> pdb import pdb; pdb.set_trace()
-inoreabbrev <buffer> ipdb import ipdb; ipdb.set_trace()
+inoreabbrev <buffer> pdb import pdb<Return>pdb.set_trace()
+inoreabbrev <buffer> ipdb import ipdb<Return>ipdb.set_trace()
+inoreabbrev <buffer> ipy import IPython<Return>IPython.embed()
