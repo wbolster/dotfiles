@@ -263,6 +263,8 @@ if [ "$PS1" ]; then
 
     # Show colors in grep output
     alias grep='grep --color=auto'
+    alias egrep='egrep --color=auto'
+    alias fgrep='fgrep --color=auto'
 
     # Process listings and process control
     alias psg='ps auxww |grep -i '
