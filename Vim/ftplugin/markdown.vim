@@ -15,3 +15,8 @@ noremap <buffer> $ g$
 " Special characters.
 inoreabbrev <buffer> ... …
 inoremap <buffer> `' ‘’<Left>
+
+" Additional vim-surround mapping for code blocks. This uses the c key (short
+" for code) for the replacement, e.g. typing ysiwc surrounds the current word
+" with triple backticks.
+let b:surround_99 = "```\r```"
