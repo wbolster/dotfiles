@@ -24,3 +24,8 @@ noremap <Leader>^ mxyypVr^`x
 noremap <Leader>+ mxyypVr+`x
 noremap <Leader># mxyypVr#`x
 noremap <Leader>u yypVr
+
+" Additional vim-surround mapping for code blocks. This uses the c key (short
+" for code) for the replacement, e.g. typing ysiwc surrounds the current word
+" with double backticks.
+let b:surround_99 = "``\r``"
