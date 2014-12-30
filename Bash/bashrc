@@ -364,6 +364,9 @@ if [ "$PS1" ]; then
     # Misc
     alias sc='screen -UxRR'
     alias lessr='less -R'
+    type sudoedit &>/dev/null || alias sudoedit="sudo -e"
+    type hd &>/dev/null || alias hd="hexdump"
+    type rgrep &>/dev/null || alias rgrep="grep -r"
 fi
 
 
