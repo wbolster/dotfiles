@@ -44,6 +44,7 @@ merge-issue = merge --no-ff --edit
 missing = "!f() { echo \"Only in $1:\"; git sl ..$1; echo; echo 'Only in HEAD:'; git sl $1..; }; f"
 
 # Updating from and pushing to remotes
+fetchall = fetch --all --prune
 fpush = push --force-with-lease
 psuh = push
 puhs = push
