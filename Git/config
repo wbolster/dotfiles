@@ -37,7 +37,7 @@ topology = log --oneline --graph --all --simplify-by-decoration
 
 # Branching, merging, and updating
 co = checkout
-delete-unused-branches = "!f() { git branch | xargs git branch -d; }; f"
+delete-unused-branches = "!f() { git branch | xargs git branch --delete; }; f"
 ff = merge --ff-only
 merge-feature = merge --no-ff --edit
 merge-issue = merge --no-ff --edit
@@ -48,7 +48,7 @@ fetchall = fetch --all --prune
 fpush = push --force-with-lease
 psuh = push
 puhs = push
-up = "!git fetch -p; git merge --ff-only @{u}"
+up = "!git fetch --prune; git merge --ff-only @{u}"
 
 # Rebasing, rewriting history, and so on
 plagiarize = filter-branch --env-filter "'export GIT_AUTHOR_NAME=\"$(git config user.name)\"; export GIT_AUTHOR_EMAIL=\"$(git config user.email)\"; export GIT_COMMITTER_NAME=\"$(git config user.name)\"; export GIT_COMMITTER_EMAIL=\"$(git config user.email)\"'"
@@ -57,9 +57,9 @@ rbc = rebase --continue
 rbi = rebase --interactive
 
 # Misc
-igrep = grep -i
-fgrep = grep -F
-figrep = grep -F -i
+igrep = grep --ignore-case
+fgrep = grep --fixed-strings
+figrep = grep --fixed-strings --ignore-case
 stashk = stash save --keep-index
 stashp = stash pop
 
