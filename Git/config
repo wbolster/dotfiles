@@ -37,7 +37,8 @@ topology = log --oneline --graph --all --simplify-by-decoration
 
 # Branching, merging, and updating
 co = checkout
-delete-unused-branches = "!f() { git branch | xargs git branch --delete; }; f"
+delete-unused-branches = "!f() { git branch | grep -v '*' | xargs --no-run-if-empty git branch --delete; }; f"
+
 ff = merge --ff-only
 merge-feature = merge --no-ff --edit
 merge-issue = merge --no-ff --edit
