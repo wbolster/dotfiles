@@ -28,7 +28,7 @@ wdiff = diff --word-diff
 
 # Inspecting
 ls = ls-files
-mylog = !git log --all --author="$(git config user.email)" --date-order --graph --format='%C(yellow)[%h] %ai (%ar)%C(auto)%d%n%n%C(reset)%s %n%+b'
+mylog = "!f() { git log --all --author=\"$(git config user.email)\" --date-order --graph --format='%C(yellow)[%h] %ai (%ar)%C(auto)%d%n%n%C(reset)%s %n%+b'; }; f"
 sl = log --oneline --graph --format='%C(yellow)%h%C(auto)%C(reset)%C(auto)%d %s %C(cyan)— %aN, %ai (%ar)'
 st = status --short --branch
 today = log --all --graph --since=0am
@@ -48,7 +48,7 @@ fetchall = fetch --all --prune
 fpush = push --force-with-lease
 psuh = push
 puhs = push
-up = "!git fetch --prune; git merge --ff-only @{u}"
+up = "!f() { git fetch --prune; git merge --ff-only @{u}; }; f"
 
 # Rebasing, rewriting history, and so on
 plagiarize = filter-branch --env-filter "'export GIT_AUTHOR_NAME=\"$(git config user.name)\"; export GIT_AUTHOR_EMAIL=\"$(git config user.email)\"; export GIT_COMMITTER_NAME=\"$(git config user.name)\"; export GIT_COMMITTER_EMAIL=\"$(git config user.email)\"'"
