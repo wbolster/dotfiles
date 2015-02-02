@@ -1,6 +1,6 @@
 " Vim configuration for ReStructured TExt
 
-setlocal tabstop=4 shiftwidth=4 expandtab
+setlocal tabstop=2 shiftwidth=2 expandtab
 setlocal textwidth=80
 setlocal spell
 autocmd Filetype rst setlocal comments=b:..  " overwrite system setting
