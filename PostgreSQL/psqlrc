@@ -1,6 +1,7 @@
 -- psql configuration
 -- vim: ft=sql
 
+\pset format wrapped
 \pset linestyle unicode
 \pset null '✗'
 \pset pager off
