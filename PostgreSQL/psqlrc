@@ -1,0 +1,13 @@
+-- psql configuration
+-- vim: ft=sql
+
+\pset linestyle unicode
+\pset null '✗'
+\pset pager off
+\timing
+\x auto
+
+-- Inspired by https://speakerdeck.com/mitsuhiko/modern-and-different-postgresql
+\set PROMPT1 '%[%033[0;33;32m%]%/%[%033[0m%]@%[%033[0;33;33m%]%M%[%033[0m%] %[%033[0;33;36m%]%x%[%033[0m%]%R '
+\set PROMPT2 '%R> '
+
