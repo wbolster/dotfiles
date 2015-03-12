@@ -4,8 +4,8 @@
 umask 077
 
 # Preprend some directories inside ~ to $PATH
-test -d ~/bin && PATH=~/bin:${PATH}
-test -d ~/.local/bin && PATH=~/.local/bin:${PATH}
+[[ -d ~/bin ]] && PATH=~/bin:${PATH}
+[[ -d ~/.local/bin ]] && PATH=~/.local/bin:${PATH}
 
 # On OSX with Homebrew, get the coreutils into the path using their normal names
 if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
@@ -16,9 +16,9 @@ if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
 fi
 
 # Interactive Shells
-if [ "$PS1" ]; then
+if [[ "$PS1" ]]; then
     # Make sure $HOSTNAME is set
-    test -z "${HOSTNAME}" && export HOSTNAME=$(hostname)
+    [[ -z "${HOSTNAME}" ]] && export HOSTNAME=$(hostname)
 
     # Prompt and terminal title
     PROMPT_DIRTRIM=3
@@ -50,7 +50,7 @@ if [ "$PS1" ]; then
     # types. (The "screen" term does not have it, for example.)
     _ps1_newline_warning_enabled=0;
     function _ps1_enable_newline_warning() {
-        if [ x"$(echo -en "\e[6n")" != x"" ]; then
+        if [[ ! -z "$(echo -en "\e[6n")" ]]; then
             _ps1_newline_warning_enabled=1;
             function _cursor_column() {
                 exec < /dev/tty
@@ -77,10 +77,10 @@ if [ "$PS1" ]; then
         local n=$1
         local output=""
         local h=$(($n / 3600))
-        test $h -gt 0 && output+="${h}h"
+        [[ $h -gt 0 ]] && output+="${h}h"
         n=$(($n % 3600))
         local m=$(($n / 60))
-        test $m -gt 0 && output+="${m}m"
+        [[ $m -gt 0 ]] && output+="${m}m"
         s=$(($n % 60))
         output+="${s}s"
         echo "${output}"
@@ -95,11 +95,11 @@ if [ "$PS1" ]; then
         # Exit code from previous command
         local prev_exit_code=$?
         local ps1_err=""
-        if [ ${prev_exit_code} -ne 0 ]; then
+        if [[ ${prev_exit_code} -ne 0 ]]; then
             local exit_status=${prev_exit_code}
             # Lookup signal numbers between 0 and 64; these are returned as
             # exit codes between 128 and 192
-            if [ ${prev_exit_code} -gt 128 -a ${prev_exit_code} -lt 192 ]; then
+            if [[ ${prev_exit_code} -gt 128 && ${prev_exit_code} -lt 192 ]]; then
                 exit_status=$((128-prev_exit_code))" "$(kill -l ${prev_exit_code} 2>/dev/null || echo -n '?')
             fi
             ps1_err=" ${COLOR_RED}${exit_status}"
@@ -107,9 +107,9 @@ if [ "$PS1" ]; then
 
         # Time since previous command
         local ps1_timer
-        if [ -n "${_timer_start}" ]; then
+        if [[ -n "${_timer_start}" ]]; then
             local seconds_elapsed=$(($SECONDS - $_timer_start))
-            if [ $seconds_elapsed -ge 10 ]; then
+            if [[ $seconds_elapsed -ge 10 ]]; then
                 seconds_elapsed=$(_fmt_seconds_elapsed ${seconds_elapsed})
                 ps1_timer+="${COLOR_GREEN}[${seconds_elapsed} elapsed]\n\n"
             fi
@@ -118,7 +118,7 @@ if [ "$PS1" ]; then
 
         # Host name
         local ps1_hostname=""
-        if [ -z "$SSH_CLIENT" ]; then
+        if [[ -z "${SSH_CLIENT}" ]]; then
             ps1_hostname+="${COLOR_GREEN}"
         else
             ps1_hostname+="${COLOR_BLUE_BOLD}"
@@ -133,7 +133,7 @@ if [ "$PS1" ]; then
         local tt_git=""
         if declare -F __git_ps1 > /dev/null; then
             local _git_ps1_output="$(__git_ps1 '%s')"
-            if [ -n "${_git_ps1_output}" ]; then
+            if [[ -n "${_git_ps1_output}" ]]; then
                 ps1_git="${COLOR_GREEN_BOLD}:${_git_ps1_output}"
                 tt_git=" (${_git_ps1_output})"
             fi
@@ -142,7 +142,7 @@ if [ "$PS1" ]; then
         # Virtualenv
         local ps1_venv=""
         local tt_venv=""
-        if [ -n "$VIRTUAL_ENV" ]; then
+        if [[ -n "$VIRTUAL_ENV" ]]; then
             local venv_name=$(basename ${VIRTUAL_ENV})
             ps1_venv=":${COLOR_GREEN_BOLD}${venv_name}"
             tt_venv=" [${venv_name}]"
@@ -150,8 +150,8 @@ if [ "$PS1" ]; then
 
         # Warning when output does not have a trailing newline
         local ps1_newline_warning=""
-        if [ ${_ps1_newline_warning_enabled} -eq 1 ]; then
-            if [ "$(_cursor_column)" -ne 1 ]; then
+        if [[ ${_ps1_newline_warning_enabled} -eq 1 ]]; then
+            if [[ "$(_cursor_column)" -ne 1 ]]; then
                 ps1_newline_warning="\n${COLOR_RED}!nl "
             fi
         fi
@@ -159,14 +159,14 @@ if [ "$PS1" ]; then
         # Background jobs
         local ps1_jobs=""
         local n_jobs="$(jobs -p | wc -w)"
-        if [ ${n_jobs} -ne 0 ]; then
+        if [[ ${n_jobs} -ne 0 ]]; then
             local n_jobs_running="$(jobs -p -r | wc -w)"
             local n_jobs_suspended="$(jobs -p -s | wc -w)"
             ps1_jobs="${COLOR_BLUE_BOLD}"
-            if [ ${n_jobs_running} -ne 0 ]; then
+            if [[ ${n_jobs_running} -ne 0 ]]; then
                 ps1_jobs+=" ${n_jobs_running}&"
             fi
-            if [ ${n_jobs_suspended} -ne 0 ]; then
+            if [[ ${n_jobs_suspended} -ne 0 ]]; then
                 ps1_jobs+=" ${n_jobs_suspended}^Z"
             fi
         fi
@@ -202,14 +202,14 @@ if [ "$PS1" ]; then
     setterm -blength 0 2>/dev/null
 
     # Completion
-    if [ -f /usr/share/bash-completion/bash_completion ]; then
+    if [[ -f /usr/share/bash-completion/bash_completion ]]; then
         source /usr/share/bash-completion/bash_completion
-    elif [ -f /etc/bash_completion ]; then
+    elif [[ -f /etc/bash_completion ]]; then
         source /etc/bash_completion
-    elif [ -f /usr/local/etc/bash_completion ]; then
+    elif [[ -f /usr/local/etc/bash_completion ]]; then
         source /usr/local/etc/bash_completion
     fi
-    if [ -f $HOME/.bash_completion ]; then
+    if [[ -f $HOME/.bash_completion ]]; then
         source $HOME/.bash_completion
     fi
 
@@ -228,7 +228,7 @@ if [ "$PS1" ]; then
         # Handle typos like "gitp ush" and "gitpu sh"
         local autocorrect_cmds="bzr git svn"
         for prefix in $autocorrect_cmds; do
-            if [ "${cmd#$prefix}" == "$cmd" ]; then
+            if [[ "${cmd#$prefix}" == "$cmd" ]]; then
                 # prefix is not a prefix of the typed command
                 continue
             fi
@@ -308,7 +308,7 @@ if [ "$PS1" ]; then
     function pyprof {
         local PROG="$1"
         shift
-        if [ -z "$PROG" ]; then
+        if [[ -z "${PROG}" ]]; then
             echo "Error: no Python program specified. Usage: pyprof some-program --some-args" > /dev/stderr
             return
         fi
@@ -332,7 +332,7 @@ if [ "$PS1" ]; then
     # GUI applications
     if [[ "$OSTYPE" == darwin* ]]; then
         alias g='open '
-    elif [ ! -z "$DISPLAY" ]; then
+    elif [[ ! -z "$DISPLAY" ]]; then
         alias g='xdg-open '
     fi
 
@@ -396,8 +396,8 @@ fi
 # if the home directory is shared over NFS.
 #
 
-test -f ~/.bashrc-local && source ~/.bashrc-local
-test -f ~/.bashrc-$HOSTNAME && source ~/.bashrc-$HOSTNAME
+[[ -f ~/.bashrc-local ]] && source ~/.bashrc-local
+[[ -f ~/.bashrc-$HOSTNAME ]] && source ~/.bashrc-$HOSTNAME
 
 # Force $? to be 0 (for the initial PS1)
 true
