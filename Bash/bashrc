@@ -361,6 +361,24 @@ if [ "$PS1" ]; then
         complete -F _apt_get_packages i ac acp
     fi
 
+    # iTerm profile tricks
+    if [[ ! -z "$ITERM_PROFILE" ]]; then
+        _ITERM_PROFILE_FILE=~/.config/iterm-profile
+        function _iterm_profile() {
+            echo -n -e "\e]50;SetProfile=$1\a"
+            echo "$1" > ${_ITERM_PROFILE_FILE}
+        }
+        function dark() {
+            _iterm_profile "Default"
+        }
+        function light() {
+            _iterm_profile "Light"
+        }
+        if [[ -e ${_ITERM_PROFILE_FILE} ]]; then
+            _iterm_profile $(cat ${_ITERM_PROFILE_FILE})
+        fi
+    fi
+
     # Misc
     alias sc='screen -UxRR'
     alias lessr='less -R'
