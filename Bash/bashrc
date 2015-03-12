@@ -88,8 +88,7 @@ if [[ "$PS1" ]]; then
 
     # Use a DEBUG trap to store timer information before a command is executed.
     # The _timer_start variable is cleared in the prompt command function.
-    # XXX: this seems broken with Bash >= 4.3 (breaking "echo hi |grep hi")
-    # trap 'test -z $_timer_start && _timer_start=${SECONDS}' DEBUG
+    trap '[[ -z $_timer_start ]] && _timer_start=${SECONDS}' DEBUG
 
     function set_prompt_command {
         # Exit code from previous command
