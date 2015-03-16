@@ -12,9 +12,9 @@ inoremap <buffer> ``` ‘
 inoremap <buffer> '' ’
 
 " Admonitions
-inoreabbrev  ..n .. note::<Enter><Enter>   <C-R>=EatWhitespace()<Enter>
-inoreabbrev  ..t .. tip::<Enter><Enter>   <C-R>=EatWhitespace()<Enter>
-inoreabbrev  ..w .. warning::<Enter><Enter>   <C-R>=EatWhitespace()<Enter>
+inoreabbrev <buffer> ..n .. note::<Enter><Enter>   <C-R>=EatWhitespace()<Enter>
+inoreabbrev <buffer> ..t .. tip::<Enter><Enter>   <C-R>=EatWhitespace()<Enter>
+inoreabbrev <buffer> ..w .. warning::<Enter><Enter>   <C-R>=EatWhitespace()<Enter>
 
 " Underline current line
 noremap <Leader>= mxyypVr=`x
