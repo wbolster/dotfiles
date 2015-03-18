@@ -302,7 +302,6 @@ if [[ "$PS1" ]]; then
     fi
 
     # Python stuff
-    export PIP_DOWNLOAD_CACHE=~/.cache/pip/
     export PYTHONDONTWRITEBYTECODE=1
     function pyprof {
         local PROG="$1"
