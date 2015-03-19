@@ -28,7 +28,7 @@ wdiff = diff --word-diff
 
 # Inspecting
 ls = ls-files
-mylog = "!f() { git log --all --author=\"$(git config user.email)\" --date-order --graph --format='%C(yellow)[%h] %ai (%ar)%C(auto)%d%n%n%C(reset)%s %n%+b'; }; f"
+mylog = "!f() { git log --all --author=\"$(git config user.email)\" --date-order --graph --format='%C(yellow)[%h] %ai (%ar)%C(auto)%d%n%n%C(reset)%s %n%+b' \"$@\"; }; f"
 sl = log --oneline --graph --format='%C(yellow)%h%C(auto)%C(reset)%C(auto)%d %s %C(cyan)— %aN, %ai (%ar)'
 st = status --short --branch
 today = log --all --graph --since=0am
