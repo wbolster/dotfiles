@@ -303,6 +303,7 @@ if [[ "$PS1" ]]; then
 
     # Python stuff
     export PYTHONDONTWRITEBYTECODE=1
+    alias pytest=py.test
     function pyprof {
         local PROG="$1"
         shift
