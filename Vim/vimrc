@@ -41,8 +41,8 @@ set ignorecase smartcase
 set hlsearch incsearch
 nohlsearch
 set gdefault
-nnoremap <Cr> :let b:winview = winsaveview()<Cr>*:call winrestview(b:winview)<Cr>
-nnoremap g<Cr> :let b:winview = winsaveview()<Cr>g*:call winrestview(b:winview)<Cr>
+nnoremap <CR> :let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'<CR>:set hlsearch<CR>:echo<CR>
+nnoremap g<CR> :let @/ = expand('<cword>')<CR>:set hlsearch<CR>:echo<CR>
 
 " Whitespace (after an abbreviation)
 function! EatWhitespace()
