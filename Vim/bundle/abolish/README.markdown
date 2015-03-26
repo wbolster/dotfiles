@@ -1,18 +1,16 @@
-abolish.vim
-===========
+# abolish.vim
 
-I sat on on this plugin for 3 years before releasing it, primarily
+I sat on this plugin for 3 years before releasing it, primarily
 because it's so gosh darn hard to explain.  It's three superficially
 unrelated plugins in one that share a common theme: working with
 variants of a word.
 
-Abbreviation
-------------
+## Abbreviation
 
-I know how to spell separate.  I know how to spell desperate.  My
+I know how to spell "separate".  I know how to spell "desperate".  My
 fingers, however, have trouble distinguishing between the two, and I
-invariably have a 50 percent chance of typing seperate or desparate each
-time one of these comes up.  At first, I tried abbreviations:
+invariably have a 50 percent chance of typing "seperate" or "desparate"
+each time one of these comes up.  At first, I tried abbreviations:
 
     :iabbrev  seperate  separate
     :iabbrev desparate desperate
@@ -42,8 +40,8 @@ Oh, but consider the noun form, and the adverb form!
     :iabbrev  SEPERATELY  SEPARATELY
     :iabbrev DESPARATELY DESPERATELY
 
-Wait, there's also separates, separated, separating, separations,
-separator...
+Wait, there's also "separates", "separated", "separating",
+"separations", "separator"...
 
 Abolish.vim provides a simpler way.  The following one command produces
 48 abbreviations including all of the above.
@@ -53,11 +51,10 @@ Abolish.vim provides a simpler way.  The following one command produces
 My current configuration has 25 Abolish commands that create hundreds of
 corrections my fingers refuse to learn.
 
-Substitution
-------------
+## Substitution
 
-One time I had an application that with a domain model called
-"facilities" that needed to be renamed to "buildings". So, a simple
+One time I had an application with a domain model called
+"facility" that needed to be renamed to "building". So, a simple
 search and replace, right?
 
     :%s/facility/building/g
@@ -82,15 +79,15 @@ From a conceptual level, one way to think about how this substitution
 works is to imagine that in the braces you are declaring the
 requirements for turning that word from singular to plural.  In
 the facility example, the same base letters in both the singular
-and plural form of the word are `facilit` To turn facility to a
+and plural form of the word are `facilit` To turn "facility" to a
 plural word you must change the `y` to `ies` so you specify
 `{y,ies}` in the braces.
 
-To convert the word building from singular to plural, again
+To convert the word "building" from singular to plural, again
 look at the common letters between the singular and plural forms:
-`building`  In this case you do not need to remove any letter
+`building`.  In this case you do not need to remove any letter
 from building to turn it into plural form and you need to
-add a `s` so the braces should be `{,s}`.
+add an `s` so the braces should be `{,s}`.
 
 A few more examples:
 
@@ -117,16 +114,14 @@ including things like `c` (confirm).
 
 There's also a variant for searching and a variant for grepping.
 
-Coercion
---------
+## Coercion
 
 Want to turn `fooBar` into `foo_bar`?  Press `crs` (coerce to
 snake\_case).  MixedCase (`crm`), camelCase (`crc`), snake\_case
 (`crs`), and UPPER\_CASE (`cru`) are all just 3 keystrokes away.  These
 commands support [repeat.vim](https://github.com/tpope/vim-repeat).
 
-Installation
-------------
+## Installation
 
 If you don't have a preferred installation method, I recommend
 installing [pathogen.vim](https://github.com/tpope/vim-pathogen), and
@@ -138,14 +133,7 @@ then simply copy and paste:
 Once help tags have been generated, you can view the manual with
 `:help abolish`.
 
-Contributing
-------------
-
-See the contribution guidelines for
-[pathogen.vim](https://github.com/tpope/vim-pathogen#readme).
-
-Self-Promotion
---------------
+## Self-Promotion
 
 Like abolish.vim? Follow the repository on
 [GitHub](https://github.com/tpope/vim-abolish) and vote for it on
@@ -154,8 +142,7 @@ you're feeling especially charitable, follow [tpope](http://tpo.pe/) on
 [Twitter](http://twitter.com/tpope) and
 [GitHub](https://github.com/tpope).
 
-License
--------
+## License
 
 Copyright (c) Tim Pope.  Distributed under the same terms as Vim itself.
 See `:help license`.
