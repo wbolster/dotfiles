@@ -41,6 +41,8 @@ set ignorecase smartcase
 set hlsearch incsearch
 nohlsearch
 set gdefault
+nnoremap <Cr> :let b:winview = winsaveview()<Cr>*:call winrestview(b:winview)<Cr>
+nnoremap g<Cr> :let b:winview = winsaveview()<Cr>g*:call winrestview(b:winview)<Cr>
 
 " Whitespace (after an abbreviation)
 function! EatWhitespace()
