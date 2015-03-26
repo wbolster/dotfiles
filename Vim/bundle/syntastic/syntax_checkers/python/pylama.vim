@@ -15,6 +15,10 @@ if exists('g:loaded_syntastic_python_pylama_checker')
 endif
 let g:loaded_syntastic_python_pylama_checker = 1
 
+if !exists('g:syntastic_python_pylama_sort')
+    let g:syntastic_python_pylama_sort = 1
+endif
+
 let s:save_cpo = &cpo
 set cpo&vim
 
@@ -30,10 +34,12 @@ function! SyntaxCheckers_python_pylama_GetLocList() dict
         \ '%-GWARNING:pylama:%.%#,' .
         \ '%A%f:%l:%c: %m'
 
+    let env = syntastic#util#isRunningWindows() ? {} : { 'TERM': 'dumb' }
+
     let loclist = SyntasticMake({
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat,
-        \ 'postprocess': ['sort'] })
+        \ 'env': env })
 
     " adjust for weirdness in each checker
     for e in loclist
@@ -65,4 +71,4 @@ call g:SyntasticRegistry.CreateAndRegisterChecker({
 let &cpo = s:save_cpo
 unlet s:save_cpo
 
-" vim: set et sts=4 sw=4:
+" vim: set sw=4 sts=4 et fdm=marker:
