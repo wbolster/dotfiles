@@ -40,8 +40,9 @@ if [[ "$PS1" ]]; then
     COLOR_WHITE="\[\e[0;37m\]"
     COLOR_WHITE_BOLD="\[\e[1;37m\]"
 
-    # __git_ps1() defaults
-    GIT_PS1_SHOWUPSTREAM=1
+    # Git status in prompt using __git_ps1()
+    GIT_PS1_SHOWDIRTYSTATE=1
+    GIT_PS1_SHOWUPSTREAM="git verbose"
 
     # Trailing newline warning using cursor column detection
     #
