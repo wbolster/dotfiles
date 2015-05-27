@@ -50,6 +50,7 @@ fetchall = fetch --all --prune
 fpush = push --force-with-lease
 psuh = push
 puhs = push
+unpush1 = "!f() { git push --verbose --force-with-lease origin HEAD^:$(git symbolic-ref --short -q HEAD); }; f"
 up = "!f() { git fetch --prune; git merge --ff-only @{u}; }; f"
 
 # Rebasing, rewriting history, and so on
