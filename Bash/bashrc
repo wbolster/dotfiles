@@ -3,14 +3,14 @@
 # Keep new files and directories private by default
 umask 077
 
-# Preprend some directories inside ~ to $PATH
+# Set a sensible $PATH
 [[ -d ~/bin ]] && PATH=~/bin:${PATH}
 [[ -d ~/.local/bin ]] && PATH=~/.local/bin:${PATH}
-
-# On OSX with Homebrew, get the coreutils into the path using their normal names
 if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
+    # OSX and Homebrew: add Homebrew's sbin, and use GNU coreutils
     brew_prefix=$(brew --prefix)
-    PATH="${brew_prefix}/opt/coreutils/libexec/gnubin:$PATH"
+    PATH="${PATH}:${brew_prefix}/sbin"
+    PATH="${brew_prefix}/opt/coreutils/libexec/gnubin:${PATH}"
     MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman:$MANPATH"
     unset brew_prefix
 fi
