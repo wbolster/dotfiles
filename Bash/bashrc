@@ -214,6 +214,8 @@ if [[ "$PS1" ]]; then
     fi
 
     # Directory changing (and creation)
+    .. () { cd .. ; }
+    - () { cd - ; }
     function mcd() {
         mkdir --verbose --parents "$1" && cd "$1"
     }
