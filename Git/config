@@ -51,6 +51,7 @@ missing = "!f() { echo \"Only in $1:\"; git sl ..$1; echo; echo 'Only in HEAD:';
 # Updating from and pushing to remotes
 fetchall = fetch --all --prune
 fpush = push --force-with-lease
+pshu = push
 psuh = push
 puhs = push
 unpush1 = "!f() { git push --verbose --force-with-lease origin HEAD^:$(git symbolic-ref --short -q HEAD); }; f"
