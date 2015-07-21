@@ -20,6 +20,7 @@ ap = add --patch
 au = add --update :/
 
 # Diff
+di = diff
 dif = diff
 cdiff = diff --cached --find-renames
 cwdiff = diff --cached --word-diff
@@ -38,7 +39,9 @@ topology = log --oneline --graph --all --simplify-by-decoration
 # http://stackoverflow.com/questions/914939/simple-tool-to-accept-theirs-or-accept-mine-on-a-whole-file-using-git
 accept-ours = "!f() { [ -z \"$@\" ] && set - '.'; git checkout --ours -- \"$@\"; git add -u -- \"$@\"; }; f"
 accept-theirs = "!f() { [ -z \"$@\" ] && set - '.'; git checkout --theirs -- \"$@\"; git add -u -- \"$@\"; }; f"
+br = branch
 co = checkout
+cob = checkout -b
 delete-unused-branches = "!f() { git branch | grep -v '*' | xargs --no-run-if-empty git branch --delete; }; f"
 ff = merge --ff-only
 merge-feature = merge --no-ff --edit
