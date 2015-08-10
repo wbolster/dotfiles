@@ -50,10 +50,10 @@ if [[ "$PS1" ]]; then
     # escape sequence, but this user string is not available for all terminal
     # types. (The "screen" term does not have it, for example.)
     _ps1_newline_warning_enabled=0;
-    function _ps1_enable_newline_warning() {
+    _ps1_enable_newline_warning() {
         if [[ ! -z "$(echo -en "\e[6n")" ]]; then
             _ps1_newline_warning_enabled=1;
-            function _cursor_column() {
+            _cursor_column() {
                 exec < /dev/tty
                 local stty_save=$(stty -g)
                 stty raw -echo min 0
@@ -69,12 +69,12 @@ if [[ "$PS1" ]]; then
             echo -e "\e[1;31mWarning: terminal does not support cursor column detection; newline detection disabled"
         fi
     }
-    function _ps1_disable_newline_warning() {
+    _ps1_disable_newline_warning() {
         _ps1_newline_warning_enabled=0;
     }
 
     # Time range formatting
-    function _fmt_seconds_elapsed {
+    _fmt_seconds_elapsed() {
         local n=$1
         local output=""
         local h=$(($n / 3600))
@@ -91,7 +91,7 @@ if [[ "$PS1" ]]; then
     # The _timer_start variable is cleared in the prompt command function.
     trap '[[ -z $_timer_start ]] && _timer_start=${SECONDS}' DEBUG
 
-    function set_prompt_command {
+    set_prompt_command() {
         # Exit code from previous command
         local prev_exit_code=$?
         local ps1_err=""
@@ -216,15 +216,15 @@ if [[ "$PS1" ]]; then
     # Directory changing (and creation)
     .. () { cd .. ; }
     - () { cd - ; }
-    function mcd() {
+    mcd() {
         mkdir --verbose --parents "$1" && cd "$1"
     }
-    function cdp {
+    cdp() {
         cd $(dirname "$1")
     }
 
     # Magic typo corrector
-    function command_not_found_handle() {
+    command_not_found_handle() {
         local cmd="$1"
 
         # Handle typos like "gitp ush" and "gitpu sh"
@@ -299,7 +299,7 @@ if [[ "$PS1" ]]; then
     alias m=make
     complete -F _make m
     if type git &>/dev/null; then
-        function cdgitroot {
+        cdgitroot() {
             cd "$(git rev-parse --show-toplevel)"
         }
     fi
@@ -307,7 +307,7 @@ if [[ "$PS1" ]]; then
     # Python stuff
     export PYTHONDONTWRITEBYTECODE=1
     alias pytest=py.test
-    function pyprof {
+    pyprof() {
         local PROG="$1"
         shift
         if [[ -z "${PROG}" ]]; then
@@ -353,7 +353,7 @@ if [[ "$PS1" ]]; then
         alias i='sudo $(which apt-get) install -V'
         alias u='sudo $(which apt-get) update && sudo $(which apt-get) upgrade -V'
 
-        function _apt_get_packages {
+        _apt_get_packages() {
             local cur
             cur=${COMP_WORDS[COMP_CWORD]}
             COMPREPLY=( $( apt-cache --no-generate pkgnames "$cur" \
@@ -366,14 +366,14 @@ if [[ "$PS1" ]]; then
     # iTerm profile tricks
     if [[ ! -z "$ITERM_PROFILE" ]]; then
         _ITERM_PROFILE_FILE=~/.config/iterm-profile
-        function _iterm_profile() {
+        _iterm_profile() {
             echo -n -e "\e]50;SetProfile=$1\a"
             echo "$1" > ${_ITERM_PROFILE_FILE}
         }
-        function dark() {
+        dark() {
             _iterm_profile "Default"
         }
-        function light() {
+        light() {
             _iterm_profile "Light"
         }
         if [[ -e ${_ITERM_PROFILE_FILE} ]]; then
