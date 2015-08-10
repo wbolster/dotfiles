@@ -307,11 +307,11 @@ if [[ "$PS1" ]]; then
     # Python stuff
     export PYTHONDONTWRITEBYTECODE=1
     alias pytest=py.test
-    pyprof() {
+    py-cprofile() {
         local PROG="$1"
         shift
         if [[ -z "${PROG}" ]]; then
-            echo "Error: no Python program specified. Usage: pyprof some-program --some-args" > /dev/stderr
+            echo -e "Error: no Python program specified. Usage:\n\n    ${FUNCNAME} some-program --some-args" > /dev/stderr
             return
         fi
         local PROFILE=$(mktemp 'profile-XXXXXX.prof')
