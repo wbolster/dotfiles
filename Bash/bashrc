@@ -321,6 +321,12 @@ if [[ "$PS1" ]]; then
         echo > /dev/stderr
         echo "Profile stored in $PROFILE" > /dev/stderr
     }
+    py-pdb() {
+        python -m pdb $(which "$1") "${@:2}"
+    }
+    py-ipdb() {
+        python -m ipdb $(which "$1") "${@:2}"
+    }
 
     # Jhbuild
     if type jhbuild &>/dev/null; then
