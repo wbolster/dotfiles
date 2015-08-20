@@ -1,0 +1,6 @@
+# Configuration for less(1)
+# Run "lesskey" to produce a ".less" file from this source file.
+
+#command
+h   left-scroll
+l   right-scroll
