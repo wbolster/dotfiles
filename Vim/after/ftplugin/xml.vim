@@ -2,6 +2,7 @@
 
 setlocal shiftwidth=2 tabstop=2 expandtab
 setlocal foldmethod=indent nofoldenable
+setlocal formatprg=xmllint\ --format\ -
 setlocal matchpairs+=<:>
 setlocal iskeyword+=: " useful for namespace prefixes
 setlocal iskeyword+=- " useful for xslt
