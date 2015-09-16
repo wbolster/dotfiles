@@ -57,7 +57,8 @@ fpush = push --force-with-lease
 pshu = push
 psuh = push
 puhs = push
-share-current-branch = "!f() { git push --verbose --set-upstream origin $(git symbolic-ref --short HEAD); }; f"
+publish = "!f() { git push --verbose --set-upstream origin $(git branch-name); }; f"
+unpublish = "!f() { git push --verbose origin --delete $(git branch-name) ; }; f"
 unpush1 = "!f() { git push --verbose --force-with-lease origin HEAD^:$(git branch-name); }; f"
 up = "!f() { git fetch --prune; git merge --ff-only @{u}; }; f"
 
