@@ -2,6 +2,9 @@
 
 [alias]
 
+# Generic
+branch-name = symbolic-ref --short HEAD
+
 # Identity
 personal-repo = "!f() { /bin/echo -n 'Old value: '; git config user.email; git config user.email uws@xs4all.nl; /bin/echo -n 'New value: '; git config user.email; }; f"
 
@@ -55,7 +58,7 @@ pshu = push
 psuh = push
 puhs = push
 share-current-branch = "!f() { git push --verbose --set-upstream origin $(git symbolic-ref --short HEAD); }; f"
-unpush1 = "!f() { git push --verbose --force-with-lease origin HEAD^:$(git symbolic-ref --short -q HEAD); }; f"
+unpush1 = "!f() { git push --verbose --force-with-lease origin HEAD^:$(git branch-name); }; f"
 up = "!f() { git fetch --prune; git merge --ff-only @{u}; }; f"
 
 # Rebasing, rewriting history, and so on
