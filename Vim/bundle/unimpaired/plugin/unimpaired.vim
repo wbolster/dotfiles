@@ -110,7 +110,7 @@ onoremap <silent> <Plug>unimpairedContextPrevious :call <SID>ContextMotion(1)<CR
 onoremap <silent> <Plug>unimpairedContextNext     :call <SID>ContextMotion(0)<CR>
 
 function! s:Context(reverse)
-  call search('^@@ .* @@\|^[<=>|]\{7}[<=>|]\@!', a:reverse ? 'bW' : 'W')
+  call search('^\(@@ .* @@\|[<=>|]\{7}[<=>|]\@!\)', a:reverse ? 'bW' : 'W')
 endfunction
 
 function! s:ContextMotion(reverse)
@@ -198,31 +198,37 @@ xmap ]e <Plug>unimpairedMoveSelectionDown
 " }}}1
 " Option toggling {{{1
 
-function! s:toggle(op)
+function! s:statusbump() abort
+  let &l:readonly = &l:readonly
+  return ''
+endfunction
+
+function! s:toggle(op) abort
+  call s:statusbump()
   return eval('&'.a:op) ? 'no'.a:op : a:op
 endfunction
 
-function! s:option_map(letter, option)
-  exe 'nnoremap [o'.a:letter.' :set '.a:option.'<CR>'
-  exe 'nnoremap ]o'.a:letter.' :set no'.a:option.'<CR>'
-  exe 'nnoremap co'.a:letter.' :set <C-R>=<SID>toggle("'.a:option.'")<CR><CR>'
+function! s:option_map(letter, option, mode) abort
+  exe 'nnoremap [o'.a:letter ':'.a:mode.' '.a:option.'<C-R>=<SID>statusbump()<CR><CR>'
+  exe 'nnoremap ]o'.a:letter ':'.a:mode.' no'.a:option.'<C-R>=<SID>statusbump()<CR><CR>'
+  exe 'nnoremap co'.a:letter ':'.a:mode.' <C-R>=<SID>toggle("'.a:option.'")<CR><CR>'
 endfunction
 
 nnoremap [ob :set background=light<CR>
 nnoremap ]ob :set background=dark<CR>
 nnoremap cob :set background=<C-R>=&background == 'dark' ? 'light' : 'dark'<CR><CR>
-call s:option_map('c', 'cursorline')
-call s:option_map('u', 'cursorcolumn')
+call s:option_map('c', 'cursorline', 'setlocal')
+call s:option_map('u', 'cursorcolumn', 'setlocal')
 nnoremap [od :diffthis<CR>
 nnoremap ]od :diffoff<CR>
 nnoremap cod :<C-R>=&diff ? 'diffoff' : 'diffthis'<CR><CR>
-call s:option_map('h', 'hlsearch')
-call s:option_map('i', 'ignorecase')
-call s:option_map('l', 'list')
-call s:option_map('n', 'number')
-call s:option_map('r', 'relativenumber')
-call s:option_map('s', 'spell')
-call s:option_map('w', 'wrap')
+call s:option_map('h', 'hlsearch', 'set')
+call s:option_map('i', 'ignorecase', 'set')
+call s:option_map('l', 'list', 'setlocal')
+call s:option_map('n', 'number', 'setlocal')
+call s:option_map('r', 'relativenumber', 'setlocal')
+call s:option_map('s', 'spell', 'setlocal')
+call s:option_map('w', 'wrap', 'setlocal')
 nnoremap [ox :set cursorline cursorcolumn<CR>
 nnoremap ]ox :set nocursorline nocursorcolumn<CR>
 nnoremap cox :set <C-R>=&cursorline && &cursorcolumn ? 'nocursorline nocursorcolumn' : 'cursorline cursorcolumn'<CR><CR>
