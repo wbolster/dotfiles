@@ -306,6 +306,8 @@ if [[ "$PS1" ]]; then
 
     # Python stuff
     export PYTHONDONTWRITEBYTECODE=1
+    alias py=python
+    alias ipy=ipython
     alias pytest=py.test
     py-cprofile() {
         local PROG="$1"
