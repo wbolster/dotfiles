@@ -107,16 +107,16 @@ function! syntastic#util#rmrf(what) abort " {{{2
     endif
 endfunction " }}}2
 
-"search the first 5 lines of the file for a magic number and return a map
-"containing the args and the executable
+" Search the first 5 lines of the file for a magic number and return a map
+" containing the args and the executable
 "
-"e.g.
+" e.g.
 "
-"#!/usr/bin/perl -f -bar
+" #!/usr/bin/perl -f -bar
 "
-"returns
+" returns
 "
-"{'exe': '/usr/bin/perl', 'args': ['-f', '-bar']}
+" {'exe': '/usr/bin/perl', 'args': ['-f', '-bar']}
 function! syntastic#util#parseShebang() abort " {{{2
     for lnum in range(1, 5)
         let line = getline(lnum)
@@ -140,8 +140,8 @@ function! syntastic#util#var(name, ...) abort " {{{2
 endfunction " }}}2
 
 " Parse a version string.  Return an array of version components.
-function! syntastic#util#parseVersion(version) abort " {{{2
-    return map(split(matchstr( a:version, '\v^\D*\zs\d+(\.\d+)+\ze' ), '\m\.'), 'str2nr(v:val)')
+function! syntastic#util#parseVersion(version, ...) abort " {{{2
+    return map(split(matchstr( a:version, a:0 ? a:1 : '\v^\D*\zs\d+(\.\d+)+\ze' ), '\m\.'), 'str2nr(v:val)')
 endfunction " }}}2
 
 " Verify that the 'installed' version is at least the 'required' version.
@@ -164,7 +164,7 @@ function! syntastic#util#compareLexi(a, b) abort " {{{2
             return a_element > b_element ? 1 : -1
         endif
     endfor
-    " Everything matched, so it is at least the required version.
+    " still here, thus everything matched
     return 0
 endfunction " }}}2
 
@@ -183,7 +183,7 @@ function! syntastic#util#screenWidth(str, tabstop) abort " {{{2
     return width
 endfunction " }}}2
 
-"print as much of a:msg as possible without "Press Enter" prompt appearing
+" Print as much of a:msg as possible without "Press Enter" prompt appearing
 function! syntastic#util#wideMsg(msg) abort " {{{2
     let old_ruler = &ruler
     let old_showcmd = &showcmd
@@ -226,9 +226,19 @@ function! syntastic#util#bufIsActive(buffer) abort " {{{2
     return 0
 endfunction " }}}2
 
-" start in directory a:where and walk up the parent folders until it
-" finds a file matching a:what; return path to that file
-function! syntastic#util#findInParent(what, where) abort " {{{2
+" Start in directory a:where and walk up the parent folders until it finds a
+" file named a:what; return path to that file
+function! syntastic#util#findFileInParent(what, where) abort " {{{2
+    let old_suffixesadd = &suffixesadd
+    let &suffixesadd = ''
+    let file = findfile(a:what, escape(a:where, ' ') . ';')
+    let &suffixesadd = old_suffixesadd
+    return file
+endfunction " }}}2
+
+" Start in directory a:where and walk up the parent folders until it finds a
+" file matching a:what; return path to that file
+function! syntastic#util#findGlobInParent(what, where) abort " {{{2
     let here = fnamemodify(a:where, ':p')
 
     let root = syntastic#util#Slash()
@@ -293,7 +303,7 @@ function! syntastic#util#argsescape(opt) abort " {{{2
     return []
 endfunction " }}}2
 
-" decode XML entities
+" Decode XML entities
 function! syntastic#util#decodeXMLEntities(string) abort " {{{2
     let str = a:string
     let str = substitute(str, '\m&lt;', '<', 'g')
@@ -323,11 +333,76 @@ function! syntastic#util#dictFilter(errors, filter) abort " {{{2
     endtry
 endfunction " }}}2
 
-" Return a [high, low] list of integers, representing the time
-" (hopefully high resolution) since program start
-" TODO: This assumes reltime() returns a list of integers.
+" Return a [seconds, fractions] list of strings, representing the
+" (hopefully high resolution) time since program start
 function! syntastic#util#stamp() abort " {{{2
-    return reltime(g:_SYNTASTIC_START)
+    return split( split(reltimestr(reltime(g:_SYNTASTIC_START)))[0], '\.' )
+endfunction " }}}2
+
+let s:_str2float = function(exists('*str2float') ? 'str2float' : 'str2nr')
+lockvar s:_str2float
+
+function! syntastic#util#str2float(val) abort " {{{2
+    return s:_str2float(a:val)
+endfunction " }}}2
+
+function! syntastic#util#float2str(val) abort " {{{2
+    return s:_float2str(a:val)
+endfunction " }}}2
+
+" Crude printf()-like width formatter.  Handles wide characters.
+function! syntastic#util#wformat(format, str) abort " {{{2
+    if a:format ==# ''
+        return a:str
+    endif
+
+ echomsg string(a:format) . ', ' . string(a:str)
+    let specs = matchlist(a:format, '\v^(-?)(0?)(%([1-9]\d*))?%(\.(\d+))?$')
+    if len(specs) < 5
+        return a:str
+    endif
+
+    let flushleft = specs[1] ==# '-'
+    let lpad = specs[2] ==# '0' ? '0' : ' '
+    let minlen = str2nr(specs[3])
+    let maxlen = str2nr(specs[4])
+    let out = substitute(a:str, "\t", ' ', 'g')
+
+    if maxlen && s:_width(out) > maxlen
+        let chars = filter(split(out, '\zs\ze', 1), 'v:val !=# ""')
+        let out = ''
+
+        if flushleft
+            for c in chars
+                if s:_width(out . c) < maxlen
+                    let out .= c
+                else
+                    let out .= &encoding ==# 'utf-8' && &termencoding ==# 'utf-8' ? "\u2026" : '>'
+                    break
+                endif
+            endfor
+        else
+            call reverse(chars)
+            for c in chars
+                if s:_width(c . out) < maxlen
+                    let out = c . out
+                else
+                    let out = (&encoding ==# 'utf-8' && &termencoding ==# 'utf-8' ? "\u2026" : '<') . out
+                    break
+                endif
+            endfor
+        endif
+    endif
+
+    if minlen && s:_width(out) < minlen
+        if flushleft
+            let out .= repeat(' ', minlen - s:_width(out))
+        else
+            let out = repeat(lpad, minlen - s:_width(out)) . out
+        endif
+    endif
+
+    return out
 endfunction " }}}2
 
 " }}}1
@@ -406,6 +481,17 @@ function! s:_rmrf(what) abort " {{{2
         silent! call delete(a:what)
     endif
 endfunction " }}}2
+
+function! s:_float2str_smart(val) abort " {{{2
+    return printf('%.1f', a:val)
+endfunction " }}}2
+
+function! s:_float2str_dumb(val) abort " {{{2
+    return a:val
+endfunction " }}}2
+
+let s:_float2str = function(has('float') ? 's:_float2str_smart' : 's:_float2str_dumb')
+lockvar s:_float2str
 
 " }}}1
 

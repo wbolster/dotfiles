@@ -1,7 +1,7 @@
 "============================================================================
-"File:        gotype.vim
-"Description: Perform syntactic and semantic checking of Go code using 'gotype'
-"Maintainer:  luz <ne.tetewi@gmail.com>
+"File:        stylint.vim
+"Description: Syntax checking plugin for syntastic.vim
+"Maintainer:  LCD 47 <lcd047 at gmail dot com>
 "License:     This program is free software. It comes without any warranty,
 "             to the extent permitted by applicable law. You can redistribute
 "             it and/or modify it under the terms of the Do What The Fuck You
@@ -10,37 +10,32 @@
 "
 "============================================================================
 
-if exists('g:loaded_syntastic_go_gotype_checker')
+if exists('g:loaded_syntastic_stylus_stylint_checker')
     finish
 endif
-let g:loaded_syntastic_go_gotype_checker = 1
+let g:loaded_syntastic_stylus_stylint_checker = 1
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! SyntaxCheckers_go_gotype_GetLocList() dict
-    let makeprg = self.makeprgBuild({
-        \ 'args': (expand('%', 1) =~# '\m_test\.go$' ? '-a' : ''),
-        \ 'fname': '.' })
+function! SyntaxCheckers_stylus_stylint_GetLocList() dict
+    let makeprg = self.makeprgBuild({})
 
     let errorformat =
-        \ '%f:%l:%c: %m,' .
-        \ '%-G%.%#'
-
-    " gotype needs the full go package to test types properly. Just cwd to
-    " the package for the same reasons specified in go.vim ("figuring out
-    " the import path is fickle").
+        \ '%WWarning: %m,' .
+        \ '%EError: %m,' .
+        \ '%CFile: %f,' .
+        \ '%CLine: %l:%.%#'
 
     return SyntasticMake({
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat,
-        \ 'cwd': expand('%:p:h', 1),
-        \ 'defaults': {'type': 'e'} })
+        \ 'subtype': 'Style' })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
-    \ 'filetype': 'go',
-    \ 'name': 'gotype'})
+    \ 'filetype': 'stylus',
+    \ 'name': 'stylint'})
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

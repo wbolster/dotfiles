@@ -1,46 +1,46 @@
 "============================================================================
-"File:        gotype.vim
-"Description: Perform syntactic and semantic checking of Go code using 'gotype'
-"Maintainer:  luz <ne.tetewi@gmail.com>
+"File:        verapp.vim
+"Description: Syntax checking plugin for syntastic.vim
+"Maintainer:  Lucas Verney <phyks@phyks.me>
 "License:     This program is free software. It comes without any warranty,
 "             to the extent permitted by applicable law. You can redistribute
 "             it and/or modify it under the terms of the Do What The Fuck You
 "             Want To Public License, Version 2, as published by Sam Hocevar.
 "             See http://sam.zoy.org/wtfpl/COPYING for more details.
 "
+" Tested with Vera++ 1.3.0
 "============================================================================
 
-if exists('g:loaded_syntastic_go_gotype_checker')
+if exists('g:loaded_syntastic_cpp_verapp_checker')
     finish
 endif
-let g:loaded_syntastic_go_gotype_checker = 1
+let g:loaded_syntastic_cpp_verapp_checker = 1
+
+if !exists('g:syntastic_verapp_config_file')
+    let g:syntastic_verapp_config_file = '.syntastic_verapp_config'
+endif
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! SyntaxCheckers_go_gotype_GetLocList() dict
+function! SyntaxCheckers_cpp_verapp_GetLocList() dict
     let makeprg = self.makeprgBuild({
-        \ 'args': (expand('%', 1) =~# '\m_test\.go$' ? '-a' : ''),
-        \ 'fname': '.' })
+        \ 'args': syntastic#c#ReadConfig(g:syntastic_verapp_config_file),
+        \ 'args_after': '--show-rule --no-duplicate -S -c -' })
 
-    let errorformat =
-        \ '%f:%l:%c: %m,' .
-        \ '%-G%.%#'
-
-    " gotype needs the full go package to test types properly. Just cwd to
-    " the package for the same reasons specified in go.vim ("figuring out
-    " the import path is fickle").
+    let errorformat = '%f:%t:%l:%c:%m'
 
     return SyntasticMake({
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat,
-        \ 'cwd': expand('%:p:h', 1),
-        \ 'defaults': {'type': 'e'} })
+        \ 'preprocess': 'checkstyle',
+        \ 'subtype': 'Style' })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
-    \ 'filetype': 'go',
-    \ 'name': 'gotype'})
+    \ 'filetype': 'cpp',
+    \ 'name': 'verapp',
+    \ 'exec': 'vera++'})
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

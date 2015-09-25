@@ -1,7 +1,7 @@
 "============================================================================
-"File:        gotype.vim
-"Description: Perform syntactic and semantic checking of Go code using 'gotype'
-"Maintainer:  luz <ne.tetewi@gmail.com>
+"File:        gometalinter.vim
+"Description: Check go syntax using 'gometalint'
+"Maintainer:  Joshua Rubin <joshua@rubixconsulting.com>
 "License:     This program is free software. It comes without any warranty,
 "             to the extent permitted by applicable law. You can redistribute
 "             it and/or modify it under the terms of the Do What The Fuck You
@@ -10,37 +10,42 @@
 "
 "============================================================================
 
-if exists('g:loaded_syntastic_go_gotype_checker')
+if exists('g:loaded_syntastic_go_gometalinter_checker')
     finish
 endif
-let g:loaded_syntastic_go_gotype_checker = 1
+let g:loaded_syntastic_go_gometalinter_checker = 1
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! SyntaxCheckers_go_gotype_GetLocList() dict
+function! SyntaxCheckers_go_gometalinter_GetLocList() dict
     let makeprg = self.makeprgBuild({
-        \ 'args': (expand('%', 1) =~# '\m_test\.go$' ? '-a' : ''),
-        \ 'fname': '.' })
+        \ 'args': '-t',
+        \ 'fname': syntastic#util#shexpand('%:p:h') })
 
     let errorformat =
-        \ '%f:%l:%c: %m,' .
-        \ '%-G%.%#'
+        \ '%f:%l:%c:%trror: %m,' .
+        \ '%f:%l:%c:%tarning: %m,' .
+        \ '%f:%l::%trror: %m,' .
+        \ '%f:%l::%tarning: %m'
 
-    " gotype needs the full go package to test types properly. Just cwd to
-    " the package for the same reasons specified in go.vim ("figuring out
-    " the import path is fickle").
-
-    return SyntasticMake({
+    let loclist = SyntasticMake({
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat,
-        \ 'cwd': expand('%:p:h', 1),
-        \ 'defaults': {'type': 'e'} })
+        \ 'returns': [0, 1] })
+
+    for e in loclist
+        if e['text'] =~# '\v\(%(deadcode|gocyclo|golint|defercheck|varcheck|structcheck|errcheck|dupl)\)$'
+            let e['subtype'] = 'Style'
+        endif
+    endfor
+
+    return loclist
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
     \ 'filetype': 'go',
-    \ 'name': 'gotype'})
+    \ 'name': 'gometalinter'})
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

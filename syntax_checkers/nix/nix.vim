@@ -1,7 +1,7 @@
 "============================================================================
-"File:        gotype.vim
-"Description: Perform syntactic and semantic checking of Go code using 'gotype'
-"Maintainer:  luz <ne.tetewi@gmail.com>
+"File:        nix.vim
+"Description: Check nix syntax using 'nix-instantiate --eval-only'
+"Maintainer:  Tim Cuthbertson <tim@gfxmonk.net>
 "License:     This program is free software. It comes without any warranty,
 "             to the extent permitted by applicable law. You can redistribute
 "             it and/or modify it under the terms of the Do What The Fuck You
@@ -9,38 +9,34 @@
 "             See http://sam.zoy.org/wtfpl/COPYING for more details.
 "
 "============================================================================
-
-if exists('g:loaded_syntastic_go_gotype_checker')
+"
+"
+if exists('g:loaded_syntastic_nix_nix_checker')
     finish
 endif
-let g:loaded_syntastic_go_gotype_checker = 1
+let g:loaded_syntastic_nix_nix_checker = 1
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! SyntaxCheckers_go_gotype_GetLocList() dict
-    let makeprg = self.makeprgBuild({
-        \ 'args': (expand('%', 1) =~# '\m_test\.go$' ? '-a' : ''),
-        \ 'fname': '.' })
+function! SyntaxCheckers_nix_nix_GetLocList() dict
+    let makeprg = self.makeprgBuild({ 'args_after': '--parse-only' })
 
     let errorformat =
-        \ '%f:%l:%c: %m,' .
-        \ '%-G%.%#'
-
-    " gotype needs the full go package to test types properly. Just cwd to
-    " the package for the same reasons specified in go.vim ("figuring out
-    " the import path is fickle").
+        \ '%m\, at %f:%l:%c,' .
+        \ '%m at %f\, line %l:,' .
+        \ 'error: %m\, in %f'
 
     return SyntasticMake({
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat,
-        \ 'cwd': expand('%:p:h', 1),
         \ 'defaults': {'type': 'e'} })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
-    \ 'filetype': 'go',
-    \ 'name': 'gotype'})
+    \ 'filetype': 'nix',
+    \ 'name': 'nix',
+    \ 'exec': 'nix-instantiate' })
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
