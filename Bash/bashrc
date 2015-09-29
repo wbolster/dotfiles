@@ -353,6 +353,7 @@ if [[ "$PS1" ]]; then
 
     # Debian and Ubuntu
     if type apt-get &>/dev/null; then
+        alias apt='sudo apt '
         alias apt-get='sudo apt-get '
         alias aptitude='sudo aptitude '
         alias ac='apt-cache show '
