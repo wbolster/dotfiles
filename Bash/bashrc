@@ -371,6 +371,12 @@ if [[ "$PS1" ]]; then
         complete -F _apt_get_packages i ac acp
     fi
 
+    # Mac OSX
+    if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
+        i() {( set -x; brew install "$@" )}
+        u() {( set -x; brew update && brew upgrade )}
+    fi
+
     # iTerm profile tricks
     if [[ ! -z "$ITERM_PROFILE" ]]; then
         _ITERM_PROFILE_FILE=~/.config/iterm-profile
