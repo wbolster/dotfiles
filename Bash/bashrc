@@ -20,6 +20,12 @@ if [[ "$PS1" ]]; then
     # Make sure $HOSTNAME is set
     [[ -z "${HOSTNAME}" ]] && export HOSTNAME=$(hostname)
 
+    # Helper to emulate "set -x" output
+    _run_verbose () {
+        echo $PS4 "$@" >&2
+        "$@"
+    }
+
     # Prompt and terminal title
     PROMPT_DIRTRIM=3
     COLOR_NORMAL="\[\e[0m\]"
