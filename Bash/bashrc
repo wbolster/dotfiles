@@ -380,8 +380,24 @@ if [[ "$PS1" ]]; then
 
     # Mac OSX
     if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
-        i() {( set -x; brew install "$@" )}
-        u() {( set -x; brew update && brew upgrade )}
+
+        # Homebrew
+        i() { _run_verbose brew install "$@"; }
+        u() {
+            local updates
+            _run_verbose brew update
+            updates=$(brew outdated)
+            if [[ -n "${updates}" ]]; then
+                echo
+                echo "${updates}"
+                echo
+                read -p 'Continue upgrade? [Y/n] ' -n 1 CONFIRM
+                if [[ "${CONFIRM}" =~ ^[Yy]?$ ]]; then
+                    _run_verbose brew upgrade
+                fi
+            fi
+            echo
+        }
     fi
 
     # iTerm profile tricks
