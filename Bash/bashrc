@@ -339,6 +339,14 @@ if [[ "$PS1" ]]; then
         python -m ipdb $(which "$1") "${@:2}"
     }
 
+    # Data conversion
+    yaml-to-json () {
+        python -c 'import json, sys, yaml; print(json.dumps(yaml.safe_load(sys.stdin), indent=2, sort_keys=True))' | syntax-highlight json
+    }
+    json-to-yaml () {
+        python -c 'import json, sys, yaml; print(yaml.safe_dump(json.load(sys.stdin), default_flow_style=False))' | syntax-highlight yaml
+    }
+
     # Jhbuild
     if type jhbuild &>/dev/null; then
         alias 'jhr'='jhbuild run'
