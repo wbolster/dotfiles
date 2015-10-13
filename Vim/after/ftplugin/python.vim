@@ -7,8 +7,8 @@ setlocal formatoptions=croqnl1
 " Fix comments dedenting
 inoremap <buffer> # X#
 
-" Allow proper formatting for comments starting with #: (used for documenting
-" class attributes by Sphinx).
+" Allow proper formatting for comments starting with #: (used by Sphinx for
+" documenting class attributes).
 autocmd Filetype python setlocal comments+=b:#:
 
 " Source code checking (flake8, pyflakes, pep8)
