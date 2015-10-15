@@ -3,15 +3,19 @@
 # Keep new files and directories private by default
 umask 077
 
-# Set a sensible $PATH
-[[ -d ~/bin ]] && PATH=~/bin:${PATH}
-[[ -d ~/.local/bin ]] && PATH=~/.local/bin:${PATH}
+# Set a sensible $PATH:
+# - Add a few "standard" dirs inside $HOME
+# - OSX and Homebrew: add Homebrew's sbin/, and use GNU coreutils
+for dir in ~/bin/ ~/.local/bin; do
+    if [[ -d "${dir}" ]]; then
+        PATH="${dir}:${PATH}"
+    fi
+done
 if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
-    # OSX and Homebrew: add Homebrew's sbin, and use GNU coreutils
     brew_prefix=$(brew --prefix)
-    PATH="${PATH}:${brew_prefix}/sbin"
+    PATH="${brew_prefix}/sbin:${PATH}"
     PATH="${brew_prefix}/opt/coreutils/libexec/gnubin:${PATH}"
-    MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman:${MANPATH:-}"
+    MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman${MANPATH:+:${MANPATH}}"
     unset brew_prefix
 fi
 
