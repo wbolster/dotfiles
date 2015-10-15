@@ -11,7 +11,7 @@ if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
     brew_prefix=$(brew --prefix)
     PATH="${PATH}:${brew_prefix}/sbin"
     PATH="${brew_prefix}/opt/coreutils/libexec/gnubin:${PATH}"
-    MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman:$MANPATH"
+    MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman:${MANPATH:-}"
     unset brew_prefix
 fi
 
@@ -95,7 +95,7 @@ if [[ "$PS1" ]]; then
 
     # Use a DEBUG trap to store timer information before a command is executed.
     # The _timer_start variable is cleared in the prompt command function.
-    trap '[[ -z $_timer_start ]] && _timer_start=${SECONDS}' DEBUG
+    trap '[[ -z "${_timer_start:-}" ]] && _timer_start=${SECONDS}' DEBUG
 
     set_prompt_command() {
         # Exit code from previous command
@@ -124,7 +124,7 @@ if [[ "$PS1" ]]; then
 
         # Host name
         local ps1_hostname=""
-        if [[ -z "${SSH_CLIENT}" ]]; then
+        if [[ -z "${SSH_CLIENT:-}" ]]; then
             ps1_hostname+="${COLOR_GREEN}"
         else
             ps1_hostname+="${COLOR_BLUE_BOLD}"
