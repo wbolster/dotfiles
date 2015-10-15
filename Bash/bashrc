@@ -400,6 +400,7 @@ if [[ "$PS1" ]]; then
             updates=$(brew outdated)
             if [[ -n "${updates}" ]]; then
                 echo
+                echo "These packages will be upgraded:"
                 echo "${updates}"
                 echo
                 read -p 'Continue upgrade? [Y/n] ' -n 1 CONFIRM
