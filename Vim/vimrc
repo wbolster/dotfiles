@@ -123,16 +123,9 @@ endfunction
 " Miscellaneous shortcuts
 let mapleader = ","
 map <silent> <Leader>c :call ToggleConceal()<Return>
-map <silent> <Leader>j :bnext<Return>
-map <silent> <Leader>k :bprevious<Return>
-map <silent> <Leader><Leader> :bnext<Return>
-map <silent> <Leader>l :set list!<Return>
 map <silent> <Leader>m :make<Return>
 map <silent> <Leader>/ :nohlsearch<Return>
-map <silent> <Leader>n :set number!<Return>
 map <silent> <Leader>s :StripTrailingWhitespace<Return>
-map <silent> <Leader>w :set wrap!<Return>
-
 
 " Load bundles using pathogen, and set some flags before loading
 let g:fontzoom_no_default_key_mappings = 1
