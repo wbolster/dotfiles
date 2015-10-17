@@ -247,8 +247,7 @@ if [[ "$PS1" ]]; then
 
             cmd_corrected="$prefix ${cmd#$prefix}$2"
             shift 2
-            echo "$cmd_corrected $@" >&2
-            $cmd_corrected "$@"
+            _run_verbose $cmd_corrected "$@"
             return
         done
 
