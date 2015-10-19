@@ -400,7 +400,7 @@ if [[ "$PS1" ]]; then
         u() {
             local updates
             _run_verbose brew update
-            updates=$(brew outdated)
+            updates=$(brew outdated --verbose)
             if [[ -n "${updates}" ]]; then
                 echo
                 echo "These packages will be upgraded:"
