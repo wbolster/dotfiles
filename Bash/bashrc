@@ -278,7 +278,7 @@ if [[ "$PS1" ]]; then
     alias fgrep='fgrep --color=auto'
 
     # Process listings and process control
-    alias psg='ps auxww |grep -i '
+    alias psg='ps auxww |grep -i'
     complete -F _killall psg
     alias k1='kill %1'
     alias k2='kill %2'
@@ -361,9 +361,9 @@ if [[ "$PS1" ]]; then
 
     # GUI applications
     if [[ "$OSTYPE" == darwin* ]]; then
-        alias g='open '
+        alias g='open'
     elif [[ ! -z "$DISPLAY" ]]; then
-        alias g='xdg-open '
+        alias g='xdg-open'
     fi
 
     # Locale
@@ -373,12 +373,12 @@ if [[ "$PS1" ]]; then
 
     # Debian and Ubuntu
     if type apt-get &>/dev/null; then
-        alias apt='sudo apt '
-        alias apt-get='sudo apt-get '
-        alias aptitude='sudo aptitude '
-        alias ac='apt-cache show '
-        alias acp='apt-cache policy '
-        alias acs='apt-cache search '
+        alias apt='sudo apt'
+        alias apt-get='sudo apt-get'
+        alias aptitude='sudo aptitude'
+        alias ac='apt-cache show'
+        alias acp='apt-cache policy'
+        alias acs='apt-cache search'
         alias i='sudo $(which apt-get) install -V'
         alias u='sudo $(which apt-get) update && sudo $(which apt-get) upgrade -V'
 
