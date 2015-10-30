@@ -10,10 +10,8 @@ set nofoldenable foldmethod=marker
 silent! set listchars=eol:$,trail:_,extends:»,precedes:«,tab:»·,nbsp:~
 
 " Movement
-noremap <C-h> h
 noremap <C-j> gj
 noremap <C-k> gk
-noremap <C-l> l
 noremap <Down> gj
 noremap <Up> gk
 
@@ -113,6 +111,8 @@ set nofsync swapsync=
 set directory-=.
 
 " Multiple files
+noremap <C-l> :bnext<Return>
+noremap <C-h> :bprevious<Return>
 set hidden
 set autochdir
 set suffixes+=.aux,.bbl,.blg,.dvi,.idx,.log,.out,.pdf,.toc,.pyc,.pyo
