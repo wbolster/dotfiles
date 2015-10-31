@@ -6,7 +6,7 @@ umask 077
 # Set a sensible $PATH:
 # - Add a few "standard" dirs inside $HOME
 # - OSX and Homebrew: add Homebrew's sbin/, and use GNU coreutils
-for dir in ~/bin/ ~/.local/bin; do
+for dir in ~/bin ~/.local/bin; do
     if [[ -d "${dir}" ]]; then
         PATH="${dir}:${PATH}"
     fi
