@@ -17,13 +17,13 @@ inoreabbrev <buffer> ..t .. tip::<Enter><Enter>   <C-R>=EatWhitespace()<Enter>
 inoreabbrev <buffer> ..w .. warning::<Enter><Enter>   <C-R>=EatWhitespace()<Enter>
 
 " Underline current line
-noremap <Leader>= mxyypVr=`x
-noremap <Leader>- mxyypVr-`x
-noremap <Leader>* mxyypVr*`x
-noremap <Leader>^ mxyypVr^`x
-noremap <Leader>+ mxyypVr+`x
-noremap <Leader># mxyypVr#`x
-noremap <Leader>u yypVr
+noremap <buffer> <Leader>= mxyypVr=`x
+noremap <buffer> <Leader>- mxyypVr-`x
+noremap <buffer> <Leader>* mxyypVr*`x
+noremap <buffer> <Leader>^ mxyypVr^`x
+noremap <buffer> <Leader>+ mxyypVr+`x
+noremap <buffer> <Leader># mxyypVr#`x
+noremap <buffer> <Leader>u yypVr
 
 " Additional vim-surround mapping for code blocks. This uses the c key (short
 " for code) for the replacement, e.g. typing ysiwc surrounds the current word
