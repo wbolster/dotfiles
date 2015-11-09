@@ -345,6 +345,9 @@ if [[ "$PS1" ]]; then
     py-ipdb() {
         python -m ipdb $(which "$1") "${@:2}"
     }
+    pytestf () {
+        _run_verbose py.test --tb=short --color=yes --looponfail --verbose --verbose "$@"
+    }
 
     # Data conversion
     yaml-to-json () {
