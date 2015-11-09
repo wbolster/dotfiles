@@ -301,6 +301,7 @@ if [[ "$PS1" ]]; then
     else
         export EDITOR=vi
     fi
+    alias ni=vi
     alias :q='exit'
     alias :e='$EDITOR'
 
