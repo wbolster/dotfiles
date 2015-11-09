@@ -433,6 +433,19 @@ if [[ "$PS1" ]]; then
         fi
     fi
 
+    # I can has colour?
+    if type lolcat &>/dev/null; then
+        cat () {
+            if [[ "${1}" != -* && -t 1 ]]; then
+                # LOLZ, stdout is a terminal and no flags (starting with a dash)
+                # are specified.
+                lolcat "$@"
+            else
+                command cat "$@"
+            fi
+        }
+    fi
+
     # Misc
     alias sc='screen -UxRR'
     alias lessr='less -R'
