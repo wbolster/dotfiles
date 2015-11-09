@@ -78,8 +78,10 @@ rbom = rebase origin/master
 igrep = grep --ignore-case
 fgrep = grep --fixed-strings
 figrep = grep --fixed-strings --ignore-case
+relpath = rev-parse --show-prefix
 stashk = stash save --keep-index
 stashp = stash pop
+toplevel = rev-parse --show-toplevel
 
 [branch]
 autosetuprebase = always
