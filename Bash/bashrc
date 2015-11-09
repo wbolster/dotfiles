@@ -313,6 +313,9 @@ if [[ "$PS1" ]]; then
             cd "$(git rev-parse --show-toplevel)"
         }
     fi
+    if type hub &>/dev/null; then
+        alias git=hub
+    fi
     syntax-highlight () {
         test -t 1 && pygmentize -l "$1" || cat
     }
