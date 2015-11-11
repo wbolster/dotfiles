@@ -454,6 +454,9 @@ if [[ "$PS1" ]]; then
     fi
 
     # Misc
+    mostfreq() {
+        sort | uniq --count | sort --numeric-sort --reverse
+    }
     alias sc='screen -UxRR'
     alias lessr='less -R'
     alias uuid4='uuid -v4'
