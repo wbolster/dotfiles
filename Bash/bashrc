@@ -293,6 +293,7 @@ if [[ "$PS1" ]]; then
     # Alias expansion also after these commands
     alias sudo='sudo '
     alias nice='nice '
+    alias xargs='xargs '
 
     # Editor
     if type vim &>/dev/null; then
