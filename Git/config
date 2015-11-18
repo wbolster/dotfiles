@@ -44,7 +44,8 @@ review-branch = "!f() { [ -z \"$@\" ] && set - origin/master..; git -c core.page
 # http://stackoverflow.com/questions/914939/simple-tool-to-accept-theirs-or-accept-mine-on-a-whole-file-using-git
 accept-ours = "!f() { [ -z \"$@\" ] && set - '.'; git checkout --ours -- \"$@\"; git add --update -- \"$@\"; }; f"
 accept-theirs = "!f() { [ -z \"$@\" ] && set - '.'; git checkout --theirs -- \"$@\"; git add --update -- \"$@\"; }; f"
-br = branch
+br = branch --verbose
+bra = branch --all --verbose
 co = checkout
 cob = checkout -b
 delete-unused-branches = "!f() { git branch | grep -v '*' | xargs --no-run-if-empty git branch --delete; }; f"
