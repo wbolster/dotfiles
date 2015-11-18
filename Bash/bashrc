@@ -306,6 +306,17 @@ if [[ "$PS1" ]]; then
     alias :q='exit'
     alias :e='$EDITOR'
 
+    # Pager
+    export PAGER=less
+    alias lessr='less -R'
+    maybe-pager () {
+        if [[ -t 1 ]]; then  # stdout is a terminal
+            less -FRX "$@"
+        else
+            cat
+        fi
+    }
+
     # Development
     alias m=make
     complete -F _make m
@@ -459,7 +470,6 @@ if [[ "$PS1" ]]; then
         sort | uniq --count | sort --numeric-sort --reverse
     }
     alias sc='screen -UxRR'
-    alias lessr='less -R'
     alias uuid4='uuid -v4'
     type sudoedit &>/dev/null || alias sudoedit="sudo -e"
     type hd &>/dev/null || alias hd="hexdump"
