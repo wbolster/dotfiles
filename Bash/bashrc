@@ -313,7 +313,7 @@ if [[ "$PS1" ]]; then
         if [[ -t 1 ]]; then  # stdout is a terminal
             less -FRX "$@"
         else
-            cat
+            command cat
         fi
     }
 
@@ -336,7 +336,7 @@ if [[ "$PS1" ]]; then
             # Force highlighted output: some-command | syntax-highlight -f LANG
             pygmentize -l "$2"
         else
-            cat
+            command cat
         fi
     }
 
@@ -460,18 +460,59 @@ if [[ "$PS1" ]]; then
         fi
     fi
 
-    # I can has colour?
-    if type lolcat &>/dev/null; then
-        cat () {
-            if [[ "${1}" != -* && -t 1 ]]; then
-                # LOLZ, stdout is a terminal and no flags (starting with a dash)
-                # are specified.
-                lolcat "$@"
-            else
-                command cat "$@"
+    # Show a file with syntax highlighting
+    show () {
+        (
+            set -e
+            if [[ -z "$@" ]]; then
+                # In case no args are specified, set "@" to use stdin so that
+                # the logic below works as intended without having to special
+                # case the "stdin as a pipe" scenario.
+                set - '/dev/stdin';
             fi
-        }
-    fi
+            local file
+            for file in "$@"; do
+                if [[ -r "$file" ]]; then
+                    # Try to use pygments/pygmentize for syntax highlighting.
+                    if type pygmentize &>/dev/null; then
+                        local lexer=$(pygmentize -N "$file")
+                        if [[ "${lexer}" == "text" ]]; then
+                            # Heuristics to improve pygmentize's detection based on fiile names;
+                            # detect a few file types using #! lines.
+                            case $(head -c 100 "$file" | head -n 1 | grep '^#!') in
+                                (*bash*)    lexer=bash ;;
+                                (*node*)    lexer=js ;;
+                                (*perl*)    lexer=perl ;;
+                                (*python*)  lexer=python ;;
+                                (*ruby*)    lexer=ruby ;;
+                                (*sh*)      lexer=sh ;;
+                            esac
+                        fi
+                        if [[ "${lexer}" != "text" ]]; then
+                            pygmentize -l "${lexer}" "${file}"
+                            continue
+                        fi
+                    elif type lolcat &>/dev/null; then
+                        # Colours, you can has it. LOLZ.
+                        lolcat "$file"
+                        continue
+                    fi
+                fi
+                # File not readable or no other viewers found; let "cat" handle
+                # it, since it's fast and will show error messages.
+                command cat "$file"
+            done
+        ) | maybe-pager
+    }
+    cat () {
+        if [[ "${1}" != -* && -t 1 ]]; then
+            # No flags are specified and stdout is a terminal; perform magic.
+            show "$@"
+        else
+            # Transparent fall-back.
+            command cat "$@"
+        fi
+    }
 
     # Misc
     mostfreq() {
