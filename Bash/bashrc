@@ -475,7 +475,7 @@ if [[ "$PS1" ]]; then
 
     # Misc
     mostfreq() {
-        sort | uniq --count | sort --numeric-sort --reverse
+        sort -- "$@" | uniq --count | sort --numeric-sort --reverse
     }
     alias sc='screen -UxRR'
     alias uuid4='uuid -v4'
