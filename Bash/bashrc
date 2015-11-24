@@ -329,15 +329,7 @@ if [[ "$PS1" ]]; then
         alias git=hub
     fi
     syntax-highlight () {
-        if [[ -t 1 ]]; then
-            # stdout is a terminal: some-command | syntax-highlight LANG
-            pygmentize -l "$1" | maybe-pager
-        elif [[ "$1" == "-f" ]]; then
-            # Force highlighted output: some-command | syntax-highlight -f LANG
-            pygmentize -l "$2"
-        else
-            command cat
-        fi
+        pygmentize -l "$1" "${@:2}" | maybe-pager
     }
 
     # Python stuff
