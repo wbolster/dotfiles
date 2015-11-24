@@ -452,25 +452,34 @@ if [[ "$PS1" ]]; then
         fi
     fi
 
-    # Show a file with syntax highlighting
+    # Show a file with syntax highlighting (when possible) through a pager (when necessary)
     show () {
         (
             set -e
-            if [[ -z "$@" ]]; then
-                # In case no args are specified, set "@" to use stdin so that
-                # the logic below works as intended without having to special
-                # case the "stdin as a pipe" scenario.
+            if [[ -z "$@" || ("$#" == 1 && "$1" == "-") ]]; then
+                # In case no args are specified or only "-" is passed, set "$@" to
+                # /dev/stdin so that the logic below works as intended without
+                # having to special case the "stdin as a pipe" scenario.
                 set - '/dev/stdin';
             fi
             local file
             for file in "$@"; do
+                # Only readable, regular files (e.g. not special files like
+                # /dev/stdin) can be peeked into.
+                local can_peek
+                if [[ -f "$file" && -r "$file" ]]; then
+                    can_peek="yes"
+                else
+                    can_peek="no"
+                fi
                 if [[ -r "$file" ]]; then
-                    # Try to use pygments/pygmentize for syntax highlighting.
                     if type pygmentize &>/dev/null; then
+                        # Try to use pygments/pygmentize for syntax highlighting.
                         local lexer=$(pygmentize -N "$file")
-                        if [[ "${lexer}" == "text" ]]; then
-                            # Heuristics to improve pygmentize's detection based on fiile names;
-                            # detect a few file types using #! lines.
+                        if [[ "${can_peek}" == "yes" && "${lexer}" == "text" ]]; then
+                            # Heuristics to improve pygmentize's detection (which
+                            # uses file names only); detect a few file types using
+                            # hashbang (#!) lines.
                             case $(head -c 100 "$file" | head -n 1 | grep '^#!') in
                                 (*bash*)    lexer=bash ;;
                                 (*node*)    lexer=js ;;
@@ -484,10 +493,15 @@ if [[ "$PS1" ]]; then
                             pygmentize -l "${lexer}" "${file}"
                             continue
                         fi
-                    elif type lolcat &>/dev/null; then
-                        # Colours, you can has it. LOLZ.
-                        lolcat "$file"
-                        continue
+                    fi
+                    if type lolcat &>/dev/null; then
+                        # Colours, you can has it. LOLZ. But only if the content
+                        # appears to be valid UTF-8, since lolcat doesn't like
+                        # files containing binary gibberish.
+                        if [[ "${can_peek}" == "yes" ]] && head -c 8K "$file" | iconv -s -f utf8 -t utf8 > /dev/null; then
+                            lolcat "$file"
+                            continue
+                        fi
                     fi
                 fi
                 # File not readable or no other viewers found; let "cat" handle
@@ -496,6 +510,8 @@ if [[ "$PS1" ]]; then
             done
         ) | maybe-pager
     }
+
+    # This cat has magical powers, like a space cat flying through pizzas with bacon.
     cat () {
         if [[ "${1}" != -* && -t 1 ]]; then
             # No flags are specified and stdout is a terminal; perform magic.
