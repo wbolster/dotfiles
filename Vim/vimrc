@@ -138,8 +138,11 @@ let mapleader = ","
 map <silent> <Leader>/ :nohlsearch<Return>
 map <silent> <Leader>c :call ToggleConceal()<Return>
 map <silent> <Leader>m :make<Return>
-map <silent> <Leader>s :StripTrailingWhitespace<Return>
-vmap <silent> <Leader>u :sort u<Return>
+map <silent> <Leader>w :StripTrailingWhitespace<Return>
+vmap <silent> <Leader>ss :sort i<Return>
+vmap <silent> <Leader>si :sort i<Return>
+vmap <silent> <Leader>sn :sort n<Return>
+vmap <silent> <Leader>su :sort u<Return>
 
 " Load bundles using pathogen, and set some flags before loading
 let g:fontzoom_no_default_key_mappings = 1
