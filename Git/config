@@ -22,6 +22,7 @@ uncommit = reset --soft HEAD^
 # Adding
 ap = add --patch
 au = add --update :/
+touch = "!f() { touch -- \"$@\"; git add -- \"$@\";  }; f"
 
 # Diff
 di = diff
