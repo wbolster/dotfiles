@@ -112,7 +112,7 @@ if [[ "$PS1" ]]; then
             if [[ ${prev_exit_code} -gt 128 && ${prev_exit_code} -lt 192 ]]; then
                 exit_status=$((128-prev_exit_code))" "$(kill -l ${prev_exit_code} 2>/dev/null || echo -n '?')
             fi
-            ps1_err=" ${COLOR_RED}${exit_status}"
+            ps1_err="exit ${exit_status} "
         fi
 
         # Time since previous command
@@ -121,41 +121,37 @@ if [[ "$PS1" ]]; then
             local seconds_elapsed=$(($SECONDS - $_timer_start))
             if [[ $seconds_elapsed -ge 10 ]]; then
                 seconds_elapsed=$(_fmt_seconds_elapsed ${seconds_elapsed})
-                ps1_timer+="${COLOR_GREEN}[${seconds_elapsed} elapsed]\n\n"
+                ps1_timer+="[${seconds_elapsed} elapsed]"
             fi
             _timer_start=""
         fi
 
-        # Host name
+        # Host name (only remote)
         local ps1_hostname=""
-        if [[ -z "${SSH_CLIENT:-}" ]]; then
-            ps1_hostname+="${COLOR_GREEN}"
-        else
-            ps1_hostname+="${COLOR_BLUE_BOLD}"
+        local tt_hostname=""
+        if [[ -n "${SSH_CLIENT:-}" ]]; then
+            ps1_hostname="on ${HOSTNAME} "
+            tt_hostname="${HOSTNAME} "
         fi
-        ps1_hostname+="${HOSTNAME:0:8}"
 
         # Working directory
-        local ps1_wd="${COLOR_GREEN}:\w"
+        local ps1_wd="in \w "
+        local tt_wd="${PWD}"
 
         # Git
         local ps1_git=""
-        local tt_git=""
         if declare -F __git_ps1 > /dev/null; then
             local _git_ps1_output="$(__git_ps1 '%s')"
             if [[ -n "${_git_ps1_output}" ]]; then
-                ps1_git="${COLOR_GREEN_BOLD}:${_git_ps1_output}"
-                tt_git=" (${_git_ps1_output})"
+                ps1_git="git ${_git_ps1_output} "
             fi
         fi
 
         # Virtualenv
         local ps1_venv=""
-        local tt_venv=""
-        if [[ -n "$VIRTUAL_ENV" ]]; then
+        if [[ -n ${VIRTUAL_ENV} ]]; then
             local venv_name=$(basename ${VIRTUAL_ENV})
-            ps1_venv=":${COLOR_GREEN_BOLD}${venv_name}"
-            tt_venv=" [${venv_name}]"
+            ps1_venv="venv ${venv_name} "
         fi
 
         # Warning when output does not have a trailing newline
@@ -170,38 +166,43 @@ if [[ "$PS1" ]]; then
         local ps1_jobs=""
         local n_jobs="$(jobs -p | wc -w)"
         if [[ ${n_jobs} -ne 0 ]]; then
-            local n_jobs_running="$(jobs -p -r | wc -w)"
+            local n_jobs_background="$(jobs -p -r | wc -w)"
             local n_jobs_suspended="$(jobs -p -s | wc -w)"
-            ps1_jobs="${COLOR_BLUE_BOLD}"
-            if [[ ${n_jobs_running} -ne 0 ]]; then
-                ps1_jobs+=" ${n_jobs_running}&"
-            fi
-            if [[ ${n_jobs_suspended} -ne 0 ]]; then
-                ps1_jobs+=" ${n_jobs_suspended}^Z"
+
+            ps1_jobs=""
+            if [[ $(($n_jobs_background + $n_jobs_suspended)) > 0 ]]; then
+                ps1_jobs="jobs "
+                ps1_jobs+="${n_jobs_background:+${n_jobs_background}&} "
+                ps1_jobs+="${n_jobs_suspended:+${n_jobs_suspended}^Z} "
             fi
         fi
+
+        # Combined status line
+        local ps1_status_combined=""
+        ps1_status_combined+="${COLOR_BLUE}${ps1_hostname}"
+        ps1_status_combined+="${COLOR_CYAN}${ps1_venv}"
+        ps1_status_combined+="${COLOR_GREEN}${ps1_wd}"
+        ps1_status_combined+="${COLOR_YELLOW}${ps1_git}"
+        ps1_status_combined+="${COLOR_CYAN}${ps1_jobs}"
+        ps1_status_combined+="${COLOR_RED}${ps1_err}"
 
         # Terminal title (execution/echoing embedded in $PS1)
         local ps1_term_title=""
         case $TERM in
-            xterm|rxvt*)
-                ps1_term_title="\[\e]0;${PWD}${tt_venv}${tt_git}\a\]"
+            xterm*|rxvt*)
+                # ps1_term_title="\[\e]0;hello${ps1_status_combined}\a\]"
+                ps1_term_title="\[\e]0;${tt_hostname}${tt_wd}\a\]"
                 ;;
         esac
 
         # Primary prompt
-        PS1="${ps1_term_title}"
-        PS1+="\n"
-        PS1+="${ps1_timer}"
+        PS1="\n"
+        PS1+="${ps1_term_title}"
+        PS1+="${ps1_timer:+${COLOR_GREEN}${ps1_timer}\n\n}"
         PS1+="${ps1_newline_warning}"
-        PS1+="${ps1_hostname}"
-        PS1+="${ps1_venv}"
-        PS1+="${ps1_wd}"
-        PS1+="${ps1_git}"
-        PS1+="${ps1_jobs}"
-        PS1+="${ps1_err}"
-        PS1+="${COLOR_GREEN_BOLD} \\$ "
-        PS1+="${COLOR_NORMAL}"
+        PS1+="${ps1_status_combined}"
+        PS1+="\n${COLOR_GREEN_BOLD}\\$"
+        PS1+="${COLOR_NORMAL} "
 
         # Secondary prompt (continuation lines)
         PS2="${COLOR_GREEN}> ${COLOR_NORMAL}"
