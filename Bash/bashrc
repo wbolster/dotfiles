@@ -191,7 +191,7 @@ if [[ "$PS1" ]]; then
         ps1_status_combined+="${COLOR_CYAN}${ps1_venv}"
         ps1_status_combined+="${COLOR_GREEN}${ps1_wd}"
         ps1_status_combined+="${COLOR_YELLOW}${ps1_git}"
-        ps1_status_combined+="${COLOR_CYAN}${ps1_jobs}"
+        ps1_status_combined+="${COLOR_PURPLE}${ps1_jobs}"
         ps1_status_combined+="${COLOR_RED}${ps1_err}"
 
         # Terminal title (execution/echoing embedded in $PS1)
