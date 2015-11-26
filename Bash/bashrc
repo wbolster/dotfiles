@@ -126,6 +126,11 @@ if [[ "$PS1" ]]; then
             _timer_start=""
         fi
 
+        # Hook for direnv.
+        if type _direnv_hook &>/dev/null; then
+            _direnv_hook
+        fi
+
         # Host name (only remote)
         local ps1_hostname=""
         local tt_hostname=""
@@ -317,6 +322,16 @@ if [[ "$PS1" ]]; then
             command cat
         fi
     }
+
+    # Detect direnv (https://github.com/direnv/direnv). The regular loading
+    # method does not cooperate well with our $PROMPT_COMMAND (it breaks $?
+    # detection).
+    if type direnv &>/dev/null; then
+        # Copied from "direnv hook bash" output:
+        _direnv_hook() {
+              eval "$(direnv export bash)";
+        };
+    fi
 
     # Development
     alias m=make
