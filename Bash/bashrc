@@ -173,12 +173,15 @@ if [[ "$PS1" ]]; then
         if [[ ${n_jobs} -ne 0 ]]; then
             local n_jobs_background="$(jobs -p -r | wc -w)"
             local n_jobs_suspended="$(jobs -p -s | wc -w)"
-
             ps1_jobs=""
             if [[ $(($n_jobs_background + $n_jobs_suspended)) > 0 ]]; then
                 ps1_jobs="jobs "
-                ps1_jobs+="${n_jobs_background:+${n_jobs_background}&} "
-                ps1_jobs+="${n_jobs_suspended:+${n_jobs_suspended}^Z} "
+                if [[ ${n_jobs_background} -gt 0 ]]; then
+                    ps1_jobs+="${n_jobs_background}& "
+                fi
+                if [[ ${n_jobs_suspended} -gt 0 ]]; then
+                    ps1_jobs+="${n_jobs_suspended}^Z "
+                fi
             fi
         fi
 
