@@ -140,9 +140,11 @@ if [[ "$PS1" ]]; then
         fi
 
         # User name (only if non-standard)
-        local ps1_user
+        local ps1_user=""
+        local ps1_user_colour="${COLOUR_BLUE}"
         case "${USER}" in
             (wbolster|uws) ps1_user="" ;;
+            (root)  ps1_user_colour="${COLOUR_RED}" ;;
             (*) ps1_user="as ${USER} " ;;
         esac
 
@@ -214,22 +216,18 @@ if [[ "$PS1" ]]; then
 
         # Status line with other information
         local ps1_status_line_other=""
-        if [[ $USER = "root" ]]; then
-            ps1_status_line_other+="${COLOUR_RED}${ps1_user}"
-        else
-            ps1_status_line_other+="${COLOUR_BLUE}${ps1_user}"
-        fi
-        ps1_status_line_other+="${COLOUR_BLUE}${ps1_hostname}"
-        ps1_status_line_other+="${COLOUR_CYAN}${ps1_venv}"
-        ps1_status_line_other+="${COLOUR_GREEN}${ps1_wd}"
-        ps1_status_line_other+="${COLOUR_YELLOW}${ps1_git}"
-        ps1_status_line_other+="${COLOUR_PURPLE}${ps1_jobs}"
+        ps1_status_line_other+="${ps1_user:+${ps1_user_colour}${ps1_user}}"
+        ps1_status_line_other+="${ps1_hostname:+${COLOUR_BLUE}${ps1_hostname}}"
+        ps1_status_line_other+="${ps1_venv:+${COLOUR_CYAN}${ps1_venv}}"
+        ps1_status_line_other+="${ps1_wd:+${COLOUR_GREEN}${ps1_wd}}"
+        ps1_status_line_other+="${ps1_git:+${COLOUR_YELLOW}${ps1_git}}"
+        ps1_status_line_other+="${ps1_jobs:+${COLOUR_PURPLE}${ps1_jobs}}"
 
         # Primary prompt
         PS1="\n"
         PS1+="${ps1_term_title}"
         PS1+="${ps1_status_line_previous:+${ps1_status_line_previous}\n}"
-        PS1+="${ps1_status_line_other}\n"
+        PS1+="${ps1_status_line_other:+${ps1_status_line_other}\n}"
         PS1+="${COLOUR_GREEN_BOLD}\\$"
         PS1+="${COLOUR_NORMAL} "
 
