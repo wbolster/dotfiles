@@ -255,6 +255,10 @@ if [[ "$PS1" ]]; then
     if [[ -f $HOME/.bash_completion ]]; then
         source $HOME/.bash_completion
     fi
+    for file in ~/.bash_completion_*; do
+        source "$file"
+    done
+    unset file
 
     # Directory changing (and creation)
     .. () { cd .. ; }
