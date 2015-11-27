@@ -3,29 +3,30 @@
 # Keep new files and directories private by default
 umask 077
 
-# Path manipulation helpers
 _deduplicate_path_components() {
-    python -c 'import collections, sys, os; print(os.pathsep.join(collections.OrderedDict.fromkeys(sys.argv[1].split(os.pathsep))))' "$@"
-}
-_prepend_to_path() { _deduplicate_path_components "${2}:${1}" ; }
-_append_to_path() { _deduplicate_path_components "${1}:${2}" ; }
+    local sed_expr='s/:/\n/g'
+    local n_components=$(echo "$1" | sed -e $sed_expr  | wc -l)
+    local n_unique_components=$(echo "$1" | sed  -e $sed_expr | sort -u | wc -l)
+    if [[ $n_components == $n_unique_components ]]; then
+        echo "$1"
+        return
+    fi
 
+    # This is relatively slow, hence all the preprocessing checks.
+    python -c 'import collections, sys, os; print(os.pathsep.join(collections.OrderedDict.fromkeys(sys.argv[1].split(os.pathsep))))' "$1"
+}
 # Set a sensible $PATH:
 # - OSX and Homebrew: add Homebrew's sbin/, and use GNU coreutils
 # - Add a few "standard" dirs inside $HOME
 unset dir
 if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
     brew_prefix=$(brew --prefix)
-    PATH=$(_prepend_to_path $PATH "${brew_prefix}/sbin")
-    PATH=$(_prepend_to_path $PATH "${brew_prefix}/opt/coreutils/libexec/gnubin")
+    PATH="${brew_prefix}/opt/coreutils/libexec/gnubin:${brew_prefix}/sbin:${PATH}"
     MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman${MANPATH:+:${MANPATH}}"
     unset brew_prefix
 fi
-for dir in ~/bin ~/.local/bin; do
-    if [[ -d "${dir}" ]]; then
-        PATH=$(_prepend_to_path ${PATH} ${dir})
-    fi
-done
+PATH="${HOME}/bin:${HOME}/.local/bin:$PATH"
+PATH=$(_deduplicate_path_components "${PATH}")
 
 # Interactive shells
 if [[ "$PS1" ]]; then
