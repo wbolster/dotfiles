@@ -3,21 +3,29 @@
 # Keep new files and directories private by default
 umask 077
 
+# Path manipulation helpers
+_deduplicate_path_components() {
+    python -c 'import collections, sys, os; print(os.pathsep.join(collections.OrderedDict.fromkeys(sys.argv[1].split(os.pathsep))))' "$@"
+}
+_prepend_to_path() { _deduplicate_path_components "${2}:${1}" ; }
+_append_to_path() { _deduplicate_path_components "${1}:${2}" ; }
+
 # Set a sensible $PATH:
-# - Add a few "standard" dirs inside $HOME
 # - OSX and Homebrew: add Homebrew's sbin/, and use GNU coreutils
-for dir in ~/bin ~/.local/bin; do
-    if [[ -d "${dir}" ]]; then
-        PATH="${dir}:${PATH}"
-    fi
-done
+# - Add a few "standard" dirs inside $HOME
+unset dir
 if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
     brew_prefix=$(brew --prefix)
-    PATH="${brew_prefix}/sbin:${PATH}"
-    PATH="${brew_prefix}/opt/coreutils/libexec/gnubin:${PATH}"
+    PATH=$(_prepend_to_path $PATH "${brew_prefix}/sbin")
+    PATH=$(_prepend_to_path $PATH "${brew_prefix}/opt/coreutils/libexec/gnubin")
     MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman${MANPATH:+:${MANPATH}}"
     unset brew_prefix
 fi
+for dir in ~/bin ~/.local/bin; do
+    if [[ -d "${dir}" ]]; then
+        PATH=$(_prepend_to_path ${PATH} ${dir})
+    fi
+done
 
 # Interactive shells
 if [[ "$PS1" ]]; then
