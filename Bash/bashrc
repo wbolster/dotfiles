@@ -124,12 +124,12 @@ if [[ "$PS1" ]]; then
         fi
 
         # Time since previous command
-        local ps1_timer
+        local ps1_timer=""
         if [[ -n "${_timer_start}" ]]; then
             local seconds_elapsed=$(($SECONDS - $_timer_start))
             if [[ $seconds_elapsed -ge 10 ]]; then
                 seconds_elapsed=$(_fmt_seconds_elapsed ${seconds_elapsed})
-                ps1_timer+="[${seconds_elapsed} elapsed]"
+                ps1_timer+="${seconds_elapsed} elapsed "
             fi
             _timer_start=""
         fi
@@ -178,7 +178,7 @@ if [[ "$PS1" ]]; then
         local ps1_newline_warning=""
         if [[ ${_ps1_newline_warning_enabled} -eq 1 ]]; then
             if [[ "$(_cursor_column)" -ne 1 ]]; then
-                ps1_newline_warning="\nno newline "
+                ps1_newline_warning="no newline "
             fi
         fi
 
@@ -200,36 +200,37 @@ if [[ "$PS1" ]]; then
             fi
         fi
 
-        # Combined status line
-        local ps1_status_combined=""
-        ps1_status_combined+="${COLOR_RED}${ps1_newline_warning}"
-        if [[ $USER = "root" ]]; then
-            ps1_status_combined+="${COLOR_RED}${ps1_user}"
-        else
-            ps1_status_combined+="${COLOR_BLUE}${ps1_user}"
-        fi
-        ps1_status_combined+="${COLOR_BLUE}${ps1_hostname}"
-        ps1_status_combined+="${COLOR_CYAN}${ps1_venv}"
-        ps1_status_combined+="${COLOR_GREEN}${ps1_wd}"
-        ps1_status_combined+="${COLOR_YELLOW}${ps1_git}"
-        ps1_status_combined+="${COLOR_PURPLE}${ps1_jobs}"
-        ps1_status_combined+="${COLOR_RED}${ps1_err}"
-
         # Terminal title (execution/echoing embedded in $PS1)
         local ps1_term_title=""
         case $TERM in
-            xterm*|rxvt*)
-                # ps1_term_title="\[\e]0;hello${ps1_status_combined}\a\]"
-                ps1_term_title="\[\e]0;${tt_hostname}${tt_wd}\a\]"
-                ;;
+            (xterm*|rxvt*)  ps1_term_title="\[\e]0;${tt_hostname}${tt_wd}\a\]" ;;
         esac
+
+        # Status line about previous command
+        local ps1_status_line_previous=""
+        ps1_status_line_previous+="${ps1_newline_warning:+\n${COLOR_RED}${ps1_newline_warning}}"
+        ps1_status_line_previous+="${ps1_err:+${COLOR_RED}${ps1_err}}"
+        ps1_status_line_previous+="${ps1_timer:+${COLOR_GREEN}${ps1_timer}}"
+
+        # Status line with other information
+        local ps1_status_line_other=""
+        if [[ $USER = "root" ]]; then
+            ps1_status_line_other+="${COLOR_RED}${ps1_user}"
+        else
+            ps1_status_line_other+="${COLOR_BLUE}${ps1_user}"
+        fi
+        ps1_status_line_other+="${COLOR_BLUE}${ps1_hostname}"
+        ps1_status_line_other+="${COLOR_CYAN}${ps1_venv}"
+        ps1_status_line_other+="${COLOR_GREEN}${ps1_wd}"
+        ps1_status_line_other+="${COLOR_YELLOW}${ps1_git}"
+        ps1_status_line_other+="${COLOR_PURPLE}${ps1_jobs}"
 
         # Primary prompt
         PS1="\n"
         PS1+="${ps1_term_title}"
-        PS1+="${ps1_timer:+${COLOR_GREEN}${ps1_timer}\n\n}"
-        PS1+="${ps1_status_combined}"
-        PS1+="\n${COLOR_GREEN_BOLD}\\$"
+        PS1+="${ps1_status_line_previous:+${ps1_status_line_previous}\n}"
+        PS1+="${ps1_status_line_other}\n"
+        PS1+="${COLOR_GREEN_BOLD}\\$"
         PS1+="${COLOR_NORMAL} "
 
         # Secondary prompt (continuation lines)
