@@ -157,8 +157,12 @@ if [[ "$PS1" ]]; then
         fi
 
         # Working directory
-        local ps1_wd="in \w "
-        local tt_wd="${PWD}"
+        local ps1_wd=""
+        local tt_wd=""
+        if [[ "${PWD}" != "${HOME}" ]]; then
+            ps1_wd="in \w "
+            tt_wd="${PWD}"
+        fi
 
         # Git
         local ps1_git=""
