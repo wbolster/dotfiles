@@ -139,6 +139,13 @@ if [[ "$PS1" ]]; then
             _direnv_hook
         fi
 
+        # User name (only if non-standard)
+        local ps1_user
+        case "${USER}" in
+            (wbolster|uws) ps1_user="" ;;
+            (*) ps1_user="as ${USER} " ;;
+        esac
+
         # Host name (only remote)
         local ps1_hostname=""
         local tt_hostname=""
@@ -196,6 +203,11 @@ if [[ "$PS1" ]]; then
         # Combined status line
         local ps1_status_combined=""
         ps1_status_combined+="${COLOR_RED}${ps1_newline_warning}"
+        if [[ $USER = "root" ]]; then
+            ps1_status_combined+="${COLOR_RED}${ps1_user}"
+        else
+            ps1_status_combined+="${COLOR_BLUE}${ps1_user}"
+        fi
         ps1_status_combined+="${COLOR_BLUE}${ps1_hostname}"
         ps1_status_combined+="${COLOR_CYAN}${ps1_venv}"
         ps1_status_combined+="${COLOR_GREEN}${ps1_wd}"
