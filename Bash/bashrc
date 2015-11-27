@@ -19,7 +19,7 @@ if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
     unset brew_prefix
 fi
 
-# Interactive Shells
+# Interactive shells
 if [[ "$PS1" ]]; then
     # Make sure $HOSTNAME is set
     [[ -z "${HOSTNAME}" ]] && export HOSTNAME=$(hostname)
@@ -432,7 +432,6 @@ if [[ "$PS1" ]]; then
 
     # Mac OSX
     if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
-
         # Homebrew
         i() { _run_verbose brew install "$@"; }
         u() {
