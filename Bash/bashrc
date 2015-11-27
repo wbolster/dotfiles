@@ -171,7 +171,7 @@ if [[ "$PS1" ]]; then
         local ps1_newline_warning=""
         if [[ ${_ps1_newline_warning_enabled} -eq 1 ]]; then
             if [[ "$(_cursor_column)" -ne 1 ]]; then
-                ps1_newline_warning="\n${COLOR_RED}!nl "
+                ps1_newline_warning="\nno newline "
             fi
         fi
 
@@ -195,6 +195,7 @@ if [[ "$PS1" ]]; then
 
         # Combined status line
         local ps1_status_combined=""
+        ps1_status_combined+="${COLOR_RED}${ps1_newline_warning}"
         ps1_status_combined+="${COLOR_BLUE}${ps1_hostname}"
         ps1_status_combined+="${COLOR_CYAN}${ps1_venv}"
         ps1_status_combined+="${COLOR_GREEN}${ps1_wd}"
@@ -215,7 +216,6 @@ if [[ "$PS1" ]]; then
         PS1="\n"
         PS1+="${ps1_term_title}"
         PS1+="${ps1_timer:+${COLOR_GREEN}${ps1_timer}\n\n}"
-        PS1+="${ps1_newline_warning}"
         PS1+="${ps1_status_combined}"
         PS1+="\n${COLOR_GREEN_BOLD}\\$"
         PS1+="${COLOR_NORMAL} "
