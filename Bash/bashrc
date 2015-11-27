@@ -359,7 +359,14 @@ if [[ "$PS1" ]]; then
         pygmentize -l "$1" "${@:2}" | maybe-pager
     }
 
-    # Python stuff
+    # Multiple python installations via pyenv
+    if type pyenv &>/dev/null && [[ $(type -t pyenv) != "function" ]]; then
+        # After initialization, pyenv provides a shell function that masks the
+        # actual executable. Initialize if pyenv is available but not loaded.
+        eval "$(pyenv init -)"
+    fi
+
+    # Python development
     export PYTHONDONTWRITEBYTECODE=1
     alias py=python
     alias ipy=ipython
