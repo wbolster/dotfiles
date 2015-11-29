@@ -242,7 +242,9 @@ if [[ "$PS1" ]]; then
     PROMPT_COMMAND=set_prompt_command
 
     # Disable annoying beeps
-    setterm -blength 0 2>/dev/null
+    if type setterm &>/dev/null; then
+        setterm -blength 0 2>/dev/null
+    fi
 
     # Completion
     if [[ -f /usr/share/bash-completion/bash_completion ]]; then
