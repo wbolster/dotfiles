@@ -316,8 +316,7 @@ if [[ "$PS1" ]]; then
             fi
 
             cmd_corrected="$prefix ${cmd#$prefix}$2"
-            shift 2
-            _run_verbose $cmd_corrected "$@"
+            _run_verbose $cmd_corrected "${@:3}"
             return
         done
 
