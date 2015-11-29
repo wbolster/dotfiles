@@ -276,6 +276,8 @@ if [[ "$PS1" ]]; then
     unset file
 
     # Directory changing (and creation)
+    export CDPATH=.:~:~/Projects
+    shopt -s autocd
     .. () { cd .. ; }
     - () { cd - ; }
     mcd() {
