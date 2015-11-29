@@ -247,18 +247,16 @@ if [[ "$PS1" ]]; then
     fi
 
     # Completion
-    if [[ -f /usr/share/bash-completion/bash_completion ]]; then
-        source /usr/share/bash-completion/bash_completion
-    elif [[ -f /etc/bash_completion ]]; then
-        source /etc/bash_completion
-    elif [[ -f /usr/local/etc/bash_completion ]]; then
-        source /usr/local/etc/bash_completion
-    fi
-    if [[ -f $HOME/.bash_completion ]]; then
-        source $HOME/.bash_completion
-    fi
-    for file in ~/.bash_completion_*; do
-        source "$file"
+    for file in /usr/share/bash-completion/bash_completion /etc/bash_completion /usr/local/etc/bash_completion; do
+        if [[ -f "$file" ]]; then
+            source $file
+            break  # stop after first match
+        fi
+    done
+    for file in ~/.bash_completion ~/.bash_completion_*; do
+        if [[ -f "${file}" ]]; then
+            source "$file"
+        fi
     done
     unset file
 
