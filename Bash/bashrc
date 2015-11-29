@@ -241,6 +241,12 @@ if [[ "$PS1" ]]; then
     }
     PROMPT_COMMAND=set_prompt_command
 
+    # Globbing. This makes both "echo *" (only non-hidden files) and "echo .*"
+    # (only hidden files, ignoring . and ..) works as intended.
+    GLOBIGNORE=".:.."
+    shopt -u dotglob  # ... since setting GLOBIGNORE enables dotglob as a side effect :-(
+    shopt -s extglob
+
     # Disable annoying beeps
     if type setterm &>/dev/null; then
         setterm -blength 0 2>/dev/null
