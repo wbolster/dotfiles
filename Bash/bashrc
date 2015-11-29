@@ -303,11 +303,11 @@ if [[ "$PS1" ]]; then
         printf "                                                    \e[48;5;16m      \e[0m      \e[48;5;16m    \e[0m              \e[48;5;16m    \e[0m    \e[48;5;16m      \e[0m\n"
     }
 
-    # Magic typo corrector
+    # Callback when a command could not be found.
     command_not_found_handle() {
         local cmd="$1"
 
-        # Handle typos like "gitp ush" and "gitpu sh"
+        # Magic typo corrector. Handles typos like "gitp ush" and "gitpu sh".
         local autocorrect_cmds="bzr git svn"
         for prefix in $autocorrect_cmds; do
             if [[ "${cmd#$prefix}" == "$cmd" ]]; then
