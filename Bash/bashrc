@@ -145,9 +145,11 @@ if [[ "$PS1" ]]; then
         local ps1_user_colour="${COLOUR_BLUE}"
         case "${USER}" in
             (wbolster|uws) ps1_user="" ;;
-            (root)  ps1_user_colour="${COLOUR_RED}" ;;
             (*) ps1_user="as ${USER} " ;;
         esac
+        if [[ "$USER" == "root" ]]; then
+            ps1_user_colour="${COLOUR_RED}"
+        fi
 
         # Host name (only remote)
         local ps1_hostname=""
