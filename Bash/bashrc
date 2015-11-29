@@ -98,23 +98,23 @@ if [[ "$PS1" ]]; then
         local prev_exit_code=$?
 
         # Colour definitions
-        local COLOUR_NORMAL="\[\e[0m\]"
-        local COLOUR_BLACK="\[\e[0;30m\]"
-        local COLOUR_BLACK_BOLD="\[\e[1;30m\]"
-        local COLOUR_RED="\[\e[0;31m\]"
-        local COLOUR_RED_BOLD="\[\e[1;31m\]"
-        local COLOUR_GREEN="\[\e[0;32m\]"
-        local COLOUR_GREEN_BOLD="\[\e[1;32m\]"
-        local COLOUR_YELLOW="\[\e[0;33m\]"
-        local COLOUR_YELLOW_BOLD="\[\e[1;33m\]"
-        local COLOUR_BLUE="\[\e[0;34m\]"
-        local COLOUR_BLUE_BOLD="\[\e[1;34m\]"
-        local COLOUR_PURPLE="\[\e[0;35m\]"
-        local COLOUR_PURPLE_BOLD="\[\e[1;35m\]"
-        local COLOUR_CYAN="\[\e[0;36m\]"
-        local COLOUR_CYAN_BOLD="\[\e[1;36m\]"
-        local COLOUR_WHITE="\[\e[0;37m\]"
-        local COLOUR_WHITE_BOLD="\[\e[1;37m\]"
+        local colour_normal="\[\e[0m\]"
+        local colour_black="\[\e[0;30m\]"
+        local colour_black_bold="\[\e[1;30m\]"
+        local colour_red="\[\e[0;31m\]"
+        local colour_red_bold="\[\e[1;31m\]"
+        local colour_green="\[\e[0;32m\]"
+        local colour_green_bold="\[\e[1;32m\]"
+        local colour_yellow="\[\e[0;33m\]"
+        local colour_yellow_bold="\[\e[1;33m\]"
+        local colour_blue="\[\e[0;34m\]"
+        local colour_blue_bold="\[\e[1;34m\]"
+        local colour_purple="\[\e[0;35m\]"
+        local colour_purple_bold="\[\e[1;35m\]"
+        local colour_cyan="\[\e[0;36m\]"
+        local colour_cyan_bold="\[\e[1;36m\]"
+        local colour_white="\[\e[0;37m\]"
+        local colour_white_bold="\[\e[1;37m\]"
 
         # Error
         local ps1_err=""
@@ -146,13 +146,13 @@ if [[ "$PS1" ]]; then
 
         # User name (only if non-standard)
         local ps1_user=""
-        local ps1_user_colour="${COLOUR_BLUE}"
+        local ps1_user_colour="${colour_blue}"
         case "${USER}" in
             (wbolster|uws) ps1_user="" ;;
             (*) ps1_user="as ${USER} " ;;
         esac
         if [[ "$USER" == "root" ]]; then
-            ps1_user_colour="${COLOUR_RED}"
+            ps1_user_colour="${colour_red}"
         fi
 
         # Host name (only remote)
@@ -221,29 +221,29 @@ if [[ "$PS1" ]]; then
 
         # Status line about previous command
         local ps1_status_line_previous=""
-        ps1_status_line_previous+="${ps1_newline_warning:+\n${COLOUR_RED}${ps1_newline_warning}}"
-        ps1_status_line_previous+="${ps1_err:+${COLOUR_RED}${ps1_err}}"
-        ps1_status_line_previous+="${ps1_timer:+${COLOUR_GREEN}${ps1_timer}}"
+        ps1_status_line_previous+="${ps1_newline_warning:+\n${colour_red}${ps1_newline_warning}}"
+        ps1_status_line_previous+="${ps1_err:+${colour_red}${ps1_err}}"
+        ps1_status_line_previous+="${ps1_timer:+${colour_green}${ps1_timer}}"
 
         # Status line with other information
         local ps1_status_line_other=""
         ps1_status_line_other+="${ps1_user:+${ps1_user_colour}${ps1_user}}"
-        ps1_status_line_other+="${ps1_hostname:+${COLOUR_BLUE}${ps1_hostname}}"
-        ps1_status_line_other+="${ps1_venv:+${COLOUR_CYAN}${ps1_venv}}"
-        ps1_status_line_other+="${ps1_wd:+${COLOUR_GREEN}${ps1_wd}}"
-        ps1_status_line_other+="${ps1_git:+${COLOUR_YELLOW}${ps1_git}}"
-        ps1_status_line_other+="${ps1_jobs:+${COLOUR_PURPLE}${ps1_jobs}}"
+        ps1_status_line_other+="${ps1_hostname:+${colour_blue}${ps1_hostname}}"
+        ps1_status_line_other+="${ps1_venv:+${colour_cyan}${ps1_venv}}"
+        ps1_status_line_other+="${ps1_wd:+${colour_green}${ps1_wd}}"
+        ps1_status_line_other+="${ps1_git:+${colour_yellow}${ps1_git}}"
+        ps1_status_line_other+="${ps1_jobs:+${colour_purple}${ps1_jobs}}"
 
         # Primary prompt
         PS1="\n"
         PS1+="${ps1_term_title}"
         PS1+="${ps1_status_line_previous:+${ps1_status_line_previous}\n}"
         PS1+="${ps1_status_line_other:+${ps1_status_line_other}\n}"
-        PS1+="${COLOUR_GREEN_BOLD}\\$"
-        PS1+="${COLOUR_NORMAL} "
+        PS1+="${colour_green_bold}\\$"
+        PS1+="${colour_normal} "
 
         # Secondary prompt (continuation lines)
-        PS2="${COLOUR_GREEN}> ${COLOUR_NORMAL}"
+        PS2="${colour_green}> ${colour_normal}"
     }
     PROMPT_COMMAND=set_prompt_command
 
