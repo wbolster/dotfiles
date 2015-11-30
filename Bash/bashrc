@@ -175,10 +175,9 @@ if [[ "$PS1" ]]; then
 
         # Working directory
         local prompt_wd=""
-        local tt_wd=""
+        local tt_wd="\w"
         if [[ "${PWD}" != "${HOME}" ]]; then
             prompt_wd="in \w"
-            tt_wd="${PWD}"
         fi
 
         # Git
