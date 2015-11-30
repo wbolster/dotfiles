@@ -286,6 +286,14 @@ if [[ "$PS1" ]]; then
     shopt -s autocd
     ..() { cd .. ; }
     -() { cd - ; }
+    cd() {
+        if [[ $# == 2 && "${1}" != -* ]]; then
+            # Simple path replacement, e.g. "cd site1 site2".
+            _run_verbose builtin cd "${PWD/$1/$2}"
+        else
+            builtin cd "$1"
+        fi
+    }
     mcd() {
         mkdir --verbose --parents "$1" && cd "$1"
     }
