@@ -35,7 +35,11 @@ if [[ "$PS1" ]]; then
 
     # Helper to emulate "set -x" output
     _run_verbose () {
-        echo $PS4 "$@" >&2
+        (
+            # Strip visible escape sequences from $PS4; bash prompting works differently from echo.
+            printf "${PS4}" | sed -e 's/\\\[//g' -e 's/\\\]//g'
+            echo "$@"
+        ) >&2
         "$@"
     }
 
