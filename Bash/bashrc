@@ -34,7 +34,7 @@ if [[ "$PS1" ]]; then
     [[ -z "${HOSTNAME}" ]] && export HOSTNAME=$(hostname)
 
     # Helper to emulate "set -x" output
-    _run_verbose () {
+    _run_verbose() {
         (
             # Strip visible escape sequences from $PS4; bash prompting works differently from echo.
             printf "${PS4}" | sed -e 's/\\\[//g' -e 's/\\\]//g'
@@ -284,8 +284,8 @@ if [[ "$PS1" ]]; then
     # Directory changing (and creation)
     export CDPATH=.:~:~/Projects
     shopt -s autocd
-    .. () { cd .. ; }
-    - () { cd - ; }
+    ..() { cd .. ; }
+    -() { cd - ; }
     mcd() {
         mkdir --verbose --parents "$1" && cd "$1"
     }
@@ -293,7 +293,7 @@ if [[ "$PS1" ]]; then
         cd $(dirname "$1")
     }
 
-    _print_nyan_cat () {
+    _print_nyan_cat() {
         printf "\e[48;5;196m            \e[0m              \e[48;5;196m                \e[0m                \e[48;5;16m                              \e[0m\n"
         printf "\e[48;5;196m                                                        \e[48;5;16m  \e[48;5;230m                              \e[48;5;16m  \e[0m\n"
         printf "\e[48;5;214m            \e[48;5;196m              \e[48;5;214m                \e[48;5;196m            \e[48;5;16m  \e[48;5;230m      \e[48;5;175m                      \e[48;5;230m      \e[48;5;16m  \e[0m\n"
@@ -393,7 +393,7 @@ if [[ "$PS1" ]]; then
     # Pager
     export PAGER=less
     alias lessr='less -R'
-    maybe-pager () {
+    maybe-pager() {
         if [[ -t 1 ]]; then  # stdout is a terminal
             less -FRX "$@"
         else
@@ -422,7 +422,7 @@ if [[ "$PS1" ]]; then
     if type hub &>/dev/null; then
         alias git=hub
     fi
-    syntax-highlight () {
+    syntax-highlight() {
         pygmentize -l "$1" "${@:2}" | maybe-pager
     }
 
@@ -458,15 +458,15 @@ if [[ "$PS1" ]]; then
     py-ipdb() {
         python -m ipdb $(which "$1") "${@:2}"
     }
-    pytestf () {
+    pytestf() {
         _run_verbose py.test --tb=short --color=yes --looponfail --verbose --verbose "$@"
     }
 
     # Data conversion
-    yaml-to-json () {
+    yaml-to-json() {
         python -c 'import json, sys, yaml; print(json.dumps(yaml.safe_load(open(sys.argv[1]) if sys.argv[1:] else sys.stdin), indent=2, sort_keys=True))' "$@" | syntax-highlight json
     }
-    json-to-yaml () {
+    json-to-yaml() {
         python -c 'import json, sys, yaml; print(yaml.safe_dump(json.load(open(sys.argv[1]) if sys.argv[1:] else sys.stdin), default_flow_style=False))' "$@" | syntax-highlight yaml
     }
 
@@ -553,7 +553,7 @@ if [[ "$PS1" ]]; then
     fi
 
     # Show a file with syntax highlighting (when possible) through a pager (when necessary)
-    show () {
+    show() {
         (
             set -e
             if [[ -z "$@" || ("$#" == 1 && "$1" == "-") ]]; then
@@ -612,7 +612,7 @@ if [[ "$PS1" ]]; then
     }
 
     # This cat has magical powers, like a space cat flying through pizzas with bacon.
-    cat () {
+    cat() {
         if [[ "${1}" != -* && -t 1 ]]; then
             # No flags are specified and stdout is a terminal; perform magic.
             show "$@"
