@@ -129,7 +129,7 @@ if [[ "$PS1" ]]; then
             if [[ ${prev_exit_code} -gt 128 && ${prev_exit_code} -lt 192 ]]; then
                 exit_status=$((128-prev_exit_code))" "$(kill -l ${prev_exit_code} 2>/dev/null || echo -n '?')
             fi
-            prompt_err="exit ${exit_status} "
+            prompt_err="exit ${exit_status}"
         fi
 
         # Time since previous command
@@ -138,7 +138,7 @@ if [[ "$PS1" ]]; then
             local seconds_elapsed=$(($SECONDS - $_timer_start))
             if [[ $seconds_elapsed -ge 10 ]]; then
                 seconds_elapsed=$(_fmt_seconds_elapsed ${seconds_elapsed})
-                prompt_timer+="${seconds_elapsed} elapsed "
+                prompt_timer+="${seconds_elapsed} elapsed"
             fi
             _timer_start=""
         fi
@@ -153,8 +153,12 @@ if [[ "$PS1" ]]; then
         local prompt_user_colour="${colour_blue}"
         local prompt_sign_colour="${colour_green}"
         case "${USER}" in
-            (wbolster|uws) prompt_user="" ;;
-            (*) prompt_user="as ${USER} " ;;
+            (wbolster|uws)
+                prompt_user=""
+                ;;
+            (*)
+                prompt_user="as ${USER}"
+                ;;
         esac
         if [[ "$USER" == "root" ]]; then
             prompt_user_colour="${colour_red}"
@@ -165,15 +169,15 @@ if [[ "$PS1" ]]; then
         local prompt_hostname=""
         local tt_hostname=""
         if [[ -n "${SSH_CLIENT:-}" ]]; then
-            prompt_hostname="on ${HOSTNAME} "
-            tt_hostname="${HOSTNAME} "
+            prompt_hostname="on ${HOSTNAME}"
+            tt_hostname="${HOSTNAME}"
         fi
 
         # Working directory
         local prompt_wd=""
         local tt_wd=""
         if [[ "${PWD}" != "${HOME}" ]]; then
-            prompt_wd="in \w "
+            prompt_wd="in \w"
             tt_wd="${PWD}"
         fi
 
@@ -182,7 +186,7 @@ if [[ "$PS1" ]]; then
         if declare -F __git_ps1 > /dev/null; then
             local _git_ps1_output="$(__git_ps1 '%s')"
             if [[ -n "${_git_ps1_output}" ]]; then
-                prompt_git="git ${_git_ps1_output} "
+                prompt_git="git ${_git_ps1_output}"
             fi
         fi
 
@@ -190,14 +194,14 @@ if [[ "$PS1" ]]; then
         local prompt_venv=""
         if [[ -n ${VIRTUAL_ENV} ]]; then
             local venv_name=$(basename ${VIRTUAL_ENV})
-            prompt_venv="venv ${venv_name} "
+            prompt_venv="venv ${venv_name}"
         fi
 
         # Warning when output does not have a trailing newline
         local prompt_newline_warning=""
         if [[ ${_prompt_newline_warning_enabled} -eq 1 ]]; then
             if [[ "$(_cursor_column)" -ne 1 ]]; then
-                prompt_newline_warning="no newline "
+                prompt_newline_warning="no newline"
             fi
         fi
 
@@ -209,13 +213,13 @@ if [[ "$PS1" ]]; then
             local n_jobs_suspended="$(jobs -p -s | wc -w)"
             prompt_jobs=""
             if [[ $(($n_jobs_background + $n_jobs_suspended)) > 0 ]]; then
-                prompt_jobs="jobs "
+                prompt_jobs="jobs"
             fi
             if [[ ${n_jobs_background} -gt 0 ]]; then
-                prompt_jobs+="${n_jobs_background}& "
+                prompt_jobs+="${n_jobs_background}&"
             fi
             if [[ ${n_jobs_suspended} -gt 0 ]]; then
-                prompt_jobs+="${n_jobs_suspended}^Z "
+                prompt_jobs+="${n_jobs_suspended}^Z"
             fi
         fi
 
@@ -227,26 +231,25 @@ if [[ "$PS1" ]]; then
 
         # Status line about previous command
         local status_line_previous=""
-        status_line_previous+="${prompt_newline_warning:+\n${colour_red}${prompt_newline_warning}}"
-        status_line_previous+="${prompt_err:+${colour_red}${prompt_err}}"
-        status_line_previous+="${prompt_timer:+${colour_green}${prompt_timer}}"
+        status_line_previous+="${prompt_newline_warning:+\n${colour_red}${prompt_newline_warning} }"
+        status_line_previous+="${prompt_err:+${colour_red}${prompt_err} }"
+        status_line_previous+="${prompt_timer:+${colour_green}${prompt_timer} }"
 
         # Status line with other information
         local prompt_status_line_other=""
-        prompt_status_line_other+="${prompt_user:+${prompt_user_colour}${prompt_user}}"
-        prompt_status_line_other+="${prompt_hostname:+${colour_blue}${prompt_hostname}}"
-        prompt_status_line_other+="${prompt_venv:+${colour_cyan}${prompt_venv}}"
-        prompt_status_line_other+="${prompt_wd:+${colour_green}${prompt_wd}}"
-        prompt_status_line_other+="${prompt_git:+${colour_yellow}${prompt_git}}"
-        prompt_status_line_other+="${prompt_jobs:+${colour_purple}${prompt_jobs}}"
+        prompt_status_line_other+="${prompt_user:+${prompt_user_colour}${prompt_user} }"
+        prompt_status_line_other+="${prompt_hostname:+${colour_blue}${prompt_hostname} }"
+        prompt_status_line_other+="${prompt_venv:+${colour_cyan}${prompt_venv} }"
+        prompt_status_line_other+="${prompt_wd:+${colour_green}${prompt_wd} }"
+        prompt_status_line_other+="${prompt_git:+${colour_yellow}${prompt_git} }"
+        prompt_status_line_other+="${prompt_jobs:+${colour_purple}${prompt_jobs} }"
 
         # Primary prompt
         PS1="\n"
         PS1+="${term_title}"
-        PS1+="${status_line_previous:+${status_line_previous}\n}"
-        PS1+="${prompt_status_line_other:+${prompt_status_line_other}\n}"
-        PS1+="${prompt_sign_colour}\\$"
-        PS1+="${colour_normal} "
+        PS1+="${status_line_previous:+${status_line_previous%% }\n}"
+        PS1+="${prompt_status_line_other:+${prompt_status_line_other%% }\n}"
+        PS1+="${prompt_sign_colour}\\$""${colour_normal} "
 
         # Additional prompts
         PS2="${prompt_sign_colour}> ${colour_normal}"  # Secondary prompt (continuation lines)
