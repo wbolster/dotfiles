@@ -581,7 +581,11 @@ if [[ "$PS1" ]]; then
                     can_peek="no"
                 fi
                 if [[ -r "$file" ]]; then
-                    if type pygmentize &>/dev/null; then
+                    if [[ "$file" == *.txt ]]; then
+                        # Don't try to highlight text files; pygmentize
+                        # detection is slow and often wrong for those.
+                        true
+                    elif type pygmentize &>/dev/null; then
                         # Try to use pygments/pygmentize for syntax highlighting.
                         local lexer=$(pygmentize -N "$file")
                         if [[ "${can_peek}" == "yes" && "${lexer}" == "text" ]]; then
