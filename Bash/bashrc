@@ -215,10 +215,10 @@ if [[ "$PS1" ]]; then
                 prompt_jobs="jobs"
             fi
             if [[ ${n_jobs_background} -gt 0 ]]; then
-                prompt_jobs+="${n_jobs_background}&"
+                prompt_jobs+=" ${n_jobs_background}&"
             fi
             if [[ ${n_jobs_suspended} -gt 0 ]]; then
-                prompt_jobs+="${n_jobs_suspended}^Z"
+                prompt_jobs+=" ${n_jobs_suspended}^Z"
             fi
         fi
 
