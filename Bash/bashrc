@@ -447,18 +447,21 @@ if [[ "$PS1" ]]; then
     alias ipy=ipython
     alias pytest=py.test
     py-cprofile() {
-        local PROG="$1"
-        shift
-        if [[ -z "${PROG}" ]]; then
-            echo -e "Error: no Python program specified. Usage:\n\n    ${FUNCNAME} some-program --some-args" > /dev/stderr
+        if [[ $# -lt 1 ]]; then
+            printf "Error: no Python program specified. Usage:\n\n    ${FUNCNAME} some-program --some-args\n" > /dev/stderr
             return
         fi
-        local PROFILE=$(mktemp 'profile-XXXXXX.prof')
-        python -m cProfile -o $PROFILE "$(which "$PROG")" "$@"
+        local prog="$1"
+        shift
+        if [[ ! -f "$prog" ]]; then
+            prog=$(which $prog)
+        fi
+        local profile_file=$(mktemp 'python-cprofile-XXXXXX.prof')
+        python -m cProfile -o "$profile_file" "$prog" "$@"
         echo > /dev/stderr
-        echo -e 'sort cumulative\nstats 30' | python -m pstats "$PROFILE" 1>&2
+        printf 'sort cumulative\nstats 30\n' | python -m pstats "$profile_file" 1>&2
         echo > /dev/stderr
-        echo "Profile stored in $PROFILE" > /dev/stderr
+        echo "Profile stored in ${profile_file}" > /dev/stderr
     }
     py-pdb() {
         python -m pdb $(which "$1") "${@:2}"
