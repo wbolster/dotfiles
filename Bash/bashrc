@@ -211,7 +211,12 @@ if [[ "$PS1" ]]; then
         # Virtualenv
         local prompt_venv=""
         if [[ -n ${VIRTUAL_ENV} ]]; then
-            local venv_name=$(basename ${VIRTUAL_ENV})
+            local venv_name
+            if [[ "${VIRTUAL_ENV}" == */.direnv/* ]]; then
+                venv_name=$(basename $(dirname $(dirname ${VIRTUAL_ENV})))
+            else
+                venv_name=$(basename ${VIRTUAL_ENV})
+            fi
             prompt_venv="venv ${venv_name}"
         fi
 
