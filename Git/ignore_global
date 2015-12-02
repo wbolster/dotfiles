@@ -1,0 +1,13 @@
+# Backup files
+*~
+
+# Mac OSX
+.DS_Store
+
+# Python
+*.py[co]
+__pycache__/
+
+# direnv
+.direnv/
+.envrc

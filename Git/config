@@ -92,6 +92,9 @@ autosetuprebase = always
 [color]
 ui = auto
 
+[core]
+excludesfile = ~/.gitignore_global
+
 [diff]
 tool = gvimdiff
 
