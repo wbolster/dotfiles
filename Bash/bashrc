@@ -162,7 +162,7 @@ if [[ "$PS1" ]]; then
                 if [[ -r "${dir}/../.umbrella" ]]; then
                     local prefix=$(command cat "${dir}/../.umbrella")
                     project=$(basename $dir)
-                    prompt_umbrella="${prefix} ${project}"
+                    prompt_umbrella="${prefix} ${project,,}"
                     break
                 fi
                 dir=$(dirname $dir)
