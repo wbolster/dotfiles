@@ -154,18 +154,21 @@ if [[ "$PS1" ]]; then
         # name of the topmost child directory under that umbrella dir.
         local prompt_umbrella=''
         local tt_umbrella=''
-        local umbrella_file=".umbrella"
-        local dir="${PWD}"
-        while [[ $dir != '/' ]]; do
-            if [[ -r "${dir}/../${umbrella_file}" && ! -r "${dir}/${umbrella_file}" ]]; then
-                local prefix=$(command cat "${dir}/../${umbrella_file}")
-                project=$(basename $dir)
-                prompt_umbrella="${prefix} ${project}"
-                tt_umbrella="${prompt_umbrella}"
-                break
-            fi
-            dir=$(dirname $dir)
-        done
+        if [[ -r ".umbrella" ]]; then
+            prompt_umbrella=$(command cat .umbrella)
+        else
+            local dir="${PWD}"
+            while [[ $dir != '/' ]]; do
+                if [[ -r "${dir}/../.umbrella" ]]; then
+                    local prefix=$(command cat "${dir}/../.umbrella")
+                    project=$(basename $dir)
+                    prompt_umbrella="${prefix} ${project}"
+                    break
+                fi
+                dir=$(dirname $dir)
+            done
+        fi
+        tt_umbrella="${prompt_umbrella}"
 
         # User name (only if non-standard)
         local prompt_user=""
