@@ -148,6 +148,25 @@ if [[ "$PS1" ]]; then
             _direnv_hook
         fi
 
+        # Show "umbrella name". This is useful for directories that act as
+        # containers for projects, e.g. ~/Projects. By storing a short word in
+        # a file called ".umbrella" the prompt will show that word and the
+        # name of the topmost child directory under that umbrella dir.
+        local prompt_umbrella=''
+        local tt_umbrella=''
+        local umbrella_file=".umbrella"
+        local dir="${PWD}"
+        while [[ $dir != '/' ]]; do
+            if [[ -r "${dir}/../${umbrella_file}" && ! -r "${dir}/${umbrella_file}" ]]; then
+                local prefix=$(command cat "${dir}/../${umbrella_file}")
+                project=$(basename $dir)
+                prompt_umbrella="${prefix} ${project}"
+                tt_umbrella="${project}"
+                break
+            fi
+            dir=$(dirname $dir)
+        done
+
         # User name (only if non-standard)
         local prompt_user=""
         local prompt_user_colour="${colour_blue}"
@@ -225,7 +244,7 @@ if [[ "$PS1" ]]; then
         # Terminal title (execution/echoing embedded in $PS1)
         local term_title=""
         case $TERM in
-            (xterm*|rxvt*)  term_title="\[\e]0;${tt_hostname}${tt_wd}\a\]" ;;
+            (xterm*|rxvt*)  term_title="\[\e]0;${tt_umbrella:+${tt_umbrella} }${tt_hostname:+${tt_hostname}:}${tt_wd}\a\]" ;;
         esac
 
         # Status line about previous command
@@ -238,6 +257,7 @@ if [[ "$PS1" ]]; then
         local prompt_status_line_other=""
         prompt_status_line_other+="${prompt_user:+${prompt_user_colour}${prompt_user} }"
         prompt_status_line_other+="${prompt_hostname:+${colour_blue}${prompt_hostname} }"
+        prompt_status_line_other+="${prompt_umbrella:+${colour_blue}${prompt_umbrella} }"
         prompt_status_line_other+="${prompt_venv:+${colour_cyan}${prompt_venv} }"
         prompt_status_line_other+="${prompt_wd:+${colour_green}${prompt_wd} }"
         prompt_status_line_other+="${prompt_git:+${colour_yellow}${prompt_git} }"
