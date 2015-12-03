@@ -474,6 +474,7 @@ if [[ "$PS1" ]]; then
     alias py=python
     alias ipy=ipython
     alias pytest=py.test
+    alias pyt=py.test
     py-cprofile() {
         if [[ $# -lt 1 ]]; then
             printf "Error: no Python program specified. Usage:\n\n    ${FUNCNAME} some-program --some-args\n" > /dev/stderr
