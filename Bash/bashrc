@@ -296,7 +296,7 @@ if [[ "$PS1" ]]; then
     fi
 
     # Completion
-    for file in /usr/share/bash-completion/bash_completion /etc/bash_completion /usr/local/etc/bash_completion; do
+    for file in /usr/share/bash-completion/bash_completion /etc/bash_completion /usr/local/share/bash-completion/bash_completion; do
         if [[ -f "$file" ]]; then
             source $file
             break  # stop after first match
