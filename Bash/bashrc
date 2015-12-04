@@ -330,6 +330,10 @@ if [[ "$PS1" ]]; then
     }
 
     _print_nyan_cat() {
+        # This image needs a terminal of at least 104 columns wide to show up properly.
+        if [[ $COLUMNS -lt 104 ]]; then
+            return
+        fi
         printf "\e[48;5;196m            \e[0m              \e[48;5;196m                \e[0m                \e[48;5;16m                              \e[0m\n"
         printf "\e[48;5;196m                                                        \e[48;5;16m  \e[48;5;230m                              \e[48;5;16m  \e[0m\n"
         printf "\e[48;5;214m            \e[48;5;196m              \e[48;5;214m                \e[48;5;196m            \e[48;5;16m  \e[48;5;230m      \e[48;5;175m                      \e[48;5;230m      \e[48;5;16m  \e[0m\n"
