@@ -585,7 +585,7 @@ if [[ "$PS1" ]]; then
         _ITERM_PROFILE_FILE=~/.config/iterm-profile
         _iterm_profile() {
             printf "\e]50;SetProfile=$1\a"
-            echo "$1" > ${_ITERM_PROFILE_FILE}
+            echo "$1" >| ${_ITERM_PROFILE_FILE}
         }
         dark() {
             _iterm_profile "Default"
