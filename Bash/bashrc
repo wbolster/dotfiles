@@ -663,8 +663,8 @@ if [[ "$PS1" ]]; then
 
     # This cat has magical powers, like a space cat flying through pizzas with bacon.
     cat() {
-        if [[ "${1}" != -* && -t 1 ]]; then
-            # No flags are specified and stdout is a terminal; perform magic.
+        if [[ $# -ge 1 && "${1}" != -* && -t 1 ]]; then
+            # Arguments but no flags are specified and stdout is a terminal; perform magic.
             show "$@"
         else
             # Transparent fall-back.
