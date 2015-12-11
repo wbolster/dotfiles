@@ -6,15 +6,7 @@ umask 077
 # Helper to keep only the first occurence of each component of a
 # colon-separated path string.
 _deduplicate_path_components() {
-    local sed_expr='s/:/\n/g'
-    local n_components=$(echo "$1" | sed -e $sed_expr  | wc -l)
-    local n_unique_components=$(echo "$1" | sed  -e $sed_expr | sort -u | wc -l)
-    if [[ $n_components == $n_unique_components ]]; then
-        echo "$1"
-        return
-    fi
-    # This is relatively slow, hence all the preprocessing checks.
-    python -c 'import collections, sys, os; print(os.pathsep.join(collections.OrderedDict.fromkeys(sys.argv[1].split(os.pathsep))))' "$1"
+    echo "$1" | tr ':' '\n' | nl | sort -k 2 | uniq -f 1 | sort -n | cut -f 2 | tr '\n' ':' | sed -e 's/:$//'
 }
 
 # Set a sensible $PATH:
