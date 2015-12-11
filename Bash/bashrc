@@ -6,7 +6,7 @@ umask 077
 # Helper to keep only the first occurence of each component of a
 # colon-separated path string.
 _deduplicate_path_components() {
-    echo "$1" | tr ':' '\n' | nl | sort -k 2 | uniq -f 1 | sort -n | cut -f 2 | tr '\n' ':' | sed -e 's/:$//'
+    echo "$1" | awk -v RS=: -v ORS=: '!a[$1]++' | sed -e 's/:$//'
 }
 
 # Set a sensible $PATH:
