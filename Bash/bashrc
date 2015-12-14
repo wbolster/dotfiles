@@ -159,7 +159,7 @@ if [[ "$PS1" ]]; then
                     prompt_umbrella="${prefix} ${project,,}"
                     break
                 fi
-                dir=$(dirname $dir)
+                dir=$(dirname "$dir")
             done
         fi
         tt_umbrella="${prompt_umbrella}"
