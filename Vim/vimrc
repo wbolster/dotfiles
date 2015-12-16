@@ -2,6 +2,11 @@
 
 set nocompatible
 
+" Load bundles using pathogen, and set some flags before loading
+let g:fontzoom_no_default_key_mappings = 1
+runtime bundle/pathogen/autoload/pathogen.vim
+call pathogen#infect()
+
 " Display
 set display=lastline,uhex laststatus=2 ruler showcmd
 set showmatch
@@ -143,11 +148,6 @@ vmap <silent> <Leader>ss :sort i<Return>
 vmap <silent> <Leader>si :sort i<Return>
 vmap <silent> <Leader>sn :sort n<Return>
 vmap <silent> <Leader>su :sort u<Return>
-
-" Load bundles using pathogen, and set some flags before loading
-let g:fontzoom_no_default_key_mappings = 1
-runtime bundle/pathogen/autoload/pathogen.vim
-call pathogen#infect()
 
 " File type configuration and syntax highlighting (set after loading pathogen)
 filetype plugin indent on
