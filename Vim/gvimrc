@@ -5,10 +5,6 @@ set lines=60 columns=120
 set guioptions-=m go-=r go-=L go-=T
 set guicursor=a:blinkon0 
 
-" Colors
-set background=dark
-colorscheme solarized
-
 " Smooth scrolling (but not over SSH)
 if (strlen($SSH_CLIENT) == 0)
   SmoothScrolling

@@ -156,3 +156,7 @@ syntax on
 " Syntastic
 let g:syntastic_html_checkers=['tidy']
 let g:syntastic_python_checkers=['flake8']
+
+" Colors
+set background=dark
+colorscheme solarized
