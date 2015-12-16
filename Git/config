@@ -6,7 +6,7 @@
 branch-name = symbolic-ref --short HEAD
 
 # Identity
-personal-repo = "!f() { /bin/echo -n 'Old value: '; git config user.email; git config user.email uws@xs4all.nl; /bin/echo -n 'New value: '; git config user.email; }; f"
+personal-repo = "!f() { /bin/echo -n 'Old value: '; git config user.email; git config user.email wouter@bolsterl.ee; /bin/echo -n 'New value: '; git config user.email; }; f"
 whoami = "!f() { printf '%s <%s>\n' \"$(git config --get user.name)\" \"$(git config --get user.email)\" ; }; f"
 
 # Committing
@@ -133,4 +133,4 @@ enabled = true
 
 [user]
 name = Wouter Bolsterlee
-email = uws@xs4all.nl
+email = wouter@bolsterl.ee
