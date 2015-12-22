@@ -181,10 +181,10 @@ if [[ "$PS1" ]]; then
             local prompt_sign_colour="${colour_red}"
         fi
 
-        # Host name (only remote)
+        # Host name (only remote without screen/tmux)
         local prompt_hostname=""
         local tt_hostname=""
-        if [[ -n "${SSH_CLIENT:-}" ]]; then
+        if [[ -n "${SSH_CLIENT:-}" && "${TERM}" != screen* ]]; then
             prompt_hostname="on ${HOSTNAME}"
             tt_hostname="${HOSTNAME}"
         fi
