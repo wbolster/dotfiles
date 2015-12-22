@@ -664,6 +664,17 @@ if [[ "$PS1" ]]; then
         fi
     }
 
+    # tmux
+    tmux() {
+        # Turn plain "tmux" into "tmux attach" to automatically attach a
+        # session (in conjunction with "new-session" in tmux.conf).
+        if [[ $# == 0 ]]; then
+            _run_verbose command tmux attach
+        else
+            command tmux "$@"
+        fi
+    }
+
     # Misc
     mostfreq() {
         sort -- "$@" | uniq --count | sort --numeric-sort --reverse
