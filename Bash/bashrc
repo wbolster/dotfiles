@@ -386,9 +386,14 @@ if [[ "$PS1" ]]; then
     alias rm='rm -i'
 
     # File listings
-    alias ls='ls --color=auto'
-    alias l='ls -lFh'
-    alias ll='ls -AlF'
+    if ls --version 2>/dev/null | grep -q -F 'ls (GNU coreutils)'; then
+        alias ls='ls --color=auto --group-directories-first'
+        alias l='ls -l --color=auto --human-readable --classify --group-directories-first'
+        alias ll='ls -l --color=auto --almost-all --classify --group-directories-first'
+    else
+        alias l='ls -lhF'
+        alias ll='ls -lAF'
+    fi
 
     # Show colors in grep output
     alias grep='grep --color=auto'
