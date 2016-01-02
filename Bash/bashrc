@@ -430,7 +430,6 @@ if [[ "$PS1" ]]; then
     alias :e='$EDITOR'
 
     # Pager
-    export PAGER=less
     alias lessr='less -R'
     maybe-pager() {
         if [[ -t 1 ]]; then  # stdout is a terminal
