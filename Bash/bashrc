@@ -673,11 +673,12 @@ if [[ "$PS1" ]]; then
         # Turn plain "tmux" into "tmux attach" to automatically attach a
         # session (in conjunction with "new-session" in tmux.conf).
         if [[ $# == 0 ]]; then
-            _run_verbose command tmux attach
+            _run_verbose command tmux attach-session
         else
             command tmux "$@"
         fi
     }
+    alias itmux='tmux -CC attach-session'  # iTerm2 tmux support
 
     # Misc
     mostfreq() {
