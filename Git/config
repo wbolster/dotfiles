@@ -77,6 +77,9 @@ rbi = rebase --interactive
 rbiom = rebase --interactive origin/master
 rbom = rebase origin/master
 
+# Github shortcuts https://github.com/github/hub
+pr = pull-request
+
 # Misc
 igrep = grep --ignore-case
 fgrep = grep --fixed-strings
