@@ -557,8 +557,12 @@ if [[ "$PS1" ]]; then
     # Mac OSX
     if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
         # Homebrew
-        i() { _run_verbose brew install "$@"; }
+        i() {
+            _run_verbose brew install "$@"
+        }
+        complete -F _brew_install i
         u() {
+            set -e
             local updates
             _run_verbose brew update
             updates=$(brew outdated --verbose)
