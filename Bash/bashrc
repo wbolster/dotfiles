@@ -541,14 +541,20 @@ if [[ "$PS1" ]]; then
         alias ac='apt-cache show'
         alias acp='apt-cache policy'
         alias acs='apt-cache search'
-        alias i='sudo $(which apt-get) install -V'
-        alias u='sudo $(which apt-get) update && sudo $(which apt-get) upgrade -V'
-
+        i() {
+            _run_verbose sudo apt-get install -V
+        }
+        u() {
+            (
+            set -e
+            _run_verbose sudo apt-get update
+            _run_verbose sudo apt-get upgrade -V
+            )
+        }
         _apt_get_packages() {
             local cur
             cur=${COMP_WORDS[COMP_CWORD]}
-            COMPREPLY=( $( apt-cache --no-generate pkgnames "$cur" \
-                2> /dev/null ) )
+            COMPREPLY=($(apt-cache --no-generate pkgnames "${cur}" 2>/dev/null))
             return 0
         }
         complete -F _apt_get_packages i ac acp
