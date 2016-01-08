@@ -568,6 +568,7 @@ if [[ "$PS1" ]]; then
         }
         complete -F _brew_install i
         u() {
+            (
             set -e
             local updates
             _run_verbose brew update
@@ -583,6 +584,7 @@ if [[ "$PS1" ]]; then
                 fi
             fi
             echo
+            )
         }
     fi
 
