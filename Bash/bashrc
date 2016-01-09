@@ -542,7 +542,7 @@ if [[ "$PS1" ]]; then
         alias acp='apt-cache policy'
         alias acs='apt-cache search'
         i() {
-            _run_verbose sudo apt-get install -V
+            _run_verbose sudo apt-get install -V "$@"
         }
         u() {
             (
