@@ -91,6 +91,7 @@ toplevel = rev-parse --show-toplevel
 # Stash
 stashk = stash save --keep-index
 stashp = stash pop
+unstash = stash pop
 
 # Github shortcuts https://github.com/github/hub
 pr = pull-request
