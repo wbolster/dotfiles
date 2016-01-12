@@ -77,19 +77,23 @@ rbi = rebase --interactive
 rbiom = rebase --interactive origin/master
 rbom = rebase origin/master
 
-# Github shortcuts https://github.com/github/hub
-pr = pull-request
-
-# Misc
+# Grep
 igrep = grep --ignore-case
 fgrep = grep --fixed-strings
 figrep = grep --fixed-strings --ignore-case
 cgrep = grep --context 5
 cigrep = grep --context 5 --ignore-case
+
+# Paths
 relpath = rev-parse --show-prefix
+toplevel = rev-parse --show-toplevel
+
+# Stash
 stashk = stash save --keep-index
 stashp = stash pop
-toplevel = rev-parse --show-toplevel
+
+# Github shortcuts https://github.com/github/hub
+pr = pull-request
 
 [branch]
 autosetuprebase = always
