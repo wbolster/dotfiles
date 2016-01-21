@@ -12,6 +12,7 @@ inoremap <buffer> # X#
 autocmd Filetype python setlocal comments+=b:#:
 
 " Source code checking (flake8, pyflakes, pep8)
+" Note: the Khuno plugin does similar things.
 setlocal makeprg=pep8\ --repeat\ --ignore=E501\ %
 let g:syntastic_python_checker_args = "--ignore=E501"
 
