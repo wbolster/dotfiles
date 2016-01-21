@@ -1,7 +1,7 @@
 "============================================================================
-"File:        asciidoc.vim
+"File:        ansible_lint.vim
 "Description: Syntax checking plugin for syntastic.vim
-"Maintainer:  LCD 47 <lcd047 at gmail dot com>
+"Maintainer:  Erik Zaadi <erik.zaadi at gmail dot com>
 "License:     This program is free software. It comes without any warranty,
 "             to the extent permitted by applicable law. You can redistribute
 "             it and/or modify it under the terms of the Do What The Fuck You
@@ -10,36 +10,41 @@
 "
 "============================================================================
 
-if exists('g:loaded_syntastic_asciidoc_asciidoc_checker')
+if exists('g:loaded_syntastic_ansible_ansible_lint_checker')
     finish
 endif
-let g:loaded_syntastic_asciidoc_asciidoc_checker = 1
+let g:loaded_syntastic_ansible_ansible_lint_checker = 1
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! SyntaxCheckers_asciidoc_asciidoc_GetLocList() dict
-    let makeprg = self.makeprgBuild({ 'args_after': syntastic#c#NullOutput() })
+function! SyntaxCheckers_ansible_ansible_lint_IsAvailable() dict
+    if !executable(self.getExec())
+        return 0
+    endif
+    return syntastic#util#versionIsAtLeast(self.getVersion(), [2, 0, 4])
+endfunction
 
-    let errorformat =
-        \ '%E%\w%\+: %tRROR: %f: line %l: %m,' .
-        \ '%E%\w%\+: %tRROR: %f: %m,' .
-        \ '%E%\w%\+: FAILED: %f: line %l: %m,' .
-        \ '%E%\w%\+: FAILED: %f: %m,' .
-        \ '%W%\w%\+: %tARNING: %f: line %l: %m,' .
-        \ '%W%\w%\+: %tARNING: %f: %m,' .
-        \ '%W%\w%\+: DEPRECATED: %f: line %l: %m,' .
-        \ '%W%\w%\+: DEPRECATED: %f: %m'
+function! SyntaxCheckers_ansible_ansible_lint_GetLocList() dict
+    let makeprg = self.makeprgBuild({ 'args_after': '-p' })
+
+    let errorformat = '%f:%l: [ANSIBLE%n] %m'
+
+    let env = syntastic#util#isRunningWindows() ? {} : { 'TERM': 'dumb' }
 
     return SyntasticMake({
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat,
-        \ 'returns': [0, 1] })
+        \ 'env': env,
+        \ 'defaults': {'type': 'E'},
+        \ 'subtype': 'Style',
+        \ 'returns': [0, 2] })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
-    \ 'filetype': 'asciidoc',
-    \ 'name': 'asciidoc'})
+    \ 'filetype': 'ansible',
+    \ 'name': 'ansible_lint',
+    \ 'exec': 'ansible-lint'})
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

@@ -1,7 +1,7 @@
 "============================================================================
-"File:        coqtop.vim
+"File:        vcom.vim
 "Description: Syntax checking plugin for syntastic.vim
-"Maintainer:  Matvey Aksenov <matvey.aksenov at gmail dot com>
+"Maintainer:  Jim Vogel <jim dot e dot vogel at gmail dot com>
 "License:     This program is free software. It comes without any warranty,
 "             to the extent permitted by applicable law. You can redistribute
 "             it and/or modify it under the terms of the Do What The Fuck You
@@ -10,29 +10,44 @@
 "
 "============================================================================
 
-if exists('g:loaded_syntastic_coq_coqtop_checker')
+if exists('g:loaded_syntastic_vhdl_vcom_checker')
     finish
 endif
-let g:loaded_syntastic_coq_coqtop_checker = 1
+let g:loaded_syntastic_vhdl_vcom_checker = 1
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! SyntaxCheckers_coq_coqtop_GetLocList() dict
-    let makeprg = self.makeprgBuild({ 'args_after': '-noglob -batch -load-vernac-source' })
+function! SyntaxCheckers_vhdl_vcom_GetLocList() dict
+    let makeprg = self.makeprgBuild({ 'args_before': '-lint' })
 
     let errorformat =
-        \ '%AFile "%f"\, line %l\, characters %c-%.%#\:,'.
-        \ '%C%m'
+        \ '** %tRROR: %f(%l): %m,' .
+        \ '** %tRROR: %m,' .
+        \ '** %tARNING: %f(%l): %m,' .
+        \ '** %tARNING: %m,' .
+        \ '** %tOTE: %m,' .
+        \ '%tRROR: %f(%l): %m,' .
+        \ '%tARNING[%*[0-9]]: %f(%l): %m,' .
+        \ '%tRROR: %m,' .
+        \ '%tARNING[%*[0-9]]: %m'
 
-    return SyntasticMake({
+    let loclist = SyntasticMake({
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat })
+
+    for e in loclist
+        if e['type'] !=? 'E' && e['type'] !=? 'W'
+            let e['type'] = 'W'
+        endif
+    endfor
+
+    return loclist
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
-    \ 'filetype': 'coq',
-    \ 'name': 'coqtop'})
+    \ 'filetype': 'vhdl',
+    \ 'name': 'vcom'})
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
