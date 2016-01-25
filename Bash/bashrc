@@ -692,6 +692,11 @@ if [[ "$PS1" ]]; then
     }
     alias itmux='tmux -CC attach-session'  # iTerm2 tmux support
 
+    # Readable $PATH (or similar variables)
+    echopath() {
+        echo "${1:-$PATH}" | sed -e 's/:/\n/g'
+    }
+
     # Misc
     mostfreq() {
         sort -- "$@" | uniq --count | sort --numeric-sort --reverse
