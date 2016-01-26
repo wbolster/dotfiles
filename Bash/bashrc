@@ -572,7 +572,7 @@ if [[ "$PS1" ]]; then
             set -e
             local updates
             _run_verbose brew update
-            updates=$(brew outdated --verbose)
+            updates="$(join -v1 <(brew outdated | cat) <(find $(brew --prefix)/Library/PinnedKegs/ -mindepth 1 -maxdepth 1 -type l -printf '%f\n') | xargs brew outdated --verbose || true)"
             if [[ -n "${updates}" ]]; then
                 echo
                 echo "These packages will be upgraded:"
