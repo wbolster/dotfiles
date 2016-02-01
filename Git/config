@@ -35,12 +35,12 @@ wdiff = diff --word-diff
 # Inspecting
 ls = ls-files
 mylog = "!f() { git log --all --author=\"$(git config user.email)\" --date-order --graph --format='%C(yellow)[%h] %ai (%ar)%C(auto)%d%n%n%C(reset)%s %n%+b' \"$@\"; }; f"
+review-branch = "!f() { [ -z \"$@\" ] && set - origin/master..; git -c core.pager='less -+F +/^commit' log --reverse --patch \"$@\"; }; f"
 sl = log --oneline --graph --pretty=longline
 slf = sl --first-parent
 st = status --short --branch
 today = log --all --graph --since=0am
 topology = log --oneline --graph --all --simplify-by-decoration
-review-branch = "!f() { [ -z \"$@\" ] && set - origin/master..; git -c core.pager='less -+F +/^commit' log --reverse --patch \"$@\"; }; f"
 
 # Branching, merging, and updating
 # http://stackoverflow.com/questions/914939/simple-tool-to-accept-theirs-or-accept-mine-on-a-whole-file-using-git
