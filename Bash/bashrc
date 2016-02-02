@@ -589,7 +589,7 @@ if [[ "$PS1" ]]; then
     fi
 
     # iTerm profile tricks
-    if [[ ! -z "$ITERM_PROFILE" ]]; then
+    if [[ ! -z "$ITERM_PROFILE" && -z "$INSIDE_EMACS" ]]; then
         _ITERM_PROFILE_FILE=~/.config/iterm-profile
         _iterm_profile() {
             printf "\e]50;SetProfile=$1\a"
