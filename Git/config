@@ -50,6 +50,7 @@ br = branch --verbose
 bra = branch --all --verbose
 co = checkout
 cob = checkout -b
+delete-merged-branches = "!f() { git branch --merged | grep --invert-match '*' | xargs --no-run-if-empty git branch --delete; }; f"
 delete-unused-branches = "!f() { git branch | grep --invert-match '*' | xargs --no-run-if-empty git branch --delete; }; f"
 ff = merge --ff-only
 merge-feature = merge --no-ff --edit
