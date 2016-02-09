@@ -697,6 +697,9 @@ if [[ "$PS1" ]]; then
         echo "${1:-$PATH}" | sed -e 's/:/\n/g'
     }
 
+    # Disable Ctrl-S/Ctrl-Q. The past is not the future.
+    stty -ixon
+
     # Misc
     mostfreq() {
         sort -- "$@" | uniq --count | sort --numeric-sort --reverse
