@@ -30,8 +30,9 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (modify-syntax-entry ?_ "w")
-(setq make-backup-files nil)
-(setq tls-checktrust 'ask)
+(setq
+ make-backup-files nil
+ tls-checktrust 'ask)
 
 ;; Resist agitprop
 (global-set-key (kbd "C-h g") nil)
@@ -54,8 +55,9 @@
 (setq text-scale-mode-step 1.05)
 
 ;; Reduce clutter
-(setq frame-resize-pixelwise t)
-(setq inhibit-startup-screen t)
+(setq
+ frame-resize-pixelwise t
+ inhibit-startup-screen t)
 (blink-cursor-mode 0)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
@@ -102,8 +104,9 @@
   " s-/"
 ))
 (sml/setup)
-(setq sml/col-number-format "%c")
-(setq sml/line-number-format "%l")
+(setq
+ sml/col-number-format "%c"
+ sml/line-number-format "%l")
 
 ;; Line numbering
 (require 'relative-line-numbers)
@@ -118,17 +121,19 @@
 ;;;
 
 (setq require-final-newline t)
-(setq-default indent-tabs-mode nil)
-(setq-default show-trailing-whitespace t)
-(setq-default tab-width 4)
+(setq-default
+ indent-tabs-mode nil
+ show-trailing-whitespace t
+ tab-width 4)
 
 
 ;;;
 ;;; Scrolling
 ;;;
 
-(setq scroll-conservatively 101)
-(setq scroll-margin 5)
+(setq
+ scroll-conservatively 101
+ scroll-margin 5)
 
 
 ;;;
@@ -148,9 +153,10 @@
 ;;; Evil
 ;;;
 
-(setq evil-want-C-u-scroll t)
-(setq evil-vsplit-window-right t)
-(setq evil-cross-lines t)
+(setq
+ evil-want-C-u-scroll t
+ evil-vsplit-window-right t
+ evil-cross-lines t)
 
 (require 'evil)
 (require 'evil-args)
@@ -314,8 +320,9 @@
 
 ;; Python
 (defun my-python-mode-hook ()
-  (setq fill-column 72)
-  (setq python-fill-docstring-style 'symmetric))
+  (setq
+   fill-column 72
+   python-fill-docstring-style 'symmetric))
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 
 
