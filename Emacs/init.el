@@ -312,12 +312,6 @@
 (setq flycheck-display-errors-delay 0)
 (global-flycheck-mode)
 
-;; Emacs lisp
-(defun my-emacs-lisp-mode-hook()
-
-  )
-(add-hook 'emacs-lisp-mode-hook 'my-emacs-lisp-mode-hook)
-
 ;; Python
 (defun my-python-mode-hook ()
   (setq
