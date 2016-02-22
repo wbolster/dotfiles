@@ -178,12 +178,12 @@
 (evil-indent-plus-default-bindings)
 
 ;; Movement
-(evil-define-key 'normal global-map
+(evil-define-key 'motion global-map
   (kbd "C-j") 'evil-next-visual-line
   (kbd "C-k") 'evil-previous-visual-line)
 
 ;; Quick window selection of vertical splits
-(evil-define-key 'normal global-map
+(evil-define-key 'motion global-map
   (kbd "C-w 1") 'evil-window-top-left
   (kbd "C-w 2") (lambda () (interactive) (evil-window-top-left) (evil-window-next 2))
   (kbd "C-w 3") (lambda () (interactive) (evil-window-top-left) (evil-window-next 3))
@@ -193,7 +193,7 @@
 (defvar my-leader-map
   (make-sparse-keymap)
   "Keymap for 'leader key' shortcuts.")
-(evil-define-key 'normal global-map "," my-leader-map)
+(evil-define-key 'motion global-map "," my-leader-map)
 (define-key my-leader-map " " 'whitespace-cleanup)
 (define-key my-leader-map "b" 'list-buffers)
 (define-key my-leader-map "k" (lambda () (interactive) (kill-buffer nil)))
@@ -233,11 +233,11 @@
 (define-key my-zoom-map "0" 'text-scale-adjust)
 
 ;; Directory navigation (inspired by vim vinagre)
-(evil-define-key 'normal global-map "-" 'dired-jump)
+(evil-define-key 'motion global-map "-" 'dired-jump)
 (define-key dired-mode-map "-" 'dired-jump)
 
 ;; Previous/next thing (inspired by vim unimpaired)
-(evil-define-key 'normal global-map
+(evil-define-key 'motion global-map
   (kbd "[ SPC") (lambda () (interactive) (evil-insert-newline-above) (evil-line 2))
   (kbd "] SPC") (lambda () (interactive) (evil-insert-newline-below) (evil-line 0))
   "[b" 'evil-prev-buffer
@@ -253,7 +253,7 @@
 )
 
 ;; Single key prefix key for god-mode integration
-(evil-define-key 'normal global-map ";" `evil-execute-in-god-state)
+(evil-define-key 'motion global-map ";" `evil-execute-in-god-state)
 (evil-define-key 'god global-map [escape] 'evil-god-state-bail)
 
 ;; Misc
@@ -261,7 +261,7 @@
   (kbd "RET") 'evil-ret-and-indent
   (kbd "C-a") 'evil-first-non-blank
   (kbd "C-l") 'end-of-line)
-(evil-define-key 'normal global-map
+(evil-define-key 'motion global-map
   "Q" 'fill-paragraph
   (kbd "M-j") 'move-text-down
   (kbd "M-k") 'move-text-up)
