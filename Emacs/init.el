@@ -57,7 +57,8 @@
 ;; Reduce clutter
 (setq
  frame-resize-pixelwise t
- inhibit-startup-screen t)
+ inhibit-startup-screen t
+ initial-scratch-message nil)
 (blink-cursor-mode 0)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
