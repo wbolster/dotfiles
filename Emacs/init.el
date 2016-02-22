@@ -125,6 +125,10 @@
  indent-tabs-mode nil
  show-trailing-whitespace t
  tab-width 4)
+(defun my-hide-trailing-whitespace ()
+  "Helper to hide trailing whitespace, intended for mode hooks."
+  (setq show-trailing-whitespace nil))
+(add-hook 'buffer-menu-mode-hook 'my-hide-trailing-whitespace)
 
 
 ;;;
@@ -294,10 +298,8 @@
   (setq current-prefix-arg '(t))
   (call-interactively 'magit-status)))
 
-(defun my-magit-popup-mode-hook ()
-  ;; Pop-ups sometimes contain trailing whitespace.
-  (setq show-trailing-whitespace nil))
-(add-hook 'magit-popup-mode-hook 'my-magit-popup-mode-hook)
+;; Pop-ups sometimes contain trailing whitespace.
+(add-hook 'magit-popup-mode-hook 'my-hide-trailing-whitespace)
 
 
 ;;;
