@@ -283,7 +283,9 @@
 ;;;
 
 (require 'magit)
-(setq auto-revert-check-vc-info t)
+(setq
+ auto-revert-check-vc-info t
+ magit-process-popup-time 10)
 
 ;; Magit shortcuts
 (defvar my-git-map
