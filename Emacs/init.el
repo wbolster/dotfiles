@@ -204,6 +204,7 @@
 (define-key my-leader-map "k" (lambda () (interactive) (kill-buffer nil)))
 (define-key my-leader-map "q" 'kill-buffer-and-window)
 (define-key my-leader-map "w" 'save-buffer)
+(define-key my-leader-map "W" 'save-some-buffers)
 (define-key my-leader-map "x" 'smex)
 (define-key my-leader-map "X" 'smex-major-mode-commands)
 (define-key my-leader-map "+" 'evil-numbers/inc-at-pt)
