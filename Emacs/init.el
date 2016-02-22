@@ -260,6 +260,12 @@
 (evil-define-key 'motion global-map ";" `evil-execute-in-god-state)
 (evil-define-key 'god global-map [escape] 'evil-god-state-bail)
 
+;; Extras for with-editor-mode, e.g. for magit commit messages.
+(evil-define-key 'normal with-editor-mode-map
+  "ZQ" 'with-editor-cancel
+  "ZZ" 'with-editor-finish
+)
+
 ;; Misc
 (evil-define-key 'insert global-map
   (kbd "RET") 'evil-ret-and-indent
