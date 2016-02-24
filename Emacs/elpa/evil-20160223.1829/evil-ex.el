@@ -647,7 +647,8 @@ works accordingly."
         (unless binding
           (setq binding (intern command)))
         (if (commandp binding)
-            binding
+            ;; check for remaps
+            (or (command-remapping binding) binding)
           (unless noerror
             (user-error "Unknown command: `%s'" command)))))))
 

@@ -122,7 +122,9 @@ seconds of user inactivity.  That is not desirable."
   ;; was still in use.  In all other cases enable the mode because if
   ;; buffers are not automatically reverted that would make many very
   ;; common tasks much more cumbersome.
-  :init-value (and (not global-auto-revert-mode) magit-revert-buffers))
+  :init-value (and magit-revert-buffers
+                   (not global-auto-revert-mode)
+                   (not noninteractive)))
 ;; - Unfortunately `:init-value t' only sets the value of the mode
 ;;   variable but does not cause the mode function to be called.
 ;; - I don't think it works like this on purpose, but since one usually
@@ -155,15 +157,13 @@ and code surrounding the definition of this function."
                        (length (buffer-list)))
              ""))))
     (magit-auto-revert-mode -1)))
-(cl-eval-when (load eval)
-  ;; Don't do this when compiling.
-  (if after-init-time
-      ;; Since `after-init-hook' has already been
-      ;; run, turn the mode on or off right now.
-      (magit-auto-revert-mode--init-kludge)
-    ;; By the time the init file has been fully loaded the
-    ;; values of the relevant variables might have changed.
-    (add-hook 'after-init-hook #'magit-auto-revert-mode--init-kludge t)))
+(if after-init-time
+    ;; Since `after-init-hook' has already been
+    ;; run, turn the mode on or off right now.
+    (magit-auto-revert-mode--init-kludge)
+  ;; By the time the init file has been fully loaded the
+  ;; values of the relevant variables might have changed.
+  (add-hook 'after-init-hook #'magit-auto-revert-mode--init-kludge t))
 
 (put 'magit-auto-revert-mode 'function-documentation
      "Toggle Magit Auto Revert mode.
