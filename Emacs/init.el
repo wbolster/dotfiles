@@ -147,7 +147,18 @@
 
 ;; ido
 (ido-mode t)
-(setq ido-default-file-method 'other-window)
+(setq
+ ido-default-buffer-method 'selected-window
+ ido-default-file-method 'selected-window
+ ido-decorations '(
+   " {" "}"
+   ", " ", ..."
+   " [" "]"
+   " [No match]"
+   " [Matched]"
+   " [Not readable]"
+   " [Too big]"
+   " [Confirm]"))
 
 ;; smex
 (global-set-key (kbd "M-x") 'smex)
