@@ -175,7 +175,7 @@
 
 (evil-mode)
 (evil-commentary-mode)
-(evil-surround-mode)
+(global-evil-surround-mode)
 
 ;; Text objects
 (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
