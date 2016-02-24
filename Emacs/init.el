@@ -328,6 +328,8 @@
   (column-number-mode)
   (highlight-symbol-mode))
 (add-hook 'prog-mode-hook 'my-prog-mode-hook)
+(evil-define-key 'insert prog-mode-map
+  (kbd "RET") 'comment-indent-new-line)
 (setq flycheck-display-errors-delay 0)
 (global-flycheck-mode)
 
