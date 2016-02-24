@@ -288,6 +288,7 @@
   (make-sparse-keymap)
   "Keymap for git shortcuts.")
 (define-key my-leader-map "g" my-git-map)
+(define-key my-git-map "!" 'magit-git-command)
 (define-key my-git-map "b" 'magit-blame)
 (define-key my-git-map "c" 'magit-commit)
 (define-key my-git-map "d" 'magit-diff)
