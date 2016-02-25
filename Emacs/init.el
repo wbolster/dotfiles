@@ -10,10 +10,13 @@
 ;;; Packages
 ;;;
 
-(setq package-archives (quote (
+(setq
+ load-prefer-newer t
+ package-archives '(
   ("melpa" . "https://melpa.org/packages/")
   ;; ("melpa-stable" . "https://stable.melpa.org/packages/")
-  ("gnu" . "https://elpa.gnu.org/packages/"))))
+  ("gnu" . "https://elpa.gnu.org/packages/")))
+
 (require 'package)
 (package-initialize)
 
