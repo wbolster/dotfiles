@@ -283,8 +283,15 @@
   (kbd "RET") 'evil-ret-and-indent
   (kbd "C-a") 'evil-first-non-blank
   (kbd "C-l") 'end-of-line)
+(defun my-evil-fill-paragraph ()
+  "Dwim helper to fill the current paragraph"
+  (interactive)
+  ;; Move point after comment marker; useful for multi-line comments.
+  (end-of-line)
+  (fill-paragraph)
+  (evil-first-non-blank))
 (evil-define-key 'motion global-map
-  "Q" 'fill-paragraph
+  "Q" 'my-evil-fill-paragraph
   (kbd "M-j") 'move-text-down
   (kbd "M-k") 'move-text-up)
 
