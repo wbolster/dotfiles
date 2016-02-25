@@ -124,7 +124,7 @@
 ;;; Whitespace
 ;;;
 
-(setq require-final-newline t)
+(setq require-final-newline 'visit-save)
 (setq-default
  indent-tabs-mode nil
  show-trailing-whitespace t
