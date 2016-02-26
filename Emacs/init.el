@@ -351,6 +351,10 @@
    python-fill-docstring-style 'symmetric))
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 
+;; Yaml
+(defun my-yaml-mode-hook ()
+  (setq evil-shift-width yaml-indent-offset))
+(add-hook 'yaml-mode-hook 'my-yaml-mode-hook)
 
 (provide 'init)
 ;;; init.el ends here
