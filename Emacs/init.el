@@ -33,9 +33,13 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (modify-syntax-entry ?_ "w")
+(setq tls-checktrust 'ask)
+
+;; Backup and autosave files
 (setq
- make-backup-files nil
- tls-checktrust 'ask)
+ auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-saves/\\1" t))
+ backup-directory-alist '((".*" . "~/.emacs.d/backups/"))
+ make-backup-files nil)
 
 ;; Resist agitprop
 (global-set-key (kbd "C-h g") nil)
