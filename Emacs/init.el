@@ -244,8 +244,14 @@
 (define-key my-toggle-map "l" 'hl-line-mode)
 (define-key my-toggle-map "m" 'toggle-frame-maximized)
 (define-key my-toggle-map "M" 'toggle-frame-fullscreen)
-(define-key my-toggle-map "n" 'linum-mode)
-(define-key my-toggle-map "r" 'relative-line-numbers-mode)
+(define-key my-toggle-map "n"
+  (lambda () (interactive)
+    (relative-line-numbers-mode -1)
+    (linum-mode 'toggle)))
+(define-key my-toggle-map "r"
+  (lambda () (interactive)
+    (linum-mode -1)
+    (relative-line-numbers-mode 'toggle)))
 (define-key my-toggle-map "t" 'toggle-truncate-lines)
 (define-key my-toggle-map "v" 'visual-line-mode)
 (define-key my-toggle-map "w" 'whitespace-mode)
