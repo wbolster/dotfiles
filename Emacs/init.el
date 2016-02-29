@@ -274,6 +274,8 @@
   "]c" 'flycheck-next-error
   "[e" 'previous-error
   "]e" 'next-error
+  "[E" 'first-error
+  "]E" 'last-error
   "[m" 'move-text-up
   "]m" 'move-text-down
   "[s" 'highlight-symbol-prev
