@@ -155,7 +155,6 @@
 ;;;
 
 ;; ido
-(ido-mode t)
 (setq
  ido-default-buffer-method 'selected-window
  ido-default-file-method 'selected-window
@@ -168,6 +167,7 @@
    " [Not readable]"
    " [Too big]"
    " [Confirm]"))
+(ido-mode t)
 
 ;; smex
 (global-set-key (kbd "M-x") 'smex)
