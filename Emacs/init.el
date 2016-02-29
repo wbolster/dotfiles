@@ -272,6 +272,8 @@
   "]b" 'evil-next-buffer
   "[c" 'flycheck-previous-error
   "]c" 'flycheck-next-error
+  "[C" 'flycheck-first-error
+  ;; FIXME: no 'flycheck-last-error
   "[e" 'previous-error
   "]e" 'next-error
   "[E" 'first-error
