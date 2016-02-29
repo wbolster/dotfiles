@@ -282,6 +282,8 @@
   "]m" 'move-text-down
   "[s" 'highlight-symbol-prev
   "]s" 'highlight-symbol-next
+  "[w" 'evil-window-prev
+  "]w" 'evil-window-next
 )
 
 ;; Single key prefix key for god-mode integration
