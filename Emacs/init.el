@@ -238,17 +238,17 @@
   (make-sparse-keymap)
   "Keymap for various toggles.")
 (define-key my-leader-map "t" my-toggle-map)
-(define-key my-toggle-map "b" `toggle-dark-light-theme)
+(define-key my-toggle-map "b" 'toggle-dark-light-theme)
 (define-key my-toggle-map "c" 'fci-mode)
-(define-key my-toggle-map "f" `auto-fill-mode)
-(define-key my-toggle-map "l" `hl-line-mode)
+(define-key my-toggle-map "f" 'auto-fill-mode)
+(define-key my-toggle-map "l" 'hl-line-mode)
 (define-key my-toggle-map "m" 'toggle-frame-maximized)
 (define-key my-toggle-map "M" 'toggle-frame-fullscreen)
-(define-key my-toggle-map "n" `linum-mode)
-(define-key my-toggle-map "r" `relative-line-numbers-mode)
-(define-key my-toggle-map "t" `toggle-truncate-lines)
-(define-key my-toggle-map "v" `visual-line-mode)
-(define-key my-toggle-map "w" `whitespace-mode)
+(define-key my-toggle-map "n" 'linum-mode)
+(define-key my-toggle-map "r" 'relative-line-numbers-mode)
+(define-key my-toggle-map "t" 'toggle-truncate-lines)
+(define-key my-toggle-map "v" 'visual-line-mode)
+(define-key my-toggle-map "w" 'whitespace-mode)
 
 ;; Zooming / text size
 (defvar my-zoom-map
@@ -287,7 +287,7 @@
 )
 
 ;; Single key prefix key for god-mode integration
-(evil-define-key 'motion global-map ";" `evil-execute-in-god-state)
+(evil-define-key 'motion global-map ";" 'evil-execute-in-god-state)
 (evil-define-key 'god global-map [escape] 'evil-god-state-bail)
 
 ;; Misc
