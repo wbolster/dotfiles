@@ -364,14 +364,18 @@
 ;;;
 
 (setq highlight-symbol-idle-delay 0.5)
+(evil-define-key 'insert prog-mode-map
+  (kbd "RET") 'comment-indent-new-line)
+
+;; Flycheck
+(setq flycheck-display-errors-delay 0)
+(global-flycheck-mode)
+
+;; Language-agnostic mode hook
 (defun my-prog-mode-hook ()
   (column-number-mode)
   (highlight-symbol-mode))
 (add-hook 'prog-mode-hook 'my-prog-mode-hook)
-(evil-define-key 'insert prog-mode-map
-  (kbd "RET") 'comment-indent-new-line)
-(setq flycheck-display-errors-delay 0)
-(global-flycheck-mode)
 
 ;; Python
 (defun my-python-mode-hook ()
@@ -384,6 +388,7 @@
 (defun my-yaml-mode-hook ()
   (setq evil-shift-width yaml-indent-offset))
 (add-hook 'yaml-mode-hook 'my-yaml-mode-hook)
+
 
 (provide 'init)
 ;;; init.el ends here
