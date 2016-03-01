@@ -243,8 +243,8 @@
 (define-key my-toggle-map "c" 'fci-mode)
 (define-key my-toggle-map "f" 'auto-fill-mode)
 (define-key my-toggle-map "l" 'hl-line-mode)
-(define-key my-toggle-map "m" 'toggle-frame-maximized)
-(define-key my-toggle-map "M" 'toggle-frame-fullscreen)
+(define-key my-toggle-map "m" 'toggle-frame-fullscreen)
+(define-key my-toggle-map "M" 'toggle-frame-maximized)
 (define-key my-toggle-map "n"
   (lambda () (interactive)
     (relative-line-numbers-mode -1)
