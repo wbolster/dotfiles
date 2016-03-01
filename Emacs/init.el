@@ -376,10 +376,10 @@
   (make-sparse-keymap)
   "Keymap for ag shortcuts.")
 (define-key my-leader-map "a" my-ag-map)
-(define-key my-ag-map "p" 'ag-project)
 (define-key my-ag-map "f" 'ag-project-files)
 (define-key my-ag-map "F" 'ag-files)
-(define-key my-ag-map "g" 'ag)
+(define-key my-ag-map "g" 'ag-project)
+(define-key my-ag-map "G" 'ag)
 (define-key my-ag-map "r" 'ag-project-regexp)
 (define-key my-ag-map "R" 'ag-regexp)
 
