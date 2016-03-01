@@ -168,6 +168,7 @@
    " [Too big]"
    " [Confirm]"))
 (ido-mode t)
+(ido-everywhere t)
 
 ;; smex
 (global-set-key (kbd "M-x") 'smex)
