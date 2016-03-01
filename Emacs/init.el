@@ -283,12 +283,18 @@
   "]b" 'evil-next-buffer
   "[c" 'flycheck-previous-error
   "]c" 'flycheck-next-error
-  "[C" 'flycheck-first-error
-  ;; FIXME: no 'flycheck-last-error
+  "[C" (lambda () (interactive)
+    (goto-char (point-min))
+    (flycheck-next-error))
+  "]C" (lambda () (interactive)
+    (goto-char (point-max))
+    (flycheck-previous-error))
   "[e" 'previous-error
   "]e" 'next-error
   "[E" 'first-error
-  "]E" 'last-error
+  "]E" (lambda () (interactive)
+    (goto-char (point-max))
+    (previous-error))
   "[m" 'move-text-up
   "]m" 'move-text-down
   "[s" 'highlight-symbol-prev
