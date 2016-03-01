@@ -66,7 +66,6 @@
  frame-resize-pixelwise t
  inhibit-startup-screen t
  initial-scratch-message nil)
-(blink-cursor-mode 0)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (toggle-frame-maximized)
@@ -84,14 +83,15 @@
     (setq my-active-theme 'solarized-light))
   (load-theme my-active-theme t))
 
-;; Cursor appearance
-(after "evil" (setq
+;; Cursor
+(blink-cursor-mode 0)
+(setq
    evil-normal-state-cursor   '("#859900" box)     ; green
    evil-visual-state-cursor   '("#cb4b16" box)     ; orange
    evil-insert-state-cursor   '("#268bd2" bar)     ; blue
    evil-replace-state-cursor  '("#dc322f" bar)     ; red
    evil-operator-state-cursor '("#dc322f" hollow)  ; red
-))
+)
 
 ;; Font faces
 (defun my-remove-bold-underline-from-all-faces ()
