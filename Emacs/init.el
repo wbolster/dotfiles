@@ -391,6 +391,7 @@
 ;; Language-agnostic mode hook
 (defun my-prog-mode-hook ()
   (column-number-mode)
+  (fci-mode)
   (highlight-symbol-mode))
 (add-hook 'prog-mode-hook 'my-prog-mode-hook)
 
