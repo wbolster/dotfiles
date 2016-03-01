@@ -334,6 +334,9 @@
  auto-revert-check-vc-info t
  magit-process-popup-time 10)
 
+;; Pop-ups sometimes contain trailing whitespace.
+(add-hook 'magit-popup-mode-hook 'my-hide-trailing-whitespace)
+
 ;; Magit shortcuts
 (defvar my-git-map
   (make-sparse-keymap)
@@ -346,17 +349,22 @@
 (define-key my-git-map "f" 'magit-file-popup)
 (define-key my-git-map "g" 'vc-git-grep)
 (define-key my-git-map "l" 'magit-log)
-(define-key my-git-map "p" 'magit-dispatch-popup)
-(define-key my-git-map "r" 'magit-rebase)
-(define-key my-git-map "s" 'magit-status)
 (define-key my-git-map "o" (lambda ()
   "Open git status for another repository."
   (interactive)
-  (setq current-prefix-arg '(t))
+  (setq current-prefix-arg t)
   (call-interactively 'magit-status)))
-
-;; Pop-ups sometimes contain trailing whitespace.
-(add-hook 'magit-popup-mode-hook 'my-hide-trailing-whitespace)
+(define-key my-git-map "p" 'magit-dispatch-popup)
+(define-key my-git-map "r" 'magit-rebase)
+(define-key my-git-map "s" 'magit-status)
+(define-key my-git-map "w" (lambda ()
+  "Browse repository on the web; invokes hub."
+  (interactive)
+  (shell-command "hub browse")))
+(define-key my-git-map "W" (lambda ()
+  "Compare repository on the web; invokes hub."
+  (interactive)
+  (shell-command "hub compare")))
 
 
 ;;;
