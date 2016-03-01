@@ -273,8 +273,12 @@
 
 ;; Previous/next thing (inspired by vim unimpaired)
 (evil-define-key 'motion global-map
-  (kbd "[ SPC") (lambda () (interactive) (evil-insert-newline-above) (evil-line 2))
-  (kbd "] SPC") (lambda () (interactive) (evil-insert-newline-below) (evil-line 0))
+  (kbd "[ SPC") (lambda () (interactive)
+    (evil-insert-newline-above)
+    (evil-line 2))
+  (kbd "] SPC") (lambda () (interactive)
+    (evil-insert-newline-below)
+    (evil-line 0))
   "[b" 'evil-prev-buffer
   "]b" 'evil-next-buffer
   "[c" 'flycheck-previous-error
