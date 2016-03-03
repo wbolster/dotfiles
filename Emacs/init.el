@@ -183,6 +183,7 @@
 (require 'evil-numbers)
 (require 'evil-surround)
 (require 'god-mode)
+(require 'hydra)
 
 (evil-mode)
 (evil-commentary-mode)
@@ -228,37 +229,52 @@
 (define-key my-leader-map "-" 'evil-numbers/dec-at-pt)
 
 ;; Toggles
-(defvar my-toggle-map
-  (make-sparse-keymap)
-  "Keymap for various toggles.")
-(define-key my-leader-map "t" my-toggle-map)
-(define-key my-toggle-map "b" 'toggle-dark-light-theme)
-(define-key my-toggle-map "c" 'fci-mode)
-(define-key my-toggle-map "f" 'auto-fill-mode)
-(define-key my-toggle-map "l" 'hl-line-mode)
-(define-key my-toggle-map "m" 'toggle-frame-fullscreen)
-(define-key my-toggle-map "M" 'toggle-frame-maximized)
-(define-key my-toggle-map "n"
-  (lambda () (interactive)
-    (relative-line-numbers-mode -1)
-    (linum-mode 'toggle)))
-(define-key my-toggle-map "r"
-  (lambda () (interactive)
-    (linum-mode -1)
-    (relative-line-numbers-mode 'toggle)))
-(define-key my-toggle-map "t" 'toggle-truncate-lines)
-(define-key my-toggle-map "v" 'visual-line-mode)
-(define-key my-toggle-map "w" 'whitespace-mode)
+(defhydra hydra-toggle (:exit t :foreign-keys warn) "
+toggle  \
+«_b_»ackgound  \
+fill-«_c_»olumn  \
+«_f_»ill  \
+«_l_»ine  \
+«_m_»aximize  \
+«_n_»umber  \
+«_r_»elative-number  \
+«_t_»runcate  \
+«_v_»isual-line  \
+«_w_»hitespace"
+  ("<escape>" nil nil)
+  ("b" toggle-dark-light-theme nil)
+  ("c" fci-mode nil)
+  ("f" auto-fill-mode nil)
+  ("l" hl-line-mode nil)
+  ("m" toggle-frame-fullscreen nil)
+  ("M" toggle-frame-maximized nil)
+  ("n" (progn
+     (relative-line-numbers-mode -1)
+     (linum-mode 'toggle)) nil)
+  ("r" (progn
+     (linum-mode -1)
+     (relative-line-numbers-mode 'toggle)) nil)
+  ("t" toggle-truncate-lines nil)
+  ("v" visual-line-mode nil)
+  ("w" whitespace-mode nil)
+)
+(define-key my-leader-map "t" 'hydra-toggle/body)
 
 ;; Zooming / text size
-(defvar my-zoom-map
-  (make-sparse-keymap)
-  "Keymap for zooming shortcuts.")
-(define-key my-leader-map "z" my-zoom-map)
-(define-key my-zoom-map "i" 'text-scale-increase)
-(define-key my-zoom-map "o" 'text-scale-decrease)
-(define-key my-zoom-map "z" 'text-scale-adjust)
-(define-key my-zoom-map "0" 'text-scale-adjust)
+(defhydra hydra-zoom (:foreign-keys warn) "
+zoom  \
+«_i_»n  \
+«_o_»ut  \
+«_z_» normal"
+  ("<escape>" nil nil)
+  ("i" text-scale-increase nil)
+  ("o" text-scale-decrease nil)
+  ("z" (text-scale-increase 0) nil :exit t)
+  ("0" (text-scale-increase 0) nil :exit t)
+  ("+" text-scale-increase nil)
+  ("-" text-scale-decrease nil)
+)
+(define-key my-leader-map "z" 'hydra-zoom/body)
 
 ;; Directory navigation (inspired by vim vinagre)
 (evil-define-key 'motion global-map "-" 'dired-jump)
@@ -331,33 +347,49 @@
 (add-hook 'magit-popup-mode-hook 'my-hide-trailing-whitespace)
 
 ;; Magit shortcuts
-(defvar my-git-map
-  (make-sparse-keymap)
-  "Keymap for git shortcuts.")
-(define-key my-leader-map "g" my-git-map)
-(define-key my-git-map "!" 'magit-git-command)
-(define-key my-git-map "b" 'magit-blame)
-(define-key my-git-map "c" 'magit-commit)
-(define-key my-git-map "d" 'magit-diff)
-(define-key my-git-map "f" 'counsel-git)
-(define-key my-git-map "g" 'vc-git-grep)
-(define-key my-git-map "l" 'magit-log)
-(define-key my-git-map "o" (lambda ()
-  "Open git status for another repository."
-  (interactive)
-  (setq current-prefix-arg t)
-  (call-interactively 'magit-status)))
-(define-key my-git-map "p" 'magit-dispatch-popup)
-(define-key my-git-map "r" 'magit-rebase)
-(define-key my-git-map "s" 'magit-status)
-(define-key my-git-map "w" (lambda ()
-  "Browse repository on the web; invokes hub."
-  (interactive)
-  (shell-command "hub browse")))
-(define-key my-git-map "W" (lambda ()
-  "Compare repository on the web; invokes hub."
-  (interactive)
-  (shell-command "hub compare")))
+(defhydra hydra-git (:exit t :foreign-keys warn) "
+git  \
+«_!_»command  \
+«_b_»lame  \
+«_c_»ommit  \
+«_d_»iff  \
+«_f_»ile  \
+«_g_»rep  \
+«_l_»og  \
+«_p_»opup  \
+«_s_»tatus  \
+«_w_»eb"
+  ("<escape>" nil nil)
+  ("!" magit-git-command nil)
+  ("b" magit-blame nil)
+  ("c" magit-commit nil)
+  ("d" magit-diff nil)
+  ("f" counsel-git nil)
+  ("g" vc-git-grep nil)
+  ("l" magit-log nil)
+  ("p" magit-dispatch-popup nil)
+  ("s" magit-status nil)
+  ("S"
+   (lambda ()
+    "Open git status for another repository."
+    (interactive)
+    (setq current-prefix-arg t)
+    (call-interactively 'magit-status))
+   nil)
+  ("w"
+   (lambda ()
+    "Browse repository on the web; invokes hub."
+    (interactive)
+    (shell-command "hub browse"))
+   nil)
+  ("W"
+   (lambda ()
+    "Compare repository on the web; invokes hub."
+    (interactive)
+    (shell-command "hub compare"))
+   nil)
+)
+(define-key my-leader-map "g" 'hydra-git/body)
 
 
 ;;;
@@ -376,16 +408,20 @@
 
 ;; Ag, the silver searcher
 (setq ag-reuse-buffers t)
-(defvar my-ag-map
-  (make-sparse-keymap)
-  "Keymap for ag shortcuts.")
-(define-key my-leader-map "a" my-ag-map)
-(define-key my-ag-map "f" 'ag-project-files)
-(define-key my-ag-map "F" 'ag-files)
-(define-key my-ag-map "g" 'ag-project)
-(define-key my-ag-map "G" 'ag)
-(define-key my-ag-map "r" 'ag-project-regexp)
-(define-key my-ag-map "R" 'ag-regexp)
+(defhydra hydra-ag (:exit t :foreign-keys warn) "
+ag  \
+«_g_» project  \
+«_f_»iles  \
+«_r_»egex"
+  ("<escape>" nil nil)
+  ("f" ag-project-files nil)
+  ("F" ag-files nil)
+  ("g" ag-project nil)
+  ("G" ag nil)
+  ("r" ag-project-regexp nil)
+  ("R" ag-regexp nil)
+)
+(define-key my-leader-map "a" 'hydra-ag/body)
 (add-hook 'ag-mode-hook (lambda ()
   (toggle-truncate-lines t)))
 
