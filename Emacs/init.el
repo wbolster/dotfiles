@@ -407,7 +407,7 @@
   (kbd "RET") 'comment-indent-new-line)
 
 ;; Flycheck
-(setq flycheck-display-errors-delay 0)
+(setq flycheck-display-errors-delay 1.0)
 (global-flycheck-mode)
 
 ;; Language-agnostic mode hook
