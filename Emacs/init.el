@@ -389,12 +389,20 @@
 (add-hook 'ag-mode-hook (lambda ()
   (toggle-truncate-lines t)))
 
+;; Highlight
+(evil-define-key 'motion global-map
+  (kbd "SPC") 'highlight-symbol
+  (kbd ", SPC") 'highlight-symbol-remove-all)
+(evil-define-key 'visual global-map
+  (kbd "SPC") (lambda (start end) (interactive "r")
+    (highlight-symbol-add-symbol (buffer-substring start end))))
+
 
 ;;;
 ;;; Programming
 ;;;
 
-(setq highlight-symbol-idle-delay 0.5)
+(setq highlight-symbol-idle-delay 1.0)
 (evil-define-key 'insert prog-mode-map
   (kbd "RET") 'comment-indent-new-line)
 
