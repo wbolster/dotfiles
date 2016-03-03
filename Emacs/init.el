@@ -402,6 +402,13 @@
   (highlight-symbol-mode))
 (add-hook 'prog-mode-hook 'my-prog-mode-hook)
 
+;; JSON
+(setq json-reformat:indent-width 2)
+(add-hook 'json-mode-hook (lambda ()
+  (setq
+   tab-width json-reformat:indent-width
+   evil-shift-width tab-width)))
+
 ;; Python
 (defun my-python-mode-hook ()
   (setq
