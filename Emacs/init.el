@@ -109,6 +109,7 @@
   " Undo-Tree"
   " hl-p"
   " hl-s"
+  " ivy"
   " s-/"
 ))
 (sml/setup)
@@ -154,25 +155,14 @@
 ;;; Completion
 ;;;
 
-;; ido
-(setq
- ido-default-buffer-method 'selected-window
- ido-default-file-method 'selected-window
- ido-decorations '(
-   " {" "}"
-   ", " ", ..."
-   " [" "]"
-   " [No match]"
-   " [Matched]"
-   " [Not readable]"
-   " [Too big]"
-   " [Confirm]"))
-(ido-mode t)
-(ido-everywhere t)
-
-;; smex
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; ivy, counsel
+(setq magit-completing-read-function 'ivy-completing-read)
+(ivy-mode 1)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key [remap find-file] 'counsel-find-file)
+(global-set-key [remap switch-to-buffer] 'ivy-switch-buffer)
+(global-set-key [remap describe-function] 'counsel-describe-function)
+(global-set-key [remap describe-variable] 'counsel-describe-variable)
 
 
 ;;;
@@ -221,18 +211,21 @@
   "Keymap for 'leader key' shortcuts.")
 (evil-define-key 'motion global-map "," my-leader-map)
 (define-key my-leader-map " " 'whitespace-cleanup)
-(define-key my-leader-map "b" (lambda() (interactive) (buffer-menu t)))
+(define-key my-leader-map "f" 'counsel-find-file)
+(define-key my-leader-map "F" (lambda()
+  "Show buffer menu with open files"
+  (interactive) (buffer-menu t)))
+(define-key my-leader-map "b" 'ivy-switch-buffer)
 (define-key my-leader-map "B" 'buffer-menu)
 (define-key my-leader-map "k" (lambda () (interactive) (kill-buffer nil)))
 (define-key my-leader-map "q" 'kill-buffer-and-window)
+(define-key my-leader-map "r" 'ivy-resume)
 (define-key my-leader-map "w" 'save-buffer)
 (define-key my-leader-map "W" 'save-some-buffers)
 (define-key my-leader-map "u" 'universal-argument)
-(define-key my-leader-map "x" 'smex)
-(define-key my-leader-map "X" 'smex-major-mode-commands)
+(define-key my-leader-map "x" 'counsel-M-x)
 (define-key my-leader-map "+" 'evil-numbers/inc-at-pt)
 (define-key my-leader-map "-" 'evil-numbers/dec-at-pt)
-(evil-define-key 'visual global-map ",x" 'smex)
 
 ;; Toggles
 (defvar my-toggle-map
@@ -346,7 +339,7 @@
 (define-key my-git-map "b" 'magit-blame)
 (define-key my-git-map "c" 'magit-commit)
 (define-key my-git-map "d" 'magit-diff)
-(define-key my-git-map "f" 'magit-file-popup)
+(define-key my-git-map "f" 'counsel-git)
 (define-key my-git-map "g" 'vc-git-grep)
 (define-key my-git-map "l" 'magit-log)
 (define-key my-git-map "o" (lambda ()
@@ -370,6 +363,16 @@
 ;;;
 ;;; Search
 ;;;
+
+;; Swiper
+(global-set-key [remap isearch-forward ] 'swiper)
+(evil-define-key 'motion global-map
+  "/" 'swiper
+  "?" 'swiper
+  "g/" 'evil-search-forward
+  "g?" 'evil-search-backward)
+(evil-define-key 'normal global-map
+  "g?" 'evil-search-backward)
 
 ;; Ag, the silver searcher
 (setq ag-reuse-buffers t)
