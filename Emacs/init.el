@@ -372,6 +372,7 @@
 ;;;
 
 ;; Ag, the silver searcher
+(setq ag-reuse-buffers t)
 (defvar my-ag-map
   (make-sparse-keymap)
   "Keymap for ag shortcuts.")
@@ -382,6 +383,8 @@
 (define-key my-ag-map "G" 'ag)
 (define-key my-ag-map "r" 'ag-project-regexp)
 (define-key my-ag-map "R" 'ag-regexp)
+(add-hook 'ag-mode-hook (lambda ()
+  (toggle-truncate-lines t)))
 
 
 ;;;
