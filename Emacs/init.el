@@ -221,6 +221,7 @@
 (define-key my-leader-map "k" (lambda () (interactive) (kill-buffer nil)))
 (define-key my-leader-map "q" 'kill-buffer-and-window)
 (define-key my-leader-map "r" 'ivy-resume)
+(define-key my-leader-map "s" 'swiper)
 (define-key my-leader-map "w" 'save-buffer)
 (define-key my-leader-map "W" 'save-some-buffers)
 (define-key my-leader-map "u" 'universal-argument)
@@ -395,16 +396,6 @@ git  \
 ;;;
 ;;; Search
 ;;;
-
-;; Swiper
-(global-set-key [remap isearch-forward ] 'swiper)
-(evil-define-key 'motion global-map
-  "/" 'swiper
-  "?" 'swiper
-  "g/" 'evil-search-forward
-  "g?" 'evil-search-backward)
-(evil-define-key 'normal global-map
-  "g?" 'evil-search-backward)
 
 ;; Ag, the silver searcher
 (setq ag-reuse-buffers t)
