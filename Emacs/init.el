@@ -328,7 +328,7 @@ fill-«_c_»olumn  \
   (interactive)
   (my-default-text-scale-set my-default-text-scale-height))
 (my-default-text-scale-reset)
-(defhydra hydra-zoom (:foreign-keys warn) "
+(defhydra hydra-zoom () "
 zoom  \
 «_i_»n  \
 «_o_»ut  \
