@@ -170,7 +170,6 @@
 
 (setq
  evil-want-C-u-scroll t
- evil-vsplit-window-right t
  evil-cross-lines t)
 
 (require 'evil)
@@ -198,13 +197,6 @@
   (kbd "C-j") 'evil-next-visual-line
   (kbd "C-k") 'evil-previous-visual-line)
 
-;; Quick window selection of vertical splits
-(evil-define-key 'motion global-map
-  (kbd "C-w 1") 'evil-window-top-left
-  (kbd "C-w 2") (lambda () (interactive) (evil-window-top-left) (evil-window-next 2))
-  (kbd "C-w 3") (lambda () (interactive) (evil-window-top-left) (evil-window-next 3))
-  (kbd "C-w 4") (lambda () (interactive) (evil-window-top-left) (evil-window-next 4)))
-
 ;; Shortcuts using a "leader key" as a prefix
 (defvar my-leader-map
   (make-sparse-keymap)
@@ -228,7 +220,69 @@
 (define-key my-leader-map "+" 'evil-numbers/inc-at-pt)
 (define-key my-leader-map "-" 'evil-numbers/dec-at-pt)
 
-;; Toggles
+;; Directory navigation (inspired by vim vinagre)
+(evil-define-key 'motion global-map "-" 'dired-jump)
+(define-key dired-mode-map "-" 'dired-jump)
+
+;; Previous/next thing (inspired by vim unimpaired)
+(defun last-error ()
+  "Jump to the last error; similar to 'first-error'."
+  (interactive) (condition-case err (while t (next-error)) (user-error nil)))
+(evil-define-key 'motion global-map
+  (kbd "[ SPC") (lambda () (interactive)
+    (evil-insert-newline-above)
+    (evil-line 2))
+  (kbd "] SPC") (lambda () (interactive)
+    (evil-insert-newline-below)
+    (evil-line 0))
+  "[b" 'evil-prev-buffer
+  "]b" 'evil-next-buffer
+  "[c" 'flycheck-previous-error
+  "]c" 'flycheck-next-error
+  "[C" (lambda () (interactive)
+    (goto-char (point-min))
+    (flycheck-next-error))
+  "]C" (lambda () (interactive)
+    (goto-char (point-max))
+    (flycheck-previous-error))
+  "[e" 'previous-error
+  "]e" 'next-error
+  "[E" 'first-error
+  "]E" 'last-error
+  "[m" 'move-text-up
+  "]m" 'move-text-down
+  "[s" 'highlight-symbol-prev
+  "]s" 'highlight-symbol-next
+  "[w" 'evil-window-prev
+  "]w" 'evil-window-next
+)
+
+;; Single key prefix key for god-mode integration
+(evil-define-key 'motion global-map ";" 'evil-execute-in-god-state)
+(evil-define-key 'god global-map [escape] 'evil-god-state-bail)
+
+;; Misc
+(evil-define-key 'insert global-map
+  (kbd "RET") 'evil-ret-and-indent
+  (kbd "C-a") 'evil-first-non-blank
+  (kbd "C-l") 'end-of-line)
+(defun my-evil-fill-paragraph ()
+  "Dwim helper to fill the current paragraph"
+  (interactive)
+  ;; Move point after comment marker; useful for multi-line comments.
+  (end-of-line)
+  (fill-paragraph)
+  (evil-first-non-blank))
+(evil-define-key 'motion global-map
+  "Q" 'my-evil-fill-paragraph
+  (kbd "M-j") 'move-text-down
+  (kbd "M-k") 'move-text-up)
+
+
+;;;
+;;; Toggles
+;;;
+
 (defhydra hydra-toggle (:exit t :foreign-keys warn) "
 toggle  \
 «_b_»ackgound  \
@@ -260,7 +314,11 @@ fill-«_c_»olumn  \
 )
 (define-key my-leader-map "t" 'hydra-toggle/body)
 
-;; Zooming / text size
+
+;;;
+;;; Zooming / text size
+;;;
+
 (require 'default-text-scale)
 (setq my-default-text-scale-height 110)
 (defun my-default-text-scale-set (height)
@@ -287,62 +345,21 @@ zoom  \
 )
 (define-key my-leader-map "z" 'hydra-zoom/body)
 
-;; Directory navigation (inspired by vim vinagre)
-(evil-define-key 'motion global-map "-" 'dired-jump)
-(define-key dired-mode-map "-" 'dired-jump)
 
-;; Previous/next thing (inspired by vim unimpaired)
+;;
+;; Window splitting
+;;
+
+(setq
+ split-height-threshold nil
+ split-width-threshold 120
+ evil-split-window-below t
+ evil-vsplit-window-right t)
 (evil-define-key 'motion global-map
-  (kbd "[ SPC") (lambda () (interactive)
-    (evil-insert-newline-above)
-    (evil-line 2))
-  (kbd "] SPC") (lambda () (interactive)
-    (evil-insert-newline-below)
-    (evil-line 0))
-  "[b" 'evil-prev-buffer
-  "]b" 'evil-next-buffer
-  "[c" 'flycheck-previous-error
-  "]c" 'flycheck-next-error
-  "[C" (lambda () (interactive)
-    (goto-char (point-min))
-    (flycheck-next-error))
-  "]C" (lambda () (interactive)
-    (goto-char (point-max))
-    (flycheck-previous-error))
-  "[e" 'previous-error
-  "]e" 'next-error
-  "[E" 'first-error
-  "]E" (lambda () (interactive)
-    (goto-char (point-max))
-    (previous-error))
-  "[m" 'move-text-up
-  "]m" 'move-text-down
-  "[s" 'highlight-symbol-prev
-  "]s" 'highlight-symbol-next
-  "[w" 'evil-window-prev
-  "]w" 'evil-window-next
-)
-
-;; Single key prefix key for god-mode integration
-(evil-define-key 'motion global-map ";" 'evil-execute-in-god-state)
-(evil-define-key 'god global-map [escape] 'evil-god-state-bail)
-
-;; Misc
-(evil-define-key 'insert global-map
-  (kbd "RET") 'evil-ret-and-indent
-  (kbd "C-a") 'evil-first-non-blank
-  (kbd "C-l") 'end-of-line)
-(defun my-evil-fill-paragraph ()
-  "Dwim helper to fill the current paragraph"
-  (interactive)
-  ;; Move point after comment marker; useful for multi-line comments.
-  (end-of-line)
-  (fill-paragraph)
-  (evil-first-non-blank))
-(evil-define-key 'motion global-map
-  "Q" 'my-evil-fill-paragraph
-  (kbd "M-j") 'move-text-down
-  (kbd "M-k") 'move-text-up)
+  (kbd "C-w 1") 'evil-window-top-left
+  (kbd "C-w 2") (lambda () (interactive) (evil-window-top-left) (evil-window-next 2))
+  (kbd "C-w 3") (lambda () (interactive) (evil-window-top-left) (evil-window-next 3))
+  (kbd "C-w 4") (lambda () (interactive) (evil-window-top-left) (evil-window-next 4)))
 
 
 ;;;
@@ -426,7 +443,8 @@ ag  \
 (add-hook 'ag-mode-hook (lambda ()
   (toggle-truncate-lines t)))
 
-;; Highlight
+;; Highlighting
+(setq highlight-symbol-idle-delay 1.0)
 (evil-define-key 'motion global-map
   (kbd "SPC") 'highlight-symbol
   (kbd ", SPC") 'highlight-symbol-remove-all)
@@ -439,7 +457,6 @@ ag  \
 ;;; Programming
 ;;;
 
-(setq highlight-symbol-idle-delay 1.0)
 (evil-define-key 'insert prog-mode-map
   (kbd "RET") 'comment-indent-new-line)
 
