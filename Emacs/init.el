@@ -59,7 +59,6 @@
 ;; TODO: highlight FIXME/TODO/XXX in comment strings
 
 (show-paren-mode t)
-(setq text-scale-mode-step 1.05)
 
 ;; Reduce clutter
 (setq
@@ -262,18 +261,29 @@ fill-«_c_»olumn  \
 (define-key my-leader-map "t" 'hydra-toggle/body)
 
 ;; Zooming / text size
+(require 'default-text-scale)
+(setq my-default-text-scale-height 110)
+(defun my-default-text-scale-set (height)
+  (interactive "nHeight (e.g. 110) ")
+  (default-text-scale-increment (- height (face-attribute 'default :height))))
+(defun my-default-text-scale-reset ()
+  (interactive)
+  (my-default-text-scale-set my-default-text-scale-height))
+(my-default-text-scale-reset)
 (defhydra hydra-zoom (:foreign-keys warn) "
 zoom  \
 «_i_»n  \
 «_o_»ut  \
 «_z_» normal"
   ("<escape>" nil nil)
-  ("i" text-scale-increase nil)
-  ("o" text-scale-decrease nil)
-  ("z" (text-scale-increase 0) nil :exit t)
-  ("0" (text-scale-increase 0) nil :exit t)
-  ("+" text-scale-increase nil)
-  ("-" text-scale-decrease nil)
+  ("i" default-text-scale-increase nil)
+  ("o" default-text-scale-decrease nil)
+  ("z" my-default-text-scale-reset nil :exit t)
+  ("0" my-default-text-scale-reset nil :exit t)
+  ("=" default-text-scale-increase nil)
+  ("+" default-text-scale-increase nil)
+  ("-" default-text-scale-decrease nil)
+  ("." hydra-repeat nil)
 )
 (define-key my-leader-map "z" 'hydra-zoom/body)
 
