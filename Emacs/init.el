@@ -210,6 +210,7 @@
 (define-key my-leader-map "b" 'ivy-switch-buffer)
 (define-key my-leader-map "B" 'buffer-menu)
 (define-key my-leader-map "k" (lambda () (interactive) (kill-buffer nil)))
+(define-key my-leader-map "o" 'occur-dwim)
 (define-key my-leader-map "q" 'kill-buffer-and-window)
 (define-key my-leader-map "r" 'ivy-resume)
 (define-key my-leader-map "s" 'swiper)
@@ -451,6 +452,20 @@ ag  \
 (evil-define-key 'visual global-map
   (kbd "SPC") (lambda (start end) (interactive "r")
     (highlight-symbol-add-symbol (buffer-substring start end))))
+
+;; Occur
+(defun occur-dwim ()
+  "Call `occur' with a sane default."
+  (interactive)
+  (push (if (region-active-p)
+            (buffer-substring-no-properties
+             (region-beginning)
+             (region-end))
+          (let ((sym (thing-at-point 'symbol)))
+            (when (stringp sym)
+              (regexp-quote sym))))
+        regexp-history)
+  (call-interactively 'occur))
 
 
 ;;;
