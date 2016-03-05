@@ -450,7 +450,7 @@ ag  \
 (setq highlight-symbol-idle-delay 1.0)
 (evil-define-key 'motion global-map
   (kbd "SPC") 'highlight-symbol
-  (kbd ", SPC") 'highlight-symbol-remove-all)
+  (kbd "S-SPC") 'highlight-symbol-remove-all)
 (evil-define-key 'visual global-map
   (kbd "SPC") (lambda (start end) (interactive "r")
     (highlight-symbol-add-symbol (buffer-substring start end))))
