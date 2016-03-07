@@ -157,7 +157,9 @@
 ;;;
 
 ;; ivy, counsel
-(setq magit-completing-read-function 'ivy-completing-read)
+(setq
+ ivy-wrap t
+ magit-completing-read-function 'ivy-completing-read)
 (ivy-mode 1)
 (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key [remap find-file] 'counsel-find-file)
