@@ -64,7 +64,8 @@
 (setq
  frame-resize-pixelwise t
  inhibit-startup-screen t
- initial-scratch-message nil)
+ initial-scratch-message nil
+ ns-use-native-fullscreen nil)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (toggle-frame-maximized)
