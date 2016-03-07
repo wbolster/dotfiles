@@ -215,7 +215,7 @@
 (define-key my-leader-map "B" 'buffer-menu)
 (define-key my-leader-map "k" (lambda () (interactive) (kill-buffer nil)))
 (define-key my-leader-map "o" 'occur-dwim)
-(define-key my-leader-map "q" 'kill-buffer-and-window)
+(define-key my-leader-map "q" (lambda () (interactive) (kill-buffer-and-window) (balance-windows)))
 (define-key my-leader-map "r" 'ivy-resume)
 (define-key my-leader-map "s" 'swiper)
 (define-key my-leader-map "w" 'save-buffer)
