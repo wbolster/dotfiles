@@ -48,8 +48,9 @@
 (global-set-key (kbd "C-h C-o") nil)
 (global-set-key (kbd "C-h C-w") nil)
 
-;; Disable Command-Q on OSX
+;; OSX keyboard
 (global-set-key (kbd "s-q") nil)
+(setq ns-right-alternate-modifier 'none)
 
 
 ;;;
