@@ -331,7 +331,8 @@ fill-«_c_»olumn  \
 (defun my-default-text-scale-reset ()
   (interactive)
   (my-default-text-scale-set my-default-text-scale-height))
-(my-default-text-scale-reset)
+(when (display-graphic-p)
+  (my-default-text-scale-reset))
 (defhydra hydra-zoom () "
 zoom  \
 «_i_»n  \
