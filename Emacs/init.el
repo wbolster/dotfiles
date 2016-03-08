@@ -357,6 +357,7 @@ zoom  \
 ;;
 
 (setq
+ help-window-select t
  split-height-threshold nil
  split-width-threshold 120
  evil-split-window-below t
