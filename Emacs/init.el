@@ -401,7 +401,8 @@ git  \
   ("d" magit-diff nil)
   ("f" counsel-git nil)
   ("g" vc-git-grep nil)
-  ("l" magit-log nil)
+  ("l" magit-log-current nil)
+  ("L" magit-log-all nil)
   ("p" magit-dispatch-popup nil)
   ("s" magit-status nil)
   ("S"
