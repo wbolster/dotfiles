@@ -198,8 +198,6 @@
 
 ;; Movement
 (evil-define-key 'motion global-map
-  "d" 'evil-scroll-down
-  "u" 'evil-scroll-up
   (kbd "C-j") 'evil-next-visual-line
   (kbd "C-k") 'evil-previous-visual-line)
 
