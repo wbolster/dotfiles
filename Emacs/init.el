@@ -511,6 +511,10 @@ ag  \
    python-fill-docstring-style 'symmetric))
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 
+;; Shell
+(add-to-list 'auto-mode-alist '("bashrc\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.bashrc-.*\\'" . sh-mode))
+
 ;; Yaml
 (defun my-yaml-mode-hook ()
   (setq evil-shift-width yaml-indent-offset))
