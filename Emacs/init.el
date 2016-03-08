@@ -486,7 +486,12 @@ ag  \
 (setq flycheck-display-errors-delay 1.0)
 (global-flycheck-mode)
 
-;; Language-agnostic mode hook
+
+;;;
+;;; Major modes
+;;;
+
+;; Programming languages
 (defun my-prog-mode-hook ()
   (column-number-mode)
   (highlight-symbol-mode))
