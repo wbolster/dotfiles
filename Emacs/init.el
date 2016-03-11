@@ -209,7 +209,7 @@
 (define-key my-leader-map "B" 'buffer-menu)
 (define-key my-leader-map "k" (lambda () (interactive) (kill-buffer nil)))
 (define-key my-leader-map "o" 'occur-dwim)
-(define-key my-leader-map "q" (lambda () (interactive) (kill-buffer-and-window) (balance-windows)))
+(define-key my-leader-map "q" 'kill-buffer-and-window)
 (define-key my-leader-map "s" 'swiper)
 (define-key my-leader-map "w" 'save-buffer)
 (define-key my-leader-map "W" 'save-some-buffers)
@@ -368,6 +368,8 @@ zoom  \
   (kbd "C-w 2") (lambda () (interactive) (evil-window-top-left) (evil-window-next 2))
   (kbd "C-w 3") (lambda () (interactive) (evil-window-top-left) (evil-window-next 3))
   (kbd "C-w 4") (lambda () (interactive) (evil-window-top-left) (evil-window-next 4)))
+(advice-add 'delete-window :after '(lambda (&rest args) (balance-windows)))
+(advice-add 'display-buffer :after '(lambda (&rest args) (balance-windows)))
 
 
 ;;;
