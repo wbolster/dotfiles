@@ -452,7 +452,9 @@ ag  \
   (toggle-truncate-lines t)))
 
 ;; Highlighting
-(setq highlight-symbol-idle-delay 1.0)
+(setq
+ highlight-symbol-idle-delay 1.0
+ highlight-symbol-on-navigation-p t)
 (evil-define-key 'motion global-map
   (kbd "SPC") 'highlight-symbol
   (kbd "S-SPC") 'highlight-symbol-remove-all)
