@@ -208,7 +208,6 @@
 (define-key my-leader-map "k" (lambda () (interactive) (kill-buffer nil)))
 (define-key my-leader-map "o" 'occur-dwim)
 (define-key my-leader-map "q" (lambda () (interactive) (kill-buffer-and-window) (balance-windows)))
-(define-key my-leader-map "r" 'ivy-resume)
 (define-key my-leader-map "s" 'swiper)
 (define-key my-leader-map "w" 'save-buffer)
 (define-key my-leader-map "W" 'save-some-buffers)
@@ -216,6 +215,7 @@
 (define-key my-leader-map "x" 'counsel-M-x)
 (define-key my-leader-map "+" 'evil-numbers/inc-at-pt)
 (define-key my-leader-map "-" 'evil-numbers/dec-at-pt)
+(define-key my-leader-map "," 'ivy-resume)
 
 ;; Directory navigation (inspired by vim vinagre)
 (evil-define-key 'motion global-map "-" 'dired-jump)
