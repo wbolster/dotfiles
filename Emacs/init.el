@@ -208,6 +208,7 @@
 (define-key my-leader-map "k" (lambda () (interactive) (kill-buffer nil)))
 (define-key my-leader-map "o" 'occur-dwim)
 (define-key my-leader-map "q" 'kill-buffer-and-window)
+(define-key my-leader-map "r" 'highlight-symbol-query-replace)
 (define-key my-leader-map "s" 'swiper)
 (define-key my-leader-map "w" 'save-buffer)
 (define-key my-leader-map "W" 'save-some-buffers)
