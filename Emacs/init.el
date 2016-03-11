@@ -260,8 +260,14 @@
   "]m" 'move-text-down
   "[s" 'highlight-symbol-prev
   "]s" 'highlight-symbol-next
+  "[S" 'highlight-symbol-prev-in-defun
+  "]S" 'highlight-symbol-next-in-defun
   "[w" 'evil-window-prev
   "]w" 'evil-window-next
+)
+(evil-define-key 'normal global-map
+  (kbd "C-p") 'highlight-symbol-prev
+  (kbd "C-n") 'highlight-symbol-next
 )
 
 ;; Single key prefix key for god-mode integration
