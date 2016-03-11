@@ -73,7 +73,9 @@
 (tool-bar-mode -1)
 
 ;; Theme
-(setq solarized-use-less-bold t)
+(setq
+ solarized-high-contrast-mode-line t
+ solarized-use-less-bold t)
 (load-theme 'solarized-dark t)
 (defvar my-active-theme 'solarized-dark "The currently active theme.")
 (defun toggle-dark-light-theme ()
