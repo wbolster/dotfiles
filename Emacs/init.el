@@ -103,7 +103,6 @@
 (my-remove-bold-underline-from-all-faces)
 
 ;; Mode line
-(require 'smart-mode-line)
 (setq rm-blacklist '(
   " ARev"
   " FlyC"
@@ -119,7 +118,6 @@
  sml/line-number-format "%l")
 
 ;; Line numbering
-(require 'relative-line-numbers)
 (defun my-relative-line-numbers-format (offset)
   "Format relative line number for OFFSET."
   (number-to-string (abs (if (= offset 0) (line-number-at-pos) offset))))
@@ -178,15 +176,7 @@
  evil-cross-lines t)
 
 (require 'evil)
-(require 'evil-args)
-(require 'evil-commentary)
-(require 'evil-god-state)
-(require 'evil-indent-plus)
 (require 'evil-magit)
-(require 'evil-numbers)
-(require 'evil-surround)
-(require 'god-mode)
-(require 'hydra)
 
 (evil-mode)
 (evil-commentary-mode)
@@ -332,7 +322,7 @@ fill-«_c_»olumn  \
 ;;; Zooming / text size
 ;;;
 
-(require 'default-text-scale)
+(require 'default-text-scale)  ;; functions below use non-autoloaded functions
 (setq my-default-text-scale-height 110)
 (defun my-default-text-scale-set (height)
   (interactive "nHeight (e.g. 110) ")
@@ -381,7 +371,6 @@ zoom  \
 ;;; Version control
 ;;;
 
-(require 'magit)
 (setq
  auto-revert-check-vc-info t
  magit-process-popup-time 10)
