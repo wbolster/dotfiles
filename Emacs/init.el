@@ -261,8 +261,12 @@
 )
 
 ;; Single key prefix key for god-mode integration
-(evil-define-key 'motion global-map ";" 'evil-execute-in-god-state)
-(evil-define-key 'god global-map [escape] 'evil-god-state-bail)
+(evil-define-key 'motion global-map
+  ";" 'evil-execute-in-god-state)
+(evil-define-key 'god global-map
+  [escape] 'evil-god-state-bail
+  ";" 'evil-repeat-find-char)  ;; makes ';;' act like original ';'
+
 
 ;; Misc
 (evil-define-key 'insert global-map
