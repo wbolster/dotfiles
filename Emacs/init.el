@@ -434,6 +434,9 @@ git  \
 ;;; Search
 ;;;
 
+;; isearch
+(setq isearch-allow-prefix nil)
+
 ;; Ag, the silver searcher
 (setq ag-reuse-buffers t)
 (defhydra hydra-ag (:exit t :foreign-keys warn) "
