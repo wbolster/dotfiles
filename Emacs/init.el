@@ -159,6 +159,7 @@
 ;; ivy, counsel
 (setq
  ivy-wrap t
+ ivy-count-format "(%d/%d) "
  magit-completing-read-function 'ivy-completing-read)
 (ivy-mode 1)
 (global-set-key (kbd "M-x") 'counsel-M-x)
