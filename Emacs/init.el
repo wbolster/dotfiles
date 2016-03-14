@@ -97,10 +97,13 @@
 ;; Font faces
 (defun my-remove-bold-underline-from-all-faces ()
   "Remove unwanted attributes from all font faces."
+  (interactive)
   (mapc
    (lambda (face) (set-face-attribute face nil :weight 'normal :underline nil))
    (face-list)))
-(my-remove-bold-underline-from-all-faces)
+;; (my-remove-bold-underline-from-all-faces)  ;; Disabled for now because
+                                              ;; color theming alone is
+                                              ;; not good enough.
 
 ;; Mode line
 (setq rm-blacklist '(
