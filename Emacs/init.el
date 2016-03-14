@@ -521,6 +521,23 @@ ag  \
    python-fill-docstring-style 'symmetric))
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 
+;; reStructuredText
+(setq
+ rst-default-indent 0
+ rst-preferred-adornments '(
+   (?= over-and-under 0)
+   (?= simple 0)
+   (?- simple 0)
+   (?~ simple 0)
+   (?+ simple 0)
+   (?` simple 0)
+   (?# simple 0)
+   (?@ simple 0))
+ rst-preferred-bullets '(?- ?*))
+(add-hook 'rst-mode-hook (lambda ()
+  (setq evil-shift-width 2)
+))
+
 ;; Shell
 (add-to-list 'auto-mode-alist '("bashrc\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.bashrc-.*\\'" . sh-mode))
