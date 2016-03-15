@@ -1,6 +1,4 @@
 /Emacs/**/*.elc
-/Emacs/**/*.info
-/Emacs/**/*.info-[123]
 /Emacs/**/dir
 /Emacs/elpa/*.signed
 /Emacs/elpa/*-readme.txt
