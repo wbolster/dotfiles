@@ -397,7 +397,8 @@ zoom  \
 
 (setq
  auto-revert-check-vc-info t
- magit-process-popup-time 10)
+ magit-process-popup-time 10
+ magit-tag-arguments '("--annotate"))
 
 ;; Pop-ups sometimes contain trailing whitespace.
 (add-hook 'magit-popup-mode-hook 'my-hide-trailing-whitespace)
