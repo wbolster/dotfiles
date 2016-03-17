@@ -359,9 +359,18 @@ zoom  \
 
 
 ;;
-;; Window splitting
+;; Window splitting.
+;;
+;; Prefered layout is full-height windows, two or three next to each
+;; other in a horizontal fashion, i.e. screen divided into columns.
 ;;
 
+(defun my-evil-window-next-or-vsplit ()
+  "Focus next window, or vsplit if it is the only window in this frame."
+  (interactive)
+  (if (> (count-windows) 1)
+      (call-interactively 'evil-window-next)
+    (evil-window-vsplit)))
 (setq
  help-window-select t
  split-height-threshold nil
@@ -372,6 +381,8 @@ zoom  \
   (kbd "C-w n") 'evil-window-vnew
   (kbd "C-w q") 'evil-window-delete
   (kbd "C-w C-q") 'evil-window-delete
+  (kbd "C-w w") 'my-evil-window-next-or-vsplit
+  (kbd "C-w C-w") 'my-evil-window-next-or-vsplit
   (kbd "C-w 1") 'evil-window-top-left
   (kbd "C-w 2") (lambda () (interactive) (evil-window-top-left) (evil-window-next 2))
   (kbd "C-w 3") (lambda () (interactive) (evil-window-top-left) (evil-window-next 3))
