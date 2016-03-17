@@ -370,6 +370,8 @@ zoom  \
  evil-vsplit-window-right t)
 (evil-define-key 'motion global-map
   (kbd "C-w n") 'evil-window-vnew
+  (kbd "C-w q") 'evil-window-delete
+  (kbd "C-w C-q") 'evil-window-delete
   (kbd "C-w 1") 'evil-window-top-left
   (kbd "C-w 2") (lambda () (interactive) (evil-window-top-left) (evil-window-next 2))
   (kbd "C-w 3") (lambda () (interactive) (evil-window-top-left) (evil-window-next 3))
