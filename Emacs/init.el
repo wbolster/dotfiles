@@ -226,30 +226,28 @@
 (define-key dired-mode-map "-" 'dired-jump)
 
 ;; Previous/next thing (inspired by vim unimpaired)
-(defun last-error ()
+(defun my-last-error ()
   "Jump to the last error; similar to 'first-error'."
-  (interactive) (condition-case err (while t (next-error)) (user-error nil)))
+  (interactive)
+  (condition-case err (while t (next-error)) (user-error nil)))
+(defun my-flycheck-last-error ()
+  "Jump to the last flycheck error."
+  (interactive)
+  (goto-char (point-max))
+  (flycheck-previous-error))
 (evil-define-key 'motion global-map
-  (kbd "[ SPC") (lambda () (interactive)
-    (evil-insert-newline-above)
-    (evil-line 2))
-  (kbd "] SPC") (lambda () (interactive)
-    (evil-insert-newline-below)
-    (evil-line 0))
+  (kbd "[ SPC") (lambda () (interactive) (save-excursion (evil-insert-newline-above)))
+  (kbd "] SPC") (lambda () (interactive) (save-excursion (evil-insert-newline-below)))
   "[b" 'evil-prev-buffer
   "]b" 'evil-next-buffer
   "[c" 'flycheck-previous-error
   "]c" 'flycheck-next-error
-  "[C" (lambda () (interactive)
-    (goto-char (point-min))
-    (flycheck-next-error))
-  "]C" (lambda () (interactive)
-    (goto-char (point-max))
-    (flycheck-previous-error))
+  "[C" 'flycheck-first-error
+  "]C" 'my-flycheck-last-error
   "[e" 'previous-error
   "]e" 'next-error
   "[E" 'first-error
-  "]E" 'last-error
+  "]E" 'my-last-error
   "[m" 'move-text-up
   "]m" 'move-text-down
   "[s" 'highlight-symbol-prev
