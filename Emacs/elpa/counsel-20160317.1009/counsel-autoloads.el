@@ -3,7 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
 
-;;;### (autoloads nil "counsel" "counsel.el" (22247 60324 0 0))
+;;;### (autoloads nil "counsel" "counsel.el" (22252 29318 784970
+;;;;;;  368000))
 ;;; Generated autoloads from counsel.el
 
 (autoload 'counsel-el "counsel" "\
@@ -64,7 +65,7 @@ Usable with `ivy-resume', `ivy-next-line-and-call' and
 Show a list of all defined keys, and their definitions.
 Describe the selected candidate.
 
-\(fn)" t nil)
+\(fn &optional PREFIX BUFFER)" t nil)
 
 (autoload 'counsel-git "counsel" "\
 Find file in the current Git repository.
@@ -163,7 +164,10 @@ Launch a Linux desktop application, similar to Alt-<F2>.
 
 (defvar counsel-mode nil "\
 Non-nil if Counsel mode is enabled.
-See the command `counsel-mode' for a description of this minor mode.")
+See the command `counsel-mode' for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `counsel-mode'.")
 
 (custom-autoload 'counsel-mode "counsel" nil)
 

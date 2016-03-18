@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20160314.1232
+;; Package-Version: 20160317.1009
 ;; Package-Requires: ((emacs "24.1") (swiper "0.4.0"))
 ;; Keywords: completion, matching
 
@@ -633,8 +633,8 @@ Usable with `ivy-resume', `ivy-next-line-and-call' and
 (defvar counsel-descbinds-history nil
   "History for `counsel-descbinds'.")
 
-(defun counsel--descbinds-cands ()
-  (let ((buffer (current-buffer))
+(defun counsel--descbinds-cands (&optional prefix buffer)
+  (let ((buffer (or buffer (current-buffer)))
         (re-exclude (regexp-opt
                      '("<vertical-line>" "<bottom-divider>" "<right-divider>"
                        "<mode-line>" "<C-down-mouse-2>" "<left-fringe>"
@@ -643,7 +643,7 @@ Usable with `ivy-resume', `ivy-next-line-and-call' and
         res)
     (with-temp-buffer
       (let ((indent-tabs-mode t))
-        (describe-buffer-bindings buffer))
+        (describe-buffer-bindings buffer prefix))
       (goto-char (point-min))
       ;; Skip the "Key translations" section
       (re-search-forward "")
@@ -680,11 +680,11 @@ Usable with `ivy-resume', `ivy-next-line-and-call' and
     (counsel-info-lookup-symbol (symbol-name cmd))))
 
 ;;;###autoload
-(defun counsel-descbinds ()
+(defun counsel-descbinds (&optional prefix buffer)
   "Show a list of all defined keys, and their definitions.
 Describe the selected candidate."
   (interactive)
-  (ivy-read "Bindings: " (counsel--descbinds-cands)
+  (ivy-read "Bindings: " (counsel--descbinds-cands prefix buffer)
             :action #'counsel-descbinds-action-describe
             :history 'counsel-descbinds-history
             :caller 'counsel-descbinds))
@@ -1887,6 +1887,12 @@ An extra action allows to switch to the process buffer."
   "Map for `counsel-mode'. Remaps built-in functions to counsel
 replacements.")
 
+(defcustom counsel-mode-override-describe-bindings nil
+  "Whether to override `describe-bindings' when `counsel-mode' is
+active."
+  :group 'ivy
+  :type 'boolean)
+
 ;;;###autoload
 (define-minor-mode counsel-mode
   "Toggle Counsel mode on or off.
@@ -1896,7 +1902,13 @@ replacements. "
   :group 'ivy
   :global t
   :keymap counsel-mode-map
-  :lighter " counsel")
+  :lighter " counsel"
+  (if counsel-mode
+      (when (and (fboundp 'advice-add)
+                 counsel-mode-override-describe-bindings)
+        (advice-add #'describe-bindings :override #'counsel-descbinds))
+    (when (fboundp 'advice-remove)
+      (advice-remove #'describe-bindings #'counsel-descbinds))))
 
 (provide 'counsel)
 
