@@ -115,10 +115,11 @@
   " ivy"
   " s-/"
 ))
-(sml/setup)
 (setq
  sml/col-number-format "%c"
- sml/line-number-format "%l")
+ sml/line-number-format "%l"
+ sml/projectile-replacement-format "%s:")
+(sml/setup)
 
 ;; Line numbering
 (defun my-relative-line-numbers-format (offset)
@@ -387,6 +388,37 @@ zoom  \
   (kbd "C-w 4") (lambda () (interactive) (evil-window-top-left) (evil-window-next 4)))
 (advice-add 'delete-window :after '(lambda (&rest args) (balance-windows)))
 (advice-add 'display-buffer :after '(lambda (&rest args) (balance-windows)))
+
+
+;;
+;; Projects
+;;
+
+(setq
+ projectile-completion-system 'ivy
+ projectile-mode-line nil)
+(projectile-global-mode)
+(defhydra hydra-project (
+  :exit t
+  :foreign-keys warn
+  :pre (projectile-project-root)
+  ) "
+project  \
+«_b_»uffer  \
+«_d_»ired  \
+«_f_»ile  \
+«_k_»ill buffers  \
+«_t_»est/impl  \
+«_w_»rite buffers"
+  ("<escape>" nil nil)
+  ("b" projectile-switch-to-buffer nil)
+  ("d" projectile-dired nil)
+  ("f" projectile-find-file-dwim nil)
+  ("k" projectile-kill-buffers nil)
+  ("t" projectile-find-implementation-or-test-other-window nil)
+  ("w" projectile-save-project-buffers nil)
+)
+(define-key my-leader-map "p" 'hydra-project/body)
 
 
 ;;;
