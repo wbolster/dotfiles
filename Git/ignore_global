@@ -1,6 +1,7 @@
 # Backup files
 *~
 \#*#
+.#*
 
 # Mac OSX
 .DS_Store
