@@ -408,6 +408,7 @@ project  \
 «_d_»ired  \
 «_f_»ile  \
 «_k_»ill buffers  \
+«_p_» switch project  \
 «_t_»est/impl  \
 «_w_»rite buffers"
   ("<escape>" nil nil)
@@ -415,6 +416,8 @@ project  \
   ("d" projectile-dired nil)
   ("f" projectile-find-file-dwim nil)
   ("k" projectile-kill-buffers nil)
+  ("p" projectile-switch-open-project nil)
+  ("P" projectile-switch-project nil)
   ("t" projectile-find-implementation-or-test-other-window nil)
   ("w" projectile-save-project-buffers nil)
 )
