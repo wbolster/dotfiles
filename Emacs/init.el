@@ -377,6 +377,7 @@ zoom  \
  evil-split-window-below t
  evil-vsplit-window-right t)
 (evil-define-key 'motion global-map
+  (kbd "C-w m") 'hydra-window-move/body
   (kbd "C-w n") 'evil-window-vnew
   (kbd "C-w q") 'evil-window-delete
   (kbd "C-w C-q") 'evil-window-delete
@@ -386,6 +387,27 @@ zoom  \
   (kbd "C-w 2") (lambda () (interactive) (evil-window-top-left) (evil-window-next 2))
   (kbd "C-w 3") (lambda () (interactive) (evil-window-top-left) (evil-window-next 3))
   (kbd "C-w 4") (lambda () (interactive) (evil-window-top-left) (evil-window-next 4)))
+(defhydra hydra-window-move (:foreign-keys warn) "
+window  \
+«_h_» left  \
+«_j_» down  \
+«_k_» up  \
+«_l_» right  \
+«_r_»otate"
+  ("<escape>" nil nil)
+  ("h" buf-move-left nil)
+  ("H" evil-window-move-far-left nil :exit t)
+  ("j" buf-move-down nil)
+  ("J" evil-window-move-very-bottom nil :exit t)
+  ("k" buf-move-up nil)
+  ("K" evil-window-move-very-top nil :exit t)
+  ("l" buf-move-right nil)
+  ("L" evil-window-move-far-right nil :exit t)
+  ("r" evil-window-rotate-downwards nil)
+  ("R" evil-window-rotate-upwards nil)
+  ("." hydra-repeat nil)
+)
+(define-key my-leader-map "m" 'hydra-window-move/body)
 (advice-add 'delete-window :after '(lambda (&rest args) (balance-windows)))
 (advice-add 'display-buffer :after '(lambda (&rest args) (balance-windows)))
 
