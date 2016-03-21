@@ -445,9 +445,8 @@ git  \
 «_c_»ommit  \
 «_d_»iff  \
 «_f_»ile  \
-«_g_»rep  \
+«_g_» popup  \
 «_l_»og  \
-«_p_»opup  \
 «_s_»tatus  \
 «_w_»eb"
   ("<escape>" nil nil)
@@ -456,10 +455,9 @@ git  \
   ("c" magit-commit nil)
   ("d" magit-diff nil)
   ("f" counsel-git nil)
-  ("g" vc-git-grep nil)
+  ("g" magit-dispatch-popup nil)
   ("l" magit-log-current nil)
   ("L" magit-log-all nil)
-  ("p" magit-dispatch-popup nil)
   ("s" magit-status nil)
   ("S"
    (lambda ()
