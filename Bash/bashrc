@@ -23,11 +23,14 @@ PATH="${HOME}/bin:${HOME}/.local/bin:$PATH"
 PATH=$(_deduplicate_path_components "${PATH}")
 MANPATH=$(_deduplicate_path_components "${MANPATH}")
 
+# Make sure $HOSTNAME is set
+if [[ -z "${HOSTNAME}" ]]; then
+    HOSTNAME=$(hostname)
+    export HOSTNAME
+fi
+
 # Interactive shells
 if [[ "$PS1" ]]; then
-    # Make sure $HOSTNAME is set
-    [[ -z "${HOSTNAME}" ]] && export HOSTNAME=$(hostname)
-
     # Helper to emulate "set -x" output
     _run_verbose() {
         (
