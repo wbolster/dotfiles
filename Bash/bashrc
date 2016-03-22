@@ -432,6 +432,10 @@ if [[ "$PS1" ]]; then
     alias ni=vi
     alias :q='exit'
     alias :e='$EDITOR'
+    em () {
+        emacs "$@" &
+        disown emacs
+    }
 
     # Pager
     alias lessr='less -R'
