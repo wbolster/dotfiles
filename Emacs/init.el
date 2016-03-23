@@ -278,7 +278,7 @@
 (evil-define-key 'insert global-map
   (kbd "RET") 'evil-ret-and-indent
   (kbd "C-a") 'evil-first-non-blank
-  (kbd "C-l") 'end-of-line)
+  (kbd "C-e") 'end-of-line)
 (defun my-evil-fill-paragraph ()
   "Dwim helper to fill the current paragraph"
   (interactive)
