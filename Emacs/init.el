@@ -612,6 +612,7 @@ ag  \
 ;; Shell
 (add-to-list 'auto-mode-alist '("bashrc\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.bashrc-.*\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.envrc\\'" . sh-mode))
 
 ;; Yaml
 (defun my-yaml-mode-hook ()
