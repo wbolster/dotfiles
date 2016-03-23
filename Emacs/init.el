@@ -210,6 +210,7 @@
   "Show buffer menu with open files"
   (interactive) (buffer-menu t)))
 (define-key my-leader-map "b" 'ivy-switch-buffer)
+(define-key my-leader-map "c" 'delete-window)
 (define-key my-leader-map "B" 'buffer-menu)
 (define-key my-leader-map "k" (lambda () (interactive) (kill-buffer nil)))
 (define-key my-leader-map "o" 'occur-dwim)
