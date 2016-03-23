@@ -194,11 +194,6 @@
 (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
 (evil-indent-plus-default-bindings)
 
-;; Movement
-(evil-define-key 'motion global-map
-  (kbd "C-j") 'evil-next-visual-line
-  (kbd "C-k") 'evil-previous-visual-line)
-
 ;; Shortcuts using a "leader key" as a prefix
 (defvar my-leader-map
   (make-sparse-keymap)
@@ -224,6 +219,23 @@
 (define-key my-leader-map "+" 'evil-numbers/inc-at-pt)
 (define-key my-leader-map "-" 'evil-numbers/dec-at-pt)
 (define-key my-leader-map "," 'ivy-resume)
+
+;; Movement
+(setq
+ avy-all-windows nil
+ avy-background t)
+(avy-setup-default)
+(evilem-default-keybindings "SPC")
+(evil-define-key 'motion global-map
+  (kbd "C-j") 'evil-next-visual-line
+  (kbd "C-k") 'evil-previous-visual-line
+  (kbd "SPC c") 'avy-goto-char-timer
+  (kbd "SPC l") 'avy-goto-line
+  (kbd "SPC p d") (lambda () (interactive) (evil-next-line) (call-interactively 'avy-move-line))
+  (kbd "SPC P d") 'avy-move-line
+  (kbd "SPC p y") (lambda () (interactive) (evil-next-line) (call-interactively 'avy-copy-line))
+  (kbd "SPC P y") 'avy-copy-line
+)
 
 ;; Directory navigation (inspired by vim vinagre)
 (evil-define-key 'motion global-map "-" 'dired-jump)
@@ -538,10 +550,10 @@ ag  \
  highlight-symbol-idle-delay 1.0
  highlight-symbol-on-navigation-p t)
 (evil-define-key 'motion global-map
-  (kbd "SPC") 'highlight-symbol
+  (kbd "SPC SPC") 'highlight-symbol
   (kbd "S-SPC") 'highlight-symbol-remove-all)
 (evil-define-key 'visual global-map
-  (kbd "SPC") (lambda (start end) (interactive "r")
+  (kbd "SPC SPC") (lambda (start end) (interactive "r")
     (highlight-symbol-add-symbol (buffer-substring start end))))
 
 ;; Occur
