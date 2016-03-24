@@ -178,8 +178,9 @@
 ;;;
 
 (setq
+ evil-cross-lines t
  evil-want-C-u-scroll t
- evil-cross-lines t)
+ evil-want-C-w-in-emacs-state t)
 
 (require 'evil)
 (require 'evil-magit)
