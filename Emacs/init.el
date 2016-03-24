@@ -392,17 +392,19 @@ zoom  \
  split-width-threshold 120
  evil-split-window-below t
  evil-vsplit-window-right t)
-(evil-define-key 'motion global-map
-  (kbd "C-w m") 'hydra-window-move/body
-  (kbd "C-w n") 'evil-window-vnew
-  (kbd "C-w q") 'evil-window-delete
-  (kbd "C-w C-q") 'evil-window-delete
-  (kbd "C-w w") 'my-evil-window-next-or-vsplit
-  (kbd "C-w C-w") 'my-evil-window-next-or-vsplit
-  (kbd "C-w 1") 'evil-window-top-left
-  (kbd "C-w 2") (lambda () (interactive) (evil-window-top-left) (evil-window-next 2))
-  (kbd "C-w 3") (lambda () (interactive) (evil-window-top-left) (evil-window-next 3))
-  (kbd "C-w 4") (lambda () (interactive) (evil-window-top-left) (evil-window-next 4)))
+(define-key evil-window-map "m" 'hydra-window-move/body)
+(define-key evil-window-map "n" 'evil-window-vnew)
+(define-key evil-window-map "q" 'evil-window-delete)
+(define-key evil-window-map (kbd "C-q") 'evil-window-delete)
+(define-key evil-window-map "w" 'my-evil-window-next-or-vsplit)
+(define-key evil-window-map (kbd "C-w") 'my-evil-window-next-or-vsplit)
+(define-key evil-window-map "1" 'evil-window-top-left)
+(define-key evil-window-map "2"
+  (lambda () (interactive) (evil-window-top-left) (evil-window-next 2)))
+(define-key evil-window-map "3"
+  (lambda () (interactive) (evil-window-top-left) (evil-window-next 3)))
+(define-key evil-window-map "4"
+  (lambda () (interactive) (evil-window-top-left) (evil-window-next 4)))
 (defhydra hydra-window-move (:foreign-keys warn) "
 window  \
 «_h_» left  \
