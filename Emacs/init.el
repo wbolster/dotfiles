@@ -469,6 +469,9 @@ project  \
 
 (setq
  auto-revert-check-vc-info t
+ magit-branch-prefer-remote-upstream '("master")
+ magit-branch-read-upstream-first t
+ magit-prefer-remote-upstream t
  magit-process-popup-time 10
  magit-tag-arguments '("--annotate"))
 
