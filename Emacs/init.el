@@ -31,9 +31,11 @@
 ;;; General
 ;;;
 
+(setq
+ disabled-command-function nil
+ tls-checktrust 'ask)
 (fset 'yes-or-no-p 'y-or-n-p)
 (modify-syntax-entry ?_ "w")
-(setq tls-checktrust 'ask)
 
 ;; Backup and autosave files
 (setq
