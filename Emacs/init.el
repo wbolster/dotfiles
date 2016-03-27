@@ -114,6 +114,7 @@
   " ARev"
   " FlyC"
   " Undo-Tree"
+  " company"
   " hl-p"
   " hl-s"
   " ivy"
@@ -173,6 +174,13 @@
 (global-set-key [remap switch-to-buffer] 'ivy-switch-buffer)
 (global-set-key [remap describe-function] 'counsel-describe-function)
 (global-set-key [remap describe-variable] 'counsel-describe-variable)
+
+;; company
+(setq
+ company-idle-delay nil
+ evil-complete-next-func 'company-select-next
+ evil-complete-previous-func 'company-select-previous)
+(add-hook 'after-init-hook 'global-company-mode)
 
 
 ;;;
