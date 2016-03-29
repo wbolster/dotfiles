@@ -408,6 +408,7 @@ zoom  \
  evil-split-window-below t
  evil-vsplit-window-right t)
 (define-key evil-window-map "m" 'hydra-window-move/body)
+(define-key evil-window-map (kbd "C-m") 'hydra-window-move/body)
 (define-key evil-window-map "n" 'evil-window-vnew)
 (define-key evil-window-map "q" 'evil-window-delete)
 (define-key evil-window-map (kbd "C-q") 'evil-window-delete)
@@ -428,6 +429,7 @@ window  \
 «_l_» right  \
 «_r_»otate"
   ("<escape>" nil nil)
+  ("<return>" nil nil)
   ("h" buf-move-left nil)
   ("H" evil-window-move-far-left nil :exit t)
   ("j" buf-move-down nil)
