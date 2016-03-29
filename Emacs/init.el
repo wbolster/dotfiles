@@ -176,10 +176,15 @@
 (global-set-key [remap describe-variable] 'counsel-describe-variable)
 
 ;; company
+(require 'company)
 (setq
+ company-auto-complete 'company-explicit-action-p
  company-idle-delay nil
+ company-selection-wrap-around t
+ company-require-match nil
  evil-complete-next-func 'company-select-next
  evil-complete-previous-func 'company-select-previous)
+(add-to-list 'company-auto-complete-chars ?\( )
 (add-hook 'after-init-hook 'global-company-mode)
 
 
