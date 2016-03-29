@@ -367,9 +367,7 @@ if [[ "$PS1" ]]; then
                 # prefix is not a prefix of the typed command
                 continue
             fi
-
-            cmd_corrected="$prefix ${cmd#$prefix}$2"
-            _run_verbose "${cmd_corrected}" "${@:3}"
+            _run_verbose "${prefix}" "${cmd#${prefix}}$2" "${@:3}"
             return
         done
 
