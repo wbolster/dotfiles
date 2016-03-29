@@ -35,7 +35,7 @@ if [[ "$PS1" ]]; then
     _run_verbose() {
         (
             # Strip visible escape sequences from $PS4; bash prompting works differently from echo.
-            printf "%s" "${PS4}" | sed -e 's/\\\[//g' -e 's/\\\]//g'
+            printf "%b" "${PS4}" | sed -e 's/\\\[//g' -e 's/\\\]//g'
             echo "$@"
         ) >&2
         "$@"
