@@ -208,6 +208,8 @@
 ;; Text objects
 (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
 (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
+(define-key evil-inner-text-objects-map "b" 'evil-textobj-anyblock-inner-block)
+(define-key evil-outer-text-objects-map "b" 'evil-textobj-anyblock-a-block)
 (evil-indent-plus-default-bindings)
 
 ;; Shortcuts using a "leader key" as a prefix
