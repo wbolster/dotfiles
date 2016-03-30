@@ -246,7 +246,17 @@
   (kbd "C-j") 'evil-next-visual-line
   (kbd "C-k") 'evil-previous-visual-line
   (kbd "SPC c") 'avy-goto-char-timer
+  (kbd "SPC C") (lambda ()
+    "Go to character in all visible windows."
+    (interactive)
+    (setq current-prefix-arg t)
+    (call-interactively 'avy-goto-char-timer))
   (kbd "SPC l") 'avy-goto-line
+  (kbd "SPC L") (lambda ()
+    "Go to line in all visible windows."
+    (interactive)
+    (setq current-prefix-arg 4)
+    (call-interactively 'avy-goto-line))
   (kbd "SPC p d") (lambda () (interactive) (evil-next-line) (call-interactively 'avy-move-line))
   (kbd "SPC P d") 'avy-move-line
   (kbd "SPC p y") (lambda () (interactive) (evil-next-line) (call-interactively 'avy-copy-line))
