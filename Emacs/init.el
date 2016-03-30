@@ -223,19 +223,19 @@
   "Show buffer menu with open files"
   (interactive) (buffer-menu t)))
 (define-key my-leader-map "b" 'ivy-switch-buffer)
-(define-key my-leader-map "c" 'delete-window)
 (define-key my-leader-map "B" 'buffer-menu)
 (define-key my-leader-map "k" (lambda () (interactive) (kill-buffer nil)))
 (define-key my-leader-map "o" 'occur-dwim)
 (define-key my-leader-map "q" 'kill-buffer-and-window)
 (define-key my-leader-map "r" 'highlight-symbol-query-replace)
-(define-key my-leader-map "s" 'swiper)
-(define-key my-leader-map "w" 'save-buffer)
-(define-key my-leader-map "W" 'save-some-buffers)
+(define-key my-leader-map "s" 'save-buffer)
+(define-key my-leader-map "S" 'save-some-buffers)
+(define-key my-leader-map "S" 'save-some-buffers)
 (define-key my-leader-map "u" 'universal-argument)
 (define-key my-leader-map "x" 'counsel-M-x)
 (define-key my-leader-map "+" 'evil-numbers/inc-at-pt)
 (define-key my-leader-map "-" 'evil-numbers/dec-at-pt)
+(define-key my-leader-map "/" 'swiper)
 (define-key my-leader-map "," 'ivy-resume)
 
 ;; Movement
@@ -419,9 +419,11 @@ zoom  \
  split-width-threshold 120
  evil-split-window-below t
  evil-vsplit-window-right t)
+(define-key my-leader-map "w" evil-window-map)
 (define-key evil-window-map "m" 'hydra-window-move/body)
 (define-key evil-window-map (kbd "C-m") 'hydra-window-move/body)
 (define-key evil-window-map "n" 'evil-window-vnew)
+(define-key evil-window-map (kbd "C-n") 'evil-window-vnew)
 (define-key evil-window-map "q" 'evil-window-delete)
 (define-key evil-window-map (kbd "C-q") 'evil-window-delete)
 (define-key evil-window-map "w" 'my-evil-window-next-or-vsplit)
@@ -454,7 +456,6 @@ window  \
   ("R" evil-window-rotate-upwards nil)
   ("." hydra-repeat nil)
 )
-(define-key my-leader-map "m" 'hydra-window-move/body)
 (advice-add 'delete-window :after '(lambda (&rest args) (balance-windows)))
 (advice-add 'display-buffer :after '(lambda (&rest args) (balance-windows)))
 
@@ -476,10 +477,10 @@ project  \
 «_b_»uffer  \
 «_d_»ired  \
 «_f_»ile  \
-«_k_»ill buffers  \
-«_p_» switch project  \
-«_t_»est/impl  \
-«_w_»rite buffers"
+«_k_»ill  \
+«_p_»roject  \
+«_s_»ave  \
+«_t_»est/impl"
   ("<escape>" nil nil)
   ("b" projectile-switch-to-buffer nil)
   ("d" projectile-dired nil)
@@ -488,8 +489,8 @@ project  \
   ("k" projectile-kill-buffers nil)
   ("p" projectile-switch-open-project nil)
   ("P" projectile-switch-project nil)
+  ("s" projectile-save-project-buffers nil)
   ("t" projectile-find-implementation-or-test-other-window nil)
-  ("w" projectile-save-project-buffers nil)
 )
 (define-key my-leader-map "p" 'hydra-project/body)
 
