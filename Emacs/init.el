@@ -115,6 +115,7 @@
   " FlyC"
   " Undo-Tree"
   " company"
+  " counsel"
   " hl-p"
   " hl-s"
   " ivy"
@@ -169,11 +170,7 @@
  ivy-count-format "(%d/%d) "
  magit-completing-read-function 'ivy-completing-read)
 (ivy-mode 1)
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key [remap find-file] 'counsel-find-file)
-(global-set-key [remap switch-to-buffer] 'ivy-switch-buffer)
-(global-set-key [remap describe-function] 'counsel-describe-function)
-(global-set-key [remap describe-variable] 'counsel-describe-variable)
+(counsel-mode 1)
 
 ;; company
 (require 'company)
