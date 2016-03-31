@@ -216,9 +216,7 @@
 (evil-define-key 'motion global-map "," my-leader-map)
 (define-key my-leader-map " " 'whitespace-cleanup)
 (define-key my-leader-map "f" 'counsel-find-file)
-(define-key my-leader-map "F" (lambda()
-  "Show buffer menu with open files"
-  (interactive) (buffer-menu t)))
+(define-key my-leader-map "F" 'find-file-other-window)
 (define-key my-leader-map "b" 'ivy-switch-buffer)
 (define-key my-leader-map "B" 'buffer-menu)
 (define-key my-leader-map "k" (lambda () (interactive) (kill-buffer nil)))
