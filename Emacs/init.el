@@ -298,27 +298,23 @@
 )
 
 ;; Symbol navigation, without masking evil-paste-pop functionality.
-(defun my-last-command-was-evil-paste ()
-  "Tell whether the last command was an evil-paste command."
-  (memq last-command ;; check stolen from evil-paste-pop
-        '(evil-paste-after
-          evil-paste-before
-          evil-visual-paste)))
 (defun my-evil-paste-pop-or-highlight-symbol-prev (count)
-  "Either paste-pop or jump to previous symbol occurence."
+  "Either paste-pop (with COUNT) or jump to previous symbol occurence."
   (interactive "p")
-  (if (my-last-command-was-evil-paste)
-      (call-interactively 'evil-paste-pop)
-    (highlight-symbol-prev)))
+  (condition-case nil
+      (evil-paste-pop count)
+    (user-error
+     (highlight-symbol-prev))))
 (defun my-evil-paste-pop-next-or-highlight-symbol-next (count)
-  "Either paste-pop-next or jump to next symbol occurence."
+  "Either paste-pop-next (with COUNT) or jump to next symbol occurence."
   (interactive "p")
-  (if (my-last-command-was-evil-paste)
-      (call-interactively 'evil-paste-pop-next)
-    (highlight-symbol-next)))
+  (condition-case nil
+      (evil-paste-pop-next count)
+    (user-error
+     (highlight-symbol-next))))
 (evil-define-key 'motion global-map
-  (kbd "C-p") 'my-evil-paste-pop-or-highlight-symbol-prev
-  (kbd "C-n") 'my-evil-paste-pop-next-or-highlight-symbol-next)
+  (kbd "C-p") 'highlight-symbol-prev
+  (kbd "C-n") 'highlight-symbol-next)
 (evil-define-key 'normal global-map
   (kbd "C-p") 'my-evil-paste-pop-or-highlight-symbol-prev
   (kbd "C-n") 'my-evil-paste-pop-next-or-highlight-symbol-next)
