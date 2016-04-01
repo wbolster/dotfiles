@@ -176,6 +176,8 @@
 (require 'company)
 (setq
  company-auto-complete 'company-explicit-action-p
+ company-dabbrev-downcase nil
+ company-dabbrev-ignore-case t
  company-idle-delay nil
  company-selection-wrap-around t
  company-require-match nil
