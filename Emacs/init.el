@@ -489,22 +489,30 @@ window  \
   ) "
 project  \
 «_b_»uffer  \
-«_d_»ired  \
+«_d_»ir  \
 «_f_»ile  \
 «_k_»ill  \
 «_p_»roject  \
 «_s_»ave  \
-«_t_»est/impl"
+«_t_»est/impl  \
+«_-_» top dir"
   ("<escape>" nil nil)
   ("b" projectile-switch-to-buffer nil)
-  ("d" projectile-dired nil)
+  ("B" projectile-switch-to-buffer-other-window nil)
+  ("-" projectile-dired nil)
+  ("d" projectile-find-dir nil)
+  ("D" projectile-find-dir-other-window nil)
   ("f" projectile-find-file nil)
-  ("F" projectile-find-file-dwim nil)
+  ("F" projectile-find-file-other-window nil)
   ("k" projectile-kill-buffers nil)
   ("p" projectile-switch-open-project nil)
   ("P" projectile-switch-project nil)
   ("s" projectile-save-project-buffers nil)
+  ;; Use the "other window" variant for the lowercase version for
+  ;; switching between test and implementation since that is generally
+  ;; more useful.
   ("t" projectile-find-implementation-or-test-other-window nil)
+  ("T" projectile-find-implementation-or-test nil)
 )
 (define-key my-leader-map "p" 'hydra-project/body)
 
