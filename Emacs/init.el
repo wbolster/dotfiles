@@ -480,6 +480,7 @@ window  \
 
 (setq
  projectile-completion-system 'ivy
+ projectile-ignored-projects '("/usr/local/")
  projectile-mode-line nil)
 (projectile-global-mode)
 (defhydra hydra-project (
