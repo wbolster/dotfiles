@@ -201,13 +201,10 @@
 (define-key my-leader-map "r" 'highlight-symbol-query-replace)
 (define-key my-leader-map "s" 'save-buffer)
 (define-key my-leader-map "S" 'save-some-buffers)
-(define-key my-leader-map "S" 'save-some-buffers)
 (define-key my-leader-map "u" 'universal-argument)
 (define-key my-leader-map "x" 'counsel-M-x)
 (define-key my-leader-map "+" 'evil-numbers/inc-at-pt)
 (define-key my-leader-map "-" 'evil-numbers/dec-at-pt)
-(define-key my-leader-map "/" 'swiper)
-(define-key my-leader-map "," 'ivy-resume)
 
 ;; Movement
 (setq
@@ -478,7 +475,8 @@ window  \
 (setq
  projectile-completion-system 'ivy
  projectile-ignored-projects '("/usr/local/")
- projectile-mode-line nil)
+ projectile-mode-line nil
+ projectile-require-project-root nil)
 (projectile-global-mode)
 (defhydra hydra-project (
   :exit t
@@ -581,7 +579,10 @@ git  \
 ;; isearch
 (setq isearch-allow-prefix nil)
 
-;; Ag, the silver searcher
+;; swiper
+(define-key my-leader-map "/" 'swiper)
+
+;; ag, the silver searcher
 (setq ag-reuse-buffers t)
 (defhydra hydra-ag (:exit t :foreign-keys warn) "
 ag  \
@@ -600,7 +601,17 @@ ag  \
 (add-hook 'ag-mode-hook (lambda ()
   (toggle-truncate-lines t)))
 
-;; Highlighting
+;; swiper style search using ag; uses shift-/, since it's conceptually
+;; an alternative to swiper.
+(defun my-counsel-ag-project ()
+  "Run counsel-ag on the current project, defaulting to the symbol at point."
+  (interactive)
+  (counsel-ag
+   (thing-at-point 'symbol t)
+   (projectile-project-root)))
+(define-key my-leader-map "?" 'my-counsel-ag-project)
+
+;; symbol highlighting
 (setq
  highlight-symbol-idle-delay 1.0
  highlight-symbol-on-navigation-p t)
@@ -611,7 +622,7 @@ ag  \
   (kbd "SPC SPC") (lambda (start end) (interactive "r")
     (highlight-symbol-add-symbol (buffer-substring start end))))
 
-;; Occur
+;; occur
 (defun occur-dwim ()
   "Call `occur' with a sane default."
   (interactive)
@@ -637,6 +648,7 @@ ag  \
  magit-completing-read-function 'ivy-completing-read)
 (ivy-mode 1)
 (counsel-mode 1)
+(define-key my-leader-map "," 'ivy-resume)
 
 ;; company
 (require 'company)
