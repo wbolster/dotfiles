@@ -161,33 +161,6 @@
 
 
 ;;;
-;;; Completion
-;;;
-
-;; ivy, counsel
-(setq
- ivy-wrap t
- ivy-count-format "(%d/%d) "
- magit-completing-read-function 'ivy-completing-read)
-(ivy-mode 1)
-(counsel-mode 1)
-
-;; company
-(require 'company)
-(setq
- company-auto-complete 'company-explicit-action-p
- company-dabbrev-downcase nil
- company-dabbrev-ignore-case t
- company-idle-delay nil
- company-selection-wrap-around t
- company-require-match nil
- evil-complete-next-func 'company-select-next
- evil-complete-previous-func 'company-select-previous)
-(add-to-list 'company-auto-complete-chars ?\( )
-(add-hook 'after-init-hook 'global-company-mode)
-
-
-;;;
 ;;; Evil
 ;;;
 
@@ -628,6 +601,37 @@ ag  \
               (regexp-quote sym))))
         regexp-history)
   (call-interactively 'occur))
+
+
+;;;
+;;; Completion
+;;;
+
+;; ivy, counsel
+(setq
+ ivy-wrap t
+ ivy-count-format "(%d/%d) "
+ magit-completing-read-function 'ivy-completing-read)
+(ivy-mode 1)
+(counsel-mode 1)
+
+;; company
+(require 'company)
+(setq
+ company-auto-complete 'company-explicit-action-p
+ company-dabbrev-downcase nil
+ company-dabbrev-ignore-case t
+ company-idle-delay nil
+ company-selection-wrap-around t
+ company-require-match nil
+ evil-complete-next-func (lambda (arg) (company-manual-begin))
+ evil-complete-previous-func (lambda (arg) (call-interactively 'company-dabbrev))
+)
+(add-to-list 'company-auto-complete-chars ?\( )
+(add-hook 'after-init-hook 'global-company-mode)
+(evil-define-key nil company-active-map
+  (kbd "C-n") 'company-select-next
+  (kbd "C-p") 'company-select-previous)
 
 
 ;;;
