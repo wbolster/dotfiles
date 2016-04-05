@@ -229,10 +229,33 @@
     (interactive)
     (setq current-prefix-arg 4)
     (call-interactively 'avy-goto-line))
-  (kbd "SPC p d") (lambda () (interactive) (evil-next-line) (call-interactively 'avy-move-line))
+)
+
+;; Move/copy line(s) using avy motions.
+(defun my-avy-move-region ()
+  "Select two lines and move the text between them here."
+  ;; Shamelessly taken from https://github.com/abo-abo/avy/pull/75
+  (interactive)
+  (avy-with avy-move-region
+    (let* ((beg (avy--line))
+           (end (save-excursion
+                  (goto-char (avy--line))
+                  (forward-line)
+                  (point)))
+           (text (buffer-substring beg end))
+           (pad (if (bolp) "" "\n")))
+      (move-beginning-of-line nil)
+      (delete-region beg end)
+      (insert text pad))))
+(evil-define-key 'motion global-map
+  (kbd "SPC p d") (lambda () (interactive) (next-line) (call-interactively 'avy-move-line))
+  (kbd "SPC p D") (lambda () (interactive) (next-line) (call-interactively 'my-avy-move-region))
   (kbd "SPC P d") 'avy-move-line
-  (kbd "SPC p y") (lambda () (interactive) (evil-next-line) (call-interactively 'avy-copy-line))
+  (kbd "SPC P D") 'my-avy-move-region
+  (kbd "SPC p y") (lambda () (interactive) (next-line) (call-interactively 'avy-copy-line))
+  (kbd "SPC p Y") (lambda () (interactive) (next-line) (call-interactively 'avy-copy-region))
   (kbd "SPC P y") 'avy-copy-line
+  (kbd "SPC P Y") 'avy-copy-region
 )
 
 ;; Directory navigation (inspired by vim vinagre)
