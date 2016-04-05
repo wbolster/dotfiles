@@ -112,6 +112,7 @@
 ;; Mode line
 (setq rm-blacklist '(
   " ARev"
+  " Abbrev"
   " FlyC"
   " Undo-Tree"
   " company"
@@ -673,10 +674,11 @@ ag  \
 ;;;
 
 ;; Programming languages
-(defun my-prog-mode-hook ()
+(add-hook 'prog-mode-hook (lambda ()
+  (abbrev-mode)
   (column-number-mode)
-  (highlight-symbol-mode))
-(add-hook 'prog-mode-hook 'my-prog-mode-hook)
+  (highlight-symbol-mode)
+))
 
 ;; JSON
 (setq json-reformat:indent-width 2)
