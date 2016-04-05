@@ -482,7 +482,6 @@ window  \
 (defhydra hydra-project (
   :exit t
   :foreign-keys warn
-  :pre (projectile-project-root)
   ) "
 project  \
 «_b_»uffer  \
