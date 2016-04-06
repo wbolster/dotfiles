@@ -320,15 +320,14 @@ if [[ "$PS1" ]]; then
         if [[ $# == 2 && "$1" != -* ]]; then
             # Two args, no options: do simple path replacement, e.g. "cd site1 site2".
             _run_verbose builtin cd "${PWD/$1/$2}"
+        elif [[ -e "$1" && ! -d "$1" ]]; then
+            _run_verbose builtin cd "$(dirname "$1")"
         else
             builtin cd "$@"
         fi
     }
     mcd() {
         mkdir --verbose --parents "$1" && cd "$1"
-    }
-    cdp() {
-        cd "$(dirname "$1")"
     }
 
     _print_nyan_cat() {
