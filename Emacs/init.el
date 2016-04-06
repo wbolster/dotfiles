@@ -602,11 +602,16 @@ ag  \
 
 ;; swiper style search using ag; uses shift-/, since it's conceptually
 ;; an alternative to swiper.
+(defun my-thing-at-point-dwim ()
+  "Returns the symbol at point, or the region contents if activated."
+  (if (region-active-p)
+      (buffer-substring-no-properties (region-beginning) (region-end))
+    (thing-at-point 'symbol t)))
 (defun my-counsel-ag-project ()
   "Run counsel-ag on the current project, defaulting to the symbol at point."
   (interactive)
   (counsel-ag
-   (thing-at-point 'symbol t)
+   (my-thing-at-point-dwim)
    (projectile-project-root)))
 (define-key my-leader-map "?" 'my-counsel-ag-project)
 
