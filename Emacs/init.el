@@ -473,7 +473,6 @@ window  \
 ;;
 
 (setq
- projectile-completion-system 'ivy
  projectile-ignored-projects '("/usr/local/")
  projectile-mode-line nil
  projectile-require-project-root nil)
@@ -643,9 +642,11 @@ ag  \
 
 ;; ivy, counsel
 (setq
- ivy-wrap t
  ivy-count-format "(%d/%d) "
- magit-completing-read-function 'ivy-completing-read)
+ ivy-initial-inputs-alist nil
+ ivy-wrap t
+ magit-completing-read-function 'ivy-completing-read
+ projectile-completion-system 'ivy)
 (ivy-mode 1)
 (counsel-mode 1)
 (define-key my-leader-map "," 'ivy-resume)
