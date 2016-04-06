@@ -692,6 +692,9 @@ ag  \
   (highlight-symbol-mode)
 ))
 
+;; jinja
+(add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode))
+
 ;; JSON
 (setq json-reformat:indent-width 2)
 (add-hook 'json-mode-hook (lambda ()
