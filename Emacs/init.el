@@ -355,7 +355,8 @@ fill-«_c_»olumn  \
 «_r_»elative-number  \
 «_t_»runcate  \
 «_v_»isual-line  \
-«_w_»hitespace"
+«_w_»riteroom  \
+«_SPC_» whitespace"
   ("<escape>" nil nil)
   ("b" toggle-dark-light-theme nil)
   ("c" fci-mode nil)
@@ -371,7 +372,8 @@ fill-«_c_»olumn  \
      (relative-line-numbers-mode 'toggle)) nil)
   ("t" toggle-truncate-lines nil)
   ("v" visual-line-mode nil)
-  ("w" whitespace-mode nil)
+  ("SPC" whitespace-mode nil)
+  ("w" writeroom-mode nil)
 )
 (define-key my-leader-map "t" 'hydra-toggle/body)
 
@@ -409,9 +411,9 @@ zoom  \
 
 
 ;;
-;; Window splitting.
+;; Window layout
 ;;
-;; Prefered layout is full-height windows, two or three next to each
+;; Preferred layout is full-height windows, up to three next to each
 ;; other in a horizontal fashion, i.e. screen divided into columns.
 ;;
 
@@ -425,8 +427,11 @@ zoom  \
  help-window-select t
  split-height-threshold nil
  split-width-threshold 120
+ split-window-preferred-function 'visual-fill-column-split-window-sensibly
  evil-split-window-below t
- evil-vsplit-window-right t)
+ evil-vsplit-window-right t
+ writeroom-global-effects nil
+ writeroom-maximize-window nil)
 (define-key my-leader-map "w" evil-window-map)
 (define-key evil-window-map "m" 'hydra-window-move/body)
 (define-key evil-window-map (kbd "C-m") 'hydra-window-move/body)
