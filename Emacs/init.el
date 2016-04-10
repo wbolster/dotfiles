@@ -753,6 +753,9 @@ ag  \
    tab-width json-reformat:indent-width
    evil-shift-width tab-width)))
 
+;; latex
+(setq TeX-engine 'xetex)
+
 ;; Python
 (defun my-python-mode-hook ()
   (setq
