@@ -736,7 +736,11 @@ ag  \
 ;;; Major modes
 ;;;
 
-;; Programming languages
+;; text editing
+(add-hook 'text-mode-hook (lambda ()
+  (visual-line-mode)))
+
+;; programming languages
 (add-hook 'prog-mode-hook (lambda ()
   (abbrev-mode)
   (column-number-mode)
