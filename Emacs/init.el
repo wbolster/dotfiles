@@ -178,91 +178,22 @@
 (global-evil-surround-mode)
 (global-evil-visualstar-mode)
 
-;; Text objects
+;; extra text objects
 (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
 (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
 (define-key evil-inner-text-objects-map "b" 'evil-textobj-anyblock-inner-block)
 (define-key evil-outer-text-objects-map "b" 'evil-textobj-anyblock-a-block)
 (evil-indent-plus-default-bindings)
 
-;; Shortcuts using a "leader key" as a prefix
-(defvar my-leader-map
-  (make-sparse-keymap)
-  "Keymap for 'leader key' shortcuts.")
-(evil-define-key 'motion global-map "," my-leader-map)
-(define-key my-leader-map " " 'whitespace-cleanup)
-(define-key my-leader-map "f" 'counsel-find-file)
-(define-key my-leader-map "F" 'find-file-other-window)
-(define-key my-leader-map "b" 'ivy-switch-buffer)
-(define-key my-leader-map "B" 'ivy-switch-buffer-other-window)
-(define-key my-leader-map "k" (lambda () (interactive) (kill-buffer nil)))
-(define-key my-leader-map "K" 'kill-buffer-and-window)
-(define-key my-leader-map "o" 'occur-dwim)
-(define-key my-leader-map "r" 'highlight-symbol-query-replace)
-(define-key my-leader-map "s" 'save-buffer)
-(define-key my-leader-map "S" 'save-some-buffers)
-(define-key my-leader-map "u" 'universal-argument)
-(define-key my-leader-map "x" 'counsel-M-x)
-(define-key my-leader-map "+" 'evil-numbers/inc-at-pt)
-(define-key my-leader-map "-" 'evil-numbers/dec-at-pt)
-
-;; Movement
-(setq
- avy-all-windows nil
- avy-background t)
-(avy-setup-default)
-(evilem-default-keybindings "SPC")
+;; god-mode integration using ; as the prefix key
 (evil-define-key 'motion global-map
-  "j" 'evil-next-visual-line
-  "k" 'evil-previous-visual-line
-  (kbd "C-j") 'evil-next-line
-  (kbd "C-k") 'evil-previous-line
-  (kbd "SPC c") 'avy-goto-char-timer
-  (kbd "SPC C") (lambda ()
-    "Go to character in all visible windows."
-    (interactive)
-    (setq current-prefix-arg t)
-    (call-interactively 'avy-goto-char-timer))
-  (kbd "SPC l") 'avy-goto-line
-  (kbd "SPC L") (lambda ()
-    "Go to line in all visible windows."
-    (interactive)
-    (setq current-prefix-arg 4)
-    (call-interactively 'avy-goto-line))
-)
+  ";" 'evil-execute-in-god-state)
 
-;; Move/copy line(s) using avy motions.
-(defun my-avy-move-region ()
-  "Select two lines and move the text between them here."
-  ;; Shamelessly taken from https://github.com/abo-abo/avy/pull/75
-  (interactive)
-  (avy-with avy-move-region
-    (let* ((beg (avy--line))
-           (end (save-excursion
-                  (goto-char (avy--line))
-                  (forward-line)
-                  (point)))
-           (text (buffer-substring beg end))
-           (pad (if (bolp) "" "\n")))
-      (move-beginning-of-line nil)
-      (delete-region beg end)
-      (insert text pad))))
-(evil-define-key 'motion global-map
-  (kbd "SPC p d") (lambda () (interactive) (next-line) (call-interactively 'avy-move-line))
-  (kbd "SPC p D") (lambda () (interactive) (next-line) (call-interactively 'my-avy-move-region))
-  (kbd "SPC P d") 'avy-move-line
-  (kbd "SPC P D") 'my-avy-move-region
-  (kbd "SPC p y") (lambda () (interactive) (next-line) (call-interactively 'avy-copy-line))
-  (kbd "SPC p Y") (lambda () (interactive) (next-line) (call-interactively 'avy-copy-region))
-  (kbd "SPC P y") 'avy-copy-line
-  (kbd "SPC P Y") 'avy-copy-region
-)
-
-;; Directory navigation (inspired by vim vinagre)
+;; directory navigation (inspired by vim vinagre)
 (evil-define-key 'motion global-map "-" 'dired-jump)
 (define-key dired-mode-map "-" 'dired-jump)
 
-;; Previous/next thing (inspired by vim unimpaired)
+;; previous/next thing (inspired by vim unimpaired)
 (defun my-last-error ()
   "Jump to the last error; similar to 'first-error'."
   (interactive)
@@ -295,7 +226,64 @@
   "]w" 'evil-window-next
 )
 
-;; Symbol navigation, without masking evil-paste-pop functionality.
+;; Misc
+(evil-define-key 'insert global-map
+  (kbd "RET") 'evil-ret-and-indent)
+(defun my-evil-fill-paragraph-dwim ()
+  "Dwim helper to fill the current paragraph"
+  (interactive)
+  ;; Move point after comment marker; useful for multi-line comments.
+  (end-of-line)
+  (fill-paragraph)
+  (evil-first-non-blank))
+(evil-define-key 'motion global-map
+  "Q" 'my-evil-fill-paragraph-dwim
+  (kbd "M-j") 'move-text-down
+  (kbd "M-k") 'move-text-up)
+
+
+;;;
+;;; leader key shortcuts
+;;;
+
+(defvar my-leader-map
+  (make-sparse-keymap)
+  "Keymap for 'leader key' shortcuts.")
+(evil-define-key 'motion global-map "," my-leader-map)
+(define-key my-leader-map " " 'whitespace-cleanup)
+(define-key my-leader-map "f" 'counsel-find-file)
+(define-key my-leader-map "F" 'find-file-other-window)
+(define-key my-leader-map "b" 'ivy-switch-buffer)
+(define-key my-leader-map "B" 'ivy-switch-buffer-other-window)
+(define-key my-leader-map "k" (lambda () (interactive) (kill-buffer nil)))
+(define-key my-leader-map "K" 'kill-buffer-and-window)
+(define-key my-leader-map "o" 'occur-dwim)
+(define-key my-leader-map "r" 'highlight-symbol-query-replace)
+(define-key my-leader-map "s" 'save-buffer)
+(define-key my-leader-map "S" 'save-some-buffers)
+(define-key my-leader-map "u" 'universal-argument)
+(define-key my-leader-map "x" 'counsel-M-x)
+(define-key my-leader-map "+" 'evil-numbers/inc-at-pt)
+(define-key my-leader-map "-" 'evil-numbers/dec-at-pt)
+
+
+;;;
+;;; movement
+;;;
+
+;; j/k should match what is displayed
+(evil-define-key 'motion global-map
+  "j" 'evil-next-visual-line
+  "k" 'evil-previous-visual-line
+  (kbd "C-j") 'evil-next-line
+  (kbd "C-k") 'evil-previous-line)
+
+;; some emacs bindings in insert mode
+(evil-define-key 'insert global-map
+  (kbd "C-a") 'evil-first-non-blank
+  (kbd "C-e") 'end-of-line)
+
+;; symbol navigation, without masking evil-paste-pop functionality.
 (defun my-evil-paste-pop-or-highlight-symbol-prev (count)
   "Either paste-pop (with COUNT) or jump to previous symbol occurence."
   (interactive "p")
@@ -317,29 +305,72 @@
   (kbd "C-p") 'my-evil-paste-pop-or-highlight-symbol-prev
   (kbd "C-n") 'my-evil-paste-pop-next-or-highlight-symbol-next)
 
-;; Single key prefix key for god-mode integration
-(evil-define-key 'motion global-map
-  ";" 'evil-execute-in-god-state)
-(evil-define-key 'god global-map
-  [escape] 'evil-god-state-bail
-  ";" 'evil-repeat-find-char)  ;; makes ';;' act like original ';'
-
-;; Misc
-(evil-define-key 'insert global-map
-  (kbd "RET") 'evil-ret-and-indent
-  (kbd "C-a") 'evil-first-non-blank
-  (kbd "C-e") 'end-of-line)
-(defun my-evil-fill-paragraph-dwim ()
-  "Dwim helper to fill the current paragraph"
+;; avy and evil-easymotion
+(setq
+ avy-all-windows nil
+ avy-background t)
+(defun my-avy-move-region ()
+  "Select two lines and move the text between them here."
+  ;; Shamelessly taken from https://github.com/abo-abo/avy/pull/75
   (interactive)
-  ;; Move point after comment marker; useful for multi-line comments.
-  (end-of-line)
-  (fill-paragraph)
-  (evil-first-non-blank))
+  (avy-with avy-move-region
+    (let* ((beg (avy--line))
+           (end (save-excursion
+                  (goto-char (avy--line))
+                  (forward-line)
+                  (point)))
+           (text (buffer-substring beg end))
+           (pad (if (bolp) "" "\n")))
+      (move-beginning-of-line nil)
+      (delete-region beg end)
+      (insert text pad))))
+(avy-setup-default)
+(evilem-default-keybindings "SPC")
 (evil-define-key 'motion global-map
-  "Q" 'my-evil-fill-paragraph-dwim
-  (kbd "M-j") 'move-text-down
-  (kbd "M-k") 'move-text-up)
+  (kbd "SPC c") 'avy-goto-char-timer
+  (kbd "SPC C") (lambda ()
+    "Go to character in any visible window."
+    (interactive)
+    (setq current-prefix-arg t)
+    (call-interactively 'avy-goto-char-timer))
+  (kbd "SPC l") 'avy-goto-line
+  (kbd "SPC L") (lambda ()
+    "Go to line in any visible window."
+    (interactive)
+    (setq current-prefix-arg 4)
+    (call-interactively 'avy-goto-line)))
+(evil-define-key 'motion global-map
+  ;; move/copy line(s) using avy motions.
+  (kbd "SPC p d") (lambda () (interactive) (next-line) (call-interactively 'avy-move-line))
+  (kbd "SPC p D") (lambda () (interactive) (next-line) (call-interactively 'my-avy-move-region))
+  (kbd "SPC P d") 'avy-move-line
+  (kbd "SPC P D") 'my-avy-move-region
+  (kbd "SPC p y") (lambda () (interactive) (next-line) (call-interactively 'avy-copy-line))
+  (kbd "SPC p Y") (lambda () (interactive) (next-line) (call-interactively 'avy-copy-region))
+  (kbd "SPC P y") 'avy-copy-line
+  (kbd "SPC P Y") 'avy-copy-region)
+
+;; evil-snipe. the t/T/f/F overrides are the most important ones,
+;; since avy/evil-easymotion already allows for fancy jumps, e.g. via
+;; avy-goto-char-timer.
+(setq
+ evil-snipe-auto-disable-substitute nil
+ evil-snipe-override-evil-repeat-keys nil
+ evil-snipe-scope 'line
+ evil-snipe-repeat-scope 'line
+ evil-snipe-smart-case t)
+(evil-snipe-mode 1)
+(evil-snipe-override-mode 1)
+(evil-define-key 'motion evil-snipe-mode-map
+  "s" nil
+  "S" nil)
+(define-key evil-snipe-parent-transient-map (kbd "SPC")
+  ;; Turn an active snipe into an avy/easy-motion overlay.
+  (evilem-create (list 'evil-snipe-repeat
+                       'evil-snipe-repeat-reverse)
+                 :bind ((evil-snipe-scope 'visible)
+                        (evil-snipe-enable-highlight)
+                        (evil-snipe-enable-incremental-highlight))))
 
 
 ;;;
@@ -481,7 +512,6 @@ window  \
 )
 (advice-add 'delete-window :after '(lambda (&rest args) (balance-windows)))
 (advice-add 'display-buffer :after '(lambda (&rest args) (balance-windows)))
-
 
 ;;
 ;; Projects
