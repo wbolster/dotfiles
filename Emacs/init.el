@@ -358,9 +358,12 @@
  evil-snipe-override-evil-repeat-keys nil
  evil-snipe-scope 'line
  evil-snipe-repeat-scope 'line
- evil-snipe-smart-case t)
+ evil-snipe-spillover-scope 'buffer
+ evil-snipe-smart-case t
+ evil-snipe-tab-increment t)
 (evil-snipe-mode 1)
 (evil-snipe-override-mode 1)
+(set-face-attribute 'evil-snipe-matches-face nil :inherit 'lazy-highlight)
 (evil-define-key 'motion evil-snipe-mode-map
   "s" nil
   "S" nil)
