@@ -737,6 +737,7 @@ ag  \
  rst-preferred-bullets '(?- ?*))
 (add-hook 'rst-mode-hook (lambda ()
   (setq evil-shift-width 2)
+  (modify-syntax-entry ?_ "w")
 ))
 
 ;; Shell
