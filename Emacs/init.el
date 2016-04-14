@@ -398,7 +398,12 @@ fill-«_c_»olumn  \
 zoom  \
 «_i_»n  \
 «_o_»ut  \
-«_z_» normal"
+«_z_» normal  \
+    \
+writeroom  \
+«_n_»arrower  \
+«_w_»ider  \
+«_r_»eset"
   ("<escape>" nil nil)
   ("i" default-text-scale-increase nil)
   ("o" default-text-scale-decrease nil)
@@ -408,6 +413,9 @@ zoom  \
   ("+" default-text-scale-increase nil)
   ("-" default-text-scale-decrease nil)
   ("." hydra-repeat nil)
+  ("n" (writeroom-decrease-width) nil)
+  ("w" (writeroom-increase-width) nil)
+  ("r" (writeroom-adjust-width nil) nil :exit t)
 )
 (define-key my-leader-map "z" 'hydra-zoom/body)
 
