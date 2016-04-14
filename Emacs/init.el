@@ -213,8 +213,10 @@
 (avy-setup-default)
 (evilem-default-keybindings "SPC")
 (evil-define-key 'motion global-map
-  (kbd "C-j") 'evil-next-visual-line
-  (kbd "C-k") 'evil-previous-visual-line
+  "j" 'evil-next-visual-line
+  "k" 'evil-previous-visual-line
+  (kbd "C-j") 'evil-next-line
+  (kbd "C-k") 'evil-previous-line
   (kbd "SPC c") 'avy-goto-char-timer
   (kbd "SPC C") (lambda ()
     "Go to character in all visible windows."
