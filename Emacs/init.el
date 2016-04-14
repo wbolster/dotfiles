@@ -62,7 +62,7 @@
 ;; TODO: highlight FIXME/TODO/XXX in comment strings
 
 ;; Feedback while typing
-(setq echo-keystrokes 0.01)
+(setq echo-keystrokes 0.5)
 (show-paren-mode t)
 
 ;; Reduce clutter
