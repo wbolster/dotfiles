@@ -121,6 +121,7 @@
   " hl-s"
   " ivy"
   " s-/"
+  " snipe"
 ))
 (setq
  sml/col-number-format "%c"
