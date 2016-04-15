@@ -555,7 +555,7 @@ project  \
   ;; switching between test and implementation since that is generally
   ;; more useful.
   ("t" projectile-find-implementation-or-test-other-window nil)
-  ("T" projectile-find-implementation-or-test nil)
+  ("T" projectile-toggle-between-implementation-and-test nil)
 )
 (define-key my-leader-map "p" 'hydra-project/body)
 
