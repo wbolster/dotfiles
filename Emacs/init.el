@@ -77,7 +77,15 @@
 (tool-bar-mode -1)
 
 ;; Theme
-(setq solarized-use-less-bold t)
+(setq
+ solarized-scale-org-headlines nil
+ solarized-use-less-bold t
+ solarized-use-variable-pitch nil
+ solarized-height-minus-1 1.0
+ solarized-height-plus-1 1.0
+ solarized-height-plus-2 1.0
+ solarized-height-plus-3 1.0
+ solarized-height-plus-4 1.0)
 (load-theme 'solarized-dark t)
 (defvar my-active-theme 'solarized-dark "The currently active theme.")
 (defun toggle-dark-light-theme ()
