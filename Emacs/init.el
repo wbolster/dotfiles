@@ -674,11 +674,10 @@ ag  \
 (setq
  highlight-symbol-idle-delay 1.0
  highlight-symbol-on-navigation-p t)
-(evil-define-key 'motion global-map
-  (kbd "SPC SPC") 'highlight-symbol
-  (kbd "S-SPC") 'highlight-symbol-remove-all)
+(define-key my-leader-map "h" 'highlight-symbol)
+(define-key my-leader-map "H" 'highlight-symbol-remove-all)
 (evil-define-key 'visual global-map
-  (kbd "SPC SPC") (lambda (start end) (interactive "r")
+  (kbd ", h") (lambda (start end) (interactive "r")
     (highlight-symbol-add-symbol (buffer-substring start end))))
 
 ;; occur
