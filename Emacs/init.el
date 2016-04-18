@@ -416,6 +416,7 @@ fill-«_c_»olumn  \
   ("v" visual-line-mode nil)
   ("SPC" whitespace-mode nil)
   ("w" writeroom-mode nil)
+  ("W" (progn (delete-other-windows) (writeroom-mode 'toggle)) nil)
 )
 (define-key my-leader-map "t" 'hydra-toggle/body)
 
