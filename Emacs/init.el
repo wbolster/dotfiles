@@ -386,7 +386,7 @@
 
 
 ;;;
-;;; Toggles
+;;; toggles
 ;;;
 
 (defhydra hydra-toggle (:exit t :foreign-keys warn) "
@@ -409,12 +409,9 @@ fill-«_c_»olumn  \
   ("l" hl-line-mode nil)
   ("m" toggle-frame-fullscreen nil)
   ("M" toggle-frame-maximized nil)
-  ("n" (progn
-     (relative-line-numbers-mode -1)
-     (linum-mode 'toggle)) nil)
-  ("r" (progn
-     (linum-mode -1)
-     (relative-line-numbers-mode 'toggle)) nil)
+  ("n" (progn (relative-line-numbers-mode -1) (linum-mode 'toggle)) nil)
+  ("N" (progn (line-number-mode 'toggle) (column-number-mode 'toggle)) nil)
+  ("r" (progn (linum-mode -1) (relative-line-numbers-mode 'toggle)) nil)
   ("t" toggle-truncate-lines nil)
   ("v" visual-line-mode nil)
   ("SPC" whitespace-mode nil)
