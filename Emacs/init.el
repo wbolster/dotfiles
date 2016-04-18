@@ -336,8 +336,8 @@
 (avy-setup-default)
 (evilem-default-keybindings "SPC")
 (evil-define-key 'motion global-map
-  (kbd "SPC c") 'avy-goto-char-timer
-  (kbd "SPC C") (lambda ()
+  (kbd "SPC SPC") 'avy-goto-char-timer
+  (kbd "SPC S-SPC") (lambda ()
     "Go to character in any visible window."
     (interactive)
     (setq current-prefix-arg t)
