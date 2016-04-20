@@ -273,6 +273,7 @@
 (define-key my-leader-map "u" 'universal-argument)
 (define-key my-leader-map "x" 'counsel-M-x)
 (define-key my-leader-map "+" 'evil-numbers/inc-at-pt)
+(define-key my-leader-map "=" 'evil-numbers/inc-at-pt)  ;; without shift key
 (define-key my-leader-map "-" 'evil-numbers/dec-at-pt)
 
 
