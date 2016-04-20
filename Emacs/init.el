@@ -745,7 +745,9 @@ ag  \
   (kbd "RET") 'comment-indent-new-line)
 
 ;; Flycheck
-(setq flycheck-display-errors-delay 1.0)
+(setq
+ flycheck-checker-error-threshold 1000
+ flycheck-display-errors-delay 1.0)
 (global-flycheck-mode)
 
 
