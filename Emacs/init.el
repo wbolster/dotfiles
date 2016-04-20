@@ -787,6 +787,9 @@ ag  \
 ;; reStructuredText
 (setq
  rst-default-indent 0
+ rst-indent-comment 2
+ rst-indent-field 2
+ rst-indent-literal-normal 2
  rst-preferred-adornments '(
    (?= over-and-under 0)
    (?= simple 0)
