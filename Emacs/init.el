@@ -334,23 +334,30 @@
       (move-beginning-of-line nil)
       (delete-region beg end)
       (insert text pad))))
+(defun my-avy-goto-char-timer-any-window ()
+  "Go to character in any visible window."
+  (interactive)
+  (setq current-prefix-arg t)
+  (call-interactively 'avy-goto-char-timer))
+(defun my-avy-goto-line-any-window ()
+  "Go to line in any visible window."
+  (interactive)
+  (setq current-prefix-arg 4)
+  (call-interactively 'avy-goto-line))
 (avy-setup-default)
 (evilem-default-keybindings "SPC")
 (evil-define-key 'motion global-map
   (kbd "SPC SPC") 'avy-goto-char-timer
-  (kbd "SPC S-SPC") (lambda ()
-    "Go to character in any visible window."
-    (interactive)
-    (setq current-prefix-arg t)
-    (call-interactively 'avy-goto-char-timer))
+  (kbd "SPC S-SPC") 'my-avy-goto-char-timer-any-window
+  (kbd "S-SPC S-SPC") 'my-avy-goto-char-timer-any-window
+  (kbd "SPC a") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-append))
+  (kbd "SPC A") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-append-line))
+  (kbd "SPC i") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-insert))
+  (kbd "SPC I") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-insert-line))
   (kbd "SPC l") 'avy-goto-line
-  (kbd "SPC L") (lambda ()
-    "Go to line in any visible window."
-    (interactive)
-    (setq current-prefix-arg 4)
-    (call-interactively 'avy-goto-line)))
-(evil-define-key 'motion global-map
-  ;; move/copy line(s) using avy motions.
+  (kbd "SPC L") 'my-avy-goto-line-any-window
+  (kbd "SPC o") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-open-below))
+  (kbd "SPC O") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-open-above))
   (kbd "SPC p d") (lambda () (interactive) (next-line) (call-interactively 'avy-move-line))
   (kbd "SPC p D") (lambda () (interactive) (next-line) (call-interactively 'my-avy-move-region))
   (kbd "SPC P d") 'avy-move-line
