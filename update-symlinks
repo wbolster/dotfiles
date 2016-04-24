@@ -48,9 +48,7 @@ if __name__ == '__main__':
 
         if not symlink_from.startswith('~/'):
             symlink_from = '~/%s' % symlink_from
-
-        while symlink_from.endswith('/'):
-            symlink_from = symlink_from[:-1]
+        symlink_from = symlink_from.rstrip('/')
 
         symlink_from_full = os.path.expanduser(symlink_from)
         symlink_to_full = os.path.relpath(os.path.join(config_dir, symlink_to), HOME_DIR)
