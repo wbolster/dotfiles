@@ -373,14 +373,15 @@
   (kbd "SPC SPC") 'avy-goto-char-timer
   (kbd "SPC S-SPC") 'my-avy-goto-char-timer-any-window
   (kbd "S-SPC S-SPC") 'my-avy-goto-char-timer-any-window
+  (kbd "SPC l") 'avy-goto-line
+  (kbd "SPC L") 'my-avy-goto-line-any-window)
+(evil-define-key 'normal global-map
   (kbd "SPC a") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-append))
   (kbd "SPC A") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-append-line))
   (kbd "SPC d") 'my-avy-evil-delete-line
   (kbd "SPC D") 'my-avy-evil-delete-region
   (kbd "SPC i") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-insert))
   (kbd "SPC I") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-insert-line))
-  (kbd "SPC l") 'avy-goto-line
-  (kbd "SPC L") 'my-avy-goto-line-any-window
   (kbd "SPC o") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-open-below))
   (kbd "SPC O") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-open-above))
   (kbd "SPC p d") (lambda () (interactive) (next-line) (call-interactively 'avy-move-line))
