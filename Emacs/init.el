@@ -335,6 +335,13 @@
       (move-beginning-of-line nil)
       (delete-region beg end)
       (insert text pad))))
+(defun my-avy-evil-change-region ()
+  "Select two lines and change the lines between them."
+  (interactive)
+  (avy-with my-avy-evil-change-region
+    (let* ((beg (progn (avy-goto-line) (point)))
+           (end (save-excursion (goto-char (avy--line)) (forward-line) (point))))
+      (evil-change beg end 'line nil nil))))
 (defun my-avy-evil-delete-line ()
   "Select a line and delete it."
   (interactive)
@@ -352,10 +359,7 @@
   (interactive)
   (avy-with my-avy-evil-delete-region
     (let* ((beg (avy--line))
-           (end (save-excursion
-                  (goto-char (avy--line))
-                  (forward-line)
-                  (point))))
+           (end (save-excursion (goto-char (avy--line)) (forward-line) (point))))
       (evil-delete beg end 'line nil nil))))
 (defun my-avy-goto-char-timer-any-window ()
   "Go to character in any visible window."
@@ -378,6 +382,8 @@
 (evil-define-key 'normal global-map
   (kbd "SPC a") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-append))
   (kbd "SPC A") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-append-line))
+  (kbd "SPC c") (lambda () (interactive) (avy-goto-line) (evil-first-non-blank) (call-interactively 'evil-change-line))
+  (kbd "SPC C") 'my-avy-evil-change-region
   (kbd "SPC d") 'my-avy-evil-delete-line
   (kbd "SPC D") 'my-avy-evil-delete-region
   (kbd "SPC i") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-insert))
