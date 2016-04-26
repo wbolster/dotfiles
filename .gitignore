@@ -1,5 +1,6 @@
 /Emacs/**/*.elc
 /Emacs/**/dir
+/Emacs/init-local.el
 /Emacs/elpa/*.signed
 /Emacs/elpa/*-readme.txt
 /Emacs/auto-save-list/

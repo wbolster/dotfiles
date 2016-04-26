@@ -842,5 +842,12 @@ ag  \
 (add-hook 'yaml-mode-hook 'my-yaml-mode-hook)
 
 
+;;;
+;;; Local configuration (not in version control)
+;;;
+
+(load "~/.emacs.d/init-local" t)
+
+
 (provide 'init)
 ;;; init.el ends here
