@@ -318,6 +318,7 @@
 ;; avy and evil-easymotion
 (setq
  avy-all-windows nil
+ avy-all-windows-alt t
  avy-background t)
 (defun my-avy-move-region ()
   "Select two lines and move the text between them here."
