@@ -789,14 +789,15 @@ ag  \
 
 ;; text editing
 (add-hook 'text-mode-hook (lambda ()
+  (auto-fill-mode)
   (visual-line-mode)))
 
 ;; programming languages
 (add-hook 'prog-mode-hook (lambda ()
   (abbrev-mode)
+  (auto-fill-mode)
   (column-number-mode)
-  (highlight-symbol-mode)
-))
+  (highlight-symbol-mode)))
 
 ;; jinja
 (add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode))
