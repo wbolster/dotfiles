@@ -843,6 +843,12 @@ ag  \
   (setq evil-shift-width 2)
   (modify-syntax-entry ?_ "w")
 ))
+(evilem-make-motion
+ my-easymotion-rst
+ (list 'rst-forward-section 'rst-backward-section)
+ :pre-hook (setq evil-this-type 'line))
+(evil-define-key 'motion rst-mode-map
+  (kbd "SPC TAB") 'my-easymotion-rst)
 
 ;; Shell
 (add-to-list 'auto-mode-alist '("bashrc\\'" . sh-mode))
