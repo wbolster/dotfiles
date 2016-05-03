@@ -822,6 +822,17 @@ ag  \
    (setq
     fill-column 72
     python-fill-docstring-style 'symmetric)))
+(evilem-make-motion
+ my-easymotion-python
+ (list
+  ;; Collect interesting positions around point, and all visible
+  ;; blocks in the window. Results are ordered: forward after point,
+  ;; then backward from point.
+  'python-nav-end-of-statement 'python-nav-end-of-block 'python-nav-forward-block
+  'python-nav-beginning-of-statement 'python-nav-beginning-of-block 'python-nav-backward-block)
+ :pre-hook (setq evil-this-type 'line))
+(evil-define-key 'motion python-mode-map
+  (kbd "SPC TAB") 'my-easymotion-python)
 
 ;; reStructuredText
 (setq
