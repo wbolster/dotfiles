@@ -816,11 +816,12 @@ ag  \
 (setq TeX-engine 'xetex)
 
 ;; Python
-(defun my-python-mode-hook ()
-  (setq
-   fill-column 72
-   python-fill-docstring-style 'symmetric))
-(add-hook 'python-mode-hook 'my-python-mode-hook)
+(add-hook
+ 'python-mode-hook
+ (lambda ()
+   (setq
+    fill-column 72
+    python-fill-docstring-style 'symmetric)))
 
 ;; reStructuredText
 (setq
