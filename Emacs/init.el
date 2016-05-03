@@ -281,12 +281,15 @@
 ;;; movement
 ;;;
 
-;; j/k should match what is displayed
-(evil-define-key 'motion global-map
-  "j" 'evil-next-visual-line
-  "k" 'evil-previous-visual-line
-  (kbd "C-j") 'evil-next-line
-  (kbd "C-k") 'evil-previous-line)
+;; j/k should move visual lines. do not modify evil-motion-state,
+;; since that will break operators taking a motion, e.g. 'dj' to
+;; delete the current and next line.
+(dolist (state '(normal visual))
+  (evil-define-key state global-map
+    "j" 'evil-next-visual-line
+    "k" 'evil-previous-visual-line
+    (kbd "C-j") 'evil-next-line
+    (kbd "C-k") 'evil-previous-line))
 
 ;; some emacs bindings in insert mode
 (evil-define-key 'insert global-map
