@@ -526,22 +526,46 @@ writeroom  \
  evil-vsplit-window-right t
  writeroom-global-effects nil
  writeroom-maximize-window nil)
-(define-key my-leader-map "w" evil-window-map)
-(define-key evil-window-map "m" 'hydra-window-move/body)
-(define-key evil-window-map (kbd "C-m") 'hydra-window-move/body)
-(define-key evil-window-map "n" 'evil-window-vnew)
-(define-key evil-window-map (kbd "C-n") 'evil-window-vnew)
-(define-key evil-window-map "q" 'evil-window-delete)
-(define-key evil-window-map (kbd "C-q") 'evil-window-delete)
-(define-key evil-window-map "w" 'my-evil-window-next-or-vsplit)
-(define-key evil-window-map (kbd "C-w") 'my-evil-window-next-or-vsplit)
-(define-key evil-window-map "1" 'evil-window-top-left)
-(define-key evil-window-map "2"
-  (lambda () (interactive) (evil-window-top-left) (evil-window-next 2)))
-(define-key evil-window-map "3"
-  (lambda () (interactive) (evil-window-top-left) (evil-window-next 3)))
-(define-key evil-window-map "4"
-  (lambda () (interactive) (evil-window-top-left) (evil-window-next 4)))
+(defun my-evil-goto-window-1 ()
+  "Go to the first window."
+  (interactive) (evil-window-top-left))
+(defun my-evil-goto-window-2 ()
+  "Go to the second window."
+  (interactive) (evil-window-top-left) (evil-window-next 2))
+(defun my-evil-goto-window-3 ()
+  "Go to the third window."
+  (interactive) (evil-window-top-left) (evil-window-next 3))
+(defun my-evil-goto-window-4 ()
+  "Go to the fourth window."
+  (interactive) (evil-window-top-left) (evil-window-next 4))
+(evil-define-key 'motion global-map
+  (kbd "C-1") 'my-evil-goto-window-1
+  (kbd "C-2") 'my-evil-goto-window-2
+  (kbd "C-3") 'my-evil-goto-window-3
+  (kbd "C-4") 'my-evil-goto-window-4)
+(evil-define-key nil my-leader-map
+  "w" evil-window-map
+  "1" 'my-evil-goto-window-1
+  "2" 'my-evil-goto-window-2
+  "3" 'my-evil-goto-window-3
+  "4" 'my-evil-goto-window-4)
+(evil-define-key nil evil-window-map ;; augment C-w map
+  (kbd "m") 'hydra-window-move/body
+  (kbd "C-m") 'hydra-window-move/body
+  (kbd "n") 'evil-window-vnew
+  (kbd "C-n") 'evil-window-vnew
+  (kbd "q") 'evil-window-delete
+  (kbd "C-q") 'evil-window-delete
+  (kbd "w") 'my-evil-window-next-or-vsplit
+  (kbd "C-w") 'my-evil-window-next-or-vsplit
+  (kbd "1") 'my-evil-goto-window-1
+  (kbd "C-1") 'my-evil-goto-window-1
+  (kbd "2") 'my-evil-goto-window-2
+  (kbd "C-2") 'my-evil-goto-window-2
+  (kbd "3") 'my-evil-goto-window-3
+  (kbd "C-3") 'my-evil-goto-window-3
+  (kbd "4") 'my-evil-goto-window-4
+  (kbd "C-4") 'my-evil-goto-window-4)
 (defhydra hydra-window-move (:foreign-keys warn) "
 window  \
 «_h_» left  \
@@ -561,10 +585,10 @@ window  \
   ("L" evil-window-move-far-right nil :exit t)
   ("r" evil-window-rotate-downwards nil)
   ("R" evil-window-rotate-upwards nil)
-  ("." hydra-repeat nil)
-)
+  ("." hydra-repeat nil))
 (advice-add 'delete-window :after '(lambda (&rest args) (balance-windows)))
 (advice-add 'display-buffer :after '(lambda (&rest args) (balance-windows)))
+
 
 ;;
 ;; Projects
