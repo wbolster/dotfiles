@@ -259,22 +259,22 @@
   (make-sparse-keymap)
   "Keymap for 'leader key' shortcuts.")
 (evil-define-key 'motion global-map "," my-leader-map)
-(define-key my-leader-map " " 'whitespace-cleanup)
-(define-key my-leader-map "f" 'counsel-find-file)
-(define-key my-leader-map "F" 'find-file-other-window)
-(define-key my-leader-map "b" 'ivy-switch-buffer)
-(define-key my-leader-map "B" 'ivy-switch-buffer-other-window)
-(define-key my-leader-map "k" (lambda () (interactive) (kill-buffer nil)))
-(define-key my-leader-map "K" 'kill-buffer-and-window)
-(define-key my-leader-map "o" 'occur-dwim)
-(define-key my-leader-map "r" 'highlight-symbol-query-replace)
-(define-key my-leader-map "s" 'save-buffer)
-(define-key my-leader-map "S" 'save-some-buffers)
-(define-key my-leader-map "u" 'universal-argument)
-(define-key my-leader-map "x" 'counsel-M-x)
-(define-key my-leader-map "+" 'evil-numbers/inc-at-pt)
-(define-key my-leader-map "=" 'evil-numbers/inc-at-pt)  ;; without shift key
-(define-key my-leader-map "-" 'evil-numbers/dec-at-pt)
+(evil-define-key nil my-leader-map
+  ;; augmented in various other places
+  " " 'whitespace-cleanup
+  "b" 'ivy-switch-buffer
+  "B" 'ivy-switch-buffer-other-window
+  "f" 'counsel-find-file
+  "F" 'find-file-other-window
+  "k" (lambda () (interactive) (kill-buffer nil))
+  "K" 'kill-buffer-and-window
+  "s" 'save-buffer
+  "S" 'save-some-buffers
+  "u" 'universal-argument
+  "x" 'counsel-M-x
+  "+" 'evil-numbers/inc-at-pt
+  "=" 'evil-numbers/inc-at-pt  ;; without shift key
+  "-" 'evil-numbers/dec-at-pt)
 
 
 ;;;
@@ -741,8 +741,10 @@ ag  \
 (setq
  highlight-symbol-idle-delay 1.0
  highlight-symbol-on-navigation-p t)
-(define-key my-leader-map "h" 'highlight-symbol)
-(define-key my-leader-map "H" 'highlight-symbol-remove-all)
+(evil-define-key nil my-leader-map
+  "h" 'highlight-symbol
+  "H" 'highlight-symbol-remove-all
+  "r" 'highlight-symbol-query-replace)
 (evil-define-key 'visual global-map
   (kbd ", h") (lambda (start end) (interactive "r")
     (highlight-symbol-add-symbol (buffer-substring start end))))
@@ -760,6 +762,7 @@ ag  \
               (regexp-quote sym))))
         regexp-history)
   (call-interactively 'occur))
+(define-key my-leader-map "o" 'occur-dwim)
 
 
 ;;;
