@@ -542,7 +542,11 @@ writeroom  \
   (kbd "C-1") 'my-evil-goto-window-1
   (kbd "C-2") 'my-evil-goto-window-2
   (kbd "C-3") 'my-evil-goto-window-3
-  (kbd "C-4") 'my-evil-goto-window-4)
+  (kbd "C-4") 'my-evil-goto-window-4
+  (kbd "S-1") 'my-evil-goto-window-1
+  (kbd "S-2") 'my-evil-goto-window-2
+  (kbd "S-3") 'my-evil-goto-window-3
+  (kbd "S-4") 'my-evil-goto-window-4)
 (evil-define-key nil my-leader-map
   "w" evil-window-map
   "1" 'my-evil-goto-window-1
