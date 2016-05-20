@@ -5,6 +5,7 @@
 /Emacs/elpa/*-readme.txt
 /Emacs/auto-save-list/
 /Emacs/elpa/archives/
+/Emacs/elpa/auctex-*/
 /Emacs/elpa/gnupg/
 /Emacs/ido.last
 /Emacs/smex-items
