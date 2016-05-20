@@ -226,29 +226,27 @@
 
 
 ;;;
-;;; leader key shortcuts
+;;; leader key shortcuts (augmented elsewhere in config)
 ;;;
 
 (defvar my-leader-map
   (make-sparse-keymap)
   "Keymap for 'leader key' shortcuts.")
 (evil-define-key 'motion global-map "," my-leader-map)
-(evil-define-key nil my-leader-map
-  ;; augmented in various other places
-  " " 'whitespace-cleanup
-  "b" 'ivy-switch-buffer
-  "B" 'ivy-switch-buffer-other-window
-  "f" 'counsel-find-file
-  "F" 'find-file-other-window
-  "k" (lambda () (interactive) (kill-buffer nil))
-  "K" 'kill-buffer-and-window
-  "s" 'save-buffer
-  "S" 'save-some-buffers
-  "u" 'universal-argument
-  "x" 'counsel-M-x
-  "+" 'evil-numbers/inc-at-pt
-  "=" 'evil-numbers/inc-at-pt  ;; without shift key
-  "-" 'evil-numbers/dec-at-pt)
+(define-key my-leader-map " " 'whitespace-cleanup)
+(define-key my-leader-map "b" 'ivy-switch-buffer)
+(define-key my-leader-map "B" 'ivy-switch-buffer-other-window)
+(define-key my-leader-map "f" 'counsel-find-file)
+(define-key my-leader-map "F" 'find-file-other-window)
+(define-key my-leader-map "k" (lambda () (interactive) (kill-buffer nil)))
+(define-key my-leader-map "K" 'kill-buffer-and-window)
+(define-key my-leader-map "s" 'save-buffer)
+(define-key my-leader-map "S" 'save-some-buffers)
+(define-key my-leader-map "u" 'universal-argument)
+(define-key my-leader-map "x" 'counsel-M-x)
+(define-key my-leader-map "+" 'evil-numbers/inc-at-pt)
+(define-key my-leader-map "=" 'evil-numbers/inc-at-pt)  ;; without shift key
+(define-key my-leader-map "-" 'evil-numbers/dec-at-pt)
 
 
 ;;;
@@ -263,12 +261,11 @@
 ;; j/k should move visual lines. do not modify evil-motion-state,
 ;; since that will break operators taking a motion, e.g. 'dj' to
 ;; delete the current and next line.
-(dolist (state '(normal visual))
-  (evil-define-key state global-map
-    "j" 'evil-next-visual-line
-    "k" 'evil-previous-visual-line
-    (kbd "C-j") 'evil-next-line
-    (kbd "C-k") 'evil-previous-line))
+(evil-define-key '(normal visual) global-map
+  "j" 'evil-next-visual-line
+  "k" 'evil-previous-visual-line
+  (kbd "C-j") 'evil-next-line
+  (kbd "C-k") 'evil-previous-line)
 
 ;; some emacs bindings in insert mode
 (evil-define-key 'insert global-map
@@ -299,7 +296,7 @@
 
 ;; move text around
 (require 'drag-stuff)
-(evil-define-key 'motion global-map
+(evil-define-key 'normal global-map
   (kbd "M-h") 'drag-stuff-left
   (kbd "M-j") 'drag-stuff-down
   (kbd "M-k") 'drag-stuff-up
@@ -513,12 +510,6 @@ writeroom  \
 ;; other in a horizontal fashion, i.e. screen divided into columns.
 ;;
 
-(defun my-evil-window-next-or-vsplit ()
-  "Focus next window, or vsplit if it is the only window in this frame."
-  (interactive)
-  (if (> (count-windows) 1)
-      (call-interactively 'evil-window-next)
-    (evil-window-vsplit)))
 (setq
  help-window-select t
  split-height-threshold nil
@@ -528,6 +519,49 @@ writeroom  \
  evil-vsplit-window-right t
  writeroom-global-effects nil
  writeroom-maximize-window nil)
+(advice-add 'delete-window :after '(lambda (&rest args) (balance-windows)))
+(advice-add 'display-buffer :after '(lambda (&rest args) (balance-windows)))
+
+;; window movement
+(defhydra hydra-window-move (:foreign-keys warn) "
+window  \
+«_h_» left  \
+«_j_» down  \
+«_k_» up  \
+«_l_» right  \
+«_r_»otate"
+  ("<escape>" nil nil)
+  ("<return>" nil nil)
+  ("h" buf-move-left nil)
+  ("H" evil-window-move-far-left nil :exit t)
+  ("j" buf-move-down nil)
+  ("J" evil-window-move-very-bottom nil :exit t)
+  ("k" buf-move-up nil)
+  ("K" evil-window-move-very-top nil :exit t)
+  ("l" buf-move-right nil)
+  ("L" evil-window-move-far-right nil :exit t)
+  ("r" evil-window-rotate-downwards nil)
+  ("R" evil-window-rotate-upwards nil)
+  ("." hydra-repeat nil))
+
+;; augment C-w map
+(defun my-evil-window-next-or-vsplit ()
+  "Focus next window, or vsplit if it is the only window in this frame."
+  (interactive)
+  (if (> (count-windows) 1)
+      (call-interactively 'evil-window-next)
+    (evil-window-vsplit)))
+(define-key my-leader-map "w" evil-window-map)
+(define-key evil-window-map (kbd "m") 'hydra-window-move/body)
+(define-key evil-window-map (kbd "C-m") 'hydra-window-move/body)
+(define-key evil-window-map (kbd "n") 'evil-window-vnew)
+(define-key evil-window-map (kbd "C-n") 'evil-window-vnew)
+(define-key evil-window-map (kbd "q") 'evil-window-delete)
+(define-key evil-window-map (kbd "C-q") 'evil-window-delete)
+(define-key evil-window-map (kbd "w") 'my-evil-window-next-or-vsplit)
+(define-key evil-window-map (kbd "C-w") 'my-evil-window-next-or-vsplit)
+
+;; window switching
 (defun my-evil-goto-window-1 ()
   "Go to the first window."
   (interactive) (evil-window-top-left))
@@ -549,51 +583,18 @@ writeroom  \
   (kbd "S-2") 'my-evil-goto-window-2
   (kbd "S-3") 'my-evil-goto-window-3
   (kbd "S-4") 'my-evil-goto-window-4)
-(evil-define-key nil my-leader-map
-  "w" evil-window-map
-  "1" 'my-evil-goto-window-1
-  "2" 'my-evil-goto-window-2
-  "3" 'my-evil-goto-window-3
-  "4" 'my-evil-goto-window-4)
-(evil-define-key nil evil-window-map ;; augment C-w map
-  (kbd "m") 'hydra-window-move/body
-  (kbd "C-m") 'hydra-window-move/body
-  (kbd "n") 'evil-window-vnew
-  (kbd "C-n") 'evil-window-vnew
-  (kbd "q") 'evil-window-delete
-  (kbd "C-q") 'evil-window-delete
-  (kbd "w") 'my-evil-window-next-or-vsplit
-  (kbd "C-w") 'my-evil-window-next-or-vsplit
-  (kbd "1") 'my-evil-goto-window-1
-  (kbd "C-1") 'my-evil-goto-window-1
-  (kbd "2") 'my-evil-goto-window-2
-  (kbd "C-2") 'my-evil-goto-window-2
-  (kbd "3") 'my-evil-goto-window-3
-  (kbd "C-3") 'my-evil-goto-window-3
-  (kbd "4") 'my-evil-goto-window-4
-  (kbd "C-4") 'my-evil-goto-window-4)
-(defhydra hydra-window-move (:foreign-keys warn) "
-window  \
-«_h_» left  \
-«_j_» down  \
-«_k_» up  \
-«_l_» right  \
-«_r_»otate"
-  ("<escape>" nil nil)
-  ("<return>" nil nil)
-  ("h" buf-move-left nil)
-  ("H" evil-window-move-far-left nil :exit t)
-  ("j" buf-move-down nil)
-  ("J" evil-window-move-very-bottom nil :exit t)
-  ("k" buf-move-up nil)
-  ("K" evil-window-move-very-top nil :exit t)
-  ("l" buf-move-right nil)
-  ("L" evil-window-move-far-right nil :exit t)
-  ("r" evil-window-rotate-downwards nil)
-  ("R" evil-window-rotate-upwards nil)
-  ("." hydra-repeat nil))
-(advice-add 'delete-window :after '(lambda (&rest args) (balance-windows)))
-(advice-add 'display-buffer :after '(lambda (&rest args) (balance-windows)))
+(define-key my-leader-map "1" 'my-evil-goto-window-1)
+(define-key my-leader-map "2" 'my-evil-goto-window-2)
+(define-key my-leader-map "3" 'my-evil-goto-window-3)
+(define-key my-leader-map "4" 'my-evil-goto-window-4)
+(define-key evil-window-map (kbd "1") 'my-evil-goto-window-1)
+(define-key evil-window-map (kbd "C-1") 'my-evil-goto-window-1)
+(define-key evil-window-map (kbd "2") 'my-evil-goto-window-2)
+(define-key evil-window-map (kbd "C-2") 'my-evil-goto-window-2)
+(define-key evil-window-map (kbd "3") 'my-evil-goto-window-3)
+(define-key evil-window-map (kbd "C-3") 'my-evil-goto-window-3)
+(define-key evil-window-map (kbd "4") 'my-evil-goto-window-4)
+(define-key evil-window-map (kbd "C-4") 'my-evil-goto-window-4)
 
 
 ;;
@@ -747,10 +748,9 @@ ag  \
 (setq
  highlight-symbol-idle-delay 1.0
  highlight-symbol-on-navigation-p t)
-(evil-define-key nil my-leader-map
-  "h" 'highlight-symbol
-  "H" 'highlight-symbol-remove-all
-  "r" 'highlight-symbol-query-replace)
+(define-key my-leader-map "h" 'highlight-symbol)
+(define-key my-leader-map "H" 'highlight-symbol-remove-all)
+(define-key my-leader-map "r" 'highlight-symbol-query-replace)
 (evil-define-key 'visual global-map
   (kbd ", h") (lambda (start end) (interactive "r")
     (highlight-symbol-add-symbol (buffer-substring start end))))
@@ -800,9 +800,8 @@ ag  \
 )
 (add-to-list 'company-auto-complete-chars ?\( )
 (add-hook 'after-init-hook 'global-company-mode)
-(evil-define-key nil company-active-map
-  (kbd "C-n") 'company-select-next
-  (kbd "C-p") 'company-select-previous)
+(define-key company-active-map (kbd "C-n") 'company-select-next)
+(define-key company-active-map (kbd "C-p") 'company-select-previous)
 
 
 ;;;
