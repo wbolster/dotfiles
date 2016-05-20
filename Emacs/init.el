@@ -216,8 +216,6 @@
   "]e" 'next-error
   "[E" 'first-error
   "]E" 'my-last-error
-  "[m" 'move-text-up
-  "]m" 'move-text-down
   "[s" 'highlight-symbol-prev
   "]s" 'highlight-symbol-next
   "[S" 'highlight-symbol-prev-in-defun
@@ -225,21 +223,6 @@
   "[w" 'evil-window-prev
   "]w" 'evil-window-next
 )
-
-;; Misc
-(evil-define-key 'insert global-map
-  (kbd "RET") 'evil-ret-and-indent)
-(defun my-evil-fill-paragraph-dwim ()
-  "Dwim helper to fill the current paragraph"
-  (interactive)
-  ;; Move point after comment marker; useful for multi-line comments.
-  (end-of-line)
-  (fill-paragraph)
-  (evil-first-non-blank))
-(evil-define-key 'motion global-map
-  "Q" 'my-evil-fill-paragraph-dwim
-  (kbd "M-j") 'move-text-down
-  (kbd "M-k") 'move-text-up)
 
 
 ;;;
@@ -269,7 +252,7 @@
 
 
 ;;;
-;;; movement
+;;; movement and editing
 ;;;
 
 ;; scrolling
@@ -313,6 +296,29 @@
 (evil-define-key 'normal global-map
   (kbd "C-p") 'my-evil-paste-pop-or-highlight-symbol-prev
   (kbd "C-n") 'my-evil-paste-pop-next-or-highlight-symbol-next)
+
+;; move text around
+(require 'drag-stuff)
+(evil-define-key 'motion global-map
+  (kbd "M-h") 'drag-stuff-left
+  (kbd "M-j") 'drag-stuff-down
+  (kbd "M-k") 'drag-stuff-up
+  (kbd "M-l") 'drag-stuff-right)
+
+;; indent on enter, keeping comments open (if any)
+(evil-define-key 'insert global-map
+  (kbd "RET") 'comment-indent-new-line)
+
+;; filling
+(defun my-evil-fill-paragraph-dwim ()
+  "Dwim helper to fill the current paragraph"
+  (interactive)
+  ;; Move point after comment marker; useful for multi-line comments.
+  (end-of-line)
+  (fill-paragraph)
+  (evil-first-non-blank))
+(evil-define-key 'normal global-map
+  "Q" 'my-evil-fill-paragraph-dwim)
 
 ;; avy and evil-easymotion
 (setq
@@ -802,9 +808,6 @@ ag  \
 ;;;
 ;;; Programming
 ;;;
-
-(evil-define-key 'insert prog-mode-map
-  (kbd "RET") 'comment-indent-new-line)
 
 ;; Flycheck
 (setq
