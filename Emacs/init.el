@@ -162,15 +162,6 @@
 
 
 ;;;
-;;; Scrolling
-;;;
-
-(setq
- scroll-conservatively 101
- scroll-margin 5)
-
-
-;;;
 ;;; Evil
 ;;;
 
@@ -280,6 +271,11 @@
 ;;;
 ;;; movement
 ;;;
+
+;; scrolling
+(setq
+ scroll-conservatively 101
+ scroll-margin 5)
 
 ;; j/k should move visual lines. do not modify evil-motion-state,
 ;; since that will break operators taking a motion, e.g. 'dj' to
