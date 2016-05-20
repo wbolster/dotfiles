@@ -322,21 +322,6 @@
  avy-all-windows nil
  avy-all-windows-alt t
  avy-background t)
-(defun my-avy-move-region ()
-  "Select two lines and move the text between them here."
-  ;; Shamelessly taken from https://github.com/abo-abo/avy/pull/75
-  (interactive)
-  (avy-with avy-move-region
-    (let* ((beg (avy--line))
-           (end (save-excursion
-                  (goto-char (avy--line))
-                  (forward-line)
-                  (point)))
-           (text (buffer-substring beg end))
-           (pad (if (bolp) "" "\n")))
-      (move-beginning-of-line nil)
-      (delete-region beg end)
-      (insert text pad))))
 (defun my-avy-evil-change-region ()
   "Select two lines and change the lines between them."
   (interactive)
@@ -393,9 +378,9 @@
   (kbd "SPC o") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-open-below))
   (kbd "SPC O") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-open-above))
   (kbd "SPC p d") (lambda () (interactive) (next-line) (call-interactively 'avy-move-line))
-  (kbd "SPC p D") (lambda () (interactive) (next-line) (call-interactively 'my-avy-move-region))
+  (kbd "SPC p D") (lambda () (interactive) (next-line) (call-interactively 'avy-move-region))
   (kbd "SPC P d") 'avy-move-line
-  (kbd "SPC P D") 'my-avy-move-region
+  (kbd "SPC P D") 'avy-move-region
   (kbd "SPC p y") (lambda () (interactive) (next-line) (call-interactively 'avy-copy-line))
   (kbd "SPC p Y") (lambda () (interactive) (next-line) (call-interactively 'avy-copy-region))
   (kbd "SPC P y") 'avy-copy-line
