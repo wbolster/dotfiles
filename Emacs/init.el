@@ -827,6 +827,10 @@ ag  \
   (column-number-mode)
   (highlight-symbol-mode)))
 
+;; emacs lisp
+(add-hook 'emacs-lisp-mode-hook (lambda ()
+  (setq evil-shift-width 2)))
+
 ;; jinja
 (add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode))
 
