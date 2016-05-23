@@ -297,10 +297,21 @@
 ;; move text around
 (require 'drag-stuff)
 (evil-define-key 'normal global-map
-  (kbd "M-h") 'drag-stuff-left
   (kbd "M-j") 'drag-stuff-down
   (kbd "M-k") 'drag-stuff-up
-  (kbd "M-l") 'drag-stuff-right)
+  (kbd "M-h") 'evil-shift-left-line
+  (kbd "M-l") 'evil-shift-right-line)
+(evil-define-key 'visual global-map
+  (kbd "M-h") (lambda (beg end)
+                (interactive "r")
+                (evil-shift-left beg end)
+                (evil-force-normal-state)
+                (call-interactively 'evil-visual-restore))
+  (kbd "M-l") (lambda (beg end)
+                (interactive "r")
+                (evil-shift-right beg end)
+                (evil-force-normal-state)
+                (call-interactively 'evil-visual-restore)))
 
 ;; indent on enter, keeping comments open (if any)
 (evil-define-key 'insert global-map
