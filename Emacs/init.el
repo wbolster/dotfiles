@@ -333,6 +333,8 @@
  avy-all-windows nil
  avy-all-windows-alt t
  avy-background t)
+(avy-setup-default)
+(evilem-default-keybindings "SPC")
 (defun my-avy-evil-change-region ()
   "Select two lines and change the lines between them."
   (interactive)
@@ -369,8 +371,13 @@
   (interactive)
   (setq current-prefix-arg 4)
   (call-interactively 'avy-goto-line))
-(avy-setup-default)
-(evilem-default-keybindings "SPC")
+(defun my-evil-end-of-next-line () (interactive) (evil-next-line) (end-of-line))
+(evilem-make-motion-plain
+ my-avy-evil-goto-end-of-line
+ (list 'evil-end-of-line 'my-evil-end-of-next-line)
+ :pre-hook (setq evil-this-type 'line)
+ :bind ((scroll-margin 0))
+ :initial-point (goto-char (window-start)))
 (evil-define-key 'motion global-map
   (kbd "SPC SPC") 'avy-goto-char-timer
   (kbd "SPC S-SPC") 'my-avy-goto-char-timer-any-window
@@ -379,7 +386,7 @@
   (kbd "SPC L") 'my-avy-goto-line-any-window)
 (evil-define-key 'normal global-map
   (kbd "SPC a") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-append))
-  (kbd "SPC A") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-append-line))
+  (kbd "SPC A") (lambda () (interactive) (my-avy-evil-goto-end-of-line) (call-interactively 'evil-append-line))
   (kbd "SPC c") (lambda () (interactive) (avy-goto-line) (evil-first-non-blank) (call-interactively 'evil-change-line))
   (kbd "SPC C") 'my-avy-evil-change-region
   (kbd "SPC d") 'my-avy-evil-delete-line
@@ -395,7 +402,8 @@
   (kbd "SPC p y") (lambda () (interactive) (next-line) (call-interactively 'avy-copy-line))
   (kbd "SPC p Y") (lambda () (interactive) (next-line) (call-interactively 'avy-copy-region))
   (kbd "SPC P y") 'avy-copy-line
-  (kbd "SPC P Y") 'avy-copy-region)
+  (kbd "SPC P Y") 'avy-copy-region
+  (kbd "SPC $") 'my-avy-evil-goto-end-of-line)
 
 ;; evil-snipe. the t/T/f/F overrides are the most important ones,
 ;; since avy/evil-easymotion already allows for fancy jumps, e.g. via
