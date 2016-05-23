@@ -159,6 +159,10 @@
   "Helper to hide trailing whitespace, intended for mode hooks."
   (setq show-trailing-whitespace nil))
 (add-hook 'buffer-menu-mode-hook 'my-hide-trailing-whitespace)
+(defun my-toggle-show-trailing-whitespace ()
+  "Toggle `show-trailing-whitespace`."
+  (interactive)
+  (setq show-trailing-whitespace (not show-trailing-whitespace)))
 
 
 ;;;
@@ -461,9 +465,9 @@ fill-«_c_»olumn  \
   ("t" toggle-truncate-lines nil)
   ("v" visual-line-mode nil)
   ("SPC" whitespace-mode nil)
+  ("S-SPC" my-toggle-show-trailing-whitespace nil)
   ("w" writeroom-mode nil)
-  ("W" (progn (delete-other-windows) (writeroom-mode 'toggle)) nil)
-)
+  ("W" (progn (delete-other-windows) (writeroom-mode 'toggle)) nil))
 (define-key my-leader-map "t" 'hydra-toggle/body)
 
 
