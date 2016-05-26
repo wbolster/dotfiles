@@ -833,10 +833,12 @@ ag  \
   (visual-line-mode)))
 
 ;; programming languages
+(setq fic-highlighted-words '("FIXME" "TODO" "BUG" "XXX"))
 (add-hook 'prog-mode-hook (lambda ()
   (abbrev-mode)
   (auto-fill-mode)
   (column-number-mode)
+  (fic-mode)
   (highlight-symbol-mode)))
 
 ;; emacs lisp
