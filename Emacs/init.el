@@ -597,14 +597,14 @@ window  \
   "Go to the fourth window."
   (interactive) (evil-window-top-left) (evil-window-next 4))
 (evil-define-key 'motion global-map
-  (kbd "C-1") 'my-evil-goto-window-1
+  (kbd "C-1") 'my-evil-goto-window-1  ; linux: control key
   (kbd "C-2") 'my-evil-goto-window-2
   (kbd "C-3") 'my-evil-goto-window-3
   (kbd "C-4") 'my-evil-goto-window-4
-  (kbd "S-1") 'my-evil-goto-window-1
-  (kbd "S-2") 'my-evil-goto-window-2
-  (kbd "S-3") 'my-evil-goto-window-3
-  (kbd "S-4") 'my-evil-goto-window-4)
+  (kbd "s-1") 'my-evil-goto-window-1  ; osx: command key
+  (kbd "s-2") 'my-evil-goto-window-2
+  (kbd "s-3") 'my-evil-goto-window-3
+  (kbd "s-4") 'my-evil-goto-window-4)
 (define-key my-leader-map "1" 'my-evil-goto-window-1)
 (define-key my-leader-map "2" 'my-evil-goto-window-2)
 (define-key my-leader-map "3" 'my-evil-goto-window-3)
