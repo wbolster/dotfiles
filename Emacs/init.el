@@ -692,6 +692,7 @@ git  \
   ("<escape>" nil nil)
   ("!" magit-git-command nil)
   ("b" magit-blame nil)
+  ("B" magit-log-buffer-file nil)
   ("c" magit-commit nil)
   ("d" magit-diff nil)
   ("f" counsel-git nil)
