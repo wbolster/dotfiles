@@ -437,7 +437,7 @@
 ;; selection
 (setq expand-region-fast-keys-enabled nil)
 (defhydra hydra-expand-region ()
-  "expand-region  «_TAB_» expand  «_-_» contract  «_r_» reset"
+  "\nexpand-region  «_TAB_» expand  «_-_» contract  «_r_» reset"
   ("<escape>" (er/expand-region 0) nil :exit t)
   ("TAB" (er/expand-region 1) nil)
   ("-" (er/expand-region -1) nil)
