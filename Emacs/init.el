@@ -735,11 +735,8 @@ git  \
 
 ;; ag, the silver searcher
 (setq ag-reuse-buffers t)
-(defhydra hydra-ag (:exit t :foreign-keys warn) "
-ag  \
-«_g_» project  \
-«_f_»iles  \
-«_r_»egex"
+(defhydra hydra-ag (:exit t :foreign-keys warn)
+  "\nag  «_g_» project  «_f_»iles  «_r_»egex"
   ("<escape>" nil nil)
   ("f" ag-project-files nil)
   ("F" ag-files nil)
