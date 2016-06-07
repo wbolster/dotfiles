@@ -733,11 +733,21 @@ git  \
 ;;; Search
 ;;;
 
+(defun my-thing-at-point-dwim ()
+  "Return the symbol at point, or the region contents if activated."
+  (if (region-active-p)
+      (buffer-substring-no-properties (region-beginning) (region-end))
+    (thing-at-point 'symbol t)))
 ;; isearch
 (setq isearch-allow-prefix nil)
 
 ;; swiper
+(defun my-swiper-thing-at-point ()
+  "Start `swiper` searching for the thing at point."
+  (interactive)
+  (swiper (my-thing-at-point-dwim)))
 (define-key my-leader-map "/" 'swiper)
+(define-key my-visual-leader-map "/" 'my-swiper-thing-at-point)
 
 ;; ag, the silver searcher
 (setq ag-reuse-buffers t)
@@ -757,11 +767,6 @@ git  \
 
 ;; swiper style search using ag; uses shift-/, since it's conceptually
 ;; an alternative to swiper.
-(defun my-thing-at-point-dwim ()
-  "Returns the symbol at point, or the region contents if activated."
-  (if (region-active-p)
-      (buffer-substring-no-properties (region-beginning) (region-end))
-    (thing-at-point 'symbol t)))
 (defun my-counsel-ag-project ()
   "Run counsel-ag on the current project, defaulting to the symbol at point."
   (interactive)
