@@ -236,7 +236,11 @@
 (defvar my-leader-map
   (make-sparse-keymap)
   "Keymap for 'leader key' shortcuts.")
+(defvar my-visual-leader-map
+  (make-sparse-keymap)
+  "Keymap for 'leader key' shortcuts in visual mode.")
 (evil-define-key 'motion global-map "," my-leader-map)
+(evil-define-key 'visual global-map "," my-visual-leader-map)
 (define-key my-leader-map " " 'whitespace-cleanup)
 (define-key my-leader-map "b" 'ivy-switch-buffer)
 (define-key my-leader-map "B" 'ivy-switch-buffer-other-window)
@@ -771,9 +775,10 @@ git  \
 (define-key my-leader-map "h" 'highlight-symbol)
 (define-key my-leader-map "H" 'highlight-symbol-remove-all)
 (define-key my-leader-map "r" 'highlight-symbol-query-replace)
-(evil-define-key 'visual global-map
-  (kbd ", h") (lambda (start end) (interactive "r")
-    (highlight-symbol-add-symbol (buffer-substring start end))))
+(define-key my-visual-leader-map "h"
+  (lambda (start end) (interactive "r")
+    (highlight-symbol-add-symbol
+     (buffer-substring-no-properties start end))))
 
 ;; occur
 (defun occur-dwim ()
