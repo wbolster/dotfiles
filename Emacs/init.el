@@ -265,6 +265,8 @@
 (setq
  scroll-conservatively 101
  scroll-margin 5)
+(evil-define-key 'motion global-map
+  (kbd "z z") 'recenter-top-bottom)
 
 ;; j/k should move visual lines. do not modify evil-motion-state,
 ;; since that will break operators taking a motion, e.g. 'dj' to
