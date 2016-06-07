@@ -728,6 +728,21 @@ git  \
 )
 (define-key my-leader-map "g" 'hydra-git/body)
 
+;; smerge
+(defhydra hydra-smerge-conflict (:exit t :foreign-keys warn)
+  "\nkeep  «_c_»urrent position «_m_»ine  «_o_»ther  «_b_»ase  «_a_»ll"
+  ("<escape>" nil nil)
+  ("c" smerge-keep-current nil)
+  ("RET" smerge-keep-current nil)
+  ("m" smerge-keep-mine nil)
+  ("o" smerge-keep-other nil)
+  ("b" smerge-keep-base nil)
+  ("a" smerge-keep-all nil))
+(evil-define-key 'motion smerge-mode-map
+  "[d" 'smerge-prev
+  "]d" 'smerge-next
+  (kbd "RET RET") 'hydra-smerge-conflict/body)
+
 
 ;;;
 ;;; Search
