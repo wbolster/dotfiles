@@ -904,7 +904,8 @@ git  \
  (lambda ()
    (setq
     fill-column 72
-    python-fill-docstring-style 'symmetric)))
+    python-fill-docstring-style 'symmetric)
+   (outline-minor-mode)))
 (evilem-make-motion
  my-easymotion-python
  (list
