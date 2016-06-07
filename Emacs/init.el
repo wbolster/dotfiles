@@ -181,6 +181,7 @@
 (evil-commentary-mode)
 (global-evil-surround-mode)
 (global-evil-visualstar-mode)
+(evil-exchange-install)
 
 ;; extra text objects
 (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
