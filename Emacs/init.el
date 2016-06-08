@@ -473,6 +473,7 @@ fill-«_c_»olumn  \
 «_l_»ine  \
 «_m_»aximize  \
 «_n_»umber  \
+«_o_»utline  \
 «_r_»elative-number  \
 «_t_»runcate  \
 «_v_»isual-line  \
@@ -486,6 +487,7 @@ fill-«_c_»olumn  \
   ("m" toggle-frame-fullscreen nil)
   ("M" toggle-frame-maximized nil)
   ("n" (progn (relative-line-numbers-mode -1) (linum-mode 'toggle)) nil)
+  ("o" outline-minor-mode nil)
   ("N" (progn (line-number-mode 'toggle) (column-number-mode 'toggle)) nil)
   ("r" (progn (linum-mode -1) (relative-line-numbers-mode 'toggle)) nil)
   ("t" toggle-truncate-lines nil)
