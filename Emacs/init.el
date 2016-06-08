@@ -780,7 +780,9 @@ git  \
 (defun my-swiper-thing-at-point ()
   "Start `swiper` searching for the thing at point."
   (interactive)
-  (swiper (my-thing-at-point-dwim)))
+  (let ((query (my-thing-at-point-dwim)))
+    (evil-force-normal-state)  ; do not expand region in visual mode
+    (swiper query)))
 (define-key my-leader-map "/" 'swiper)
 (define-key my-visual-leader-map "/" 'my-swiper-thing-at-point)
 
