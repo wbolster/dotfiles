@@ -466,6 +466,12 @@
                 (er/expand-region 1)
                 (hydra-expand-region/body)))
 
+;; folding (outline)
+(evil-define-key 'motion global-map
+  "zi" 'outline-minor-mode
+  "[z" 'outline-previous-visible-heading
+  "]z" 'outline-next-visible-heading)
+
 
 ;;;
 ;;; toggles
