@@ -117,17 +117,18 @@
 
 ;; Mode line
 (setq rm-blacklist '(
-  " ARev"
   " Abbrev"
-  " FlyC"
-  " Undo-Tree"
+  " ARev"
   " company"
   " counsel"
+  " FlyC"
   " hl-p"
   " hl-s"
   " ivy"
+  " Outl"
   " s-/"
   " snipe"
+  " Undo-Tree"
 ))
 (setq
  sml/col-number-format "%c"
