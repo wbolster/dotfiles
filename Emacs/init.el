@@ -164,7 +164,7 @@
 
 
 ;;;
-;;; Evil
+;;; evil
 ;;;
 
 (setq
@@ -194,37 +194,6 @@
 ;; directory navigation (inspired by vim vinagre)
 (evil-define-key 'motion global-map "-" 'dired-jump)
 (define-key dired-mode-map "-" 'dired-jump)
-
-;; previous/next thing (inspired by vim unimpaired)
-(defun my-last-error ()
-  "Jump to the last error; similar to 'first-error'."
-  (interactive)
-  (condition-case err (while t (next-error)) (user-error nil)))
-(defun my-flycheck-last-error ()
-  "Jump to the last flycheck error."
-  (interactive)
-  (goto-char (point-max))
-  (flycheck-previous-error))
-(evil-define-key 'motion global-map
-  (kbd "[ SPC") (lambda () (interactive) (save-excursion (evil-insert-newline-above)))
-  (kbd "] SPC") (lambda () (interactive) (save-excursion (evil-insert-newline-below)))
-  "[b" 'evil-prev-buffer
-  "]b" 'evil-next-buffer
-  "[c" 'flycheck-previous-error
-  "]c" 'flycheck-next-error
-  "[C" 'flycheck-first-error
-  "]C" 'my-flycheck-last-error
-  "[e" 'previous-error
-  "]e" 'next-error
-  "[E" 'first-error
-  "]E" 'my-last-error
-  "[s" 'highlight-symbol-prev
-  "]s" 'highlight-symbol-next
-  "[S" 'highlight-symbol-prev-in-defun
-  "]S" 'highlight-symbol-next-in-defun
-  "[w" 'evil-window-prev
-  "]w" 'evil-window-next
-)
 
 
 ;;;
@@ -279,6 +248,37 @@
 (evil-define-key 'insert global-map
   (kbd "C-a") 'evil-first-non-blank
   (kbd "C-e") 'end-of-line)
+
+;; previous/next thing (inspired by vim unimpaired)
+(defun my-last-error ()
+  "Jump to the last error; similar to 'first-error'."
+  (interactive)
+  (condition-case err (while t (next-error)) (user-error nil)))
+(defun my-flycheck-last-error ()
+  "Jump to the last flycheck error."
+  (interactive)
+  (goto-char (point-max))
+  (flycheck-previous-error))
+(evil-define-key 'motion global-map
+  (kbd "[ SPC") (lambda () (interactive) (save-excursion (evil-insert-newline-above)))
+  (kbd "] SPC") (lambda () (interactive) (save-excursion (evil-insert-newline-below)))
+  "[b" 'evil-prev-buffer
+  "]b" 'evil-next-buffer
+  "[c" 'flycheck-previous-error
+  "]c" 'flycheck-next-error
+  "[C" 'flycheck-first-error
+  "]C" 'my-flycheck-last-error
+  "[e" 'previous-error
+  "]e" 'next-error
+  "[E" 'first-error
+  "]E" 'my-last-error
+  "[s" 'highlight-symbol-prev
+  "]s" 'highlight-symbol-next
+  "[S" 'highlight-symbol-prev-in-defun
+  "]S" 'highlight-symbol-next-in-defun
+  "[w" 'evil-window-prev
+  "]w" 'evil-window-next
+)
 
 ;; evil-exchange to quickly swap two text objects.
 (evil-define-key 'normal global-map
