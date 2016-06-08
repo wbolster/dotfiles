@@ -181,7 +181,6 @@
 (evil-commentary-mode)
 (global-evil-surround-mode)
 (global-evil-visualstar-mode)
-(evil-exchange-install)
 
 ;; extra text objects
 (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
@@ -282,6 +281,13 @@
 (evil-define-key 'insert global-map
   (kbd "C-a") 'evil-first-non-blank
   (kbd "C-e") 'end-of-line)
+
+;; evil-exchange to quickly swap two text objects.
+(evil-define-key 'normal global-map
+  "gx" 'evil-exchange
+  "gX" 'evil-exchange-cancel)
+(evil-define-key 'visual global-map
+  "x" 'evil-exchange)
 
 ;; symbol navigation, without masking evil-paste-pop functionality.
 (defun my-evil-paste-pop-or-highlight-symbol-prev (count)
