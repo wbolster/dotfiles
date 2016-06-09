@@ -940,7 +940,7 @@ git  \
   (interactive)
   (swiper "^\\s-*\\(def\\|class\\)\\s- "))
 (evil-define-key 'motion python-mode-map
-  (kbd "SPC g d") 'my-swiper-python-definitions
+  (kbd "SPC /") 'my-swiper-python-definitions
   (kbd "SPC TAB") 'my-easymotion-python)
 
 ;; reStructuredText
