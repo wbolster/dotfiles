@@ -231,6 +231,7 @@
 
 ;; scrolling
 (setq
+ indicate-buffer-boundaries 'right
  scroll-conservatively 101
  scroll-margin 5)
 (evil-define-key 'motion global-map
