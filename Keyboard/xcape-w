@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e
+
+XCAPE_SETTINGS="Caps_Lock=Escape;Shift_R=BackSpace;Control_R=BackSpace"
+
+# One, and only one.
+pkill --exact --uid "$(id -u)" xcape || true
+
+# Run in foreground. Redirect activity logs (stdout), but keep diagnostic
+# messages (stderr).
+xcape -d -e "${XCAPE_SETTINGS}" >/dev/null
+
+# Idea: make tab a modifier key, acting like Alt_L. Then assign a unused
+# keycode for Tab so that xcape can make it a Tab again if pressed by itself.
+# FIXME: This breaks Shift-Tab (used for focus jumps in gui toolkits).
+# xmodmap -e 'keycode 23 = Alt_L' -e 'keycode 255 = Tab'
+# xcape -e 'Caps_Lock=Escape;Shift_R=BackSpace;Alt_L=Tab'
