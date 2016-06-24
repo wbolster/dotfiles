@@ -19,6 +19,8 @@
 
 (require 'package)
 (package-initialize)
+(require 'auto-compile)
+(auto-compile-on-load-mode)
 
 (defmacro after (feature &rest body)
   "After FEATURE is loaded, evaluate BODY."
