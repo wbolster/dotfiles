@@ -188,10 +188,6 @@
 (define-key evil-outer-text-objects-map "b" 'evil-textobj-anyblock-a-block)
 (evil-indent-plus-default-bindings)
 
-;; god-mode integration using ; as the prefix key
-(evil-define-key 'motion global-map
-  ";" 'evil-execute-in-god-state)
-
 ;; directory navigation (inspired by vim vinagre)
 (evil-define-key 'motion global-map "-" 'dired-jump)
 (define-key dired-mode-map "-" 'dired-jump)
