@@ -481,7 +481,6 @@
 (defhydra hydra-toggle (:exit t :foreign-keys warn) "
 toggle  \
 «_b_»ackgound  \
-fill-«_c_»olumn  \
 «_f_»ill  \
 «_l_»ine  \
 «_m_»aximize  \
@@ -494,14 +493,14 @@ fill-«_c_»olumn  \
 «_SPC_» whitespace"
   ("<escape>" nil nil)
   ("b" toggle-dark-light-theme nil)
-  ("c" fci-mode nil)
   ("f" auto-fill-mode nil)
+  ("F" fci-mode nil)
   ("l" hl-line-mode nil)
   ("m" toggle-frame-fullscreen nil)
   ("M" toggle-frame-maximized nil)
   ("n" (progn (relative-line-numbers-mode -1) (linum-mode 'toggle)) nil)
-  ("o" outline-minor-mode nil)
   ("N" (progn (line-number-mode 'toggle) (column-number-mode 'toggle)) nil)
+  ("o" outline-minor-mode nil)
   ("r" (progn (linum-mode -1) (relative-line-numbers-mode 'toggle)) nil)
   ("t" toggle-truncate-lines nil)
   ("v" visual-line-mode nil)
