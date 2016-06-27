@@ -479,6 +479,7 @@
 (defhydra hydra-toggle (:exit t :foreign-keys warn) "
 toggle  \
 «_b_»ackgound  \
+«_c_»olemak  \
 «_f_»ill  \
 «_l_»ine  \
 «_m_»aximize  \
@@ -491,6 +492,7 @@ toggle  \
 «_SPC_» whitespace"
   ("<escape>" nil nil)
   ("b" toggle-dark-light-theme nil)
+  ("c" global-evil-colemak-basics-mode)
   ("f" auto-fill-mode nil)
   ("F" fci-mode nil)
   ("l" hl-line-mode nil)
