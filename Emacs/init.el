@@ -279,19 +279,15 @@
   "[w" 'evil-window-prev
   "]w" 'evil-window-next)
 
-;; quickly swap two text objects; the empty text object is a trick to
-;; make "gxp" work to move previously marked text without moving
-;; anything back to the original location.
+;; quickly swap two text objects using "gx"; the empty text object is
+;; a trick to make "gxp" work to move previously marked text without
+;; moving anything back to the original location.
 (evil-define-text-object
   my-evil-empty-text-object (count &optional beg end type)
   "Empty text object for cut/paste style evil-exchange interaction."
   (evil-range (point) (point)))
-(evil-define-key 'normal global-map
-  "gx" 'evil-exchange
-  "gX" 'evil-exchange-cancel)
-(evil-define-key 'visual global-map
-  "x" 'evil-exchange)
 (define-key evil-operator-state-map "p" 'my-evil-empty-text-object)
+(evil-exchange-install)
 
 ;; symbol navigation, without masking evil-paste-pop functionality.
 (defun my-evil-paste-pop-or-highlight-symbol-prev (count)
