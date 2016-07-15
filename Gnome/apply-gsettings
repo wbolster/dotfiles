@@ -14,6 +14,14 @@ gsettings set org.gnome.shell.calendar show-weekdate true
 
 
 #
+# Keyboard layout
+#
+
+gsettings set org.gnome.desktop.input-sources per-window false
+gsettings set org.gnome.desktop.input-sources show-all-sources true
+
+
+#
 # Security
 #
 
