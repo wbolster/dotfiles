@@ -142,6 +142,9 @@ if [[ "$PS1" ]]; then
             _timer_start=""
         fi
 
+        # Save history so that newly opened shells immediately see it.
+        history -a
+
         # Hook for direnv.
         if type _direnv_hook &>/dev/null; then
             _direnv_hook
