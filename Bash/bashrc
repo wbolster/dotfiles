@@ -392,6 +392,7 @@ if [[ "$PS1" ]]; then
     alias cp='cp -i'
     alias mv='mv -i'
     alias rm='rm -i'
+    export IGNOREEOF=1  # Require twice Ctrl-D to exit.
 
     # File listings
     if ls --version 2>/dev/null | grep -q -F 'ls (GNU coreutils)'; then
