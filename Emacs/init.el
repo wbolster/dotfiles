@@ -52,6 +52,9 @@
 (global-set-key (kbd "C-h C-o") nil)
 (global-set-key (kbd "C-h C-w") nil)
 
+;; Minibuffer
+(define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)
+
 ;; OSX keyboard
 (global-set-key (kbd "s-q") nil)
 (setq ns-right-alternate-modifier 'none)
@@ -850,6 +853,7 @@ git  \
 (ivy-mode 1)
 (counsel-mode 1)
 (define-key my-leader-map "," 'ivy-resume)
+(define-key ivy-minibuffer-map (kbd "C-w") 'ivy-backward-kill-word)
 
 ;; company
 (require 'company)
