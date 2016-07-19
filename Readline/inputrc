@@ -1,7 +1,9 @@
 # inputrc for readline
 
-set mark-symlinked-directories on
 set completion-ignore-case on
+set mark-symlinked-directories on
+set match-hidden-files off
+set visible-stats on
 
 # Ctrl-P and Ctrl-N
 "\C-p":    history-search-backward
