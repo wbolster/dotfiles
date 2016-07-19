@@ -19,3 +19,9 @@ set visible-stats on
 "\e\e[C":  forward-word
 "\e\e[D":  backward-word
 
+# History expansion
+$if bash
+  space: magic-space
+$endif
+
+# TODO: bind menu-complete
