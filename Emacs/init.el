@@ -126,12 +126,14 @@
   " ARev"
   " company"
   " counsel"
+  " DS"  ;; python-docstring
   " FlyC"
   " hl-p"
-  " hl-s"
+  " hl-s"  ;; highlight-symbol
+  " hnei"  ;; evil-colemak-basics
   " ivy"
   " Outl"
-  " s-/"
+  " s-/"  ;; evil-commentary
   " snipe"
   " Undo-Tree"
 ))
