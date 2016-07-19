@@ -357,7 +357,8 @@
 (setq
  avy-all-windows nil
  avy-all-windows-alt t
- avy-background t)
+ avy-background t
+ avy-keys '(?a ?r ?s ?t ?n ?e ?i ?o))
 (avy-setup-default)
 (evilem-default-keybindings "SPC")
 (defun my-avy-evil-change-region ()
@@ -496,7 +497,7 @@ toggle  \
 «_SPC_» whitespace"
   ("<escape>" nil nil)
   ("b" toggle-dark-light-theme nil)
-  ("c" global-evil-colemak-basics-mode)
+  ("c" my-colemak-mode)
   ("f" auto-fill-mode nil)
   ("F" fci-mode nil)
   ("l" hl-line-mode nil)
@@ -513,6 +514,18 @@ toggle  \
   ("w" writeroom-mode nil)
   ("W" (progn (delete-other-windows) (writeroom-mode 'toggle)) nil))
 (define-key my-leader-map "t" 'hydra-toggle/body)
+
+(define-minor-mode my-colemak-mode
+  "Tweaks for the Colemak keyboard layout."
+  :lighter " colemak"
+  :global t
+  (if my-colemak-mode
+      (progn
+        (global-evil-colemak-basics-mode)
+        (setq avy-keys '(?a ?r ?s ?t ?n ?e ?i ?o)))
+    (progn
+      (global-evil-colemak-basics-mode -1)
+      (setq avy-keys '(?a ?s ?d ?f ?h ?j ?k ?l)))))
 
 
 ;;;
