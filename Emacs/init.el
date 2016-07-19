@@ -147,6 +147,9 @@
   (number-to-string (abs (if (= offset 0) (line-number-at-pos) offset))))
 (setq relative-line-numbers-format 'my-relative-line-numbers-format)
 
+;; Misc
+(setq fci-rule-width 2)
+
 
 ;;;
 ;;; Whitespace
