@@ -905,6 +905,7 @@ git  \
   (auto-fill-mode)
   (column-number-mode)
   (fic-mode)
+  (highlight-parentheses-mode)
   (highlight-symbol-mode)))
 
 ;; emacs lisp
