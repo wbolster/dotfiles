@@ -89,8 +89,10 @@
  solarized-height-plus-2 1.0
  solarized-height-plus-3 1.0
  solarized-height-plus-4 1.0)
-(load-theme 'solarized-dark t)
-(defvar my-active-theme 'solarized-dark "The currently active theme.")
+(defvar my-active-theme 'solarized-light "The currently active theme.")
+(if (file-exists-p "~/.config/dark-theme")
+    (setq my-active-theme 'solarized-dark))
+(load-theme my-active-theme t)
 (defun toggle-dark-light-theme ()
   "Toggle between a dark and light theme."
   (interactive)
