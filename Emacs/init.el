@@ -668,6 +668,11 @@ window  \
 ;; Projects
 ;;
 
+(defun my-projectile-detect-test-file-name ()
+  "Detect associated test file name for the current buffer."
+  (or (if (projectile-test-file-p (buffer-file-name))
+          (file-relative-name (buffer-file-name) (projectile-project-root)))
+      (projectile-find-matching-test (buffer-file-name))))
 (setq
  projectile-ignored-projects '("/usr/local/")
  projectile-mode-line nil
@@ -957,6 +962,22 @@ git  \
     python-fill-docstring-style 'symmetric)
    (outline-minor-mode)
    (python-docstring-mode)))
+(add-hook 'comint-output-filter-functions 'python-pdbtrack-comint-output-filter-function)
+(defvar my-python-pytest-arguments-history nil
+  "Argument history for pytest invocations.")
+(defun my-python-pytest (&optional arguments)
+  "Run pytest with specified ARGUMENTS."
+  (interactive
+   (list
+    (read-string
+     "pytest arguments: "
+     (or
+      (let ((test-file-name (my-projectile-detect-test-file-name)))
+        (if test-file-name (format "-k %s " test-file-name)))
+      (first my-python-pytest-arguments-history))
+     'my-python-pytest-arguments-history)))
+  (let ((default-directory (projectile-project-root)))
+    (compile (format "py.test %s" arguments) t)))
 (evilem-make-motion
  my-easymotion-python
  (list
@@ -972,6 +993,13 @@ git  \
 (evil-define-key 'motion python-mode-map
   (kbd "SPC /") 'my-swiper-python-definitions
   (kbd "SPC TAB") 'my-easymotion-python)
+(defhydra hydra-python (:exit t :foreign-keys warn)
+  "\npython  «_b_» pdb trace  «_t_» pytest"
+  ("<escape>" nil nil)
+  ("t" my-python-pytest nil)
+  ("T" (my-python-pytest "") nil))
+(evil-define-key 'normal python-mode-map
+  (kbd "RET") 'hydra-python/body)
 
 ;; reStructuredText
 (setq
