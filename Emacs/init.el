@@ -1009,6 +1009,7 @@ git  \
   (kbd "SPC TAB") 'my-easymotion-python)
 (defhydra hydra-python (:exit t :foreign-keys warn)
   "\npython  «_b_» pdb trace  «_t_» pytest"
+  ("RET" nil nil)
   ("<escape>" nil nil)
   ("b" (my-python-insert-pdb-trace "pdb") nil)
   ("B" (my-python-insert-pdb-trace "ipdb") nil)
@@ -1043,6 +1044,13 @@ git  \
  :pre-hook (setq evil-this-type 'line))
 (evil-define-key 'motion rst-mode-map
   (kbd "SPC TAB") 'my-easymotion-rst)
+(defhydra hydra-rst (:exit t :foreign-keys warn)
+  "\nrestructuredtext  «_a_»djust"
+  ("RET" nil nil)
+  ("<escape>" nil nil)
+  ("a" rst-adjust nil :exit nil))
+(evil-define-key 'normal rst-mode-map
+  (kbd "RET") 'hydra-rst/body)
 
 ;; Shell
 (add-to-list 'auto-mode-alist '("bashrc\\'" . sh-mode))
