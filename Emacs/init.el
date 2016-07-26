@@ -978,6 +978,14 @@ git  \
      'my-python-pytest-arguments-history)))
   (let ((default-directory (projectile-project-root)))
     (compile (format "py.test %s" arguments) t)))
+(defun my-python-insert-pdb-trace (mod)
+  (python-nav-beginning-of-statement)
+  (beginning-of-line)
+  (insert "\n")
+  (forward-line -1)
+  (indent-according-to-mode)
+  (insert (format "import %s; %s.set_trace()  # FIXME" mod mod))
+  (beginning-of-line-text))
 (evilem-make-motion
  my-easymotion-python
  (list
@@ -996,6 +1004,8 @@ git  \
 (defhydra hydra-python (:exit t :foreign-keys warn)
   "\npython  «_b_» pdb trace  «_t_» pytest"
   ("<escape>" nil nil)
+  ("b" (my-python-insert-pdb-trace "pdb") nil)
+  ("B" (my-python-insert-pdb-trace "ipdb") nil)
   ("t" my-python-pytest nil)
   ("T" (my-python-pytest "") nil))
 (evil-define-key 'normal python-mode-map
