@@ -909,6 +909,10 @@ git  \
  flycheck-display-errors-delay 1.0)
 (global-flycheck-mode)
 
+;; Compilation
+(add-hook 'compilation-mode-hook 'my-hide-trailing-whitespace)
+(add-hook 'comint-mode-hook 'my-hide-trailing-whitespace)
+
 
 ;;;
 ;;; Major modes
