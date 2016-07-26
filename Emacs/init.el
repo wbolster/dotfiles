@@ -253,9 +253,12 @@
 
 ;; some emacs bindings and overrides for insert mode
 (evil-define-key 'insert global-map
+  ;; shell style editing (emacs inspired key bindings)
   (kbd "C-a") 'evil-first-non-blank
   (kbd "C-e") 'end-of-line
-  (kbd "C-h") 'backward-delete-char-untabify)
+  (kbd "C-h") 'backward-delete-char-untabify
+  ;; during typing, ctrl-v is "paste", like everywhere else.
+  (kbd "C-v") 'yank)
 
 ;; previous/next thing (inspired by vim unimpaired)
 (defun my-last-error ()
