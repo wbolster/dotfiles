@@ -251,10 +251,11 @@
   (kbd "C-j") 'evil-next-line
   (kbd "C-k") 'evil-previous-line)
 
-;; some emacs bindings in insert mode
+;; some emacs bindings and overrides for insert mode
 (evil-define-key 'insert global-map
   (kbd "C-a") 'evil-first-non-blank
-  (kbd "C-e") 'end-of-line)
+  (kbd "C-e") 'end-of-line
+  (kbd "C-h") 'backward-delete-char-untabify)
 
 ;; previous/next thing (inspired by vim unimpaired)
 (defun my-last-error ()
