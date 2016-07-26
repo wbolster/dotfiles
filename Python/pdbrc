@@ -1,0 +1,11 @@
+# Python debugger (pdb) configuration
+
+# Print str() representation, instead of the default repr(),
+# intended as additions to the default 'p' and 'pp'.
+alias ps p str(%1)
+alias pps pp str(%1)
+
+# Pretty-print often used expressions: locals and class instance
+# attributes.
+alias ppl pp locals()
+alias ppi pp %1.__dict__
