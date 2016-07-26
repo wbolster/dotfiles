@@ -673,10 +673,7 @@ window  \
  projectile-mode-line nil
  projectile-require-project-root nil)
 (projectile-global-mode)
-(defhydra hydra-project (
-  :exit t
-  :foreign-keys warn
-  ) "
+(defhydra hydra-project (:exit t :foreign-keys warn) "
 project  \
 «_b_»uffer  \
 «_d_»ir  \
@@ -951,7 +948,7 @@ git  \
 ;; latex
 (setq TeX-engine 'xetex)
 
-;; Python
+;; python
 (add-hook
  'python-mode-hook
  (lambda ()
