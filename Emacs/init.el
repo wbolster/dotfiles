@@ -502,7 +502,7 @@ toggle  \
 «_SPC_» whitespace"
   ("<escape>" nil nil)
   ("b" toggle-dark-light-theme nil)
-  ("c" my-colemak-mode)
+  ("c" my-colemak-mode nil)
   ("f" auto-fill-mode nil)
   ("F" fci-mode nil)
   ("l" hl-line-mode nil)
