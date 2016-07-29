@@ -959,6 +959,12 @@ git  \
  (lambda ()
    (setq evil-shift-width 2)
    (rainbow-delimiters-mode)))
+(evil-define-key 'motion emacs-lisp-mode-map (kbd "RET")
+  (defhydra hydra-emacs-lisp (:exit t :foreign-keys warn)
+    "\nelisp  «_e_»val"
+    ("RET" nil nil)
+    ("<escape>" nil nil)
+    ("e" eval-last-sexp nil)))
 
 ;; jinja
 (add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode))
