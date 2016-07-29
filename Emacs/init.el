@@ -579,7 +579,6 @@ writeroom  \
   ("=" default-text-scale-increase nil)
   ("+" default-text-scale-increase nil)
   ("-" default-text-scale-decrease nil)
-  ("." hydra-repeat nil)
   ("n" (writeroom-decrease-width) nil)
   ("w" (writeroom-increase-width) nil)
   ("r" (writeroom-adjust-width nil) nil :exit t)
@@ -625,8 +624,7 @@ window  \
   ("l" buf-move-right nil)
   ("L" evil-window-move-far-right nil :exit t)
   ("r" evil-window-rotate-downwards nil)
-  ("R" evil-window-rotate-upwards nil)
-  ("." hydra-repeat nil))
+  ("R" evil-window-rotate-upwards nil))
 
 ;; augment C-w map
 (defun my-evil-window-next-or-vsplit ()
