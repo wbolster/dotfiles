@@ -48,12 +48,24 @@ gsettings set org.gnome.desktop.wm.preferences visual-bell false
 
 gsettings set org.gnome.desktop.wm.keybindings close "['<Alt>F4', '<Super>q']"
 gsettings set org.gnome.desktop.wm.keybindings minimize "[]"
-gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Alt>F11', '<Super>j']"
-gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Alt>F10', '<Super>k']"
 
-gsettings set org.gnome.mutter.keybindings toggle-tiled-left "['<Super>h']"
-gsettings set org.gnome.mutter.keybindings toggle-tiled-right "['<Super>l']"
+# maximised/full screen
+gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Alt>F10', '<Super>f']"
+gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Alt>F11', '<Shift><Super>f']"
 
+# left/right with </> keys (without shift)
+gsettings set org.gnome.mutter.keybindings toggle-tiled-left "['<Super>comma']"
+gsettings set org.gnome.mutter.keybindings toggle-tiled-right "['<Super>period']"
+
+# hjkl-style window/workspace navigation
+gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Super>l']"
+gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Super>h']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down "['<Super>j']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up "['<Super>k']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-down "['<Shift><Super>j']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-up "['<Shift><Super>k']"
+
+# numbered workspaces
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Super>1']"
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 "['<Super>2']"
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-3 "['<Super>3']"
@@ -78,9 +90,11 @@ gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-9 "['<Shift><Su
 # shortcuts
 #
 
+gsettings set org.gnome.shell.keybindings toggle-overview "['<Super>s', '<Super>d']"
+
+# applications
 gsettings set org.gnome.settings-daemon.plugins.media-keys home "'<Super>e'"
 gsettings set org.gnome.settings-daemon.plugins.media-keys www "'<Super>w'"
-gsettings set org.gnome.shell.keybindings toggle-overview "['<Super>s', '<Super>d']"
 
 # screenshots
 gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot-clip 'Print'
