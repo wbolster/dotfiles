@@ -158,5 +158,10 @@ let g:syntastic_html_checkers=['tidy']
 let g:syntastic_python_checkers=['flake8']
 
 " Colors
-set background=dark
+
+if filereadable(expand("~/.config/dark-theme"))
+  set background=dark
+else
+  set background=light
+endif
 colorscheme solarized
