@@ -3,7 +3,7 @@
 set -e -u -x
 
 #
-# Main interface
+# main interface
 #
 
 gsettings set org.gnome.desktop.interface clock-show-date true
@@ -14,7 +14,7 @@ gsettings set org.gnome.shell.calendar show-weekdate true
 
 
 #
-# Keyboard layout
+# keyboard layouts
 #
 
 gsettings set org.gnome.desktop.input-sources per-window false
@@ -22,7 +22,7 @@ gsettings set org.gnome.desktop.input-sources show-all-sources true
 
 
 #
-# Security
+# security
 #
 
 gsettings set org.gnome.desktop.notifications show-in-lock-screen false
@@ -33,7 +33,7 @@ gsettings set org.gnome.desktop.screensaver show-full-name-in-top-bar false
 
 
 #
-# Window management
+# window management
 #
 
 gsettings set org.gnome.desktop.wm.preferences action-double-click-titlebar "'toggle-maximize-vertically'"
@@ -74,7 +74,7 @@ gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-9 "['<Shift><Su
 
 
 #
-# Shortcuts
+# shortcuts
 #
 
 gsettings set org.gnome.settings-daemon.plugins.media-keys home "'<Super>e'"
