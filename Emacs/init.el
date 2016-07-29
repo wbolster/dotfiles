@@ -77,6 +77,8 @@
 (tool-bar-mode -1)
 
 ;; Theme
+(defvar my-dark-theme 'solarized-dark "The preferred dark theme.")
+(defvar my-light-theme 'solarized-light "The preferred light theme.")
 (setq
  solarized-scale-org-headlines nil
  solarized-use-less-bold t
@@ -86,17 +88,19 @@
  solarized-height-plus-2 1.0
  solarized-height-plus-3 1.0
  solarized-height-plus-4 1.0)
-(defvar my-active-theme 'solarized-light "The currently active theme.")
-(if (file-exists-p "~/.config/dark-theme")
-    (setq my-active-theme 'solarized-dark))
-(load-theme my-active-theme t)
-(defun toggle-dark-light-theme ()
+(defun my-toggle-dark-light-theme ()
   "Toggle between a dark and light theme."
   (interactive)
-  (if (eq my-active-theme 'solarized-light)
-      (setq my-active-theme 'solarized-dark)
-    (setq my-active-theme 'solarized-light))
-  (load-theme my-active-theme t))
+  (if (eq (first custom-enabled-themes) my-light-theme)
+      (load-theme my-dark-theme t)
+    (load-theme my-light-theme t)))
+(defun my-set-theme-from-environment ()
+  "Set the theme based on presence/absence of a configuration file."
+  (interactive)
+  (if (file-exists-p "~/.config/dark-theme")
+      (load-theme my-dark-theme t)
+    (load-theme my-light-theme t)))
+(my-set-theme-from-environment)
 
 ;; Cursor
 (blink-cursor-mode 0)
@@ -501,7 +505,8 @@ toggle  \
 «_w_»riteroom  \
 «_SPC_» whitespace"
   ("<escape>" nil nil)
-  ("b" toggle-dark-light-theme nil)
+  ("b" my-toggle-dark-light-theme nil)
+  ("B" my-set-theme-from-environment nil)
   ("c" my-colemak-mode nil)
   ("f" auto-fill-mode nil)
   ("F" fci-mode nil)
