@@ -259,10 +259,17 @@
 (evil-define-key 'insert global-map
   ;; shell style editing (emacs inspired key bindings)
   (kbd "C-a") 'evil-first-non-blank
+  (kbd "C-d") 'delete-char
   (kbd "C-e") 'end-of-line
   (kbd "C-h") 'backward-delete-char-untabify
-  ;; during typing, ctrl-v is "paste", like everywhere else.
-  (kbd "C-v") 'yank)
+  (kbd "C-t") 'transpose-chars
+  ;; during typing, ctrl-v is "paste", like everywhere else
+  (kbd "C-v") 'yank
+  ;; shift line with < and > (same chars as in normal mode; replaces C-d and C-t)
+  (kbd "C-,") 'evil-shift-left-line
+  (kbd "C-<") 'evil-shift-left-line
+  (kbd "C-.") 'evil-shift-right-line
+  (kbd "C->") 'evil-shift-right-line)
 
 ;; previous/next thing (inspired by vim unimpaired)
 (defun my-last-error ()
