@@ -1,0 +1,47 @@
+#!/bin/bash
+
+set -e -u
+
+file=~/.config/dark-theme
+
+set_gnome_terminal_theme() {
+    # Set Solarized colour scheme for the first Gnome terminal
+    # profile, and toggle between the dark and light variants.
+    local profile_id profile_path
+    profile_id=$(dconf list /org/gnome/terminal/legacy/profiles:/ | head -n 1)
+    profile_path="/org/gnome/terminal/legacy/profiles:/${profile_id}"
+
+    dconf write "${profile_path}palette" "['rgb(7,54,66)', 'rgb(220,50,47)', 'rgb(133,153,0)', 'rgb(181,137,0)', 'rgb(38,139,210)', 'rgb(211,54,130)', 'rgb(42,161,152)', 'rgb(195,190,174)', 'rgb(7,54,66)', 'rgb(220,50,47)', 'rgb(133,153,0)', 'rgb(181,137,0)', 'rgb(38,139,210)', 'rgb(211,54,130)', 'rgb(42,161,152)', 'rgb(195,190,174)']"
+
+    if [ "$1" = "dark" ]; then
+        # Switch to dark
+        dconf write "${profile_path}background-color" "'rgb(0,43,54)'"
+        dconf write "${profile_path}foreground-color" "'rgb(131,148,150)'"
+    else
+        # Switch to light
+        dconf write "${profile_path}background-color" "'rgb(253,246,227)'"
+        dconf write "${profile_path}foreground-color" "'rgb(101,123,131)'"
+    fi
+
+}
+
+notify_emacs() {
+    # Notify running Emacs instance.
+    if pgrep -u "$(id -u)" emacs > /dev/null; then
+        emacsclient -e '(my-set-theme-from-environment)' > /dev/null || true
+    fi
+}
+
+main() {
+    if [ -e ${file} ]; then
+        rm ${file}
+        set_gnome_terminal_theme light
+        notify_emacs
+    else
+        touch ${file}
+        set_gnome_terminal_theme dark
+        notify_emacs
+    fi
+}
+
+main
