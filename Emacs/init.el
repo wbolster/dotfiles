@@ -550,7 +550,9 @@ toggle  \
 ;;;
 
 (require 'default-text-scale)  ;; functions below use non-autoloaded functions
-(setq my-default-text-scale-height 110)
+(defvar my-default-text-scale-height
+  (face-attribute 'default :height)  ;; inherited from environment configuration
+  "The default text scale height.")
 (defun my-default-text-scale-set (height)
   (interactive "nHeight (e.g. 110) ")
   (default-text-scale-increment (- height (face-attribute 'default :height))))
