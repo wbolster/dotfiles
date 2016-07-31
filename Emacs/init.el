@@ -822,6 +822,7 @@ git  \
 (defhydra hydra-ag (:exit t :foreign-keys warn)
   "\nag  «_g_» project  «_f_»iles  «_r_»egex"
   ("<escape>" nil nil)
+  ("a" ag-project nil)
   ("f" ag-project-files nil)
   ("F" ag-files nil)
   ("g" ag-project nil)
