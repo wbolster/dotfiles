@@ -474,7 +474,7 @@
 ;; selection
 (setq expand-region-fast-keys-enabled nil)
 (defhydra hydra-expand-region ()
-  "\nexpand-region  «_TAB_» expand  «_-_» contract  «_r_» reset"
+  "\nexpand-region  _TAB_ expand  _-_ contract  _r_eset"
   ("<escape>" (er/expand-region 0) nil :exit t)
   ("TAB" (er/expand-region 1) nil)
   ("-" (er/expand-region -1) nil)
@@ -497,20 +497,8 @@
 ;;; toggles
 ;;;
 
-(defhydra hydra-toggle (:exit t :foreign-keys warn) "
-toggle  \
-«_b_»ackgound  \
-«_c_»olemak  \
-«_f_»ill  \
-«_l_»ine  \
-«_m_»aximize  \
-«_n_»umber  \
-«_o_»utline  \
-«_r_»elative-number  \
-«_t_»runcate  \
-«_v_»isual-line  \
-«_w_»riteroom  \
-«_SPC_» whitespace"
+(defhydra hydra-toggle (:exit t :foreign-keys warn)
+  "\ntoggle  _b_ackgound  _c_olemak  _f_ill  _l_ine  _m_aximize  _n_umber  _o_utline  _r_elative-number  _t_runcate  _v_isual-line  _w_riteroom  _SPC_ whitespace"
   ("<escape>" nil nil)
   ("b" my-toggle-dark-light-theme nil)
   ("B" my-set-theme-from-environment nil)
@@ -561,16 +549,8 @@ toggle  \
   (my-default-text-scale-set my-default-text-scale-height))
 (when (display-graphic-p)
   (my-default-text-scale-reset))
-(defhydra hydra-zoom () "
-zoom  \
-«_i_»n  \
-«_o_»ut  \
-«_z_» normal  \
-    \
-writeroom  \
-«_n_»arrower  \
-«_w_»ider  \
-«_r_»eset"
+(defhydra hydra-zoom ()
+  "\nzoom  _i_n  _o_ut  _z_ normal    writeroom  _n_arrower _w_ider _r_eset"
   ("<escape>" nil nil)
   ("i" default-text-scale-increase nil)
   ("o" default-text-scale-decrease nil)
@@ -605,13 +585,8 @@ writeroom  \
 (advice-add 'display-buffer :after '(lambda (&rest args) (balance-windows)))
 
 ;; window movement
-(defhydra hydra-window-move (:foreign-keys warn) "
-window  \
-«_h_» left  \
-«_j_» down  \
-«_k_» up  \
-«_l_» right  \
-«_r_»otate"
+(defhydra hydra-window-move (:foreign-keys warn)
+  "\nwindow  _h_ left  _j_ down  _k_ up  _l_ right  _r_otate"
   ("<escape>" nil nil)
   ("<return>" nil nil)
   ("h" buf-move-left nil)
@@ -692,16 +667,8 @@ window  \
  projectile-mode-line nil
  projectile-require-project-root nil)
 (projectile-global-mode)
-(defhydra hydra-project (:exit t :foreign-keys warn) "
-project  \
-«_b_»uffer  \
-«_d_»ir  \
-«_f_»ile  \
-«_k_»ill  \
-«_p_»roject  \
-«_s_»ave  \
-«_t_»est/impl  \
-«_-_» top dir"
+(defhydra hydra-project (:exit t :foreign-keys warn)
+  "\nproject  _b_uffer  _d_ir  _f_ile  _k_ill  _p_roject  _s_ave  _t_est/impl  _-_ top dir"
   ("<escape>" nil nil)
   ("b" projectile-switch-to-buffer nil)
   ("B" projectile-switch-to-buffer-other-window nil)
@@ -738,17 +705,8 @@ project  \
 (add-hook 'magit-popup-mode-hook 'my-hide-trailing-whitespace)
 
 ;; Magit shortcuts
-(defhydra hydra-git (:exit t :foreign-keys warn) "
-git  \
-«_!_»command  \
-«_b_»lame  \
-«_c_»ommit  \
-«_d_»iff  \
-«_f_»ile  \
-«_g_» popup  \
-«_l_»og  \
-«_s_»tatus  \
-«_w_»eb"
+(defhydra hydra-git (:exit t :foreign-keys warn)
+  "\ngit  _b_lame  _c_ommit  _d_iff  _f_ile  _g_ popup  _l_og  _s_tatus  _w_eb  _!_ command"
   ("<escape>" nil nil)
   ("!" magit-git-command nil)
   ("b" magit-blame nil)
@@ -783,7 +741,7 @@ git  \
 
 ;; smerge
 (defhydra hydra-smerge (:exit t :foreign-keys warn)
-  "\nkeep  «_c_»urrent position «_m_»ine  «_o_»ther  «_b_»ase  «_a_»ll      go to  «_j_» next  «_k_» previous"
+  "\nsmerge  _c_urrent  _m_ine  _o_ther  _b_ase  _a_ll      go to  _j_ next  _k_ previous"
   ("<escape>" nil nil)
   ("c" smerge-keep-current nil)
   ("m" smerge-keep-mine nil)
@@ -820,7 +778,7 @@ git  \
 ;; ag, the silver searcher
 (setq ag-reuse-buffers t)
 (defhydra hydra-ag (:exit t :foreign-keys warn)
-  "\nag  «_g_» project  «_f_»iles  «_r_»egex"
+  "\nag  _g_ project  _f_iles  _r_egex"
   ("<escape>" nil nil)
   ("a" ag-project nil)
   ("f" ag-project-files nil)
@@ -958,7 +916,7 @@ git  \
    (rainbow-delimiters-mode)))
 (evil-define-key 'motion emacs-lisp-mode-map (kbd "RET")
   (defhydra hydra-emacs-lisp (:exit t :foreign-keys warn)
-    "\nelisp  «_e_»val"
+    "\nelisp  _e_val"
     ("RET" nil nil)
     ("<escape>" nil nil)
     ("e" eval-last-sexp nil)))
@@ -1024,16 +982,15 @@ git  \
 (evil-define-key 'motion python-mode-map
   (kbd "SPC /") 'my-swiper-python-definitions
   (kbd "SPC TAB") 'my-easymotion-python)
-(defhydra hydra-python (:exit t :foreign-keys warn)
-  "\npython  «_b_» pdb trace  «_t_» pytest"
-  ("RET" nil nil)
-  ("<escape>" nil nil)
-  ("b" (my-python-insert-pdb-trace "pdb") nil)
-  ("B" (my-python-insert-pdb-trace "ipdb") nil)
-  ("t" my-python-pytest nil)
-  ("T" (my-python-pytest "") nil))
-(evil-define-key 'normal python-mode-map
-  (kbd "RET") 'hydra-python/body)
+(evil-define-key 'normal python-mode-map (kbd "RET")
+  (defhydra hydra-python (:exit t :foreign-keys warn)
+    "\npython  _b_ pdb trace  _t_ pytest"
+    ("RET" nil nil)
+    ("<escape>" nil nil)
+    ("b" (my-python-insert-pdb-trace "pdb") nil)
+    ("B" (my-python-insert-pdb-trace "ipdb") nil)
+    ("t" my-python-pytest nil)
+    ("T" (my-python-pytest "") nil)))
 
 ;; reStructuredText
 (setq
@@ -1061,13 +1018,12 @@ git  \
  :pre-hook (setq evil-this-type 'line))
 (evil-define-key 'motion rst-mode-map
   (kbd "SPC TAB") 'my-easymotion-rst)
-(defhydra hydra-rst (:exit t :foreign-keys warn)
-  "\nrestructuredtext  «_a_»djust"
-  ("RET" nil nil)
-  ("<escape>" nil nil)
-  ("a" rst-adjust nil :exit nil))
-(evil-define-key 'normal rst-mode-map
-  (kbd "RET") 'hydra-rst/body)
+(evil-define-key 'normal rst-mode-map (kbd "RET")
+  (defhydra hydra-rst (:exit t :foreign-keys warn)
+    "\nrestructuredtext  _a_djust"
+    ("RET" nil nil)
+    ("<escape>" nil nil)
+    ("a" rst-adjust nil :exit nil)))
 
 ;; Shell
 (add-to-list 'auto-mode-alist '("bashrc\\'" . sh-mode))
