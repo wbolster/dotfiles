@@ -26,7 +26,7 @@
   "After FEATURE is loaded, evaluate BODY."
   (declare (indent defun))
   `(eval-after-load ,feature
-    '(progn ,@body)))
+     '(progn ,@body)))
 
 
 ;;;
@@ -105,12 +105,11 @@
 ;; Cursor
 (blink-cursor-mode 0)
 (setq
-   evil-normal-state-cursor   '("#859900" box)     ; green
-   evil-visual-state-cursor   '("#cb4b16" box)     ; orange
-   evil-insert-state-cursor   '("#268bd2" bar)     ; blue
-   evil-replace-state-cursor  '("#dc322f" bar)     ; red
-   evil-operator-state-cursor '("#dc322f" hollow)  ; red
-)
+ evil-normal-state-cursor   '("#859900" box)     ; green
+ evil-visual-state-cursor   '("#cb4b16" box)     ; orange
+ evil-insert-state-cursor   '("#268bd2" bar)     ; blue
+ evil-replace-state-cursor  '("#dc322f" bar)     ; red
+ evil-operator-state-cursor '("#dc322f" hollow)) ; red
 
 ;; Font faces
 (defun my-remove-bold-underline-from-all-faces ()
@@ -481,10 +480,11 @@
   ("-" (er/expand-region -1) nil)
   ("r" (er/expand-region 0) nil))
 (evil-define-key 'visual global-map
-  (kbd "TAB") (lambda ()
-                (interactive)
-                (er/expand-region 1)
-                (hydra-expand-region/body)))
+  (kbd "TAB")
+  (lambda ()
+    (interactive)
+    (er/expand-region 1)
+    (hydra-expand-region/body)))
 
 ;; folding (outline)
 (evil-define-key 'motion global-map
@@ -581,8 +581,7 @@ writeroom  \
   ("-" default-text-scale-decrease nil)
   ("n" (writeroom-decrease-width) nil)
   ("w" (writeroom-increase-width) nil)
-  ("r" (writeroom-adjust-width nil) nil :exit t)
-)
+  ("r" (writeroom-adjust-width nil) nil :exit t))
 (define-key my-leader-map "z" 'hydra-zoom/body)
 
 
@@ -719,8 +718,7 @@ project  \
   ;; switching between test and implementation since that is generally
   ;; more useful.
   ("t" projectile-find-implementation-or-test-other-window nil)
-  ("T" projectile-toggle-between-implementation-and-test nil)
-)
+  ("T" projectile-toggle-between-implementation-and-test nil))
 (define-key my-leader-map "p" 'hydra-project/body)
 
 
@@ -764,24 +762,23 @@ git  \
   ("s" magit-status nil)
   ("S"
    (lambda ()
-    "Open git status for another repository."
-    (interactive)
-    (setq current-prefix-arg t)
-    (call-interactively 'magit-status))
+     "Open git status for another repository."
+     (interactive)
+     (setq current-prefix-arg t)
+     (call-interactively 'magit-status))
    nil)
   ("w"
    (lambda ()
-    "Browse repository on the web; invokes hub."
-    (interactive)
-    (shell-command "hub browse"))
+     "Browse repository on the web; invokes hub."
+     (interactive)
+     (shell-command "hub browse"))
    nil)
   ("W"
    (lambda ()
-    "Compare repository on the web; invokes hub."
-    (interactive)
-    (shell-command "hub compare"))
-   nil)
-)
+     "Compare repository on the web; invokes hub."
+     (interactive)
+     (shell-command "hub compare"))
+   nil))
 (define-key my-leader-map "g" 'hydra-git/body)
 
 ;; smerge
@@ -830,11 +827,12 @@ git  \
   ("g" ag-project nil)
   ("G" ag nil)
   ("r" ag-project-regexp nil)
-  ("R" ag-regexp nil)
-)
+  ("R" ag-regexp nil))
 (define-key my-leader-map "a" 'hydra-ag/body)
-(add-hook 'ag-mode-hook (lambda ()
-  (toggle-truncate-lines t)))
+(add-hook
+ 'ag-mode-hook
+ (lambda ()
+   (toggle-truncate-lines t)))
 
 ;; swiper style search using ag; uses shift-/, since it's conceptually
 ;; an alternative to swiper.
@@ -1042,20 +1040,20 @@ git  \
  rst-indent-comment 2
  rst-indent-field 2
  rst-indent-literal-normal 2
- rst-preferred-adornments '(
-   (?= over-and-under 0)
-   (?= simple 0)
-   (?- simple 0)
-   (?~ simple 0)
-   (?+ simple 0)
-   (?` simple 0)
-   (?# simple 0)
-   (?@ simple 0))
+ rst-preferred-adornments '((?= over-and-under 0)
+                            (?= simple 0)
+                            (?- simple 0)
+                            (?~ simple 0)
+                            (?+ simple 0)
+                            (?` simple 0)
+                            (?# simple 0)
+                            (?@ simple 0))
  rst-preferred-bullets '(?- ?*))
-(add-hook 'rst-mode-hook (lambda ()
-  (setq evil-shift-width 2)
-  (modify-syntax-entry ?_ "w")
-))
+(add-hook
+ 'rst-mode-hook
+ (lambda ()
+   (setq evil-shift-width 2)
+   (modify-syntax-entry ?_ "w")))
 (evilem-make-motion
  my-easymotion-rst
  (list 'rst-forward-section 'rst-backward-section)
