@@ -531,7 +531,7 @@
         (setq avy-keys '(?a ?r ?s ?t ?n ?e ?i ?o)))
     (progn
       (global-evil-colemak-basics-mode -1)
-      (setq avy-keys '(?a ?s ?d ?f ?h ?j ?k ?l)))))
+      (setq avy-keys '(?a ?s ?d ?f ?j ?k ?l ?\;)))))
 
 
 ;;;
