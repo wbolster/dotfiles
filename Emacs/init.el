@@ -68,6 +68,7 @@
 ;; Reduce clutter
 (setq
  frame-resize-pixelwise t
+ frame-title-format "%b"
  inhibit-startup-screen t
  initial-scratch-message nil
  ns-use-native-fullscreen nil)
