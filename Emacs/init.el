@@ -1024,7 +1024,7 @@
     "\nrestructuredtext  _a_djust"
     ("RET" nil nil)
     ("<escape>" nil nil)
-    ("a" rst-adjust nil :exit nil)))
+    ("a" rst-adjust nil)))
 
 ;; Shell
 (add-to-list 'auto-mode-alist '("bashrc\\'" . sh-mode))
