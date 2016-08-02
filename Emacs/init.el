@@ -1001,6 +1001,10 @@
     ("B" (my-python-insert-pdb-trace "ipdb") nil)
     ("t" my-python-pytest nil)
     ("T" (my-python-pytest "") nil)))
+(evil-define-key 'insert python-mode-map
+  ;; Swap : and ; in insert mode
+  ":" (lambda () (interactive) (insert ";"))
+  ";" (lambda () (interactive) (insert ":")))
 
 ;; reStructuredText
 (setq
