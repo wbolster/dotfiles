@@ -542,6 +542,10 @@
 (defvar my-default-text-scale-height
   (face-attribute 'default :height)  ;; inherited from environment configuration
   "The default text scale height.")
+(if (<= my-default-text-scale-height 60)
+    ;; when started as an emacs daemon process, the default face's
+    ;; height attribute is bogus. use a sane default in that case.
+    (setq my-default-text-scale-height 100))
 (defun my-default-text-scale-set (height)
   (interactive "nHeight (e.g. 110) ")
   (default-text-scale-increment (- height (face-attribute 'default :height))))
