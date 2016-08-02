@@ -39,6 +39,11 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (modify-syntax-entry ?_ "w")
 
+;; ensure a server is running
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
 ;; Backup and autosave files
 (setq
  auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-saves/\\1" t))
