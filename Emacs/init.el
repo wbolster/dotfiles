@@ -734,6 +734,7 @@
  magit-prefer-remote-upstream t
  magit-process-popup-time 10
  magit-fetch-arguments '("--prune")
+ magit-rebase-arguments '("--autostash")
  magit-tag-arguments '("--annotate"))
 
 ;; Pop-ups sometimes contain trailing whitespace.
