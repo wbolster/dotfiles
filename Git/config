@@ -107,6 +107,7 @@ ui = auto
 excludesfile = ~/.gitignore_global
 
 [diff]
+algorithm = patience
 tool = gvimdiff
 
 [diff "po"]
