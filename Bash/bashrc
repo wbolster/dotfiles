@@ -416,7 +416,11 @@ if [[ "$PS1" ]]; then
     alias k2='kill %2'
     alias k3='kill %3'
 
-    # Recursive chmod
+    # common chmod invocations
+    alias chmod-public='chmod u=rwX,go=rX'
+    alias chmod-public-with-group='chmod ug=rwX,o=rX'
+    alias chmod-private='chmod u=rwX,go='
+    alias chmod-private-with-group='chmod ug=rwX,o='
     alias rchmod-public='chmod -R u=rwX,go=rX'
     alias rchmod-public-with-group='chmod -R ug=rwX,o=rX'
     alias rchmod-private='chmod -R u=rwX,go='
