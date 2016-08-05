@@ -121,6 +121,7 @@ decorate = short
 date = iso8601
 
 [merge]
+conflictstyle = diff3
 defaultToUpstream = true
 log = 100
 tool = gvimdiff
