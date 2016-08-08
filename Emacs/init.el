@@ -276,29 +276,6 @@
   (kbd "C-.") 'evil-shift-right-line
   (kbd "C->") 'evil-shift-right-line)
 
-;; swap number/symbol row in insert mode
-;; TODO: convert into a globalized minor mode to allow enabling/disabling
-(evil-define-key 'insert global-map
-  "1" (lambda () (interactive) (insert "!"))
-  "!" (lambda () (interactive) (insert "1"))
-  "2" (lambda () (interactive) (insert "@"))
-  "@" (lambda () (interactive) (insert "2"))
-  "3" (lambda () (interactive) (insert "#"))
-  "#" (lambda () (interactive) (insert "3"))
-  "4" (lambda () (interactive) (insert "$"))
-  "$" (lambda () (interactive) (insert "4"))
-  "5" (lambda () (interactive) (insert "%"))
-  "%" (lambda () (interactive) (insert "5"))
-  "6" (lambda () (interactive) (insert "^"))
-  "^" (lambda () (interactive) (insert "6"))
-  "7" (lambda () (interactive) (insert "&"))
-  "&" (lambda () (interactive) (insert "7"))
-  "8" (lambda () (interactive) (insert "*"))
-  "*" (lambda () (interactive) (insert "8"))
-  "9" (lambda () (interactive) (insert "("))
-  "(" (lambda () (interactive) (insert "9"))
-  "0" (lambda () (interactive) (insert ")"))
-  ")" (lambda () (interactive) (insert "0")))
 
 ;; previous/next thing (inspired by vim unimpaired)
 (defun my-last-error ()
