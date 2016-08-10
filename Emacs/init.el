@@ -673,6 +673,11 @@
   (or (if (projectile-test-file-p (buffer-file-name))
           (file-relative-name (buffer-file-name) (projectile-project-root)))
       (projectile-find-matching-test (buffer-file-name))))
+(defun my-projectile-switch-open-project-buffer ()
+  "Switch to a buffer of an open project."
+  (interactive)
+  (let ((projectile-switch-project-action 'projectile-switch-to-buffer))
+    (projectile-switch-open-project)))
 (setq
  projectile-ignored-projects '("/usr/local/")
  projectile-mode-line nil
@@ -689,7 +694,7 @@
   ("f" projectile-find-file nil)
   ("F" projectile-find-file-other-window nil)
   ("k" projectile-kill-buffers nil)
-  ("p" projectile-switch-open-project nil)
+  ("p" my-projectile-switch-open-project-buffer nil)
   ("P" projectile-switch-project nil)
   ("s" projectile-save-project-buffers nil)
   ;; Use the "other window" variant for the lowercase version for
