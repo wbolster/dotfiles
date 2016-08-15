@@ -266,7 +266,7 @@
   (kbd "C-a") 'evil-first-non-blank
   (kbd "C-d") 'delete-char
   (kbd "C-e") 'end-of-line
-  (kbd "C-h") 'backward-delete-char-untabify
+  (kbd "C-h") [backspace]
   (kbd "C-t") 'transpose-chars
   ;; during typing, ctrl-v is "paste", like everywhere else
   (kbd "C-v") 'yank
