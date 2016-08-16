@@ -243,6 +243,8 @@
 ;;; movement and editing
 ;;;
 
+(electric-pair-mode)
+
 ;; scrolling
 (setq
  indicate-buffer-boundaries 'left
@@ -280,7 +282,6 @@
   (kbd "C-<") 'evil-shift-left-line
   (kbd "C-.") 'evil-shift-right-line
   (kbd "C->") 'evil-shift-right-line)
-
 
 ;; previous/next thing (inspired by vim unimpaired)
 (defun my-last-error ()
