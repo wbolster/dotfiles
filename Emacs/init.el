@@ -425,7 +425,10 @@
   (interactive)
   (setq current-prefix-arg 4)
   (call-interactively 'avy-goto-line))
-(defun my-evil-end-of-next-line () (interactive) (evil-next-line) (end-of-line))
+(defun my-evil-end-of-next-line ()
+  (interactive)
+  (evil-next-line)
+  (end-of-line))
 (evilem-make-motion-plain
  my-avy-evil-goto-end-of-line
  (list 'evil-end-of-line 'my-evil-end-of-next-line)
