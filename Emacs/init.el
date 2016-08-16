@@ -987,12 +987,15 @@
   (let ((default-directory (projectile-project-root)))
     (compile (format "py.test %s" arguments) t)))
 (defun my-python-insert-pdb-trace (mod)
+  "Insert a pdb trace statement using MOD right before the current statement."
   (python-nav-beginning-of-statement)
-  (beginning-of-line)
-  (insert "\n")
+  (insert-before-markers
+   (format
+    "import %s; %s.set_trace()  # FIXME\n%s"
+    mod mod
+    (buffer-substring-no-properties  ;; copy indentation
+     (line-beginning-position) (point))))
   (forward-line -1)
-  (indent-according-to-mode)
-  (insert (format "import %s; %s.set_trace()  # FIXME" mod mod))
   (beginning-of-line-text))
 (evilem-make-motion
  my-easymotion-python
