@@ -260,14 +260,19 @@
   (kbd "C-j") 'evil-next-line
   (kbd "C-k") 'evil-previous-line)
 
-;; some emacs bindings and overrides for insert mode
+;; some emacs and shell style bindings (emacs inspired) in insert mode
+(defun my-evil-transpose-chars ()
+  "Invoke 'transpose-chars' on the right chars in insert state."
+  (interactive)
+  (backward-char)
+  (transpose-chars nil)
+  (unless (eolp) (forward-char)))
 (evil-define-key 'insert global-map
-  ;; shell style editing (emacs inspired key bindings)
   (kbd "C-a") 'evil-first-non-blank
   (kbd "C-d") 'delete-char
   (kbd "C-e") 'end-of-line
   (kbd "C-h") [backspace]
-  (kbd "C-t") 'transpose-chars
+  (kbd "C-t") 'my-evil-transpose-chars
   ;; during typing, ctrl-v is "paste", like everywhere else
   (kbd "C-v") 'yank
   ;; shift line with < and > (same chars as in normal mode; replaces C-d and C-t)
