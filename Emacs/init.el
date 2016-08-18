@@ -887,6 +887,7 @@
  evil-complete-previous-func (lambda (arg) (call-interactively 'company-dabbrev))
 )
 (add-to-list 'company-auto-complete-chars ?\( )
+(add-to-list 'company-backends 'company-files)
 (add-hook 'after-init-hook 'global-company-mode)
 (define-key company-active-map (kbd "C-n") 'company-select-next)
 (define-key company-active-map (kbd "C-p") 'company-select-previous)
