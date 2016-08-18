@@ -135,6 +135,7 @@
   " company"
   " counsel"
   " DS"  ;; python-docstring
+  " Fill"
   " FlyC"
   " hl-p"
   " hl-s"  ;; highlight-symbol
