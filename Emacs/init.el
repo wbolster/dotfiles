@@ -472,7 +472,6 @@
  evil-snipe-override-evil-repeat-keys nil
  evil-snipe-scope 'line
  evil-snipe-repeat-scope 'line
- evil-snipe-spillover-scope 'buffer
  evil-snipe-smart-case t
  evil-snipe-tab-increment t)
 (evil-snipe-mode 1)
