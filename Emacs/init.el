@@ -149,6 +149,7 @@
 (setq
  sml/col-number-format "%c"
  sml/line-number-format "%l"
+ sml/name-width '(1 . 40)
  sml/projectile-replacement-format "%s:")
 (sml/setup)
 
