@@ -189,6 +189,7 @@
 ;;;
 
 (setq
+ evil-cleverparens-swap-move-by-word-and-symbol t
  evil-cross-lines t
  evil-want-C-u-scroll t
  evil-want-C-w-in-emacs-state t)
@@ -948,6 +949,7 @@
  'emacs-lisp-mode-hook
  (lambda ()
    (setq evil-shift-width 2)
+   (evil-cleverparens-mode)
    (rainbow-delimiters-mode)))
 (evil-define-key 'motion emacs-lisp-mode-map (kbd "RET")
   (defhydra hydra-emacs-lisp (:exit t :foreign-keys warn)
