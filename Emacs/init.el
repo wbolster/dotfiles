@@ -245,8 +245,6 @@
 ;;; movement and editing
 ;;;
 
-(electric-pair-mode)
-
 ;; scrolling
 (setq
  indicate-buffer-boundaries 'left
@@ -263,6 +261,11 @@
   "k" 'evil-previous-visual-line
   (kbd "C-j") 'evil-next-line
   (kbd "C-k") 'evil-previous-line)
+
+;; electric pairs
+(setq
+ electric-pair-inhibit-predicate 'electric-pair-default-inhibit
+ electric-pair-skip-whitespace 'chomp)
 
 ;; some emacs and shell style bindings (emacs inspired) in insert mode
 (defun my-evil-transpose-chars ()
@@ -933,6 +936,7 @@
   (abbrev-mode)
   (auto-fill-mode)
   (column-number-mode)
+  (electric-pair-mode)
   (fic-mode)
   (highlight-parentheses-mode)
   (highlight-symbol-mode)))
