@@ -926,8 +926,10 @@
 ;;;
 
 ;; text editing
+(setq typo-language "English")
 (add-hook 'text-mode-hook (lambda ()
   (auto-fill-mode)
+  (typo-mode)
   (visual-line-mode)))
 
 ;; programming languages
