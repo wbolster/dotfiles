@@ -1018,19 +1018,20 @@
 (evil-define-key 'motion python-mode-map
   (kbd "SPC /") 'my-swiper-python-definitions
   (kbd "SPC TAB") 'my-easymotion-python)
-(evil-define-key 'normal python-mode-map (kbd "RET")
-  (defhydra hydra-python (:exit t :foreign-keys warn)
-    "\npython  _b_ pdb trace  _t_ pytest"
-    ("RET" nil nil)
-    ("<escape>" nil nil)
-    ("b" (my-python-insert-pdb-trace "pdb") nil)
-    ("B" (my-python-insert-pdb-trace "ipdb") nil)
-    ("t" my-python-pytest nil)
-    ("T" (my-python-pytest "") nil)))
 (evil-define-key 'insert python-mode-map
   ;; Swap : and ; in insert mode
   ":" (lambda () (interactive) (insert ";"))
   ";" (lambda () (interactive) (insert ":")))
+(defhydra hydra-python (:exit t :foreign-keys warn)
+  "\npython  _b_ pdb trace  _t_ pytest"
+  ("RET" nil nil)
+  ("<escape>" nil nil)
+  ("b" (my-python-insert-pdb-trace "pdb") nil)
+  ("B" (my-python-insert-pdb-trace "ipdb") nil)
+  ("t" my-python-pytest nil)
+  ("T" (my-python-pytest "") nil))
+(evil-define-key 'normal python-mode-map
+  (kbd "RET") 'hydra-python/body)
 
 ;; reStructuredText
 (setq
