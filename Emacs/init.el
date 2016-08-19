@@ -1026,7 +1026,21 @@
   ("B" (my-python-insert-pdb-trace "ipdb") nil)
   ("t" my-python-pytest nil)
   ("T" (my-python-pytest "") nil))
+(evil-define-operator my-evil-join-python (beg end)
+  "Like 'evil-join', but handles comments sensibly."
+  :motion evil-line
+  (evil-join beg end)
+  (let ((first-line-is-comment (save-excursion
+                                 (evil-first-non-blank)
+                                 (looking-at-p "#")))
+        (joined-line-is-comment (looking-at " #")))
+    (when joined-line-is-comment
+      (if first-line-is-comment
+          (delete-region (point) (match-end 0))
+        (insert " ")
+        (forward-char)))))
 (evil-define-key 'normal python-mode-map
+  [remap evil-join] 'my-evil-join-python
   (kbd "RET") 'hydra-python/body)
 
 ;; reStructuredText
