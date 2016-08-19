@@ -387,6 +387,14 @@
 (evil-define-key 'normal global-map
   "Q" 'my-evil-fill-paragraph-dwim)
 
+;; dumb jump
+(defun my-evil-dumb-jump (&optional use-tooltip)
+  (interactive "P")
+  (evil-set-jump)
+  (dumb-jump-go use-tooltip))
+(evil-define-key 'motion global-map
+  [remap evil-goto-definition] 'my-evil-dumb-jump)
+
 ;; avy and evil-easymotion
 (setq
  avy-all-windows nil
