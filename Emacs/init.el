@@ -1018,10 +1018,6 @@
 (evil-define-key 'motion python-mode-map
   (kbd "SPC /") 'my-swiper-python-definitions
   (kbd "SPC TAB") 'my-easymotion-python)
-(evil-define-key 'insert python-mode-map
-  ;; Swap : and ; in insert mode
-  ":" (lambda () (interactive) (insert ";"))
-  ";" (lambda () (interactive) (insert ":")))
 (defhydra hydra-python (:exit t :foreign-keys warn)
   "\npython  _b_ pdb trace  _t_ pytest"
   ("RET" nil nil)
