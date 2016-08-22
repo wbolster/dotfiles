@@ -388,6 +388,7 @@
   "Q" 'my-evil-fill-paragraph-dwim)
 
 ;; dumb jump
+(setq dumb-jump-selector 'ivy)
 (defun my-evil-dumb-jump (&optional use-tooltip)
   (interactive "P")
   (evil-set-jump)
