@@ -319,7 +319,9 @@
   "[S" 'highlight-symbol-prev-in-defun
   "]S" 'highlight-symbol-next-in-defun
   "[w" 'evil-window-prev
-  "]w" 'evil-window-next)
+  "]w" 'evil-window-next
+  "[z" 'outline-previous-visible-heading
+  "]z" 'outline-next-visible-heading)
 
 ;; quickly swap two text objects using "gx"; the empty text object is
 ;; a trick to make "gxp" work to move previously marked text without
@@ -513,12 +515,6 @@
     (interactive)
     (er/expand-region 1)
     (hydra-expand-region/body)))
-
-;; folding (outline)
-(evil-define-key 'motion global-map
-  "zi" 'outline-minor-mode
-  "[z" 'outline-previous-visible-heading
-  "]z" 'outline-next-visible-heading)
 
 
 ;;;
