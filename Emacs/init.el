@@ -389,12 +389,10 @@
 
 ;; dumb jump
 (setq dumb-jump-selector 'ivy)
-(defun my-evil-dumb-jump (&optional use-tooltip)
-  (interactive "P")
-  (evil-set-jump)
-  (dumb-jump-go use-tooltip))
+(advice-add 'dumb-jump-go :before (lambda (&rest r) (evil-set-jump)))
 (evil-define-key 'motion global-map
-  [remap evil-goto-definition] 'my-evil-dumb-jump)
+  "gd" 'dumb-jump-go-current-window
+  "gD" 'dumb-jump-go-other-window)
 
 ;; avy and evil-easymotion
 (setq
