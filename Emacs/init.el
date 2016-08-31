@@ -201,7 +201,15 @@
 (global-evil-surround-mode)
 (global-evil-visualstar-mode)
 
-;; extra text objects
+;; text objects
+(defun my-evil-text-object-symbol-dwim (count)
+  "Intelligently pick evil-inner-symbol or evil-a-symbol."
+  (interactive "P")
+  (if (eq this-command 'evil-delete)
+      (evil-a-symbol count)
+    (evil-inner-symbol count)))
+(evil-define-key '(operator visual) global-map
+  "o" 'my-evil-text-object-symbol-dwim)
 (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
 (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
 (define-key evil-inner-text-objects-map "b" 'evil-textobj-anyblock-inner-block)
