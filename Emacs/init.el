@@ -199,6 +199,7 @@
 (evil-mode)
 (evil-commentary-mode)
 (global-evil-surround-mode)
+(global-evil-swap-keys-mode)
 (global-evil-visualstar-mode)
 
 ;; text objects
@@ -529,7 +530,7 @@
 ;;;
 
 (defhydra hydra-toggle (:exit t :foreign-keys warn)
-  "\ntoggle  _b_ackgound  _c_olemak  _f_ill  _l_ine  _m_aximize  _n_umber  _o_utline  _r_elative-number  _t_runcate  _v_isual-line  _w_riteroom  _SPC_ whitespace"
+  "\ntoggle  _b_ackgound  _c_olemak  _f_ill  _l_ine  _m_aximize  _n_umber  _o_utline  _r_elative-number  _t_runcate  _v_isual-line  _w_riteroom  _SPC_ whitespace  _1_ num/sym"
   ("<escape>" nil nil)
   ("b" my-toggle-dark-light-theme nil)
   ("B" my-set-theme-from-environment nil)
@@ -548,7 +549,9 @@
   ("SPC" whitespace-mode nil)
   ("S-SPC" my-toggle-show-trailing-whitespace nil)
   ("w" writeroom-mode nil)
-  ("W" (progn (delete-other-windows) (writeroom-mode 'toggle)) nil))
+  ("W" (progn (delete-other-windows) (writeroom-mode 'toggle)) nil)
+  ("1" global-evil-swap-keys-mode nil)
+  ("!" global-evil-swap-keys-mode nil))
 (define-key my-leader-map "t" 'hydra-toggle/body)
 
 (define-minor-mode my-colemak-mode
@@ -942,20 +945,23 @@
   (add-to-list 'typo-quotation-marks '("prefer-single" "‘" "’" "“" "”")))
 (defun my-text-mode-hook ()
   (auto-fill-mode)
+  (evil-swap-keys-swap-question-mark-slash)
   (typo-mode)
   (visual-line-mode))
 (add-hook 'text-mode-hook 'my-text-mode-hook)
 
 ;; programming languages
 (setq fic-highlighted-words '("FIXME" "TODO" "BUG" "XXX"))
-(add-hook 'prog-mode-hook (lambda ()
+(defun my-prog-mode-hook ()
   (abbrev-mode)
+  (evil-swap-keys-swap-number-row)
   (auto-fill-mode)
   (column-number-mode)
   (electric-pair-mode)
   (fic-mode)
   (highlight-parentheses-mode)
-  (highlight-symbol-mode)))
+  (highlight-symbol-mode))
+(add-hook 'prog-mode-hook 'my-prog-mode-hook)
 
 ;; emacs lisp
 (add-hook
@@ -985,14 +991,16 @@
 (setq TeX-engine 'xetex)
 
 ;; python
-(add-hook
- 'python-mode-hook
- (lambda ()
-   (setq
-    fill-column 72
-    python-fill-docstring-style 'symmetric)
-   (outline-minor-mode)
-   (python-docstring-mode)))
+(defun my-python-mode-hook ()
+  (setq
+   fill-column 72
+   python-fill-docstring-style 'symmetric)
+  (evil-swap-keys-swap-colon-semicolon)
+  (evil-swap-keys-swap-underscore-dash)
+  (evil-text-object-python-add-bindings)
+  (outline-minor-mode)
+  (python-docstring-mode))
+(add-hook 'python-mode-hook 'my-python-mode-hook)
 (add-hook 'comint-output-filter-functions 'python-pdbtrack-comint-output-filter-function)
 (defvar my-python-pytest-arguments-history nil
   "Argument history for pytest invocations.")
@@ -1094,6 +1102,9 @@
     ("a" rst-adjust nil)))
 
 ;; Shell
+(defun my-sh-mode-hook ()
+  (evil-swap-keys-swap-pipe-backslash))
+(add-hook 'sh-mode-hook 'my-sh-mode-hook)
 (add-to-list 'auto-mode-alist '("bashrc\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.bashrc-.*\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.envrc\\'" . sh-mode))
