@@ -1083,11 +1083,13 @@
                             (?# simple 0)
                             (?@ simple 0))
  rst-preferred-bullets '(?- ?*))
-(add-hook
- 'rst-mode-hook
- (lambda ()
-   (setq evil-shift-width 2)
-   (modify-syntax-entry ?_ "w")))
+(defun my-rst-mode-hook ()
+  (setq evil-shift-width 2)
+  (modify-syntax-entry ?_ "w")
+  (make-variable-buffer-local 'typo-mode-map)
+  (define-key typo-mode-map "`" nil)
+  (add-to-list 'electric-pair-pairs '(?_ . ?_)))
+(add-hook 'rst-mode-hook 'my-rst-mode-hook)
 (evilem-make-motion
  my-easymotion-rst
  (list 'rst-forward-section 'rst-backward-section)
