@@ -937,11 +937,14 @@
 ;;;
 
 ;; text editing
-(setq typo-language "English")
-(add-hook 'text-mode-hook (lambda ()
+(setq-default typo-language "prefer-single")
+(with-eval-after-load 'typo
+  (add-to-list 'typo-quotation-marks '("prefer-single" "‘" "’" "“" "”")))
+(defun my-text-mode-hook ()
   (auto-fill-mode)
   (typo-mode)
-  (visual-line-mode)))
+  (visual-line-mode))
+(add-hook 'text-mode-hook 'my-text-mode-hook)
 
 ;; programming languages
 (setq fic-highlighted-words '("FIXME" "TODO" "BUG" "XXX"))
