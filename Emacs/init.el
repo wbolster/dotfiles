@@ -399,7 +399,12 @@
 
 ;; dumb jump
 (setq dumb-jump-selector 'ivy)
-(advice-add 'dumb-jump-go :before (lambda (&rest r) (evil-set-jump)))
+(defun my-jump-around-advice (fn &rest args)
+  (evil-set-jump)
+  (apply fn args)
+  (recenter-top-bottom 0)
+  (nav-flash-show))
+(advice-add 'dumb-jump-go :around 'my-jump-around-advice)
 (evil-define-key 'motion global-map
   "gd" 'dumb-jump-go-current-window
   "gD" 'dumb-jump-go-other-window)
