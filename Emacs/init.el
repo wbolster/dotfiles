@@ -1049,13 +1049,15 @@
   (kbd "SPC /") 'my-swiper-python-definitions
   (kbd "SPC TAB") 'my-easymotion-python)
 (defhydra hydra-python (:exit t :foreign-keys warn)
-  "\npython  _b_ pdb trace  _t_ pytest"
+  "\npython  _b_ pdb trace  _l_  multi-line  _t_ pytest"
   ("RET" nil nil)
   ("<escape>" nil nil)
   ("b" (my-python-insert-pdb-trace "pdb") nil)
   ("B" (my-python-insert-pdb-trace "ipdb") nil)
   ("t" my-python-pytest nil)
-  ("T" (my-python-pytest "") nil))
+  ("T" (my-python-pytest "") nil)
+  ("l" multi-line nil :exit nil)
+  ("L" multi-line-single-line nil))
 (evil-define-operator my-evil-join-python (beg end)
   "Like 'evil-join', but handles comments sensibly."
   :motion evil-line
@@ -1072,6 +1074,8 @@
 (evil-define-key 'normal python-mode-map
   [remap evil-join] 'my-evil-join-python
   (kbd "RET") 'hydra-python/body)
+(evil-define-key 'insert python-mode-map
+  (kbd "C-l") 'multi-line)
 
 ;; reStructuredText
 (setq
