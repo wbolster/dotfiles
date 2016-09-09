@@ -401,10 +401,21 @@
 ;; dumb jump
 (setq dumb-jump-selector 'ivy)
 (defun my-jump-around-advice (fn &rest args)
-  (evil-set-jump)
-  (apply fn args)
-  (recenter-top-bottom 0)
-  (nav-flash-show))
+  ;; TODO: figure out whether the buffer changed. if the jump was in
+  ;; the same buffer, check whether the target was already between
+  ;; (window-start) and (window-end), and if so, avoid scrolling.
+  (let ((original-buffer (current-buffer))
+        (original-point (point))
+        (original-window-start (window-start))
+        (original-window-end (window-end)))
+    (evil-set-jump)
+    (apply fn args)
+    (unless (and (eq (current-buffer) original-buffer)
+                 (<= original-window-start (point) original-window-end))
+      (recenter-top-bottom 0))
+    (unless (and (eq (current-buffer) original-buffer)
+                 (eq (point) original-point))
+      (nav-flash-show))))
 (advice-add 'dumb-jump-go :around 'my-jump-around-advice)
 (evil-define-key 'motion global-map
   "gd" 'dumb-jump-go-current-window
