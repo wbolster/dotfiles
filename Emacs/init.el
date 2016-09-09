@@ -1072,11 +1072,22 @@
           (delete-region (point) (match-end 0))
         (insert " ")
         (forward-char)))))
+(defun my-evil-forward-char-or-python-statement (count)
+  "Intelligently pick a statement or a character."
+  (interactive "p")
+  (cond
+   ((eq this-command 'evil-change)
+    (evil-text-object-python-inner-statement count))
+   ((eq this-command 'evil-delete)
+    (evil-text-object-python-outer-statement count))
+   (t (evil-forward-char count))))
 (evil-define-key 'normal python-mode-map
   [remap evil-join] 'my-evil-join-python
   (kbd "RET") 'hydra-python/body)
 (evil-define-key 'insert python-mode-map
   (kbd "C-l") 'multi-line)
+(evil-define-key 'operator python-mode-map
+  "l" 'my-evil-forward-char-or-python-statement)
 
 ;; reStructuredText
 (setq
