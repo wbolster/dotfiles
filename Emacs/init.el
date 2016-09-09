@@ -288,6 +288,7 @@
   (kbd "C-d") 'delete-char
   (kbd "C-e") 'end-of-line
   (kbd "C-h") [backspace]
+  (kbd "C-k") 'kill-line
   (kbd "C-t") 'my-evil-transpose-chars
   ;; during typing, ctrl-v is "paste", like everywhere else
   (kbd "C-v") 'yank
