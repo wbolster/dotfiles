@@ -1046,19 +1046,6 @@
 (defun my-swiper-python-definitions ()
   (interactive)
   (swiper "^\\s-*\\(def\\|class\\)\\s- "))
-(evil-define-key 'motion python-mode-map
-  (kbd "SPC /") 'my-swiper-python-definitions
-  (kbd "SPC TAB") 'my-easymotion-python)
-(defhydra hydra-python (:exit t :foreign-keys warn)
-  "\npython  _b_ pdb trace  _l_  multi-line  _t_ pytest"
-  ("RET" nil nil)
-  ("<escape>" nil nil)
-  ("b" (my-python-insert-pdb-trace "pdb") nil)
-  ("B" (my-python-insert-pdb-trace "ipdb") nil)
-  ("t" my-python-pytest nil)
-  ("T" (my-python-pytest "") nil)
-  ("l" multi-line nil :exit nil)
-  ("L" multi-line-single-line nil))
 (evil-define-operator my-evil-join-python (beg end)
   "Like 'evil-join', but handles comments sensibly."
   :motion evil-line
@@ -1081,9 +1068,35 @@
    ((eq this-command 'evil-delete)
     (evil-text-object-python-outer-statement count))
    (t (evil-forward-char count))))
-(evil-define-key 'normal python-mode-map
-  [remap evil-join] 'my-evil-join-python
+(defun my-python-refactor-make-variable (beg end)
+  "Refactor the current region into a named variable."
+  (interactive "r")
+  (let ((name (read-string "Variable name: "))
+        (code (delete-and-extract-region beg end)))
+    (insert name)
+    (python-nav-beginning-of-statement)
+    (insert-before-markers
+     (format "%s = %s\n%s" name code
+      (buffer-substring-no-properties (line-beginning-position) (point))))
+    (forward-line -1)
+    (beginning-of-line-text)))
+(defhydra hydra-python (:exit t :foreign-keys warn)
+  "\npython  _b_ pdb trace  _l_  multi-line  _t_ pytest  _v_ariable"
+  ("RET" nil nil)
+  ("<escape>" nil nil)
+  ("b" (my-python-insert-pdb-trace "pdb") nil)
+  ("B" (my-python-insert-pdb-trace "ipdb") nil)
+  ("t" my-python-pytest nil)
+  ("T" (my-python-pytest "") nil)
+  ("l" multi-line nil :exit nil)
+  ("L" multi-line-single-line nil)
+  ("v" my-python-refactor-make-variable nil))
+(evil-define-key 'motion python-mode-map
+  (kbd "SPC /") 'my-swiper-python-definitions
+  (kbd "SPC TAB") 'my-easymotion-python
   (kbd "RET") 'hydra-python/body)
+(evil-define-key 'normal python-mode-map
+  [remap evil-join] 'my-evil-join-python)
 (evil-define-key 'insert python-mode-map
   (kbd "C-l") 'multi-line)
 (evil-define-key 'operator python-mode-map
