@@ -205,7 +205,7 @@
 ;; text objects
 (defun my-evil-text-object-symbol-dwim (count)
   "Intelligently pick evil-inner-symbol or evil-a-symbol."
-  (interactive "P")
+  (interactive "p")
   (if (eq this-command 'evil-delete)
       (evil-a-symbol count)
     (evil-inner-symbol count)))
