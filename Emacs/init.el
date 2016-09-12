@@ -195,6 +195,7 @@
 
 (require 'evil)
 (require 'evil-magit)
+(add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
 
 (evil-mode)
 (evil-commentary-mode)
