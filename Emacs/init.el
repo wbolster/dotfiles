@@ -353,6 +353,9 @@
   "[z" 'outline-previous-visible-heading
   "]z" 'outline-next-visible-heading)
 
+;; jumps
+(add-hook 'evil-jumps-post-jump-hook #'nav-flash-show)
+
 ;; quickly swap two text objects using "gx"; the empty text object is
 ;; a trick to make "gxp" work to move previously marked text without
 ;; moving anything back to the original location.
