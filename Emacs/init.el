@@ -938,11 +938,12 @@
  company-dabbrev-downcase nil
  company-dabbrev-ignore-case t
  company-idle-delay nil
- company-selection-wrap-around t
+ company-occurrence-weight-function 'company-occurrence-prefer-any-closest
  company-require-match nil
+ company-selection-wrap-around t
+ company-transformers '(company-sort-by-occurrence)
  evil-complete-next-func (lambda (arg) (company-manual-begin))
- evil-complete-previous-func (lambda (arg) (call-interactively 'company-dabbrev))
-)
+ evil-complete-previous-func (lambda (arg) (call-interactively 'company-dabbrev)))
 (add-to-list 'company-auto-complete-chars ?\( )
 (add-to-list 'company-backends 'company-files)
 (add-hook 'after-init-hook 'global-company-mode)
