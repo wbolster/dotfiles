@@ -144,6 +144,7 @@
   " Outl"
   " s-/"  ;; evil-commentary
   " snipe"
+  " SP"  ;; smart-parens
   " Undo-Tree"
 ))
 (setq
@@ -283,10 +284,10 @@
   (kbd "C-j") 'evil-next-line
   (kbd "C-k") 'evil-previous-line)
 
-;; electric pairs
-(setq
- electric-pair-inhibit-predicate 'electric-pair-default-inhibit
- electric-pair-skip-whitespace 'chomp)
+;; smart parens
+(require 'smartparens-config)
+(smartparens-global-mode)
+(show-smartparens-global-mode)
 
 ;; some emacs and shell style bindings (emacs inspired) in insert mode
 (defun my-evil-transpose-chars ()
@@ -1013,7 +1014,6 @@
   (evil-swap-keys-swap-number-row)
   (auto-fill-mode)
   (column-number-mode)
-  (electric-pair-mode)
   (fic-mode)
   (highlight-parentheses-mode)
   (highlight-symbol-mode))
@@ -1062,6 +1062,10 @@
   (python-docstring-mode))
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 (add-hook 'comint-output-filter-functions 'python-pdbtrack-comint-output-filter-function)
+(dolist (open '("(" "{" "["))
+  (sp-local-pair
+   'python-mode open nil
+   :unless '(sp-point-before-word-p)))
 (defvar my-python-pytest-arguments-history nil
   "Argument history for pytest invocations.")
 (defun my-python-pytest (&optional arguments)
