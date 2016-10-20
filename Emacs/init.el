@@ -783,7 +783,8 @@
 ;;; Version control
 ;;;
 
-(require 'magithub)
+(with-eval-after-load 'magit
+  (require 'magithub))
 
 (setq
  auto-revert-check-vc-info t
