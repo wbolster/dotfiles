@@ -1103,7 +1103,7 @@
   (cond
    ((eq this-command 'evil-change)
     (evil-text-object-python-inner-statement count))
-   ((eq this-command 'evil-delete)
+   ((memq this-command '(evil-delete evil-shift-left evil-shift-right))
     (evil-text-object-python-outer-statement count))
    (t (evil-forward-char count))))
 (defun my-python-refactor-make-variable (beg end)
