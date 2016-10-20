@@ -203,6 +203,17 @@
 (global-evil-swap-keys-mode)
 (global-evil-visualstar-mode)
 
+;; esc quits
+(define-key evil-normal-state-map [escape] 'keyboard-quit)
+(define-key evil-visual-state-map [escape] 'keyboard-quit)
+(with-eval-after-load 'ivy
+  (define-key ivy-minibuffer-map [escape] 'minibuffer-keyboard-quit))
+(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+
 ;; text objects
 (defun my-evil-text-object-symbol-dwim (count)
   "Intelligently pick evil-inner-symbol or evil-a-symbol."
