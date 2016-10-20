@@ -688,6 +688,10 @@
       (call-interactively 'evil-window-next)
     (evil-window-vsplit)))
 (define-key my-leader-map "w" evil-window-map)
+(define-key evil-window-map (kbd "C-h") 'evil-window-left)
+(define-key evil-window-map (kbd "i") 'evil-window-right)  ;; colemak right
+(define-key evil-window-map (kbd "C-i") 'evil-window-right)  ;; colemak right
+(define-key evil-window-map (kbd "C-l") 'evil-window-right)
 (define-key evil-window-map (kbd "m") 'hydra-window-move/body)
 (define-key evil-window-map (kbd "C-m") 'hydra-window-move/body)
 (define-key evil-window-map (kbd "n") 'evil-window-vnew)
