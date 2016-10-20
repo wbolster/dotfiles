@@ -1003,6 +1003,10 @@
   (highlight-symbol-mode))
 (add-hook 'prog-mode-hook 'my-prog-mode-hook)
 
+;; compilation
+(evil-define-key 'motion compilation-mode-map
+  "gr" 'recompile)
+
 ;; emacs lisp
 (add-hook
  'emacs-lisp-mode-hook
