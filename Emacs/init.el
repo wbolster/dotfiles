@@ -295,12 +295,19 @@
   (backward-char)
   (transpose-chars nil)
   (unless (eolp) (forward-char)))
+(defun my-kill-line-dwim ()
+  "Kill line, or join the next line when at eolp."
+  (interactive)
+  (if (not (eolp))
+      (kill-line)
+    (kill-line)
+    (delete-horizontal-space)))
 (evil-define-key 'insert global-map
   (kbd "C-a") 'evil-first-non-blank
   (kbd "C-d") 'delete-char
   (kbd "C-e") 'end-of-line
   (kbd "C-h") [backspace]
-  (kbd "C-k") 'kill-line
+  (kbd "C-k") 'my-kill-line-dwim
   (kbd "C-t") 'my-evil-transpose-chars
   ;; during typing, ctrl-v is "paste", like everywhere else
   (kbd "C-v") 'yank
