@@ -606,6 +606,7 @@
     (progn
       (global-evil-colemak-basics-mode -1)
       (setq avy-keys '(?a ?s ?d ?f ?j ?k ?l ?\;)))))
+(my-colemak-mode)
 
 
 ;;;
