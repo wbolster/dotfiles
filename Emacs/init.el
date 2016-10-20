@@ -782,6 +782,8 @@
 ;;; Version control
 ;;;
 
+(require 'magithub)
+
 (setq
  auto-revert-check-vc-info t
  magit-branch-prefer-remote-upstream '("master")
