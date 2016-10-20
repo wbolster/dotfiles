@@ -308,6 +308,8 @@
   (kbd "C-e") 'end-of-line
   (kbd "C-h") [backspace]
   (kbd "C-k") 'my-kill-line-dwim
+  (kbd "C-n") 'next-line
+  (kbd "C-p") 'previous-line
   (kbd "C-t") 'my-evil-transpose-chars
   ;; during typing, ctrl-v is "paste", like everywhere else
   (kbd "C-v") 'yank
