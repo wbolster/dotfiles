@@ -774,6 +774,10 @@
  magit-fetch-arguments '("--prune")
  magit-rebase-arguments '("--autostash")
  magit-tag-arguments '("--annotate"))
+(evil-define-key '(normal visual) magit-mode-map
+  ;; colemak up/down
+  (kbd "n") 'evil-next-visual-line
+  (kbd "e") 'evil-previous-visual-line)
 
 ;; Pop-ups sometimes contain trailing whitespace.
 (add-hook 'magit-popup-mode-hook 'my-hide-trailing-whitespace)
