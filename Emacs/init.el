@@ -1029,7 +1029,7 @@
  'emacs-lisp-mode-hook
  (lambda ()
    (setq evil-shift-width 2)
-   (evil-cleverparens-mode)
+   ;; (evil-cleverparens-mode)  ;; FIXME: useless with colemak
    (rainbow-delimiters-mode)))
 (evil-define-key 'motion emacs-lisp-mode-map (kbd "RET")
   (defhydra hydra-emacs-lisp (:exit t :foreign-keys warn)
