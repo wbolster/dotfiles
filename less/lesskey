@@ -2,5 +2,16 @@
 # Run "lesskey" to produce a ".less" file from this source file.
 
 #command
-h   left-scroll
-l   right-scroll
+h    left-scroll
+
+# qwerty
+l    right-scroll
+
+# colemak
+i    right-scroll
+n    forw-line
+e    back-line
+k    repeat-search
+\ek  repeat-search-all
+K    reverse-search
+\eK  reverse-search-all
