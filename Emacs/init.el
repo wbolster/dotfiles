@@ -1160,6 +1160,10 @@
   (kbd "C-l") 'multi-line)
 (evil-define-key 'operator python-mode-map
   "l" 'my-evil-forward-char-or-python-statement)
+(evil-define-key '(operator visual) python-mode-map
+  "H" 'python-nav-backward-sexp-safe
+  "L" 'python-nav-forward-sexp-safe  ;; qwerty
+  "I" 'python-nav-forward-sexp-safe)  ;; colemak
 
 ;; reStructuredText
 (setq
