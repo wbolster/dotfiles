@@ -1,0 +1,84 @@
+" cvim (chrome extension) configuration
+" see https://github.com/1995eaton/chromium-vim
+
+" this configuration rebinds most keys so that they make sense
+" with a colemak keyboard layout. some keys are not unmapped
+" to retain their default behaviour.
+
+" let barposition="bottom"
+set noautofocus
+set defaultnewtabpage
+set nodimhintcharacters
+let hintcharacters = "arstdvwf"
+set linkanimations
+set smoothscroll
+
+map a createTabbedHint
+map A createMultiHint
+map r scrollPageUp
+map R scrollUp
+map s scrollPageDown
+map S scrollDown
+map t createHint
+map T createActiveTabbedHint
+unmap d
+unmap D
+map h scrollLeft
+map H goBack
+map n scrollPageDown
+map N nextTab
+map e scrollPageUp
+map E previousTab
+map i scrollRight
+map I goForward
+
+map q goBack
+unmap Q
+map w scrollPageUp
+map W scrollUp
+map f createHint
+map F createActiveTabbedHint
+map p passKeys
+unmap P
+" unmap g
+map G scrollToBottom
+map gr reloadTab
+map gR reloadTabUncached
+unmap j
+unmap J
+unmap l
+unmap L
+map u insertMode
+unmap U
+" unmap y
+" unmap Y
+
+" unmap z
+" unmap Z
+map x closeTab
+map X lastClosedTab
+unmap c
+unmap C
+map v toggleVisualMode
+map V toggleVisualLineMode
+unmap b
+unmap B
+map k nextSearchResult
+map K previousSearchResult
+unmap m
+unmap M
+
+map = zoomPageIn
+map + zoomPageIn
+map - zoomPageOut
+map _ zoomPageOut
+map 0 zoomOrig
+
+unmap <C-6>
+
+" for some reason chrome or cvim binds the qwerty key position
+" even though that keyboard layout is not in use at all. work
+" around that by binding qwerty positions to make it work for
+" colemak. sigh.
+imap <C-e> forwardChar
+imap <C-n> forwardLine
