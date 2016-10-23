@@ -106,6 +106,8 @@
   (if (file-exists-p "~/.config/dark-theme")
       (load-theme my-dark-theme t)
     (load-theme my-light-theme t)))
+(defadvice load-theme (before theme-dont-propagate activate)
+  (mapcar #'disable-theme custom-enabled-themes))
 (my-set-theme-from-environment)
 
 ;; Cursor
