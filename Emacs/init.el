@@ -106,8 +106,11 @@
   (if (file-exists-p "~/.config/dark-theme")
       (load-theme my-dark-theme t)
     (load-theme my-light-theme t)))
-(defadvice load-theme (before theme-dont-propagate activate)
-  (mapcar #'disable-theme custom-enabled-themes))
+(defun my-disable-themes ()
+  "Disable all enabled themes."
+  (dolist (theme custom-enabled-themes)
+    (disable-theme theme)))
+(advice-add 'load-theme :before '(lambda (&rest args) (my-disable-themes)))
 (my-set-theme-from-environment)
 
 ;; Cursor
