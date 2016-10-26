@@ -81,4 +81,5 @@ unmap <C-6>
 " around that by binding qwerty positions to make it work for
 " colemak. sigh.
 imap <C-e> forwardChar
-imap <C-n> forwardLine
+imap <C-k> endOfLine
+imap <C-n> deleteToEnd
