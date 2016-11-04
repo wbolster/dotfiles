@@ -981,7 +981,8 @@
 (add-to-list 'company-backends 'company-files)
 (add-hook 'after-init-hook 'global-company-mode)
 (evil-define-key 'insert global-map
-  (kbd "C-<return>") 'company-manual-begin)
+  (kbd "C-<return>") 'company-manual-begin
+  (kbd "C-n") 'company-manual-begin)
 (define-key company-active-map (kbd "C-n") 'company-select-next)
 (define-key company-active-map (kbd "C-p") 'company-select-previous)
 (define-key company-active-map (kbd "C-<return>") 'company-select-next)
