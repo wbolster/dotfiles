@@ -223,6 +223,13 @@
 (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 
+;; overwrite evil-surround defaults to not put spaces inside braces
+(evil-add-to-alist
+ 'evil-surround-pairs-alist
+ ?\( '("(" . ")")
+ ?\[ '("[" . "]")
+ ?\{ '("{" . "}"))
+
 ;; text objects
 (defun my-evil-text-object-symbol-dwim (count)
   "Intelligently pick evil-inner-symbol or evil-a-symbol."
