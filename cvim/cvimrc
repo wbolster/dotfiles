@@ -26,9 +26,9 @@ unmap D
 map h scrollLeft
 map H goBack
 map n scrollPageDown
-map N nextTab
+map N scrollDown
 map e scrollPageUp
-map E previousTab
+map E scrollUp
 map i scrollRight
 map I goForward
 
