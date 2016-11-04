@@ -209,6 +209,9 @@
 (global-evil-swap-keys-mode)
 (global-evil-visualstar-mode)
 
+;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
+(evil-add-command-properties 'evil-yank-line :motion 'evil-end-of-line)
+
 ;; esc quits
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
 (define-key evil-visual-state-map [escape] 'keyboard-quit)
