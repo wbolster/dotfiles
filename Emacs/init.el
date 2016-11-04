@@ -1078,7 +1078,6 @@
    python-fill-docstring-style 'symmetric)
   (evil-swap-keys-swap-colon-semicolon)
   (evil-swap-keys-swap-underscore-dash)
-  (evil-text-object-python-add-bindings)
   (outline-minor-mode)
   (python-docstring-mode))
 (add-hook 'python-mode-hook 'my-python-mode-hook)
@@ -1182,8 +1181,10 @@
   "l" 'my-evil-forward-char-or-python-statement)
 (evil-define-key '(operator visual) python-mode-map
   "H" 'python-nav-backward-sexp-safe
-  "L" 'python-nav-forward-sexp-safe  ;; qwerty
-  "I" 'python-nav-forward-sexp-safe)  ;; colemak
+  ;; "L" 'python-nav-forward-sexp-safe  ;; qwerty
+  "I" 'python-nav-forward-sexp-safe
+  "ul" 'evil-text-object-python-inner-statement
+  "al" 'evil-text-object-python-outer-statement)
 
 ;; reStructuredText
 (setq
