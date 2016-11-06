@@ -680,62 +680,41 @@
 (advice-add 'delete-window :after '(lambda (&rest args) (balance-windows)))
 (advice-add 'display-buffer :after '(lambda (&rest args) (balance-windows)))
 
-;; window movement
-(defhydra hydra-window-move (:foreign-keys warn)
-  "\nwindow  _h_ left  _j_ down  _k_ up  _l_ right  _r_otate"
-  ("<escape>" nil nil)
-  ("<return>" nil nil)
-  ("h" buf-move-left nil)
-  ("H" evil-window-move-far-left nil :exit t)
-  ("j" buf-move-down nil)
-  ("J" evil-window-move-very-bottom nil :exit t)
-  ("k" buf-move-up nil)
-  ("K" evil-window-move-very-top nil :exit t)
-  ("l" buf-move-right nil)
-  ("L" evil-window-move-far-right nil :exit t)
-  ("r" evil-window-rotate-downwards nil)
-  ("R" evil-window-rotate-upwards nil))
-
-;; augment C-w map
 (defun my-evil-window-next-or-vsplit ()
   "Focus next window, or vsplit if it is the only window in this frame."
   (interactive)
   (if (> (count-windows) 1)
       (call-interactively 'evil-window-next)
-    (evil-window-vsplit)))
-(define-key my-leader-map "w" evil-window-map)
-(define-key evil-window-map (kbd "C-h") 'evil-window-left)
-(define-key evil-window-map (kbd "i") 'evil-window-right)  ;; colemak right
-(define-key evil-window-map (kbd "C-i") 'evil-window-right)  ;; colemak right
-(define-key evil-window-map (kbd "C-l") 'evil-window-right)
-(define-key evil-window-map (kbd "m") 'hydra-window-move/body)
-(define-key evil-window-map (kbd "C-m") 'hydra-window-move/body)
-(define-key evil-window-map (kbd "n") 'evil-window-vnew)
-(define-key evil-window-map (kbd "C-n") 'evil-window-vnew)
-(define-key evil-window-map (kbd "q") 'evil-window-delete)
-(define-key evil-window-map (kbd "C-q") 'evil-window-delete)
-(define-key evil-window-map (kbd "w") 'my-evil-window-next-or-vsplit)
-(define-key evil-window-map (kbd "C-w") 'my-evil-window-next-or-vsplit)
-
-;; window switching
+    (evil-window-vsplit))
+  (nav-flash-show))
+(defun my-evil-goto-window (n)
+  "Go to window N."
+  (evil-window-top-left)
+  (evil-window-next n)
+  (nav-flash-show))
 (defun my-evil-goto-window-1 ()
   "Go to the first window."
-  (interactive) (evil-window-top-left))
+  (interactive)
+  (my-evil-goto-window 1))
 (defun my-evil-goto-window-2 ()
   "Go to the second window."
-  (interactive) (evil-window-top-left) (evil-window-next 2))
+  (interactive)
+  (my-evil-goto-window 2))
 (defun my-evil-goto-window-3 ()
   "Go to the third window."
-  (interactive) (evil-window-top-left) (evil-window-next 3))
+  (interactive)
+  (my-evil-goto-window 3))
 (defun my-evil-goto-window-4 ()
   "Go to the fourth window."
-  (interactive) (evil-window-top-left) (evil-window-next 4))
+  (interactive)
+  (my-evil-goto-window 4))
+
 (evil-define-key 'motion global-map
-  (kbd "C-1") 'my-evil-goto-window-1  ; linux: control key
+  (kbd "C-1") 'my-evil-goto-window-1  ;; linux: control key
   (kbd "C-2") 'my-evil-goto-window-2
   (kbd "C-3") 'my-evil-goto-window-3
   (kbd "C-4") 'my-evil-goto-window-4
-  (kbd "s-1") 'my-evil-goto-window-1  ; osx: command key
+  (kbd "s-1") 'my-evil-goto-window-1  ;; osx: command key
   (kbd "s-2") 'my-evil-goto-window-2
   (kbd "s-3") 'my-evil-goto-window-3
   (kbd "s-4") 'my-evil-goto-window-4)
@@ -743,14 +722,37 @@
 (define-key my-leader-map "2" 'my-evil-goto-window-2)
 (define-key my-leader-map "3" 'my-evil-goto-window-3)
 (define-key my-leader-map "4" 'my-evil-goto-window-4)
-(define-key evil-window-map (kbd "1") 'my-evil-goto-window-1)
-(define-key evil-window-map (kbd "C-1") 'my-evil-goto-window-1)
-(define-key evil-window-map (kbd "2") 'my-evil-goto-window-2)
-(define-key evil-window-map (kbd "C-2") 'my-evil-goto-window-2)
-(define-key evil-window-map (kbd "3") 'my-evil-goto-window-3)
-(define-key evil-window-map (kbd "C-3") 'my-evil-goto-window-3)
-(define-key evil-window-map (kbd "4") 'my-evil-goto-window-4)
-(define-key evil-window-map (kbd "C-4") 'my-evil-goto-window-4)
+
+(defhydra my-hydra-window (:exit t :foreign-keys warn )
+  "\nwindow  _h__n__e__i_ nav  _c_lose  _o_nly  _r_otate  _s_plit"
+  ("<escape>" nil nil)
+  ("<return>" nil nil)
+  ("h" evil-window-left nil :exit nil)
+  ("H" buf-move-left nil :exit nil)
+  ("n" evil-window-down nil :exit nil)
+  ("N" buf-move-down nil :exit nil)
+  ("e" evil-window-up nil :exit nil)
+  ("E" buf-move-up nil :exit nil)
+  ("i" evil-window-right nil :exit nil)
+  ("I" buf-move-right nil :exit nil)
+  ("c" evil-window-delete nil)
+  ("o" delete-other-windows nil)
+  ("r" evil-window-rotate-downwards nil :exit nil)
+  ("R" evil-window-rotate-upwards nil :exit nil)
+  ("s" evil-window-split nil)
+  ("S" evil-window-new nil)
+  ("v" evil-window-vsplit nil)
+  ("V" evil-window-vnew nil)
+  ("w" my-evil-window-next-or-vsplit nil)
+  ("C-w" my-evil-window-next-or-vsplit nil)
+  ("1" my-evil-goto-window-1 nil)
+  ("2" my-evil-goto-window-2 nil)
+  ("3" my-evil-goto-window-3 nil)
+  ("4" my-evil-goto-window-4 nil)
+  ("=" balance-windows nil))
+(evil-define-key '(emacs motion) global-map
+  (kbd "C-w") 'my-hydra-window/body)
+(define-key my-leader-map "w" 'my-hydra-window/body)
 
 
 ;;
