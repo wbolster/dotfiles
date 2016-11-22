@@ -889,6 +889,10 @@
     (swiper query)))
 (define-key my-leader-map "/" 'swiper)
 (define-key my-visual-leader-map "/" 'my-swiper-thing-at-point)
+(evil-define-key 'motion global-map
+  "/" 'swiper
+  "g/" 'evil-search-forward)
+(define-key my-leader-map "/" 'evil-search-forward)
 
 ;; ag, the silver searcher
 (setq ag-reuse-buffers t)
