@@ -241,9 +241,8 @@
  ?\{ '("{" . "}"))
 
 ;; text objects
-(defun my-evil-text-object-symbol-dwim (count)
+(evil-define-text-object my-evil-text-object-symbol-dwim (count &optional beg end type)
   "Intelligently pick evil-inner-symbol or evil-a-symbol."
-  (interactive "p")
   (if (eq this-command 'evil-delete)
       (evil-a-symbol count)
     (evil-inner-symbol count)))
