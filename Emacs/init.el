@@ -1062,12 +1062,15 @@
 ;; jinja
 (add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode))
 
-;; JSON
-(setq json-reformat:indent-width 2)
-(add-hook 'json-mode-hook (lambda ()
+;; json
+(defun my-json-mode-hook ()
   (setq
-   tab-width json-reformat:indent-width
-   evil-shift-width tab-width)))
+   tab-width 2
+   json-reformat:indent-width tab-width
+   evil-shift-width tab-width)
+  (evil-swap-keys-swap-colon-semicolon)
+  (evil-swap-keys-swap-double-single-quotes))
+(add-hook 'json-mode-hook #'my-json-mode-hook)
 
 ;; latex
 (setq TeX-engine 'xetex)
