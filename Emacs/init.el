@@ -86,6 +86,7 @@
 (defvar my-dark-theme 'solarized-dark "The preferred dark theme.")
 (defvar my-light-theme 'solarized-light "The preferred light theme.")
 (setq
+ solarized-emphasize-indicators nil
  solarized-scale-org-headlines nil
  solarized-use-less-bold t
  solarized-use-variable-pitch nil
