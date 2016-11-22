@@ -1,1 +1,0 @@
-(define-package "evil-textobj-anyblock" "20151017.1417" "Textobject for the closest user-defined blocks." '((cl-lib "0.5") (evil "1.1.0")) :url "https://github.com/noctuid/evil-textobj-anyblock" :keywords '("evil"))
