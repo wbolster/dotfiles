@@ -596,6 +596,7 @@
   ("c" evil-colemak-basics-mode nil)
   ("f" auto-fill-mode nil)
   ("F" fci-mode nil)
+  ("g" global-diff-hl-mode nil)
   ("l" hl-line-mode nil)
   ("m" toggle-frame-maximized nil)
   ("M" toggle-frame-fullscreen nil)
@@ -809,6 +810,10 @@
 (add-hook
  'magit-status-mode-hook
  (lambda () (evil-colemak-basics-mode -1)))
+
+;; hl-diff
+(global-diff-hl-mode)
+(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
 
 ;; Pop-ups sometimes contain trailing whitespace.
 (add-hook 'magit-popup-mode-hook 'my-hide-trailing-whitespace)
