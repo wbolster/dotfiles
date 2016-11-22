@@ -675,7 +675,7 @@
   "Focus next window, or vsplit if it is the only window in this frame."
   (interactive)
   (if (> (count-windows) 1)
-      (call-interactively 'evil-window-next)
+      (evil-window-next nil)
     (evil-window-vsplit))
   (nav-flash-show))
 (defun my-evil-goto-window (n)
