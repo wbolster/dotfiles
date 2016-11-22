@@ -801,6 +801,7 @@
  magit-prefer-remote-upstream t
  magit-process-popup-time 10
  magit-fetch-arguments '("--prune")
+ magit-log-arguments '("--graph" "--color" "--decorate" "--follow" "-n256")
  magit-rebase-arguments '("--autostash")
  magit-tag-arguments '("--annotate"))
 
