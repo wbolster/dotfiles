@@ -198,6 +198,15 @@
  evil-cross-lines t
  evil-want-C-u-scroll t
  evil-want-C-w-in-emacs-state t)
+(setq
+ evil-colemak-basics-char-jump-commands 'evil-snipe)
+(setq
+ evil-snipe-auto-disable-substitute nil
+ evil-snipe-override-evil-repeat-keys nil
+ evil-snipe-scope 'line
+ evil-snipe-repeat-scope 'line
+ evil-snipe-smart-case t
+ evil-snipe-tab-increment t)
 
 (require 'evil)
 (require 'evil-magit)
@@ -205,6 +214,7 @@
 
 (evil-mode)
 (evil-commentary-mode)
+(global-evil-colemak-basics-mode)
 (global-evil-surround-mode)
 (global-evil-swap-keys-mode)
 (global-evil-visualstar-mode)
@@ -545,15 +555,7 @@
 ;; evil-snipe. the t/T/f/F overrides are the most important ones,
 ;; since avy/evil-easymotion already allows for fancy jumps, e.g. via
 ;; avy-goto-char-timer.
-(setq
- evil-snipe-auto-disable-substitute nil
- evil-snipe-override-evil-repeat-keys nil
- evil-snipe-scope 'line
- evil-snipe-repeat-scope 'line
- evil-snipe-smart-case t
- evil-snipe-tab-increment t)
 (evil-snipe-mode 1)
-(evil-snipe-override-mode 1)
 (set-face-attribute 'evil-snipe-matches-face nil :inherit 'lazy-highlight)
 (evil-define-key 'motion evil-snipe-mode-map
   "s" nil
@@ -591,7 +593,7 @@
   ("<escape>" nil nil)
   ("b" my-toggle-dark-light-theme nil)
   ("B" my-set-theme-from-environment nil)
-  ("c" my-colemak-mode nil)
+  ("c" evil-colemak-basics-mode nil)
   ("f" auto-fill-mode nil)
   ("F" fci-mode nil)
   ("l" hl-line-mode nil)
@@ -610,19 +612,6 @@
   ("1" global-evil-swap-keys-mode nil)
   ("!" global-evil-swap-keys-mode nil))
 (define-key my-leader-map "t" 'hydra-toggle/body)
-
-(define-minor-mode my-colemak-mode
-  "Tweaks for the Colemak keyboard layout."
-  :lighter " colemak"
-  :global t
-  (if my-colemak-mode
-      (progn
-        (global-evil-colemak-basics-mode)
-        (setq avy-keys '(?a ?r ?s ?t ?n ?e ?i ?o)))
-    (progn
-      (global-evil-colemak-basics-mode -1)
-      (setq avy-keys '(?a ?s ?d ?f ?j ?k ?l ?\;)))))
-(my-colemak-mode)
 
 
 ;;;
