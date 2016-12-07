@@ -586,6 +586,25 @@
     (hydra-expand-region/body)))
 
 
+;; narrowing
+(defun my-narrow-dwim ()
+  "Narrow (or widen) to defun or region."
+  (interactive)
+  (if (region-active-p)
+      (progn
+        (narrow-to-region (region-beginning) (region-end))
+        (deactivate-mark)
+        (message "Showing region only"))
+    (if (buffer-narrowed-p)
+        (progn
+          (widen)
+          (message "Showing everything"))
+      (narrow-to-defun)
+      (message "Showing defun only"))))
+(define-key my-leader-map "n" 'my-narrow-dwim)
+(define-key my-visual-leader-map "n" 'my-narrow-dwim)
+
+
 ;;;
 ;;; toggles
 ;;;
