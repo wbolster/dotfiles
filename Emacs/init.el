@@ -1051,7 +1051,12 @@
 (add-hook 'text-mode-hook 'my-text-mode-hook)
 
 ;; programming languages
-(setq fic-highlighted-words '("FIXME" "TODO" "BUG" "XXX"))
+(setq
+ fic-highlighted-words
+ '("FIXME" "fixme"
+   "TODO" "todo"
+   "BUG" "bug"
+   "XXX" "xxx"))
 (defun my-prog-mode-hook ()
   (abbrev-mode)
   (evil-swap-keys-swap-number-row)
