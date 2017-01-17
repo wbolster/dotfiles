@@ -856,7 +856,7 @@
 
 ;; Magit shortcuts
 (defhydra hydra-git (:exit t :foreign-keys warn)
-  "\ngit  _b_lame  _c_ommit  _d_iff  _f_ile  _g_ popup  _l_og  _s_tatus  _w_eb  _!_ command"
+  "\ngit  _b_lame  _c_ommit  _d_iff  _f_ile  _g_ popup  _l_og  _r_efs  _s_tatus  _t_ lock  _w_eb  _!_ command"
   ("<escape>" nil nil)
   ("!" magit-git-command nil)
   ("b" magit-blame nil)
@@ -867,6 +867,7 @@
   ("g" magit-dispatch-popup nil)
   ("l" magit-log-current nil)
   ("L" magit-log-all nil)
+  ("r" magit-show-refs-popup nil)
   ("s" magit-status nil)
   ("S"
    (lambda ()
@@ -875,6 +876,7 @@
      (setq current-prefix-arg t)
      (call-interactively 'magit-status))
    nil)
+  ("t" magit-toggle-buffer-lock nil)
   ("w"
    (lambda ()
      "Browse repository on the web; invokes hub."
