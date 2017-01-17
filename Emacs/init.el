@@ -1044,6 +1044,7 @@
 (define-key minibuffer-local-map (kbd "C-u") 'kill-whole-line)
 (define-key ivy-minibuffer-map (kbd "C-w") 'ivy-backward-kill-word)
 (define-key ivy-minibuffer-map (kbd "C-u") 'kill-whole-line)
+(add-hook 'minibuffer-inactive-mode-hook 'my-hide-trailing-whitespace)
 
 
 ;;;
