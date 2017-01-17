@@ -749,7 +749,7 @@
 (define-key my-leader-map "4" 'my-evil-goto-window-4)
 
 (defhydra my-hydra-window (:exit t :foreign-keys warn )
-  "\nwindow  _h__n__e__i_ nav  _c_lose  _o_nly  _r_otate  _s_plit"
+  "\nwindow  _h__n__e__i_ nav  _c_lose  _o_nly  _r_otate  _s_plit  _v_split  _w_ cycle"
   ("<escape>" nil nil)
   ("<return>" nil nil)
   ("h" evil-window-left nil)
