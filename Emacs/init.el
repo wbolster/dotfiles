@@ -1004,6 +1004,14 @@
 (counsel-mode 1)
 (define-key my-leader-map "," 'ivy-resume)
 
+;; ivy-rich integration
+(ivy-set-display-transformer
+ 'ivy-switch-buffer
+ 'ivy-rich-switch-buffer-transformer)
+(ivy-set-display-transformer
+ 'ivy-switch-buffer-other-window
+ 'ivy-rich-switch-buffer-transformer)
+
 ;; company
 (require 'company)
 (setq
