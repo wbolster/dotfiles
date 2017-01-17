@@ -843,9 +843,11 @@
 (evil-define-key '(normal visual) magit-mode-map
   (kbd "n") 'evil-next-visual-line
   (kbd "e") 'evil-previous-visual-line)
-(add-hook
- 'magit-status-mode-hook
- (lambda () (evil-colemak-basics-mode -1)))
+(defun my-disable-colemak ()
+  "Disable colemak overrides."
+  (evil-colemak-basics-mode -1))
+(dolist (hook '(magit-status-mode-hook magit-log-mode-hook))
+  (add-hook hook #'my-disable-colemak))
 
 ;; hl-diff
 (global-diff-hl-mode)
