@@ -1065,6 +1065,8 @@
 ;;; Major modes
 ;;;
 
+(setq-default major-mode 'text-mode)
+
 ;; text editing
 (setq-default typo-language "prefer-single")
 (with-eval-after-load 'typo
