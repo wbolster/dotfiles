@@ -624,14 +624,14 @@
 ;;;
 
 (defhydra hydra-toggle (:exit t :foreign-keys warn)
-  "\ntoggle  _b_ackgound  _c_olemak  _f_ill  _l_ine  _m_aximize  _n_umber  _o_utline  _r_elative-number  _t_runcate  _v_isual-line  _w_riteroom  _SPC_ whitespace  _1_ num/sym"
+  "\ntoggle  _b_ackgound  _c_olemak  _d_iff  _f_ill  _l_ine  _m_aximize  _n_umber  _o_utline  _r_elative-number  _t_runcate  _v_isual-line  _w_riteroom  _SPC_ whitespace  _1_ num/sym"
   ("<escape>" nil nil)
   ("b" my-toggle-dark-light-theme nil)
   ("B" my-set-theme-from-environment nil)
   ("c" evil-colemak-basics-mode nil)
+  ("d" global-diff-hl-mode nil)
   ("f" auto-fill-mode nil)
   ("F" fci-mode nil)
-  ("g" global-diff-hl-mode nil)
   ("l" hl-line-mode nil)
   ("m" toggle-frame-maximized nil)
   ("M" toggle-frame-fullscreen nil)
