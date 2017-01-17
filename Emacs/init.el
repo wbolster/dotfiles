@@ -364,14 +364,14 @@
   "]c" 'flycheck-next-error
   "[C" 'flycheck-first-error
   "]C" 'my-flycheck-last-error
-  "[d" 'smerge-prev
-  "]d" 'smerge-next
+  "[d" 'diff-hl-previous-hunk
+  "]d" 'diff-hl-next-hunk
   "[e" 'previous-error
   "]e" 'next-error
   "[E" 'first-error
   "]E" 'my-last-error
-  "[g" 'diff-hl-previous-hunk
-  "]g" 'diff-hl-next-hunk
+  "[m" 'smerge-prev
+  "]m" 'smerge-next
   "[s" 'highlight-symbol-prev
   "]s" 'highlight-symbol-next
   "[S" 'highlight-symbol-prev-in-defun
