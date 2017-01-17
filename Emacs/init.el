@@ -926,11 +926,12 @@
   (let ((query (my-thing-at-point-dwim)))
     (evil-force-normal-state)  ; do not expand region in visual mode
     (swiper query)))
-(define-key my-leader-map "/" 'swiper)
-(define-key my-visual-leader-map "/" 'my-swiper-thing-at-point)
 (evil-define-key 'motion global-map
   "/" 'swiper
   "g/" 'evil-search-forward)
+(evil-define-key 'visual global-map
+  "/" 'my-swiper-thing-at-point)
+(define-key my-visual-leader-map "/" 'my-swiper-thing-at-point)
 (define-key my-leader-map "/" 'evil-search-forward)
 
 ;; ag, the silver searcher
