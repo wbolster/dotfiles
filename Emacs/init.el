@@ -1184,18 +1184,30 @@
   (interactive)
   (swiper "^\\s-*\\(def\\|class\\)\\s- "))
 (evil-define-operator my-evil-join-python (beg end)
-  "Like 'evil-join', but handles comments sensibly."
+  "Like 'evil-join', but handles comments and some continuation styles sensibly."
   :motion evil-line
   (evil-join beg end)
   (let ((first-line-is-comment (save-excursion
                                  (evil-first-non-blank)
                                  (looking-at-p "#")))
         (joined-line-is-comment (looking-at " #")))
-    (when joined-line-is-comment
-      (if first-line-is-comment
-          (delete-region (point) (match-end 0))
-        (insert " ")
-        (forward-char)))))
+    (if joined-line-is-comment
+        (if first-line-is-comment
+            ;; remove # when joining two comment lines
+            (delete-region (point) (match-end 0))
+          ;; pep8 mandates two spaces before inline comments
+          (insert " ")
+          (forward-char))
+      (when (looking-at " \\\.")
+        ;; remove space when the joined line starts with period, which
+        ;; is a sensible style for long chained api calls, such as
+        ;; sqlalchemy queries:
+        ;;   query = (
+        ;;       query
+        ;;       .where(...)
+        ;;       .limit(...)
+        ;;       .offset(...))
+        (delete-region (point) (1+ (point)))))))
 (defun my-evil-forward-char-or-python-statement (count)
   "Intelligently pick a statement or a character."
   (interactive "p")
