@@ -49,6 +49,20 @@
  auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-saves/\\1" t))
  backup-directory-alist '((".*" . "~/.emacs.d/backups/"))
  make-backup-files nil)
+(defun my-ask-confirmation-for-unsaved-buffers ()
+  "Ask for confirmation when a non-special buffer has not been saved."
+  ;; Do not ask for buffers that have a * in their name, except
+  ;; buffers that start with *new* since that is the template used by
+  ;; evil-mode for new buffers.
+  (if (and
+       (buffer-modified-p)
+       (not (buffer-file-name))
+       (or
+        (string-prefix-p "*new*" (buffer-name))
+        (not (string-match-p "\*" (buffer-name)))))
+      (y-or-n-p (format "Buffer %s modified but not saved; kill anyway? " (buffer-name)))
+    t))
+(add-to-list 'kill-buffer-query-functions 'my-ask-confirmation-for-unsaved-buffers)
 
 ;; Resist agitprop
 (global-set-key (kbd "C-h g") nil)
