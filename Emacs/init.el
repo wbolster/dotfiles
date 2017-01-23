@@ -800,7 +800,7 @@
  projectile-require-project-root nil)
 (projectile-global-mode)
 (defhydra hydra-project (:exit t :foreign-keys warn)
-  "\nproject  _b_uffer  _d_ir  _f_ile  _k_ill  _p_roject  _s_ave  _t_est/impl  _-_ top dir"
+  "\nproject  _b_uffer  _d_ir  _f_ile  _k_ill  _p_roject  _r_eplace  _s_ave  _t_est/impl  _-_ top dir"
   ("<escape>" nil nil)
   ("b" projectile-switch-to-buffer nil)
   ("B" projectile-switch-to-buffer-other-window nil)
@@ -812,6 +812,8 @@
   ("k" projectile-kill-buffers nil)
   ("p" my-projectile-switch-open-project-buffer nil)
   ("P" projectile-switch-project nil)
+  ("r" projectile-replace nil)
+  ("R" projectile-replace-regexp nil)
   ("s" projectile-save-project-buffers nil)
   ;; Use the "other window" variant for the lowercase version for
   ;; switching between test and implementation since that is generally
