@@ -1280,8 +1280,7 @@
   (modify-syntax-entry ?_ "w")
   (evil-swap-keys-swap-double-single-quotes)
   (make-variable-buffer-local 'typo-mode-map)
-  (define-key typo-mode-map "`" nil)
-  (add-to-list 'electric-pair-pairs '(?_ . ?_)))
+  (define-key typo-mode-map "`" nil))
 (add-hook 'rst-mode-hook 'my-rst-mode-hook)
 (evilem-make-motion
  my-easymotion-rst
