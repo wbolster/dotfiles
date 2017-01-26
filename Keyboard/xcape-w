@@ -2,7 +2,7 @@
 
 set -e
 
-XCAPE_SETTINGS="Caps_Lock=Escape;Control_L=BackSpace;Shift_R=BackSpace;Control_R=Return"
+XCAPE_SETTINGS="Control_L=Escape"
 
 # One, and only one.
 pkill --exact --uid "$(id -u)" xcape || true
