@@ -256,13 +256,22 @@
  ?\{ '("{" . "}"))
 
 ;; text objects
+(evil-define-text-object
+  my-evil-text-object-whole-buffer (count &optional beg end type)
+  "Text object for the whole buffer."
+  (evil-range (point-min) (point-max) 'line))
+(evil-define-text-object
+  my-evil-empty-text-object (count &optional beg end type)
+  "Empty text object."
+  (evil-range (point) (point)))
 (evil-define-text-object my-evil-text-object-symbol-dwim (count &optional beg end type)
   "Intelligently pick evil-inner-symbol or evil-a-symbol."
   (if (eq this-command 'evil-delete)
       (evil-a-symbol count)
     (evil-inner-symbol count)))
 (evil-define-key '(operator visual) global-map
-  "o" 'my-evil-text-object-symbol-dwim)
+  "o" 'my-evil-text-object-symbol-dwim
+  (kbd "C-a") 'my-evil-text-object-whole-buffer)
 (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
 (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
 (define-key evil-inner-text-objects-map "b" 'evil-textobj-anyblock-inner-block)
@@ -401,10 +410,6 @@
 ;; quickly swap two text objects using "gx"; the empty text object is
 ;; a trick to make "gxp" work to move previously marked text without
 ;; moving anything back to the original location.
-(evil-define-text-object
-  my-evil-empty-text-object (count &optional beg end type)
-  "Empty text object for cut/paste style evil-exchange interaction."
-  (evil-range (point) (point)))
 (define-key evil-operator-state-map "p" 'my-evil-empty-text-object)
 (evil-exchange-install)
 
