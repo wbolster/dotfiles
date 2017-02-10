@@ -195,6 +195,14 @@ Turn off `show-smartparens-mode'.
 
 ;;;***
 
+;;;### (autoloads nil "smartparens-elixir" "smartparens-elixir.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from smartparens-elixir.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "smartparens-elixir" '("sp-elixir-")))
+
+;;;***
+
 ;;;### (autoloads nil "smartparens-ess" "smartparens-ess.el" (0 0
 ;;;;;;  0 0))
 ;;; Generated autoloads from smartparens-ess.el
