@@ -1056,6 +1056,13 @@
 
 
 ;;;
+;;; Spelling
+;;;
+
+(setq guess-language-languages '(en de fr nl sv))
+
+
+;;;
 ;;; Programming
 ;;;
 
@@ -1083,6 +1090,7 @@
 (defun my-text-mode-hook ()
   (auto-fill-mode)
   (evil-swap-keys-swap-question-mark-slash)
+  (guess-language-mode)
   (typo-mode)
   (visual-line-mode))
 (add-hook 'text-mode-hook 'my-text-mode-hook)
