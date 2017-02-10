@@ -993,19 +993,13 @@
      (buffer-substring-no-properties start end))))
 
 ;; occur
-(defun occur-dwim ()
+(defun my-occur-dwim (&optional nlines)
   "Call `occur' with a sane default."
-  (interactive)
-  (push (if (region-active-p)
-            (buffer-substring-no-properties
-             (region-beginning)
-             (region-end))
-          (let ((sym (thing-at-point 'symbol)))
-            (when (stringp sym)
-              (regexp-quote sym))))
-        regexp-history)
-  (call-interactively 'occur))
-(define-key my-leader-map "o" 'occur-dwim)
+  (interactive "P")
+  (let ((thing (regexp-quote (or (my-thing-at-point-dwim) ""))))
+    (read-string "Open occur for regexp: " thing 'regexp-history)
+    (occur thing nlines)))
+(define-key my-leader-map "o" 'my-occur-dwim)
 
 
 ;;;
