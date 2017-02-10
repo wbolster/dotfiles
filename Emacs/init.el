@@ -458,6 +458,17 @@
 (evil-define-key 'insert global-map
   (kbd "RET") 'comment-indent-new-line)
 
+;; replacing
+(defhydra my-hydra-replace (:exit t :foreign-keys warn )
+  "\nreplace  _p_roject  _r_ symbol  _q_uery"
+  ("<escape>" nil nil)
+  ("p" projectile-replace nil)
+  ("P" projectile-replace-regexp nil)
+  ("r" highlight-symbol-query-replace nil)
+  ("q" query-replace nil)
+  ("Q" query-replace-regexp nil))
+(define-key my-leader-map "r" 'my-hydra-replace/body)
+
 ;; filling
 (defun my-evil-fill-paragraph-dwim ()
   "Dwim helper to fill the current paragraph"
@@ -975,7 +986,6 @@
  highlight-symbol-on-navigation-p t)
 (define-key my-leader-map "h" 'highlight-symbol)
 (define-key my-leader-map "H" 'highlight-symbol-remove-all)
-(define-key my-leader-map "r" 'highlight-symbol-query-replace)
 (define-key my-visual-leader-map "h"
   (lambda (start end) (interactive "r")
     (highlight-symbol-add-symbol
