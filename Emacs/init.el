@@ -634,6 +634,20 @@
 (define-key my-leader-map "n" 'my-narrow-dwim)
 (define-key my-visual-leader-map "n" 'my-narrow-dwim)
 
+;; cycle through snake-case and camelCase and so on
+(defhydra my-hydra-case (:exit t :foreign-keys warn )
+  "\ncase  _c_ycle  _a_ camel  _l_isp  _u_pper  _s_nake"
+  ("<escape>" nil nil)
+  ("c" string-inflection-all-cycle nil)
+  ("a" string-inflection-camelcase nil)
+  ("A" string-inflection-lower-camelcase nil)
+  ("l" string-inflection-lisp nil)
+  ("s" string-inflection-underscore nil)
+  ("S" string-inflection-upcase nil)
+  ("u" string-inflection-upcase nil))
+(define-key my-leader-map "c" #'my-hydra-case/body)
+(evil-declare-repeat #'my-hydra-case/body)  ;; todo: this does not work
+
 
 ;;;
 ;;; toggles
