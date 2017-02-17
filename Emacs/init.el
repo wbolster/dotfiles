@@ -1145,6 +1145,14 @@
   (evil-swap-keys-swap-double-single-quotes))
 (add-hook 'json-mode-hook #'my-json-mode-hook)
 
+;; markdown
+(defun my-markdown-mode-hook ()
+  (setq evil-shift-width 2)
+  (evil-swap-keys-swap-double-single-quotes)
+  (make-variable-buffer-local 'typo-mode-map)
+  (define-key typo-mode-map "`" nil))
+(add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
+
 ;; latex
 (setq TeX-engine 'xetex)
 
