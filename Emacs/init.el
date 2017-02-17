@@ -867,6 +867,8 @@
  magit-rebase-arguments '("--autostash")
  magit-tag-arguments '("--annotate"))
 
+(evil-define-key '(normal visual) magit-mode-map
+  [escape] nil)
 ;; colemak tweaks
 (evil-define-key '(normal visual) magit-mode-map
   (kbd "n") 'evil-next-visual-line
