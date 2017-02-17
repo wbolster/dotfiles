@@ -638,7 +638,7 @@
 (defhydra my-hydra-case (:exit t :foreign-keys warn )
   "\ncase  _c_ycle  _a_ camel  _l_isp  _u_pper  _s_nake"
   ("<escape>" nil nil)
-  ("c" string-inflection-all-cycle nil)
+  ("c" string-inflection-all-cycle nil :exit nil)
   ("a" string-inflection-camelcase nil)
   ("A" string-inflection-lower-camelcase nil)
   ("l" string-inflection-lisp nil)
