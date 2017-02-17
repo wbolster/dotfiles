@@ -991,8 +991,10 @@
 (defun my-occur-dwim (&optional nlines)
   "Call `occur' with a sane default."
   (interactive "P")
-  (let ((thing (regexp-quote (or (my-thing-at-point-dwim) ""))))
-    (read-string "Open occur for regexp: " thing 'regexp-history)
+  (let ((thing (read-string
+                "Open occur for regexp: "
+                (regexp-quote (or (my-thing-at-point-dwim) ""))
+                'regexp-history)))
     (occur thing nlines)))
 (define-key my-leader-map "o" 'my-occur-dwim)
 
