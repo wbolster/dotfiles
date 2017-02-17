@@ -474,9 +474,9 @@
   "Dwim helper to fill the current paragraph"
   (interactive)
   ;; Move point after comment marker; useful for multi-line comments.
-  (end-of-line)
-  (fill-paragraph)
-  (evil-first-non-blank))
+  (save-excursion
+    (end-of-line)
+    (fill-paragraph)))
 (evil-define-key 'normal global-map
   "Q" 'my-evil-fill-paragraph-dwim)
 
