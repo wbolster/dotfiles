@@ -55,6 +55,9 @@ delete-unused-branches = "!f() { git branch | grep --invert-match '*' | xargs --
 ff = merge --ff-only
 merge-feature = merge --no-ff --edit
 merge-issue = merge --no-ff --edit
+# https://stackoverflow.com/questions/8475448/find-merge-commit-which-include-a-specific-commit
+merge-find = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
+merge-show = "!sh -c 'merge=$(git merge-find $0 $1) && [ -n \"$merge\" ] && git show $merge'"
 missing = "!f() { (echo \"Only in $1:\"; git --no-pager sl ..$1; echo; echo 'Only in HEAD:'; git --no-pager sl $1..;) | less -FRSX; }; f"
 
 # Updating from and pushing to remotes
