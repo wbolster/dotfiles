@@ -492,8 +492,6 @@ if [[ "$PS1" ]]; then
     export PYTHONDONTWRITEBYTECODE=1
     alias py=python
     alias ipy=ipython
-    alias pytest=py.test
-    alias pyt=py.test
     py-cprofile() {
         if [[ $# -lt 1 ]]; then
             printf "Error: no Python program specified. Usage:\n\n    %s some-program --some-args\n" "${FUNCNAME[0]}" > /dev/stderr
