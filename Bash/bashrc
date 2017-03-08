@@ -383,7 +383,7 @@ if [[ "$PS1" ]]; then
 
     # History
     shopt -s histappend
-    export HISTCONTROL=ignoredups
+    export HISTCONTROL=ignorespace:ignoredups
     export HISTSIZE=100000
     export HISTFILESIZE=1000000
     alias h='unset HISTFILE'
