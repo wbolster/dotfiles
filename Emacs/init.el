@@ -1230,10 +1230,9 @@ offending propaganda function instead."
    (setq evil-shift-width 2)
    ;; (evil-cleverparens-mode)  ;; FIXME: useless with colemak
    (rainbow-delimiters-mode)))
-(evil-define-key 'motion emacs-lisp-mode-map (kbd "RET")
+(evil-define-key 'motion emacs-lisp-mode-map (kbd ", ,")
   (defhydra hydra-emacs-lisp (:exit t :foreign-keys warn)
     "\nelisp  _e_val"
-    ("RET" nil nil)
     ("<escape>" nil nil)
     ("e" eval-last-sexp nil)))
 
@@ -1378,7 +1377,7 @@ offending propaganda function instead."
 (evil-define-key 'motion python-mode-map
   (kbd "SPC /") 'my-swiper-python-definitions
   (kbd "SPC TAB") 'my-easymotion-python
-  (kbd "RET") 'hydra-python/body)
+  (kbd ", ,") 'hydra-python/body)
 (evil-define-key 'normal python-mode-map
   [remap evil-join] 'my-evil-join-python)
 (evil-define-key 'insert python-mode-map
@@ -1422,10 +1421,9 @@ offending propaganda function instead."
  :pre-hook (setq evil-this-type 'line))
 (evil-define-key 'motion rst-mode-map
   (kbd "SPC TAB") 'my-easymotion-rst)
-(evil-define-key 'normal rst-mode-map (kbd "RET")
+(evil-define-key 'normal rst-mode-map (kbd ", ,")
   (defhydra hydra-rst (:exit t :foreign-keys warn)
     "\nrestructuredtext  _a_djust"
-    ("RET" nil nil)
     ("<escape>" nil nil)
     ("a" rst-adjust nil)))
 
