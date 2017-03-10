@@ -1045,10 +1045,16 @@ offending propaganda function instead."
 (evil-define-key 'visual global-map
   "/" 'my-swiper-thing-at-point)
 (define-key my-visual-leader-map "/" 'my-swiper-thing-at-point)
-(define-key my-leader-map "/" 'evil-search-forward)
+;; (define-key my-leader-map "/" 'evil-search-forward)
 
 ;; ag, the silver searcher
-(setq ag-reuse-buffers t)
+(defun my-ag-project-root (directory)
+  "Find project root for DIRECTORY; used for ag-project-root-function."
+  (let ((default-directory directory))
+    (projectile-project-root)))
+(setq
+ ag-project-root-function 'my-ag-project-root
+ ag-reuse-buffers t)
 (defhydra hydra-ag (:exit t :foreign-keys warn)
   "\nag  _g_ project  _f_iles  _r_egex"
   ("<escape>" nil nil)
@@ -1067,13 +1073,16 @@ offending propaganda function instead."
 
 ;; swiper style search using ag; uses shift-/, since it's conceptually
 ;; an alternative to swiper.
-(defun my-counsel-ag-project ()
+(defun my-counsel-ag-project (&optional unrestricted)
   "Run counsel-ag on the current project, defaulting to the symbol at point."
-  (interactive)
+  (interactive "P")
   (counsel-ag
    (my-thing-at-point-dwim)
-   (projectile-project-root)))
-(define-key my-leader-map "?" 'my-counsel-ag-project)
+   (projectile-project-root)
+   (if unrestricted "--unrestricted" "")))
+(define-key my-leader-map "/" 'my-counsel-ag-project)
+(define-key my-leader-map
+  "?" (lambda () (interactive) (my-counsel-ag-project t)))
 
 ;; symbol highlighting
 (setq
