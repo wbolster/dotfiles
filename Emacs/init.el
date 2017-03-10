@@ -250,6 +250,12 @@ offending propaganda function instead."
 (global-evil-swap-keys-mode)
 (global-evil-visualstar-mode)
 
+(defun my-hydra-evil-repeat-last-command ()
+  "Record last command from the hydra in evil's repeat system."
+  (evil-repeat-start)
+  (setq evil-repeat-info `((call-interactively ,real-this-command)))
+  (evil-repeat-stop))
+
 ;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
 (evil-add-command-properties 'evil-yank-line :motion 'evil-end-of-line)
 
