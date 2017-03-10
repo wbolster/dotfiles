@@ -1362,15 +1362,17 @@ offending propaganda function instead."
       (buffer-substring-no-properties (line-beginning-position) (point))))
     (forward-line -1)
     (beginning-of-line-text)))
-(defhydra hydra-python (:exit t :foreign-keys warn)
-  "\npython  _b_ pdb trace  _l_  multi-line  _t_ pytest  _v_ariable"
-  ("RET" nil nil)
+(defhydra hydra-python
+  (:exit t
+   :foreign-keys warn
+   :exit my-hydra-evil-repeat-last-command)
+  "\npython  _b_ pdb trace  multi-_l_ine  _t_ pytest  _v_ariable"
   ("<escape>" nil nil)
   ("b" (my-python-insert-pdb-trace "pdb") nil)
   ("B" (my-python-insert-pdb-trace "ipdb") nil)
   ("t" my-python-pytest nil)
   ("T" (my-python-pytest "") nil)
-  ("l" multi-line nil :exit nil)
+  ("l" multi-line nil)
   ("L" multi-line-single-line nil)
   ("v" my-python-refactor-make-variable nil))
 (evil-define-key 'motion python-mode-map
