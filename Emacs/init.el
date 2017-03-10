@@ -1167,7 +1167,8 @@ offending propaganda function instead."
 ;; Flycheck
 (setq
  flycheck-checker-error-threshold 1000
- flycheck-display-errors-delay 1.0)
+ flycheck-display-errors-delay 1.0
+ flycheck-idle-change-delay 3)
 (global-flycheck-mode)
 
 ;; Compilation
