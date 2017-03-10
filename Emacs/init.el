@@ -1030,7 +1030,11 @@ offending propaganda function instead."
     (thing-at-point 'symbol t)))
 
 ;; isearch
-(setq isearch-allow-prefix nil)
+(setq
+ isearch-allow-prefix nil
+ lazy-highlight-cleanup nil
+ lazy-highlight-initial-delay 0.5
+ lazy-highlight-max-at-a-time nil)
 
 ;; swiper
 (defun my-swiper-thing-at-point ()
