@@ -455,6 +455,7 @@ if [[ "$PS1" ]]; then
             command cat
         fi
     }
+    alias p='maybe-pager'
 
     # Detect direnv (https://github.com/direnv/direnv). The regular loading
     # method does not cooperate well with our $PROMPT_COMMAND (it breaks $?
