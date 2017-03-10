@@ -637,7 +637,6 @@ offending propaganda function instead."
     (er/expand-region 1)
     (hydra-expand-region/body)))
 
-
 ;; narrowing
 (defun my-narrow-dwim ()
   "Narrow (or widen) to defun or region."
