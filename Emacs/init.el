@@ -410,8 +410,8 @@ offending propaganda function instead."
   "]c" 'flycheck-next-error
   "[C" 'flycheck-first-error
   "]C" 'my-flycheck-last-error
-  "[d" 'diff-hl-previous-hunk
-  "]d" 'diff-hl-next-hunk
+  "[d" (lambda () (interactive) (diff-hl-mode) (diff-hl-previous-hunk))
+  "]d" (lambda () (interactive) (diff-hl-mode) (diff-hl-next-hunk))
   "[e" 'previous-error
   "]e" 'next-error
   "[E" 'first-error
