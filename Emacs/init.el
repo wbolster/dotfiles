@@ -947,7 +947,8 @@ offending propaganda function instead."
  magit-fetch-arguments '("--prune")
  magit-log-arguments '("--graph" "--color" "--decorate" "--follow" "-n256")
  magit-rebase-arguments '("--autostash")
- magit-tag-arguments '("--annotate"))
+ magit-tag-arguments '("--annotate")
+ magithub-pull-request-arguments '("-o"))
 
 (evil-define-key '(normal visual) magit-mode-map
   [escape] nil)
