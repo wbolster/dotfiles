@@ -1189,6 +1189,7 @@ offending propaganda function instead."
 ;; Compilation
 (add-hook 'compilation-mode-hook 'my-hide-trailing-whitespace)
 (add-hook 'comint-mode-hook 'my-hide-trailing-whitespace)
+(setq comint-move-point-for-output 'all)
 
 
 ;;;
