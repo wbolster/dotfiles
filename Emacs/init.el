@@ -1292,7 +1292,7 @@ offending propaganda function instead."
       (first my-python-pytest-arguments-history))
      'my-python-pytest-arguments-history)))
   (let ((default-directory (projectile-project-root)))
-    (compile (format "py.test %s" arguments) t)))
+    (compile (format "pytest %s" arguments) t)))
 (defun my-python-insert-pdb-trace (mod)
   "Insert a pdb trace statement using MOD right before the current statement."
   (python-nav-beginning-of-statement)
