@@ -427,8 +427,36 @@ offending propaganda function instead."
   "[z" 'outline-previous-visible-heading
   "]z" 'outline-next-visible-heading)
 
-;; jumps
+;; highlights after jumps
 (add-hook 'evil-jumps-post-jump-hook #'nav-flash-show)
+(add-hook 'focus-in-hook #'nav-flash-show)
+(add-hook 'next-error-hook #'nav-flash-show)
+(setq
+ my-jump-commands
+ '(diff-hl-next-hunk
+   diff-hl-previous-hunk
+   evil-backward-paragraph
+   evil-backward-section-begin
+   evil-backward-section-end
+   evil-forward-paragraph
+   evil-forward-section-begin
+   evil-forward-section-end
+   evil-goto-first-line
+   evil-goto-line
+   evil-goto-mark
+   evil-goto-mark-line
+   evil-scroll-down
+   evil-scroll-page-down
+   evil-scroll-page-up
+   evil-scroll-up
+   evil-window-bottom
+   evil-window-middle
+   evil-window-top
+   recenter-top-bottom
+   switch-to-buffer
+   ))
+(dolist (command my-jump-commands)
+  (advice-add command :after '(lambda (&rest args) (nav-flash-show))))
 
 ;; quickly swap two text objects using "gx"; the empty text object is
 ;; a trick to make "gxp" work to move previously marked text without
