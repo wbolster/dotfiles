@@ -716,7 +716,7 @@ offending propaganda function instead."
   ("b" my-toggle-dark-light-theme nil)
   ("B" my-set-theme-from-environment nil)
   ("c" evil-colemak-basics-mode nil)
-  ("d" global-diff-hl-mode nil)
+  ("d" diff-hl-mode nil)
   ("f" auto-fill-mode nil)
   ("F" fci-mode nil)
   ("l" hl-line-mode nil)
