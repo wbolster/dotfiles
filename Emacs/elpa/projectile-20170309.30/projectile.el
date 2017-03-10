@@ -1,13 +1,13 @@
 ;;; projectile.el --- Manage and navigate projects in Emacs easily -*- lexical-binding: t -*-
 
-;; Copyright © 2011-2016 Bozhidar Batsov <bozhidar@batsov.com>
+;; Copyright © 2011-2017 Bozhidar Batsov <bozhidar@batsov.com>
 
 ;; Author: Bozhidar Batsov <bozhidar@batsov.com>
 ;; URL: https://github.com/bbatsov/projectile
-;; Package-Version: 20161122.728
+;; Package-Version: 20170309.30
 ;; Keywords: project, convenience
 ;; Version: 0.15.0-cvs
-;; Package-Requires: ((pkg-info "0.4"))
+;; Package-Requires: ((emacs "24.1") (pkg-info "0.4"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -143,8 +143,8 @@ attention to case differences."
 There are two indexing methods - native and alien.
 
 The native method is implemented in Emacs Lisp (therefore it is
-native to Emacs).  It's advantage is that is portable and will
-work everywhere that Emacs does.  It's disadvantage is that is a
+native to Emacs).  Its advantage is that it is portable and will
+work everywhere that Emacs does.  Its disadvantage is that it is a
 bit slow (especially for large projects).  Generally it's a good
 idea to pair the native indexing method with caching.
 
@@ -301,7 +301,6 @@ If variable `projectile-project-name' is non-nil, this function will not be used
     "requirements.txt"   ; Pip file
     "setup.py"           ; Setuptools file
     "tox.ini"            ; Tox file
-    "package.json"       ; npm package file
     "gulpfile.js"        ; Gulp build file
     "Gruntfile.js"       ; Grunt project file
     "bower.json"         ; Bower project file
@@ -715,7 +714,7 @@ The cache is created both in memory and on the hard drive."
   (let* ((project-root (projectile-project-root))
          (project-cache (gethash project-root projectile-projects-cache)))
     (puthash project-root
-             (cl-remove-if-not (lambda (str) (string-prefix-p dir str)) project-cache)
+             (cl-remove-if (lambda (str) (string-prefix-p dir str)) project-cache)
              projectile-projects-cache)))
 
 (defun projectile-file-cached-p (file project)
@@ -896,17 +895,45 @@ A thin wrapper around `file-truename' that handles nil."
   "Default function used create project name to be displayed based on the value of PROJECT-ROOT."
   (file-name-nondirectory (directory-file-name project-root)))
 
+(defvar-local projectile-cached-project-name nil
+  "Cached name of the current Projectile project. If non-nil, it
+is used as the return value of `projectile-project-name' for
+performance (unless the variable `projectile-project-name' is
+also set). If nil, it is recalculated the next time
+`projectile-project-name' is called.
+
+This variable is reset automatically when Projectile detects that
+the `buffer-file-name' has changed. It can also be reset manually
+by calling `projectile-reset-cached-project-name'.")
+
+(defvar-local projectile-cached-buffer-file-name nil
+  "The last known value of `buffer-file-name' for the current
+buffer. This is used to detect a change in `buffer-file-name',
+which triggers a reset of `projectile-cached-project-name'.")
+
+(defun projectile-reset-cached-project-name ()
+  "Reset the value of `projectile-cached-project-name' to nil.
+
+This means that it is automatically recalculated the next time
+function `projectile-project-name' is called."
+  (interactive)
+  (setq projectile-cached-project-name nil))
+
 (defun projectile-project-name ()
   "Return project name."
-  (if projectile-project-name
-      projectile-project-name
-    (let ((project-root
-           (condition-case nil
-               (projectile-project-root)
-             (error nil))))
-      (if project-root
-          (funcall projectile-project-name-function project-root)
-        "-"))))
+  (or projectile-project-name
+      (and (equal projectile-cached-buffer-file-name buffer-file-name)
+           projectile-cached-project-name)
+      (progn
+        (setq projectile-cached-buffer-file-name buffer-file-name)
+        (setq projectile-cached-project-name
+              (let ((project-root
+                     (condition-case nil
+                         (projectile-project-root)
+                       (error nil))))
+                (if project-root
+                    (funcall projectile-project-name-function project-root)
+                  "-"))))))
 
 
 ;;; Project indexing
@@ -1377,11 +1404,13 @@ Only buffers not visible in windows are returned."
    (projectile-project-buffers)))
 
 ;;;###autoload
-(defun projectile-multi-occur ()
-  "Do a `multi-occur' in the project's buffers."
-  (interactive)
+(defun projectile-multi-occur (&optional nlines)
+  "Do a `multi-occur' in the project's buffers.
+With a prefix argument, show NLINES of context."
+  (interactive "P")
   (multi-occur (projectile-project-buffers)
-               (car (occur-read-primary-args))))
+               (car (occur-read-primary-args))
+               nlines))
 
 (defun projectile-normalise-paths (patterns)
   "Remove leading `/' from the elements of PATTERNS."
@@ -1603,11 +1632,11 @@ project-root for every file."
                      (fboundp 'helm-make-source))
                 (helm :sources
                       (helm-make-source "Projectile" 'helm-source-sync
-                        :candidates choices
-                        :action (if action
-                                    (prog1 action
-                                      (setq action nil))
-                                  #'identity))
+                                        :candidates choices
+                                        :action (if action
+                                                    (prog1 action
+                                                      (setq action nil))
+                                                  #'identity))
                       :prompt prompt
                       :input initial-input
                       :buffer "*helm-projectile*")
@@ -1682,8 +1711,8 @@ https://github.com/abo-abo/swiper")))
     ("c" . ("h"))
     ("m" . ("h"))
     ("mm" . ("h"))
-    ("h" . ("c" "cpp" "ipp" "hpp" "cxx" "ixx" "hxx" "m" "mm"))
-    ("cc" . ("hh" "hpp"))
+    ("h" . ("c" "cc" "cpp" "ipp" "hpp" "cxx" "ixx" "hxx" "m" "mm"))
+    ("cc" . ("h" "hh" "hpp"))
     ("hh" . ("cc"))
 
     ;; vertex shader and fragment shader extensions in glsl
@@ -2070,7 +2099,7 @@ a COMPILE-CMD, a TEST-CMD, and a RUN-CMD."
 (projectile-register-project-type 'django '("manage.py") "python manage.py runserver" "python manage.py test")
 (projectile-register-project-type 'python-pip '("requirements.txt") "python setup.by build" "python -m unittest discover")
 (projectile-register-project-type 'python-pkg '("setup.py") "python setup.py build" "python -m unittest discover")
-(projectile-register-project-type 'python-tox '("tox.ini") nil "tox")
+(projectile-register-project-type 'python-tox '("tox.ini") "tox -r --notest" "tox")
 (projectile-register-project-type 'scons '("SConstruct") "scons" "scons test")
 (projectile-register-project-type 'maven '("pom.xml") "mvn clean install" "mvn test")
 (projectile-register-project-type 'gradle '("build.gradle") "gradle build" "gradle test")
@@ -2095,6 +2124,7 @@ a COMPILE-CMD, a TEST-CMD, and a RUN-CMD."
 (defvar-local projectile-project-type nil
   "Buffer local var for overriding the auto-detected project type.
 Normally you'd set this from .dir-locals.el.")
+(put 'projectile-project-type 'safe-local-variable #'symbolp)
 
 (defun projectile-detect-project-type ()
   "Detect the type of the current project."
@@ -2170,11 +2200,14 @@ PROJECT-ROOT is the targeted directory.  If nil, use
 
 (defun projectile-create-test-file-for (impl-file-path)
   (let* ((test-file (projectile--test-name-for-impl-name impl-file-path))
-         (test-dir (replace-regexp-in-string "src/" "test/" (file-name-directory impl-file-path))))
-    (unless (file-exists-p (expand-file-name test-file test-dir))
+         (project-root (projectile-project-root))
+         (relative-dir (file-name-directory (file-relative-name impl-file-path project-root)))
+         (test-dir (expand-file-name (replace-regexp-in-string "src/" "test/" relative-dir) project-root))
+         (test-path (expand-file-name test-file test-dir)))
+    (unless (file-exists-p test-path)
       (progn (unless (file-exists-p test-dir)
                (make-directory test-dir :create-parents))
-             (concat test-dir test-file)))))
+             test-path))))
 
 (defcustom projectile-create-missing-test-files nil
   "During toggling, if non-nil enables creating test files if not found.
@@ -2339,6 +2372,15 @@ This is a subset of `grep-read-files', where either a matching entry from
   "Return ignored file suffixes as a list of glob patterns."
   (mapcar (lambda (pat) (concat "*" pat)) projectile-globally-ignored-file-suffixes))
 
+(defun projectile--read-search-string-with-default (prefix-label)
+  (let* ((prefix-label (projectile-prepend-project-name prefix-label))
+         (default-value (projectile-symbol-or-selection-at-point))
+         (default-label (if (or (not default-value)
+                                (string= default-value ""))
+                            ""
+                          (format " (default %s)" default-value))))
+    (read-string (format "%s%s: " prefix-label default-label) nil nil default-value)))
+
 ;;;###autoload
 (defun projectile-grep (&optional regexp arg)
   "Perform rgrep in the project.
@@ -2352,8 +2394,7 @@ With REGEXP given, don't query the user for a regexp."
   (require 'grep) ;; for `rgrep'
   (let* ((roots (projectile-get-project-directories))
          (search-regexp (or regexp
-                            (read-string (projectile-prepend-project-name "Grep for: ")
-                                         (projectile-symbol-or-selection-at-point))))
+                            (projectile--read-search-string-with-default "Grep for")))
          (files (and arg (or (and (equal current-prefix-arg '-)
                                   (projectile-grep-default-files))
                              (read-string (projectile-prepend-project-name "Grep in: ")
@@ -2387,9 +2428,8 @@ With REGEXP given, don't query the user for a regexp."
 With an optional prefix argument ARG SEARCH-TERM is interpreted as a
 regular expression."
   (interactive
-   (list (read-from-minibuffer
-          (projectile-prepend-project-name (format "Ag %ssearch for: " (if current-prefix-arg "regexp " "")))
-          (projectile-symbol-or-selection-at-point))
+   (list (projectile--read-search-string-with-default
+          (format "Ag %ssearch for" (if current-prefix-arg "regexp " "")))
          current-prefix-arg))
   (if (require 'ag nil 'noerror)
       (let ((ag-command (if arg 'ag-regexp 'ag))
@@ -2949,13 +2989,13 @@ Invokes the command referenced by `projectile-switch-project-action' on switch.
 With a prefix ARG invokes `projectile-commander' instead of
 `projectile-switch-project-action.'"
   (interactive "P")
-  (let (projects)
-    (if (setq projects (projectile-relevant-known-projects))
+  (let ((projects (projectile-relevant-known-projects)))
+    (if projects
         (projectile-completing-read
          "Switch to project: " projects
          :action (lambda (project)
                    (projectile-switch-project-by-name project arg)))
-      (error "There are no known projects"))))
+      (user-error "There are no known projects"))))
 
 ;;;###autoload
 (defun projectile-switch-open-project (&optional arg)
@@ -2964,12 +3004,12 @@ Invokes the command referenced by `projectile-switch-project-action' on switch.
 With a prefix ARG invokes `projectile-commander' instead of
 `projectile-switch-project-action.'"
   (interactive "P")
-  (let (projects)
-    (if (setq projects (projectile-relevant-open-projects))
+  (let ((projects (projectile-relevant-open-projects)))
+    (if projects
         (projectile-switch-project-by-name
          (projectile-completing-read "Switch to open project: " projects)
          arg)
-      (error "There are no open projects"))))
+      (user-error "There are no open projects"))))
 
 (defun projectile-switch-project-by-name (project-to-switch &optional arg)
   "Switch to project by project name PROJECT-TO-SWITCH.
@@ -2980,10 +3020,19 @@ With a prefix ARG invokes `projectile-commander' instead of
                                    'projectile-commander
                                  projectile-switch-project-action)))
     (run-hooks 'projectile-before-switch-project-hook)
-    ;; use a temporary buffer to load PROJECT-TO-SWITCH's dir-locals before calling SWITCH-PROJECT-ACTION
-    (with-temp-buffer
-      (let ((default-directory project-to-switch))
-        (hack-dir-local-variables-non-file-buffer)
+    (let ((default-directory project-to-switch))
+      ;; use a temporary buffer to load PROJECT-TO-SWITCH's dir-locals before calling SWITCH-PROJECT-ACTION
+      (with-temp-buffer
+        (hack-dir-local-variables-non-file-buffer))
+      ;; Normally the project name is determined from the current
+      ;; buffer. However, when we're switching projects, we want to
+      ;; show the name of the project being switched to, rather than
+      ;; the current project, in the minibuffer. This is a simple hack
+      ;; to tell the `projectile-project-name' function to ignore the
+      ;; current buffer and the caching mechanism, and just return the
+      ;; value of the `projectile-project-name' variable.
+      (let ((projectile-project-name (funcall projectile-project-name-function
+                                              project-to-switch)))
         (funcall switch-project-action)))
     (run-hooks 'projectile-after-switch-project-hook)))
 
