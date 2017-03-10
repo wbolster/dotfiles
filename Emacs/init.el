@@ -70,6 +70,13 @@
 (global-set-key (kbd "C-h C-m") nil)
 (global-set-key (kbd "C-h C-o") nil)
 (global-set-key (kbd "C-h C-w") nil)
+(defun display-startup-echo-area-message ()
+  "Do not display progaganda.
+Setting 'inhibit-startup-echo-area-message'
+to nil or even (user-login-name) is not enough
+to resist the gnu/extremists, so modify the
+offending propaganda function instead."
+  (message ""))
 
 ;; OSX keyboard
 (global-set-key (kbd "s-q") nil)
