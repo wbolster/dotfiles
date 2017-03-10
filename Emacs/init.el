@@ -672,6 +672,10 @@ offending propaganda function instead."
   ("U" string-inflection-upcase nil))
 (define-key my-leader-map "c" #'my-hydra-case/body)
 
+;; smart paren closing
+(evil-define-key 'insert global-map
+  (kbd "C-0") #'syntactic-close)
+
 
 ;;;
 ;;; toggles
