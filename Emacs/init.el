@@ -963,8 +963,8 @@ offending propaganda function instead."
   (add-hook hook #'my-disable-colemak))
 
 ;; hl-diff
-(global-diff-hl-mode)
-(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+(with-eval-after-load 'diff-hl
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 ;; Pop-ups sometimes contain trailing whitespace.
 (add-hook 'magit-popup-mode-hook 'my-hide-trailing-whitespace)
