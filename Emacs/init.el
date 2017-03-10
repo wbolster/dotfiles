@@ -899,6 +899,7 @@ offending propaganda function instead."
           (file-relative-name (buffer-file-name) (projectile-project-root)))
       (projectile-find-matching-test (buffer-file-name))))
 (setq
+ projectile-completion-system 'ivy
  projectile-ignored-projects '("/usr/local/")
  projectile-mode-line nil
  projectile-require-project-root nil)
@@ -940,6 +941,7 @@ offending propaganda function instead."
  auto-revert-check-vc-info t
  magit-branch-prefer-remote-upstream '("master")
  magit-branch-read-upstream-first nil
+ magit-completing-read-function 'ivy-completing-read
  magit-prefer-remote-upstream t
  magit-process-popup-time 10
  magit-fetch-arguments '("--prune")
@@ -1103,9 +1105,7 @@ offending propaganda function instead."
 (setq
  ivy-count-format "(%d/%d) "
  ivy-initial-inputs-alist nil
- ivy-wrap t
- magit-completing-read-function 'ivy-completing-read
- projectile-completion-system 'ivy)
+ ivy-wrap t)
 (ivy-mode 1)
 (counsel-mode 1)
 (define-key my-leader-map "," 'ivy-resume)
