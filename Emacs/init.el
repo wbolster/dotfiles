@@ -871,6 +871,28 @@ offending propaganda function instead."
 ;; Projects
 ;;
 
+(defun my-projectile-find-file-all (&optional pattern)
+  "Find any file in the current project, including ignored files."
+  (interactive
+   (list
+    (read-string
+     "file name pattern (empty means all): "
+     (if buffer-file-name
+         (concat (file-name-extension buffer-file-name) "$")
+       "")
+     ".")))
+  (ivy-read
+   "Find file in complete project: "
+   (projectile-make-relative-to-root
+    (directory-files-recursively (projectile-project-root) pattern))
+   :action
+   (lambda (filename)
+     (find-file (concat
+                 (file-name-as-directory (projectile-project-root))
+                 filename)))
+   :require-match t
+   :history 'file-name-history))
+
 (defun my-projectile-detect-test-file-name ()
   "Detect associated test file name for the current buffer."
   (or (if (projectile-test-file-p (buffer-file-name))
@@ -882,8 +904,9 @@ offending propaganda function instead."
  projectile-require-project-root nil)
 (projectile-global-mode)
 (defhydra hydra-project (:exit t :foreign-keys warn)
-  "\nproject  _b_uffer  _d_ir  _f_ile  _k_ill  _o_ccur  _p_roject  _r_eplace  _s_ave  _t_est/impl  _-_ top dir"
+  "\nproject  _a_ny file  _b_uffer  _d_ir  _f_ile  _k_ill  _o_ccur  _p_roject  _r_eplace  _s_ave  _t_est/impl  _-_ top dir"
   ("<escape>" nil nil)
+  ("a" my-projectile-find-file-all nil)
   ("b" projectile-switch-to-buffer nil)
   ("B" projectile-switch-to-buffer-other-window nil)
   ("-" projectile-dired nil)
