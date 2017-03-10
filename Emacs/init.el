@@ -1028,6 +1028,7 @@ offending propaganda function instead."
   (if (region-active-p)
       (buffer-substring-no-properties (region-beginning) (region-end))
     (thing-at-point 'symbol t)))
+
 ;; isearch
 (setq isearch-allow-prefix nil)
 
