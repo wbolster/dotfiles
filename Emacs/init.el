@@ -186,6 +186,15 @@ offending propaganda function instead."
   (number-to-string (abs (if (= offset 0) (line-number-at-pos) offset))))
 (setq relative-line-numbers-format 'my-relative-line-numbers-format)
 
+;; indent-guide
+(setq
+ indent-guide-char "·"
+ indent-guide-delay 0
+ indent-guide-recursive nil
+ indent-guide-threshold 7)
+(indent-guide-global-mode)
+(set-face-attribute 'indent-guide-face nil :inherit 'font-lock-comment-face)
+
 ;; Misc
 (setq fci-rule-width 2)
 
