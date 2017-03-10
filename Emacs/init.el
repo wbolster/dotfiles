@@ -301,8 +301,7 @@ offending propaganda function instead."
 (evil-indent-plus-default-bindings)
 
 ;; directory navigation (inspired by vim vinagre)
-(evil-define-key 'motion global-map "-" 'dired-jump)
-(define-key dired-mode-map "-" 'dired-jump)
+(evil-define-key '(motion normal) dired-mode-map "-" 'dired-jump)
 
 
 ;;;
