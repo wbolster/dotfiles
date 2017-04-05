@@ -1,11 +1,30 @@
-# Python debugger (pdb) configuration
+# python debugger (pdb) configuration
 
-# Print str() representation, instead of the default repr(),
+# print str() representation, instead of the default repr(),
 # intended as additions to the default 'p' and 'pp'.
 alias ps p str(%1)
 alias pps pp str(%1)
 
-# Pretty-print often used expressions: locals and class instance
+# pretty-print often used expressions: locals and class instance
 # attributes.
 alias ppl pp locals()
 alias ppi pp %1.__dict__
+alias pv p vars(%1)
+alias ppv pp vars(%1)
+
+# pretty-print lxml elements
+alias ppx print(__import__('lxml.etree').etree.tounicode(%1, pretty_print=True))
+
+# tracebacks that omit third-party code
+# fixme: this is not perfect
+import traceback
+alias pt print(''.join(y for y in __import__('traceback').format_stack() if '/site-packages/' not in y and '/usr/lib/' not in y))
+
+# preserve readline history between sessions (very hacky)
+import atexit
+import os
+import readline
+_history_path = os.path.expanduser("~/.pdb_history")
+if os.path.exists(_history_path): readline.read_history_file(_history_path)
+def _save_history(path): import readline; readline.write_history_file(path)
+atexit.register(_save_history, _history_path)
