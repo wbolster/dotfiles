@@ -1087,9 +1087,9 @@ defined as lowercase."
   (setq
    copy-as-format-default "slack"
    copy-as-format-format-alist  ;; only retain formats i use
-   ;; todo: upgrade and add restructuredtext
    '(("github" copy-as-format--github)
      ("markdown" copy-as-format--markdown)
+     ("rst" copy-as-format--rst)
      ("slack" copy-as-format--slack)))
   (evil-define-operator w--evil-copy-as-format (beg end type)
     "Evilified version of copy-as-format"
