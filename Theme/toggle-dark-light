@@ -28,7 +28,7 @@ set_gnome_terminal_theme() {
 notify_emacs() {
     # Notify running Emacs instance.
     if pgrep -u "$(id -u)" emacs > /dev/null; then
-        emacsclient -e '(my-set-theme-from-environment)' > /dev/null || true
+        emacsclient -e '(w--set-theme-from-environment)' > /dev/null || true
     fi
 }
 
