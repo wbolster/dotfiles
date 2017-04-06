@@ -1,10 +1,9 @@
 ;;; json-reformat-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "json-reformat" "json-reformat.el" (22221 58941
-;;;;;;  0 0))
+;;;### (autoloads nil "json-reformat" "json-reformat.el" (0 0 0 0))
 ;;; Generated autoloads from json-reformat.el
 
 (autoload 'json-reformat-region "json-reformat" "\
@@ -15,6 +14,8 @@ please see the documentation of `json-reformat:indent-width'
 and `json-reformat:pretty-string?'.
 
 \(fn BEGIN END)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "json-reformat" '("json-reformat")))
 
 ;;;***
 

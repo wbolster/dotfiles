@@ -1,10 +1,9 @@
 ;;; cython-mode-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "cython-mode" "cython-mode.el" (22254 65374
-;;;;;;  270784 877000))
+;;;### (autoloads nil "cython-mode" "cython-mode.el" (0 0 0 0))
 ;;; Generated autoloads from cython-mode.el
 
 (add-to-list 'auto-mode-alist '("\\.pyx\\'" . cython-mode))
@@ -27,6 +26,8 @@ Major mode for Cython development, derived from Python mode.
 \\{cython-mode-map}
 
 \(fn)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "cython-mode" '("cython-")))
 
 ;;;***
 

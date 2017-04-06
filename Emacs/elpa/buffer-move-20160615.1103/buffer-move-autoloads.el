@@ -1,10 +1,9 @@
 ;;; buffer-move-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "buffer-move" "buffer-move.el" (22381 45002
-;;;;;;  0 0))
+;;;### (autoloads nil "buffer-move" "buffer-move.el" (0 0 0 0))
 ;;; Generated autoloads from buffer-move.el
 
 (autoload 'buf-move-up "buffer-move" "\
@@ -42,6 +41,8 @@ Use the arrow keys to move in the desired direction.  Pressing
 any other key exits this function.
 
 \(fn)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "buffer-move" '("buf")))
 
 ;;;***
 

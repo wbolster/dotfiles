@@ -1,10 +1,10 @@
 ;;; evil-visualstar-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "evil-visualstar" "evil-visualstar.el" (22222
-;;;;;;  52357 0 0))
+;;;### (autoloads nil "evil-visualstar" "evil-visualstar.el" (0 0
+;;;;;;  0 0))
 ;;; Generated autoloads from evil-visualstar.el
 
 (autoload 'evil-visualstar-mode "evil-visualstar" "\
@@ -13,8 +13,9 @@ Minor mode for visual star selection.
 \(fn &optional ARG)" t nil)
 
 (defvar global-evil-visualstar-mode nil "\
-Non-nil if Global-Evil-Visualstar mode is enabled.
-See the command `global-evil-visualstar-mode' for a description of this minor mode.
+Non-nil if Global Evil-Visualstar mode is enabled.
+See the `global-evil-visualstar-mode' command
+for a description of this minor mode.
 Setting this variable directly does not take effect;
 either customize it (see the info node `Easy Customization')
 or call the function `global-evil-visualstar-mode'.")
@@ -23,7 +24,7 @@ or call the function `global-evil-visualstar-mode'.")
 
 (autoload 'global-evil-visualstar-mode "evil-visualstar" "\
 Toggle Evil-Visualstar mode in all buffers.
-With prefix ARG, enable Global-Evil-Visualstar mode if ARG is positive;
+With prefix ARG, enable Global Evil-Visualstar mode if ARG is positive;
 otherwise, disable it.  If called from Lisp, enable the mode if
 ARG is omitted or nil.
 
@@ -42,6 +43,8 @@ Turns on visual star selection.
 Turns off visual star selection.
 
 \(fn)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-visualstar" '("evil-visualstar/")))
 
 ;;;***
 

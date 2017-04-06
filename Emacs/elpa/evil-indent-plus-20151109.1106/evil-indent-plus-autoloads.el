@@ -1,10 +1,10 @@
 ;;; evil-indent-plus-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "evil-indent-plus" "evil-indent-plus.el" (22214
-;;;;;;  5326 0 0))
+;;;### (autoloads nil "evil-indent-plus" "evil-indent-plus.el" (0
+;;;;;;  0 0 0))
 ;;; Generated autoloads from evil-indent-plus.el
  (autoload 'evil-indent-plus-i-indent "evil-indent-plus" nil t)
  (autoload 'evil-indent-plus-a-indent "evil-indent-plus" nil t)
@@ -17,6 +17,8 @@
 Set the default evil-indent-plus keybindings.
 
 \(fn)" nil nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-indent-plus" '("evil-indent-plus--")))
 
 ;;;***
 

@@ -1,9 +1,9 @@
 ;;; evil-args-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "evil-args" "evil-args.el" (22214 5305 0 0))
+;;;### (autoloads nil "evil-args" "evil-args.el" (0 0 0 0))
 ;;; Generated autoloads from evil-args.el
 
 (autoload 'evil-backward-arg "evil-args" "\
@@ -22,6 +22,8 @@ Move the cursor forward COUNT arguments.
 Move the cursor out of the nearest enclosing matching pairs.
 
 \(fn COUNT)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-args" '("evil-args-")))
 
 ;;;***
 

@@ -1,10 +1,9 @@
 ;;; evil-numbers-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "evil-numbers" "evil-numbers.el" (22214 5348
-;;;;;;  0 0))
+;;;### (autoloads nil "evil-numbers" "evil-numbers.el" (0 0 0 0))
 ;;; Generated autoloads from evil-numbers.el
 
 (autoload 'evil-numbers/inc-at-pt "evil-numbers" "\
@@ -25,6 +24,8 @@ If a region is active, decrement all the numbers at a point by `amount'.
 This function uses `evil-numbers/inc-at-pt'
 
 \(fn AMOUNT)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-numbers" '("evil-numbers/")))
 
 ;;;***
 

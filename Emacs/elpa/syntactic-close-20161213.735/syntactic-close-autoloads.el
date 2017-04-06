@@ -10,7 +10,7 @@
 (autoload 'syntactic-close "syntactic-close" "\
 Command will insert closing delimiter whichever needed.
 
-With \\[universal-argument]: close everything at point. 
+With \\[universal-argument]: close everything at point.
 
 \(fn &optional ARG BEG FORCE)" t nil)
 
