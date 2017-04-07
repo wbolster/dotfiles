@@ -1972,10 +1972,20 @@ defined as lowercase."
   :config
   (setq comint-move-point-for-output 'all)
   (add-hook 'comint-mode-hook #'w--compilation-mode-hook)
-  (evil-set-initial-state 'comint-mode 'emacs)
+  (evil-set-initial-state 'comint-mode 'insert)
   ;; fixme use :bind
   (define-key comint-mode-map
-    (kbd "ESC") #'evil-normal-state))
+    (kbd "ESC") #'evil-normal-state)
+  (evil-define-key*
+   'normal comint-mode-map
+   (kbd "C-e") 'comint-previous-prompt
+   (kbd "C-n") 'comint-next-prompt
+   (kbd "C-p") 'comint-previous-prompt)
+  (evil-define-key*
+   'insert comint-mode-map
+   (kbd "RET") 'comint-send-input
+   (kbd "C-n") 'comint-next-input
+   (kbd "C-p") 'comint-previous-input))
 
 
 ;;;; major mode: emacs lisp
