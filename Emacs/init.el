@@ -1947,6 +1947,7 @@ defined as lowercase."
 ;;;; major-mode: compilation and comint
 
 (use-package compile
+  :defer t
   :config
   (setq compilation-always-kill t)
 
@@ -1966,6 +1967,7 @@ defined as lowercase."
     ("r" recompile)))
 
 (use-package comint
+  :defer t
   :ensure nil
   :config
   (setq comint-move-point-for-output 'all)
