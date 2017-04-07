@@ -1363,22 +1363,12 @@ defined as lowercase."
  evil-split-window-below t
  evil-vsplit-window-right t)
 
-;; fixme: maybe advice some of split-window split-window-below
-;; split-window-right instead?
-;; http://blog.danielgempesaw.com/post/45400072065/keeping-my-emacs-windows-balanced
-
 (defvar w--balanced-windows-functions
-  '(split-window
-    delete-window
-    ;; fixme: is this enough?
-    ;; display-buffer
-    ;; switch-to-buffer
-    )
+  '(delete-window quit-window split-window)
   "Commands that need to be adviced to keep windows balanced.")
 
-(defun w--balance-windows-advice (&rest args)
+(defun w--balance-windows-advice (&rest _ignored)
   "Balance windows (intended as ;after advice); ARGS are ignored."
-  ;; fixme: use (fn: balance-windows) instead of this advice function
   (balance-windows))
 
 (define-minor-mode w--balanced-windows-mode
