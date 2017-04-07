@@ -586,7 +586,6 @@ defined as lowercase."
     (kbd "SPC P Y") 'avy-copy-region
     (kbd "SPC $") 'w--avy-evil-goto-end-of-line))
 
-
 (use-package evil-exchange
   :config
   (evil-exchange-install)
@@ -948,7 +947,6 @@ defined as lowercase."
   "Jump to the last error; similar to 'first-error'."
   (interactive)
   (condition-case err (while t (next-error)) (user-error nil)))
-
 
 (evil-define-key 'motion global-map
   (kbd "[ SPC") (lambda () (interactive) (save-excursion (evil-insert-newline-above)))
@@ -1510,7 +1508,6 @@ defined as lowercase."
   :defer t
   :config
   (setq ispell-dictionary "english"))
-
 
 ;; todo https://github.com/d12frosted/flyspell-correct
 ;; (use-package flyspell)
