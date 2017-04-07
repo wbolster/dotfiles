@@ -2064,43 +2064,58 @@ defined as lowercase."
     (python-docstring-mode))
 
   (add-hook 'python-mode-hook 'w--python-mode-hook)
-  (add-hook 'comint-output-filter-functions
-            'python-pdbtrack-comint-output-filter-function)
+
+  (defun w--python-pytest-sensible-args ()
+    "Figure out sensible pytest args for the current buffer and point."
+    (let* ((test-file-name (w--projectile-detect-test-file-name))
+           (buffer-is-test-file
+            (file-equal-p (concat (projectile-project-root) test-file-name)
+                          (buffer-file-name)))
+           (python-function-name
+            (save-excursion
+              ;; jumping makes it work on empty lines
+              (python-nav-backward-defun)
+              (python-info-current-defun)))
+           (pytest-args (or test-file-name "")))
+      (when (and buffer-is-test-file python-function-name)
+        (setq pytest-args (format "%s -k %s" pytest-args python-function-name)))
+      pytest-args))
 
   (defvar w--python-pytest-arguments-history nil
     "Argument history for pytest invocations.")
 
-  (defun w--sensible-pytest-args ()
-    ;; todo: make something sensible out of this stub
-    "Figure out sensible pytest args for the current buffer and point."
-    projectile-test-file-p
-    (let* ((test-file-name
-            (w--projectile-detect-test-file-name))
-           (relative-test-file-name
-            (when test-file-name
-              (file-relative-name
-               buffer-file-name
-               (projectile-project-root)))))
-      (message "%s %s" test-file-name buffer-file-name)
-      (if (string-equal test-file-name buffer-file-name)
-          (format "%s -k %s"
-                  relative-test-file-name
-                  (python-info-current-defun))
-        relative-test-file-name)))
-
-  (defun w--python-pytest (&optional arguments)
-    "Run pytest with specified ARGUMENTS."
-    (interactive
-     (list
-      (read-string
-       "pytest arguments: "
-       (or
-        (let ((test-file-name (w--projectile-detect-test-file-name)))
-          (if test-file-name (format "%s " test-file-name)))
-        (first w--python-pytest-arguments-history))
-       'w--python-pytest-arguments-history)))
-    (let ((default-directory (projectile-project-root)))
-      (compile (format "pytest %s" arguments) t)))
+  (defun w--python-pytest (&optional arg)
+    "Run pytest after prompting for arguments.
+With a prefix argument (and on first invocation), suggests sensible
+arguments based on the current file and point. Subsequent invocations
+default to the previously used arguments."
+    ;; todo: use (define-compilation-mode) perhaps? it might help
+    ;; getting hooks like compilation-finish-functions to work.
+    (interactive "P")
+    (let ((arguments (first w--python-pytest-arguments-history)))
+      (when (or arg (null arguments))
+        (setq arguments (w--python-pytest-sensible-args)))
+      (require 'comint)
+      (let ((comint-buffer (get-buffer-create "*pytest*")))
+        (with-current-buffer comint-buffer
+          (when (comint-check-proc comint-buffer)
+            (if (or compilation-always-kill (yes-or-no-p "Kill running pytest process?"))
+                (kill-process (get-buffer-process comint-buffer))
+              (user-error "Aborting because of existing pytest process")))
+          (setq arguments (read-from-minibuffer
+                           "pytest args: " arguments nil nil
+                           'w--python-pytest-arguments-history))
+          (delete-region (point-min) (point-max))
+          (add-hook
+           'comint-output-filter-functions
+           'python-pdbtrack-comint-output-filter-function
+           nil t)
+          (setq arguments (format "pytest %s" arguments))
+          (insert (format "command: %s\nworking directory: %s\n\n"
+                          arguments default-directory))
+          (let ((default-directory (projectile-project-root)))
+            (make-comint-in-buffer "pytest" comint-buffer "sh" nil "-c" arguments))
+          (display-buffer comint-buffer)))))
 
   (evilem-make-motion
    w--easymotion-python
@@ -2203,7 +2218,7 @@ defined as lowercase."
     ("b" (w--python-insert-pdb-trace "pdb") nil)
     ("B" (w--python-insert-pdb-trace "ipdb") nil)
     ("t" w--python-pytest nil)
-    ("T" (w--python-pytest "") nil)
+    ("T" (w--python-pytest t) nil)
     ("l" multi-line nil)
     ("L" multi-line-single-line nil)
     ("v" w--python-refactor-make-variable nil))
