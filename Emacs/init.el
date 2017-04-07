@@ -402,6 +402,12 @@ defined as lowercase."
   "_r_eset"
   ("r" w--writeroom-reset))
 
+(evil-define-key*
+ 'motion global-map
+ (kbd "C-0") 'w--default-text-scale-reset
+ (kbd "C--") 'default-text-scale-decrease
+ (kbd "C-=") 'default-text-scale-increase)
+
 
 ;;;; mode line
 
