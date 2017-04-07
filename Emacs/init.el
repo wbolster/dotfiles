@@ -51,6 +51,18 @@
 (use-package fn)
 
 
+;;;; evil (bootstrap only)
+
+;; bootstrap early in the process so evil functionality
+;; such as evil-define-key can be used.
+(use-package evil
+  :init
+  (setq
+   evil-cross-lines t
+   evil-want-C-u-scroll t
+   evil-want-C-w-in-emacs-state t))
+
+
 ;;;; security
 
 (use-package tls
@@ -414,12 +426,8 @@ defined as lowercase."
   :config
   (w--hide-from-mode-line " Undo-Tree"))
 
+;; note: evil is already bootstrapped at this point
 (use-package evil
-  :init
-  (setq
-   evil-cross-lines t
-   evil-want-C-u-scroll t
-   evil-want-C-w-in-emacs-state t)
   :config
   (evil-mode)
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
