@@ -1965,6 +1965,7 @@ defined as lowercase."
 ;;;; major mode: emacs lisp
 
 (use-package elisp-mode
+  :defer t
   :ensure nil
   :config
   (defun w--emacs-lisp-mode-hook ()
@@ -1972,9 +1973,7 @@ defined as lowercase."
     (w--set-major-mode-hydra #'w--hydra-emacs-lisp/body)
     ;; (evil-cleverparens-mode)  ;; fixme: useless with colemak
     (rainbow-delimiters-mode))
-
   (add-hook 'emacs-lisp-mode-hook 'w--emacs-lisp-mode-hook)
-
   (w--make-hydra w--hydra-emacs-lisp nil
     "elisp"
     "_b_ eval-buffer"
