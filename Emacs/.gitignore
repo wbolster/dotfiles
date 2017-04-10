@@ -1,0 +1,13 @@
+/**/*.elc
+/**/dir
+/auto-save-list/
+/custom.el
+/elpa/archives/
+/elpa/auctex-*/
+/elpa/gnupg/
+/ido.last
+/init-local.el
+/projectile-bookmarks.eld
+/session.*
+/smex-items
+/tramp
