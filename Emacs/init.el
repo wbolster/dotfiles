@@ -584,7 +584,34 @@ defined as lowercase."
     (kbd "SPC p Y") (lambda () (interactive) (next-line) (call-interactively 'avy-copy-region))
     (kbd "SPC P y") 'avy-copy-line
     (kbd "SPC P Y") 'avy-copy-region
-    (kbd "SPC $") 'w--avy-evil-goto-end-of-line))
+    (kbd "SPC $") 'w--avy-evil-goto-end-of-line)
+
+  (w--make-hydra w--hydra-teleport nil
+    "teleport"
+    "_w_/_f_/_b_/_gf_ word"
+    ("w" evilem--motion-function-evil-forward-word-begin)
+    ("W" evilem--motion-function-evil-forward-WORD-begin)
+    ("f" evilem--motion-function-evil-forward-word-end)
+    ("F" evilem--motion-function-evil-forward-WORD-end)
+    ("b" evilem--motion-function-evil-backward-word-begin)
+    ("B" evilem--motion-function-evil-backward-WORD-begin)
+    ("gf" evilem--motion-function-evil-backward-word-end)
+    ("gF" evilem--motion-function-evil-backward-WORD-end)
+    "_n_/_e_/_l_ line"
+    ("e" evilem--motion-function-previous-line)
+    ("E" avy-goto-line-above)
+    ("n" evilem--motion-function-next-line)
+    ("N" avy-goto-line-below)
+    ("l" avy-goto-line)
+    ("L" (avy-goto-line 4))
+    "_t_/_j_/SPC char"
+    ("SPC" avy-goto-char-timer)
+    ("t" evilem--motion-evil-find-char)
+    ("T" evilem--motion-evil-find-char-to)
+    ("j" evilem--motion-evil-find-char-backward)
+    ("J" evilem--motion-evil-find-char-to-backward))
+  (evil-define-key 'motion global-map
+    (kbd "SPC") 'w--hydra-teleport/body))
 
 (use-package evil-exchange
   :config
