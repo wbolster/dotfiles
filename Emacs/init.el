@@ -1251,12 +1251,6 @@ defined as lowercase."
      :require-match t
      :history 'file-name-history))
 
-  (defun w--projectile-detect-test-file-name ()
-    "Detect associated test file name for the current buffer."
-    (or (if (projectile-test-file-p (buffer-file-name))
-            (file-relative-name (buffer-file-name) (projectile-project-root)))
-        (projectile-find-matching-test (buffer-file-name))))
-
   (w--make-hydra w--hydra-project nil
     "project"
     "_a_ny file"
@@ -2092,58 +2086,6 @@ defined as lowercase."
 
   (add-hook 'python-mode-hook 'w--python-mode-hook)
 
-  (defun w--python-pytest-sensible-args ()
-    "Figure out sensible pytest args for the current buffer and point."
-    (let* ((test-file-name (w--projectile-detect-test-file-name))
-           (buffer-is-test-file
-            (file-equal-p (concat (projectile-project-root) test-file-name)
-                          (buffer-file-name)))
-           (python-function-name
-            (save-excursion
-              ;; jumping makes it work on empty lines
-              (python-nav-backward-defun)
-              (python-info-current-defun)))
-           (pytest-args (or test-file-name "")))
-      (when (and buffer-is-test-file python-function-name)
-        (setq pytest-args (format "%s -k %s" pytest-args python-function-name)))
-      pytest-args))
-
-  (defvar w--python-pytest-arguments-history nil
-    "Argument history for pytest invocations.")
-
-  (defun w--python-pytest (&optional arg)
-    "Run pytest after prompting for arguments.
-With a prefix argument (and on first invocation), suggests sensible
-arguments based on the current file and point. Subsequent invocations
-default to the previously used arguments."
-    ;; todo: use (define-compilation-mode) perhaps? it might help
-    ;; getting hooks like compilation-finish-functions to work.
-    (interactive "P")
-    (let ((arguments (first w--python-pytest-arguments-history)))
-      (when (or arg (null arguments))
-        (setq arguments (w--python-pytest-sensible-args)))
-      (require 'comint)
-      (let ((comint-buffer (get-buffer-create "*pytest*")))
-        (with-current-buffer comint-buffer
-          (when (comint-check-proc comint-buffer)
-            (if (or compilation-always-kill (yes-or-no-p "Kill running pytest process?"))
-                (kill-process (get-buffer-process comint-buffer))
-              (user-error "Aborting because of existing pytest process")))
-          (setq arguments (read-from-minibuffer
-                           "pytest args: " arguments nil nil
-                           'w--python-pytest-arguments-history))
-          (delete-region (point-min) (point-max))
-          (add-hook
-           'comint-output-filter-functions
-           'python-pdbtrack-comint-output-filter-function
-           nil t)
-          (setq arguments (format "pytest %s" arguments))
-          (insert (format "command: %s\nworking directory: %s\n\n"
-                          arguments default-directory))
-          (let ((default-directory (projectile-project-root)))
-            (make-comint-in-buffer "pytest" comint-buffer "sh" nil "-c" arguments))
-          (display-buffer comint-buffer)))))
-
   (evilem-make-motion
    w--easymotion-python
    (list
@@ -2236,6 +2178,9 @@ default to the previously used arguments."
       (w--python-insert-statement-above
        (format "%s = %s" name code))))
 
+  (require 'w--pytest)
+  (add-hook 'w--pytest-finished-hooks #'evil-force-normal-state)
+
   (defhydra w--hydra-python
     (:exit t
            :foreign-keys warn
@@ -2244,8 +2189,8 @@ default to the previously used arguments."
     ("<escape>" nil nil)
     ("b" (w--python-insert-pdb-trace "pdb") nil)
     ("B" (w--python-insert-pdb-trace "ipdb") nil)
-    ("t" w--python-pytest nil)
-    ("T" (w--python-pytest t) nil)
+    ("t" w--pytest nil)
+    ("T" (w--pytest t) nil)
     ("l" multi-line nil)
     ("L" multi-line-single-line nil)
     ("v" w--python-refactor-make-variable nil))
