@@ -468,7 +468,7 @@ defined as lowercase."
   ;; the t/T/f/F overrides are the most important ones, since
   ;; avy/evil-easymotion already allows for fancy jumps, e.g. via
   ;; avy-goto-char-timer.
-  (evil-define-key 'motion evil-snipe-mode-map
+  (evil-define-key* 'motion evil-snipe-mode-map
     "s" nil
     "S" nil)
 
@@ -557,7 +557,7 @@ defined as lowercase."
    :bind ((scroll-margin 0))
    :initial-point (goto-char (window-start)))
 
-  (evil-define-key 'motion global-map
+  (evil-define-key* 'motion global-map
     (kbd "SPC SPC") 'avy-goto-char-timer
     (kbd "SPC S-SPC") 'w--avy-goto-char-timer-any-window
     (kbd "S-SPC S-SPC") 'w--avy-goto-char-timer-any-window
@@ -565,7 +565,7 @@ defined as lowercase."
     (kbd "SPC L") 'w--avy-goto-line-any-window)
 
   ;; todo: all of this could use some rethinking and cleaning up
-  (evil-define-key 'normal global-map
+  (evil-define-key* 'normal global-map
     (kbd "SPC a") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-append))
     (kbd "SPC A") (lambda () (interactive) (w--avy-evil-goto-end-of-line) (call-interactively 'evil-append-line))
     (kbd "SPC c") (lambda () (interactive) (avy-goto-line) (evil-first-non-blank) (call-interactively 'evil-change-line))
@@ -610,7 +610,7 @@ defined as lowercase."
     ("T" evilem--motion-evil-find-char-to)
     ("j" evilem--motion-evil-find-char-backward)
     ("J" evilem--motion-evil-find-char-to-backward))
-  (evil-define-key 'motion global-map
+  (evil-define-key* 'motion global-map
     (kbd "SPC") 'w--hydra-teleport/body))
 
 (use-package evil-exchange
@@ -619,11 +619,11 @@ defined as lowercase."
   ;; quickly swap two text objects using "gx"; the empty text object is
   ;; a trick to make "gxp" work to move previously marked text without
   ;; moving anything back to the original location.
-  (evil-define-key 'operator global-map "p" 'w--evil-empty-text-object))
+  (evil-define-key* 'operator global-map "p" 'w--evil-empty-text-object))
 
 (use-package evil-numbers
   :config
-  (evil-define-key 'normal global-map
+  (evil-define-key* 'normal global-map
     "+" 'evil-numbers/inc-at-pt
     "-" 'evil-numbers/dec-at-pt))
 
@@ -678,7 +678,7 @@ defined as lowercase."
       (evil-a-symbol count)
     (evil-inner-symbol count)))
 
-(evil-define-key '(operator visual) global-map
+(evil-define-key* '(operator visual) global-map
   "o" 'w--evil-text-object-symbol-dwim
   (kbd "C-a") 'w--evil-text-object-whole-buffer)
 
@@ -695,7 +695,7 @@ defined as lowercase."
   "_z_"
   ("z" recenter-top-bottom nil :exit nil))
 
-(evil-define-key 'motion global-map
+(evil-define-key* 'motion global-map
   (kbd "z z") #'w--hydra-recenter/recenter-top-bottom)
 
 
@@ -779,7 +779,7 @@ defined as lowercase."
       (evil-previous-visual-line count)
     (evil-previous-line count)))
 
-(evil-define-key '(normal visual) global-map
+(evil-define-key* '(normal visual) global-map
   [remap evil-next-line] 'w--evil-next-line
   [remap evil-previous-line] 'w--evil-previous-line)
 
@@ -849,7 +849,7 @@ defined as lowercase."
   (provide 'occur)  ; fake feature since it is actually inside replace.el
   :config
   (evil-set-initial-state 'occur-mode 'motion)
-  (evil-define-key '(motion normal) occur-mode-map
+  (evil-define-key* '(motion normal) occur-mode-map
     (kbd "RET") 'occur-mode-goto-occurrence
     (kbd "C-e") 'occur-prev
     (kbd "C-n") 'occur-next
@@ -881,7 +881,7 @@ defined as lowercase."
 
 (use-package swiper
   :config
-  (evil-define-key 'motion global-map
+  (evil-define-key* 'motion global-map
     "/" 'swiper
     "g/" 'evil-search-forward)
   (defun w--swiper-thing-at-point-dwim ()
@@ -890,7 +890,7 @@ defined as lowercase."
     (let ((query (w--thing-at-point-dwim)))
       (evil-force-normal-state)  ; do not expand region in visual mode
       (swiper query)))
-  (evil-define-key 'visual global-map
+  (evil-define-key* 'visual global-map
     "/" 'w--swiper-thing-at-point-dwim))
 
 (use-package ag
@@ -956,11 +956,11 @@ defined as lowercase."
       (user-error
        (highlight-symbol-next))))
 
-  (evil-define-key 'motion global-map
+  (evil-define-key* 'motion global-map
     (kbd "C-p") 'highlight-symbol-prev
     (kbd "C-n") 'highlight-symbol-next)
 
-  (evil-define-key 'normal global-map
+  (evil-define-key* 'normal global-map
     (kbd "C-p") 'w--evil-paste-pop-or-highlight-symbol-prev
     (kbd "C-n") 'w--evil-paste-pop-next-or-highlight-symbol-next))
 
@@ -975,7 +975,7 @@ defined as lowercase."
   (interactive)
   (condition-case err (while t (next-error)) (user-error nil)))
 
-(evil-define-key 'motion global-map
+(evil-define-key* 'motion global-map
   (kbd "[ SPC") (lambda () (interactive) (save-excursion (evil-insert-newline-above)))
   (kbd "] SPC") (lambda () (interactive) (save-excursion (evil-insert-newline-below)))
   "[b" 'evil-prev-buffer
@@ -1024,7 +1024,7 @@ defined as lowercase."
 
 (use-package syntactic-close
   :config
-  (evil-define-key 'insert global-map
+  (evil-define-key* 'insert global-map
     ;; this is a zero, i.e. C-) without shift
     (kbd "C-0") #'syntactic-close))
 
@@ -1041,7 +1041,7 @@ defined as lowercase."
     (end-of-line)
     (fill-paragraph)))
 
-(evil-define-key 'normal global-map
+(evil-define-key* 'normal global-map
   "Q" 'w--evil-fill-paragraph-dwim)
 
 (use-package fill-column-indicator
@@ -1064,13 +1064,13 @@ defined as lowercase."
 
 (use-package drag-stuff
   :config
-  (evil-define-key 'normal global-map
+  (evil-define-key* 'normal global-map
     (kbd "M-n") 'drag-stuff-down
     (kbd "M-e") 'drag-stuff-up
     (kbd "M-h") 'evil-shift-left-line
     (kbd "M-i") 'evil-shift-right-line)
   ;; todo: C-[hnei] in visual mode?
-  (evil-define-key 'visual global-map
+  (evil-define-key* 'visual global-map
     (kbd "M-h") (lambda (beg end)
                   (interactive "r")
                   (evil-shift-left beg end)
@@ -1088,7 +1088,7 @@ defined as lowercase."
 (use-package expand-region
   :config
   (setq expand-region-fast-keys-enabled nil)
-  (evil-define-key 'visual global-map
+  (evil-define-key* 'visual global-map
     (kbd "TAB") 'w--hydra-expand-region/er/expand-region)
   (w--make-hydra w--hydra-expand-region nil
     "expand-region"
@@ -1147,7 +1147,7 @@ defined as lowercase."
       (let ((current-prefix-arg t))
         (copy-as-format))
       (pop-mark)))
-  (evil-define-key 'visual global-map
+  (evil-define-key* 'visual global-map
     "Y" #'w--evil-copy-as-format))
 
 
@@ -1168,7 +1168,7 @@ defined as lowercase."
     (when was-at-eol
       (fixup-whitespace))))
 
-(evil-define-key 'insert global-map
+(evil-define-key* 'insert global-map
   (kbd "C-a") 'evil-first-non-blank
   (kbd "C-d") 'delete-char
   (kbd "C-e") 'end-of-line
@@ -1178,11 +1178,11 @@ defined as lowercase."
   (kbd "C-p") 'previous-line
   (kbd "C-t") 'w--evil-transpose-chars)
 
-(evil-define-key 'insert global-map
+(evil-define-key* 'insert global-map
   ;; during typing, ctrl-v is "paste", like everywhere else
   (kbd "C-v") 'yank)
 
-(evil-define-key 'insert global-map
+(evil-define-key* 'insert global-map
   ;; shift line with < and > (same chars as in normal mode;
   ;; used instead of standard vim bindings C-d and C-t.
   (kbd "C-,") 'evil-shift-left-line
@@ -1191,7 +1191,7 @@ defined as lowercase."
   (kbd "C->") 'evil-shift-right-line)
 
 ;; indent on enter, keeping comments open (if any)
-(evil-define-key 'insert global-map
+(evil-define-key* 'insert global-map
   (kbd "RET") 'comment-indent-new-line)
 
 
@@ -1300,7 +1300,7 @@ defined as lowercase."
 (use-package dired
   :ensure nil
   :config
-  (evil-define-key '(motion normal) dired-mode-map
+  (evil-define-key* '(motion normal) dired-mode-map
     "-" 'dired-jump)) ;; inspired by vim vinagre
 
 (defvar w--jump-commands
@@ -1347,7 +1347,7 @@ defined as lowercase."
 (use-package dumb-jump
   :config
   (setq dumb-jump-selector 'ivy)
-  (evil-define-key 'motion global-map
+  (evil-define-key* 'motion global-map
     "gd" 'dumb-jump-go-current-window
     "gD" 'dumb-jump-go-other-window)
 
@@ -1446,7 +1446,7 @@ defined as lowercase."
 
 (cond
  ((eq system-type 'darwin)  ;; osx: command key
-  (evil-define-key 'motion global-map
+  (evil-define-key* 'motion global-map
     (kbd "s-1") 'w--evil-goto-window-1
     (kbd "s-2") 'w--evil-goto-window-2
     (kbd "s-3") 'w--evil-goto-window-3
@@ -1457,7 +1457,7 @@ defined as lowercase."
    ("s-3" . w--evil-goto-window-3)
    ("s-4" . w--evil-goto-window-4)))
  (t  ;; others: control key
-  (evil-define-key 'motion global-map
+  (evil-define-key* 'motion global-map
     (kbd "C-1") 'w--evil-goto-window-1
     (kbd "C-2") 'w--evil-goto-window-2
     (kbd "C-3") 'w--evil-goto-window-3
@@ -1509,7 +1509,7 @@ defined as lowercase."
   ("-" evil-window-decrease-width nil :exit nil))
 
 ;; replace evil-window-map completely
-(evil-define-key '(emacs motion) global-map
+(evil-define-key* '(emacs motion) global-map
   (kbd "C-w") 'w--hydra-window/body)
 
 
@@ -1611,7 +1611,7 @@ defined as lowercase."
   (add-to-list 'company-backends 'company-files)
   (w--hide-from-mode-line " company")
   (global-company-mode)
-  (evil-define-key 'insert global-map
+  (evil-define-key* 'insert global-map
     (kbd "C-<return>") 'company-manual-begin
     (kbd "C-n") 'company-manual-begin))
 
@@ -1637,7 +1637,7 @@ defined as lowercase."
    magit-tag-arguments '("--annotate"))
   (add-hook 'magit-popup-mode-hook 'w--hide-trailing-whitespace)
 
-  (evil-define-key '(normal visual) magit-mode-map
+  (evil-define-key* '(normal visual) magit-mode-map
     [escape] nil)
 
   (defun w--magit-status-other-repository ()
@@ -1890,7 +1890,7 @@ defined as lowercase."
   ("~" w--hydra-text-case/body)
   ("`" w--hydra-text-case/body))
 
-(evil-define-key 'motion global-map
+(evil-define-key* 'motion global-map
   "," #'w--hydra-leader/body
   "\\" #'w--hydra-leader/body)
 
@@ -2096,14 +2096,14 @@ defined as lowercase."
     'python-nav-beginning-of-statement 'python-nav-beginning-of-block 'python-nav-backward-block)
    :pre-hook (setq evil-this-type 'line))
 
-  (evil-define-key 'motion python-mode-map
+  (evil-define-key* 'motion python-mode-map
     (kbd "SPC TAB") 'w--easymotion-python)
 
   (defun w--swiper-python-definitions ()
     (interactive)
     (swiper "^\\s-*\\(def\\|class\\)\\s- "))
 
-  (evil-define-key 'motion python-mode-map
+  (evil-define-key* 'motion python-mode-map
     (kbd "SPC /") 'w--swiper-python-definitions)
 
   (evil-define-operator w--evil-join-python (beg end)
@@ -2132,7 +2132,7 @@ defined as lowercase."
           ;;       .offset(...))
           (delete-region (point) (1+ (point)))))))
 
-  (evil-define-key 'normal python-mode-map
+  (evil-define-key* 'normal python-mode-map
     [remap evil-join] 'w--evil-join-python)
 
   (use-package evil-text-object-python
@@ -2146,10 +2146,10 @@ defined as lowercase."
        ((memq this-command '(evil-delete evil-shift-left evil-shift-right))
         (evil-text-object-python-outer-statement count))
        (t (evil-forward-char count))))
-    (evil-define-key '(operator visual) python-mode-map
+    (evil-define-key* '(operator visual) python-mode-map
       "ul" 'evil-text-object-python-inner-statement
       "al" 'evil-text-object-python-outer-statement)
-    (evil-define-key 'operator python-mode-map
+    (evil-define-key* 'operator python-mode-map
       [remap evil-forward-char] 'w--evil-forward-char-or-python-statement))
 
   (defun w--python-insert-statement-above (statement)
@@ -2195,10 +2195,10 @@ defined as lowercase."
     ("L" multi-line-single-line nil)
     ("v" w--python-refactor-make-variable nil))
 
-  (evil-define-key 'insert python-mode-map
+  (evil-define-key* 'insert python-mode-map
     (kbd "C-l") 'multi-line)
 
-  (evil-define-key '(operator visual) python-mode-map
+  (evil-define-key* '(operator visual) python-mode-map
     "H" 'python-nav-backward-sexp-safe
     ;; "L" 'python-nav-forward-sexp-safe  ;; qwerty
     "I" 'python-nav-forward-sexp-safe))
@@ -2254,7 +2254,7 @@ defined as lowercase."
    w--easymotion-rst
    (list 'rst-forward-section 'rst-backward-section)
    :pre-hook (setq evil-this-type 'line))
-  (evil-define-key 'motion rst-mode-map
+  (evil-define-key* 'motion rst-mode-map
     (kbd "SPC TAB") 'w--easymotion-rst)
 
   (w--make-hydra w--hydra-rst nil
