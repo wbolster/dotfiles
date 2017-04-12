@@ -1296,7 +1296,7 @@ defined as lowercase."
    avy-all-windows nil
    avy-all-windows-alt t
    avy-background t
-   avy-keys '(?a ?r ?s ?t ?n ?e ?i ?o))
+   avy-keys (string-to-list "arstneio"))
   (avy-setup-default))
 
 (use-package dired
