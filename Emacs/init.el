@@ -72,7 +72,7 @@
    tls-program (--remove (s-contains? "gnutls" it) tls-program)))
 
 
-;; no agitprop
+;;;; no agitprop
 
 (defun display-startup-echo-area-message ()
   "Do not display progaganda."
