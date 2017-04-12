@@ -244,6 +244,7 @@ defined as lowercase."
 
 ;; todo: try out https://github.com/fourier/ztree
 (use-package ztree)
+
 (w--make-hydra w--hydra-find-file nil
   "open"
   "_d_irectory"
@@ -261,6 +262,7 @@ defined as lowercase."
   ("o" find-file-other-window)
   "_s_udo"
   ("s" sudo-edit)
+  ("S" (sudo-edit t))
   "_t_ree"
   ("t" (ztree-dir (file-name-directory (buffer-file-name)))))
 
