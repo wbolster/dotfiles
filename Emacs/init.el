@@ -2224,6 +2224,7 @@ defined as lowercase."
        (format "%s = %s" name code))))
 
   (require 'w--pytest)
+  (evil-set-initial-state 'w--pytest-mode 'insert)
   (add-hook 'w--pytest-finished-hooks #'evil-force-normal-state)
 
   (defhydra w--hydra-python
