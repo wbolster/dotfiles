@@ -1896,6 +1896,8 @@ defined as lowercase."
   ("o" w--occur-dwim)
   "_p_roject"
   ("p" w--hydra-project/body)
+  "_q_ bury buffer"
+  ("q" bury-buffer)
   "_r_eplace"
   ("r" w--hydra-replace/body)
   "_s_ave"
