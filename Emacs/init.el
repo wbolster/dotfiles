@@ -809,6 +809,7 @@ defined as lowercase."
   :config
   (setq
    isearch-allow-prefix nil
+   isearch-forward t  ;; initial direction; useful after swiper
    lazy-highlight-cleanup nil
    lazy-highlight-initial-delay 0.5
    lazy-highlight-max-at-a-time nil))
