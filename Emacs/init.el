@@ -1781,7 +1781,6 @@ defined as lowercase."
 
 ;;;; flycheck
 
-;; todo: hydra for flycheck? ,c
 (use-package flycheck
   :config
   (setq
@@ -1796,7 +1795,20 @@ defined as lowercase."
     "Jump to the last flycheck error."
     (interactive)
     (goto-char (point-max))
-    (flycheck-previous-error)))
+    (flycheck-previous-error))
+
+  ;; todo: hydra for flycheck? ,c
+  (w--make-hydra w--hydra-flycheck nil
+    "flycheck"
+    "_c_ errors"
+    ("c" flycheck-list-errors)
+    ("o" flycheck-list-errors)
+    "_n_/_e_/_p_ nav"
+    ("n" flycheck-next-error nil :exit nil)
+    ("e" flycheck-previous-error nil :exit nil)
+    ("p" flycheck-previous-error nil :exit nil)
+    "_t_oggle"
+    ("t" flycheck-mode)))
 
 (use-package flycheck-cython)
 (use-package flycheck-package)
@@ -1867,6 +1879,8 @@ defined as lowercase."
   ("a" w--hydra-ag/body)
   "_b_uffer"
   ("b" w--hydra-buffer/body)
+  "_c_heck"
+  ("c" w--hydra-flycheck/body)
   "_f_ind"
   ("f" w--hydra-find-file/body)
   "_g_it"
