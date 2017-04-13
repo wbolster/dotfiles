@@ -1870,7 +1870,6 @@ defined as lowercase."
 ;;;; leader key
 
 (w--make-hydra w--hydra-leader nil
-  "menu"
   "_1__2__3__4_ window"
   ("1" w--evil-goto-window-1)
   ("2" w--evil-goto-window-2)
