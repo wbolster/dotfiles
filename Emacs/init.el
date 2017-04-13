@@ -1907,7 +1907,7 @@ defined as lowercase."
   ("u" universal-argument)
   "_w_indow"
   ("w" w--hydra-window/body)
-  "_x_ M-x"
+  "M-_x_"
   ("x" counsel-M-x)
   "_y_ copy format"
   ("y" w--evil-copy-as-format)
@@ -1917,9 +1917,9 @@ defined as lowercase."
   ("SPC" whitespace-cleanup)
   "_,_ major mode"
   ("," w--major-mode-hydra)
-  "_/_"
+  "_/_ search"
   ("/" w--swiper-thing-at-point-dwim)
-  "_~_ text case"
+  "_~_ case"
   ("~" w--hydra-text-case/body)
   ("`" w--hydra-text-case/body))
 
