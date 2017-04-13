@@ -224,6 +224,15 @@ defined as lowercase."
  'kill-buffer-query-functions
  'w--ask-confirmation-for-unsaved-buffers)
 
+(use-package recentf
+  :config
+  (setq
+   recentf-auto-cleanup 300
+   recentf-max-saved-items 200)
+  (recentf-mode))
+
+(use-package sync-recentf)
+
 (use-package sudo-edit)
 
 (w--make-hydra w--hydra-buffer nil
@@ -260,6 +269,13 @@ defined as lowercase."
          (call-interactively #'evil-buffer-new)))
   "_o_ther-window"
   ("o" find-file-other-window)
+  "_r_ecent"
+  ("r" counsel-recentf)
+  ;; todo: make recentf for other-window work properly,
+  ;; with focus on new window after opening
+  ("R" (letf (((symbol-function 'find-file)
+               (symbol-function 'find-file-other-window)))
+         (counsel-recentf)))
   "_s_udo"
   ("s" sudo-edit)
   ("S" (sudo-edit t))
@@ -1228,7 +1244,8 @@ defined as lowercase."
    projectile-completion-system 'ivy
    projectile-ignored-projects '("/usr/local/")
    projectile-mode-line nil
-   projectile-require-project-root nil)
+   projectile-require-project-root nil
+   projectile-sort-order 'recently-active)
   (projectile-mode)
 
   (defun w--projectile-find-file-all (&optional pattern)
