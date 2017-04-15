@@ -2089,7 +2089,8 @@ defined as lowercase."
      json-reformat:indent-width tab-width
      evil-shift-width tab-width)
     (evil-swap-keys-swap-colon-semicolon)
-    (evil-swap-keys-swap-double-single-quotes))
+    (evil-swap-keys-swap-double-single-quotes)
+    (evil-swap-keys-swap-square-curly-brackets))
   (add-hook 'json-mode-hook #'w--json-mode-hook))
 
 
