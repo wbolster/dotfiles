@@ -457,6 +457,7 @@ defined as lowercase."
 ;; note: evil is already bootstrapped at this point
 (use-package evil
   :config
+  (setq evil-insert-state-message nil)
   (evil-mode)
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
   ;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
