@@ -193,7 +193,7 @@ defined as lowercase."
    ns-use-native-fullscreen nil))
 
 
-;;;; buffers and files
+;;;; buffers, files, directories
 
 (setq
  auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-saves/\\1" t))
@@ -234,6 +234,8 @@ defined as lowercase."
 (use-package sync-recentf)
 
 (use-package sudo-edit)
+
+(use-package terminal-here)
 
 (w--make-hydra w--hydra-buffer nil
   "buffer"
@@ -280,7 +282,9 @@ defined as lowercase."
   ("s" sudo-edit)
   ("S" (sudo-edit t))
   "_t_ree"
-  ("t" (ztree-dir (file-name-directory (buffer-file-name)))))
+  ("t" (ztree-dir (file-name-directory (buffer-file-name))))
+  "_!_ terminal"
+  ("!" terminal-here))
 
 
 ;;;; frames
@@ -1313,7 +1317,9 @@ defined as lowercase."
     ("-" projectile-dired)
     "_/__?_ counsel-ag"
     ("/" w--counsel-ag-project)
-    ("?" w--counsel-ag-project-all-files)))
+    ("?" w--counsel-ag-project-all-files)
+    "_!_ terminal"
+    ("!" terminal-here-project-launch)))
 
 
 ;;;; jumping around
