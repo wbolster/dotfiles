@@ -328,31 +328,33 @@ defined as lowercase."
    solarized-height-plus-3 1.0
    solarized-height-plus-4 1.0))
 
-(defun w--load-theme (dark)
+(load-theme w--dark-theme t t)
+(load-theme w--light-theme t t)
+
+(defun w--activate-theme (dark)
   "Load configured theme. When DARK is nil, load a light theme."
   (setq frame-background-mode (if dark 'dark 'light))
   (mapc 'frame-set-background-mode (frame-list))
   (let ((theme (if dark w--dark-theme w--light-theme)))
-    (load-theme theme t)))
+    (enable-theme theme)))
 
 (defun w--toggle-dark-light-theme ()
   "Toggle between a dark and light theme."
   (interactive)
-  (w--load-theme (eq (first custom-enabled-themes) w--light-theme)))
+  (w--activate-theme (eq (first custom-enabled-themes) w--light-theme)))
 
-(defun w--disable-themes (&rest _ignored)
+(defun w--disable-themes-advice (theme)
   "Disable all enabled themes."
-  (--each custom-enabled-themes
-    (disable-theme it)))
+  (unless (eq theme 'user)
+    (--each custom-enabled-themes
+      (disable-theme it))))
 
-(advice-add
- 'load-theme
- :before (fn: w--disable-themes))
+(advice-add 'enable-theme :before #'w--disable-themes-advice)
 
 (defun w--set-theme-from-environment ()
   "Set the theme based on presence/absence of a configuration file."
   (interactive)
-  (w--load-theme (file-exists-p "~/.config/dark-theme")))
+  (w--activate-theme (file-exists-p "~/.config/dark-theme")))
 
 (w--set-theme-from-environment)
 
