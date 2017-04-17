@@ -720,7 +720,13 @@ defined as lowercase."
 
 (w--make-hydra w--hydra-recenter (:foreign-keys nil)
   "recenter"
-  "_z_"
+  "_b_ottom"
+  ("b" evil-scroll-line-to-bottom)
+  "_c_enter"
+  ("c" evil-scroll-line-to-center)
+  "_t_op"
+  ("t" evil-scroll-line-to-top)
+  "_z_ cycle"
   ("z" recenter-top-bottom nil :exit nil))
 
 (evil-define-key* 'motion global-map
