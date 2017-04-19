@@ -251,7 +251,9 @@ defined as lowercase."
   "_n_ew"
   ("n" evil-buffer-new)
   "_o_ther-window"
-  ("o" ivy-switch-buffer-other-window))
+  ("o" ivy-switch-buffer-other-window)
+  "_r_evert"
+  ("r" revert-buffer))
 
 ;; todo: try out https://github.com/fourier/ztree
 (use-package ztree)
