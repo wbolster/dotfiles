@@ -1600,7 +1600,8 @@ defined as lowercase."
    ("C-h" . ivy-backward-delete-char)
    ("C-w" . ivy-backward-kill-word)
    ("C-u" . kill-whole-line)
-   ("C-SPC" . ivy-avy))
+   ("C-SPC" . ivy-avy)
+   ("C-<return>" . ivy-dispatching-done-hydra))
   :config
   (setq
    ivy-count-format "(%d/%d) "
@@ -1626,6 +1627,8 @@ defined as lowercase."
            (lines (truncate (* total-lines w--ivy-height-percentage 0.01)))
            (new-height (w--clamp-number lines 10 20)))
       (setq ivy-height new-height))))
+
+(use-package ivy-hydra)
 
 (use-package ivy-rich
   :config
