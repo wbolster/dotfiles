@@ -2244,6 +2244,13 @@ defined as lowercase."
       (w--python-insert-statement-above
        (format "%s = %s" name code))))
 
+  (defun w--python-insert-import-statement ()
+    "Add an import statement for the thing at point."
+    (interactive)
+    (let ((thing (w--thing-at-point-dwim)))
+      (w--python-insert-statement-above
+       (format "import %s" thing))))
+
   (require 'w--pytest)
   (evil-set-initial-state 'w--pytest-mode 'insert)
   (add-hook 'w--pytest-finished-hooks #'evil-force-normal-state)
@@ -2252,10 +2259,11 @@ defined as lowercase."
     (:exit t
            :foreign-keys warn
            :exit w--hydra-evil-repeat-last-command)
-    "\npython  _b_ pdb trace  multi-_l_ine  _t_ pytest  _v_ariable"
+    "\npython  _b_ pdb trace  _i_mport  multi-_l_ine  _t_ pytest  _v_ariable"
     ("<escape>" nil nil)
     ("b" (w--python-insert-pdb-trace "pdb") nil)
     ("B" (w--python-insert-pdb-trace "ipdb") nil)
+    ("i" w--python-insert-import-statement nil)
     ("t" w--pytest nil)
     ("T" (w--pytest t) nil)
     ("l" multi-line nil)
