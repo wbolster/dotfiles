@@ -2255,19 +2255,20 @@ defined as lowercase."
   (evil-set-initial-state 'w--pytest-mode 'insert)
   (add-hook 'w--pytest-finished-hooks #'evil-force-normal-state)
 
-  (defhydra w--hydra-python
-    (:exit t
-           :foreign-keys warn
-           :exit w--hydra-evil-repeat-last-command)
-    "\npython  _b_ pdb trace  _i_mport  multi-_l_ine  _t_ pytest  _v_ariable"
-    ("<escape>" nil nil)
+  (w--make-hydra w--hydra-python nil
+    "python"
+    "_b_reakpoint"
     ("b" (w--python-insert-pdb-trace "pdb") nil)
     ("B" (w--python-insert-pdb-trace "ipdb") nil)
+    "_i_mport"
     ("i" w--python-insert-import-statement nil)
-    ("t" w--pytest nil)
-    ("T" (w--pytest t) nil)
+    "_l_ multi-line"
     ("l" multi-line nil)
     ("L" multi-line-single-line nil)
+    "_t_ pytest"
+    ("t" w--pytest nil)
+    ("T" (w--pytest t) nil)
+    "_v_ariable"
     ("v" w--python-refactor-make-variable nil))
 
   (evil-define-key* 'insert python-mode-map
