@@ -1928,6 +1928,7 @@ defined as lowercase."
   ("p" w--hydra-project/body)
   "_q_ bury buffer"
   ("q" bury-buffer)
+  ("Q" unbury-buffer)
   "_r_eplace"
   ("r" w--hydra-replace/body)
   "_s_ave"
