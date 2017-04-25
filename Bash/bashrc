@@ -193,29 +193,32 @@ if [[ "$PS1" ]]; then
             done
         fi
         tt_umbrella="${prompt_umbrella}"
+        if [ -n "${prompt_umbrella}" ]; then
+            prompt_umbrella="${colour_blue}${prompt_umbrella}"
+        fi
 
         # User name (only if non-standard)
         local prompt_user=""
         local prompt_user_colour="${colour_blue}"
         local prompt_sign_colour="${colour_green}"
+        if [[ "$USER" == "root" ]]; then
+            prompt_user_colour="${colour_red}"
+            prompt_sign_colour="${colour_red}"
+        fi
         case "${USER}" in
             (wbolster|uws)
                 prompt_user=""
                 ;;
             (*)
-                prompt_user="as ${USER}"
+                prompt_user="${colour_normal}as ${prompt_user_colour}${USER}"
                 ;;
         esac
-        if [[ "$USER" == "root" ]]; then
-            prompt_user_colour="${colour_red}"
-            local prompt_sign_colour="${colour_red}"
-        fi
 
         # Host name (only remote without screen/tmux)
         local prompt_hostname=""
         local tt_hostname=""
         if [[ -n "${SSH_CLIENT:-}" && "${TERM}" != screen* ]]; then
-            prompt_hostname="on ${HOSTNAME}"
+            prompt_hostname="${colour_normal}on ${colour_blue}${HOSTNAME}"
             tt_hostname="${HOSTNAME}"
         fi
 
@@ -223,7 +226,9 @@ if [[ "$PS1" ]]; then
         local prompt_wd=""
         local tt_wd="\w"
         if [[ "${PWD}" != "${HOME}" ]]; then
-            prompt_wd="in \w"
+            short_pwd=$(shorten_path "$PWD" 3)
+            prompt_wd="${colour_normal}in ${colour_green}${short_pwd}"
+            tt_wd="${short_pwd}"
         fi
 
         # Git
@@ -232,7 +237,7 @@ if [[ "$PS1" ]]; then
             local _git_ps1_output
             _git_ps1_output="$(__git_ps1 '%s')"
             if [[ -n "${_git_ps1_output}" ]]; then
-                prompt_git="git ${_git_ps1_output}"
+                prompt_git="${colour_normal}git ${colour_yellow}${_git_ps1_output}"
             fi
         fi
 
@@ -245,7 +250,7 @@ if [[ "$PS1" ]]; then
             else
                 venv_name="$(basename "${VIRTUAL_ENV}")"
             fi
-            prompt_venv="venv ${venv_name}"
+            prompt_venv="${colour_normal}venv ${colour_cyan}${venv_name}"
         fi
 
         # Warning when output does not have a trailing newline
@@ -265,7 +270,7 @@ if [[ "$PS1" ]]; then
             n_jobs_suspended="$(jobs -p -s | wc -w)"
             prompt_jobs=""
             if [[ $((n_jobs_background + n_jobs_suspended)) -gt 0 ]]; then
-                prompt_jobs="jobs"
+                prompt_jobs="${colour_normal}jobs ${colour_purple}"
             fi
             if [[ ${n_jobs_background} -gt 0 ]]; then
                 prompt_jobs+=" ${n_jobs_background}&"
@@ -283,19 +288,20 @@ if [[ "$PS1" ]]; then
 
         # Status line about previous command
         local status_line_previous=""
-        status_line_previous+="${prompt_newline_warning:+\n${colour_red}${prompt_newline_warning} }"
-        status_line_previous+="${prompt_err:+${colour_red}${prompt_err} }"
-        status_line_previous+="${prompt_timer:+${colour_green}${prompt_timer} }"
+        status_line_previous+="${prompt_newline_warning:+\n${colour_red}${prompt_newline_warning}  }"
+        status_line_previous+="${prompt_err:+${colour_red}${prompt_err}  }"
+        status_line_previous+="${prompt_timer:+${colour_green}${prompt_timer}  }"
 
         # Status line with other information
+        # fixme: use array and join_by?
         local prompt_status_line_other=""
-        prompt_status_line_other+="${prompt_user:+${prompt_user_colour}${prompt_user} }"
-        prompt_status_line_other+="${prompt_hostname:+${colour_blue}${prompt_hostname} }"
-        prompt_status_line_other+="${prompt_umbrella:+${colour_blue}${prompt_umbrella} }"
-        prompt_status_line_other+="${prompt_venv:+${colour_cyan}${prompt_venv} }"
-        prompt_status_line_other+="${prompt_wd:+${colour_green}${prompt_wd} }"
-        prompt_status_line_other+="${prompt_git:+${colour_yellow}${prompt_git} }"
-        prompt_status_line_other+="${prompt_jobs:+${colour_purple}${prompt_jobs} }"
+        prompt_status_line_other+="${prompt_user:+${prompt_user} }"
+        prompt_status_line_other+="${prompt_hostname:+${prompt_hostname} }"
+        prompt_status_line_other+="${prompt_umbrella:+${prompt_umbrella} }"
+        prompt_status_line_other+="${prompt_venv:+${prompt_venv} }"
+        prompt_status_line_other+="${prompt_wd:+${prompt_wd} }"
+        prompt_status_line_other+="${prompt_git:+${prompt_git} }"
+        prompt_status_line_other+="${prompt_jobs:+${prompt_jobs} }"
 
         # Primary prompt
         PS1="\n"
