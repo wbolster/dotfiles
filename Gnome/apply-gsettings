@@ -90,7 +90,7 @@ gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-9 "['<Shift><Su
 # shortcuts
 #
 
-gsettings set org.gnome.shell.keybindings toggle-overview "['<Super>s'']"
+gsettings set org.gnome.shell.keybindings toggle-overview "['<Super>s']"
 gsettings set org.gnome.shell.keybindings focus-active-notification "[]"
 
 # applications
