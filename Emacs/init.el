@@ -1427,6 +1427,11 @@ defined as lowercase."
 ;; up to three next to each other in a horizontal fashion,
 ;; i.e. screen divided into columns.
 
+(use-package winner
+  :config
+  (setq winner-dont-bind-my-keys t)
+  (winner-mode))
+
 (setq
  help-window-select t
  split-height-threshold nil
@@ -1549,6 +1554,9 @@ defined as lowercase."
   "_s_plit"
   ("s" evil-window-split)
   ("S" evil-window-new)
+  "_u_ndo"
+  ("u" winner-undo)
+  ("U" winner-redo)
   "_v_split"
   ("v" evil-window-vsplit)
   ("V" evil-window-vnew)
