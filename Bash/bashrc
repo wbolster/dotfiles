@@ -395,6 +395,7 @@ if [[ "$PS1" ]]; then
     export IGNOREEOF=1  # Require twice Ctrl-D to exit.
 
     # File listings
+    # shellcheck disable=SC2010
     if ls --version 2>/dev/null | grep -q -F 'ls (GNU coreutils)'; then
         alias ls='ls --color=auto --group-directories-first'
         alias l='ls -l --color=auto --human-readable --classify --group-directories-first'
