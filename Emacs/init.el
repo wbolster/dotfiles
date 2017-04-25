@@ -120,7 +120,7 @@
   (setq evil-repeat-info `((call-interactively ,real-this-command)))
   (evil-repeat-stop))
 
-(defun w--hydra-make-docstring (&rest args)
+(defun w--hydra-make-docstring (args)
   "Make a docstring for a hydra from ARGS."
   (setq args (--map-when (not (string-match-p "_" it))
                          (format "  %s:" it)
@@ -160,7 +160,7 @@ defined as lowercase."
     `(defhydra
        ,name
        ,(w--hydra-set-defaults body)
-       ,(apply #'w--hydra-make-docstring docstrings)
+       ,(w--hydra-make-docstring docstrings)
        ,@(w--hydra-missing-uppercase-heads heads)
        ,@heads
        ("<escape>" nil :exit t))))
