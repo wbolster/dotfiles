@@ -225,12 +225,21 @@ defined as lowercase."
 
 (use-package recentf
   :config
+  (use-package sync-recentf)
   (setq
    recentf-auto-cleanup 300
-   recentf-max-saved-items 200)
-  (recentf-mode))
-
-(use-package sync-recentf)
+   recentf-max-saved-items 500)
+  (recentf-mode)
+  (defun w--counsel-recentf ()
+    "Wrapper around `counsel-recentf'."
+    (interactive)
+    (let ((recentf-list (-remove-item sync-recentf-marker recentf-list)))
+      (counsel-recentf)))
+  (defun w--counsel-recentf-other-window ()
+    "Like `w--counsel-recentf', but opens the file in another window."
+    (interactive)
+    (let ((ivy-inhibit-action t))
+      (find-file-other-window (w--counsel-recentf)))))
 
 (use-package sudo-edit)
 
@@ -273,12 +282,8 @@ defined as lowercase."
   "_o_ther-window"
   ("o" find-file-other-window)
   "_r_ecent"
-  ("r" counsel-recentf)
-  ;; todo: make recentf for other-window work properly,
-  ;; with focus on new window after opening
-  ("R" (letf (((symbol-function 'find-file)
-               (symbol-function 'find-file-other-window)))
-         (counsel-recentf)))
+  ("r" w--counsel-recentf)
+  ("R" w--counsel-recentf-other-window)
   "_s_udo"
   ("s" sudo-edit)
   ("S" (sudo-edit t))
