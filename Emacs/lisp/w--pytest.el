@@ -70,14 +70,13 @@ default to the previously used arguments."
           (if (or compilation-always-kill (yes-or-no-p "Kill running pytest process?"))
               (kill-process (get-buffer-process comint-buffer))
             (user-error "Aborting; pytest still running")))
-        ;; (setq arguments (read-from-minibuffer
-        ;;                  "pytest args: " arguments nil nil
-        ;;                  'w--pytest-arguments-history))
         (setq arguments (completing-read
                          "pytest args: "
-                         w--pytest-arguments-history
-                         nil nil
-                         nil 'w--pytest-arguments-history arguments))
+                         (append (list "" w--pytest-default-args)
+                                 w--pytest-arguments-history)
+                         nil nil nil
+                         'w--pytest-arguments-history
+                         arguments))
         (delete-region (point-min) (point-max))
         (add-hook
          'comint-output-filter-functions
