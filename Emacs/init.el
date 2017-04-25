@@ -1729,6 +1729,16 @@ defined as lowercase."
     (interactive)
     (magithub--command-quick "compare")))
 
+(use-package git-link)
+
+(defun w--git-web-browse ()
+  (interactive)
+  (if (region-active-p)
+      (let ((git-link-open-in-browser t))
+        (call-interactively #'git-link)
+        (setq kill-ring (cdr kill-ring)))
+    (magithub-browse)))
+
 (use-package diff-hl
   :config
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
@@ -1760,7 +1770,7 @@ defined as lowercase."
   "_t_ lock"
   ("t" magit-toggle-buffer-lock)
   "_w_eb"
-  ("w" magithub-browse)
+  ("w" w--git-web-browse)
   ("W" w--magithub-compare)
   "_!_ command"
   ("!" magit-git-command))
