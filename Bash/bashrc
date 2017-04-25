@@ -462,9 +462,9 @@ if [[ "$PS1" ]]; then
     # detection).
     if type direnv &>/dev/null; then
         # Copied from "direnv hook bash" output:
-        _DIRENV_HOOK_ENABLED=1
+        _direnv_hook_enabled=1
         _direnv_hook() {
-            if [ $_DIRENV_HOOK_ENABLED == "1" ]; then
+            if [ $_direnv_hook_enabled == "1" ]; then
                 eval "$(direnv export bash)"
             fi
         };
@@ -476,11 +476,11 @@ if [[ "$PS1" ]]; then
                 popd > /dev/null
             fi
             echo "direnv: disabling shell hook; use direnv-thaw to enable again"
-            _DIRENV_HOOK_ENABLED=0
+            _direnv_hook_enabled=0
         }
         direnv-thaw() {
             echo "direnv: enabling shell hook"
-            _DIRENV_HOOK_ENABLED=1
+            _direnv_hook_enabled=1
         }
         complete -F _cd direnv-freeze
     fi
