@@ -1285,7 +1285,8 @@ defined as lowercase."
    projectile-ignored-projects '("/usr/local/")
    projectile-mode-line nil
    projectile-require-project-root nil
-   projectile-sort-order 'recently-active)
+   projectile-sort-order 'recently-active
+   projectile-switch-project-action 'projectile-vc)
   (projectile-mode)
 
   (defun w--projectile-find-file-all (&optional pattern)
