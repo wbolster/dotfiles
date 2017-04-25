@@ -675,6 +675,7 @@ if [[ "$PS1" ]]; then
                             # hashbang (#!) lines.
                             case $(head -c 100 "$file" | head -n 1 | grep '^#!') in
                                 (*bash*)    lexer=bash ;;
+                                (*make*)    lexer=make ;;
                                 (*node*)    lexer=js ;;
                                 (*perl*)    lexer=perl ;;
                                 (*python*)  lexer=python ;;
