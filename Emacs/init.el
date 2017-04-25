@@ -2082,10 +2082,15 @@ defined as lowercase."
   (add-hook 'comint-mode-hook #'w--compilation-mode-hook)
   (evil-set-initial-state 'comint-mode 'insert)
   ;; fixme use :bind
+  (defun w--comint-goto-end ()
+    (interactive)
+    (goto-char (point-max))
+    (call-interactively #'evil-append))
   (define-key comint-mode-map
     (kbd "ESC") #'evil-normal-state)
   (evil-define-key*
    'normal comint-mode-map
+   (kbd "RET") 'w--comint-goto-end
    (kbd "C-e") 'comint-previous-prompt
    (kbd "C-n") 'comint-next-prompt
    (kbd "C-p") 'comint-previous-prompt)
