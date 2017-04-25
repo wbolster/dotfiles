@@ -2197,15 +2197,15 @@ defined as lowercase."
     'python-nav-beginning-of-statement 'python-nav-beginning-of-block 'python-nav-backward-block)
    :pre-hook (setq evil-this-type 'line))
 
-  (evil-define-key* 'motion python-mode-map
-    (kbd "SPC TAB") 'w--easymotion-python)
+  ;; (evil-define-key* 'motion python-mode-map
+  ;;   (kbd "SPC TAB") 'w--easymotion-python)
 
   (defun w--swiper-python-definitions ()
     (interactive)
     (swiper "^\\s-*\\(def\\|class\\)\\s- "))
 
-  (evil-define-key* 'motion python-mode-map
-    (kbd "SPC /") 'w--swiper-python-definitions)
+  ;; (evil-define-key* 'motion python-mode-map
+  ;;   (kbd "SPC /") 'w--swiper-python-definitions)
 
   (evil-define-operator w--evil-join-python (beg end)
     "Like 'evil-join', but handles comments and some continuation styles sensibly."
@@ -2365,8 +2365,8 @@ defined as lowercase."
    w--easymotion-rst
    (list 'rst-forward-section 'rst-backward-section)
    :pre-hook (setq evil-this-type 'line))
-  (evil-define-key* 'motion rst-mode-map
-    (kbd "SPC TAB") 'w--easymotion-rst)
+  ;; (evil-define-key* 'motion rst-mode-map
+  ;;   (kbd "SPC TAB") 'w--easymotion-rst)
 
   (w--make-hydra w--hydra-rst nil
     "restructuredtext"
