@@ -463,8 +463,8 @@ defined as lowercase."
 ;; note: evil is already bootstrapped at this point
 (use-package evil
   :config
-  (setq evil-insert-state-message nil)
   (setq
+   evil-insert-state-message nil
    evil-cross-lines t)
   (evil-mode)
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
