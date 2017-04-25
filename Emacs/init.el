@@ -58,7 +58,6 @@
 (use-package evil
   :init
   (setq
-   evil-cross-lines t
    evil-want-C-u-scroll t
    evil-want-C-w-in-emacs-state t))
 
@@ -465,6 +464,8 @@ defined as lowercase."
 (use-package evil
   :config
   (setq evil-insert-state-message nil)
+  (setq
+   evil-cross-lines t)
   (evil-mode)
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
   ;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
