@@ -41,8 +41,29 @@ if [[ "$PS1" ]]; then
         "$@"
     }
 
-    # Prompt and terminal title
-    PROMPT_DIRTRIM=3
+    join_by () {
+        local IFS="$1"
+        shift
+        echo "$*"
+    }
+
+    shorten_path() {
+        # shorten a directory name. keep last n components intact and
+        # truncate the components in front of it (with special
+        # handling of .hidden components). add an ellipsis when the
+        # value has been truncated.
+        dir=$1
+        n=$2
+        dir=${1##$HOME/}
+        tail=$(echo "${dir}" | rev | cut -d/ -f"-${n}" | rev)
+        head=${dir%%$tail}
+        if [ -n "${head}" ]; then
+            # shellcheck disable=SC2001
+            head=$(echo "$head" | sed -e 's#\(\(\.\?[^/]\{1\}\)[^/]\+/\?\)#\2/#g')
+            head="${head%%/}…/"
+        fi
+        echo "${head}${tail}"
+    }
 
     # Git status in prompt using __git_ps1()
     export GIT_PS1_SHOWDIRTYSTATE=1
