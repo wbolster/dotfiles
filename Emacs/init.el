@@ -1329,8 +1329,8 @@ defined as lowercase."
     "_o_ccur"
     ("o" projectile-multi-occur)
     "_p_roject"
-    ("p" projectile-switch-open-project)
-    ("P" projectile-switch-project)
+    ("p" projectile-switch-project)
+    ("P" projectile-switch-open-project)
     "_r_eplace"
     ("r" projectile-replace)
     ("R" projectile-replace-regexp)
