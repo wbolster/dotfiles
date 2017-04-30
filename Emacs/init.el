@@ -1792,7 +1792,8 @@ defined as lowercase."
   "_d_iff"
   ("d" magit-diff)
   "_f_ile"
-  ("f" counsel-git)
+  ("f" magit-find-file)
+  ("F" magit-find-file-other-window)
   "_g_ popup"
   ("g" magit-dispatch-popup)
   "_l_og"
