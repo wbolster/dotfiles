@@ -18,7 +18,7 @@
  package-enable-at-startup nil)
 (package-initialize)
 
-;; (benchmark-init/activate)  ;; fixme
+(benchmark-init/activate)
 
 (defun w--use-package-fail-on-missing-package (package ensure _state _context)
   "Trigger an error if PACKAGE was not installed and ENSURE is non-nil."
