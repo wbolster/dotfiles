@@ -1711,6 +1711,13 @@ defined as lowercase."
    magit-tag-arguments '("--annotate"))
   (add-hook 'magit-popup-mode-hook 'w--hide-trailing-whitespace)
 
+  (magit-wip-after-save-mode)
+  (w--hide-from-mode-line " sWip")
+  (magit-wip-after-apply-mode)
+  (w--hide-from-mode-line " aWip")
+  (magit-wip-before-change-mode)
+  (w--hide-from-mode-line " cWip")
+
   (evil-define-key* '(normal visual) magit-mode-map
     [escape] nil)
 
