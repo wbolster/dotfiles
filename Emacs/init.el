@@ -478,6 +478,16 @@ defined as lowercase."
   (dolist (map (list evil-normal-state-map evil-visual-state-map))
     (define-key map [escape] 'keyboard-quit)))
 
+(use-package key-chord
+  :config
+  (key-chord-mode +1))
+
+(use-package general
+  :config
+  (general-define-key
+   :keymaps 'evil-insert-state-map
+   (general-chord "qq") 'evil-normal-state))
+
 (use-package evil-snipe
   :defer nil
   :bind
