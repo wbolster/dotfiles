@@ -312,7 +312,9 @@ if [[ "$PS1" ]]; then
 
         # Additional prompts
         PS2="${prompt_sign_colour}> ${colour_normal}"  # Secondary prompt (continuation lines)
-        PS4="${colour_purple}+ ${colour_normal}"  # Output from "set -x"
+        # PS4="${colour_purple}+ ${colour_normal}"  # Output from "set -x"
+        # PS4=$(printf "%b" "${colour_purple}+ ${colour_normal}" \
+                  # | sed -e 's/\\\[//g' -e 's/\\\]//g') # Output from "set -x"
     }
     PROMPT_COMMAND=set_prompt_command
 
