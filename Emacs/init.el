@@ -2139,6 +2139,8 @@ defined as lowercase."
     ("d" eval-defun)
     "_e_val-last-sexp"
     ("e" eval-last-sexp)
+    "_m_acro-expand"
+    ("m" pp-macroexpand-last-sexp)
     "_r_ eval-region"
     ("r" eval-region)))
 
