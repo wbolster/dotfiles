@@ -256,6 +256,8 @@ defined as lowercase."
   "_k_ill"
   ("k" kill-this-buffer)
   ("K" kill-buffer-and-window)
+  "_m_ajor mode"
+  ("m" w--switch-major-mode)
   "_n_ew"
   ("n" evil-buffer-new)
   "_o_ther-window"
@@ -2026,6 +2028,30 @@ defined as lowercase."
 ;;;; major modes
 
 (setq-default major-mode 'text-mode)
+(defvar w--major-modes
+  '(("normal" . normal-mode)
+    ("fundamental" . fundamental-mode)
+    ("text (txt)" . text-mode)
+    ("elisp" . emacs-lisp-mode)
+    ("jinja (j2)" . jinja2-mode)
+    ("json" . json-mode)
+    ("markdown (md)" . markdown-mode)
+    ("python" . python-mode)
+    ("restructuredtext (rst)" . rst-mode)
+    ("shell" . sh-mode)
+    ("yaml" . yaml-mode))
+  "Commonly used major modes.")
+
+(defun w--switch-major-mode ()
+  "Switch major mode."
+  (interactive)
+  (let* ((choice
+          (ivy-read
+           "Switch major mode: "
+           w--major-modes
+           :require-match t))
+         (fn (cdr (assoc choice w--major-modes))))
+    (funcall fn)))
 
 
 ;;;; major mode: text (generic)
