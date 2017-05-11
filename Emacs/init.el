@@ -1294,7 +1294,7 @@ defined as lowercase."
   :config
   (setq
    projectile-completion-system 'ivy
-   projectile-ignored-projects '("/usr/local/")
+   projectile-ignored-projects '("/usr/local/" "~/")
    projectile-mode-line nil
    projectile-require-project-root nil
    projectile-sort-order 'recently-active
