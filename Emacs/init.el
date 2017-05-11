@@ -1706,6 +1706,10 @@ defined as lowercase."
   (setq auto-revert-check-vc-info t)
   (w--hide-from-mode-line " ARev"))
 
+(use-package ediff
+  :config
+  (setq ediff-split-window-function 'split-window-horizontally))
+
 (use-package magit
   :config
   (setq
