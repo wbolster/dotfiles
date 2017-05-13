@@ -19,7 +19,12 @@ if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
     MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman${MANPATH:+:${MANPATH}}"
     unset brew_prefix
 fi
-PATH="${HOME}/bin:${HOME}/.local/bin:${HOME}/.npm/bin:${PATH}"
+for dir in ~/.npm/bin ~/bin ~/.local/bin; do
+    if [[ -d "${dir}" ]]; then
+        PATH="${dir}:${PATH}"
+    fi
+done
+unset dir
 PATH=$(_deduplicate_path_components "${PATH}")
 MANPATH=$(_deduplicate_path_components "${MANPATH}")
 
