@@ -2191,11 +2191,19 @@ defined as lowercase."
     (setq
      tab-width 2
      json-reformat:indent-width tab-width
+     js-indent-level 2
      evil-shift-width tab-width)
+    (w--set-major-mode-hydra #'w--hydra-json/body)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-double-single-quotes)
     (evil-swap-keys-swap-square-curly-brackets))
-  (add-hook 'json-mode-hook #'w--json-mode-hook))
+  (add-hook 'json-mode-hook #'w--json-mode-hook)
+  (w--make-hydra w--hydra-json nil
+    "json"
+    "_p_ pretty-print"
+    ("p" (progn
+           (json-pretty-print-buffer-ordered)
+           (goto-char (point-min))))))
 
 
 ;;;; major mode: markdown
