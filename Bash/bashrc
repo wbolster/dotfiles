@@ -19,7 +19,7 @@ if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
     MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman${MANPATH:+:${MANPATH}}"
     unset brew_prefix
 fi
-for dir in ~/.npm/bin ~/bin ~/.local/bin; do
+for dir in ~/.npm/bin ~/.pyenv/shims ~/.local/bin ~/bin; do
     if [[ -d "${dir}" ]]; then
         PATH="${dir}:${PATH}"
     fi
@@ -537,9 +537,10 @@ if [[ "$PS1" ]]; then
 
     # Multiple python installations via pyenv
     if type pyenv &>/dev/null && [[ $(type -t pyenv) != "function" ]]; then
-        # After initialization, pyenv provides a shell function that masks the
-        # actual executable. Initialize if pyenv is available but not loaded.
-        eval "$(pyenv init -)"
+        # After initialisation, pyenv provides a shell function that masks the
+        # actual executable. Initialize if pyenv is available but not loaded,
+        # but ignore the line setting PATH since that is already set up.
+        eval "$(pyenv init - | grep -v 'export PATH=')"
     fi
 
     # python development
