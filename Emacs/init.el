@@ -2404,7 +2404,10 @@ defined as lowercase."
   (evil-define-key* '(operator visual) python-mode-map
     "H" 'python-nav-backward-sexp-safe
     ;; "L" 'python-nav-forward-sexp-safe  ;; qwerty
-    "I" 'python-nav-forward-sexp-safe))
+    "I" 'python-nav-forward-sexp-safe)
+
+  (evil-define-key* 'normal python-mode-map
+    [backspace] 'python-nav-backward-up-list))
 
 (use-package python-docstring
   :defer t
