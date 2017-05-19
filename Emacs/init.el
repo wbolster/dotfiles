@@ -680,6 +680,14 @@ defined as lowercase."
   ;; moving anything back to the original location.
   (evil-define-key* 'operator global-map "p" 'w--evil-empty-text-object))
 
+(use-package evil-goggles
+  :config
+  (setq
+   evil-goggles-duration .5
+   evil-goggles-default-face 'highlight)
+  (w--hide-from-mode-line " EG")
+  (evil-goggles-mode))
+
 (use-package evil-numbers
   :config
   (evil-define-key* 'normal global-map
