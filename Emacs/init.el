@@ -467,6 +467,12 @@ defined as lowercase."
   :config
   (w--hide-from-mode-line " Undo-Tree"))
 
+(defun w--keyboard-quit ()
+  "Like `keyboard-quit', with some extra cleanups."
+  (interactive)
+  (lazy-highlight-cleanup t)
+  (keyboard-quit))
+
 ;; note: evil is already bootstrapped at this point
 (use-package evil
   :config
@@ -478,7 +484,7 @@ defined as lowercase."
   ;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
   (evil-add-command-properties 'evil-yank-line :motion 'evil-end-of-line)
   (dolist (map (list evil-normal-state-map evil-visual-state-map))
-    (define-key map [escape] 'keyboard-quit)))
+    (define-key map [escape] 'w--keyboard-quit)))
 
 (use-package key-chord
   :config
