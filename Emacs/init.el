@@ -1724,6 +1724,7 @@ defined as lowercase."
    magit-branch-prefer-remote-upstream '("master")
    magit-branch-read-upstream-first nil
    magit-completing-read-function 'ivy-completing-read
+   magit-merge-arguments '("--no-ff")
    magit-popup-show-help-echo nil
    magit-prefer-remote-upstream t
    magit-process-popup-time 10
