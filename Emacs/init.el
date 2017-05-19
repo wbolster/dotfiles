@@ -2104,6 +2104,7 @@ defined as lowercase."
     (highlight-symbol-mode))
   (add-hook 'prog-mode-hook 'w--prog-mode-hook))
 
+
 ;;;; major-mode: compilation and comint
 
 (use-package compile
