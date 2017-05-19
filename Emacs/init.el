@@ -894,7 +894,6 @@ defined as lowercase."
              query-replace-to-history-variable)))
       (when use-boundaries
         (setq thing (format "\\_<%s\\_>" thing)))
-      (message "%s" thing)
       (query-replace-regexp thing replacement)))
   (w--make-hydra w--hydra-replace nil
     "replace"
