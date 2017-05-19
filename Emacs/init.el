@@ -2449,7 +2449,6 @@ defined as lowercase."
     (setq evil-shift-width 2)
     (w--set-major-mode-hydra #'w--hydra-rst/body)
     (modify-syntax-entry ?_ "w")
-    (evil-swap-keys-swap-double-single-quotes)
     (evil-swap-keys-swap-question-mark-slash)
     (typo-mode)
     (make-variable-buffer-local 'typo-mode-map)
