@@ -1780,6 +1780,13 @@ defined as lowercase."
 
 (use-package git-link)
 
+(use-package diff-hl
+  :config
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+  (w--mark-as-jump-commands
+    'diff-hl-next-hunk
+    'diff-hl-previous-hunk))
+
 (defun w--git-web-browse ()
   (interactive)
   (if (region-active-p)
@@ -1787,13 +1794,6 @@ defined as lowercase."
         (call-interactively #'git-link)
         (setq kill-ring (cdr kill-ring)))
     (magithub-browse)))
-
-(use-package diff-hl
-  :config
-  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
-  (w--mark-as-jump-commands
-    'diff-hl-next-hunk
-    'diff-hl-previous-hunk))
 
 (w--make-hydra w--hydra-git nil
   "git"
