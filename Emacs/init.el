@@ -2218,13 +2218,37 @@ defined as lowercase."
   :config
   (setq markdown-asymmetric-header t)
   (defun w--markdown-mode-hook ()
-    (setq evil-shift-width 2)
-    (evil-swap-keys-swap-double-single-quotes)
+    (setq
+     evil-shift-width 2
+     fill-column 999999)
+    (w--set-major-mode-hydra #'w--hydra-markdown/body)
     (evil-swap-keys-swap-question-mark-slash)
-    (typo-mode)
+    (evil-define-key*
+     'insert markdown-mode-map
+     "'" #'w--typo-cycle-quotation-marks)
     (make-variable-buffer-local 'typo-mode-map)
     (define-key typo-mode-map "`" nil))
-  (add-hook 'markdown-mode-hook 'w--markdown-mode-hook))
+  (add-hook 'markdown-mode-hook 'w--markdown-mode-hook)
+  (evil-declare-repeat 'markdown-promote)
+  (evil-declare-repeat 'markdown-demote)
+  (w--make-hydra w--hydra-markdown nil
+    "markdown"
+    "_1__2__3__4__5_ _!__@_ _h_eader"
+    ("1" markdown-insert-header-atx-1)
+    ("2" markdown-insert-header-atx-2)
+    ("3" markdown-insert-header-atx-3)
+    ("4" markdown-insert-header-atx-4)
+    ("5" markdown-insert-header-atx-5)
+    ("!" markdown-insert-header-setext-1)
+    ("@" markdown-insert-header-setext-2)
+    "_c_ode"
+    ("c" markdown-insert-gfm-code-block)
+    "_h_yperlink"
+    ("h" markdown-insert-link)
+    "_i_mage"
+    ("i" markdown-insert-image)
+    "_n_umber"
+    ("n" markdown-cleanup-list-numbers)))
 
 
 ;;;; major mode: latex
