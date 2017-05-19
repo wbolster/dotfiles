@@ -1793,8 +1793,10 @@ defined as lowercase."
   ("B" magit-log-buffer-file)
   "_c_ommit"
   ("c" magit-commit)
+  ("C" magit-commit-popup)
   "_d_iff"
   ("d" magit-diff)
+  ("D" magit-diff-popup)
   "_f_ile"
   ("f" magit-find-file)
   ("F" magit-find-file-other-window)
