@@ -844,17 +844,41 @@ defined as lowercase."
 
 (evil-define-motion w--evil-next-line (count)
   (if visual-line-mode
-      (evil-next-visual-line count)
+      (progn
+        (setq evil-this-type 'exclusive)
+        (evil-next-visual-line count))
+    (setq evil-this-type 'line)
     (evil-next-line count)))
 
 (evil-define-motion w--evil-previous-line (count)
   (if visual-line-mode
-      (evil-previous-visual-line count)
+      (progn
+        (setq evil-this-type 'exclusive)
+        (evil-previous-visual-line count))
+    (setq evil-this-type 'line)
     (evil-previous-line count)))
+
+(evil-define-motion w--evil-end-of-line (count)
+  :type inclusive
+  (if visual-line-mode
+      (evil-end-of-visual-line count)
+    (evil-end-of-line count)))
+
+(evil-define-motion w--evil-first-non-blank ()
+  :type exclusive
+  (if visual-line-mode
+      (evil-first-non-blank-of-visual-line)
+    (evil-first-non-blank)))
+
+;; todo: make "0" work visually in visual line mode. maybe using
+;; something like this:
+;; (evil-redirect-digit-argument evil-motion-state-map "0" 'evil-beginning-of-line)
 
 (evil-define-key* '(normal visual) global-map
   [remap evil-next-line] 'w--evil-next-line
-  [remap evil-previous-line] 'w--evil-previous-line)
+  [remap evil-previous-line] 'w--evil-previous-line
+  [remap evil-end-of-line] 'w--evil-end-of-line
+  [remap evil-first-non-blank] 'w--evil-first-non-blank)
 
 
 ;;;; search
@@ -1242,9 +1266,9 @@ defined as lowercase."
       (fixup-whitespace))))
 
 (evil-define-key* 'insert global-map
-  (kbd "C-a") 'evil-first-non-blank
+  (kbd "C-a") 'w--evil-first-non-blank
   (kbd "C-d") 'delete-char
-  (kbd "C-e") 'end-of-line
+  (kbd "C-e") 'end-of-visual-line
   (kbd "C-h") [backspace]
   (kbd "C-k") 'w--kill-line-dwim
   ;; (kbd "C-n") 'next-line  ;; fixme: completion trigger
