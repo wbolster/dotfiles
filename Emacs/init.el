@@ -1739,34 +1739,19 @@ defined as lowercase."
   (magit-wip-after-apply-mode)
   (w--hide-from-mode-line " aWip")
   (magit-wip-before-change-mode)
-  (w--hide-from-mode-line " cWip")
-
-  (evil-define-key* '(normal visual) magit-mode-map
-    [escape] nil)
-
-  (defun w--magit-status-other-repository ()
-    "Open git status for another repository."
-    (interactive)
-    (setq current-prefix-arg t)
-    (call-interactively 'magit-status)))
+  (w--hide-from-mode-line " cWip"))
 
 (use-package evil-magit
   :config
-  (defun w--magit-colemak-tweaks ()
-    "Colemak tweaks for magit."
-    (dolist (hook '(magit-status-mode-hook
-                    magit-log-mode-hook))
-      (add-hook hook #'w--disable-colemak))
-    (dolist (map (list magit-mode-map
-                       ;; fixme: more needed?
-                       ;; magit-status-mode-map
-                       ;; magit-log-mode-map
-                       ;; magit-diff-mode-map
-                       ))
-      (evil-define-key* '(normal visual) map
-        "n" #'evil-next-visual-line
-        "e" #'evil-previous-visual-line)))
-  (w--magit-colemak-tweaks))
+  (add-hook 'magit-log-mode-hook #'w--disable-colemak)
+  (add-hook 'magit-status-mode-hook #'w--disable-colemak)
+  ;; todo: make ,q use the various magit-*-bury-buffer functions, then
+  ;; unbind q to force ,q usage.
+  (evil-define-key*
+   '(normal visual) magit-mode-map
+    [escape] nil
+   "n" #'evil-next-visual-line
+   "e" #'evil-previous-visual-line))
 
 (use-package magithub
   :after magit
@@ -1786,6 +1771,12 @@ defined as lowercase."
   (w--mark-as-jump-commands
     'diff-hl-next-hunk
     'diff-hl-previous-hunk))
+
+(defun w--magit-status-other-repository ()
+  "Open git status for another repository."
+  (interactive)
+  (setq current-prefix-arg t)
+  (call-interactively 'magit-status))
 
 (defun w--git-web-browse ()
   (interactive)
