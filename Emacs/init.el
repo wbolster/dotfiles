@@ -1414,12 +1414,13 @@ defined as lowercase."
 
 (use-package nav-flash
   :config
+  (setq nav-flash-delay 5)
   (add-hook 'post-command-hook #'w--maybe-nav-flash)
   (dolist (hook w--jump-hooks)
     (add-hook hook #'w--maybe-nav-flash))
 
   (defun w--maybe-nav-flash ()
-    "Briefly highlight point when run after a jump command."
+    "Highlight point when run after a jump command."
     (when (member this-command w--jump-commands)
       (nav-flash-show))))
 
