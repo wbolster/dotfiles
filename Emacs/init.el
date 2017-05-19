@@ -2060,7 +2060,10 @@ defined as lowercase."
 (use-package typo
   :config
   (setq-default typo-language "prefer-single")
-  (add-to-list 'typo-quotation-marks '("prefer-single" "‘" "’" "“" "”")))
+  (add-to-list 'typo-quotation-marks '("prefer-single" "‘" "’" "“" "”"))
+  (define-typo-cycle w--typo-cycle-quotation-marks
+    "Cycle through various quotation marks."
+    ("'" "‘" "’" "“" "”" "\"")))
 
 (use-package text-mode
   :ensure nil
