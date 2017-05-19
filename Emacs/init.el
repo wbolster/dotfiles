@@ -2008,6 +2008,7 @@ defined as lowercase."
   ("SPC" whitespace-cleanup)
   "_,_ major mode"
   ("," w--major-mode-hydra)
+  ("\\" w--major-mode-hydra)
   "_/_ search"
   ("/" w--swiper-thing-at-point-dwim)
   "_~_ case"
