@@ -9,10 +9,9 @@ _deduplicate_path_components() {
     echo "$1" | awk -v RS=: -v ORS=: '!a[$1]++' | sed -e 's/:$//'
 }
 
-# Set a sensible $PATH:
+# Set a sensible $PATH and $MANPATH:
 # - OSX and Homebrew: add Homebrew's sbin/, and use GNU coreutils
 # - Add a few "standard" dirs inside $HOME
-unset dir
 if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
     brew_prefix=$(brew --prefix)
     PATH="${brew_prefix}/opt/coreutils/libexec/gnubin:${brew_prefix}/sbin:${PATH}"
@@ -25,6 +24,9 @@ for dir in ~/.npm/bin ~/.pyenv/shims ~/.local/bin ~/bin; do
     fi
 done
 unset dir
+if [[ -d ~/.local/man ]]; then
+    MANPATH="${HOME}/.local/man${MANPATH:+:${MANPATH}}"
+fi
 PATH=$(_deduplicate_path_components "${PATH}")
 MANPATH=$(_deduplicate_path_components "${MANPATH}")
 
