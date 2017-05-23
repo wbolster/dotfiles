@@ -1293,8 +1293,8 @@ defined as lowercase."
 
 ;; type numbers by holding alt using home row keys and by having a
 ;; "numpad overlay" starting at the home position for my right hand.
-(--each (-zip-pair (split-string "arstdhneio'luy7890km" "" t)
-                   (split-string "87659012345456789000" "" t))
+(--each (-zip-pair (split-string "arstdhneio'luy7890km.," "" t)
+                   (split-string "87659012345456789000.," "" t))
   (-let [(key . num) it]
     (evil-define-key*
      'insert global-map
