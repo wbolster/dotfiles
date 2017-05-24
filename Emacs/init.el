@@ -467,11 +467,11 @@ defined as lowercase."
   :config
   (w--hide-from-mode-line " Undo-Tree"))
 
-(defun w--keyboard-quit ()
-  "Like `keyboard-quit', with some extra cleanups."
+(defun w--evil-force-normal-state ()
+  "Like `evil-force-normal-state', with some extra cleanups."
   (interactive)
   (lazy-highlight-cleanup t)
-  (keyboard-quit))
+  (evil-force-normal-state))
 
 ;; note: evil is already bootstrapped at this point
 (use-package evil
@@ -483,8 +483,9 @@ defined as lowercase."
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
   ;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
   (evil-add-command-properties 'evil-yank-line :motion 'evil-end-of-line)
-  (dolist (map (list evil-normal-state-map evil-visual-state-map))
-    (define-key map [escape] 'w--keyboard-quit)))
+  (evil-define-key*
+   'normal global-map
+   [escape] #'w--evil-force-normal-state))
 
 (use-package key-chord
   :config
