@@ -12,10 +12,11 @@ _deduplicate_path_components() {
 # Set a sensible $PATH and $MANPATH:
 # - OSX and Homebrew: add Homebrew's sbin/, and use GNU coreutils
 # - Add a few "standard" dirs inside $HOME
+MANPATH="$(MANPATH= manpath -g)"
 if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
     brew_prefix=$(brew --prefix)
     PATH="${brew_prefix}/opt/coreutils/libexec/gnubin:${brew_prefix}/sbin:${PATH}"
-    MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman${MANPATH:+:${MANPATH}}"
+    MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman:${MANPATH}"
     unset brew_prefix
 fi
 for dir in ~/.npm/bin ~/.pyenv/shims ~/.local/bin ~/bin; do
@@ -25,7 +26,7 @@ for dir in ~/.npm/bin ~/.pyenv/shims ~/.local/bin ~/bin; do
 done
 unset dir
 if [[ -d ~/.local/man ]]; then
-    MANPATH="${HOME}/.local/man${MANPATH:+:${MANPATH}}"
+    MANPATH="${HOME}/.local/man:${MANPATH}"
 fi
 PATH=$(_deduplicate_path_components "${PATH}")
 MANPATH=$(_deduplicate_path_components "${MANPATH}")
