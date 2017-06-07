@@ -59,7 +59,7 @@ gsettings set org.gnome.mutter.keybindings toggle-tiled-right "[]"
 
 # hjkl-style window/workspace navigation (with colemak keys)
 gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Super>i', '<Super>Space']"
-gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Super>h']"
+gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Super>h', '<Shift><Super>Space']"
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down "['<Super>n']"
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up "['<Super>e']"
 gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-down "['<Shift><Super>n']"
