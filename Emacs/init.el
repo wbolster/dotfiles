@@ -2391,9 +2391,14 @@ defined as lowercase."
     (beginning-of-line-text))
 
   (defun w--python-insert-pdb-trace (pdb-module)
-    "Insert a pdb trace statement using PDB-MODULE right before the current statement."
+    "Insert a pdb trace statement using PDB-MODULE before the current statement."
     (w--python-insert-statement-above
      (format "import %s; %s.set_trace()  # FIXME" pdb-module pdb-module)))
+
+  (defun w--python-insert-ipython-repl ()
+    "Insert IPython repl statememnt before the current statement."
+    (w--python-insert-statement-above
+     (format "import IPython; IPython.embed()  # FIXME")))
 
   (defun w--python-refactor-make-variable (beg end)
     "Refactor the current region into a named variable."
@@ -2425,6 +2430,8 @@ defined as lowercase."
     "_l_ multi-line"
     ("l" multi-line nil)
     ("L" multi-line-single-line nil)
+    "_r_epl"
+    ("r" (w--python-insert-ipython-repl) nil)
     "_t_ pytest"
     ("t" w--pytest nil)
     ("T" (w--pytest t) nil)
