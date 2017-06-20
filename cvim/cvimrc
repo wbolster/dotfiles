@@ -74,6 +74,9 @@ map - zoomPageOut
 map _ zoomPageOut
 map 0 zoomOrig
 
+map <C-,> moveTabLeft
+map <C-.> moveTabRight
+
 unmap <C-6>
 
 imap <C-h> deleteChar
