@@ -2074,6 +2074,7 @@ defined as lowercase."
     ("python" . python-mode)
     ("restructuredtext (rst)" . rst-mode)
     ("shell" . sh-mode)
+    ("sql" . sql-mode)
     ("yaml" . yaml-mode))
   "Commonly used major modes.")
 
