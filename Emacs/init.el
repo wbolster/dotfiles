@@ -2341,23 +2341,28 @@ defined as lowercase."
                                    (evil-first-non-blank)
                                    (looking-at-p "#")))
           (joined-line-is-comment (looking-at " #")))
-      (if joined-line-is-comment
-          (if first-line-is-comment
-              ;; remove # when joining two comment lines
-              (delete-region (point) (match-end 0))
-            ;; pep8 mandates two spaces before inline comments
-            (insert " ")
-            (forward-char))
-        (when (looking-at " \\\.")
-          ;; remove space when the joined line starts with period, which
-          ;; is a sensible style for long chained api calls, such as
-          ;; sqlalchemy queries:
-          ;;   query = (
-          ;;       query
-          ;;       .where(...)
-          ;;       .limit(...)
-          ;;       .offset(...))
-          (delete-region (point) (1+ (point)))))))
+      (cond
+       (joined-line-is-comment
+        (if first-line-is-comment
+            ;; remove # when joining two comment lines
+            (delete-region (point) (match-end 0))
+          ;; pep8 mandates two spaces before inline comments
+          (insert " ")
+          (forward-char)))
+       ((looking-at-p " \\\.")
+        ;; remove space when the joined line starts with period, which
+        ;; is a sensible style for long chained api calls, such as
+        ;; sqlalchemy queries:
+        ;;   query = (
+        ;;       query
+        ;;       .where(...)
+        ;;       .limit(...)
+        ;;       .offset(...))
+        (delete-region (point) (1+ (point))))
+       ((and (looking-at-p ")") (looking-back ","))
+        ;; remove trailing comma (e.g. after last function argument)
+        ;; when joining a closing paren from the next line.
+        (delete-char -1)))))
 
   (evil-define-key* 'normal python-mode-map
     [remap evil-join] 'w--evil-join-python)
