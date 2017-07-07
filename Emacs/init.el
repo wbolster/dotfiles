@@ -892,7 +892,8 @@ defined as lowercase."
    isearch-forward t  ;; initial direction; useful after swiper
    lazy-highlight-cleanup nil
    lazy-highlight-initial-delay 0.5
-   lazy-highlight-max-at-a-time nil))
+   lazy-highlight-max-at-a-time nil
+   search-default-mode t))
 
 (use-package thingatpt
   :config
