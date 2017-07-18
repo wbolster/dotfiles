@@ -2140,6 +2140,17 @@ defined as lowercase."
   (add-hook 'prog-mode-hook 'w--prog-mode-hook))
 
 
+;;;; major-mode: c
+(use-package c
+  :ensure nil
+  :config
+  (defun w--c-mode-hook ()
+    (setq evil-shift-width 2)
+    (evil-swap-keys-swap-double-single-quotes)
+    (evil-swap-keys-swap-square-curly-brackets)
+    (evil-swap-keys-swap-underscore-dash))
+  (add-hook 'c-mode-hook 'w--c-mode-hook))
+
 ;;;; major-mode: compilation and comint
 
 (use-package compile
