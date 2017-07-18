@@ -1,19 +1,38 @@
 # Configuration for IPython
+# This file can be symlinked from /.ipython/profile_default
 
-c = c  # noqa: 'c' is defined but flake8 doesn't know about it
+import os
+import sys
 
-c.TerminalIPythonApp.display_banner = False
+import IPython
+from IPython.terminal.prompts import Prompts, Token
 
-c.InteractiveShell.autocall = 1  # smart
-c.InteractiveShell.show_rewritten_input = True
-# c.InteractiveShell.automagic = True
-# c.InteractiveShell.separate_in = '\n'
-# c.InteractiveShell.pdb = False
 
-c.TerminalInteractiveShell.confirm_exit = False
+class MyPrompts(Prompts):
+    def in_prompt_tokens(self, cli=None):
+        return [
+            # (Token.PromptNum, '{:d} '.format(self.shell.execution_count)),
+            (Token.Prompt, '>>> '),
+        ]
 
-c.PromptManager.in_template = '\\# >>> '
-c.PromptManager.in2_template = '\\# ... '
-c.PromptManager.out_template = '\\#: '
+    def continuation_prompt_tokens(self, cli=None, width=None):
+        return [(Token.Prompt, '... '.rjust(width))]
 
-# c.IPCompleter.limit_to__all__ = False
+    def out_prompt_tokens(self, cli=None):
+        return []
+
+
+c = c  # noqa: F821: 'c' is defined but flake8 doesn't know about it
+
+c.InteractiveShell.separate_in = '\n'
+c.InteractiveShell.prompts_class = MyPrompts
+
+c.TerminalIPythonApp.display_banner = True
+python_version = '.'.join(map(str, sys.version_info[:3]))
+ipython_version = '.'.join(map(str, IPython.version_info[:3]))
+sys_prefix = sys.prefix
+home_dir = os.path.expanduser('~')
+if sys_prefix.startswith(home_dir):
+    sys_prefix = '~' + sys_prefix[len(home_dir):]
+c.InteractiveShell.banner1 = "[Python {}, IPython {}, sys.prefix {}]\n".format(
+    python_version, ipython_version, sys_prefix)
