@@ -2535,8 +2535,9 @@ defined as lowercase."
   :config
   (message "yaml-mode config")
   (defun w--yaml-mode-hook ()
-    (message "yaml-mode-hoom")
-    (setq evil-shift-width yaml-indent-offset))
+    (setq evil-shift-width yaml-indent-offset)
+    (evil-swap-keys-swap-colon-semicolon)
+    (evil-swap-keys-swap-double-single-quotes))
   (add-hook 'yaml-mode-hook 'w--yaml-mode-hook))
 
 
