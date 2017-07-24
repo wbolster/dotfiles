@@ -1428,6 +1428,7 @@ defined as lowercase."
     evil-window-bottom
     evil-window-middle
     evil-window-top
+    ivy-done
     recenter-top-bottom
     switch-to-buffer))
 
