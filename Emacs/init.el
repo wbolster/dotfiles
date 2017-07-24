@@ -980,6 +980,9 @@ defined as lowercase."
 
 (use-package swiper
   :config
+  (setq
+   swiper-action-recenter t
+   swiper-goto-start-of-match t)
   (evil-define-key* 'motion global-map
     "/" 'swiper
     "g/" 'evil-search-forward)
