@@ -586,12 +586,6 @@ defined as lowercase."
              (end (save-excursion (goto-char (avy--line)) (forward-line) (point))))
         (evil-delete beg end 'line nil nil))))
 
-  (defun w--avy-goto-char-timer-any-window ()
-    "Go to character in any visible window."
-    (interactive)
-    (setq current-prefix-arg t)
-    (call-interactively 'avy-goto-char-timer))
-
   (defun w--avy-goto-line-any-window ()
     "Go to line in any visible window."
     (interactive)
@@ -610,33 +604,14 @@ defined as lowercase."
    :bind ((scroll-margin 0))
    :initial-point (goto-char (window-start)))
 
-  ;; (evil-define-key* 'motion global-map
-  ;;   (kbd "SPC SPC") 'avy-goto-char-timer
-  ;;   (kbd "SPC S-SPC") 'w--avy-goto-char-timer-any-window
-  ;;   (kbd "S-SPC S-SPC") 'w--avy-goto-char-timer-any-window
-  ;;   (kbd "SPC l") 'avy-goto-line
-  ;;   (kbd "SPC L") 'w--avy-goto-line-any-window)
-
   ;; todo: all of this could use some rethinking and cleaning up
   ;; (evil-define-key* 'normal global-map
   ;;   (kbd "SPC a") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-append))
   ;;   (kbd "SPC A") (lambda () (interactive) (w--avy-evil-goto-end-of-line) (call-interactively 'evil-append-line))
   ;;   (kbd "SPC c") (lambda () (interactive) (avy-goto-line) (evil-first-non-blank) (call-interactively 'evil-change-line))
   ;;   (kbd "SPC C") 'w--avy-evil-change-region
-  ;;   (kbd "SPC d") 'w--avy-evil-delete-line
-  ;;   (kbd "SPC D") 'w--avy-evil-delete-region
   ;;   (kbd "SPC i") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-insert))
   ;;   (kbd "SPC I") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-insert-line))
-  ;;   (kbd "SPC o") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-open-below))
-  ;;   (kbd "SPC O") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-open-above))
-  ;;   (kbd "SPC p d") (lambda () (interactive) (next-line) (call-interactively 'avy-move-line))
-  ;;   (kbd "SPC p D") (lambda () (interactive) (next-line) (call-interactively 'avy-move-region))
-  ;;   (kbd "SPC P d") 'avy-move-line
-  ;;   (kbd "SPC P D") 'avy-move-region
-  ;;   (kbd "SPC p y") (lambda () (interactive) (next-line) (call-interactively 'avy-copy-line))
-  ;;   (kbd "SPC p Y") (lambda () (interactive) (next-line) (call-interactively 'avy-copy-region))
-  ;;   (kbd "SPC P y") 'avy-copy-line
-  ;;   (kbd "SPC P Y") 'avy-copy-region
   ;;   (kbd "SPC $") 'w--avy-evil-goto-end-of-line)
 
   (evilem-default-keybindings "C-M-S-s-<f12>")  ;; fixme: for side effects only
@@ -657,7 +632,7 @@ defined as lowercase."
     ("n" evilem--motion-function-next-line)
     ("N" avy-goto-line-below)
     ("l" avy-goto-line)
-    ("L" (avy-goto-line 4))
+    ("L" w--avy-goto-line-any-window)
     "_t_,_j_,_SPC_ char"
     ("SPC" avy-goto-char-timer)
     ("S-SPC" (avy-goto-char-timer t))
@@ -669,7 +644,23 @@ defined as lowercase."
     ("k" evilem--motion-function-evil-search-next)
     ("K" evilem--motion-function-evil-search-previous)
     ("/" evilem--motion-function-evil-search-next)
-    ("?" evilem--motion-function-evil-search-previous))
+    ("?" evilem--motion-function-evil-search-previous)
+    "_o_ new line"
+    ("o" (progn (avy-goto-line) (call-interactively 'evil-open-below)))
+    ("O" (progn (avy-goto-line) (call-interactively 'evil-open-above)))
+    "_d_ delete"
+    ("d" w--avy-evil-delete-line)
+    ("D" w--avy-evil-delete-region)
+    "_pd_ move"
+    ("pd" (save-excursion (forward-line) (call-interactively 'avy-move-line)))
+    ("pD" (save-excursion (forward-line) (call-interactively 'avy-move-region)))
+    ("Pd" (save-excursion (call-interactively 'avy-move-line)))
+    ("PD" (save-excursion (call-interactively 'avy-move-region)))
+    "_py_ copy"
+    ("py" (save-excursion (forward-line) (call-interactively 'avy-copy-line)))
+    ("pY" (save-excursion (forward-line) (call-interactively 'avy-copy-region)))
+    ("Py" (save-excursion (call-interactively 'avy-copy-line)))
+    ("PY" (save-excursion (call-interactively 'avy-copy-region))))
   (evil-define-key* 'motion global-map
     (kbd "SPC") 'w--hydra-teleport/body))
 
