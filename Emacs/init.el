@@ -1536,56 +1536,101 @@ defined as lowercase."
   (evil-window-top-left)
   (evil-window-next n))
 
-(defun w--evil-goto-window-1 ()
+(defun w--goto-window-1 ()
   "Go to the first window."
   (interactive)
   (w--evil-goto-window 1))
 
-(defun w--evil-goto-window-2 ()
+(defun w--goto-window-2 ()
   "Go to the second window."
   (interactive)
   (w--evil-goto-window 2))
 
-(defun w--evil-goto-window-3 ()
+(defun w--goto-window-3 ()
   "Go to the third window."
   (interactive)
   (w--evil-goto-window 3))
 
-(defun w--evil-goto-window-4 ()
+(defun w--goto-window-4 ()
   "Go to the fourth window."
   (interactive)
   (w--evil-goto-window 4))
 
+(defun w--set-as-window-1 ()
+  "Make this the first window."
+  (interactive)
+  (evil-window-move-far-left))
+
+(defun w--set-as-window-2 ()
+  "Make this the second window."
+  (interactive)
+  (evil-window-move-far-left)
+  (buf-move-right))
+
+(defun w--set-as-window-3 ()
+  "Make this the third window."
+  (interactive)
+  (evil-window-move-far-left)
+  (buf-move-right)
+  (buf-move-right))
+
+(defun w--set-as-window-4 ()
+  "Make this the fourth window."
+  (interactive)
+  (evil-window-move-far-left)
+  (buf-move-right)
+  (buf-move-right)
+  (buf-move-right))
+
 (w--mark-as-jump-commands
  'w--evil-window-next-or-vsplit
- 'w--evil-goto-window-1
- 'w--evil-goto-window-2
- 'w--evil-goto-window-3
- 'w--evil-goto-window-4)
+ 'w--goto-window-1
+ 'w--goto-window-2
+ 'w--goto-window-3
+ 'w--goto-window-4)
 
+;; todo: write these bindings in a more concise way
 (cond
  ((eq system-type 'darwin)  ;; osx: command key
-  (evil-define-key* 'motion global-map
-    (kbd "s-1") 'w--evil-goto-window-1
-    (kbd "s-2") 'w--evil-goto-window-2
-    (kbd "s-3") 'w--evil-goto-window-3
-    (kbd "s-4") 'w--evil-goto-window-4)
+  (evil-define-key*
+   'motion global-map
+   (kbd "s-1") 'w--goto-window-1
+   (kbd "s-2") 'w--goto-window-2
+   (kbd "s-3") 'w--goto-window-3
+   (kbd "s-4") 'w--goto-window-4)
   (bind-keys
-   ("s-1" . w--evil-goto-window-1)
-   ("s-2" . w--evil-goto-window-2)
-   ("s-3" . w--evil-goto-window-3)
-   ("s-4" . w--evil-goto-window-4)))
+   ("s-1" . w--goto-window-1)
+   ("s-2" . w--goto-window-2)
+   ("s-3" . w--goto-window-3)
+   ("s-4" . w--goto-window-4)))
  (t  ;; others: control key
-  (evil-define-key* 'motion global-map
-    (kbd "C-1") 'w--evil-goto-window-1
-    (kbd "C-2") 'w--evil-goto-window-2
-    (kbd "C-3") 'w--evil-goto-window-3
-    (kbd "C-4") 'w--evil-goto-window-4)
+  (evil-define-key*
+   'motion global-map
+   (kbd "C-SPC") 'evil-window-next
+   (kbd "C-S-SPC") 'evil-window-next
+   (kbd "C-`") 'evil-window-next
+   (kbd "C-~") 'evil-window-prev
+   (kbd "C-1") 'w--goto-window-1
+   (kbd "C-2") 'w--goto-window-2
+   (kbd "C-3") 'w--goto-window-3
+   (kbd "C-4") 'w--goto-window-4
+   (kbd "C-!") 'w--set-as-window-1
+   (kbd "C-@") 'w--set-as-window-2
+   (kbd "C-#") 'w--set-as-window-3
+   (kbd "C-$") 'w--set-as-window-4)
   (bind-keys
-   ("C-1" . w--evil-goto-window-1)
-   ("C-2" . w--evil-goto-window-2)
-   ("C-3" . w--evil-goto-window-3)
-   ("C-4" . w--evil-goto-window-4))))
+   ("C-SPC" . evil-window-next)
+   ("C-S-SPC" . evil-window-prev)
+   ("C-`" . evil-window-next)
+   ("C-~" . evil-window-prev)
+   ("C-1" . w--goto-window-1)
+   ("C-2" . w--goto-window-2)
+   ("C-3" . w--goto-window-3)
+   ("C-4" . w--goto-window-4)
+   ("C-!" . w--set-as-window-1)
+   ("C-@" . w--set-as-window-2)
+   ("C-#" . w--set-as-window-3)
+   ("C-$" . w--set-as-window-4))))
 
 (use-package buffer-move)
 
@@ -1600,10 +1645,14 @@ defined as lowercase."
   ("N" buf-move-down)
   ("E" buf-move-up)
   ("I" buf-move-right)
-  ("1" w--evil-goto-window-1)
-  ("2" w--evil-goto-window-2)
-  ("3" w--evil-goto-window-3)
-  ("4" w--evil-goto-window-4)
+  ("1" w--goto-window-1)
+  ("2" w--goto-window-2)
+  ("3" w--goto-window-3)
+  ("4" w--goto-window-4)
+  ("!" w--set-as-window-1)
+  ("@" w--set-as-window-2)
+  ("#" w--set-as-window-3)
+  ("$" w--set-as-window-4)
   "_b_alance"
   ("b" balance-windows)
   ("=" balance-windows)  ;; evil/vim style
@@ -1994,10 +2043,14 @@ defined as lowercase."
 
 (w--make-hydra w--hydra-leader nil
   "_1__2__3__4_ window"
-  ("1" w--evil-goto-window-1)
-  ("2" w--evil-goto-window-2)
-  ("3" w--evil-goto-window-3)
-  ("4" w--evil-goto-window-4)
+  ("1" w--goto-window-1)
+  ("2" w--goto-window-2)
+  ("3" w--goto-window-3)
+  ("4" w--goto-window-4)
+  ("!" w--set-as-window-1)
+  ("@" w--set-as-window-2)
+  ("#" w--set-as-window-3)
+  ("$" w--set-as-window-4)
   "_a_g"
   ("a" w--hydra-ag/body)
   "_b_uffer"
