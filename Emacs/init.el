@@ -251,6 +251,9 @@ defined as lowercase."
 
 (use-package terminal-here)
 
+;; todo: try out https://github.com/fourier/ztree
+(use-package ztree)
+
 (w--make-hydra w--hydra-buffer nil
   "buffer"
   "_b_uffer"
@@ -271,9 +274,6 @@ defined as lowercase."
   ("o" ivy-switch-buffer-other-window)
   "_r_evert"
   ("r" revert-buffer))
-
-;; todo: try out https://github.com/fourier/ztree
-(use-package ztree)
 
 (w--make-hydra w--hydra-find-file nil
   "open"
