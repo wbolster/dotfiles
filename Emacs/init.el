@@ -1833,9 +1833,19 @@ defined as lowercase."
   ;; unbind q to force ,q usage.
   (evil-define-key*
    '(normal visual) magit-mode-map
-    [escape] nil
+   [escape] nil
    "n" #'evil-next-visual-line
-   "e" #'evil-previous-visual-line))
+   "e" #'evil-previous-visual-line
+   (kbd "C-n") #'magit-section-forward
+   (kbd "C-e") #'magit-section-backward
+   (kbd "C-p") #'magit-section-backward
+   (kbd "TAB") #'magit-section-cycle
+   (kbd "C-TAB") #'magit-section-toggle
+   (kbd "C-w") 'w--hydra-window/body)
+  (general-define-key
+   :keymaps 'magit-diff-mode-map
+   "SPC" nil
+   "DEL" nil))
 
 (use-package magithub
   :after magit
