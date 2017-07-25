@@ -1823,7 +1823,15 @@ defined as lowercase."
   (magit-wip-after-apply-mode)
   (w--hide-from-mode-line " aWip")
   (magit-wip-before-change-mode)
-  (w--hide-from-mode-line " cWip"))
+  (w--hide-from-mode-line " cWip")
+
+  (magit-add-section-hook
+   'magit-status-sections-hook
+   'magit-insert-unpulled-from-upstream-or-recent
+   'magit-insert-unpulled-from-upstream)
+  (remove-hook
+   'magit-status-sections-hook
+   'magit-insert-unpulled-from-upstream))
 
 (use-package evil-magit
   :config
