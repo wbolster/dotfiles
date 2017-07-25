@@ -223,6 +223,12 @@ defined as lowercase."
  'kill-buffer-query-functions
  'w--ask-confirmation-for-unsaved-buffers)
 
+(defun w--evil-buffer-new-other-window ()
+  "Open a new window in another window."
+  (interactive)
+  (w--evil-window-next-or-vsplit)
+  (call-interactively #'evil-buffer-new))
+
 (use-package recentf
   :config
   (use-package sync-recentf)
@@ -260,6 +266,7 @@ defined as lowercase."
   ("m" w--switch-major-mode)
   "_n_ew"
   ("n" evil-buffer-new)
+  ("N" w--evil-buffer-new-other-window)
   "_o_ther-window"
   ("o" ivy-switch-buffer-other-window)
   "_r_evert"
@@ -278,9 +285,7 @@ defined as lowercase."
   ("F" find-file-other-window)
   "_n_ew"
   ("n" evil-buffer-new)
-  ("N" (progn
-         (w--evil-window-next-or-vsplit)
-         (call-interactively #'evil-buffer-new)))
+  ("N" w--evil-buffer-new-other-window)
   "_o_ther-window"
   ("o" find-file-other-window)
   "_r_ecent"
