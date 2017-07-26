@@ -1883,6 +1883,7 @@ defined as lowercase."
   (call-interactively 'magit-status))
 
 (defun w--git-web-browse ()
+  "Open a web browser for the current git repo or file."
   (interactive)
   (if (region-active-p)
       (let ((git-link-open-in-browser t))
