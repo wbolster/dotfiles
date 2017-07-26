@@ -2150,7 +2150,7 @@ defined as lowercase."
     ("restructuredtext (rst)" . rst-mode)
     ("shell" . sh-mode)
     ("sql" . sql-mode)
-    ("yaml" . yaml-mode))
+    ("yaml (yml)" . yaml-mode))
   "Commonly used major modes.")
 
 (defun w--switch-major-mode ()
