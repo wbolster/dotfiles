@@ -1867,7 +1867,9 @@ defined as lowercase."
     (interactive)
     (magithub--command-quick "compare")))
 
-(use-package git-link)
+(use-package git-link
+  :config
+  (setq git-link-open-in-browser t))
 
 (use-package diff-hl
   :config
