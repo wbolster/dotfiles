@@ -2582,7 +2582,9 @@ defined as lowercase."
    rst-preferred-bullets '(?- ?*))
 
   (defun w--rst-mode-hook ()
-    (setq evil-shift-width 2)
+    (setq
+     evil-shift-width 2
+     rst-mode-abbrev-table nil)
     (w--set-major-mode-hydra #'w--hydra-rst/body)
     (modify-syntax-entry ?_ "w")
     (evil-swap-keys-swap-question-mark-slash)
