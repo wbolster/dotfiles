@@ -45,7 +45,9 @@
 
 ;;;; lisp helpers
 
-(use-package dash)
+(use-package dash
+  :config
+  (dash-enable-font-lock))
 (use-package dash-functional)
 (use-package s)
 (use-package fn)
