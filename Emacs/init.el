@@ -2141,6 +2141,7 @@ defined as lowercase."
   '(("normal" . normal-mode)
     ("fundamental" . fundamental-mode)
     ("text (txt)" . text-mode)
+    ("c" . c-mode)
     ("elisp" . emacs-lisp-mode)
     ("jinja (j2)" . jinja2-mode)
     ("json" . json-mode)
