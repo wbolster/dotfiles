@@ -19,7 +19,7 @@ if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
     MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman:${MANPATH}"
     unset brew_prefix
 fi
-for dir in ~/.npm/bin ~/.pyenv/shims ~/.local/bin ~/bin; do
+for dir in ~/.cargo/bin ~/.npm/bin ~/.pyenv/shims ~/.local/bin ~/bin; do
     if [[ -d "${dir}" ]]; then
         PATH="${dir}:${PATH}"
     fi
