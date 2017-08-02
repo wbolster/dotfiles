@@ -1700,7 +1700,9 @@ defined as lowercase."
   (setq ispell-dictionary "english"))
 
 ;; todo https://github.com/d12frosted/flyspell-correct
-;; (use-package flyspell)
+(use-package flyspell
+  :config
+  (w--hide-from-mode-line " Fly"))
 ;; (use-package flyspell-correct-ivy)
 
 (use-package guess-language
@@ -2218,6 +2220,7 @@ defined as lowercase."
     (auto-fill-mode)
     (column-number-mode)
     (fic-mode)
+    (flyspell-prog-mode)
     ;; (show-paren-mode)  ; fixme: needed?
     (highlight-parentheses-mode)
     (highlight-symbol-mode))
