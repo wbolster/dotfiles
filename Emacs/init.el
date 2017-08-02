@@ -556,7 +556,8 @@ defined as lowercase."
 
 (use-package evil-swap-keys
   :config
-  (global-evil-swap-keys-mode))
+  (global-evil-swap-keys-mode)
+  (w--hide-from-mode-line " !1"))
 
 (use-package evil-commentary
   :config
