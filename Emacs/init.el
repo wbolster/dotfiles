@@ -299,7 +299,8 @@ defined as lowercase."
   "_t_ree"
   ("t" (ztree-dir (file-name-directory (buffer-file-name))))
   "_!_ terminal"
-  ("!" terminal-here))
+  ("!" terminal-here)
+  ("1" terminal-here))
 
 
 ;;;; frames
@@ -1397,7 +1398,8 @@ defined as lowercase."
     ("/" w--counsel-ag-project)
     ("?" w--counsel-ag-project-all-files)
     "_!_ terminal"
-    ("!" terminal-here-project-launch)))
+    ("!" terminal-here-project-launch)
+    ("1" terminal-here-project-launch)))
 
 
 ;;;; jumping around
