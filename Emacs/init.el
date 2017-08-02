@@ -1272,11 +1272,14 @@ defined as lowercase."
 
 (evil-define-key* 'insert global-map
   (kbd "C-a") 'w--evil-first-non-blank
+  (kbd "C-c") 'evil-normal-state
   (kbd "C-d") 'delete-char
+  (kbd "C-g") 'evil-normal-state
   (kbd "C-e") 'end-of-visual-line
   (kbd "C-h") [backspace]
   (kbd "C-k") 'w--kill-line-dwim
   ;; (kbd "C-n") 'next-line  ;; fixme: completion trigger
+  (kbd "C-o") 'evil-normal-state
   (kbd "C-p") 'previous-line
   (kbd "C-t") 'w--evil-transpose-chars)
 
