@@ -12,7 +12,7 @@ _deduplicate_path_components() {
 # Set a sensible $PATH and $MANPATH:
 # - OSX and Homebrew: add Homebrew's sbin/, and use GNU coreutils
 # - Add a few "standard" dirs inside $HOME
-MANPATH="$(MANPATH= manpath -g)"
+MANPATH="$(MANPATH='' manpath -g)"
 if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
     brew_prefix=$(brew --prefix)
     PATH="${brew_prefix}/opt/coreutils/libexec/gnubin:${brew_prefix}/sbin:${PATH}"
