@@ -2312,6 +2312,10 @@ defined as lowercase."
     "_r_ eval-region"
     ("r" eval-region)))
 
+(use-package eldoc
+  :config
+  (w--hide-from-mode-line " ElDoc"))
+
 
 ;;;; major mode: jinja
 
