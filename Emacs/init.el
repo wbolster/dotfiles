@@ -1035,6 +1035,13 @@ defined as lowercase."
     ("r" ag-project-regexp)
     ("R" ag-regexp)))
 
+;; todo: switch to rg/ripgrep
+;; (use-package rg)
+;; use / for swiper
+;; use ? for w--swiper-thing-at-point-dwim
+;; use ,/ for rg
+;; use ,? for counsel-rg
+
 (use-package highlight-symbol
   :config
   (setq
