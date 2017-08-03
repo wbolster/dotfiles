@@ -251,7 +251,9 @@ defined as lowercase."
 
 (use-package sudo-edit)
 
-(use-package terminal-here)
+(use-package terminal-here
+  :config
+  (setq terminal-here-project-root-function 'projectile-project-root))
 
 ;; todo: try out https://github.com/fourier/ztree
 (use-package ztree)
