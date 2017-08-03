@@ -1825,14 +1825,14 @@ defined as lowercase."
   (setq
    magit-branch-prefer-remote-upstream '("master")
    magit-branch-read-upstream-first nil
-   magit-completing-read-function 'ivy-completing-read
    magit-cherry-pick-arguments '("-x")
+   magit-completing-read-function 'ivy-completing-read
+   magit-fetch-arguments '("--prune")
+   magit-log-arguments '("--graph" "--color" "--decorate" "--follow" "-n256")
    magit-merge-arguments '("--no-ff")
    magit-popup-show-help-echo nil
    magit-prefer-remote-upstream t
    magit-process-popup-time 10
-   magit-fetch-arguments '("--prune")
-   magit-log-arguments '("--graph" "--color" "--decorate" "--follow" "-n256")
    magit-rebase-arguments '("--autostash")
    magit-tag-arguments '("--annotate"))
   (add-hook 'magit-popup-mode-hook 'w--hide-trailing-whitespace)
