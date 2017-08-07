@@ -1,7 +1,10 @@
 ;;; evil-easymotion-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
 ;;;### (autoloads nil "evil-easymotion" "evil-easymotion.el" (0 0
 ;;;;;;  0 0))
@@ -20,5 +23,6 @@ Define easymotions for all motions evil defines by default
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; evil-easymotion-autoloads.el ends here

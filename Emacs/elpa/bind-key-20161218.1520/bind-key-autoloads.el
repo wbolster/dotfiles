@@ -1,7 +1,10 @@
 ;;; bind-key-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
 ;;;### (autoloads nil "bind-key" "bind-key.el" (0 0 0 0))
 ;;; Generated autoloads from bind-key.el
@@ -69,5 +72,6 @@ Display all the personal keybindings defined by `bind-key'.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; bind-key-autoloads.el ends here

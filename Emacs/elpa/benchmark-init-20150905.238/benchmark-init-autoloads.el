@@ -1,7 +1,10 @@
 ;;; benchmark-init-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
 ;;;### (autoloads nil "benchmark-init" "benchmark-init.el" (0 0 0
 ;;;;;;  0))
@@ -12,7 +15,7 @@ Activate benchmark-init and start collecting data.
 
 \(fn)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "benchmark-init" '(#("benchmark-init/" 0 15 (fontified nil)))))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "benchmark-init" '(#("benchmark-init/" 0 15 (face font-lock-function-name-face fontified nil)))))
 
 ;;;***
 
@@ -42,5 +45,6 @@ Show durations in call-tree.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; benchmark-init-autoloads.el ends here

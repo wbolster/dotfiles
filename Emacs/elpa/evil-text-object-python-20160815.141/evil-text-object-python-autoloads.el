@@ -1,7 +1,10 @@
 ;;; evil-text-object-python-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
 ;;;### (autoloads nil "evil-text-object-python" "evil-text-object-python.el"
 ;;;;;;  (0 0 0 0))
@@ -26,5 +29,6 @@ both operator state and visual state.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; evil-text-object-python-autoloads.el ends here

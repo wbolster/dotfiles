@@ -1,7 +1,10 @@
 ;;; drag-stuff-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
 ;;;### (autoloads nil "drag-stuff" "drag-stuff.el" (0 0 0 0))
 ;;; Generated autoloads from drag-stuff.el
@@ -75,5 +78,6 @@ See `drag-stuff-mode' for more information on Drag-Stuff mode.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; drag-stuff-autoloads.el ends here

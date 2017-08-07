@@ -1,7 +1,10 @@
 ;;; highlight-parentheses-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
 ;;;### (autoloads nil "highlight-parentheses" "highlight-parentheses.el"
 ;;;;;;  (0 0 0 0))
@@ -42,5 +45,6 @@ See `highlight-parentheses-mode' for more information on Highlight-Parentheses m
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; highlight-parentheses-autoloads.el ends here

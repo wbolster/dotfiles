@@ -1,7 +1,10 @@
 ;;; highlight-symbol-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
 ;;;### (autoloads nil "highlight-symbol" "highlight-symbol.el" (0
 ;;;;;;  0 0 0))
@@ -97,5 +100,6 @@ before if NLINES is negative.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; highlight-symbol-autoloads.el ends here

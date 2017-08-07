@@ -1,7 +1,10 @@
 ;;; typo-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
 ;;;### (autoloads nil "typo" "typo.el" (0 0 0 0))
 ;;; Generated autoloads from typo.el
@@ -45,5 +48,6 @@ default C-x 8 prefix map.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; typo-autoloads.el ends here

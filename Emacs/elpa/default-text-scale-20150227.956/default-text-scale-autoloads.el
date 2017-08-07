@@ -1,7 +1,10 @@
 ;;; default-text-scale-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
 ;;;### (autoloads nil "default-text-scale" "default-text-scale.el"
 ;;;;;;  (0 0 0 0))
@@ -25,5 +28,6 @@ Decrease the height of the default face by `default-text-scale-amount'.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; default-text-scale-autoloads.el ends here
