@@ -18,7 +18,8 @@
  package-enable-at-startup nil)
 (package-initialize)
 
-(benchmark-init/activate)
+(when (package-installed-p 'benchmark-init)
+  (benchmark-init/activate))
 
 (defun w--use-package-fail-on-missing-package (package ensure _state _context)
   "Trigger an error if PACKAGE was not installed and ENSURE is non-nil."
@@ -42,6 +43,7 @@
   (setq auto-compile-update-autoloads t)
   (auto-compile-on-load-mode))
 
+(use-package benchmark-init)
 
 ;;;; lisp helpers
 
