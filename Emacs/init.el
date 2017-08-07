@@ -840,12 +840,13 @@ defined as lowercase."
 
 ;;;; line navigation
 
-(use-package relative-line-numbers
-  :config
-  (defun w--relative-line-numbers-format (offset)
-    "Format relative line number for OFFSET."
-    (number-to-string (abs (if (= offset 0) (line-number-at-pos) offset))))
-  (setq relative-line-numbers-format 'w--relative-line-numbers-format))
+;; fixme: https://github.com/melpa/melpa/pull/4814
+;;(use-package relative-line-numbers
+;;  :config
+;;  (defun w--relative-line-numbers-format (offset)
+;;    "Format relative line number for OFFSET."
+;;    (number-to-string (abs (if (= offset 0) (line-number-at-pos) offset))))
+;;  (setq relative-line-numbers-format 'w--relative-line-numbers-format))
 
 (evil-define-motion w--evil-next-line (count)
   (if visual-line-mode
