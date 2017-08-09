@@ -1885,7 +1885,9 @@ defined as lowercase."
 (use-package magithub
   :after magit
   :config
-  (setq magithub-pull-request-arguments '("-o"))
+  (setq
+   magithub-api-timeout 10
+   magithub-pull-request-arguments '("-o"))
   (magithub-feature-autoinject t)
   (defun w--magithub-compare ()
     "Compare repository on the web; invokes hub."
