@@ -690,8 +690,10 @@ defined as lowercase."
 (use-package evil-goggles
   :config
   (setq
-   evil-goggles-duration .5
-   evil-goggles-default-face 'highlight)
+   evil-goggles-duration .5)
+  (set-face-attribute
+   'evil-goggles-default-face nil
+   :inherit 'highlight)
   (w--hide-from-mode-line " EG")
   (evil-goggles-mode))
 
