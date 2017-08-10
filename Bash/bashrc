@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Bash Configuration
 
 # Keep new files and directories private by default
