@@ -426,9 +426,19 @@ if [[ "$PS1" ]]; then
     export HISTFILESIZE=1000000
     alias h='unset HISTFILE'
 
-    # Require confirmation for possibly destructive operations
-    alias cp='cp -i'
-    alias mv='mv -i'
+    # Require confirmation for possibly destructive operations,
+    # and make mv/cp use the current directory as a target by default.
+    _mv_cp_helper() {
+        cmd="$1"
+        shift
+        if [[ $# == 1 ]]; then
+            _run_verbose command "$cmd" -i "$@" .
+        else
+            command "$cmd" -i "$@"
+        fi
+    }
+    mv() { _mv_cp_helper mv "$@"; }
+    cp() { _mv_cp_helper cp "$@"; }
     alias rm='rm -i'
     export IGNOREEOF=1  # Require twice Ctrl-D to exit.
 
