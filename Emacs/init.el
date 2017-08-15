@@ -2481,9 +2481,9 @@ defined as lowercase."
         ;;       .limit(...)
         ;;       .offset(...))
         (delete-region (point) (1+ (point))))
-       ((and (looking-at-p ")") (looking-back ","))
+       ((and (looking-at-p "[)}\\]") (looking-back ","))
         ;; remove trailing comma (e.g. after last function argument)
-        ;; when joining a closing paren from the next line.
+        ;; when joining any closing paren from the next line.
         (delete-char -1)))))
 
   (evil-define-key* 'normal python-mode-map
