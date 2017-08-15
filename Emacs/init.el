@@ -1855,10 +1855,8 @@ defined as lowercase."
   (magit-add-section-hook
    'magit-status-sections-hook
    'magit-insert-unpulled-from-upstream-or-recent
-   'magit-insert-unpulled-from-upstream)
-  (remove-hook
-   'magit-status-sections-hook
-   'magit-insert-unpulled-from-upstream))
+   'magit-insert-unpulled-from-upstream
+   'replace))
 
 (use-package evil-magit
   :config
