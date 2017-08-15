@@ -36,7 +36,7 @@ wdiff = diff --word-diff
 ls = ls-files
 mylog = "!f() { git log --all --author=\"$(git config user.email)\" --date-order --graph --format='%C(yellow)[%h] %ai (%ar)%C(auto)%d%n%n%C(reset)%s %n%+b' \"$@\"; }; f"
 review-branch = "!f() { [ -z \"$@\" ] && set - origin/master..; git -c core.pager='less -+F +/^commit' log --reverse --patch \"$@\"; }; f"
-sl = log --oneline --graph --pretty=longline
+sl = log --oneline --graph --pretty=longline --date=short
 slf = sl --first-parent
 st = status --short --branch
 today = log --all --graph --since=0am
@@ -130,7 +130,7 @@ log = 100
 tool = gvimdiff
 
 [pretty]
-longline = "%C(yellow)%h%C(auto)%C(reset)%C(auto)%d %s %C(cyan)— %aN, %ai (%ar)"
+longline = "%C(yellow)%h%C(auto) %s %C(cyan)— %aN, %ad%C(auto)%d"
 
 [pull]
 ff = only
