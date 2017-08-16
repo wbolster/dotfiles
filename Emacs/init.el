@@ -1964,10 +1964,10 @@ defined as lowercase."
   ("a" smerge-keep-all)
   "go to"
   "_n_ext"
-  ("n" 'smerge-next nil :exit nil)
+  ("n" smerge-next nil :exit nil)
   "_p_revious"
-  ("e" 'smerge-prev nil :exit nil)
-  ("p" 'smerge-prev nil :exit nil))
+  ("e" smerge-prev nil :exit nil)
+  ("p" smerge-prev nil :exit nil))
 
 
 ;;;; writeroom
