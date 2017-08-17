@@ -411,11 +411,8 @@ if [[ "$PS1" ]]; then
             return
         done
 
-        # Think. Before. Doing.
-        _print_nyan_cat
-
         # Too bad
-        printf "%s: command not found\n" "$1" >&2
+        printf "\e[0;31m%s: command not found\e[0m\n" "$1" >&2
         return 127
     }
 
