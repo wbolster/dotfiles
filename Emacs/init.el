@@ -2261,6 +2261,10 @@ defined as lowercase."
   :defer t
   :config
   (setq compilation-always-kill t)
+  (evil-define-key* '(motion normal) compilation-mode-map
+    (kbd "C-e") 'compilation-previous-error
+    (kbd "C-n") 'compilation-next-error
+    (kbd "C-p") 'compilation-previous-error)
 
   (defun w--compilation-mode-hook ()
     (w--hide-trailing-whitespace)
