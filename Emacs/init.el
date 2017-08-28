@@ -2658,7 +2658,6 @@ defined as lowercase."
 (use-package yaml-mode
   :defer t
   :config
-  (message "yaml-mode config")
   (defun w--yaml-mode-hook ()
     (setq evil-shift-width yaml-indent-offset)
     (evil-swap-keys-swap-colon-semicolon)
