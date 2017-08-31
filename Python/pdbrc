@@ -14,6 +14,9 @@ alias ppv pp vars(%1)
 
 alias ipython __import__('IPython').embed()
 
+# pretty-print sqlalchemy queries
+alias pq print((%1).compile(compile_kwargs=dict(literal_binds=True)))
+
 # pretty-print lxml elements
 alias ppx print(__import__('lxml.etree').etree.tounicode(%1, pretty_print=True))
 
