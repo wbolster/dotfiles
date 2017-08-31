@@ -2051,6 +2051,7 @@ defined as lowercase."
   ("F" fci-mode)
   "_l_ine"
   ("l" hl-line-mode)
+  ("L" global-hl-line-mode)
   "_m_aximize"
   ("m" toggle-frame-maximized)
   ("M" toggle-frame-fullscreen)
