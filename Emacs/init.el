@@ -2249,6 +2249,7 @@ defined as lowercase."
 
 
 ;;;; major-mode: c
+
 (use-package c
   :ensure nil
   :config
@@ -2258,6 +2259,7 @@ defined as lowercase."
     (evil-swap-keys-swap-square-curly-brackets)
     (evil-swap-keys-swap-underscore-dash))
   (add-hook 'c-mode-hook 'w--c-mode-hook))
+
 
 ;;;; major-mode: compilation and comint
 
