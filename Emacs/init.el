@@ -2160,6 +2160,13 @@ defined as lowercase."
   "\\" #'w--hydra-leader/body)
 
 
+;;;; help
+
+(use-package helpful
+  :config
+  (global-set-key [remap counsel-describe-function] 'helpful-function))
+
+
 ;;;; custom
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
@@ -2334,6 +2341,8 @@ defined as lowercase."
     ("d" eval-defun)
     "_e_val-last-sexp"
     ("e" eval-last-sexp)
+    "_h_elp"
+    ("h" helpful-at-point)
     "_m_acro-expand"
     ("m" pp-macroexpand-last-sexp)
     "_r_ eval-region"
