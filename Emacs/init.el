@@ -2342,6 +2342,14 @@ defined as lowercase."
   (w--hide-from-mode-line " ElDoc"))
 
 
+;;;; major mode: help
+
+(use-package help-mode
+  :defer t
+  :ensure nil
+  :config
+  (define-key help-mode-map "q" nil))
+
 ;;;; major mode: jinja
 
 (use-package jinja2-mode
