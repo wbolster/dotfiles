@@ -1876,6 +1876,9 @@ defined as lowercase."
    (kbd "C-TAB") #'magit-section-toggle
    (kbd "C-w") 'w--hydra-window/body)
   (general-define-key
+   :keymaps 'magit-status-mode-map
+   "q" nil)
+  (general-define-key
    :keymaps 'magit-diff-mode-map
    "SPC" nil
    "DEL" nil))
