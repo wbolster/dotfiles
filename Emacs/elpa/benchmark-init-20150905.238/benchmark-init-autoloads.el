@@ -15,7 +15,7 @@ Activate benchmark-init and start collecting data.
 
 \(fn)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "benchmark-init" '(#("benchmark-init/" 0 15 (face font-lock-function-name-face fontified nil)))))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "benchmark-init" '("benchmark-init/")))
 
 ;;;***
 
