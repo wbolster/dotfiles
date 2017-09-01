@@ -1384,6 +1384,16 @@ defined as lowercase."
      :require-match t
      :history 'file-name-history))
 
+  (defun w--projectile-project-bury-buffers ()
+    "Quit all windows and bury all buffers for the current project."
+    (interactive)
+    (-each (projectile-project-buffers)
+      (lambda (buffer)
+        (-each (get-buffer-window-list buffer)
+          (lambda (window)
+            (quit-window nil window)))
+        (bury-buffer buffer))))
+
   (w--make-hydra w--hydra-project nil
     "project"
     "_a_ny file"
@@ -1404,6 +1414,8 @@ defined as lowercase."
     "_p_roject"
     ("p" projectile-switch-project)
     ("P" projectile-switch-open-project)
+    "_q_ bury"
+    ("q" w--projectile-project-bury-buffers)
     "_r_eplace"
     ("r" projectile-replace)
     ("R" projectile-replace-regexp)
