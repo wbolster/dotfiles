@@ -537,7 +537,7 @@ defined as lowercase."
   ;; the t/T/f/F overrides are the most important ones, since
   ;; avy/evil-easymotion already allows for fancy jumps, e.g. via
   ;; avy-goto-char-timer.
-  (evil-define-key* '(motion normal) evil-snipe-mode-map
+  (evil-define-key* '(motion normal) evil-snipe-local-mode-map
     "s" nil
     "S" nil)
 
