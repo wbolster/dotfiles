@@ -2662,6 +2662,9 @@ defined as lowercase."
     (modify-syntax-entry ?_ "w")
     (evil-swap-keys-swap-question-mark-slash)
     (typo-mode)
+    (evil-define-key*
+     'insert rst-mode-map
+     "'" #'w--typo-cycle-quotation-marks)
     (make-variable-buffer-local 'typo-mode-map)
     (define-key typo-mode-map "`" nil))
   (add-hook 'rst-mode-hook 'w--rst-mode-hook)
