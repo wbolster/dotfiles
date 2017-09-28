@@ -1862,19 +1862,18 @@ defined as lowercase."
    magit-rebase-arguments '("--autostash")
    magit-tag-arguments '("--annotate"))
   (add-hook 'magit-popup-mode-hook 'w--hide-trailing-whitespace)
-
-  (magit-wip-after-save-mode)
-  (w--hide-from-mode-line " sWip")
-  (magit-wip-after-apply-mode)
-  (w--hide-from-mode-line " aWip")
-  (magit-wip-before-change-mode)
-  (w--hide-from-mode-line " cWip")
-
   (magit-add-section-hook
    'magit-status-sections-hook
    'magit-insert-unpulled-from-upstream-or-recent
    'magit-insert-unpulled-from-upstream
-   'replace))
+   'replace)
+  (magit-auto-revert-mode)
+  (magit-wip-after-save-mode)
+  (magit-wip-after-apply-mode)
+  (magit-wip-before-change-mode)
+  (w--hide-from-mode-line " sWip")
+  (w--hide-from-mode-line " aWip")
+  (w--hide-from-mode-line " cWip"))
 
 (use-package evil-magit
   :config
