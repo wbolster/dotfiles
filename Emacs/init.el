@@ -2565,7 +2565,7 @@ defined as lowercase."
      (format "import %s; %s.set_trace()  # FIXME" pdb-module pdb-module)))
 
   (defun w--python-insert-ipython-repl ()
-    "Insert IPython repl statememnt before the current statement."
+    "Insert an IPython repl statement before the current statement."
     (w--python-insert-statement-above
      (format "import IPython; IPython.embed()  # FIXME")))
 
