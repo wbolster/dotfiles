@@ -2038,7 +2038,6 @@ defined as lowercase."
     (goto-char (point-max))
     (flycheck-previous-error))
 
-  ;; todo: hydra for flycheck? ,c
   (w--make-hydra w--hydra-flycheck nil
     "flycheck"
     "_c_ errors"
