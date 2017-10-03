@@ -1913,6 +1913,7 @@ defined as lowercase."
   (defun w--magithub-compare ()
     "Compare repository on the web; invokes hub."
     (interactive)
+    ;; fixme: this is broken
     (magithub--command-quick "compare")))
 
 (use-package git-link
