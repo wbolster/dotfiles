@@ -1093,7 +1093,7 @@ defined as lowercase."
   (interactive)
   (condition-case err (while t (next-error)) (user-error nil)))
 
-(evil-define-key* 'motion global-map
+(evil-define-key* '(motion normal) global-map
   (kbd "[ SPC") (lambda () (interactive) (save-excursion (evil-insert-newline-above)))
   (kbd "] SPC") (lambda () (interactive) (save-excursion (evil-insert-newline-below)))
   "[b" 'evil-prev-buffer
@@ -1117,7 +1117,9 @@ defined as lowercase."
   "[w" 'evil-window-prev
   "]w" 'evil-window-next
   "[z" 'outline-previous-visible-heading
-  "]z" 'outline-next-visible-heading)
+  "]z" 'outline-next-visible-heading
+  (kbd "C-,") 'evil-prev-buffer
+  (kbd "C-.") 'evil-next-buffer)
 
 
 ;;;; parens
