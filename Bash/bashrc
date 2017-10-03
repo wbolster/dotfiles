@@ -585,7 +585,10 @@ if [[ "$PS1" ]]; then
         _run_verbose pytest --tb=short --color=yes --looponfail --verbose --verbose "$@"
     }
 
-    # Data conversion
+    # data display and conversion
+    jql() {
+        jq -C . "$@" | less -R
+    }
     yaml-to-json() {
         python -c 'import json, sys, yaml; print(json.dumps(yaml.safe_load(open(sys.argv[1]) if sys.argv[1:] else sys.stdin), indent=2, sort_keys=True))' "$@"
     }
