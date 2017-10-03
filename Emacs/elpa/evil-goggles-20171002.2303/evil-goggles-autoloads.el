@@ -24,7 +24,11 @@ evil-goggles global minor mode.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-goggles" '("evil-goggles-")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-goggles" '(#("evil-goggles-" 0 13 (face font-lock-variable-name-face fontified nil)))))
+
+;;;***
+
+;;;### (autoloads nil nil ("evil-goggles-pkg.el") (0 0 0 0))
 
 ;;;***
 
