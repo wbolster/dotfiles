@@ -1841,6 +1841,7 @@ defined as lowercase."
 (use-package autorevert
   :config
   (setq auto-revert-check-vc-info t)
+  (global-auto-revert-mode)
   (w--hide-from-mode-line " ARev"))
 
 (use-package ediff
