@@ -2095,8 +2095,6 @@ defined as lowercase."
   "_b_ackgound"
   ("b" w--toggle-dark-light-theme)
   ("B" w--set-theme-from-environment)
-  "_c_olemak"
-  ("c" evil-colemak-basics-mode)
   "_d_iff"
   ("d" diff-hl-mode)
   "_f_ill"
