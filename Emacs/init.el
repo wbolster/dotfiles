@@ -851,6 +851,16 @@ defined as lowercase."
 ;;    "Format relative line number for OFFSET."
 ;;    (number-to-string (abs (if (= offset 0) (line-number-at-pos) offset))))
 ;;  (setq relative-line-numbers-format 'w--relative-line-numbers-format))
+(use-package nlinum)
+
+(use-package nlinum-relative
+  :config
+  (set-face-attribute
+   'nlinum-relative-current-face nil
+   :foreground nil
+   :background nil
+   :weight 'normal
+   :inherit 'nlinum))
 
 (evil-define-motion w--evil-next-line (count)
   (if visual-line-mode
@@ -2060,6 +2070,20 @@ defined as lowercase."
 
 ;;;; toggles
 
+(defun w--line-numbers-cycle ()
+  "Cycle between no, absolute, and relative line numbers."
+  (interactive)
+  (cond
+   ((and nlinum-mode nlinum-relative-mode)
+    (nlinum-mode -1)
+    (nlinum-relative-off))
+   (nlinum-mode
+    (nlinum-relative-mode +1)
+    (nlinum-relative-reflush))
+   (t
+    (nlinum-mode +1)
+    (nlinum-relative-mode -1))))
+
 (w--make-hydra w--hydra-toggle nil
   "toggle"
   "_b_ackgound"
@@ -2079,18 +2103,12 @@ defined as lowercase."
   ("m" toggle-frame-maximized)
   ("M" toggle-frame-fullscreen)
   "_n_umber"
-  ("n" (progn
-         (relative-line-numbers-mode -1)
-         (linum-mode 'toggle)))
+  ("n" w--line-numbers-cycle)
   ("N" (progn
          (line-number-mode 'toggle)
          (column-number-mode 'toggle)))
   "_o_utline"
   ("o" outline-minor-mode)
-  "_r_elative-number"
-  ("r" (progn
-         (linum-mode -1)
-         (relative-line-numbers-mode 'toggle)))
   "_t_runcate"
   ("t" toggle-truncate-lines)
   "_v_isual-line"
