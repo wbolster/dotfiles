@@ -61,10 +61,6 @@ Setup nlinum-relative-mode for evil
 
 ;;;***
 
-;;;### (autoloads nil nil ("nlinum-relative-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
