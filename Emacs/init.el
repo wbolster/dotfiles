@@ -1911,7 +1911,13 @@ defined as lowercase."
   (general-define-key
    :keymaps 'magit-diff-mode-map
    "SPC" nil
-   "DEL" nil))
+   "DEL" nil)
+  (general-define-key
+   :keymaps 'magit-blame-mode-map
+   :states '(motion normal)
+   (kbd "C-n") 'magit-blame-next-chunk
+   (kbd "C-e") 'magit-blame-previous-chunk
+   (kbd "C-p") 'magit-blame-previous-chunk))
 
 (use-package magithub
   :after magit
