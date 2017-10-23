@@ -1873,6 +1873,7 @@ defined as lowercase."
    magit-process-popup-time 10
    magit-push-arguments '("--force-with-lease")
    magit-rebase-arguments '("--autostash")
+   magit-show-refs-arguments '("--sort=-committerdate")
    magit-tag-arguments '("--annotate"))
   (add-hook 'magit-popup-mode-hook 'w--hide-trailing-whitespace)
   (magit-add-section-hook
