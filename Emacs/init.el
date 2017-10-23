@@ -498,7 +498,7 @@ defined as lowercase."
   ;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
   (evil-add-command-properties 'evil-yank-line :motion 'evil-end-of-line)
   (evil-define-key*
-   'normal global-map
+   '(motion normal) global-map
    [escape] #'w--evil-force-normal-state))
 
 (use-package key-chord
