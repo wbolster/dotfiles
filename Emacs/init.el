@@ -203,6 +203,7 @@ defined as lowercase."
 (setq
  auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-saves/\\1" t))
  backup-directory-alist '((".*" . "~/.emacs.d/backups/"))
+ create-lockfiles nil
  find-file-visit-truename t
  make-backup-files nil)
 
