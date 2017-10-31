@@ -1324,6 +1324,9 @@ defined as lowercase."
   (kbd "C-v") 'yank)
 
 (evil-define-key* 'insert global-map
+  (kbd "C-SPC") 'fixup-whitespace)
+
+(evil-define-key* 'insert global-map
   ;; shift line with < and > (same chars as in normal mode;
   ;; used instead of standard vim bindings C-d and C-t.
   (kbd "C-,") 'evil-shift-left-line
