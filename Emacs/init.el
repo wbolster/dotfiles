@@ -1880,6 +1880,7 @@ defined as lowercase."
    magit-rebase-arguments '("--autostash")
    magit-show-refs-arguments '("--sort=-committerdate")
    magit-tag-arguments '("--annotate"))
+  (add-to-list 'magit-repository-directories '("~/Projects/" . 2))
   (add-hook 'magit-popup-mode-hook 'w--hide-trailing-whitespace)
   (magit-add-section-hook
    'magit-status-sections-hook
