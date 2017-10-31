@@ -819,6 +819,7 @@ defined as lowercase."
    indent-guide-recursive t
    indent-guide-threshold 7)
   (indent-guide-global-mode)
+  (face-spec-reset-face 'indent-guide-face)
   (set-face-attribute
    'indent-guide-face nil
    :inherit 'font-lock-comment-face)
