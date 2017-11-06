@@ -2402,6 +2402,13 @@ defined as lowercase."
   (w--hide-from-mode-line " ElDoc"))
 
 
+;;;; major mode: git related
+
+(use-package gitattributes-mode)
+(use-package gitconfig-mode)
+(use-package gitignore-mode)
+
+
 ;;;; major mode: help
 
 (use-package help-mode
