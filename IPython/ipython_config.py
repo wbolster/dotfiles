@@ -16,6 +16,8 @@ class MyPrompts(Prompts):
         ]
 
     def continuation_prompt_tokens(self, cli=None, width=None):
+        if width is None:
+            width = 0
         return [(Token.Prompt, '... '.rjust(width))]
 
     def out_prompt_tokens(self, cli=None):
