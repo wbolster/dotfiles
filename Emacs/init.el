@@ -2592,26 +2592,30 @@ defined as lowercase."
     (evil-define-key* 'operator python-mode-map
       [remap evil-forward-char] 'w--evil-forward-char-or-python-statement))
 
-  (defun w--python-insert-statement-above (statement)
-    "Insert a new STATEMENT above the statement at point"
+  (defun w--python-insert-statement (position statement)
+    "Insert a new STATEMENT before or after the statement at point."
     (python-nav-beginning-of-statement)
-    (insert-before-markers
-     (format
-      "%s\n%s"
-      statement
-      (buffer-substring-no-properties  ;; copy indentation
-       (line-beginning-position) (point))))
-    (forward-line -1)
-    (beginning-of-line-text))
+    (let ((indent (buffer-substring-no-properties
+                   (line-beginning-position) (point))))
+      (cond
+       ((eq position 'after)
+        (python-nav-end-of-statement)
+        (insert "\n" indent statement)
+        (python-nav-beginning-of-statement))
+       ((eq position 'before)
+        (insert-before-markers statement "\n" indent)
+        (python-nav-backward-statement)))))
 
   (defun w--python-insert-pdb-trace (pdb-module)
     "Insert a pdb trace statement using PDB-MODULE before the current statement."
-    (w--python-insert-statement-above
+    (w--python-insert-statement
+     'before
      (format "import %s; %s.set_trace()  # FIXME" pdb-module pdb-module)))
 
-  (defun w--python-insert-ipython-repl ()
+  (defun w--python-insert-ipython-repl (position)
     "Insert an IPython repl statement before the current statement."
-    (w--python-insert-statement-above
+    (w--python-insert-statement
+     position
      (format "import IPython; IPython.embed()  # FIXME")))
 
   (defun w--python-refactor-make-variable (beg end)
@@ -2620,14 +2624,16 @@ defined as lowercase."
     (let ((name (read-string "Variable name: "))
           (code (delete-and-extract-region beg end)))
       (insert name)
-      (w--python-insert-statement-above
+      (w--python-insert-statement
+       'before
        (format "%s = %s" name code))))
 
   (defun w--python-insert-import-statement ()
     "Add an import statement for the thing at point."
     (interactive)
     (let ((thing (w--thing-at-point-dwim)))
-      (w--python-insert-statement-above
+      (w--python-insert-statement
+       'before
        (format "import %s" thing))))
 
   (require 'w--pytest)
@@ -2645,7 +2651,8 @@ defined as lowercase."
     ("l" multi-line nil)
     ("L" multi-line-single-line nil)
     "_r_epl"
-    ("r" (w--python-insert-ipython-repl) nil)
+    ("r" (w--python-insert-ipython-repl 'after) nil)
+    ("R" (w--python-insert-ipython-repl 'before) nil)
     "_t_ pytest"
     ("t" w--pytest nil)
     ("T" (w--pytest t) nil)
