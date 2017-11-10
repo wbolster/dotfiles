@@ -2370,6 +2370,12 @@ defined as lowercase."
    (kbd "C-p") 'comint-previous-input))
 
 
+;;;; major mode: docker
+
+(use-package dockerfile-mode
+  :mode "Dockerfile[-_\\.].*")
+
+
 ;;;; major mode: emacs lisp
 
 (use-package elisp-mode
