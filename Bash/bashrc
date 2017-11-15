@@ -472,6 +472,14 @@ if [[ "$PS1" ]]; then
     alias rchmod-private='chmod -R u=rwX,go='
     alias rchmod-private-with-group='chmod -R ug=rwX,o='
 
+    # common chown invocations
+    chown-mine () {
+        sudo chown "$(id -un):$(id -gn)" "$@"
+    }
+    rchown-mine () {
+        chown-mine -R "$@"
+    }
+
     # Alias expansion also after these commands
     alias sudo='sudo '
     alias nice='nice '
