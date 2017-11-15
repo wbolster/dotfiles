@@ -729,8 +729,14 @@ defined as lowercase."
    ("a" . evil-outer-arg)))
 
 (use-package evil-indent-plus
+  :defer nil
   :config
-  (evil-indent-plus-default-bindings))
+  (evil-indent-plus-default-bindings)
+  :bind
+  (:map evil-inner-text-objects-map
+   ([tab] . evil-indent-plus-i-indent)
+   :map evil-outer-text-objects-map
+   ([tab] . evil-indent-plus-a-indent-up)))
 
 (use-package evil-textobj-anyblock
   :bind
