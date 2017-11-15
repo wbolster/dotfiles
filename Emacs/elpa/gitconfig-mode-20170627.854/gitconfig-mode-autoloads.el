@@ -17,11 +17,7 @@ A major mode for editing .gitconfig files.
 
 (dolist (pattern '("/\\.gitconfig\\'" "/\\.git/config\\'" "/modules/.*/config\\'" "/git/config\\'" "/\\.gitmodules\\'" "/etc/gitconfig\\'")) (add-to-list 'auto-mode-alist (cons pattern 'gitconfig-mode)))
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "gitconfig-mode" '(#("gitconfig-" 0 10 (fontified nil face font-lock-variable-name-face)))))
-
-;;;***
-
-;;;### (autoloads nil nil ("gitconfig-mode-pkg.el") (0 0 0 0))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "gitconfig-mode" '("gitconfig-")))
 
 ;;;***
 
