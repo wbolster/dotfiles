@@ -510,7 +510,9 @@ defined as lowercase."
   :config
   (general-define-key
    :keymaps 'evil-insert-state-map
-   (general-chord "qq") 'evil-normal-state))
+   (general-chord "qw") 'evil-normal-state
+   (general-chord "qq") 'evil-normal-state
+   (general-chord "wq") 'evil-normal-state))
 
 (use-package evil-snipe
   :defer nil
