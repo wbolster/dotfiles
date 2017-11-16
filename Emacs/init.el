@@ -712,7 +712,11 @@ defined as lowercase."
    'evil-surround-pairs-alist
    ?\( '("(" . ")")
    ?\[ '("[" . "]")
-   ?\{ '("{" . "}")))
+   ?\{ '("{" . "}")
+   ?\‘ '("‘" . "’")
+   ?\’ '("‘" . "’")
+   ?\“ '("“" . "”")
+   ?\” '("“" . "”")))
 
 (use-package evil-visualstar
   :config
