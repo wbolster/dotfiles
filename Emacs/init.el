@@ -1888,7 +1888,6 @@ defined as lowercase."
    magit-popup-show-help-echo nil
    magit-prefer-remote-upstream t
    magit-process-popup-time 10
-   magit-push-arguments '("--force-with-lease")
    magit-rebase-arguments '("--autostash")
    magit-show-refs-arguments '("--sort=-committerdate")
    magit-tag-arguments '("--annotate"))
