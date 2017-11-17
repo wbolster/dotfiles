@@ -595,7 +595,7 @@ if [[ "$PS1" ]]; then
 
     # data display and conversion
     jql() {
-        jq -C . "$@" | less -R
+        jq -C . "$@" | less -FRSX
     }
     yaml-to-json() {
         python -c 'import json, sys, yaml; print(json.dumps(yaml.safe_load(open(sys.argv[1]) if sys.argv[1:] else sys.stdin), indent=2, sort_keys=True))' "$@"
