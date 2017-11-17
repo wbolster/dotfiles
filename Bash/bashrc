@@ -496,7 +496,7 @@ if [[ "$PS1" ]]; then
     alias :q='exit'
     alias :e='$EDITOR'
     em () {
-        emacs "$@" |& >/dev/null &
+        emacs "$@" > /dev/null 2>&1 &
         disown emacs
     }
 
