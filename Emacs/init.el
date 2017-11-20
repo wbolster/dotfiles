@@ -191,6 +191,15 @@ defined as lowercase."
   (unless (server-running-p)
     (server-start)))
 
+(use-package edit-server
+  ;; this is used by the ‘edit with emacs’ chrome extension:
+  ;; https://chrome.google.com/webstore/detail/edit-with-emacs/ljobjlafonikaiipfkggjbhkghgicgoh
+  :config
+  (edit-server-start)
+  (evil-add-to-alist
+   'edit-server-url-major-mode-alist
+   "github\\.com" 'markdown-mode))
+
 (when (eq system-type 'darwin)
   (global-set-key (kbd "s-q") nil)
   (setq
