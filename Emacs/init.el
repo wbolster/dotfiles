@@ -726,8 +726,11 @@ defined as lowercase."
    ?\{ '("{" . "}")
    ?\‘ '("‘" . "’")
    ?\’ '("‘" . "’")
+   ?\q '("‘" . "’")
    ?\“ '("“" . "”")
-   ?\” '("“" . "”")))
+   ?\” '("“" . "”")
+   ?\Q '("“" . "”"))
+  (setq-default evil-surround-pairs-alist evil-surround-pairs-alist))
 
 (use-package evil-visualstar
   :config
