@@ -1896,6 +1896,7 @@ defined as lowercase."
    magit-branch-read-upstream-first 'fallback
    magit-cherry-pick-arguments '("-x")
    magit-completing-read-function 'ivy-completing-read
+   magit-display-file-buffer-function 'magit-display-file-buffer-other-window
    magit-fetch-arguments '("--prune")
    magit-log-arguments '("--graph" "--color" "--decorate" "--follow" "-n256")
    magit-merge-arguments '("--no-ff")
