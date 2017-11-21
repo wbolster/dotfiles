@@ -702,7 +702,9 @@ defined as lowercase."
 (use-package evil-goggles
   :config
   (setq
-   evil-goggles-duration .5)
+   evil-goggles-duration 4
+   evil-goggles-async-duration evil-goggles-duration
+   evil-goggles-blocking-duration .2)
   (set-face-attribute
    'evil-goggles-default-face nil
    :inherit 'highlight)
