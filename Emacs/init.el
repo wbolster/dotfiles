@@ -1893,7 +1893,7 @@ defined as lowercase."
   :config
   (setq
    magit-branch-prefer-remote-upstream '("master")
-   magit-branch-read-upstream-first nil
+   magit-branch-read-upstream-first 'fallback
    magit-cherry-pick-arguments '("-x")
    magit-completing-read-function 'ivy-completing-read
    magit-fetch-arguments '("--prune")
