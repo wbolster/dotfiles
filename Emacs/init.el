@@ -366,7 +366,8 @@ defined as lowercase."
   (setq frame-background-mode (if dark 'dark 'light))
   (mapc 'frame-set-background-mode (frame-list))
   (let ((theme (if dark w--dark-theme w--light-theme)))
-    (enable-theme theme)))
+    (enable-theme theme))
+  (w--tweak-faces))
 
 (defun w--toggle-dark-light-theme ()
   "Toggle between a dark and light theme."
@@ -378,6 +379,13 @@ defined as lowercase."
   (unless (eq theme 'user)
     (--each custom-enabled-themes
       (disable-theme it))))
+
+(defun w--tweak-faces ()
+  "Tweak some font faces."
+  (set-face-attribute  ;; less contrasting region (evil visual state)
+   'region nil
+   :background nil :foreground nil
+   :inherit 'secondary-selection))
 
 (advice-add 'enable-theme :before #'w--disable-themes-advice)
 
