@@ -723,6 +723,8 @@ defined as lowercase."
   (evil-add-to-alist
    'evil-surround-pairs-alist
    ?\( '("(" . ")")
+   ?\0 '("(" . ")")
+   ?\9 '("(" . ")")
    ?\[ '("[" . "]")
    ?\{ '("{" . "}")
    ?\‘ '("‘" . "’")
