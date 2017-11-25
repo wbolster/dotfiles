@@ -2276,6 +2276,7 @@ defined as lowercase."
     ("jinja (j2)" . jinja2-mode)
     ("json" . json-mode)
     ("markdown (md)" . markdown-mode)
+    ("org" . org-mode)
     ("python" . python-mode)
     ("restructuredtext (rst)" . rst-mode)
     ("shell" . sh-mode)
@@ -2539,6 +2540,29 @@ defined as lowercase."
 
 ;; fixme: optional auctex?
 (setq TeX-engine 'xetex)
+
+
+;;;; major mode: org
+
+(use-package org
+  :config
+  (defun w--org-mode-hook ()
+    (setq org-ellipsis " [...]")
+    (evil-org-mode))
+  (add-hook 'org-mode-hook 'w--org-mode-hook))
+
+(use-package evil-org
+  :after org
+  :config
+  (setq
+   evil-org-movement-bindings
+   '((left . "h")
+     (down . "n")
+     (up . "e")
+     (right . "i")))
+  (setq evil-org-retain-visual-state-on-shift t)
+  (w--hide-from-mode-line " EvilOrg")
+  (evil-org-set-key-theme))
 
 
 ;;;; major mode: python
