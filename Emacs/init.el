@@ -325,8 +325,6 @@ defined as lowercase."
  frame-resize-pixelwise t
  frame-title-format "%b")
 
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
-
 
 ;;;; minimal ui
 
