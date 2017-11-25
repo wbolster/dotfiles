@@ -2099,6 +2099,7 @@ defined as lowercase."
 
   (global-flycheck-mode)
   (w--hide-from-mode-line " FlyC")
+  (w--hide-from-mode-line " FlyC-")
 
   (defun w--flycheck-last-error ()
     "Jump to the last flycheck error."
