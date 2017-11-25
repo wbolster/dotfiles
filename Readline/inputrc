@@ -1,17 +1,12 @@
 # inputrc for readline
 
 set completion-ignore-case on
-set mark-symlinked-directories on
-set match-hidden-files off
-set visible-stats on
 
-# Ctrl-P and Ctrl-N
+# History
 "\C-p":    history-search-backward
 "\C-n":    history-search-forward
-
-# PageUp and PageDown
-"\e[5~":   history-search-backward
-"\e[6~":   history-search-forward
+# "\e[5~":   history-search-backward  # PageUp
+# "\e[6~":   history-search-forward   # PageDown
 
 # Ctrl-Left and Ctrl-Right
 "\e[5C":   forward-word
@@ -19,9 +14,13 @@ set visible-stats on
 "\e\e[C":  forward-word
 "\e\e[D":  backward-word
 
-# History expansion
-$if bash
-  space: magic-space
+# Bash
+$if Bash
+    set mark-symlinked-directories on
+    set match-hidden-files off
+    set show-all-if-ambiguous on
+    set visible-stats on
+    space: magic-space
 $endif
 
 # TODO: bind menu-complete

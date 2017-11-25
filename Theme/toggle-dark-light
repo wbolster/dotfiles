@@ -1,8 +1,30 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e -u
 
 file=~/.config/dark-theme
+
+# gtk_theme_light='Adwaita'
+# gtk_theme_dark='Adwaita-dark'
+gtk_theme_light='Adapta'
+gtk_theme_dark='Adapta-Nokto'
+
+gnome_shell_theme_light='Adapta'
+gnome_shell_theme_dark='Adapta-Nokto'
+
+
+set_gnome_theme() {
+    local gtk_theme gnome_shell_theme
+    if [ "$1" = "dark" ]; then
+        gtk_theme="$gtk_theme_dark"
+        gnome_shell_theme="$gnome_shell_theme_dark"
+    else
+        gtk_theme="$gtk_theme_light"
+        gnome_shell_theme="$gnome_shell_theme_light"
+    fi
+    gsettings set org.gnome.desktop.interface gtk-theme "${gtk_theme}"
+    gsettings set org.gnome.shell.extensions.user-theme name "${gnome_shell_theme}"
+}
 
 set_gnome_terminal_theme() {
     # Set Solarized colour scheme for the first Gnome terminal
@@ -33,15 +55,17 @@ notify_emacs() {
 }
 
 main() {
+    local theme
     if [ -e ${file} ]; then
         rm ${file}
-        set_gnome_terminal_theme light
-        notify_emacs
+        theme=light
     else
         touch ${file}
-        set_gnome_terminal_theme dark
-        notify_emacs
+        theme=dark
     fi
+        set_gnome_theme $theme &
+        set_gnome_terminal_theme $theme &
+        notify_emacs &
 }
 
 main
