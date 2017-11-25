@@ -388,14 +388,24 @@ defined as lowercase."
 
 (w--set-theme-from-environment)
 
-;; todo: revise cursor appearance
 (setq
- evil-normal-state-cursor   '("#859900" box)     ; green
- evil-visual-state-cursor   '("#cb4b16" box)     ; orange
- evil-insert-state-cursor   '("#268bd2" bar)     ; blue
- evil-replace-state-cursor  '("#dc322f" bar)     ; red
- evil-operator-state-cursor '("#dc322f" hollow)) ; red
+ solarized-color-yellow  "#b58900"
+ solarized-color-orange  "#cb4b16"
+ solarized-color-red     "#dc322f"
+ solarized-color-magenta "#d33682"
+ solarized-color-violet  "#6c71c4"
+ solarized-color-blue    "#268bd2"
+ solarized-color-cyan    "#2aa198"
+ solarized-color-green   "#859900")
 
+(setq
+ evil-normal-state-cursor (list solarized-color-yellow 'box)
+ evil-visual-state-cursor (list solarized-color-orange 'hollow)
+ evil-insert-state-cursor  (list solarized-color-yellow 'bar)
+ evil-replace-state-cursor (list solarized-color-red 'hbar)
+ evil-operator-state-cursor (list solarized-color-magenta 'hollow))
+
+(setq evil-normal-state-cursor (list solarized-color-yellow 'box))
 
 ;;;; fonts
 
