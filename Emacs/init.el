@@ -2009,6 +2009,9 @@ defined as lowercase."
     'diff-hl-next-hunk
     'diff-hl-previous-hunk))
 
+(use-package vdiff)
+(use-package vdiff-magit)
+
 (defun w--magit-status-other-repository ()
   "Open git status for another repository."
   (interactive)
