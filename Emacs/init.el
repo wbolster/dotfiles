@@ -57,6 +57,10 @@
 (use-package fn)
 
 
+;;;; keep it clean
+
+(use-package no-littering)
+
 ;;;; evil (bootstrap only)
 
 ;; bootstrap early in the process so evil functionality
@@ -210,8 +214,12 @@ defined as lowercase."
 ;;;; buffers, files, directories
 
 (setq
- auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-saves/\\1" t))
- backup-directory-alist '((".*" . "~/.emacs.d/backups/"))
+ auto-save-file-name-transforms
+ `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+(setq
+ backup-directory-alist
+ `((".*" ,(no-littering-expand-var-file-name "backup/") t)))
+(setq
  create-lockfiles nil
  find-file-visit-truename t
  make-backup-files nil)
@@ -251,6 +259,8 @@ defined as lowercase."
   (setq
    recentf-auto-cleanup 300
    recentf-max-saved-items 500)
+  (add-to-list 'recentf-exclude no-littering-var-directory)
+  (add-to-list 'recentf-exclude no-littering-etc-directory)
   (recentf-mode)
   (defun w--counsel-recentf ()
     "Wrapper around `counsel-recentf'."
