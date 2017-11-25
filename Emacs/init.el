@@ -1718,6 +1718,17 @@ defined as lowercase."
 
 (use-package buffer-move)
 
+(defun w--make-frame ()
+  (interactive)
+  (let ((frame (make-frame)))
+    (select-frame-set-input-focus frame)
+    frame))
+
+(defun w--make-frame-new-buffer ()
+  (interactive)
+  (with-selected-frame (w--make-frame)
+    (call-interactively #'evil-buffer-new)))
+
 (w--make-hydra w--hydra-window nil
   "window"
   "_h__n__e__i_ _1__2__3__4_ navigate"
@@ -1743,6 +1754,9 @@ defined as lowercase."
   "_c_lose"
   ("c" evil-window-delete)
   "_o_nly"
+  "_f_rame"
+  ("f" (w--make-frame))
+  ("F" (w--make-frame-new-buffer))
   ("o" delete-other-windows)
   "_r_otate"
   ("r" evil-window-rotate-downwards nil :exit nil)
