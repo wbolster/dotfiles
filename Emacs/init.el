@@ -1572,9 +1572,9 @@ defined as lowercase."
 
 ;;;; window layout
 
-;; my preferred window layout is full-height windows,
-;; up to three next to each other in a horizontal fashion,
-;; i.e. screen divided into columns.
+;; my preferred window layout is multiple full-height windows,
+;; next to each other in a horizontal fashion, i.e. screen
+;; divided into columns.
 
 (use-package winner
   :config
