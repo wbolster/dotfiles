@@ -1797,10 +1797,10 @@ defined as lowercase."
   ("=" balance-windows)  ;; evil/vim style
   "_c_lose"
   ("c" evil-window-delete)
-  "_o_nly"
   "_f_rame"
   ("f" (w--make-frame))
   ("F" (w--make-frame-new-buffer))
+  "_o_nly"
   ("o" delete-other-windows)
   "_r_otate"
   ("r" evil-window-rotate-downwards nil :exit nil)
