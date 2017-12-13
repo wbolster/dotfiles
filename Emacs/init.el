@@ -1856,7 +1856,10 @@ defined as lowercase."
   (w--hide-from-mode-line " Abbrev"))
 
 (use-package flx)
-(use-package smex)
+
+(use-package amx
+  :config
+  (amx-mode +1))
 
 (use-package ivy
   :demand t
@@ -2276,7 +2279,7 @@ defined as lowercase."
   "_w_indow"
   ("w" w--hydra-window/body)
   "M-_x_"
-  ("x" counsel-M-x)
+  ("x" amx)
   "_y_ copy format"
   ("y" w--evil-copy-as-format)
   "_z_oom"
