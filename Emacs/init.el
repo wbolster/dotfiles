@@ -230,6 +230,7 @@ defined as lowercase."
    ((string-equal "*scratch*" name) t)
    ((string-prefix-p "*new*" name) t)  ;; evil-mode template
    ((string-match-p "\*" name) nil) ;; e.g. magit, help
+   ((string-match-p "^ " name) nil) ;; hidden buffers
    (t t)))
 
 (defun w--ask-confirmation-for-unsaved-buffers ()
