@@ -972,6 +972,8 @@ defined as lowercase."
 
 (use-package isearch
   :ensure nil
+  :init
+  (provide 'isearch)  ; fake feature for emacs 25
   :config
   (setq
    isearch-allow-prefix nil
@@ -1001,6 +1003,8 @@ defined as lowercase."
 
 (use-package replace
   :ensure nil
+  :init
+  (provide 'replace)  ; fake feature for emacs 25
   :config
   (defun w--query-replace-thing-at-point-dwim ()
     "Return 'query-replace' for the active region or the symbol at point."
