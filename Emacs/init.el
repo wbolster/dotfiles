@@ -2312,8 +2312,9 @@ defined as lowercase."
 ;;;; help
 
 (use-package helpful
-  :config
-  (global-set-key [remap counsel-describe-function] 'helpful-function))
+  :general
+  ("C-h f" 'helpful-function)
+  ("C-h v" 'helpful-variable))
 
 
 ;;;; custom
