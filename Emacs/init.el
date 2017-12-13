@@ -95,7 +95,6 @@
 
 (bind-keys
  ("C-h g" . nil)
- ("C-h g" . nil)
  ("C-h C-c" . nil)
  ("C-h C-m" . nil)
  ("C-h C-o" . nil)
