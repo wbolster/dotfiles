@@ -1776,14 +1776,14 @@ defined as lowercase."
 (w--make-hydra w--hydra-window nil
   "window"
   "_h__n__e__i_ _1__2__3__4_ navigate"
-  ("h" evil-window-left)
-  ("n" evil-window-down)
-  ("e" evil-window-up)
-  ("i" evil-window-right)
-  ("H" buf-move-left)
-  ("N" buf-move-down)
-  ("E" buf-move-up)
-  ("I" buf-move-right)
+  ("h" buf-move-left)
+  ("n" buf-move-down)
+  ("e" buf-move-up)
+  ("i" buf-move-right)
+  ("H" evil-window-left)
+  ("N" evil-window-down)
+  ("E" evil-window-up)
+  ("I" evil-window-right)
   ("1" w--goto-window-1)
   ("2" w--goto-window-2)
   ("3" w--goto-window-3)
