@@ -63,9 +63,9 @@ main() {
         touch ${file}
         theme=dark
     fi
-        set_gnome_theme $theme &
-        set_gnome_terminal_theme $theme &
-        notify_emacs &
+    set_gnome_theme $theme &
+    set_gnome_terminal_theme $theme &
+    notify_emacs &
 }
 
 main
