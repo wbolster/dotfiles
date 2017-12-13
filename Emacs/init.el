@@ -748,22 +748,30 @@ defined as lowercase."
 
 (use-package evil-surround
   :config
-  (global-evil-surround-mode)
-  ;; overwrite defaults to not put spaces inside braces
   (evil-add-to-alist
    'evil-surround-pairs-alist
+   ;; overwrite defaults to not put spaces inside braces:
    ?\( '("(" . ")")
-   ?\0 '("(" . ")")
-   ?\9 '("(" . ")")
    ?\[ '("[" . "]")
    ?\{ '("{" . "}")
+   ;; without shift key:
+   ?\0 '("(" . ")")
+   ?\9 '("(" . ")")
+   ;; nice quotation marks:
    ?\‘ '("‘" . "’")
    ?\’ '("‘" . "’")
    ?\q '("‘" . "’")
    ?\“ '("“" . "”")
    ?\” '("“" . "”")
    ?\Q '("“" . "”"))
-  (setq-default evil-surround-pairs-alist evil-surround-pairs-alist))
+  (setq-default evil-surround-pairs-alist evil-surround-pairs-alist)
+  :general
+  (:states 'operator
+   "s" 'evil-surround-edit
+   "S" 'evil-Surround-edit)
+  (:states 'visual
+   "S" 'evil-surround-region
+   "gS" 'evil-Surround-region))
 
 (use-package evil-visualstar
   :config
