@@ -214,6 +214,10 @@ defined as lowercase."
 
 ;;;; buffers, files, directories
 
+(use-package desktop
+  :config
+  (desktop-save-mode))
+
 (setq
  auto-save-file-name-transforms
  `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
