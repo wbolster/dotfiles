@@ -47,6 +47,7 @@
 
 (use-package benchmark-init)
 
+
 ;;;; lisp helpers
 
 (use-package dash
@@ -60,6 +61,7 @@
 ;;;; keep it clean
 
 (use-package no-littering)
+
 
 ;;;; evil (bootstrap only)
 
