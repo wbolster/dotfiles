@@ -1983,6 +1983,7 @@ defined as lowercase."
   (w--hide-from-mode-line " cWip"))
 
 (use-package evil-magit
+  :after magit
   :config
   (add-hook 'magit-log-mode-hook #'w--disable-colemak)
   (add-hook 'magit-status-mode-hook #'w--disable-colemak)
