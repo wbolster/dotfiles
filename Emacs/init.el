@@ -333,6 +333,7 @@ defined as lowercase."
 ;;;; frames
 
 (setq
+ default-frame-alist '((width . 160) (height . 48))
  frame-resize-pixelwise t
  frame-title-format "%b")
 
