@@ -2021,6 +2021,10 @@ defined as lowercase."
    magithub-api-timeout 10
    magithub-pull-request-arguments '("-o"))
   (magithub-feature-autoinject t)
+  :general
+  (:keymaps 'magithub-map  ;; colemak tweaks
+   "e" nil
+   "c" #'magithub-edit-thing)
   (defun w--magithub-compare ()
     "Compare repository on the web; invokes hub."
     (interactive)
