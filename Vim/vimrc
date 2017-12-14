@@ -15,9 +15,9 @@ set nofoldenable foldmethod=marker
 silent! set listchars=eol:$,trail:_,extends:»,precedes:«,tab:»·,nbsp:~
 
 " Colemak, inspired by Emacs evil-colemak-basics https://github.com/ohjames/colemak
-map n <down>
-map e <up>
-map i <right>
+noremap n <down>
+noremap e <up>
+noremap i <right>
 noremap k n
 noremap K N
 noremap u i
