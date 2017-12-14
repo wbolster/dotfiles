@@ -38,7 +38,7 @@ mylog = "!f() { git log --all --author=\"$(git config user.email)\" --date-order
 review-branch = "!f() { [ -z \"$@\" ] && set - origin/master..; git -c core.pager='less -+F +/^commit' log --reverse --patch \"$@\"; }; f"
 sl = log --oneline --graph --pretty=longline --date=short
 message-log = log --pretty=message
-pull-request-log=log --format=message "@{upstream}.."
+pull-request-log=log --reverse --format=message "@{upstream}.."
 slf = sl --first-parent
 st = status --short --branch
 today = log --all --graph --since=0am
