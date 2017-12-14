@@ -2408,7 +2408,7 @@ defined as lowercase."
 
 ;;;; major-mode: c
 
-(use-package c
+(use-package cc-mode
   :ensure nil
   :config
   (defun w--c-mode-hook ()
