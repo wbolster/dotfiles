@@ -37,6 +37,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (setq use-package-always-ensure t)
+(require 'use-package)
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
