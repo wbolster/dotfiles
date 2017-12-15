@@ -1940,6 +1940,7 @@ defined as lowercase."
    magit-completing-read-function 'ivy-completing-read
    magit-display-file-buffer-function 'magit-display-file-buffer-other-window
    magit-fetch-arguments '("--prune")
+   magit-list-refs-sortby '("-creatordate")
    magit-log-arguments '("--graph" "--color" "--decorate" "--follow" "-n256")
    magit-merge-arguments '("--no-ff")
    magit-popup-show-help-echo nil
