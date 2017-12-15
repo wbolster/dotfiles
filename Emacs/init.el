@@ -393,7 +393,7 @@ defined as lowercase."
   (w--activate-theme (eq (first custom-enabled-themes) w--light-theme)))
 
 (defun w--disable-themes-advice (theme)
-  "Disable all enabled themes."
+  "Disable all enabled themes except THEME."
   (unless (eq theme 'user)
     (--each custom-enabled-themes
       (disable-theme it))))
