@@ -1743,12 +1743,14 @@ defined as lowercase."
 (use-package buffer-move)
 
 (defun w--make-frame ()
+  "Make a new frame."
   (interactive)
   (let ((frame (make-frame)))
     (select-frame-set-input-focus frame)
     frame))
 
 (defun w--make-frame-new-buffer ()
+  "Make a new frame with a new buffer."
   (interactive)
   (with-selected-frame (w--make-frame)
     (call-interactively #'evil-buffer-new)))
