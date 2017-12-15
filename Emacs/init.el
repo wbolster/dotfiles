@@ -529,6 +529,7 @@ defined as lowercase."
   "Like `evil-force-normal-state', with some extra cleanups."
   (interactive)
   (lazy-highlight-cleanup t)
+  (remove-overlays nil nil 'category 'evil-snipe)
   (evil-force-normal-state))
 
 ;; note: evil is already bootstrapped at this point
@@ -558,42 +559,15 @@ defined as lowercase."
    (general-chord "wq") 'evil-normal-state))
 
 (use-package evil-snipe
-  :defer nil
-  :bind
-  (:map
-   evil-snipe-parent-transient-map
-   ("[spc]" . w--evil-easymotion-for-active-snipe))
-  :init
-  (setq
-   evil-snipe-auto-disable-substitute nil)
-  :config
-  (setq
-   evil-snipe-override-evil-repeat-keys nil
-   evil-snipe-scope 'line
-   evil-snipe-repeat-scope 'line
-   evil-snipe-smart-case t
-   evil-snipe-tab-increment t)
-  (set-face-attribute
-   'evil-snipe-matches-face nil
-   :inherit 'lazy-highlight)
-
-  (evil-snipe-mode)
-  (w--hide-from-mode-line " snipe")
-
-  ;; the t/T/f/F overrides are the most important ones, since
-  ;; avy/evil-easymotion already allows for fancy jumps, e.g. via
-  ;; avy-goto-char-timer.
-  (evil-define-key* '(motion normal) evil-snipe-local-mode-map
-    "s" nil
-    "S" nil)
-
-  (defun w--evil-easymotion-for-active-snipe ()
-    "Turn an active snipe into an avy/easy-motion overlay."
-    (evilem-create
-     (list 'evil-snipe-repeat 'evil-snipe-repeat-reverse)
-     :bind ((evil-snipe-scope 'visible)
-            (evil-snipe-enable-highlight)
-            (evil-snipe-enable-incremental-highlight)))))
+  ;; the t/T/f/F overrides are handled by evil-colemak-basics.
+  :custom
+  (evil-snipe-override-evil-repeat-keys nil)
+  (evil-snipe-scope 'line)
+  (evil-snipe-repeat-scope 'line)
+  (evil-snipe-smart-case t)
+  (evil-snipe-tab-increment t)
+  :custom-face
+  (evil-snipe-matches-face ((t (:inherit lazy-highlight)))))
 
 (use-package evil-colemak-basics
   :init
