@@ -1,13 +1,10 @@
 ;;; nlinum-relative-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "nlinum-relative" "nlinum-relative.el" (0 0
-;;;;;;  0 0))
+;;;### (autoloads nil "nlinum-relative" "nlinum-relative.el" (23092
+;;;;;;  12200 27244 622000))
 ;;; Generated autoloads from nlinum-relative.el
 
 (autoload 'nlinum-relative-on "nlinum-relative" "\
@@ -57,14 +54,11 @@ Setup nlinum-relative-mode for evil
 
 \(fn)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "nlinum-relative" '("nlinum-relative-")))
-
 ;;;***
 
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; nlinum-relative-autoloads.el ends here

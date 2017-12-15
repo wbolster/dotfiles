@@ -1,12 +1,10 @@
 ;;; key-chord-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "key-chord" "key-chord.el" (0 0 0 0))
+;;;### (autoloads nil "key-chord" "key-chord.el" (23092 12191 685561
+;;;;;;  725000))
 ;;; Generated autoloads from key-chord.el
 
 (autoload 'key-chord-mode "key-chord" "\
@@ -59,14 +57,11 @@ If COMMAND is nil, the key-chord is removed.
 
 \(fn KEYMAP KEYS COMMAND)" nil nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "key-chord" '("key-chord-")))
-
 ;;;***
 
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; key-chord-autoloads.el ends here

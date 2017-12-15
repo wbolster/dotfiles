@@ -1,13 +1,10 @@
 ;;; evil-swap-keys-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "evil-swap-keys" "evil-swap-keys.el" (0 0 0
-;;;;;;  0))
+;;;### (autoloads nil "evil-swap-keys" "evil-swap-keys.el" (23092
+;;;;;;  12193 537998 380000))
 ;;; Generated autoloads from evil-swap-keys.el
 
 (autoload 'evil-swap-keys-mode "evil-swap-keys" "\
@@ -87,14 +84,11 @@ Swap the question mark and slash.
 
 \(fn)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-swap-keys" '("evil-swap-keys-")))
-
 ;;;***
 
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; evil-swap-keys-autoloads.el ends here

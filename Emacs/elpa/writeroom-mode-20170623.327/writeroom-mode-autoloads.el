@@ -1,13 +1,10 @@
 ;;; writeroom-mode-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "writeroom-mode" "writeroom-mode.el" (0 0 0
-;;;;;;  0))
+;;;### (autoloads nil "writeroom-mode" "writeroom-mode.el" (23092
+;;;;;;  12245 323040 65000))
 ;;; Generated autoloads from writeroom-mode.el
 
 (autoload 'writeroom-mode "writeroom-mode" "\
@@ -37,11 +34,10 @@ See `writeroom-mode' for more information on Writeroom mode.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "writeroom-mode" '("writeroom-" "tool-bar-lines" "turn-on-writeroom-mode" "bottom-divider-width" "sticky" "internal-border-width" "menu-bar-lines" "vertical-scroll-bars" "alpha" "fullscreen" "define-writeroom-global-effect")))
-
 ;;;***
 
-;;;### (autoloads nil nil ("writeroom-mode-pkg.el") (0 0 0 0))
+;;;### (autoloads nil nil ("writeroom-mode-pkg.el") (23092 12245
+;;;;;;  343041 105000))
 
 ;;;***
 
@@ -49,6 +45,5 @@ See `writeroom-mode' for more information on Writeroom mode.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; writeroom-mode-autoloads.el ends here

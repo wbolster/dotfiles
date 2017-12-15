@@ -1,12 +1,10 @@
 ;;; drag-stuff-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "drag-stuff" "drag-stuff.el" (0 0 0 0))
+;;;### (autoloads nil "drag-stuff" "drag-stuff.el" (23092 12210 944665
+;;;;;;  407000))
 ;;; Generated autoloads from drag-stuff.el
 
 (autoload 'drag-stuff-up "drag-stuff" "\
@@ -66,11 +64,10 @@ See `drag-stuff-mode' for more information on Drag-Stuff mode.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "drag-stuff" '("drag-stuff-")))
-
 ;;;***
 
-;;;### (autoloads nil nil ("drag-stuff-pkg.el") (0 0 0 0))
+;;;### (autoloads nil nil ("drag-stuff-pkg.el") (23092 12210 948665
+;;;;;;  829000))
 
 ;;;***
 
@@ -78,6 +75,5 @@ See `drag-stuff-mode' for more information on Drag-Stuff mode.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; drag-stuff-autoloads.el ends here

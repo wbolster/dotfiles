@@ -1,12 +1,9 @@
 ;;; nlinum-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "nlinum" "nlinum.el" (0 0 0 0))
+;;;### (autoloads nil "nlinum" "nlinum.el" (23092 12199 667184 529000))
 ;;; Generated autoloads from nlinum.el
 
 (autoload 'nlinum-mode "nlinum" "\
@@ -41,14 +38,11 @@ See `nlinum-mode' for more information on Nlinum mode.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "nlinum" '("nlinum-")))
-
 ;;;***
 
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; nlinum-autoloads.el ends here

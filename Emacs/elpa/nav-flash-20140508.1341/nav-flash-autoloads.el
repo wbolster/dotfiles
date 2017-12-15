@@ -1,12 +1,10 @@
 ;;; nav-flash-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "nav-flash" "nav-flash.el" (0 0 0 0))
+;;;### (autoloads nil "nav-flash" "nav-flash.el" (23092 12218 389349
+;;;;;;  317000))
 ;;; Generated autoloads from nav-flash.el
 
 (let ((loads (get 'nav-flash 'custom-loads))) (if (member '"nav-flash" loads) nil (put 'nav-flash 'custom-loads (cons '"nav-flash" loads))))
@@ -28,14 +26,11 @@ this function a no-op.
 
 \(fn &optional POS END-POS FACE DELAY)" nil nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "nav-flash" '("nav-flash-")))
-
 ;;;***
 
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; nav-flash-autoloads.el ends here

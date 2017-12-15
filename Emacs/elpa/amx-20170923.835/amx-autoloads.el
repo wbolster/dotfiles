@@ -3,7 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "amx" "amx.el" (23086 26195 189657 399000))
+;;;### (autoloads nil "amx" "amx.el" (23092 12222 877694 933000))
 ;;; Generated autoloads from amx.el
 
 (defvar amx-mode nil "\

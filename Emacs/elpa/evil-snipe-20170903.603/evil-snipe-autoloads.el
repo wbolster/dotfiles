@@ -1,12 +1,10 @@
 ;;; evil-snipe-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "evil-snipe" "evil-snipe.el" (0 0 0 0))
+;;;### (autoloads nil "evil-snipe" "evil-snipe.el" (23092 12192 729813
+;;;;;;  249000))
 ;;; Generated autoloads from evil-snipe.el
 
 (autoload 'evil-snipe-def "evil-snipe" "\
@@ -97,14 +95,11 @@ See `evil-snipe-override-local-mode' for more information on Evil-Snipe-Override
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-snipe" '("evil-snipe-")))
-
 ;;;***
 
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; evil-snipe-autoloads.el ends here

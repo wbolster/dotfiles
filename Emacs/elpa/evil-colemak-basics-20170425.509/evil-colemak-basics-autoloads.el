@@ -1,13 +1,10 @@
 ;;; evil-colemak-basics-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
 ;;;### (autoloads nil "evil-colemak-basics" "evil-colemak-basics.el"
-;;;;;;  (0 0 0 0))
+;;;;;;  (23092 12193 189920 55000))
 ;;; Generated autoloads from evil-colemak-basics.el
 
 (autoload 'evil-colemak-basics-mode "evil-colemak-basics" "\
@@ -37,14 +34,11 @@ See `evil-colemak-basics-mode' for more information on Evil-Colemak-Basics mode.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-colemak-basics" '("evil-colemak-basics-")))
-
 ;;;***
 
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; evil-colemak-basics-autoloads.el ends here

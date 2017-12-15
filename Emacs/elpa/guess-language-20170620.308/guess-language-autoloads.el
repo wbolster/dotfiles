@@ -1,13 +1,10 @@
 ;;; guess-language-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "guess-language" "guess-language.el" (0 0 0
-;;;;;;  0))
+;;;### (autoloads nil "guess-language" "guess-language.el" (23092
+;;;;;;  12221 433587 995000))
 ;;; Generated autoloads from guess-language.el
 
 (autoload 'guess-language-mode "guess-language" "\
@@ -29,11 +26,10 @@ correctly.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "guess-language" '("guess-language")))
-
 ;;;***
 
-;;;### (autoloads nil nil ("guess-language-pkg.el") (0 0 0 0))
+;;;### (autoloads nil nil ("guess-language-pkg.el") (23092 12221
+;;;;;;  241573 561000))
 
 ;;;***
 
@@ -41,6 +37,5 @@ correctly.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; guess-language-autoloads.el ends here

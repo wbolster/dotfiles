@@ -1,68 +1,10 @@
 ;;; expand-region-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "cc-mode-expansions" "cc-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from cc-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "cc-mode-expansions" '("er/")))
-
-;;;***
-
-;;;### (autoloads nil "clojure-mode-expansions" "clojure-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from clojure-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "clojure-mode-expansions" '("er/")))
-
-;;;***
-
-;;;### (autoloads nil "cperl-mode-expansions" "cperl-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from cperl-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "cperl-mode-expansions" '("er/")))
-
-;;;***
-
-;;;### (autoloads nil "css-mode-expansions" "css-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from css-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "css-mode-expansions" '("er/")))
-
-;;;***
-
-;;;### (autoloads nil "enh-ruby-mode-expansions" "enh-ruby-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from enh-ruby-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "enh-ruby-mode-expansions" '("er/add-enh-ruby-mode-expansions")))
-
-;;;***
-
-;;;### (autoloads nil "er-basic-expansions" "er-basic-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from er-basic-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "er-basic-expansions" '("er--" "er/mark-")))
-
-;;;***
-
-;;;### (autoloads nil "erlang-mode-expansions" "erlang-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from erlang-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "erlang-mode-expansions" '("er/add-erlang-mode-expansions")))
-
-;;;***
-
-;;;### (autoloads nil "expand-region" "expand-region.el" (0 0 0 0))
+;;;### (autoloads nil "expand-region" "expand-region.el" (23092 12211
+;;;;;;  872760 177000))
 ;;; Generated autoloads from expand-region.el
 
 (autoload 'er/expand-region "expand-region" "\
@@ -77,16 +19,8 @@ before calling `er/expand-region' for the first time.
 
 ;;;***
 
-;;;### (autoloads nil "expand-region-core" "expand-region-core.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from expand-region-core.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "expand-region-core" '("er--" "er/")))
-
-;;;***
-
 ;;;### (autoloads nil "expand-region-custom" "expand-region-custom.el"
-;;;;;;  (0 0 0 0))
+;;;;;;  (23092 12211 980771 181000))
 ;;; Generated autoloads from expand-region-custom.el
 
 (let ((loads (get 'expand-region 'custom-loads))) (if (member '"expand-region-custom" loads) nil (put 'expand-region 'custom-loads (cons '"expand-region-custom" loads))))
@@ -143,147 +77,18 @@ If set to nil, always place the cursor at the beginning of the region.")
 
 (custom-autoload 'expand-region-smart-cursor "expand-region-custom" t)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "expand-region-custom" '("expand-region-guess-python-mode")))
-
 ;;;***
 
-;;;### (autoloads nil "feature-mode-expansions" "feature-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from feature-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "feature-mode-expansions" '("er--block-between-keywords" "er/")))
-
-;;;***
-
-;;;### (autoloads nil "html-mode-expansions" "html-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from html-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "html-mode-expansions" '("er--" "er/")))
-
-;;;***
-
-;;;### (autoloads nil "js-mode-expansions" "js-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from js-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "js-mode-expansions" '("er/")))
-
-;;;***
-
-;;;### (autoloads nil "js2-mode-expansions" "js2-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from js2-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "js2-mode-expansions" '("er/add-js2-mode-expansions" "js2-mark-parent-statement")))
-
-;;;***
-
-;;;### (autoloads nil "jsp-expansions" "jsp-expansions.el" (0 0 0
-;;;;;;  0))
-;;; Generated autoloads from jsp-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "jsp-expansions" '("er/")))
-
-;;;***
-
-;;;### (autoloads nil "latex-mode-expansions" "latex-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from latex-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "latex-mode-expansions" '("er/")))
-
-;;;***
-
-;;;### (autoloads nil "nxml-mode-expansions" "nxml-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from nxml-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "nxml-mode-expansions" '("er/")))
-
-;;;***
-
-;;;### (autoloads nil "octave-expansions" "octave-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from octave-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "octave-expansions" '("er/")))
-
-;;;***
-
-;;;### (autoloads nil "python-el-expansions" "python-el-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from python-el-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "python-el-expansions" '("er--python-string-delimiter" "er/")))
-
-;;;***
-
-;;;### (autoloads nil "python-el-fgallina-expansions" "python-el-fgallina-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from python-el-fgallina-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "python-el-fgallina-expansions" '("er--python-" "er/")))
-
-;;;***
-
-;;;### (autoloads nil "python-mode-expansions" "python-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from python-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "python-mode-expansions" '("er--" "er/" "py-goto-beyond-clause")))
-
-;;;***
-
-;;;### (autoloads nil "ruby-mode-expansions" "ruby-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from ruby-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ruby-mode-expansions" '("er/")))
-
-;;;***
-
-;;;### (autoloads nil "sml-mode-expansions" "sml-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from sml-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "sml-mode-expansions" '("er/")))
-
-;;;***
-
-;;;### (autoloads nil "subword-mode-expansions" "subword-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from subword-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "subword-mode-expansions" '("er/")))
-
-;;;***
-
-;;;### (autoloads nil "text-mode-expansions" "text-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from text-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "text-mode-expansions" '("er/")))
-
-;;;***
-
-;;;### (autoloads nil "the-org-mode-expansions" "the-org-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from the-org-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "the-org-mode-expansions" '("er/")))
-
-;;;***
-
-;;;### (autoloads nil "web-mode-expansions" "web-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from web-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "web-mode-expansions" '("er/add-web-mode-expansions")))
-
-;;;***
-
-;;;### (autoloads nil nil ("expand-region-pkg.el") (0 0 0 0))
+;;;### (autoloads nil nil ("cc-mode-expansions.el" "clojure-mode-expansions.el"
+;;;;;;  "cperl-mode-expansions.el" "css-mode-expansions.el" "enh-ruby-mode-expansions.el"
+;;;;;;  "er-basic-expansions.el" "erlang-mode-expansions.el" "expand-region-core.el"
+;;;;;;  "expand-region-pkg.el" "feature-mode-expansions.el" "html-mode-expansions.el"
+;;;;;;  "js-mode-expansions.el" "js2-mode-expansions.el" "jsp-expansions.el"
+;;;;;;  "latex-mode-expansions.el" "nxml-mode-expansions.el" "octave-expansions.el"
+;;;;;;  "python-el-expansions.el" "python-el-fgallina-expansions.el"
+;;;;;;  "python-mode-expansions.el" "ruby-mode-expansions.el" "sml-mode-expansions.el"
+;;;;;;  "subword-mode-expansions.el" "text-mode-expansions.el" "the-org-mode-expansions.el"
+;;;;;;  "web-mode-expansions.el") (23092 12212 28775 981000))
 
 ;;;***
 
@@ -291,6 +96,5 @@ If set to nil, always place the cursor at the beginning of the region.")
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; expand-region-autoloads.el ends here

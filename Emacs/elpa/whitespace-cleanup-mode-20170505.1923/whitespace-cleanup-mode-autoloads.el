@@ -1,13 +1,10 @@
 ;;; whitespace-cleanup-mode-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
 ;;;### (autoloads nil "whitespace-cleanup-mode" "whitespace-cleanup-mode.el"
-;;;;;;  (0 0 0 0))
+;;;;;;  (23092 12198 330955 356000))
 ;;; Generated autoloads from whitespace-cleanup-mode.el
 
 (let ((loads (get 'whitespace-cleanup 'custom-loads))) (if (member '"whitespace-cleanup-mode" loads) nil (put 'whitespace-cleanup 'custom-loads (cons '"whitespace-cleanup-mode" loads))))
@@ -41,14 +38,11 @@ See `whitespace-cleanup-mode' for more information on Whitespace-Cleanup mode.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "whitespace-cleanup-mode" '("whitespace-cleanup-mode-" "turn-on-whitespace-cleanup-mode")))
-
 ;;;***
 
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; whitespace-cleanup-mode-autoloads.el ends here

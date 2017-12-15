@@ -1,13 +1,10 @@
 ;;; pip-requirements-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "pip-requirements" "pip-requirements.el" (0
-;;;;;;  0 0 0))
+;;;### (autoloads nil "pip-requirements" "pip-requirements.el" (23092
+;;;;;;  12259 322180 872000))
 ;;; Generated autoloads from pip-requirements.el
 
 (add-to-list 'auto-mode-alist `(,(rx ".pip" string-end) . pip-requirements-mode))
@@ -29,14 +26,11 @@ Major mode for editing pip requirements files.
 
 \(fn)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pip-requirements" '("pip-")))
-
 ;;;***
 
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; pip-requirements-autoloads.el ends here

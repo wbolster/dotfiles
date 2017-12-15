@@ -1,13 +1,10 @@
 ;;; python-docstring-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "python-docstring" "python-docstring.el" (0
-;;;;;;  0 0 0))
+;;;### (autoloads nil "python-docstring" "python-docstring.el" (23092
+;;;;;;  12258 910200 567000))
 ;;; Generated autoloads from python-docstring.el
 
 (autoload 'python-docstring-fill "python-docstring" "\
@@ -28,11 +25,10 @@ Add python-docstring-mode as a hook to python.mode.
 
 \(fn)" nil nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "python-docstring" '("python-docstring-")))
-
 ;;;***
 
-;;;### (autoloads nil nil ("python-docstring-pkg.el") (0 0 0 0))
+;;;### (autoloads nil nil ("python-docstring-pkg.el") (23092 12258
+;;;;;;  926199 770000))
 
 ;;;***
 
@@ -40,6 +36,5 @@ Add python-docstring-mode as a hook to python.mode.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; python-docstring-autoloads.el ends here

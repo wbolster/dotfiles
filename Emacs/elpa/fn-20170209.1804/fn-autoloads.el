@@ -1,12 +1,9 @@
 ;;; fn-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "fn" "fn.el" (0 0 0 0))
+;;;### (autoloads nil "fn" "fn.el" (23092 12175 130288 363000))
 ;;; Generated autoloads from fn.el
 
 (autoload 'fn "fn" "\
@@ -79,6 +76,5 @@ Examples:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; fn-autoloads.el ends here

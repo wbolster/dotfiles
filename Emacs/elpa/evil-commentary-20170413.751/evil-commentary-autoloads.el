@@ -1,13 +1,10 @@
 ;;; evil-commentary-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "evil-commentary" "evil-commentary.el" (0 0
-;;;;;;  0 0))
+;;;### (autoloads nil "evil-commentary" "evil-commentary.el" (23092
+;;;;;;  12193 926085 708000))
 ;;; Generated autoloads from evil-commentary.el
 
 (defvar evil-commentary-mode nil "\
@@ -22,12 +19,10 @@ Commentary mode.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-commentary" '("evil-commentary-comment-function-for-mode-alist")))
-
 ;;;***
 
 ;;;### (autoloads nil "evil-commentary-integration" "evil-commentary-integration.el"
-;;;;;;  (0 0 0 0))
+;;;;;;  (23092 12193 942089 309000))
 ;;; Generated autoloads from evil-commentary-integration.el
 
 (autoload 'evil-commentary/org-comment-or-uncomment-region "evil-commentary-integration" "\
@@ -35,11 +30,10 @@ Comment function for `org-mode'.
 
 \(fn BEG END)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-commentary-integration" '("evil-commentary/org-babel-do-in-edit-buffer")))
-
 ;;;***
 
-;;;### (autoloads nil nil ("evil-commentary-pkg.el") (0 0 0 0))
+;;;### (autoloads nil nil ("evil-commentary-pkg.el") (23092 12193
+;;;;;;  934087 509000))
 
 ;;;***
 
@@ -47,6 +41,5 @@ Comment function for `org-mode'.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; evil-commentary-autoloads.el ends here

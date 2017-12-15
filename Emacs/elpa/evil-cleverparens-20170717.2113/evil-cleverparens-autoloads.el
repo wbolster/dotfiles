@@ -1,13 +1,10 @@
 ;;; evil-cleverparens-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
 ;;;### (autoloads nil "evil-cleverparens" "evil-cleverparens.el"
-;;;;;;  (0 0 0 0))
+;;;;;;  (23092 12207 636299 272000))
 ;;; Generated autoloads from evil-cleverparens.el
 
 (autoload 'evil-cp-set-movement-keys "evil-cleverparens" "\
@@ -38,12 +35,10 @@ for an advanced modal structural editing experience.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-cleverparens" '("evil-c" "forward-evil-cp-")))
-
 ;;;***
 
 ;;;### (autoloads nil "evil-cleverparens-text-objects" "evil-cleverparens-text-objects.el"
-;;;;;;  (0 0 0 0))
+;;;;;;  (23092 12207 624297 852000))
 ;;; Generated autoloads from evil-cleverparens-text-objects.el
  (autoload 'evil-cp-a-form "evil-cleverparens-text-objects" nil t)
  (autoload 'evil-cp-inner-form "evil-cleverparens-text-objects" nil t)
@@ -54,15 +49,8 @@ for an advanced modal structural editing experience.
 
 ;;;***
 
-;;;### (autoloads nil "evil-cleverparens-util" "evil-cleverparens-util.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from evil-cleverparens-util.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-cleverparens-util" '("evil-cp-")))
-
-;;;***
-
-;;;### (autoloads nil nil ("evil-cleverparens-pkg.el") (0 0 0 0))
+;;;### (autoloads nil nil ("evil-cleverparens-pkg.el" "evil-cleverparens-util.el")
+;;;;;;  (23092 12207 644300 219000))
 
 ;;;***
 
@@ -70,6 +58,5 @@ for an advanced modal structural editing experience.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; evil-cleverparens-autoloads.el ends here

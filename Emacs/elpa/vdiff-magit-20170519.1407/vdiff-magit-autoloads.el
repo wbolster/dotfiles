@@ -1,12 +1,10 @@
 ;;; vdiff-magit-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "vdiff-magit" "vdiff-magit.el" (0 0 0 0))
+;;;### (autoloads nil "vdiff-magit" "vdiff-magit.el" (23092 12244
+;;;;;;  695007 281000))
 ;;; Generated autoloads from vdiff-magit.el
  (autoload 'vdiff-magit-popup "vdiff-magit" nil t)
 
@@ -49,14 +47,11 @@ FILE must be relative to the top directory of the repository.
 
 \(fn FILE)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "vdiff-magit" '("vdiff-magit-")))
-
 ;;;***
 
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; vdiff-magit-autoloads.el ends here

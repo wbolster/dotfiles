@@ -1,12 +1,10 @@
 ;;; evil-numbers-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "evil-numbers" "evil-numbers.el" (0 0 0 0))
+;;;### (autoloads nil "evil-numbers" "evil-numbers.el" (23092 12196
+;;;;;;  130544 811000))
 ;;; Generated autoloads from evil-numbers.el
 
 (autoload 'evil-numbers/inc-at-pt "evil-numbers" "\
@@ -28,14 +26,11 @@ This function uses `evil-numbers/inc-at-pt'
 
 \(fn AMOUNT)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-numbers" '("evil-numbers/")))
-
 ;;;***
 
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; evil-numbers-autoloads.el ends here

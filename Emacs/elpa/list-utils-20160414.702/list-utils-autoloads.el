@@ -1,12 +1,10 @@
 ;;; list-utils-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-
-(add-to-list 'load-path (directory-file-name
-                         (or (file-name-directory #$) (car load-path))))
-
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "list-utils" "list-utils.el" (0 0 0 0))
+;;;### (autoloads nil "list-utils" "list-utils.el" (23092 12250 718692
+;;;;;;  972000))
 ;;; Generated autoloads from list-utils.el
 
 (let ((loads (get 'list-utils 'custom-loads))) (if (member '"list-utils" loads) nil (put 'list-utils 'custom-loads (cons '"list-utils" loads))))
@@ -482,14 +480,11 @@ This functionality overlaps with the undocumented `cl-do-remf'.
 
 \(fn PLIST PROP)" nil nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "list-utils" '("list-utils-htt-")))
-
 ;;;***
 
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; list-utils-autoloads.el ends here
