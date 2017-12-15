@@ -34,8 +34,9 @@
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 (use-package auto-compile
+  :custom
+  (auto-compile-update-autoloads t)
   :config
-  (setq auto-compile-update-autoloads t)
   (auto-compile-on-load-mode))
 
 (use-package benchmark-init)
