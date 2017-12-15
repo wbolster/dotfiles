@@ -24,18 +24,10 @@
 (setq disabled-command-function nil)
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; (defun w--use-package-fail-on-missing-package (package ensure _state _context)
-;;   "Trigger an error if PACKAGE was not installed and ENSURE is non-nil."
-;;   (when (and ensure (not (package-installed-p package))
-;;       (error "Package %s is not installed" package))))
-;; (when (package-installed-p 'use-package)
-;;   ;; no more automatic downloads after initial run
-;;   (setq use-package-ensure-function 'w--use-package-fail-on-missing-package))
-
 (unless (package-installed-p 'use-package)
-  ;; initial run without installed packages
   (package-refresh-contents)
   (package-install 'use-package))
+
 (setq use-package-always-ensure t)
 (require 'use-package)
 
