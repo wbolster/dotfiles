@@ -6,28 +6,19 @@
 
 ;;; Code:
 
-;;;; packages
+;;;; bootstrap
 
 (require 'package)
-
 (setq
- package-archives
- '(("melpa" . "https://melpa.org/packages/")
-   ("melpa-stable" . "https://stable.melpa.org/packages/")
-   ("gnu" . "https://elpa.gnu.org/packages/"))
+ package-archives '(("melpa" . "https://melpa.org/packages/")
+                    ("melpa-stable" . "https://stable.melpa.org/packages/")
+                    ("gnu" . "https://elpa.gnu.org/packages/"))
  package-enable-at-startup nil)
 (package-initialize)
-
-(when (package-installed-p 'benchmark-init)
-  (benchmark-init/activate))
-
-(setq disabled-command-function nil)
-(fset 'yes-or-no-p 'y-or-n-p)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-
 (setq use-package-always-ensure t)
 (require 'use-package)
 
@@ -39,10 +30,12 @@
   :config
   (auto-compile-on-load-mode))
 
-(use-package benchmark-init)
+(use-package benchmark-init
+  :config
+  (benchmark-init/activate))
 
 
-;;;; lisp helpers
+;;;; helper libraries
 
 (use-package dash
   :config
@@ -50,49 +43,35 @@
 (use-package dash-functional)
 (use-package s)
 (use-package fn)
+(use-package general)
 
 
-;;;; keep it clean
+;;;; basics
 
 (use-package no-littering)
 
-
-;;;; evil (bootstrap only)
-
-;; bootstrap early in the process so evil functionality
-;; such as evil-define-key can be used.
-(use-package evil
-  :init
-  (setq
-   evil-want-C-u-scroll t
-   evil-want-C-w-in-emacs-state t))
-
-
-;;;; security
+(setq disabled-command-function nil)
+(fset 'yes-or-no-p 'y-or-n-p)
 
 (use-package tls
-  :config
-  (setq
-   tls-checktrust 'ask
-   tls-program (--remove (s-contains? "gnutls" it) tls-program)))
+  :custom
+  (tls-checktrust 'ask))
 
-
-;;;; no agitprop
-
+;; no gnu/agitprop kthxbye
 (defun display-startup-echo-area-message ()
   "Do not display progaganda."
-  ;; setting 'inhibit-startup-echo-area-message'
-  ;; to nil or even (user-login-name) is not enough
-  ;; to resist the gnu/extremists, so modify the
-  ;; offending propaganda function instead.
+  ;; the 'inhibit-startup-echo-area-message' variable
+  ;; requires hard-coding a user name for it to work.
+  ;; annoying. resist the gnu/extremists by turning
+  ;; the propaganda function into a no-op.
   (message ""))
-
-(bind-keys
- ("C-h g" . nil)
- ("C-h C-c" . nil)
- ("C-h C-m" . nil)
- ("C-h C-o" . nil)
- ("C-h C-w" . nil))
+(general-define-key  ;; unbind useless shortcuts to gpl etc.
+ :prefix "C-h"
+ "g" nil
+ "C-c" nil
+ "C-m" nil
+ "C-o" nil
+ "C-w" nil)
 
 
 ;;;; hydra
@@ -195,9 +174,9 @@ defined as lowercase."
   ;; https://chrome.google.com/webstore/detail/edit-with-emacs/ljobjlafonikaiipfkggjbhkghgicgoh
   :config
   (edit-server-start)
-  (evil-add-to-alist
+  (add-to-list
    'edit-server-url-major-mode-alist
-   "github\\.com" 'markdown-mode))
+   '("github\\.com" . markdown-mode)))
 
 (when (eq system-type 'darwin)
   (global-set-key (kbd "s-q") nil)
@@ -525,12 +504,15 @@ defined as lowercase."
   (remove-overlays nil nil 'category 'evil-snipe)
   (evil-force-normal-state))
 
-;; note: evil is already bootstrapped at this point
 (use-package evil
-  :config
+  :init
   (setq
-   evil-insert-state-message nil
-   evil-cross-lines t)
+   evil-want-C-u-scroll t
+   evil-want-C-w-in-emacs-state t)
+  :custom
+  (evil-insert-state-message nil)
+  (evil-cross-lines t)
+  :config
   (evil-mode)
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
   ;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
@@ -544,6 +526,7 @@ defined as lowercase."
   (key-chord-mode +1))
 
 (use-package general
+  ;; todo this should be in :general for evil
   :config
   (general-define-key
    :keymaps 'evil-insert-state-map
