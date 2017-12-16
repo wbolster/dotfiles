@@ -437,9 +437,10 @@ defined as lowercase."
 (defun w--make-faces-boring ()
   "Remove unwanted attributes from font faces."
   (interactive)
-  (--each (face-list)
-    (unless (member it w--faces-bold)
-      (set-face-attribute it nil :weight 'normal :underline nil))))
+  (dolist (face (face-list))
+    (set-face-attribute face nil :underline nil)
+    (unless (member face w--faces-bold)
+      (set-face-attribute face nil :weight 'normal))))
 
 (w--make-faces-boring)
 
