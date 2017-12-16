@@ -407,7 +407,13 @@ defined as lowercase."
 
 ;;;; fonts
 
-(use-package default-text-scale)
+(use-package default-text-scale
+  :demand t
+  :general
+  (:states 'motion
+   "C-0" 'w--default-text-scale-reset
+   "C--" 'default-text-scale-decrease
+   "C-=" 'default-text-scale-increase))
 
 (defvar w--default-text-scale-height
   (face-attribute 'default :height)  ;; inherit from startup environment
@@ -426,6 +432,7 @@ defined as lowercase."
 (defun w--default-text-scale-set (height)
   "Set default text scale to HEIGHT."
   (interactive "nHeight (e.g. 110) ")
+  (require 'default-text-scale)  ;; fixme should not be needed
   (default-text-scale-increment (- height (face-attribute 'default :height))))
 
 (when (display-graphic-p)
@@ -467,12 +474,6 @@ defined as lowercase."
   ("w" w--writeroom-wider :exit nil)
   "_r_eset"
   ("r" w--writeroom-reset))
-
-(evil-define-key*
- 'motion global-map
- (kbd "C-0") 'w--default-text-scale-reset
- (kbd "C--") 'default-text-scale-decrease
- (kbd "C-=") 'default-text-scale-increase)
 
 
 ;;;; mode line
