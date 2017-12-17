@@ -1888,34 +1888,29 @@ defined as lowercase."
 
 (use-package magit
   :config
-  (setq
-   magit-branch-prefer-remote-upstream '("master")
-   magit-branch-read-upstream-first 'fallback
-   magit-cherry-pick-arguments '("-x")
-   magit-completing-read-function 'ivy-completing-read
-   magit-display-file-buffer-function 'magit-display-file-buffer-other-window
-   magit-fetch-arguments '("--prune")
-   magit-list-refs-sortby '("-creatordate")
-   magit-log-arguments '("--graph" "--color" "--decorate" "--follow" "-n256")
-   magit-merge-arguments '("--no-ff")
-   magit-popup-show-help-echo nil
-   magit-prefer-remote-upstream t
-   magit-process-popup-time 10
-   magit-rebase-arguments '("--autostash")
-   magit-show-refs-arguments '("--sort=-committerdate")
-   magit-tag-arguments '("--annotate"))
-  (add-to-list 'magit-repository-directories '("~/Projects/" . 2))
-  (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
-  (add-hook 'magit-popup-mode-hook 'w--hide-trailing-whitespace)
-  (magit-add-section-hook
-   'magit-status-sections-hook
-   'magit-insert-unpulled-from-upstream-or-recent
-   'magit-insert-unpulled-from-upstream
-   'replace)
   (magit-auto-revert-mode)
   (magit-wip-after-save-mode)
   (magit-wip-after-apply-mode)
   (magit-wip-before-change-mode)
+  (add-to-list 'magit-repository-directories '("~/Projects/" . 2))
+  (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
+  (add-hook 'magit-popup-mode-hook 'w--hide-trailing-whitespace)
+  :custom
+  (magit-branch-prefer-remote-upstream '("master"))
+  (magit-branch-read-upstream-first 'fallback)
+  (magit-cherry-pick-arguments '("-x"))
+  (magit-completing-read-function 'ivy-completing-read)
+  (magit-display-file-buffer-function 'magit-display-file-buffer-other-window)
+  (magit-fetch-arguments '("--prune"))
+  (magit-list-refs-sortby '("-creatordate"))
+  (magit-log-arguments '("--graph" "--color" "--decorate" "--follow" "-n256"))
+  (magit-merge-arguments '("--no-ff"))
+  (magit-popup-show-help-echo nil)
+  (magit-prefer-remote-upstream t)
+  (magit-process-popup-time 10)
+  (magit-rebase-arguments '("--autostash"))
+  (magit-show-refs-arguments '("--sort=-committerdate"))
+  (magit-tag-arguments '("--annotate"))
   :delight
   (magit-wip-after-save-local-mode)
   (magit-wip-after-apply-mode)
