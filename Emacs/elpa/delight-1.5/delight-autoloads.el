@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "delight" "delight.el" (23094 47759 816082
-;;;;;;  725000))
+;;;### (autoloads nil "delight" "delight.el" (23094 50547 349019
+;;;;;;  973000))
 ;;; Generated autoloads from delight.el
 
 (autoload 'delight "delight" "\

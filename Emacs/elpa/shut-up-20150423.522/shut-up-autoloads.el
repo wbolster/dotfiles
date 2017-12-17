@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "shut-up" "shut-up.el" (23092 12209 188476
-;;;;;;  801000))
+;;;### (autoloads nil "shut-up" "shut-up.el" (23094 50568 837117
+;;;;;;  477000))
 ;;; Generated autoloads from shut-up.el
 
 (autoload 'shut-up "shut-up" "\

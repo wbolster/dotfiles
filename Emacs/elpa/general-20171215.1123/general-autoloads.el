@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "general" "general.el" (23092 12192 297710
-;;;;;;  843000))
+;;;### (autoloads nil "general" "general.el" (23094 50540 168987
+;;;;;;  420000))
 ;;; Generated autoloads from general.el
 
 (autoload 'general-define-key "general" "\

@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "dockerfile-mode" "dockerfile-mode.el" (23092
-;;;;;;  12253 918477 313000))
+;;;### (autoloads nil "dockerfile-mode" "dockerfile-mode.el" (23094
+;;;;;;  50607 213291 886000))
 ;;; Generated autoloads from dockerfile-mode.el
 
 (autoload 'dockerfile-build-buffer "dockerfile-mode" "\

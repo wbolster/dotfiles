@@ -4,7 +4,7 @@
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
 ;;;### (autoloads nil "visual-fill-column" "visual-fill-column.el"
-;;;;;;  (23092 12210 436611 775000))
+;;;;;;  (23094 50570 25122 870000))
 ;;; Generated autoloads from visual-fill-column.el
 
 (autoload 'visual-fill-column-mode "visual-fill-column" "\

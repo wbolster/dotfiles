@@ -3,7 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil nil ("apiwrap.el") (23092 12238 706685 308000))
+;;;### (autoloads nil nil ("apiwrap.el") (23094 50593 29227 383000))
 
 ;;;***
 

@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil nil ("no-littering.el") (23092 12175 406527
-;;;;;;  742000))
+;;;### (autoloads nil nil ("no-littering.el") (23094 50540 916990
+;;;;;;  810000))
 
 ;;;***
 

@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "yaml-mode" "yaml-mode.el" (23092 12260 398131
-;;;;;;  3000))
+;;;### (autoloads nil "yaml-mode" "yaml-mode.el" (23094 50613 417320
+;;;;;;  113000))
 ;;; Generated autoloads from yaml-mode.el
 
 (let ((loads (get 'yaml 'custom-loads))) (if (member '"yaml-mode" loads) nil (put 'yaml 'custom-loads (cons '"yaml-mode" loads))))

@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "multi-line" "multi-line.el" (23092 12209 664528
-;;;;;;  934000))
+;;;### (autoloads nil "multi-line" "multi-line.el" (23094 50569 297119
+;;;;;;  565000))
 ;;; Generated autoloads from multi-line.el
 
 (autoload 'multi-line-enable-mode-hooks "multi-line" "\
@@ -32,7 +32,7 @@ Single-line the statement at point.
 ;;;***
 
 ;;;### (autoloads nil "multi-line-highlight" "multi-line-highlight.el"
-;;;;;;  (23092 12209 672529 810000))
+;;;;;;  (23094 50569 305119 601000))
 ;;; Generated autoloads from multi-line-highlight.el
 
 (autoload 'multi-line-clear-highlights "multi-line-highlight" "\
@@ -50,7 +50,7 @@ Highlight the positions at which multi-line will consider adding newlines.
 ;;;### (autoloads nil nil ("multi-line-candidate.el" "multi-line-cycle.el"
 ;;;;;;  "multi-line-decorator.el" "multi-line-enter.el" "multi-line-find.el"
 ;;;;;;  "multi-line-pkg.el" "multi-line-respace.el" "multi-line-shared.el")
-;;;;;;  (23092 12209 716534 629000))
+;;;;;;  (23094 50569 365119 874000))
 
 ;;;***
 

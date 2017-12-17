@@ -4,7 +4,7 @@
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
 ;;;### (autoloads nil "gitattributes-mode" "gitattributes-mode.el"
-;;;;;;  (23092 12254 402447 653000))
+;;;;;;  (23094 50607 705294 124000))
 ;;; Generated autoloads from gitattributes-mode.el
 
 (autoload 'gitattributes-mode "gitattributes-mode" "\

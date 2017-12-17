@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "syntactic-close" "syntactic-close.el" (23092
-;;;;;;  12208 292375 597000))
+;;;### (autoloads nil "syntactic-close" "syntactic-close.el" (23094
+;;;;;;  50567 917113 300000))
 ;;; Generated autoloads from syntactic-close.el
 
 (autoload 'syntactic-close "syntactic-close" "\

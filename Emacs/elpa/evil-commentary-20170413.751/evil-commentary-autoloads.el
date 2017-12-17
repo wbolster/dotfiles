@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "evil-commentary" "evil-commentary.el" (23092
-;;;;;;  12193 926085 708000))
+;;;### (autoloads nil "evil-commentary" "evil-commentary.el" (23094
+;;;;;;  50554 333051 652000))
 ;;; Generated autoloads from evil-commentary.el
 
 (defvar evil-commentary-mode nil "\
@@ -22,7 +22,7 @@ Commentary mode.
 ;;;***
 
 ;;;### (autoloads nil "evil-commentary-integration" "evil-commentary-integration.el"
-;;;;;;  (23092 12193 942089 309000))
+;;;;;;  (23094 50554 341051 688000))
 ;;; Generated autoloads from evil-commentary-integration.el
 
 (autoload 'evil-commentary/org-comment-or-uncomment-region "evil-commentary-integration" "\
@@ -32,8 +32,8 @@ Comment function for `org-mode'.
 
 ;;;***
 
-;;;### (autoloads nil nil ("evil-commentary-pkg.el") (23092 12193
-;;;;;;  934087 509000))
+;;;### (autoloads nil nil ("evil-commentary-pkg.el") (23094 50554
+;;;;;;  337051 669000))
 
 ;;;***
 
