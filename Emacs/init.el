@@ -504,20 +504,16 @@ defined as lowercase."
   (evil-add-command-properties 'evil-yank-line :motion 'evil-end-of-line)
   (evil-define-key*
    '(motion normal) global-map
-   [escape] #'w--evil-force-normal-state))
+   [escape] #'w--evil-force-normal-state)
+  :general
+  (:keymaps 'evil-insert-state-map
+   (general-chord "qw") 'evil-normal-state
+   (general-chord "qq") 'evil-normal-state
+   (general-chord "wq") 'evil-normal-state))
 
 (use-package key-chord
   :config
   (key-chord-mode +1))
-
-(use-package general
-  ;; todo this should be in :general for evil
-  :config
-  (general-define-key
-   :keymaps 'evil-insert-state-map
-   (general-chord "qw") 'evil-normal-state
-   (general-chord "qq") 'evil-normal-state
-   (general-chord "wq") 'evil-normal-state))
 
 (use-package evil-snipe
   ;; the t/T/f/F overrides are handled by evil-colemak-basics.
