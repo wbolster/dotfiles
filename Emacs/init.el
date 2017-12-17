@@ -213,10 +213,6 @@ defined as lowercase."
 (setq backup-directory-alist
       `((".*" ,(no-littering-expand-var-file-name "backup/") t)))
 
-(add-hook
- 'kill-buffer-query-functions
- 'w--ask-confirmation-for-unsaved-buffers)
-
 (use-package desktop
   :config
   (desktop-save-mode))
@@ -262,6 +258,10 @@ defined as lowercase."
         "Buffer %s modified but not saved; kill anyway? "
         (buffer-name)))
     t))
+
+(add-hook
+ 'kill-buffer-query-functions
+ #'w--ask-confirmation-for-unsaved-buffers)
 
 (defun w--evil-buffer-new-other-window ()
   "Open a new window in another window."
