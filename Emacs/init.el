@@ -670,16 +670,15 @@ defined as lowercase."
 
 (use-package evil-goggles
   :config
-  (setq
-   evil-goggles-duration 1
-   evil-goggles-async-duration evil-goggles-duration
-   evil-goggles-blocking-duration .2
-   evil-goggles-pulse t)
-  (set-face-attribute
-   'evil-goggles-default-face nil
-   :inherit 'highlight)
   (w--hide-from-mode-line " EG")
-  (evil-goggles-mode))
+  (evil-goggles-mode)
+  :custom
+  (evil-goggles-duration 1)
+  (evil-goggles-async-duration evil-goggles-duration)
+  (evil-goggles-blocking-duration .2)
+  (evil-goggles-pulse t)
+  :custom-face
+  (evil-goggles-default-face ((t (:inherit highlight)))))
 
 (use-package evil-numbers
   :config
