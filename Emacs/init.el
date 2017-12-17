@@ -461,26 +461,19 @@ defined as lowercase."
 
 ;;;; mode line
 
-(use-package smart-mode-line
-  :config
-  (setq
-   sml/line-number-format "%l"
-   sml/name-width '(1 . 40)
-   sml/projectile-replacement-format "%s:")
-  (sml/setup))
+(use-package delight)
 
-(use-package rich-minority
+(use-package powerline
   :config
-  (defun w--hide-from-mode-line (string)
-    "Hide STRING from the mode line."
-    (add-to-list 'rm-blacklist string)))
+  (powerline-center-evil-theme)
+  :custom
+  (powerline-default-separator nil))
 
 
 ;;;; evil
 
 (use-package undo-tree
-  :config
-  (w--hide-from-mode-line " Undo-Tree"))
+  :delight)
 
 (defun w--evil-force-normal-state ()
   "Like `evil-force-normal-state', with some extra cleanups."
@@ -531,7 +524,7 @@ defined as lowercase."
   (setq evil-colemak-basics-char-jump-commands 'evil-snipe)
   :config
   (global-evil-colemak-basics-mode)
-  (w--hide-from-mode-line " hnei"))
+  :delight)
 
 (defun w--disable-colemak ()
   "Disable colemak overrides."
@@ -540,12 +533,12 @@ defined as lowercase."
 (use-package evil-swap-keys
   :config
   (global-evil-swap-keys-mode)
-  (w--hide-from-mode-line " !1"))
+  :delight)
 
 (use-package evil-commentary
   :config
   (evil-commentary-mode)
-  (w--hide-from-mode-line " s-/"))
+  :delight)
 
 (use-package evil-easymotion
   :config
@@ -669,8 +662,8 @@ defined as lowercase."
 
 (use-package evil-goggles
   :config
-  (w--hide-from-mode-line " EG")
   (evil-goggles-mode)
+  :delight
   :custom
   (evil-goggles-duration 1)
   (evil-goggles-async-duration evil-goggles-duration)
@@ -802,7 +795,7 @@ defined as lowercase."
 (use-package whitespace-cleanup-mode
   :config
   (global-whitespace-cleanup-mode)
-  (w--hide-from-mode-line " WSC"))
+  :delight)
 
 (defun w--hide-trailing-whitespace ()
   "Helper to hide trailing whitespace, intended for mode hooks."
@@ -817,17 +810,17 @@ defined as lowercase."
 
 (use-package indent-guide
   :config
-  (setq
-   indent-guide-char "·"
-   indent-guide-delay 0
-   indent-guide-recursive t
-   indent-guide-threshold 7)
   (indent-guide-global-mode)
   (face-spec-reset-face 'indent-guide-face)
   (set-face-attribute
    'indent-guide-face nil
    :inherit 'font-lock-comment-face)
-  (w--hide-from-mode-line " ing"))
+  :delight
+  :custom
+  (indent-guide-char "·")
+  (indent-guide-delay 0)
+  (indent-guide-recursive t)
+  (indent-guide-threshold 7))
 
 
 ;;;; minibuffer
@@ -1072,35 +1065,33 @@ defined as lowercase."
 ;; use ,? for counsel-rg
 
 (use-package highlight-symbol
-  :config
-  (setq
-   highlight-symbol-idle-delay 1.0
-   highlight-symbol-on-navigation-p t)
-  (w--hide-from-mode-line " hl-s")
+  :custom
+  (highlight-symbol-idle-delay 1.0)
+  (highlight-symbol-on-navigation-p t)
+  :delight
+  :general
+  (:states 'motion
+   "C-p" #'highlight-symbol-prev
+   "C-n" #'highlight-symbol-next)
+  (:states 'normal
+   "C-p" #'w--evil-paste-pop-or-highlight-symbol-prev
+   "C-n" #'w--evil-paste-pop-next-or-highlight-symbol-next))
 
-  (defun w--evil-paste-pop-or-highlight-symbol-prev (count)
-    "Either paste-pop (with COUNT) or jump to previous symbol occurence."
-    (interactive "p")
-    (condition-case nil
-        (evil-paste-pop count)
-      (user-error
-       (highlight-symbol-prev))))
+(defun w--evil-paste-pop-or-highlight-symbol-prev (count)
+  "Either paste-pop (with COUNT) or jump to previous symbol occurence."
+  (interactive "p")
+  (condition-case nil
+      (evil-paste-pop count)
+    (user-error
+      (highlight-symbol-prev))))
 
-  (defun w--evil-paste-pop-next-or-highlight-symbol-next (count)
-    "Either paste-pop-next (with COUNT) or jump to next symbol occurence."
-    (interactive "p")
-    (condition-case nil
-        (evil-paste-pop-next count)
-      (user-error
-       (highlight-symbol-next))))
-
-  (evil-define-key* 'motion global-map
-    (kbd "C-p") 'highlight-symbol-prev
-    (kbd "C-n") 'highlight-symbol-next)
-
-  (evil-define-key* 'normal global-map
-    (kbd "C-p") 'w--evil-paste-pop-or-highlight-symbol-prev
-    (kbd "C-n") 'w--evil-paste-pop-next-or-highlight-symbol-next))
+(defun w--evil-paste-pop-next-or-highlight-symbol-next (count)
+  "Either paste-pop-next (with COUNT) or jump to next symbol occurence."
+  (interactive "p")
+  (condition-case nil
+      (evil-paste-pop-next count)
+    (user-error
+      (highlight-symbol-next))))
 
 
 ;;;; previous/next navigation
@@ -1145,17 +1136,16 @@ defined as lowercase."
 ;;;; parens
 
 (use-package smartparens
+  :delight
   :config
   (require 'smartparens-config)
   (smartparens-global-mode)
-  (show-smartparens-global-mode)
-  (w--hide-from-mode-line " SP"))
+  (show-smartparens-global-mode))
 
 (use-package rainbow-delimiters)
 
 (use-package highlight-parentheses
-  :config
-  (w--hide-from-mode-line " hl-p"))
+  :delight)
 
 (use-package evil-cleverparens
   :config
@@ -1171,7 +1161,8 @@ defined as lowercase."
 
 ;;;; filling
 
-(w--hide-from-mode-line " Fill")
+(use-package emacs
+  :delight auto-fill-function)
 
 (defun w--evil-fill-paragraph-dwim ()
   "Fill the current paragraph."
@@ -1202,8 +1193,8 @@ defined as lowercase."
 ;;;; outline
 
 (use-package outline
-  :config
-  (w--hide-from-mode-line " Outl"))
+  :delight
+  (outline-minor-mode " ‣"))
 
 
 ;;;; move lines
@@ -1785,8 +1776,7 @@ defined as lowercase."
 
 ;; todo https://github.com/d12frosted/flyspell-correct
 (use-package flyspell
-  :config
-  (w--hide-from-mode-line " Fly"))
+  :delight " ∼")
 ;; (use-package flyspell-correct-ivy)
 
 (use-package guess-language
@@ -1799,10 +1789,8 @@ defined as lowercase."
 (defvar w--ivy-height-percentage 30
   "Percentage of the screen height that ivy should use.")
 
-(use-package abbrev
-  :ensure nil
-  :config
-  (w--hide-from-mode-line " Abbrev"))
+(use-package emacs
+  :delight (abbrev-mode " ⋯"))
 
 (use-package flx)
 
@@ -1828,23 +1816,23 @@ defined as lowercase."
    ivy-wrap t)
 
   (ivy-mode 1)
-  (w--hide-from-mode-line " ivy")
+  :delight)
 
-  (define-key ivy-minibuffer-map
-    [escape] 'minibuffer-keyboard-quit) ;; fixme: use :bind perhaps?
+(define-key ivy-minibuffer-map
+  [escape] 'minibuffer-keyboard-quit) ;; fixme: use :bind perhaps?
 
-  (add-hook 'window-size-change-functions #'w--adjust-ivy-height)
+(add-hook 'window-size-change-functions #'w--adjust-ivy-height)
 
-  (defun w--clamp-number (num low high)
-    "Clamp NUM between LOW and HIGH."
-    (min high (max num low)))
+(defun w--clamp-number (num low high)
+  "Clamp NUM between LOW and HIGH."
+  (min high (max num low)))
 
-  (defun w--adjust-ivy-height (frame)
-    "Adjust ivy-height based on the current FRAME height."
-    (let* ((total-lines (frame-text-lines frame))
-           (lines (truncate (* total-lines w--ivy-height-percentage 0.01)))
-           (new-height (w--clamp-number lines 10 20)))
-      (setq ivy-height new-height))))
+(defun w--adjust-ivy-height (frame)
+  "Adjust ivy-height based on the current FRAME height."
+  (let* ((total-lines (frame-text-lines frame))
+          (lines (truncate (* total-lines w--ivy-height-percentage 0.01)))
+          (new-height (w--clamp-number lines 10 20)))
+    (setq ivy-height new-height)))
 
 (use-package ivy-hydra)
 
@@ -1856,8 +1844,8 @@ defined as lowercase."
 
 (use-package counsel
   :config
-  (counsel-mode 1)
-  (w--hide-from-mode-line " counsel"))
+  (counsel-mode)
+  :delight)
 
 (use-package company
   :demand t
@@ -1867,6 +1855,7 @@ defined as lowercase."
    ("C-n" . company-select-next)
    ("C-p" . company-select-previous)
    ("C-<return>" . company-select-next))
+  :delight
   :config
   (setq
    company-auto-complete 'company-explicit-action-p
@@ -1880,7 +1869,6 @@ defined as lowercase."
    company-transformers '(company-sort-by-occurrence))
   (add-to-list 'company-auto-complete-chars ?\( )
   (add-to-list 'company-backends 'company-files)
-  (w--hide-from-mode-line " company")
   (global-company-mode)
   (evil-define-key* 'insert global-map
     (kbd "C-<return>") 'company-manual-begin
@@ -1891,9 +1879,10 @@ defined as lowercase."
 
 (use-package autorevert
   :config
-  (setq auto-revert-check-vc-info t)
   (global-auto-revert-mode)
-  (w--hide-from-mode-line " ARev"))
+  :custom
+  (auto-revert-check-vc-info t)
+  :delight (auto-revert-mode" ⇤"))
 
 (use-package ediff
   :config
@@ -1928,9 +1917,10 @@ defined as lowercase."
   (magit-wip-after-save-mode)
   (magit-wip-after-apply-mode)
   (magit-wip-before-change-mode)
-  (w--hide-from-mode-line " sWip")
-  (w--hide-from-mode-line " aWip")
-  (w--hide-from-mode-line " cWip"))
+  :delight
+  (magit-wip-after-save-local-mode)
+  (magit-wip-after-apply-mode)
+  (magit-wip-before-change-mode))
 
 (use-package evil-magit
   :after magit
@@ -2097,8 +2087,6 @@ defined as lowercase."
 (use-package flycheck
   :config
   (global-flycheck-mode)
-  (w--hide-from-mode-line " FlyC")
-  (w--hide-from-mode-line " FlyC-")
   :custom
   (flycheck-checker-error-threshold 1000)
   (flycheck-display-errors-delay 1.0)
@@ -2452,8 +2440,7 @@ defined as lowercase."
     ("r" eval-region)))
 
 (use-package eldoc
-  :config
-  (w--hide-from-mode-line " ElDoc"))
+  :delight)
 
 
 ;;;; major mode: git related
@@ -2557,7 +2544,7 @@ defined as lowercase."
   (add-hook 'org-mode-hook 'w--org-mode-hook))
 
 (use-package evil-org
-  :after org
+  :delight
   :config
   (setq
    evil-org-movement-bindings
@@ -2566,7 +2553,6 @@ defined as lowercase."
      (up . "e")
      (right . "i")))
   (setq evil-org-retain-visual-state-on-shift t)
-  (w--hide-from-mode-line " EvilOrg")
   (evil-org-set-key-theme))
 
 
@@ -2743,9 +2729,9 @@ defined as lowercase."
 
 (use-package python-docstring
   :defer t
-  :config
-  (w--hide-from-mode-line " DS")
-  (setq python-fill-docstring-style 'symmetric))
+  :delight
+  :custom
+  (python-fill-docstring-style 'symmetric))
 
 (use-package pip-requirements
   :defer t
