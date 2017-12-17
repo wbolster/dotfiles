@@ -221,13 +221,20 @@ defined as lowercase."
   :config
   (desktop-save-mode))
 
+(defvar
+  w--recentf-ignore-dirs
+  (list
+   no-littering-etc-directory
+   no-littering-var-directory)
+  "Directories to ignore in recentf listings.")
+
 (use-package recentf
   :custom
   (recentf-auto-cleanup 300)
   (recentf-max-saved-items 500)
   :config
-  (add-to-list 'recentf-exclude no-littering-etc-directory)
-  (add-to-list 'recentf-exclude no-littering-var-directory)
+  (dolist (dir w--recentf-ignore-dirs)
+    (add-to-list 'recentf-exclude (concat (regexp-quote dir) ".*")))
   (recentf-mode))
 
 (use-package sudo-edit)
