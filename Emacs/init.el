@@ -269,9 +269,6 @@ defined as lowercase."
   :config
   (setq terminal-here-project-root-function 'projectile-project-root))
 
-;; todo: try out https://github.com/fourier/ztree
-(use-package ztree)
-
 (w--make-hydra w--hydra-buffer nil
   "buffer"
   "_b_uffer"
@@ -312,8 +309,6 @@ defined as lowercase."
   "_s_udo"
   ("s" sudo-edit)
   ("S" (sudo-edit t))
-  "_t_ree"
-  ("t" (ztree-dir (file-name-directory (buffer-file-name))))
   "_!_ terminal"
   ("!" terminal-here)
   ("1" terminal-here))
