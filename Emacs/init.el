@@ -40,10 +40,14 @@
 (use-package dash
   :config
   (dash-enable-font-lock))
+
 (use-package dash-functional)
-(use-package s)
+
 (use-package fn)
+
 (use-package general)
+
+(use-package s)
 
 
 ;;;; basics
