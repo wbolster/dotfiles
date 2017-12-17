@@ -492,17 +492,15 @@ defined as lowercase."
   (evil-cross-lines t)
   :config
   (evil-mode)
-  (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
   ;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
   (evil-add-command-properties 'evil-yank-line :motion 'evil-end-of-line)
-  (evil-define-key*
-   '(motion normal) global-map
-   [escape] #'w--evil-force-normal-state)
   :general
-  (:keymaps 'evil-insert-state-map
-   (general-chord "qw") 'evil-normal-state
-   (general-chord "qq") 'evil-normal-state
-   (general-chord "wq") 'evil-normal-state))
+  (:states '(motion normal)
+   [escape] #'w--evil-force-normal-state)
+  (:states 'insert
+   (general-chord "qw") #'evil-normal-state
+   (general-chord "qq") #'evil-normal-state
+   (general-chord "wq") #'evil-normal-state))
 
 (use-package key-chord
   :config
@@ -1907,6 +1905,7 @@ defined as lowercase."
    magit-show-refs-arguments '("--sort=-committerdate")
    magit-tag-arguments '("--annotate"))
   (add-to-list 'magit-repository-directories '("~/Projects/" . 2))
+  (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
   (add-hook 'magit-popup-mode-hook 'w--hide-trailing-whitespace)
   (magit-add-section-hook
    'magit-status-sections-hook
