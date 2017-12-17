@@ -74,6 +74,48 @@
  "C-w" nil)
 
 
+;;;; environment
+
+(use-package exec-path-from-shell
+  :custom
+  (exec-path-from-shell-check-startup-files nil)
+  :config
+  (exec-path-from-shell-initialize))
+
+(use-package direnv
+  :custom
+  (direnv-always-show-summary t)
+  (direnv-show-paths-in-summary nil)
+  :config
+  (direnv-mode))
+
+;; os-x specific
+(when (eq system-type 'darwin)
+  (general-define-key "s-q" nil)
+  (setq
+   ns-right-alternate-modifier 'none
+   ns-use-native-fullscreen nil))
+
+
+;;;; server
+
+(use-package server
+  :if window-system
+  :unless (server-running-p)
+  :config
+  (server-start))
+
+(use-package edit-server
+  ;; this is used by the ‘edit with emacs’ chrome extension:
+  ;; https://chrome.google.com/webstore/detail/edit-with-emacs/ljobjlafonikaiipfkggjbhkghgicgoh
+  :if window-system
+  :config
+  (edit-server-start)
+  (add-to-list
+   'edit-server-url-major-mode-alist
+   '("github\\.com" . markdown-mode)))
+
+
 ;;;; hydra
 
 (use-package hydra)
@@ -148,41 +190,6 @@ defined as lowercase."
        ,@(w--hydra-missing-uppercase-heads heads)
        ,@heads
        ("<escape>" nil :exit t))))
-
-
-;;;; environment
-
-(use-package exec-path-from-shell
-  :config
-  (setq exec-path-from-shell-check-startup-files nil)
-  (exec-path-from-shell-initialize))
-
-(use-package direnv
-  :config
-  (setq
-   direnv-always-show-summary t
-   direnv-show-paths-in-summary nil)
-  (direnv-mode))
-
-(use-package server
-  :config
-  (unless (server-running-p)
-    (server-start)))
-
-(use-package edit-server
-  ;; this is used by the ‘edit with emacs’ chrome extension:
-  ;; https://chrome.google.com/webstore/detail/edit-with-emacs/ljobjlafonikaiipfkggjbhkghgicgoh
-  :config
-  (edit-server-start)
-  (add-to-list
-   'edit-server-url-major-mode-alist
-   '("github\\.com" . markdown-mode)))
-
-(when (eq system-type 'darwin)
-  (global-set-key (kbd "s-q") nil)
-  (setq
-   ns-right-alternate-modifier 'none
-   ns-use-native-fullscreen nil))
 
 
 ;;;; buffers, files, directories
