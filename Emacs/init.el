@@ -661,12 +661,15 @@ defined as lowercase."
     (kbd "SPC") 'w--hydra-teleport/body))
 
 (use-package evil-exchange
-  :config
-  (evil-exchange-install)
+  :general
+  (:states '(normal visual)
+   "gx" 'evil-exchange
+   "gX" 'evil-exchange-cancel)
   ;; quickly swap two text objects using "gx"; the empty text object is
   ;; a trick to make "gxp" work to move previously marked text without
   ;; moving anything back to the original location.
-  (evil-define-key* 'operator global-map "p" 'w--evil-empty-text-object))
+  (:states 'operator
+   "p" #'w--evil-empty-text-object))
 
 (use-package evil-goggles
   :config
