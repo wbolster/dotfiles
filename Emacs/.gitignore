@@ -1,5 +1,6 @@
 /elpa/**/*.elc
 /elpa/**/dir
+/elpa/*.signed
 /custom.el
 /elpa/archives/
 /elpa/gnupg/
