@@ -198,20 +198,38 @@ defined as lowercase."
 
 ;;;; buffers, files, directories
 
-(use-package desktop
-  :config
-  (desktop-save-mode))
-
-(setq
- auto-save-file-name-transforms
- `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-(setq
- backup-directory-alist
- `((".*" ,(no-littering-expand-var-file-name "backup/") t)))
 (setq
  create-lockfiles nil
  find-file-visit-truename t
  make-backup-files nil)
+(setq
+ auto-save-file-name-transforms
+ `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+(setq backup-directory-alist
+      `((".*" ,(no-littering-expand-var-file-name "backup/") t)))
+
+(add-hook
+ 'kill-buffer-query-functions
+ 'w--ask-confirmation-for-unsaved-buffers)
+
+(use-package desktop
+  :config
+  (desktop-save-mode))
+
+(use-package recentf
+  :custom
+  (recentf-auto-cleanup 300)
+  (recentf-max-saved-items 500)
+  :config
+  (add-to-list 'recentf-exclude no-littering-etc-directory)
+  (add-to-list 'recentf-exclude no-littering-var-directory)
+  (recentf-mode))
+
+(use-package sudo-edit)
+
+(use-package terminal-here
+  :custom
+  (terminal-here-project-root-function 'projectile-project-root))
 
 (defun w--buffer-worth-saving-p (name)
   "Does the buffer NAME indicate it may be worth saving?"
@@ -233,41 +251,17 @@ defined as lowercase."
         (buffer-name)))
     t))
 
-(add-hook
- 'kill-buffer-query-functions
- 'w--ask-confirmation-for-unsaved-buffers)
-
 (defun w--evil-buffer-new-other-window ()
   "Open a new window in another window."
   (interactive)
   (w--evil-window-next-or-vsplit)
   (call-interactively #'evil-buffer-new))
 
-(use-package recentf
-  :config
-  (use-package sync-recentf)
-  (setq
-   recentf-auto-cleanup 300
-   recentf-max-saved-items 500)
-  (add-to-list 'recentf-exclude no-littering-var-directory)
-  (add-to-list 'recentf-exclude no-littering-etc-directory)
-  (recentf-mode)
-  (defun w--counsel-recentf ()
-    "Wrapper around `counsel-recentf'."
-    (interactive)
-    (let ((recentf-list (-remove-item sync-recentf-marker recentf-list)))
-      (counsel-recentf)))
-  (defun w--counsel-recentf-other-window ()
-    "Like `w--counsel-recentf', but opens the file in another window."
-    (interactive)
-    (let ((ivy-inhibit-action t))
-      (find-file-other-window (w--counsel-recentf)))))
-
-(use-package sudo-edit)
-
-(use-package terminal-here
-  :config
-  (setq terminal-here-project-root-function 'projectile-project-root))
+(defun w--counsel-recentf-other-window ()
+  "Like `w--counsel-recentf', but opens the file in another window."
+  (interactive)
+  (let ((ivy-inhibit-action t))
+    (find-file-other-window (counsel-recentf))))
 
 (w--make-hydra w--hydra-buffer nil
   "buffer"
@@ -285,8 +279,6 @@ defined as lowercase."
   "_n_ew"
   ("n" evil-buffer-new)
   ("N" w--evil-buffer-new-other-window)
-  "_o_ther-window"
-  ("o" ivy-switch-buffer-other-window)
   "_r_evert"
   ("r" revert-buffer))
 
@@ -301,10 +293,8 @@ defined as lowercase."
   "_n_ew"
   ("n" evil-buffer-new)
   ("N" w--evil-buffer-new-other-window)
-  "_o_ther-window"
-  ("o" find-file-other-window)
   "_r_ecent"
-  ("r" w--counsel-recentf)
+  ("r" counsel-recentf)
   ("R" w--counsel-recentf-other-window)
   "_s_udo"
   ("s" sudo-edit)
