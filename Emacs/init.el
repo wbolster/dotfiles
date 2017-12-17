@@ -1956,19 +1956,14 @@ defined as lowercase."
 (use-package magithub
   :after magit
   :config
-  (setq
-   magithub-api-timeout 10
-   magithub-pull-request-arguments '("-o"))
   (magithub-feature-autoinject t)
+  :custom
+  (magithub-api-timeout 10)
+  (magithub-pull-request-arguments '("-o"))
   :general
   (:keymaps 'magithub-map  ;; colemak tweaks
    "e" nil
-   "c" #'magithub-edit-thing)
-  (defun w--magithub-compare ()
-    "Compare repository on the web; invokes hub."
-    (interactive)
-    ;; fixme: this is broken
-    (magithub--command-quick "compare")))
+   "c" #'magithub-edit-thing))
 
 (use-package git-link
   :config
@@ -2027,7 +2022,6 @@ defined as lowercase."
   ("t" magit-toggle-buffer-lock)
   "_w_eb"
   ("w" w--git-web-browse)
-  ("W" w--magithub-compare)
   "_!_ command"
   ("!" magit-git-command))
 
