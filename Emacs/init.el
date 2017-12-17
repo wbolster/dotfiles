@@ -54,12 +54,17 @@
 
 (use-package no-littering)
 
-(setq disabled-command-function nil)
-(fset 'yes-or-no-p 'y-or-n-p)
-
 (use-package tls
   :custom
   (tls-checktrust 'ask))
+
+(fset 'yes-or-no-p 'y-or-n-p)
+
+(setq
+ disabled-command-function nil
+ echo-keystrokes 0.5
+ inhibit-startup-screen t
+ initial-scratch-message nil)
 
 ;; no gnu/agitprop kthxbye
 (defun display-startup-echo-area-message ()
@@ -304,48 +309,30 @@ defined as lowercase."
   ("1" terminal-here))
 
 
-;;;; frames
-
-(setq
- default-frame-alist '((width . 160) (height . 48))
- frame-resize-pixelwise t
- frame-title-format "%b")
-
-
-;;;; minimal ui
-
-(setq
- echo-keystrokes 0.5
- inhibit-startup-screen t
- initial-scratch-message nil)
-
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(blink-cursor-mode -1)
-
-
 ;;;; theme
+
+(use-package solarized-theme
+  :custom
+  (solarized-emphasize-indicators nil)
+  (solarized-scale-org-headlines nil)
+  (solarized-use-less-bold t)
+  (solarized-use-variable-pitch nil)
+  (solarized-height-minus-1 1.0)
+  (solarized-height-plus-1 1.0)
+  (solarized-height-plus-2 1.0)
+  (solarized-height-plus-3 1.0)
+  (solarized-height-plus-4 1.0))
 
 (defvar w--dark-theme 'solarized-dark "The preferred dark theme.")
 (defvar w--light-theme 'solarized-light "The preferred light theme.")
 
-(use-package solarized-theme
-  :config
-  (setq
-   solarized-desaturation 25  ;; only in locally patched version for now
-   solarized-emphasize-indicators nil
-   solarized-scale-org-headlines nil
-   solarized-use-less-bold t
-   solarized-use-variable-pitch nil
-   solarized-height-minus-1 1.0
-   solarized-height-plus-1 1.0
-   solarized-height-plus-2 1.0
-   solarized-height-plus-3 1.0
-   solarized-height-plus-4 1.0))
-
 (load-theme w--dark-theme t t)
 (load-theme w--light-theme t t)
+
+(defun w--toggle-dark-light-theme ()
+  "Toggle between a dark and light theme."
+  (interactive)
+  (w--activate-theme (eq (first custom-enabled-themes) w--light-theme)))
 
 (defun w--activate-theme (dark)
   "Load configured theme. When DARK is nil, load a light theme."
@@ -355,16 +342,13 @@ defined as lowercase."
     (enable-theme theme))
   (w--tweak-faces))
 
-(defun w--toggle-dark-light-theme ()
-  "Toggle between a dark and light theme."
-  (interactive)
-  (w--activate-theme (eq (first custom-enabled-themes) w--light-theme)))
-
 (defun w--disable-themes-advice (theme)
   "Disable all enabled themes except THEME."
   (unless (eq theme 'user)
     (--each custom-enabled-themes
       (disable-theme it))))
+
+(advice-add 'enable-theme :before #'w--disable-themes-advice)
 
 (defun w--tweak-faces ()
   "Tweak some font faces."
@@ -372,8 +356,6 @@ defined as lowercase."
    'region nil
    :background nil :foreground nil
    :inherit 'secondary-selection))
-
-(advice-add 'enable-theme :before #'w--disable-themes-advice)
 
 (defun w--set-theme-from-environment ()
   "Set the theme based on presence/absence of a configuration file."
@@ -399,7 +381,6 @@ defined as lowercase."
  evil-replace-state-cursor (list solarized-color-red 'hbar)
  evil-operator-state-cursor (list solarized-color-magenta 'hollow))
 
-(setq evil-normal-state-cursor (list solarized-color-yellow 'box))
 
 ;;;; fonts
 
@@ -409,7 +390,10 @@ defined as lowercase."
   (:states 'motion
    "C-0" 'w--default-text-scale-reset
    "C--" 'default-text-scale-decrease
-   "C-=" 'default-text-scale-increase))
+   "C-=" 'default-text-scale-increase)
+  :config
+  (when (display-graphic-p)
+    (add-hook 'after-init-hook #'w--default-text-scale-reset)))
 
 (defvar w--default-text-scale-height
   (face-attribute 'default :height)  ;; inherit from startup environment
@@ -428,11 +412,7 @@ defined as lowercase."
 (defun w--default-text-scale-set (height)
   "Set default text scale to HEIGHT."
   (interactive "nHeight (e.g. 110) ")
-  (require 'default-text-scale)  ;; fixme should not be needed
   (default-text-scale-increment (- height (face-attribute 'default :height))))
-
-(when (display-graphic-p)
-  (w--default-text-scale-reset))
 
 (defvar w--faces-bold '(magit-popup-argument)
   "Faces that may retain their bold appearance.")
@@ -1566,28 +1546,37 @@ defined as lowercase."
   (advice-add 'dumb-jump-go :around #'w--jump-around-advice))
 
 
-;;;; window layout
+;;;; frames and windows
 
 ;; my preferred window layout is multiple full-height windows,
 ;; next to each other in a horizontal fashion, i.e. screen
 ;; divided into columns.
 
 (use-package winner
+  :custom
+  (winner-dont-bind-my-keys t)
   :config
-  (setq winner-dont-bind-my-keys t)
   (winner-mode))
 
 (setq
+ default-frame-alist '((width . 160) (height . 48))
+ evil-split-window-below t
+ evil-vsplit-window-right t
+ frame-resize-pixelwise t
+ frame-title-format "%b — emacs"
  help-window-select t
  split-height-threshold nil
  split-width-threshold 120
- split-window-preferred-function 'visual-fill-column-split-window-sensibly
- evil-split-window-below t
- evil-vsplit-window-right t)
+ split-window-preferred-function 'visual-fill-column-split-window-sensibly)
+
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(blink-cursor-mode -1)
 
 (defvar w--balanced-windows-functions
   '(delete-window quit-window split-window)
-  "Commands that need to be adviced to keep windows balanced.")
+  "Functions needing advice to keep windows balanced.")
 
 (defun w--balance-windows-advice (&rest _ignored)
   "Balance windows (intended as ;after advice); ARGS are ignored."
