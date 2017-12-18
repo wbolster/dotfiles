@@ -234,7 +234,8 @@ defined as lowercase."
     (add-to-list 'recentf-exclude (concat (regexp-quote dir) ".*")))
   (recentf-mode))
 
-(use-package sudo-edit)
+(use-package sudo-edit
+  :defer t)
 
 (use-package terminal-here
   :defer t
