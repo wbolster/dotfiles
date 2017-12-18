@@ -2087,9 +2087,6 @@ defined as lowercase."
   (flycheck-idle-change-delay 3)
   (flycheck-mode-line-prefix "✓"))
 
-(use-package flycheck-cython)
-(use-package flycheck-package)
-
 (w--make-hydra w--hydra-flycheck nil
   "flycheck"
   "_c_ errors"
@@ -2309,7 +2306,8 @@ defined as lowercase."
 (modify-syntax-entry ?_ "w")
 
 (use-package fic-mode
-  :config
+  :defer t
+  :init
   (setq
    fic-highlighted-words
    '("FIXME" "fixme"
@@ -2337,7 +2335,7 @@ defined as lowercase."
 ;;;; major-mode: c
 
 (use-package cc-mode
-  :ensure nil
+  :defer t
   :config
   (defun w--c-mode-hook ()
     (setq evil-shift-width 2)
@@ -2403,6 +2401,7 @@ defined as lowercase."
 ;;;; major mode: docker
 
 (use-package dockerfile-mode
+  :defer t
   :mode "Dockerfile[-_\\.].*")
 
 
@@ -2412,6 +2411,7 @@ defined as lowercase."
   :defer t
   :ensure nil
   :config
+  (require 'flycheck-package)
   (defun w--emacs-lisp-mode-hook ()
     (setq evil-shift-width 2)
     (w--set-major-mode-hydra #'w--hydra-emacs-lisp/body)
@@ -2434,14 +2434,25 @@ defined as lowercase."
     ("r" eval-region)))
 
 (use-package eldoc
+  :defer t
   :delight)
+
+(use-package flycheck-package
+  :defer t
+  :config
+  (flycheck-package-setup))
 
 
 ;;;; major mode: git related
 
-(use-package gitattributes-mode)
-(use-package gitconfig-mode)
-(use-package gitignore-mode)
+(use-package gitattributes-mode
+  :defer t)
+
+(use-package gitconfig-mode
+  :defer t)
+
+(use-package gitignore-mode
+  :defer t)
 
 
 ;;;; major mode: help
@@ -2531,13 +2542,17 @@ defined as lowercase."
 ;;;; major mode: org
 
 (use-package org
+  :defer t
   :config
   (defun w--org-mode-hook ()
-    (setq org-ellipsis " [...]")
     (evil-org-mode))
-  (add-hook 'org-mode-hook 'w--org-mode-hook))
+  (add-hook 'org-mode-hook 'w--org-mode-hook)
+  :custom
+  (org-ellipsis " [...]"))
 
 (use-package evil-org
+  :defer t
+  :after org
   :delight
   :config
   (setq
@@ -2734,6 +2749,11 @@ defined as lowercase."
   (setq pip-packages '(this is a fake package listing)))
 
 (use-package cython-mode
+  :defer t
+  :config
+  (require 'flycheck-cython))
+
+(use-package flycheck-cython
   :defer t)
 
 
