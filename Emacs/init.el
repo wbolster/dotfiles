@@ -1148,12 +1148,15 @@ defined as lowercase."
   (smartparens-global-mode)
   (show-smartparens-global-mode))
 
-(use-package rainbow-delimiters)
+(use-package rainbow-delimiters
+  :defer t)
 
 (use-package highlight-parentheses
+  :defer t
   :delight)
 
 (use-package evil-cleverparens
+  :defer t
   :config
   (setq
    evil-cleverparens-swap-move-by-word-and-symbol t))
