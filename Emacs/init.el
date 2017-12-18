@@ -1986,8 +1986,9 @@ defined as lowercase."
   (git-link-open-in-browser t))
 
 (use-package diff-hl
+  :hook
+  (magit-post-refresh-hook . diff-hl-magit-post-refresh)
   :config
-  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   (w--mark-as-jump-commands
     'diff-hl-next-hunk
     'diff-hl-previous-hunk))
