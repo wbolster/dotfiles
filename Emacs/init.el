@@ -2313,6 +2313,7 @@ defined as lowercase."
   :ensure nil
   :defer t
   :config
+  ;; todo: use adaptive-wrap-prefix-mode in addition to visual-line-mode
   (defun w--text-mode-hook ()
     (auto-fill-mode)
     (guess-language-mode)
