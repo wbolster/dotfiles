@@ -741,13 +741,11 @@ defined as lowercase."
   (:keymaps 'evil-outer-text-objects-map
    "b" #'evil-textobj-anyblock-a-block))
 
-(evil-define-text-object
-  w--evil-text-object-whole-buffer (count &optional beg end type)
+(evil-define-text-object w--evil-text-object-whole-buffer (count &optional beg end type)
   "Text object for the whole buffer."
   (evil-range (point-min) (point-max) 'line))
 
-(evil-define-text-object
-  w--evil-empty-text-object (count &optional beg end type)
+(evil-define-text-object w--evil-empty-text-object (count &optional beg end type)
   "Empty text object."
   (evil-range (point) (point)))
 
@@ -757,9 +755,13 @@ defined as lowercase."
       (evil-a-symbol count)
     (evil-inner-symbol count)))
 
-(evil-define-key* '(operator visual) global-map
-  "o" 'w--evil-text-object-symbol-dwim
-  (kbd "C-a") 'w--evil-text-object-whole-buffer)
+(use-package evil
+  :general
+  (:states '(operator visual)
+   "o" #'w--evil-text-object-symbol-dwim
+   "C-a" #'w--evil-text-object-whole-buffer)
+  (:keymaps 'evil-outer-text-objects-map
+   "g" #'w--evil-text-object-whole-buffer))
 
 
 ;;;; scrolling
