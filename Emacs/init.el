@@ -237,6 +237,7 @@ defined as lowercase."
 (use-package sudo-edit)
 
 (use-package terminal-here
+  :defer t
   :custom
   (terminal-here-project-root-function 'projectile-project-root))
 
