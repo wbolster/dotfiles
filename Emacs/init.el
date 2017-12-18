@@ -1162,10 +1162,10 @@ defined as lowercase."
    evil-cleverparens-swap-move-by-word-and-symbol t))
 
 (use-package syntactic-close
-  :config
-  (evil-define-key* 'insert global-map
-    ;; this is a zero, i.e. C-) without shift
-    (kbd "C-0") #'syntactic-close))
+  :general
+  (:state 'insert
+   ;; this is a zero, i.e. C-) without shift
+   (kbd "C-0") #'syntactic-close))
 
 
 ;;;; filling
