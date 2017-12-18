@@ -32,7 +32,8 @@
 
 (use-package benchmark-init
   :config
-  (benchmark-init/activate))
+  (benchmark-init/activate)
+  (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 
 ;;;; helper libraries
