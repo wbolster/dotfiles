@@ -2347,7 +2347,8 @@ defined as lowercase."
     (flyspell-prog-mode)
     ;; (show-paren-mode)  ; fixme: needed?
     (highlight-parentheses-mode)
-    (highlight-symbol-mode))
+    (highlight-symbol-mode)
+    (which-function-mode))
   (add-hook 'prog-mode-hook 'w--prog-mode-hook))
 
 
