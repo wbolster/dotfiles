@@ -2068,29 +2068,29 @@ defined as lowercase."
 ;;;; writeroom
 
 (use-package writeroom-mode
-  :config
-  (setq
-   writeroom-global-effects nil
-   writeroom-maximize-window nil))
+  :defer t
+  :custom
+  (writeroom-global-effects nil)
+  (writeroom-maximize-window nil))
 
 (defun w--writeroom-narrower ()
   "Make the writeroom column narrower."
   (interactive)
-  (unless writeroom-mode
+  (unless (bound-and-true-p writeroom-mode)
     (writeroom-mode))
   (writeroom-decrease-width))
 
 (defun w--writeroom-wider ()
   "Make the writeroom column wider."
   (interactive)
-  (unless writeroom-mode
+  (unless (bound-and-true-p writeroom-mode)
     (writeroom-mode))
   (writeroom-increase-width))
 
 (defun w--writeroom-reset ()
   "Reset the writeroom column width."
   (interactive)
-  (unless writeroom-mode
+  (unless (bound-and-true-p writeroom-mode)
     (writeroom-mode))
   (writeroom-adjust-width nil))
 
