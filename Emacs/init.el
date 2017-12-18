@@ -1006,21 +1006,22 @@ defined as lowercase."
     ("f" next-error-follow-minor-mode)))
 
 (use-package swiper
-  :config
-  (setq
-   swiper-action-recenter t
-   swiper-goto-start-of-match t)
-  (evil-define-key* 'motion global-map
-    "/" 'swiper
-    "g/" 'evil-search-forward)
-  (defun w--swiper-thing-at-point-dwim ()
-    "Start `swiper` searching for the thing at point."
-    (interactive)
-    (let ((query (w--thing-at-point-dwim)))
-      (evil-force-normal-state)  ; do not expand region in visual mode
-      (swiper query)))
-  (evil-define-key* 'visual global-map
-    "/" 'w--swiper-thing-at-point-dwim))
+  :custom
+  (swiper-action-recenter t)
+  (swiper-goto-start-of-match t)
+  :general
+  (:states 'motion
+   "/" 'swiper
+   "g/" 'evil-search-forward)
+  (:states 'visual
+   "/" 'w--swiper-thing-at-point-dwim))
+
+(defun w--swiper-thing-at-point-dwim ()
+  "Start `swiper` searching for the thing at point."
+  (interactive)
+  (let ((query (w--thing-at-point-dwim)))
+    (evil-force-normal-state)  ; do not expand region in visual mode
+    (swiper query)))
 
 (use-package ag
   :config
