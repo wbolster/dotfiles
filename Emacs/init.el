@@ -1521,12 +1521,13 @@ defined as lowercase."
       (nav-flash-show))))
 
 (use-package dumb-jump
+  :custom
+  (dumb-jump-selector 'ivy)
+  :general
+  (:states 'motion
+    "gd" #'dumb-jump-go-current-window
+    "gD" #'dumb-jump-go-other-window)
   :config
-  (setq dumb-jump-selector 'ivy)
-  (evil-define-key* 'motion global-map
-    "gd" 'dumb-jump-go-current-window
-    "gD" 'dumb-jump-go-other-window)
-
   (defun w--jump-around-advice (fn &rest args)
     ;; TODO: figure out whether the buffer changed. if the jump was in
     ;; the same buffer, check whether the target was already between
