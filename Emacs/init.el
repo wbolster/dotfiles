@@ -673,10 +673,10 @@ defined as lowercase."
   (evil-goggles-default-face ((t (:inherit highlight)))))
 
 (use-package evil-numbers
-  :config
-  (evil-define-key* 'normal global-map
-    "+" 'evil-numbers/inc-at-pt
-    "-" 'evil-numbers/dec-at-pt))
+  :general
+  (:states 'normal
+   "+" #'evil-numbers/inc-at-pt
+   "-" #'evil-numbers/dec-at-pt))
 
 (use-package evil-surround
   :config
@@ -713,28 +713,32 @@ defined as lowercase."
 ;;;; text objects
 
 (use-package evil-args
-  :bind
-  (:map evil-inner-text-objects-map
-   ("a" . evil-inner-arg)
-   :map evil-outer-text-objects-map
-   ("a" . evil-outer-arg)))
+  :general
+  (:keymaps 'evil-inner-text-objects-map
+   "a" #'evil-inner-arg)
+  (:keymaps 'evil-outer-text-objects-map
+   "a" #'evil-outer-arg))
 
 (use-package evil-indent-plus
-  :defer nil
-  :config
-  (evil-indent-plus-default-bindings)
-  :bind
-  (:map evil-inner-text-objects-map
-   ([tab] . evil-indent-plus-i-indent)
-   :map evil-outer-text-objects-map
-   ([tab] . evil-indent-plus-a-indent-up)))
+  :general
+  (:keymaps 'evil-inner-text-objects-map
+   "i" #'evil-indent-plus-i-indent
+   "i" #'evil-indent-plus-i-indent
+   "J" #'evil-indent-plus-i-indent-up-down
+   "TAB" #'evil-indent-plus-i-indent)
+  (:keymaps 'evil-outer-text-objects-map
+   "i" #'evil-indent-plus-a-indent
+   "I" #'evil-indent-plus-a-indent-up
+   "J" #'evil-indent-plus-a-indent-up-down
+   "TAB" #'evil-indent-plus-a-indent-up))
 
 (use-package evil-textobj-anyblock
-  :bind
-  (:map evil-inner-text-objects-map
-   ("b" . evil-textobj-anyblock-inner-block)
-   :map evil-outer-text-objects-map
-   ("b" . evil-textobj-anyblock-a-block)))
+  ;; todo perhaps replace with https://github.com/noctuid/targets.el
+  :general
+  (:keymaps 'evil-inner-text-objects-map
+   "b" #'evil-textobj-anyblock-inner-block)
+  (:keymaps 'evil-outer-text-objects-map
+   "b" #'evil-textobj-anyblock-a-block))
 
 (evil-define-text-object
   w--evil-text-object-whole-buffer (count &optional beg end type)
