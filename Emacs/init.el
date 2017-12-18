@@ -782,8 +782,8 @@ defined as lowercase."
   "_z_ cycle"
   ("z" recenter-top-bottom nil :exit nil))
 
-(evil-define-key* 'motion global-map
-  (kbd "z z") #'w--hydra-recenter/recenter-top-bottom)
+(general-define-key :states 'motion
+  "z z" #'w--hydra-recenter/recenter-top-bottom)
 
 
 ;;;; whitespace
