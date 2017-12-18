@@ -1981,8 +1981,9 @@ defined as lowercase."
    "c" #'magithub-edit-thing))
 
 (use-package git-link
-  :config
-  (setq git-link-open-in-browser t))
+  :defer t
+  :custom
+  (git-link-open-in-browser t))
 
 (use-package diff-hl
   :config
