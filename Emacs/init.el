@@ -474,16 +474,6 @@ defined as lowercase."
 
 ;;;; evil
 
-(use-package undo-tree
-  :delight)
-
-(defun w--evil-force-normal-state ()
-  "Like `evil-force-normal-state', with some extra cleanups."
-  (interactive)
-  (lazy-highlight-cleanup t)
-  (remove-overlays nil nil 'category 'evil-snipe)
-  (evil-force-normal-state))
-
 (use-package evil
   :init
   (setq
@@ -504,22 +494,22 @@ defined as lowercase."
    (general-chord "qq") #'evil-normal-state
    (general-chord "wq") #'evil-normal-state))
 
+(defun w--evil-force-normal-state ()
+  "Like `evil-force-normal-state', with some extra cleanups."
+  (interactive)
+  (lazy-highlight-cleanup t)
+  (remove-overlays nil nil 'category 'evil-snipe)
+  (evil-force-normal-state))
+
 (use-package key-chord
   :config
   (key-chord-mode +1))
 
-(use-package evil-snipe
-  ;; the t/T/f/F overrides are handled by evil-colemak-basics.
-  :custom
-  (evil-snipe-override-evil-repeat-keys nil)
-  (evil-snipe-scope 'line)
-  (evil-snipe-repeat-scope 'line)
-  (evil-snipe-smart-case t)
-  (evil-snipe-tab-increment t)
-  :custom-face
-  (evil-snipe-matches-face ((t (:inherit lazy-highlight)))))
+(use-package undo-tree
+  :delight)
 
 (use-package evil-colemak-basics
+  :after evil-snipe
   :init
   (setq evil-colemak-basics-char-jump-commands 'evil-snipe)
   :config
@@ -529,6 +519,17 @@ defined as lowercase."
 (defun w--disable-colemak ()
   "Disable colemak overrides."
   (evil-colemak-basics-mode -1))
+
+(use-package evil-snipe
+  ;; evil-colemak-basics takes care of the basic key bindings.
+  :custom
+  (evil-snipe-override-evil-repeat-keys nil)
+  (evil-snipe-scope 'line)
+  (evil-snipe-repeat-scope 'line)
+  (evil-snipe-smart-case t)
+  (evil-snipe-tab-increment t)
+  :custom-face
+  (evil-snipe-matches-face ((t (:inherit lazy-highlight)))))
 
 (use-package evil-swap-keys
   :config
