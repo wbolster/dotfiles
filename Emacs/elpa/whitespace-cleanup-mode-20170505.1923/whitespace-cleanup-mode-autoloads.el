@@ -4,7 +4,7 @@
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
 ;;;### (autoloads nil "whitespace-cleanup-mode" "whitespace-cleanup-mode.el"
-;;;;;;  (23094 50558 617071 89000))
+;;;;;;  (23097 30333 331921 523000))
 ;;; Generated autoloads from whitespace-cleanup-mode.el
 
 (let ((loads (get 'whitespace-cleanup 'custom-loads))) (if (member '"whitespace-cleanup-mode" loads) nil (put 'whitespace-cleanup 'custom-loads (cons '"whitespace-cleanup-mode" loads))))

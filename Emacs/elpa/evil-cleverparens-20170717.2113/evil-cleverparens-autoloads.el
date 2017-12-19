@@ -4,7 +4,7 @@
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
 ;;;### (autoloads nil "evil-cleverparens" "evil-cleverparens.el"
-;;;;;;  (23094 50567 337110 666000))
+;;;;;;  (23097 30343 359985 67000))
 ;;; Generated autoloads from evil-cleverparens.el
 
 (autoload 'evil-cp-set-movement-keys "evil-cleverparens" "\
@@ -38,7 +38,7 @@ for an advanced modal structural editing experience.
 ;;;***
 
 ;;;### (autoloads nil "evil-cleverparens-text-objects" "evil-cleverparens-text-objects.el"
-;;;;;;  (23094 50567 321110 594000))
+;;;;;;  (23097 30343 343984 966000))
 ;;; Generated autoloads from evil-cleverparens-text-objects.el
  (autoload 'evil-cp-a-form "evil-cleverparens-text-objects" nil t)
  (autoload 'evil-cp-inner-form "evil-cleverparens-text-objects" nil t)
@@ -50,7 +50,7 @@ for an advanced modal structural editing experience.
 ;;;***
 
 ;;;### (autoloads nil nil ("evil-cleverparens-pkg.el" "evil-cleverparens-util.el")
-;;;;;;  (23094 50567 345110 703000))
+;;;;;;  (23097 30343 367985 118000))
 
 ;;;***
 

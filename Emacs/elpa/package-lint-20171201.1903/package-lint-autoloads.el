@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "package-lint" "package-lint.el" (23094 50602
-;;;;;;  517270 526000))
+;;;### (autoloads nil "package-lint" "package-lint.el" (23097 30382
+;;;;;;  312229 543000))
 ;;; Generated autoloads from package-lint.el
 
 (autoload 'package-lint-buffer "package-lint" "\

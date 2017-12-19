@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "diff-hl" "diff-hl.el" (23094 50597 161246
-;;;;;;  169000))
+;;;### (autoloads nil "diff-hl" "diff-hl.el" (23097 30372 236166
+;;;;;;  653000))
 ;;; Generated autoloads from diff-hl.el
 
 (autoload 'diff-hl-mode "diff-hl" "\
@@ -41,8 +41,8 @@ See `diff-hl-mode' for more information on Diff-Hl mode.
 
 ;;;***
 
-;;;### (autoloads nil "diff-hl-amend" "diff-hl-amend.el" (23094 50597
-;;;;;;  169246 205000))
+;;;### (autoloads nil "diff-hl-amend" "diff-hl-amend.el" (23097 30372
+;;;;;;  240166 678000))
 ;;; Generated autoloads from diff-hl-amend.el
 
 (autoload 'diff-hl-amend-mode "diff-hl-amend" "\
@@ -77,8 +77,8 @@ See `diff-hl-amend-mode' for more information on Diff-Hl-Amend mode.
 
 ;;;***
 
-;;;### (autoloads nil "diff-hl-dired" "diff-hl-dired.el" (23094 50597
-;;;;;;  181246 259000))
+;;;### (autoloads nil "diff-hl-dired" "diff-hl-dired.el" (23097 30372
+;;;;;;  252166 753000))
 ;;; Generated autoloads from diff-hl-dired.el
 
 (autoload 'diff-hl-dired-mode "diff-hl-dired" "\
@@ -93,8 +93,8 @@ Toggle VC diff highlighting on the side of a Dired window.
 
 ;;;***
 
-;;;### (autoloads nil "diff-hl-flydiff" "diff-hl-flydiff.el" (23094
-;;;;;;  50597 157246 150000))
+;;;### (autoloads nil "diff-hl-flydiff" "diff-hl-flydiff.el" (23097
+;;;;;;  30372 228166 603000))
 ;;; Generated autoloads from diff-hl-flydiff.el
 
 (defvar diff-hl-flydiff-mode nil "\
@@ -115,8 +115,8 @@ This is a global minor mode.  It alters how `diff-hl-mode' works.
 
 ;;;***
 
-;;;### (autoloads nil "diff-hl-margin" "diff-hl-margin.el" (23094
-;;;;;;  50597 149246 115000))
+;;;### (autoloads nil "diff-hl-margin" "diff-hl-margin.el" (23097
+;;;;;;  30372 224166 578000))
 ;;; Generated autoloads from diff-hl-margin.el
 
 (defvar diff-hl-margin-mode nil "\
@@ -136,8 +136,8 @@ Toggle displaying `diff-hl-mode' highlights on the margin.
 
 ;;;***
 
-;;;### (autoloads nil nil ("diff-hl-pkg.el") (23094 50597 177246
-;;;;;;  242000))
+;;;### (autoloads nil nil ("diff-hl-pkg.el") (23097 30372 244166
+;;;;;;  704000))
 
 ;;;***
 

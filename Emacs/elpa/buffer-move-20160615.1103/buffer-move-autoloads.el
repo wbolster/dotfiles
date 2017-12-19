@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "buffer-move" "buffer-move.el" (23094 50577
-;;;;;;  517156 895000))
+;;;### (autoloads nil "buffer-move" "buffer-move.el" (23097 30354
+;;;;;;  348054 406000))
 ;;; Generated autoloads from buffer-move.el
 
 (autoload 'buf-move-up "buffer-move" "\

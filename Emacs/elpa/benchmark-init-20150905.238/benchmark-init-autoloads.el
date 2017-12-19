@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "benchmark-init" "benchmark-init.el" (23094
-;;;;;;  50538 532980 5000))
+;;;### (autoloads nil "benchmark-init" "benchmark-init.el" (23097
+;;;;;;  30310 799777 794000))
 ;;; Generated autoloads from benchmark-init.el
 
 (autoload 'benchmark-init/activate "benchmark-init" "\
@@ -15,7 +15,7 @@ Activate benchmark-init and start collecting data.
 ;;;***
 
 ;;;### (autoloads nil "benchmark-init-modes" "benchmark-init-modes.el"
-;;;;;;  (23094 50538 540980 41000))
+;;;;;;  (23097 30310 807777 845000))
 ;;; Generated autoloads from benchmark-init-modes.el
 
 (autoload 'benchmark-init/show-durations-tabulated "benchmark-init-modes" "\
@@ -30,8 +30,8 @@ Show durations in call-tree.
 
 ;;;***
 
-;;;### (autoloads nil nil ("benchmark-init-pkg.el") (23094 50538
-;;;;;;  548980 77000))
+;;;### (autoloads nil nil ("benchmark-init-pkg.el") (23097 30310
+;;;;;;  815777 897000))
 
 ;;;***
 

@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "pkg-info" "pkg-info.el" (23094 50574 73141
-;;;;;;  253000))
+;;;### (autoloads nil "pkg-info" "pkg-info.el" (23097 30350 420029
+;;;;;;  654000))
 ;;; Generated autoloads from pkg-info.el
 
 (autoload 'pkg-info-library-original-version "pkg-info" "\

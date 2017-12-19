@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "fic-mode" "fic-mode.el" (23094 50606 673289
-;;;;;;  430000))
+;;;### (autoloads nil "fic-mode" "fic-mode.el" (23097 30381 316223
+;;;;;;  337000))
 ;;; Generated autoloads from fic-mode.el
 
 (autoload 'fic-mode "fic-mode" "\

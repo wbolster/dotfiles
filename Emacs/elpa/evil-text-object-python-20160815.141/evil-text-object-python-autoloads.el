@@ -4,7 +4,7 @@
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
 ;;;### (autoloads nil "evil-text-object-python" "evil-text-object-python.el"
-;;;;;;  (23094 50611 581311 759000))
+;;;;;;  (23097 30389 820276 251000))
 ;;; Generated autoloads from evil-text-object-python.el
  (autoload 'evil-text-object-python-inner-statement "evil-text-object-python" nil t)
  (autoload 'evil-text-object-python-outer-statement "evil-text-object-python" nil t)
