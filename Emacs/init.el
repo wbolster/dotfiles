@@ -478,6 +478,7 @@ defined as lowercase."
 ;;;; evil
 
 (use-package evil
+  :demand t
   :init
   (setq
    evil-want-C-u-scroll t
