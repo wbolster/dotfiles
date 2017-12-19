@@ -216,7 +216,9 @@ defined as lowercase."
 
 (use-package desktop
   :config
-  (desktop-save-mode))
+  (desktop-save-mode)
+  :custom
+  (desktop-restore-eager 5))
 
 (defvar
   w--recentf-ignore-dirs
