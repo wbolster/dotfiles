@@ -1737,6 +1737,11 @@ defined as lowercase."
   (with-selected-frame (w--make-frame)
     (call-interactively #'evil-buffer-new)))
 
+(define-minor-mode w--pinned-buffer-mode
+  "Pin the current buffer to the selected window."
+  nil " ▣" nil
+  (set-window-dedicated-p (selected-window) w--pinned-buffer-mode))
+
 (w--make-hydra w--hydra-window nil
   "window"
   "_h__n__e__i_ _1__2__3__4_ navigate"
@@ -1766,6 +1771,8 @@ defined as lowercase."
   ("F" (w--make-frame-new-buffer))
   "_o_nly"
   ("o" delete-other-windows)
+  "_p_in"
+  ("p" w--pinned-buffer-mode)
   "_r_otate"
   ("r" evil-window-rotate-downwards nil :exit nil)
   ("R" evil-window-rotate-upwards nil :exit nil)
