@@ -711,8 +711,10 @@ defined as lowercase."
    "gS" 'evil-Surround-region))
 
 (use-package evil-visualstar
-  :config
-  (global-evil-visualstar-mode))
+  :general
+  (:states 'visual
+   "*" #'evil-visualstar/begin-search-forward
+   "#" #'evil-visualstar/begin-search-backward))
 
 
 ;;;; text objects
