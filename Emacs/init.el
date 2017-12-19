@@ -1330,7 +1330,7 @@ defined as lowercase."
   (kbd "C-e") 'end-of-visual-line
   (kbd "C-h") [backspace]
   (kbd "C-k") 'w--kill-line-dwim
-  ;; (kbd "C-n") 'next-line  ;; fixme: completion trigger
+  (kbd "C-n") 'next-line  ;; fixme: completion trigger?
   (kbd "C-o") 'evil-normal-state
   (kbd "C-p") 'previous-line
   (kbd "C-t") 'w--evil-transpose-chars)
@@ -1871,31 +1871,35 @@ defined as lowercase."
   :delight)
 
 (use-package company
-  :demand t
-  :bind
-  (:map
-   company-active-map
-   ("C-n" . company-select-next)
-   ("C-p" . company-select-previous)
-   ("C-<return>" . company-select-next))
   :delight
+  :general
+  (:states 'insert
+   "C-<return>" #'company-manual-begin
+   "<tab>" #'w--indent-or-complete)
+  (:keymaps 'company-active-map
+   "C-n" #'company-select-next
+   "C-p" #'company-select-previous
+   "C-<return>" #'company-select-next
+   "<tab>" #'company-complete-common-or-cycle)
+  :custom
+  (company-auto-complete 'company-explicit-action-p)
+  (company-dabbrev-code-everywhere t)
+  (company-dabbrev-downcase nil)
+  (company-dabbrev-ignore-case t)
+  (company-idle-delay nil)
+  (company-occurrence-weight-function 'company-occurrence-prefer-any-closest)
+  (company-require-match nil)
+  (company-selection-wrap-around t)
+  (company-transformers '(company-sort-by-occurrence))
   :config
-  (setq
-   company-auto-complete 'company-explicit-action-p
-   company-dabbrev-code-everywhere t
-   company-dabbrev-downcase nil
-   company-dabbrev-ignore-case t
-   company-idle-delay nil
-   company-occurrence-weight-function 'company-occurrence-prefer-any-closest
-   company-require-match nil
-   company-selection-wrap-around t
-   company-transformers '(company-sort-by-occurrence))
   (add-to-list 'company-auto-complete-chars ?\( )
   (add-to-list 'company-backends 'company-files)
   (global-company-mode)
-  (evil-define-key* 'insert global-map
-    (kbd "C-<return>") 'company-manual-begin
-    (kbd "C-n") 'company-manual-begin))
+  (defun w--indent-or-complete ()
+    (interactive)
+    (if (looking-at "\\_>")
+        (company-manual-begin)
+      (call-interactively #'indent-for-tab-command))))
 
 
 ;;;; version control
