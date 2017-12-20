@@ -2607,6 +2607,8 @@ defined as lowercase."
   :defer t
   :after org
   :delight
+  :custom
+  (evil-org-retain-visual-state-on-shift t)
   :config
   (setq
    evil-org-movement-bindings
@@ -2614,7 +2616,6 @@ defined as lowercase."
      (down . "n")
      (up . "e")
      (right . "i")))
-  (setq evil-org-retain-visual-state-on-shift t)
   (evil-org-set-key-theme))
 
 
