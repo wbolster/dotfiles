@@ -1929,19 +1929,14 @@ defined as lowercase."
   (auto-revert-check-vc-info t)
   :delight (auto-revert-mode" ⇤"))
 
-(use-package ediff
-  :config
-  (setq ediff-split-window-function 'split-window-horizontally))
-
 (use-package magit
-  :config
-  (magit-auto-revert-mode)
-  (magit-wip-after-save-mode)
+  :defer t
+  :init
+  (add-hook 'find-file-hook (fn: require 'magit))
+  :delight
+  (magit-wip-after-save-local-mode)
   (magit-wip-after-apply-mode)
   (magit-wip-before-change-mode)
-  (add-to-list 'magit-repository-directories '("~/Projects/" . 2))
-  (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
-  (add-hook 'magit-popup-mode-hook 'w--hide-trailing-whitespace)
   :custom
   (magit-branch-prefer-remote-upstream '("master"))
   (magit-branch-read-upstream-first 'fallback)
@@ -1958,44 +1953,94 @@ defined as lowercase."
   (magit-rebase-arguments '("--autostash"))
   (magit-show-refs-arguments '("--sort=-committerdate"))
   (magit-tag-arguments '("--annotate"))
-  :delight
-  (magit-wip-after-save-local-mode)
+  :commands
+  w--hydra-git/body
+  :config
+  (require 'evil-magit)
+  (require 'magithub)
+  (magit-wip-after-save-mode)
   (magit-wip-after-apply-mode)
-  (magit-wip-before-change-mode))
+  (magit-wip-before-change-mode)
+  (add-to-list 'magit-repository-directories '("~/Projects/" . 2))
+  (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
+  (add-hook 'magit-popup-mode-hook 'w--hide-trailing-whitespace)
+  (defun w--magit-status-other-repository ()
+    "Open git status for another repository."
+    (interactive)
+    (setq current-prefix-arg t)
+    (call-interactively 'magit-status))
+  (defun w--git-web-browse ()
+    "Open a web browser for the current git repo or file."
+    (interactive)
+    (if (region-active-p)
+        (let ((git-link-open-in-browser t))
+          (call-interactively #'git-link)
+          (setq kill-ring (cdr kill-ring)))
+      (magithub-browse)))
+  (w--make-hydra w--hydra-git nil
+    "git"
+    "_b_lame"
+    ("b" magit-blame)
+    ("B" magit-log-buffer-file)
+    "_c_ommit"
+    ("c" magit-commit)
+    ("C" magit-commit-popup)
+    "_d_iff"
+    ("d" magit-diff)
+    ("D" magit-diff-popup)
+    "_f_ile"
+    ("f" magit-find-file)
+    ("F" magit-find-file-other-window)
+    "_g_ popup"
+    ("g" magit-dispatch-popup)
+    "_l_og"
+    ("l" magit-log-current)
+    ("L" magit-log-all)
+    "_r_efs"
+    ("r" magit-show-refs-popup)
+    "_s_tatus"
+    ("s" magit-status)
+    ("S" w--magit-status-other-repository)
+    "_t_ lock"
+    ("t" magit-toggle-buffer-lock)
+    "_w_eb"
+    ("w" w--git-web-browse)
+    "_!_ command"
+    ("!" magit-git-command)))
 
 (use-package evil-magit
+  :defer t
   :after magit
   :config
-  (add-hook 'magit-log-mode-hook #'w--disable-colemak)
-  (add-hook 'magit-status-mode-hook #'w--disable-colemak)
+  (dolist (hook '(magit-log-mode-hook magit-status-mode-hook ))
+    (add-hook hook #'w--disable-colemak))
   ;; todo: make ,q use the various magit-*-bury-buffer functions, then
   ;; unbind q to force ,q usage.
-  (evil-define-key*
-   '(normal visual) magit-mode-map
+  :general
+  (:keymaps 'magit-mode-map
+   :states '(normal visual)
    [escape] nil
    "n" #'evil-next-visual-line
    "e" #'evil-previous-visual-line
-   (kbd "C-n") #'magit-section-forward
-   (kbd "C-e") #'magit-section-backward
-   (kbd "C-p") #'magit-section-backward
-   (kbd "TAB") #'magit-section-cycle
-   (kbd "C-TAB") #'magit-section-toggle
-   (kbd "C-w") 'w--hydra-window/body)
-  (general-define-key
-   :keymaps 'magit-status-mode-map
+   "C-n" #'magit-section-forward
+   "C-e" #'magit-section-backward
+   "C-p" #'magit-section-backward
+   "<tab>" #'magit-section-cycle
+   "C-<tab>" #'magit-section-toggle
+   "C-w" 'w--hydra-window/body)
+  (:keymaps 'magit-status-mode-map
    "q" nil)
-  (general-define-key
-   :keymaps 'magit-diff-mode-map
+  (:keymaps 'magit-diff-mode-map
    "SPC" nil
    "DEL" nil)
-  (general-define-key
-   :keymaps 'magit-blame-mode-map
+  (:keymaps 'magit-blame-mode-map
    :states '(motion normal)
-   (kbd "C-n") 'magit-blame-next-chunk
-   (kbd "C-e") 'magit-blame-previous-chunk
-   (kbd "C-p") 'magit-blame-previous-chunk))
+   "C-n" #'magit-blame-next-chunk
+   "C-e" #'magit-blame-previous-chunk
+   "C-p" #'magit-blame-previous-chunk))
 
 (use-package magithub
+  :defer t
   :after magit
   :config
   (magithub-feature-autoinject t)
@@ -2020,57 +2065,16 @@ defined as lowercase."
     'diff-hl-next-hunk
     'diff-hl-previous-hunk))
 
+(use-package ediff
+  :defer t
+  :custom
+  (ediff-split-window-function 'split-window-horizontally))
+
 (use-package vdiff
   :defer t)
 
 (use-package vdiff-magit
   :defer t)
-
-(defun w--magit-status-other-repository ()
-  "Open git status for another repository."
-  (interactive)
-  (setq current-prefix-arg t)
-  (call-interactively 'magit-status))
-
-(defun w--git-web-browse ()
-  "Open a web browser for the current git repo or file."
-  (interactive)
-  (if (region-active-p)
-      (let ((git-link-open-in-browser t))
-        (call-interactively #'git-link)
-        (setq kill-ring (cdr kill-ring)))
-    (magithub-browse)))
-
-(w--make-hydra w--hydra-git nil
-  "git"
-  "_b_lame"
-  ("b" magit-blame)
-  ("B" magit-log-buffer-file)
-  "_c_ommit"
-  ("c" magit-commit)
-  ("C" magit-commit-popup)
-  "_d_iff"
-  ("d" magit-diff)
-  ("D" magit-diff-popup)
-  "_f_ile"
-  ("f" magit-find-file)
-  ("F" magit-find-file-other-window)
-  "_g_ popup"
-  ("g" magit-dispatch-popup)
-  "_l_og"
-  ("l" magit-log-current)
-  ("L" magit-log-all)
-  "_r_efs"
-  ("r" magit-show-refs-popup)
-  "_s_tatus"
-  ("s" magit-status)
-  ("S" w--magit-status-other-repository)
-  "_t_ lock"
-  ("t" magit-toggle-buffer-lock)
-  "_w_eb"
-  ("w" w--git-web-browse)
-  "_!_ command"
-  ("!" magit-git-command))
 
 (w--make-hydra w--hydra-merge nil
   "merge"
