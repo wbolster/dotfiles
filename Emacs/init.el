@@ -1201,8 +1201,8 @@ defined as lowercase."
 
 (use-package fill-column-indicator
   :defer
-  :config
-  (setq fci-rule-width 2))
+  :custom
+  (fci-rule-width 2))
 
 (use-package multi-line
   :defer t)
