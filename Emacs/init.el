@@ -540,7 +540,7 @@ defined as lowercase."
 (use-package evil-swap-keys
   :config
   (global-evil-swap-keys-mode)
-  :delight)
+  :delight " ⇵")
 
 (use-package evil-commentary
   :config
