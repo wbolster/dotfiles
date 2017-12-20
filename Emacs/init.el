@@ -236,7 +236,13 @@ defined as lowercase."
   :config
   (dolist (dir w--recentf-ignore-dirs)
     (add-to-list 'recentf-exclude (concat (regexp-quote dir) ".*")))
-  (recentf-mode))
+  (recentf-mode)
+
+  (defun w--counsel-recentf-other-window ()
+    "Like `w--counsel-recentf', but opens the file in another window."
+    (interactive)
+    (let ((ivy-inhibit-action t))
+      (find-file-other-window (counsel-recentf)))))
 
 (use-package sudo-edit
   :defer t)
@@ -275,12 +281,6 @@ defined as lowercase."
   (interactive)
   (w--evil-window-next-or-vsplit)
   (call-interactively #'evil-buffer-new))
-
-(defun w--counsel-recentf-other-window ()
-  "Like `w--counsel-recentf', but opens the file in another window."
-  (interactive)
-  (let ((ivy-inhibit-action t))
-    (find-file-other-window (counsel-recentf))))
 
 (w--make-hydra w--hydra-buffer nil
   "buffer"
