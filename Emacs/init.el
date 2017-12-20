@@ -1181,7 +1181,7 @@ defined as lowercase."
 ;;;; filling
 
 (use-package emacs
-  :delight auto-fill-function)
+  :delight (auto-fill-function " ↲"))
 
 (defun w--evil-fill-paragraph-dwim ()
   "Fill the current paragraph."
