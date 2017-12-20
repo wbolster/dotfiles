@@ -2333,6 +2333,7 @@ defined as lowercase."
 ;;;; major mode: text (generic)
 
 (use-package typo
+  :delight "”"
   :config
   (setq-default typo-language "prefer-single")
   (add-to-list 'typo-quotation-marks '("prefer-single" "‘" "’" "“" "”"))
