@@ -1200,17 +1200,21 @@ defined as lowercase."
   "Q" 'w--evil-fill-paragraph-dwim)
 
 (use-package fill-column-indicator
+  :defer
   :config
   (setq fci-rule-width 2))
 
-(use-package multi-line)
+(use-package multi-line
+  :defer t)
 
-(use-package visual-fill-column)
+(use-package visual-fill-column
+  :defer t)
 
 
 ;;;; outline
 
 (use-package outline
+  :defer t
   :delight
   (outline-minor-mode " ‣"))
 
