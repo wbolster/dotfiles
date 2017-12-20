@@ -1391,91 +1391,96 @@ defined as lowercase."
 ;;;; projects
 
 (use-package projectile
-  :defer t  ;; fixme still loaded on startup it seems
-  :init
-  (add-hook 'find-file-hook (fn: require 'projectile))
-  :config
-  (projectile-mode)
+  :defer t
+  :hook find-file-hook
+  :delight
+
   :custom
   (projectile-completion-system 'ivy)
   (projectile-ignored-projects '("/usr/local/" "~/"))
-  (projectile-mode-line nil)
+  ;; (projectile-mode-line nil)  ;; causes eager loading, :delight has same effect
   (projectile-require-project-root nil)
   (projectile-sort-order 'recently-active)
-  (projectile-switch-project-action 'projectile-vc))
+  (projectile-switch-project-action 'projectile-vc)
 
-(defun w--projectile-find-file-all (&optional pattern)
-  "Find any file in the current project, including ignored files."
-  (require 'projectile)
-  (interactive
-   (list
-    (read-string
-     "file name pattern (empty means all): "
-     (if buffer-file-name
-         (concat (file-name-extension buffer-file-name) "$")
-       "")
-     ".")))
-  (ivy-read
-   "Find file in complete project: "
-   (projectile-make-relative-to-root
-    (directory-files-recursively (projectile-project-root) pattern))
-   :action
-   (lambda (filename)
-     (find-file (concat
-                 (file-name-as-directory (projectile-project-root))
-                 filename)))
-   :require-match t
-   :history 'file-name-history))
+  :commands
+  w--hydra-project/body
 
-(defun w--projectile-project-bury-buffers ()
-  "Quit all windows and bury all buffers for the current project."
-  (interactive)
-  (require 'projectile)
-  (-each (projectile-project-buffers)
-    (lambda (buffer)
-      (-each (get-buffer-window-list buffer)
-        (lambda (window)
-          (quit-window nil window)))
-      (bury-buffer buffer))))
+  :config
+  (projectile-mode)
 
-(w--make-hydra w--hydra-project nil
-  "project"
-  "_a_ny file"
-  ("a" w--projectile-find-file-all)
-  "_b_uffer"
-  ("b" projectile-switch-to-buffer)
-  ("B" projectile-switch-to-buffer-other-window)
-  "_d_ir"
-  ("d" projectile-find-dir)
-  ("D" projectile-find-dir-other-window)
-  "_f_ile"
-  ("f" projectile-find-file)
-  ("F" projectile-find-file-other-window)
-  "_k_ill"
-  ("k" projectile-kill-buffers)
-  "_o_ccur"
-  ("o" projectile-multi-occur)
-  "_p_roject"
-  ("p" projectile-switch-project)
-  ("P" projectile-switch-open-project)
-  "_q_ bury"
-  ("q" w--projectile-project-bury-buffers)
-  "_r_eplace"
-  ("r" projectile-replace)
-  ("R" projectile-replace-regexp)
-  "_s_ave"
-  ("s" projectile-save-project-buffers)
-  "_t_est/impl"
-  ("t" projectile-toggle-between-implementation-and-test)
-  ("T" projectile-find-implementation-or-test-other-window)
-  "_-_ top dir"
-  ("-" projectile-dired)
-  "_/__?_ counsel-ag"
-  ("/" w--counsel-ag-project)
-  ("?" w--counsel-ag-project-all-files)
-  "_!_ terminal"
-  ("!" terminal-here-project-launch)
-  ("1" terminal-here-project-launch))
+  (defun w--projectile-find-file-all (&optional pattern)
+    "Find any file in the current project, including ignored files."
+    (require 'projectile)
+    (interactive
+     (list
+      (read-string
+       "file name pattern (empty means all): "
+       (if buffer-file-name
+           (concat (file-name-extension buffer-file-name) "$")
+         "")
+       ".")))
+    (ivy-read
+     "Find file in complete project: "
+     (projectile-make-relative-to-root
+      (directory-files-recursively (projectile-project-root) pattern))
+     :action
+     (lambda (filename)
+       (find-file (concat
+                   (file-name-as-directory (projectile-project-root))
+                   filename)))
+     :require-match t
+     :history 'file-name-history))
+
+  (defun w--projectile-project-bury-buffers ()
+    "Quit all windows and bury all buffers for the current project."
+    (interactive)
+    (require 'projectile)
+    (-each (projectile-project-buffers)
+      (lambda (buffer)
+        (-each (get-buffer-window-list buffer)
+          (lambda (window)
+            (quit-window nil window)))
+        (bury-buffer buffer))))
+
+  (w--make-hydra w--hydra-project nil
+    "project"
+    "_a_ny file"
+    ("a" w--projectile-find-file-all)
+    "_b_uffer"
+    ("b" projectile-switch-to-buffer)
+    ("B" projectile-switch-to-buffer-other-window)
+    "_d_ir"
+    ("d" projectile-find-dir)
+    ("D" projectile-find-dir-other-window)
+    "_f_ile"
+    ("f" projectile-find-file)
+    ("F" projectile-find-file-other-window)
+    "_k_ill"
+    ("k" projectile-kill-buffers)
+    "_o_ccur"
+    ("o" projectile-multi-occur)
+    "_p_roject"
+    ("p" projectile-switch-project)
+    ("P" projectile-switch-open-project)
+    "_q_ bury"
+    ("q" w--projectile-project-bury-buffers)
+    "_r_eplace"
+    ("r" projectile-replace)
+    ("R" projectile-replace-regexp)
+    "_s_ave"
+    ("s" projectile-save-project-buffers)
+    "_t_est/impl"
+    ("t" projectile-toggle-between-implementation-and-test)
+    ("T" projectile-find-implementation-or-test-other-window)
+    "_-_ top dir"
+    ("-" projectile-dired)
+    "_/__?_ counsel-ag"
+    ("/" w--counsel-ag-project)
+    ("?" w--counsel-ag-project-all-files)
+    "_!_ terminal"
+    ("!" terminal-here-project-launch)
+    ("1" terminal-here-project-launch)))
 
 
 ;;;; jumping around
