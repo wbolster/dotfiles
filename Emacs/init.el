@@ -1190,14 +1190,14 @@ defined as lowercase."
     (end-of-line)
     (fill-paragraph)))
 
+(general-define-key :states 'normal
+  "Q" #'w--evil-fill-paragraph-dwim)
+
 (defun w--use-very-long-lines ()
   "Use very long lines so that `fill-paragraph' and related functions do not add newlines."
   (interactive)
   (setq fill-column most-positive-fixnum)
   (auto-fill-mode -1))
-
-(evil-define-key* 'normal global-map
-  "Q" 'w--evil-fill-paragraph-dwim)
 
 (use-package fill-column-indicator
   :defer
