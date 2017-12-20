@@ -1173,7 +1173,7 @@ defined as lowercase."
 
 (use-package syntactic-close
   :general
-  (:state 'insert
+  (:states 'insert
    ;; this is a zero, i.e. C-) without shift
    (kbd "C-0") #'syntactic-close))
 
