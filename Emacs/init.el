@@ -129,78 +129,79 @@
 
 ;;;; hydra
 
-(use-package hydra)
+(use-package hydra
+  :demand t
+  :config
+  (defvar w--hydra-hint-delay 1
+    "Delay before showing help.")
 
-(defvar w--hydra-hint-delay 1
-  "Delay before showing help.")
+  ;; fixme: maybe use a registry pattern with an alist that maps major
+  ;; modes (and derived modes) to a hydra, instead of buffer-local variables?
+  (defvar w--major-mode-hydra nil
+    "Hydra body for the current major mode.")
+  (make-variable-buffer-local 'w--major-mode-hydra)
 
-;; fixme: maybe use a registry pattern with an alist that maps major
-;; modes (and derived modes) to a hydra, instead of buffer-local variables?
-(defvar w--major-mode-hydra nil
-  "Hydra body for the current major mode.")
-(make-variable-buffer-local 'w--major-mode-hydra)
+  (defun w--set-major-mode-hydra (hydra-body)
+    "Set the buffer-local major-mode specific hydra to HYDRA-BODY."
+    (setq w--major-mode-hydra hydra-body))
 
-(defun w--set-major-mode-hydra (hydra-body)
-  "Set the buffer-local major-mode specific hydra to HYDRA-BODY."
-  (setq w--major-mode-hydra hydra-body))
+  (defun w--major-mode-hydra ()
+    "Run major mode hydra, if any."
+    (interactive)
+    (if w--major-mode-hydra
+        (call-interactively w--major-mode-hydra)
+      (user-error "No major-mode specific hydra defined for %s" major-mode)))
 
-(defun w--major-mode-hydra ()
-  "Run major mode hydra, if any."
-  (interactive)
-  (if w--major-mode-hydra
-      (call-interactively w--major-mode-hydra)
-    (user-error "No major-mode specific hydra defined for %s" major-mode)))
+  (defun w--hydra-evil-repeat-record-command ()
+    "Record last command from the hydra in evil's repeat system."
+    (evil-repeat-start)
+    (setq evil-repeat-info `((call-interactively ,real-this-command)))
+    (evil-repeat-stop))
 
-(defun w--hydra-evil-repeat-record-command ()
-  "Record last command from the hydra in evil's repeat system."
-  (evil-repeat-start)
-  (setq evil-repeat-info `((call-interactively ,real-this-command)))
-  (evil-repeat-stop))
+  (defun w--hydra-make-docstring (args)
+    "Make a docstring for a hydra from ARGS."
+    (setq args (--map-when (not (string-match-p "_" it))
+                           (format "  %s:" it)
+                           args))
+    (s-concat "\n" (s-trim (s-join "  " args))))
 
-(defun w--hydra-make-docstring (args)
-  "Make a docstring for a hydra from ARGS."
-  (setq args (--map-when (not (string-match-p "_" it))
-                         (format "  %s:" it)
-                         args))
-  (s-concat "\n" (s-trim (s-join "  " args))))
+  (defun w--hydra-set-defaults (body)
+    "Add defaults to a hydra BODY list."
+    (unless (plist-member body :exit)
+      (setq body (plist-put body :exit t)))
+    (unless (plist-member body :hint)
+      (setq body (plist-put body :hint nil)))
+    (unless (plist-member body :foreign-keys)
+      (setq body (plist-put body :foreign-keys 'warn)))
+    (setq body (plist-put body :idle w--hydra-hint-delay))
+    body)
 
-(defun w--hydra-set-defaults (body)
-  "Add defaults to a hydra BODY list."
-  (unless (plist-member body :exit)
-    (setq body (plist-put body :exit t)))
-  (unless (plist-member body :hint)
-    (setq body (plist-put body :hint nil)))
-  (unless (plist-member body :foreign-keys)
-    (setq body (plist-put body :foreign-keys 'warn)))
-  (setq body (plist-put body :idle w--hydra-hint-delay))
-  body)
-
-(defun w--hydra-missing-uppercase-heads (heads)
-  "Return missing uppercase hydra heads.
+  (defun w--hydra-missing-uppercase-heads (heads)
+    "Return missing uppercase hydra heads.
 
 This creates uppercase versions for all lowercase HEADS that are only
 defined as lowercase."
-  (let* ((case-fold-search nil)
-         (uppercase-keys
-          (--filter (s-matches-p "^[A-Z]$" it) (-map #'car heads))))
-    (--map
-     (-replace-at 0 (upcase (car it)) it)
-     (--filter
-      (and (s-matches? "^[a-z]$" (car it))
-           (not (-contains-p uppercase-keys (upcase (car it)))))
-      heads))))
+    (let* ((case-fold-search nil)
+           (uppercase-keys
+            (--filter (s-matches-p "^[A-Z]$" it) (-map #'car heads))))
+      (--map
+       (-replace-at 0 (upcase (car it)) it)
+       (--filter
+        (and (s-matches? "^[a-z]$" (car it))
+             (not (-contains-p uppercase-keys (upcase (car it)))))
+        heads))))
 
-(defmacro w--make-hydra (name body &rest args)
-  "Make a hydra NAME with BODY, using ARGS for heads and docstrings."
-  (declare (indent 2))
-  (-let [(docstrings heads) (-separate #'stringp args)]
-    `(defhydra
-       ,name
-       ,(w--hydra-set-defaults body)
-       ,(w--hydra-make-docstring docstrings)
-       ,@(w--hydra-missing-uppercase-heads heads)
-       ,@heads
-       ("<escape>" nil :exit t))))
+  (defmacro w--make-hydra (name body &rest args)
+    "Make a hydra NAME with BODY, using ARGS for heads and docstrings."
+    (declare (indent 2))
+    (-let [(docstrings heads) (-separate #'stringp args)]
+      `(defhydra
+         ,name
+         ,(w--hydra-set-defaults body)
+         ,(w--hydra-make-docstring docstrings)
+         ,@(w--hydra-missing-uppercase-heads heads)
+         ,@heads
+         ("<escape>" nil :exit t)))))
 
 
 ;;;; buffers, files, directories
