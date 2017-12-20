@@ -1927,7 +1927,7 @@ defined as lowercase."
   (global-auto-revert-mode)
   :custom
   (auto-revert-check-vc-info t)
-  :delight (auto-revert-mode" ⇤"))
+  :delight (auto-revert-mode" ↶"))
 
 (use-package magit
   :defer t
