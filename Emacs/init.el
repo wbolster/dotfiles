@@ -1737,7 +1737,8 @@ defined as lowercase."
    ("C-#" . w--set-as-window-3)
    ("C-$" . w--set-as-window-4))))
 
-(use-package buffer-move)
+(use-package buffer-move
+  :defer t)
 
 (defun w--make-frame ()
   "Make a new frame."
