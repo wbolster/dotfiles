@@ -1508,6 +1508,8 @@ defined as lowercase."
     "-" #'dired-jump))
 
 (defvar w--jump-commands
+  ;; todo: this should use a property on the symbol
+  ;; (evil does something similar)
   '(evil-backward-paragraph
     evil-backward-section-begin
     evil-backward-section-end
@@ -1539,8 +1541,9 @@ defined as lowercase."
   (setq w--jump-commands (-union w--jump-commands commands)))
 
 (use-package nav-flash
+  :custom
+  (nav-flash-delay 5)
   :config
-  (setq nav-flash-delay 5)
   (add-hook 'post-command-hook #'w--maybe-nav-flash)
   (dolist (hook w--jump-hooks)
     (add-hook hook #'w--maybe-nav-flash))
