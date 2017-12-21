@@ -1502,9 +1502,10 @@ defined as lowercase."
 
 (use-package dired
   :ensure nil
-  :config
-  (evil-define-key* '(motion normal) dired-mode-map
-    "-" 'dired-jump)) ;; inspired by vim vinagre
+  :general
+  (:keymap 'dired-mode-map
+   :states '(motion normal)
+    "-" #'dired-jump))
 
 (defvar w--jump-commands
   '(evil-backward-paragraph
