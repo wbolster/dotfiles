@@ -805,12 +805,16 @@ defined as lowercase."
  show-trailing-whitespace t
  tab-width 4)
 
-(use-package whitespace)
+(use-package whitespace
+  :defer t)
 
 (use-package whitespace-cleanup-mode
+  :delight
+  '(:eval
+    (unless whitespace-cleanup-mode-initially-clean
+      " ⎵"))
   :config
-  (global-whitespace-cleanup-mode)
-  :delight)
+  (global-whitespace-cleanup-mode))
 
 (defun w--hide-trailing-whitespace ()
   "Helper to hide trailing whitespace, intended for mode hooks."
