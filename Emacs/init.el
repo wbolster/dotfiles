@@ -828,6 +828,7 @@ defined as lowercase."
   (setq show-trailing-whitespace (not show-trailing-whitespace)))
 
 (use-package indent-guide
+  :defer t
   :config
   (indent-guide-global-mode)
   (face-spec-reset-face 'indent-guide-face)
