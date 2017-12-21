@@ -847,18 +847,18 @@ defined as lowercase."
 
 (use-package minibuffer
   :ensure nil
-  :config
-  (add-hook 'minibuffer-setup-hook #'w--hide-trailing-whitespace)
-  (bind-keys
-   :map minibuffer-local-map
-   ("C-w" . backward-kill-word)
-   ("C-u" . kill-whole-line))
-  (--each (list minibuffer-local-map
-                minibuffer-local-ns-map
-                minibuffer-local-completion-map
-                minibuffer-local-must-match-map
-                minibuffer-local-isearch-map)
-    (define-key it [escape] 'minibuffer-keyboard-quit)))
+  :general
+  (:keymaps 'minibuffer-local-map
+   "C-w" #'backward-kill-word
+   "C-u" #'kill-whole-line)
+  (:keymaps '(minibuffer-local-completion-map
+              minibuffer-local-isearch-map
+              minibuffer-local-map
+              minibuffer-local-must-match-map
+              minibuffer-local-ns-map)
+   "<esc>" #'minibuffer-keyboard-quit)
+  :init
+  (add-hook 'minibuffer-setup-hook #'w--hide-trailing-whitespace))
 
 
 ;;;; line navigation
