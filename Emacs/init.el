@@ -112,9 +112,9 @@
 
 (use-package server
   :if window-system
-  :unless (server-running-p)
   :config
-  (server-start))
+  (unless (server-running-p)
+    (server-start)))
 
 (use-package edit-server
   ;; this is used by the ‘edit with emacs’ chrome extension:
