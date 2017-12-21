@@ -1816,17 +1816,19 @@ defined as lowercase."
 
 (use-package ispell
   :defer t
-  :config
-  (setq ispell-dictionary "english"))
+  :custom
+  (ispell-dictionary "english"))
 
 ;; todo https://github.com/d12frosted/flyspell-correct
 (use-package flyspell
+  :defer t
   :delight " ∼")
-;; (use-package flyspell-correct-ivy)
+;; (use-package flyspell-correct-ivy)  ;; todo
 
 (use-package guess-language
-  :config
-  (setq guess-language-languages '(en de fr nl sv)))
+  :defer t
+  :custom
+  (guess-language-languages '(en de fr nl sv)))
 
 
 ;;;; completion
