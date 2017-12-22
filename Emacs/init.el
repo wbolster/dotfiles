@@ -2204,6 +2204,8 @@ defined as lowercase."
   "_f_ill"
   ("f" auto-fill-mode)
   ("F" fci-mode)
+  "_h_ighlight-symbol"
+  ("h" highlight-symbol-mode)
   "_l_ine"
   ("l" hl-line-mode)
   ("L" global-hl-line-mode)
