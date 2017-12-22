@@ -1143,8 +1143,8 @@ defined as lowercase."
   "]c" 'flycheck-next-error
   "[C" 'flycheck-first-error
   "]C" 'w--flycheck-last-error
-  "[d" (lambda () (interactive) (diff-hl-mode) (diff-hl-previous-hunk))
-  "]d" (lambda () (interactive) (diff-hl-mode) (diff-hl-next-hunk))
+  "[d" 'w--diff-hl-previous-hunk
+  "]d" 'w--diff-hl-next-hunk
   "[e" 'previous-error
   "]e" 'next-error
   "[E" 'first-error
@@ -2080,10 +2080,23 @@ defined as lowercase."
 (use-package diff-hl
   :hook
   (magit-post-refresh . diff-hl-magit-post-refresh)
+  :commands
+  w--diff-hl-next-hunk
+  w--diff-hl-previous-hunk
   :config
   (w--mark-as-jump-commands
-    'diff-hl-next-hunk
-    'diff-hl-previous-hunk))
+    'w--diff-hl-next-hunk
+    'w--diff-hl-previous-hunk)
+  (defun w--diff-hl-previous-hunk ()
+    "Jump to the previous hunk."
+    (interactive)
+    (diff-hl-mode)
+    (diff-hl-previous-hunk))
+  (defun w--diff-hl-next-hunk ()
+    "Jump to the next hunk."
+    (interactive)
+    (diff-hl-mode)
+    (diff-hl-next-hunk)))
 
 (use-package ediff
   :defer t
