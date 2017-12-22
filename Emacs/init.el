@@ -1442,7 +1442,7 @@ defined as lowercase."
 
   (w--make-hydra w--hydra-project nil
     "project"
-    "_a_ny file"
+    "_a_ll files"
     ("a" w--projectile-find-file-all)
     "_b_uffer"
     ("b" projectile-switch-to-buffer)
