@@ -1866,39 +1866,32 @@ defined as lowercase."
 
 (use-package ivy
   :demand t
-  :bind
-  (:map
-   ivy-minibuffer-map
-   ("C-h" . ivy-backward-delete-char)
-   ("C-w" . ivy-backward-kill-word)
-   ("C-u" . kill-whole-line)
-   ("C-SPC" . ivy-avy)
-   ("C-<return>" . ivy-dispatching-done-hydra))
+  :delight
+  :general
+  (:keymaps 'ivy-minibuffer-map
+   "C-h" #'ivy-backward-delete-char
+   "C-w" #'ivy-backward-kill-word
+   "C-u" #'kill-whole-line
+   "C-SPC" #'ivy-avy
+   "C-<return>" #'ivy-dispatching-done-hydra
+   "<esc>" #'minibuffer-keyboard-quit)
+  :custom
+  (ivy-count-format "(%d/%d) ")
+  (ivy-height 20)
+  (ivy-initial-inputs-alist nil)
+  (ivy-wrap t)
   :config
-  (setq
-   ivy-count-format "(%d/%d) "
-   ivy-height 20
-   ivy-initial-inputs-alist nil
-   ivy-wrap t)
-
   (ivy-mode 1)
-  :delight)
-
-(define-key ivy-minibuffer-map
-  [escape] 'minibuffer-keyboard-quit) ;; fixme: use :bind perhaps?
-
-(add-hook 'window-size-change-functions #'w--adjust-ivy-height)
-
-(defun w--clamp-number (num low high)
-  "Clamp NUM between LOW and HIGH."
-  (min high (max num low)))
-
-(defun w--adjust-ivy-height (frame)
-  "Adjust ivy-height based on the current FRAME height."
-  (let* ((total-lines (frame-text-lines frame))
-          (lines (truncate (* total-lines w--ivy-height-percentage 0.01)))
-          (new-height (w--clamp-number lines 10 20)))
-    (setq ivy-height new-height)))
+  (add-hook 'window-size-change-functions #'w--adjust-ivy-height)
+  (defun w--clamp-number (num low high)
+    "Clamp NUM between LOW and HIGH."
+    (min high (max num low)))
+  (defun w--adjust-ivy-height (frame)
+    "Adjust ivy-height based on the current FRAME height."
+    (let* ((total-lines (frame-text-lines frame))
+           (lines (truncate (* total-lines w--ivy-height-percentage 0.01)))
+           (new-height (w--clamp-number lines 10 20)))
+      (setq ivy-height new-height))))
 
 (use-package ivy-hydra)
 
