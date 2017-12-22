@@ -2135,28 +2135,30 @@ defined as lowercase."
   :defer t
   :custom
   (writeroom-global-effects nil)
-  (writeroom-maximize-window nil))
-
-(defun w--writeroom-narrower ()
-  "Make the writeroom column narrower."
-  (interactive)
-  (unless (bound-and-true-p writeroom-mode)
-    (writeroom-mode))
-  (writeroom-decrease-width))
-
-(defun w--writeroom-wider ()
-  "Make the writeroom column wider."
-  (interactive)
-  (unless (bound-and-true-p writeroom-mode)
-    (writeroom-mode))
-  (writeroom-increase-width))
-
-(defun w--writeroom-reset ()
-  "Reset the writeroom column width."
-  (interactive)
-  (unless (bound-and-true-p writeroom-mode)
-    (writeroom-mode))
-  (writeroom-adjust-width nil))
+  (writeroom-maximize-window nil)
+  :commands
+  w--writeroom-narrower
+  w--writeroom-wider
+  w--writeroom-reset
+  :config
+  (defun w--writeroom-narrower ()
+    "Make the writeroom column narrower."
+    (interactive)
+    (unless writeroom-mode
+      (writeroom-mode))
+    (writeroom-decrease-width))
+  (defun w--writeroom-wider ()
+    "Make the writeroom column wider."
+    (interactive)
+    (unless writeroom-mode
+      (writeroom-mode))
+    (writeroom-increase-width))
+  (defun w--writeroom-reset ()
+    "Reset the writeroom column width."
+    (interactive)
+    (unless writeroom-mode
+      (writeroom-mode))
+    (writeroom-adjust-width nil)))
 
 
 ;;;; flycheck
