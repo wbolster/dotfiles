@@ -829,18 +829,16 @@ defined as lowercase."
 
 (use-package indent-guide
   :defer t
-  :config
-  (indent-guide-global-mode)
-  (face-spec-reset-face 'indent-guide-face)
-  (set-face-attribute
-   'indent-guide-face nil
-   :inherit 'font-lock-comment-face)
   :delight
   :custom
   (indent-guide-char "·")
   (indent-guide-delay 0)
   (indent-guide-recursive t)
-  (indent-guide-threshold 7))
+  (indent-guide-threshold 7)
+  :custom-face
+  (indent-guide-face
+   ((t (:inherit font-lock-comment-face
+        :foreground unspecified)))))
 
 
 ;;;; minibuffer
@@ -2393,6 +2391,7 @@ defined as lowercase."
     ;; (show-paren-mode)  ; fixme: needed?
     (highlight-parentheses-mode)
     (highlight-symbol-mode)
+    (indent-guide-mode)
     (which-function-mode))
   (add-hook 'prog-mode-hook 'w--prog-mode-hook))
 
