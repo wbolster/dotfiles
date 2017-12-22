@@ -2232,6 +2232,8 @@ defined as lowercase."
   "_1_ num/sym"
   ("1" global-evil-swap-keys-mode)
   ("!" global-evil-swap-keys-mode)
+  "_._ indent-guide"
+  ("." indent-guide-mode)
   "_=_ balanced-windows"
   ("=" w--balanced-windows-mode))
 
