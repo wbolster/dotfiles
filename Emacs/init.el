@@ -863,23 +863,33 @@ defined as lowercase."
 
 ;;;; line navigation
 
-;; fixme: https://github.com/melpa/melpa/pull/4814
-;;(use-package relative-line-numbers
-;;  :config
-;;  (defun w--relative-line-numbers-format (offset)
-;;    "Format relative line number for OFFSET."
-;;    (number-to-string (abs (if (= offset 0) (line-number-at-pos) offset))))
-;;  (setq relative-line-numbers-format 'w--relative-line-numbers-format))
-(use-package nlinum)
+(use-package nlinum
+  :defer t)
 
 (use-package nlinum-relative
+  :defer t
+  :custom-face
+  (nlinum-relative-current-face
+   ((t (:inherit nlinum
+        :foreground unspecified
+        :background unspecified
+        :weight unspecified))))
+  :commands
+  w--line-numbers-cycle
   :config
-  (set-face-attribute
-   'nlinum-relative-current-face nil
-   :foreground nil
-   :background nil
-   :weight 'normal
-   :inherit 'nlinum))
+  (defun w--line-numbers-cycle ()
+    "Cycle between no, absolute, and relative line numbers."
+    (interactive)
+    (cond
+     ((and nlinum-mode nlinum-relative-mode)
+      (nlinum-mode -1)
+      (nlinum-relative-off))
+     (nlinum-mode
+      (nlinum-relative-mode +1)
+      (nlinum-relative-reflush))
+     (t
+      (nlinum-mode +1)
+      (nlinum-relative-mode -1)))))
 
 (evil-define-motion w--evil-next-line (count)
   (if visual-line-mode
@@ -2169,20 +2179,6 @@ defined as lowercase."
 
 
 ;;;; toggles
-
-(defun w--line-numbers-cycle ()
-  "Cycle between no, absolute, and relative line numbers."
-  (interactive)
-  (cond
-   ((and nlinum-mode nlinum-relative-mode)
-    (nlinum-mode -1)
-    (nlinum-relative-off))
-   (nlinum-mode
-    (nlinum-relative-mode +1)
-    (nlinum-relative-reflush))
-   (t
-    (nlinum-mode +1)
-    (nlinum-relative-mode -1))))
 
 (w--make-hydra w--hydra-toggle nil
   "toggle"
