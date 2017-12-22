@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "terminal-here" "terminal-here.el" (23097 30318
-;;;;;;  355826 142000))
+;;;### (autoloads nil "terminal-here" "terminal-here.el" (23101 14107
+;;;;;;  736260 241000))
 ;;; Generated autoloads from terminal-here.el
 
 (autoload 'terminal-here-launch "terminal-here" "\

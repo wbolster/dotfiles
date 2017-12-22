@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "evil-swap-keys" "evil-swap-keys.el" (23097
-;;;;;;  30328 231889 107000))
+;;;### (autoloads nil "evil-swap-keys" "evil-swap-keys.el" (23101
+;;;;;;  14118 440311 984000))
 ;;; Generated autoloads from evil-swap-keys.el
 
 (autoload 'evil-swap-keys-mode "evil-swap-keys" "\

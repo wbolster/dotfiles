@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "copy-as-format" "copy-as-format.el" (23097
-;;;;;;  30349 96021 302000))
+;;;### (autoloads nil "copy-as-format" "copy-as-format.el" (23101
+;;;;;;  14139 92411 829000))
 ;;; Generated autoloads from copy-as-format.el
 
 (autoload 'copy-as-format "copy-as-format" "\

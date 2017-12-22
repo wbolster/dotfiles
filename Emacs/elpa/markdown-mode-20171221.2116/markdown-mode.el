@@ -7,8 +7,8 @@
 ;; Maintainer: Jason R. Blevins <jblevins@xbeta.org>
 ;; Created: May 24, 2007
 ;; Version: 2.4-dev
-;; Package-Version: 20171211.2209
-;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
+;; Package-Version: 20171221.2116
+;; Package-Requires: ((emacs "24.4") (cl-lib "0.5"))
 ;; Keywords: Markdown, GitHub Flavored Markdown, itex
 ;; URL: https://jblevins.org/projects/markdown-mode/
 
@@ -573,16 +573,22 @@ requires Emacs to be built with ImageMagick support."
       (checkbox . ,(rx "[" (any " xX") "]")))
     "Markdown-specific sexps for `markdown-rx'")
 
+  (defun markdown-rx-to-string (form &optional no-group)
+    "Markdown mode specialized `rx-to-string' function.
+This variant supports named Markdown expressions in FORM.
+NO-GROUP non-nil means don't put shy groups around the result."
+    (let ((rx-constituents (append markdown-rx-constituents rx-constituents)))
+      (rx-to-string form no-group)))
+
   (defmacro markdown-rx (&rest regexps)
     "Markdown mode specialized rx macro.
 This variant of `rx' supports common Markdown named REGEXPS."
-    (let ((rx-constituents (append markdown-rx-constituents rx-constituents)))
-      (cond ((null regexps)
-             (error "No regexp"))
-            ((cdr regexps)
-             (rx-to-string `(and ,@regexps) t))
-            (t
-             (rx-to-string (car regexps) t))))))
+    (cond ((null regexps)
+           (error "No regexp"))
+          ((cdr regexps)
+           (markdown-rx-to-string `(and ,@regexps) t))
+          (t
+           (markdown-rx-to-string (car regexps) t)))))
 
 
 ;;; Regular Expressions =======================================================
@@ -1107,7 +1113,7 @@ giving the bounds of the current and parent list items."
       (markdown-search-backward-baseline)
       ;; Search for all list items between baseline and END
       (while (and (< (point) end)
-                  (re-search-forward markdown-regex-list end t))
+                  (re-search-forward markdown-regex-list end 'limit))
         ;; Level of list nesting
         (setq level (length bounds))
         ;; Pre blocks need to be indented one level past the list level
@@ -2579,31 +2585,33 @@ original point.  If the point is not in a list item, do nothing."
         (cond
          ;; Stop at end of the buffer.
          ((eobp) nil)
-         ;; Continue if the current line is blank
-         ((looking-at markdown-regex-blank-line) t)
          ;; Continue while indentation is the same or greater
          ((>= indent level) t)
+         ;; Continue if the current line is blank
+         ((looking-at markdown-regex-blank-line) t)
          ;; Stop if current indentation is less than list item
          ;; and the previous line was blank.
          ((and (< indent level)
                (markdown-prev-line-blank))
           nil)
-         ;; Stop at a new list item of the same or lesser indentation
-         ((looking-at markdown-regex-list) nil)
-         ;; Stop at a header
-         ((looking-at markdown-regex-header) nil)
-         ;; Stop at a horizontal rule
-         ((looking-at markdown-regex-hr) nil)
+         ;; Stop at a new list items of the same or lesser
+         ;; indentation, headings, and horizontal rules.
+         ((looking-at (concat "\\(?:" markdown-regex-list
+                              "\\|" markdown-regex-header
+                              "\\|" markdown-regex-hr "\\)"))
+          nil)
          ;; Otherwise, continue.
          (t t))
       (forward-line)
       (setq indent (current-indentation)))
     ;; Don't skip over whitespace for empty list items (marker and
     ;; whitespace only), just move to end of whitespace.
-    (save-match-data
-      (if (looking-back (concat markdown-regex-list "\\s-*") (point-at-bol))
-          (goto-char (match-end 3))
-        (skip-chars-backward " \t\n")))
+    (if (save-excursion
+          (beginning-of-line)
+          (looking-at (concat markdown-regex-list "[ \t]*$")))
+        (goto-char (match-end 3))
+      (skip-chars-backward " \t\n"))
+    (end-of-line)
     (point)))
 
 (defun markdown-cur-list-item-bounds ()
@@ -3049,7 +3057,7 @@ $..$ or `markdown-regex-math-inline-double' for matching $$..$$."
         (and (or (null (setq bounds (car (get-text-property pos prop))))
                  (< (cl-first bounds) pos))
              (< (point) last)
-             (setq pos (next-single-char-property-change pos prop nil last))
+             (setq pos (next-single-property-change pos prop nil last))
              (goto-char pos)))
     (when bounds
       (set-match-data (cl-seventh bounds))
@@ -3077,7 +3085,7 @@ Restore match data previously stored in PROPERTY."
   (let ((saved (get-text-property (point) property))
         pos)
     (unless saved
-      (setq pos (next-single-char-property-change (point) property nil last))
+      (setq pos (next-single-property-change (point) property nil last))
       (setq saved (get-text-property pos property)))
     (when saved
       (set-match-data saved)
@@ -3137,29 +3145,42 @@ analysis."
 (defun markdown-match-generic-links (last ref)
   "Match inline links from point to LAST.
 When REF is non-nil, match reference links instead of standard
-links with URLs."
+links with URLs.
+This function should only be used during font-lock, as it
+determines syntax based on the presence of faces for previously
+processed elements."
   ;; Search for the next potential link (not in a code block).
-  (while (and (progn
-                ;; Clear match data to test for a match after functions returns.
-                (set-match-data nil)
-                ;; Preliminary regular expression search so we can return
-                ;; quickly upon failure.  This doesn't handle malformed links
-                ;; or nested square brackets well, so if it passes we back up
-                ;; continue with a more precise search.
-                (re-search-forward
-                 (if ref
-                     markdown-regex-link-reference
-                   markdown-regex-link-inline)
-                 last 'limit))
-              ;; Keep searching if this is in a code block, inline
-              ;; code, or a comment, or if it is include syntax.
-              (or (markdown-code-block-at-point-p)
-                  (markdown-inline-code-at-pos-p (match-beginning 0))
-                  (markdown-inline-code-at-pos-p (match-end 0))
-                  (markdown-in-comment-p)
-                  (and (char-equal (char-after (point-at-bol)) ?<)
-                       (char-equal (char-after (1+ (point-at-bol))) ?<)))
-              (< (point) last)))
+  (let ((prohibited-faces '(markdown-pre-face
+                            markdown-code-face
+                            markdown-inline-code-face
+                            markdown-comment-face))
+        found)
+    (while
+        (and (not found) (< (point) last)
+             (progn
+               ;; Clear match data to test for a match after functions returns.
+               (set-match-data nil)
+               ;; Preliminary regular expression search so we can return
+               ;; quickly upon failure.  This doesn't handle malformed links
+               ;; or nested square brackets well, so if it passes we back up
+               ;; continue with a more precise search.
+               (re-search-forward
+                (if ref
+                    markdown-regex-link-reference
+                  markdown-regex-link-inline)
+                last 'limit)))
+      ;; Keep searching if this is in a code block, inline code, or a
+      ;; comment, or if it is include syntax. The link text portion
+      ;; (group 3) may contain inline code or comments, but the
+      ;; markup, URL, and title should not be part of such elements.
+      (if (or (markdown-range-property-any
+               (match-beginning 0) (match-end 2) 'face prohibited-faces)
+              (markdown-range-property-any
+               (match-beginning 4) (match-end 0) 'face prohibited-faces)
+              (and (char-equal (char-after (point-at-bol)) ?<)
+                   (char-equal (char-after (1+ (point-at-bol))) ?<)))
+          (set-match-data nil)
+        (setq found t))))
   ;; Match opening exclamation point (optional) and left bracket.
   (when (match-beginning 2)
     (let* ((bang (match-beginning 1))
@@ -3226,14 +3247,6 @@ links with URLs."
         nil)
        ;; Return t if a match occurred
        (t t)))))
-
-(defun markdown-match-inline-links (last)
-  "Match standard inline links from point to LAST."
-  (markdown-match-generic-links last nil))
-
-(defun markdown-match-reference-links (last)
-  "Match inline reference links from point to LAST."
-  (markdown-match-generic-links last t))
 
 (defun markdown-match-angle-uris (last)
   "Match angle bracket URIs from point to LAST."
@@ -7496,9 +7509,8 @@ Translate filenames using `markdown-filename-translate-function'."
                      'invisible 'markdown-markup
                      'rear-nonsticky t
                      'font-lock-multiline t))
-           ;; Link part
+           ;; Link part (without face)
            (lp (list 'keymap markdown-mode-mouse-map
-                     'face 'markdown-link-face
                      'mouse-face 'markdown-highlight-face
                      'font-lock-multiline t
                      'help-echo (if title (concat title "\n" url) url)))
@@ -7517,7 +7529,11 @@ Translate filenames using `markdown-filename-translate-function'."
       (dolist (g '(1 2 4 5 8))
         (when (match-end g)
           (add-text-properties (match-beginning g) (match-end g) mp)))
-      (when link-start (add-text-properties link-start link-end lp))
+      ;; Preserve existing faces applied to link part (e.g., inline code)
+      (when link-start
+        (add-text-properties link-start link-end lp)
+        (add-face-text-property link-start link-end
+                                'markdown-link-face 'append))
       (when url-start (add-text-properties url-start url-end up))
       (when title-start (add-text-properties url-end title-end tp))
       (when (and markdown-hide-urls url-start)
@@ -7610,7 +7626,7 @@ and disable it otherwise."
   (markdown-reload-extensions))
 
 
-;;; WikiLink Following/Markup =================================================
+;;; Wiki Links ================================================================
 
 (defun markdown-wiki-link-p ()
   "Return non-nil if wiki links are enabled and `point' is at a true wiki link.
@@ -7800,6 +7816,43 @@ Designed to be used with the `after-change-functions' hook."
   "Refontify all wiki links in the buffer."
   (interactive)
   (markdown-check-change-for-wiki-link (point-min) (point-max)))
+
+(defun markdown-toggle-wiki-links (&optional arg)
+  "Toggle support for wiki links.
+With a prefix argument ARG, enable wiki link support if ARG is positive,
+and disable it otherwise."
+  (interactive (list (or current-prefix-arg 'toggle)))
+  (setq markdown-enable-wiki-links
+        (if (eq arg 'toggle)
+            (not markdown-enable-wiki-links)
+          (> (prefix-numeric-value arg) 0)))
+  (if markdown-enable-wiki-links
+      (message "markdown-mode wiki link support enabled")
+    (message "markdown-mode wiki link support disabled"))
+  (markdown-reload-extensions))
+
+(defun markdown-setup-wiki-link-hooks ()
+  "Add or remove hooks for fontifying wiki links.
+These are only enabled when `markdown-wiki-link-fontify-missing' is non-nil."
+  ;; Anytime text changes make sure it gets fontified correctly
+  (if (and markdown-enable-wiki-links
+           markdown-wiki-link-fontify-missing)
+      (add-hook 'after-change-functions
+                'markdown-check-change-for-wiki-link-after-change t t)
+    (remove-hook 'after-change-functions
+                 'markdown-check-change-for-wiki-link-after-change t))
+  ;; If we left the buffer there is a really good chance we were
+  ;; creating one of the wiki link documents. Make sure we get
+  ;; refontified when we come back.
+  (if (and markdown-enable-wiki-links
+           markdown-wiki-link-fontify-missing)
+      (progn
+        (add-hook 'window-configuration-change-hook
+                  'markdown-fontify-buffer-wiki-links t t)
+        (markdown-fontify-buffer-wiki-links))
+    (remove-hook 'window-configuration-change-hook
+                 'markdown-fontify-buffer-wiki-links t)
+  (markdown-unfontify-region-wiki-links (point-min) (point-max))))
 
 
 ;;; Following & Doing =========================================================
@@ -8002,46 +8055,6 @@ before regenerating font-lock rules for extensions."
     (when (assoc 'markdown-enable-math file-local-variables-alist)
       (markdown-toggle-math markdown-enable-math))
     (markdown-reload-extensions)))
-
-
-;;; Wiki Links ================================================================
-
-(defun markdown-toggle-wiki-links (&optional arg)
-  "Toggle support for wiki links.
-With a prefix argument ARG, enable wiki link support if ARG is positive,
-and disable it otherwise."
-  (interactive (list (or current-prefix-arg 'toggle)))
-  (setq markdown-enable-wiki-links
-        (if (eq arg 'toggle)
-            (not markdown-enable-wiki-links)
-          (> (prefix-numeric-value arg) 0)))
-  (if markdown-enable-wiki-links
-      (message "markdown-mode wiki link support enabled")
-    (message "markdown-mode wiki link support disabled"))
-  (markdown-reload-extensions))
-
-(defun markdown-setup-wiki-link-hooks ()
-  "Add or remove hooks for fontifying wiki links.
-These are only enabled when `markdown-wiki-link-fontify-missing' is non-nil."
-  ;; Anytime text changes make sure it gets fontified correctly
-  (if (and markdown-enable-wiki-links
-           markdown-wiki-link-fontify-missing)
-      (add-hook 'after-change-functions
-                'markdown-check-change-for-wiki-link-after-change t t)
-    (remove-hook 'after-change-functions
-                 'markdown-check-change-for-wiki-link-after-change t))
-  ;; If we left the buffer there is a really good chance we were
-  ;; creating one of the wiki link documents. Make sure we get
-  ;; refontified when we come back.
-  (if (and markdown-enable-wiki-links
-           markdown-wiki-link-fontify-missing)
-      (progn
-        (add-hook 'window-configuration-change-hook
-                  'markdown-fontify-buffer-wiki-links t t)
-        (markdown-fontify-buffer-wiki-links))
-    (remove-hook 'window-configuration-change-hook
-                 'markdown-fontify-buffer-wiki-links t)
-  (markdown-unfontify-region-wiki-links (point-min) (point-max))))
 
 
 ;;; Math Support ==============================================================
@@ -9178,7 +9191,9 @@ spaces, or alternatively a TAB should be used as the separator."
           nil nil nil nil
           (font-lock-multiline . t)
           (font-lock-syntactic-face-function . markdown-syntactic-face)
-          (font-lock-extra-managed-props . (composition display invisible))))
+          (font-lock-extra-managed-props
+           . (composition display invisible rear-nonsticky
+                          keymap help-echo mouse-face))))
   (if markdown-hide-markup
       (add-to-invisibility-spec 'markdown-markup)
     (remove-from-invisibility-spec 'markdown-markup))

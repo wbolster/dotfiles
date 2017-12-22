@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "evil-goggles" "evil-goggles.el" (23097 30330
-;;;;;;  431903 99000))
+;;;### (autoloads nil "evil-goggles" "evil-goggles.el" (23101 14120
+;;;;;;  612322 483000))
 ;;; Generated autoloads from evil-goggles.el
 
 (defvar evil-goggles-mode nil "\

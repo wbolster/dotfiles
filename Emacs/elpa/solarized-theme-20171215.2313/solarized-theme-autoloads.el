@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "solarized" "solarized.el" (23097 30319 31830
-;;;;;;  460000))
+;;;### (autoloads nil "solarized" "solarized.el" (23101 14108 444263
+;;;;;;  663000))
 ;;; Generated autoloads from solarized.el
 
 (autoload 'solarized-color-blend "solarized" "\
@@ -23,7 +23,7 @@ Alpha should be a float between 0 and 1.
 
 ;;;### (autoloads nil nil ("solarized-dark-theme.el" "solarized-light-theme.el"
 ;;;;;;  "solarized-theme-pkg.el" "solarized-theme-utils.el" "solarized-theme.el")
-;;;;;;  (23097 30319 51830 588000))
+;;;;;;  (23101 14108 468263 779000))
 
 ;;;***
 

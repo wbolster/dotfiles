@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "python-docstring" "python-docstring.el" (23097
-;;;;;;  30390 396279 829000))
+;;;### (autoloads nil "python-docstring" "python-docstring.el" (23101
+;;;;;;  14182 12619 396000))
 ;;; Generated autoloads from python-docstring.el
 
 (autoload 'python-docstring-fill "python-docstring" "\
@@ -27,8 +27,8 @@ Add python-docstring-mode as a hook to python.mode.
 
 ;;;***
 
-;;;### (autoloads nil nil ("python-docstring-pkg.el") (23097 30390
-;;;;;;  408279 903000))
+;;;### (autoloads nil nil ("python-docstring-pkg.el") (23101 14182
+;;;;;;  28619 474000))
 
 ;;;***
 

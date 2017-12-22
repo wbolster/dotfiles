@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "guess-language" "guess-language.el" (23097
-;;;;;;  30355 480061 533000))
+;;;### (autoloads nil "guess-language" "guess-language.el" (23101
+;;;;;;  14145 328441 983000))
 ;;; Generated autoloads from guess-language.el
 
 (autoload 'guess-language-mode "guess-language" "\
@@ -28,8 +28,8 @@ correctly.
 
 ;;;***
 
-;;;### (autoloads nil nil ("guess-language-pkg.el") (23097 30355
-;;;;;;  292060 349000))
+;;;### (autoloads nil nil ("guess-language-pkg.el") (23101 14145
+;;;;;;  144441 93000))
 
 ;;;***
 

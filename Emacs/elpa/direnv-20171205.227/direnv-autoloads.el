@@ -3,7 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "direnv" "direnv.el" (23097 30315 911810 521000))
+;;;### (autoloads nil "direnv" "direnv.el" (23101 14105 456249 220000))
 ;;; Generated autoloads from direnv.el
 
 (autoload 'direnv-update-environment "direnv" "\

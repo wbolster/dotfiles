@@ -3,7 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil nil ("ivy-hydra.el") (23097 30357 448073 915000))
+;;;### (autoloads nil nil ("ivy-hydra.el") (23101 14147 88450 493000))
 
 ;;;***
 

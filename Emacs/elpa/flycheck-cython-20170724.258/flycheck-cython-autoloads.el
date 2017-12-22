@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil nil ("flycheck-cython.el") (23097 30391 796288
-;;;;;;  522000))
+;;;### (autoloads nil nil ("flycheck-cython.el") (23101 14183 300625
+;;;;;;  627000))
 
 ;;;***
 

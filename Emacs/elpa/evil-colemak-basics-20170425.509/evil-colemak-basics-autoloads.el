@@ -4,7 +4,7 @@
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
 ;;;### (autoloads nil "evil-colemak-basics" "evil-colemak-basics.el"
-;;;;;;  (23097 30327 831886 562000))
+;;;;;;  (23101 14118 32310 11000))
 ;;; Generated autoloads from evil-colemak-basics.el
 
 (autoload 'evil-colemak-basics-mode "evil-colemak-basics" "\

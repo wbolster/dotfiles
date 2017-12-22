@@ -3,15 +3,15 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "magithub" "magithub.el" (23098 35761 405819
-;;;;;;  434000))
+;;;### (autoloads nil "magithub" "magithub.el" (23101 14161 652520
+;;;;;;  923000))
 ;;; Generated autoloads from magithub.el
  (autoload 'magithub-dispatch-popup "magithub" nil t)
 
 ;;;***
 
-;;;### (autoloads nil "magithub-comment" "magithub-comment.el" (23098
-;;;;;;  35761 417819 337000))
+;;;### (autoloads nil "magithub-comment" "magithub-comment.el" (23101
+;;;;;;  14161 668521 0))
 ;;; Generated autoloads from magithub-comment.el
 
 (autoload 'magithub-comment-new "magithub-comment" "\
@@ -26,8 +26,8 @@ initial contents of the reply if there is no draft.
 
 ;;;***
 
-;;;### (autoloads nil "magithub-dash" "magithub-dash.el" (23098 35761
-;;;;;;  465818 954000))
+;;;### (autoloads nil "magithub-dash" "magithub-dash.el" (23101 14161
+;;;;;;  720521 252000))
 ;;; Generated autoloads from magithub-dash.el
 
 (autoload 'magithub-dashboard "magithub-dash" "\
@@ -38,7 +38,7 @@ View your Github dashboard.
 ;;;***
 
 ;;;### (autoloads nil "magithub-edit-mode" "magithub-edit-mode.el"
-;;;;;;  (23098 35761 357819 815000))
+;;;;;;  (23101 14161 628520 807000))
 ;;; Generated autoloads from magithub-edit-mode.el
 
 (autoload 'magithub-edit-mode "magithub-edit-mode" "\
@@ -49,7 +49,7 @@ Major mode for editing Github issues and pull requests.
 ;;;***
 
 ;;;### (autoloads nil "magithub-issue-tricks" "magithub-issue-tricks.el"
-;;;;;;  (23098 35761 469818 923000))
+;;;;;;  (23101 14161 728521 290000))
 ;;; Generated autoloads from magithub-issue-tricks.el
 
 (autoload 'magithub-pull-request-merge "magithub-issue-tricks" "\
@@ -62,7 +62,7 @@ pull-request object, that object is selected by default.
 ;;;***
 
 ;;;### (autoloads nil "magithub-issue-view" "magithub-issue-view.el"
-;;;;;;  (23098 35761 429819 242000))
+;;;;;;  (23101 14161 684521 77000))
 ;;; Generated autoloads from magithub-issue-view.el
 
 (autoload 'magithub-issue-view "magithub-issue-view" "\
@@ -76,7 +76,7 @@ View ISSUE in a new buffer.
 ;;;;;;  "magithub-issue-post.el" "magithub-issue.el" "magithub-label.el"
 ;;;;;;  "magithub-notification.el" "magithub-orgs.el" "magithub-pkg.el"
 ;;;;;;  "magithub-proxy.el" "magithub-repo.el" "magithub-user.el")
-;;;;;;  (23098 35761 485818 796000))
+;;;;;;  (23101 14161 744521 368000))
 
 ;;;***
 
