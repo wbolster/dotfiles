@@ -1522,7 +1522,7 @@ defined as lowercase."
 (use-package dired
   :ensure nil
   :general
-  (:keymap 'dired-mode-map
+  (:keymaps 'dired-mode-map
    :states '(motion normal)
     "-" #'dired-jump))
 
