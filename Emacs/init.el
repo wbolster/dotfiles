@@ -2020,16 +2020,18 @@ defined as lowercase."
    "<tab>" #'magit-section-cycle
    "C-<tab>" #'magit-section-toggle
    "C-w" 'w--hydra-window/body)
-  (:keymaps 'magit-status-mode-map
-   "q" nil)
-  (:keymaps 'magit-diff-mode-map
-   "SPC" nil
-   "DEL" nil)
   (:keymaps 'magit-blame-mode-map
    :states '(motion normal)
    "C-n" #'magit-blame-next-chunk
    "C-e" #'magit-blame-previous-chunk
-   "C-p" #'magit-blame-previous-chunk))
+   "C-p" #'magit-blame-previous-chunk)
+  (:keymaps 'magit-diff-mode-map
+   "SPC" nil
+   "DEL" nil)
+  (:keymaps 'magit-hunk-section-map
+   "<return>" #'magit-diff-visit-file-other-window)
+  (:keymaps 'magit-status-mode-map
+   "q" nil))
 
 (use-package magithub
   :defer t
