@@ -977,7 +977,6 @@ defined as lowercase."
   (search-default-mode t))
 
 (use-package thingatpt
-  :defer t
   :config
   (defun w--thing-at-point-dwim (&optional deactivate-selection move-to-beginning)
     "Return the active region or the symbol at point."
