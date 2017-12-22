@@ -2079,7 +2079,7 @@ defined as lowercase."
 
 (use-package diff-hl
   :hook
-  (magit-post-refresh-hook . diff-hl-magit-post-refresh)
+  (magit-post-refresh . diff-hl-magit-post-refresh)
   :config
   (w--mark-as-jump-commands
     'diff-hl-next-hunk
