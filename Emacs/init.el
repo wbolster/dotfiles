@@ -1907,9 +1907,9 @@ defined as lowercase."
      command 'ivy-rich-switch-buffer-transformer)))
 
 (use-package counsel
+  :delight
   :config
-  (counsel-mode)
-  :delight)
+  (counsel-mode))
 
 (use-package company
   :delight
