@@ -1415,7 +1415,6 @@ defined as lowercase."
 
 (use-package projectile
   :defer t
-  :hook find-file-hook
   :delight
 
   :custom
@@ -1428,6 +1427,9 @@ defined as lowercase."
 
   :commands
   w--hydra-project/body
+
+  :init
+  (add-hook 'find-file-hook (fn: require 'projectile))
 
   :config
   (projectile-mode)
