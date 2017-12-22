@@ -2897,7 +2897,7 @@ defined as lowercase."
 
 ;;;; local configuration (not in version control)
 
-(load "~/.emacs.d/init-local" t)
+(load (concat user-emacs-directory "init-local") t)
 
 
 (provide 'init)
