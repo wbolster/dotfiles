@@ -1918,7 +1918,8 @@ defined as lowercase."
    "C-n" #'company-select-next
    "C-p" #'company-select-previous
    "C-<return>" #'company-select-next
-   "<tab>" #'company-complete-common-or-cycle)
+   "<tab>" #'company-complete-common-or-cycle
+   "/" #'counsel-company)
   :custom
   (company-auto-complete 'company-explicit-action-p)
   (company-dabbrev-code-everywhere t)
