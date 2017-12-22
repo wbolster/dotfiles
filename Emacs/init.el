@@ -1389,6 +1389,8 @@ defined as lowercase."
 ;;;; text case
 
 (use-package string-inflection
+  :commands
+  w--hydra-text-case/body
   :config
   (w--make-hydra w--hydra-text-case
       (:post w--hydra-evil-repeat-record-command)
