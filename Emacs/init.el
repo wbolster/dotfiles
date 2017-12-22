@@ -234,9 +234,9 @@ defined as lowercase."
   (recentf-auto-cleanup 300)
   (recentf-max-saved-items 500)
   :config
+  (recentf-mode)
   (dolist (dir w--recentf-ignore-dirs)
     (add-to-list 'recentf-exclude (concat (regexp-quote dir) ".*")))
-  (recentf-mode)
 
   (defun w--counsel-recentf-other-window ()
     "Like `counsel-recentf', but opens the file in another window."
