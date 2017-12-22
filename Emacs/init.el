@@ -2524,8 +2524,9 @@ defined as lowercase."
 (use-package help-mode
   :defer t
   :ensure nil
-  :config
-  (define-key help-mode-map "q" nil))
+  :general
+  (:keymaps 'help-mode-map
+   "q" nil))
 
 ;;;; major mode: jinja
 
