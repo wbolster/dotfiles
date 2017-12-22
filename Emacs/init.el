@@ -997,14 +997,15 @@ defined as lowercase."
   :ensure nil
   :init
   (provide 'occur)  ; fake feature since it is actually inside replace.el
+  :general
+  (:keymaps 'occur-mode-map
+   :states '(motion normal)
+   "RET" #'occur-mode-goto-occurrence
+   "C-e" #'occur-prev
+   "C-n" #'occur-next
+   "C-p" #'occur-prev)
   :config
   (evil-set-initial-state 'occur-mode 'motion)
-  (evil-define-key* '(motion normal) occur-mode-map
-    (kbd "RET") 'occur-mode-goto-occurrence
-    (kbd "C-e") 'occur-prev
-    (kbd "C-n") 'occur-next
-    (kbd "C-p") 'occur-prev)
-
   (defun w--occur-mode-hook ()
     (toggle-truncate-lines t)
     (next-error-follow-minor-mode)
