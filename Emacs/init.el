@@ -1068,17 +1068,19 @@ defined as lowercase."
   (swiper-goto-start-of-match t)
   :general
   (:states 'motion
-   "/" 'swiper
-   "g/" 'evil-search-forward)
+   "/" #'swiper
+   "?" #'w--swiper-dwim)
   (:states 'visual
-   "/" 'w--swiper-thing-at-point-dwim))
-
-(defun w--swiper-thing-at-point-dwim ()
-  "Start `swiper` searching for the thing at point."
-  (interactive)
-  (let ((query (w--thing-at-point-dwim)))
-    (evil-force-normal-state)  ; do not expand region in visual mode
-    (swiper query)))
+   "/" 'w--swiper-dwim)
+  :config
+  (defun w--swiper-dwim ()
+    "Start `swiper` searching for the thing at point."
+    (interactive)
+    (let ((query (w--thing-at-point-dwim)))
+      (when evil-visual-state-minor-mode
+        ;; do not expand region in visual mode
+        (evil-normal-state))
+      (swiper query))))
 
 (use-package ag
   :defer t
@@ -1126,10 +1128,7 @@ defined as lowercase."
 
 ;; todo: switch to rg/ripgrep
 ;; (use-package rg)
-;; use / for swiper
-;; use ? for w--swiper-thing-at-point-dwim
-;; use ,/ for rg
-;; use ,? for counsel-rg
+;; perhaps use ,/ for rg hydra?
 
 (use-package highlight-symbol
   :delight
@@ -2276,8 +2275,6 @@ defined as lowercase."
   "_,_ major mode"
   ("," w--major-mode-hydra)
   ("\\" w--major-mode-hydra)
-  "_/_ search"
-  ("/" w--swiper-thing-at-point-dwim)
   "_~_ case"
   ("~" w--hydra-text-case/body)
   ("`" w--hydra-text-case/body))
