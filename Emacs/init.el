@@ -936,14 +936,13 @@ defined as lowercase."
   :ensure nil
   :init
   (provide 'isearch)  ; fake feature for emacs 25
-  :config
-  (setq
-   isearch-allow-prefix nil
-   isearch-forward t  ;; initial direction; useful after swiper
-   lazy-highlight-cleanup nil
-   lazy-highlight-initial-delay 0.5
-   lazy-highlight-max-at-a-time nil
-   search-default-mode t))
+  :custom
+  (isearch-allow-prefix nil)
+  (isearch-forward t)  ;; initial direction; useful after swiper
+  (lazy-highlight-cleanup nil)
+  (lazy-highlight-initial-delay 0.5)
+  (lazy-highlight-max-at-a-time nil)
+  (search-default-mode t))
 
 (use-package thingatpt
   :config
