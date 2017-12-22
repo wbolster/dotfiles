@@ -1095,33 +1095,32 @@ defined as lowercase."
 ;; use ,? for counsel-rg
 
 (use-package highlight-symbol
+  :delight
   :custom
   (highlight-symbol-idle-delay 1.0)
   (highlight-symbol-on-navigation-p t)
-  :delight
   :general
   (:states 'motion
    "C-p" #'highlight-symbol-prev
    "C-n" #'highlight-symbol-next)
   (:states 'normal
    "C-p" #'w--evil-paste-pop-or-highlight-symbol-prev
-   "C-n" #'w--evil-paste-pop-next-or-highlight-symbol-next))
-
-(defun w--evil-paste-pop-or-highlight-symbol-prev (count)
-  "Either paste-pop (with COUNT) or jump to previous symbol occurence."
-  (interactive "p")
-  (condition-case nil
-      (evil-paste-pop count)
-    (user-error
-      (highlight-symbol-prev))))
-
-(defun w--evil-paste-pop-next-or-highlight-symbol-next (count)
-  "Either paste-pop-next (with COUNT) or jump to next symbol occurence."
-  (interactive "p")
-  (condition-case nil
-      (evil-paste-pop-next count)
-    (user-error
-      (highlight-symbol-next))))
+   "C-n" #'w--evil-paste-pop-next-or-highlight-symbol-next)
+  :config
+  (defun w--evil-paste-pop-or-highlight-symbol-prev (count)
+    "Either paste-pop (with COUNT) or jump to previous symbol occurence."
+    (interactive "p")
+    (condition-case nil
+        (evil-paste-pop count)
+      (user-error
+       (highlight-symbol-prev))))
+  (defun w--evil-paste-pop-next-or-highlight-symbol-next (count)
+    "Either paste-pop-next (with COUNT) or jump to next symbol occurence."
+    (interactive "p")
+    (condition-case nil
+        (evil-paste-pop-next count)
+      (user-error
+       (highlight-symbol-next)))))
 
 
 ;;;; previous/next navigation
