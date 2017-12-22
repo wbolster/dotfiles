@@ -1298,14 +1298,17 @@ defined as lowercase."
 
 ;; todo https://github.com/sshaw/copy-as-format/issues/2
 (use-package copy-as-format
-  :config
-  (setq
-   copy-as-format-default "slack"
-   copy-as-format-format-alist  ;; only retain formats i use
+  :general
+  (:states 'visual
+   "Y" #'w--evil-copy-as-format)
+  :custom
+  (copy-as-format-default "slack")
+  (copy-as-format-format-alist  ;; only retain formats i use
    '(("github" copy-as-format--github)
      ("markdown" copy-as-format--markdown)
      ("rst" copy-as-format--rst)
      ("slack" copy-as-format--slack)))
+  :config
   (evil-define-operator w--evil-copy-as-format (beg end type)
     "Evilified version of copy-as-format"
     :move-point nil
@@ -1322,9 +1325,7 @@ defined as lowercase."
         (end-of-line))
       (let ((current-prefix-arg t))
         (copy-as-format))
-      (pop-mark)))
-  (evil-define-key* 'visual global-map
-    "Y" #'w--evil-copy-as-format))
+      (pop-mark))))
 
 
 ;;;; insert state
