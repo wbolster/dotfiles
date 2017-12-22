@@ -239,7 +239,7 @@ defined as lowercase."
   (recentf-mode)
 
   (defun w--counsel-recentf-other-window ()
-    "Like `w--counsel-recentf', but opens the file in another window."
+    "Like `counsel-recentf', but opens the file in another window."
     (interactive)
     (let ((ivy-inhibit-action t))
       (find-file-other-window (counsel-recentf)))))
