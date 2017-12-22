@@ -1509,13 +1509,14 @@ defined as lowercase."
 ;;;; jumping around
 
 (use-package avy
-  :config
-  (setq
-   avy-all-windows nil
-   avy-all-windows-alt t
-   avy-background t
-   avy-keys (string-to-list "arstneio"))
-  (avy-setup-default))
+  :general
+  (:keymaps 'isearch-mode-map
+   "C-'" #'avy-isearch)
+  :custom
+  (avy-all-windows nil)
+  (avy-all-windows-alt t)
+  (avy-background t)
+  (avy-keys (string-to-list "arstneio")))
 
 (use-package dired
   :ensure nil
