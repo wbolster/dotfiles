@@ -477,7 +477,7 @@ defined as lowercase."
   (powerline-default-separator nil))
 
 
-;;;; evil
+;;;; evil and editing
 
 (use-package evil
   :demand t
@@ -488,125 +488,173 @@ defined as lowercase."
   :custom
   (evil-insert-state-message nil)
   (evil-cross-lines t)
-  :config
-  (evil-mode)
-  ;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
-  (evil-add-command-properties 'evil-yank-line :motion 'evil-end-of-line)
   :general
+  (:states 'motion
+   "z z" #'w--hydra-recenter/recenter-top-bottom)
   (:states '(motion normal)
    [escape] #'w--evil-force-normal-state)
+  (:states '(motion normal visual)
+   [remap evil-next-line] #'w--evil-next-line
+   [remap evil-previous-line] #'w--evil-previous-line
+   [remap evil-end-of-line] #'w--evil-end-of-line
+   [remap evil-first-non-blank] #'w--evil-first-non-blank)
+  (:states '(operator visual)
+   "o" #'w--evil-text-object-symbol-dwim
+   "C-a" #'w--evil-text-object-whole-buffer)
+  (:states 'operator
+    ;; the empty text object is a trick to make it possible to
+    ;; quickly swap two text objects using evil-exchange "gx";
+    ;; "gxp" move previously marked text without moving anything
+    ;; back to the original location, or vice versa.
+   "p" #'w--evil-empty-text-object)
+  (:keymaps 'evil-outer-text-objects-map
+   "g" #'w--evil-text-object-whole-buffer)
   (:states 'insert
    (general-chord "qw") #'evil-normal-state
    (general-chord "qq") #'evil-normal-state
-   (general-chord "wq") #'evil-normal-state))
+   (general-chord "wq") #'evil-normal-state
+   "<return>" #'comment-indent-new-line
+   "C-a" #'w--evil-first-non-blank
+   "C-c" #'evil-normal-state
+   "C-d" #'delete-char
+   "C-g" #'evil-normal-state
+   "C-e" #'end-of-visual-line
+   "C-h" [backspace]
+   "C-k" #'w--kill-line-dwim
+   "C-n" #'next-line
+   "C-o" #'evil-normal-state
+   "C-p" #'previous-line
+   "C-t" #'w--evil-transpose-chars
+   "C-v" #'yank  ;; during typing, ctrl-v is "paste", like everywhere else
+   "C-SPC" #'fixup-whitespace
+   "C-," #'evil-shift-left-line  ;; shift line with < and > (same
+   "C-<" #'evil-shift-left-line  ;; chars as in normal mode);
+   "C-." #'evil-shift-right-line ;; used instead of standard vim
+   "C->" #'evil-shift-right-line ;; bindings C-d and C-t.
+   "C-=" #'evil-indent-line)
 
-(defun w--evil-force-normal-state ()
-  "Like `evil-force-normal-state', with some extra cleanups."
-  (interactive)
-  (lazy-highlight-cleanup t)
-  (remove-overlays nil nil 'category 'evil-snipe)
-  (evil-force-normal-state))
-
-(use-package key-chord
   :config
-  (key-chord-mode +1))
+  (evil-mode)
 
-(use-package undo-tree
-  :delight)
+  ;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
+  (evil-add-command-properties 'evil-yank-line :motion 'evil-end-of-line)
+
+  ;; type numbers by holding alt using home row keys and by having a
+  ;; "numpad overlay" starting at the home position for my right hand.
+  (--each (-zip-pair (split-string "arstdhneio'luy7890km.," "" t)
+                     (split-string "87659012345456789000.," "" t))
+    (-let [(key . num) it]
+      (general-define-key
+       :states 'insert
+        (concat "M-" key)
+        (lambda () (interactive) (insert num)))))
+
+  (defun w--evil-force-normal-state ()
+    "Like `evil-force-normal-state', with some extra cleanups."
+    (interactive)
+    (lazy-highlight-cleanup t)
+    (remove-overlays nil nil 'category 'evil-snipe)
+    (evil-force-normal-state))
+
+  (defun w--evil-transpose-chars ()
+    "Invoke 'transpose-chars' on the right chars in insert state."
+    (interactive)
+    (backward-char)
+    (transpose-chars nil)
+    (unless (eolp) (forward-char)))
+
+  (defun w--kill-line-dwim ()
+    "Kill line, or join the next line when at eolp."
+    (interactive)
+    (let ((was-at-eol (eolp)))
+      (kill-line)
+      (when was-at-eol
+        (fixup-whitespace))))
+
+  (evil-define-motion w--evil-next-line (count)
+    (if visual-line-mode
+        (progn
+          (setq evil-this-type 'exclusive)
+          (evil-next-visual-line count))
+      (setq evil-this-type 'line)
+      (evil-next-line count)))
+
+  (evil-define-motion w--evil-previous-line (count)
+    (if visual-line-mode
+        (progn
+          (setq evil-this-type 'exclusive)
+          (evil-previous-visual-line count))
+      (setq evil-this-type 'line)
+      (evil-previous-line count)))
+
+  (evil-define-motion w--evil-end-of-line (count)
+    :type inclusive
+    (if visual-line-mode
+        (evil-end-of-visual-line count)
+      (evil-end-of-line count)))
+
+  (evil-define-motion w--evil-first-non-blank ()
+    :type exclusive
+    (if visual-line-mode
+        (evil-first-non-blank-of-visual-line)
+      (evil-first-non-blank)))
+
+  ;; todo: make "0" work visually in visual line mode. maybe using
+  ;; something like this:
+  ;; (evil-redirect-digit-argument evil-motion-state-map "0" 'evil-beginning-of-line)
+
+  (evil-define-text-object w--evil-text-object-whole-buffer (count &optional beg end type)
+    "Text object for the whole buffer."
+    (evil-range (point-min) (point-max) 'line))
+
+  (evil-define-text-object w--evil-empty-text-object (count &optional beg end type)
+    "Empty text object."
+    (evil-range (point) (point)))
+
+  (evil-define-text-object w--evil-text-object-symbol-dwim (count &optional beg end type)
+    "Intelligently pick evil-inner-symbol or evil-a-symbol."
+    (if (eq this-command 'evil-delete)
+        (evil-a-symbol count)
+      (evil-inner-symbol count)))
+
+  (w--make-hydra w--hydra-recenter (:foreign-keys nil)
+    "recenter"
+    "_b_ottom"
+    ("b" evil-scroll-line-to-bottom)
+    "_c_enter"
+    ("c" evil-scroll-line-to-center)
+    "_t_op"
+    ("t" evil-scroll-line-to-top)
+    "_z_ cycle"
+    ("z" recenter-top-bottom nil :exit nil)))
+
+(use-package evil-args
+  :general
+  (:keymaps 'evil-inner-text-objects-map
+   "a" #'evil-inner-arg)
+  (:keymaps 'evil-outer-text-objects-map
+   "a" #'evil-outer-arg))
 
 (use-package evil-colemak-basics
   :after evil-snipe
+  :delight
   :init
   (setq evil-colemak-basics-char-jump-commands 'evil-snipe)
   :config
-  (global-evil-colemak-basics-mode)
-  :delight)
-
-(defun w--disable-colemak ()
-  "Disable colemak overrides."
-  (evil-colemak-basics-mode -1))
-
-(use-package evil-snipe
-  ;; evil-colemak-basics takes care of the basic key bindings.
-  :custom
-  (evil-snipe-override-evil-repeat-keys nil)
-  (evil-snipe-scope 'line)
-  (evil-snipe-repeat-scope 'line)
-  (evil-snipe-smart-case t)
-  (evil-snipe-tab-increment t)
-  :custom-face
-  (evil-snipe-matches-face ((t (:inherit lazy-highlight)))))
-
-(use-package evil-swap-keys
-  :config
-  (global-evil-swap-keys-mode)
-  :delight " ⇵")
+  (global-evil-colemak-basics-mode))
 
 (use-package evil-commentary
+  :delight
   :config
-  (evil-commentary-mode)
-  :delight)
+  (evil-commentary-mode))
 
 (use-package evil-easymotion
+  :general
+  (:states 'motion
+   "SPC" #'w--hydra-teleport/body)
+
   :config
-  (defun w--avy-evil-change-region ()
-    "Select two lines and change the lines between them."
-    (interactive)
-    (avy-with w--avy-evil-change-region
-      (let* ((beg (progn (avy-goto-line) (point)))
-             (end (save-excursion (goto-char (avy--line)) (forward-line) (point))))
-        (evil-change beg end 'line nil nil))))
-
-  (defun w--avy-evil-delete-line ()
-    "Select a line and delete it."
-    (interactive)
-    (avy-with w--avy-evil-delete-line
-      (save-excursion
-        (let ((line (avy--line)))
-          (unless (eq line t)
-            (goto-char line)
-            (evil-delete-whole-line
-             (point)
-             (line-beginning-position 2)
-             'line nil nil))))))
-
-  (defun w--avy-evil-delete-region ()
-    "Select two lines and delete the lines between them."
-    (interactive)
-    (avy-with w--avy-evil-delete-region
-      (let* ((beg (avy--line))
-             (end (save-excursion (goto-char (avy--line)) (forward-line) (point))))
-        (evil-delete beg end 'line nil nil))))
-
-  (defun w--avy-goto-line-any-window ()
-    "Go to line in any visible window."
-    (interactive)
-    (setq current-prefix-arg 4)
-    (call-interactively 'avy-goto-line))
-
-  (defun w--evil-end-of-next-line ()
-    (interactive)
-    (evil-next-line)
-    (end-of-line))
-
-  (evilem-make-motion-plain
-   w--avy-evil-goto-end-of-line
-   (list 'evil-end-of-line 'w--evil-end-of-next-line)
-   :pre-hook (setq evil-this-type 'line)
-   :bind ((scroll-margin 0))
-   :initial-point (goto-char (window-start)))
-
-  ;; todo: all of this could use some rethinking and cleaning up
-  ;; (evil-define-key* 'normal global-map
-  ;;   (kbd "SPC a") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-append))
-  ;;   (kbd "SPC A") (lambda () (interactive) (w--avy-evil-goto-end-of-line) (call-interactively 'evil-append-line))
-  ;;   (kbd "SPC c") (lambda () (interactive) (avy-goto-line) (evil-first-non-blank) (call-interactively 'evil-change-line))
-  ;;   (kbd "SPC C") 'w--avy-evil-change-region
-  ;;   (kbd "SPC i") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-insert))
-  ;;   (kbd "SPC I") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-insert-line))
-  ;;   (kbd "SPC $") 'w--avy-evil-goto-end-of-line)
-
-  (evilem-default-keybindings "C-M-S-s-<f12>")  ;; fixme: for side effects only
+  (evilem-default-keybindings "C-M-S-s-<f12>")  ;; xxx: for side effects only
   (w--make-hydra w--hydra-teleport nil
     "teleport"
     "_w_,_f_,_b_,_gf_ word"
@@ -642,7 +690,7 @@ defined as lowercase."
     ("O" (progn (avy-goto-line) (call-interactively 'evil-open-above)))
     "_d_ delete"
     ("d" w--avy-evil-delete-line)
-    ("D" w--avy-evil-delete-region)
+    ("D" w--avy-evil-delete-lines)
     "_pd_ move"
     ("pd" (save-excursion (forward-line) (call-interactively 'avy-move-line)))
     ("pD" (save-excursion (forward-line) (call-interactively 'avy-move-region)))
@@ -653,19 +701,66 @@ defined as lowercase."
     ("pY" (save-excursion (forward-line) (call-interactively 'avy-copy-region)))
     ("Py" (save-excursion (call-interactively 'avy-copy-line)))
     ("PY" (save-excursion (call-interactively 'avy-copy-region))))
-  (evil-define-key* 'motion global-map
-    (kbd "SPC") 'w--hydra-teleport/body))
+
+  ;; todo: commented stuff below needs rethinking and cleaning up
+  ;; (evil-define-key* 'normal global-map
+  ;;   (kbd "SPC a") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-append))
+  ;;   (kbd "SPC A") (lambda () (interactive) (w--avy-evil-goto-end-of-line) (call-interactively 'evil-append-line))
+  ;;   (kbd "SPC c") (lambda () (interactive) (avy-goto-line) (evil-first-non-blank) (call-interactively 'evil-change-line))
+  ;;   (kbd "SPC C") 'w--avy-evil-change-region
+  ;;   (kbd "SPC i") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-insert))
+  ;;   (kbd "SPC I") (lambda () (interactive) (avy-goto-line) (call-interactively 'evil-insert-line))
+  ;;   (kbd "SPC $") 'w--avy-evil-goto-end-of-line)
+  ;; (defun w--evil-end-of-next-line ()
+  ;;   (interactive)
+  ;;   (evil-next-line)
+  ;;   (end-of-line))
+  ;; (evilem-make-motion-plain
+  ;;  w--avy-evil-goto-end-of-line
+  ;;  (list 'evil-end-of-line 'w--evil-end-of-next-line)
+  ;;  :pre-hook (setq evil-this-type 'line)
+  ;;  :bind ((scroll-margin 0))
+  ;;  :initial-point (goto-char (window-start)))
+  ;; (defun w--avy-evil-change-region ()
+  ;;   "Select two lines and change the lines between them."
+  ;;   (interactive)
+  ;;   (avy-with w--avy-evil-change-region
+  ;;     (let* ((beg (progn (avy-goto-line) (point)))
+  ;;            (end (save-excursion (goto-char (avy--line)) (forward-line) (point))))
+  ;;       (evil-change beg end 'line nil nil))))
+
+  (defun w--avy-evil-delete-line ()
+    "Select a line and delete it."
+    (interactive)
+    (avy-with w--avy-evil-delete-line
+      (save-excursion
+        (let ((line (avy--line)))
+          (unless (eq line t)
+            (goto-char line)
+            (evil-delete-whole-line
+             (point)
+             (line-beginning-position 2)
+             'line nil nil))))))
+
+  (defun w--avy-evil-delete-lines ()
+    "Select two lines and delete the lines between them."
+    (interactive)
+    (avy-with w--avy-evil-delete-lines
+      (let* ((beg (avy--line))
+             (end (save-excursion (goto-char (avy--line)) (forward-line) (point))))
+        (evil-delete beg end 'line nil nil))))
+
+  (defun w--avy-goto-line-any-window ()
+    "Go to line in any visible window."
+    (interactive)
+    (setq current-prefix-arg 4)
+    (call-interactively 'avy-goto-line)))
 
 (use-package evil-exchange
   :general
   (:states '(normal visual)
    "gx" 'evil-exchange
-   "gX" 'evil-exchange-cancel)
-  ;; quickly swap two text objects using "gx"; the empty text object is
-  ;; a trick to make "gxp" work to move previously marked text without
-  ;; moving anything back to the original location.
-  (:states 'operator
-   "p" #'w--evil-empty-text-object))
+   "gX" 'evil-exchange-cancel))
 
 (use-package evil-goggles
   :config
@@ -679,11 +774,35 @@ defined as lowercase."
   :custom-face
   (evil-goggles-default-face ((t (:inherit highlight)))))
 
+(use-package evil-indent-plus
+  :general
+  (:keymaps 'evil-inner-text-objects-map
+   "i" #'evil-indent-plus-i-indent
+   "i" #'evil-indent-plus-i-indent
+   "J" #'evil-indent-plus-i-indent-up-down
+   "TAB" #'evil-indent-plus-i-indent)
+  (:keymaps 'evil-outer-text-objects-map
+   "i" #'evil-indent-plus-a-indent
+   "I" #'evil-indent-plus-a-indent-up
+   "J" #'evil-indent-plus-a-indent-up-down
+   "TAB" #'evil-indent-plus-a-indent-up))
+
 (use-package evil-numbers
   :general
   (:states 'normal
    "+" #'evil-numbers/inc-at-pt
    "-" #'evil-numbers/dec-at-pt))
+
+(use-package evil-snipe
+  ;; evil-colemak-basics takes care of the basic key bindings.
+  :custom
+  (evil-snipe-override-evil-repeat-keys nil)
+  (evil-snipe-scope 'line)
+  (evil-snipe-repeat-scope 'line)
+  (evil-snipe-smart-case t)
+  (evil-snipe-tab-increment t)
+  :custom-face
+  (evil-snipe-matches-face ((t (:inherit lazy-highlight)))))
 
 (use-package evil-surround
   :config
@@ -712,34 +831,10 @@ defined as lowercase."
    "S" 'evil-surround-region
    "gS" 'evil-Surround-region))
 
-(use-package evil-visualstar
-  :general
-  (:states 'visual
-   "*" #'evil-visualstar/begin-search-forward
-   "#" #'evil-visualstar/begin-search-backward))
-
-
-;;;; text objects
-
-(use-package evil-args
-  :general
-  (:keymaps 'evil-inner-text-objects-map
-   "a" #'evil-inner-arg)
-  (:keymaps 'evil-outer-text-objects-map
-   "a" #'evil-outer-arg))
-
-(use-package evil-indent-plus
-  :general
-  (:keymaps 'evil-inner-text-objects-map
-   "i" #'evil-indent-plus-i-indent
-   "i" #'evil-indent-plus-i-indent
-   "J" #'evil-indent-plus-i-indent-up-down
-   "TAB" #'evil-indent-plus-i-indent)
-  (:keymaps 'evil-outer-text-objects-map
-   "i" #'evil-indent-plus-a-indent
-   "I" #'evil-indent-plus-a-indent-up
-   "J" #'evil-indent-plus-a-indent-up-down
-   "TAB" #'evil-indent-plus-a-indent-up))
+(use-package evil-swap-keys
+  :config
+  (global-evil-swap-keys-mode)
+  :delight " ⇵")
 
 (use-package evil-textobj-anyblock
   ;; todo perhaps replace with https://github.com/noctuid/targets.el
@@ -749,27 +844,18 @@ defined as lowercase."
   (:keymaps 'evil-outer-text-objects-map
    "b" #'evil-textobj-anyblock-a-block))
 
-(evil-define-text-object w--evil-text-object-whole-buffer (count &optional beg end type)
-  "Text object for the whole buffer."
-  (evil-range (point-min) (point-max) 'line))
-
-(evil-define-text-object w--evil-empty-text-object (count &optional beg end type)
-  "Empty text object."
-  (evil-range (point) (point)))
-
-(evil-define-text-object w--evil-text-object-symbol-dwim (count &optional beg end type)
-  "Intelligently pick evil-inner-symbol or evil-a-symbol."
-  (if (eq this-command 'evil-delete)
-      (evil-a-symbol count)
-    (evil-inner-symbol count)))
-
-(use-package evil
+(use-package evil-visualstar
   :general
-  (:states '(operator visual)
-   "o" #'w--evil-text-object-symbol-dwim
-   "C-a" #'w--evil-text-object-whole-buffer)
-  (:keymaps 'evil-outer-text-objects-map
-   "g" #'w--evil-text-object-whole-buffer))
+  (:states 'visual
+   "*" #'evil-visualstar/begin-search-forward
+   "#" #'evil-visualstar/begin-search-backward))
+
+(use-package key-chord
+  :config
+  (key-chord-mode +1))
+
+(use-package undo-tree
+  :delight)
 
 
 ;;;; scrolling
@@ -778,20 +864,6 @@ defined as lowercase."
  indicate-buffer-boundaries 'left
  scroll-conservatively 101
  scroll-margin 5)
-
-(w--make-hydra w--hydra-recenter (:foreign-keys nil)
-  "recenter"
-  "_b_ottom"
-  ("b" evil-scroll-line-to-bottom)
-  "_c_enter"
-  ("c" evil-scroll-line-to-center)
-  "_t_op"
-  ("t" evil-scroll-line-to-top)
-  "_z_ cycle"
-  ("z" recenter-top-bottom nil :exit nil))
-
-(general-define-key :states 'motion
-  "z z" #'w--hydra-recenter/recenter-top-bottom)
 
 
 ;;;; whitespace
@@ -888,44 +960,6 @@ defined as lowercase."
      (t
       (nlinum-mode +1)
       (nlinum-relative-mode -1)))))
-
-(evil-define-motion w--evil-next-line (count)
-  (if visual-line-mode
-      (progn
-        (setq evil-this-type 'exclusive)
-        (evil-next-visual-line count))
-    (setq evil-this-type 'line)
-    (evil-next-line count)))
-
-(evil-define-motion w--evil-previous-line (count)
-  (if visual-line-mode
-      (progn
-        (setq evil-this-type 'exclusive)
-        (evil-previous-visual-line count))
-    (setq evil-this-type 'line)
-    (evil-previous-line count)))
-
-(evil-define-motion w--evil-end-of-line (count)
-  :type inclusive
-  (if visual-line-mode
-      (evil-end-of-visual-line count)
-    (evil-end-of-line count)))
-
-(evil-define-motion w--evil-first-non-blank ()
-  :type exclusive
-  (if visual-line-mode
-      (evil-first-non-blank-of-visual-line)
-    (evil-first-non-blank)))
-
-;; todo: make "0" work visually in visual line mode. maybe using
-;; something like this:
-;; (evil-redirect-digit-argument evil-motion-state-map "0" 'evil-beginning-of-line)
-
-(evil-define-key* '(normal visual) global-map
-  [remap evil-next-line] 'w--evil-next-line
-  [remap evil-previous-line] 'w--evil-previous-line
-  [remap evil-end-of-line] 'w--evil-end-of-line
-  [remap evil-first-non-blank] 'w--evil-first-non-blank)
 
 
 ;;;; search
@@ -1323,67 +1357,6 @@ defined as lowercase."
       (let ((current-prefix-arg t))
         (copy-as-format))
       (pop-mark))))
-
-
-;;;; insert state
-
-(defun w--evil-transpose-chars ()
-  "Invoke 'transpose-chars' on the right chars in insert state."
-  (interactive)
-  (backward-char)
-  (transpose-chars nil)
-  (unless (eolp) (forward-char)))
-
-(defun w--kill-line-dwim ()
-  "Kill line, or join the next line when at eolp."
-  (interactive)
-  (let ((was-at-eol (eolp)))
-    (kill-line)
-    (when was-at-eol
-      (fixup-whitespace))))
-
-(evil-define-key* 'insert global-map
-  (kbd "C-a") 'w--evil-first-non-blank
-  (kbd "C-c") 'evil-normal-state
-  (kbd "C-d") 'delete-char
-  (kbd "C-g") 'evil-normal-state
-  (kbd "C-e") 'end-of-visual-line
-  (kbd "C-h") [backspace]
-  (kbd "C-k") 'w--kill-line-dwim
-  (kbd "C-n") 'next-line  ;; fixme: completion trigger?
-  (kbd "C-o") 'evil-normal-state
-  (kbd "C-p") 'previous-line
-  (kbd "C-t") 'w--evil-transpose-chars)
-
-(evil-define-key* 'insert global-map
-  ;; during typing, ctrl-v is "paste", like everywhere else
-  (kbd "C-v") 'yank)
-
-(evil-define-key* 'insert global-map
-  (kbd "C-SPC") 'fixup-whitespace)
-
-(evil-define-key* 'insert global-map
-  ;; shift line with < and > (same chars as in normal mode;
-  ;; used instead of standard vim bindings C-d and C-t.
-  (kbd "C-,") 'evil-shift-left-line
-  (kbd "C-<") 'evil-shift-left-line
-  (kbd "C-.") 'evil-shift-right-line
-  (kbd "C->") 'evil-shift-right-line)
-
-;; indent on enter, keeping comments open (if any)
-(evil-define-key* 'insert global-map
-  (kbd "RET") 'comment-indent-new-line)
-
-;; type numbers by holding alt using home row keys and by having a
-;; "numpad overlay" starting at the home position for my right hand.
-(--each (-zip-pair (split-string "arstdhneio'luy7890km.," "" t)
-                   (split-string "87659012345456789000.," "" t))
-  (-let [(key . num) it]
-    (evil-define-key*
-     'insert global-map
-     (kbd (concat "M-" key))
-     (lambda () (interactive) (insert num)))))
-
 
 ;;;; text case
 
@@ -2033,7 +2006,7 @@ defined as lowercase."
   :after magit
   :config
   (dolist (hook '(magit-log-mode-hook magit-status-mode-hook ))
-    (add-hook hook #'w--disable-colemak))
+    (add-hook hook (fn (evil-colemak-basics-mode -1))))
   ;; todo: make ,q use the various magit-*-bury-buffer functions, then
   ;; unbind q to force ,q usage.
   :general
