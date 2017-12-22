@@ -1045,6 +1045,14 @@ defined as lowercase."
     (w--set-major-mode-hydra #'w--hydra-occur/body))
   (add-hook 'occur-mode-hook #'w--occur-mode-hook)
 
+  (w--make-hydra w--hydra-occur nil
+    "occur"
+    "_n__e_ nav"
+    ("n" occur-next :exit nil)
+    ("e" occur-prev :exit nil)
+    "_f_ollow"
+    ("f" next-error-follow-minor-mode))
+
   (defun w--occur-dwim (&optional nlines)
     "Call `occur' with a sane default."
     (interactive "P")
@@ -1053,15 +1061,7 @@ defined as lowercase."
                   (regexp-quote (or (w--thing-at-point-dwim) ""))
                   'regexp-history)))
       (occur thing nlines)
-      (evil-force-normal-state)))
-
-  (w--make-hydra w--hydra-occur nil
-    "occur"
-    "_n__e_ nav"
-    ("n" occur-next :exit nil)
-    ("e" occur-prev :exit nil)
-    "_f_ollow"
-    ("f" next-error-follow-minor-mode)))
+      (evil-normal-state))))
 
 (use-package swiper
   :custom
