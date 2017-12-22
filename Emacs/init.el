@@ -1081,11 +1081,29 @@ defined as lowercase."
     (swiper query)))
 
 (use-package ag
+  :defer t
+  :custom
+  (ag-project-root-function 'w--ag-project-root)
+  (ag-reuse-buffers t)
+  :commands
+  w--hydra-ag/body
+  w--counsel-ag-project
+  w--counsel-ag-project-all-files
   :config
-  (setq
-   ag-project-root-function 'w--ag-project-root
-   ag-reuse-buffers t)
   (add-hook 'ag-mode-hook (fn: toggle-truncate-lines t))
+  (w--make-hydra w--hydra-ag nil
+    "ag"
+    "_a_ project"
+    ("a" ag-project)
+    "_f_iles"
+    ("f" ag-project-files)
+    ("F" ag-files)
+    "_g_ project"
+    ("g" ag-project)
+    ("G" ag)
+    "_r_egex"
+    ("r" ag-project-regexp)
+    ("R" ag-regexp))
 
   (defun w--ag-project-root (directory)
     "Find project root for DIRECTORY; used for ag-project-root-function."
@@ -1104,21 +1122,7 @@ defined as lowercase."
   (defun w--counsel-ag-project-all-files ()
     "Run counsel-ag on all files within the project root."
     (interactive)
-    (w--counsel-ag-project t))
-
-  (w--make-hydra w--hydra-ag nil
-    "ag"
-    "_a_ project"
-    ("a" ag-project)
-    "_f_iles"
-    ("f" ag-project-files)
-    ("F" ag-files)
-    "_g_ project"
-    ("g" ag-project)
-    ("G" ag)
-    "_r_egex"
-    ("r" ag-project-regexp)
-    ("R" ag-regexp)))
+    (w--counsel-ag-project t)))
 
 ;; todo: switch to rg/ripgrep
 ;; (use-package rg)
