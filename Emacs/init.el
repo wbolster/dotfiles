@@ -924,7 +924,7 @@ defined as lowercase."
 
 (use-package indent-guide
   :defer t
-  :delight
+  :delight " ⋮"
   :custom
   (indent-guide-char "·")
   (indent-guide-delay 1)
