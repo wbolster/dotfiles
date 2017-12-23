@@ -1412,7 +1412,6 @@ defined as lowercase."
 
   (defun w--projectile-find-file-all (&optional pattern)
     "Find any file in the current project, including ignored files."
-    (require 'projectile)
     (interactive
      (list
       (read-string
@@ -1436,7 +1435,6 @@ defined as lowercase."
   (defun w--projectile-project-bury-buffers ()
     "Quit all windows and bury all buffers for the current project."
     (interactive)
-    (require 'projectile)
     (-each (projectile-project-buffers)
       (lambda (buffer)
         (-each (get-buffer-window-list buffer)
