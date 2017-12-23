@@ -949,7 +949,7 @@ defined as lowercase."
               minibuffer-local-map
               minibuffer-local-must-match-map
               minibuffer-local-ns-map)
-   "<esc>" #'minibuffer-keyboard-quit)
+   "<escape>" #'minibuffer-keyboard-quit)
   :init
   (add-hook 'minibuffer-setup-hook #'w--hide-trailing-whitespace))
 
@@ -1850,7 +1850,7 @@ defined as lowercase."
    "C-u" #'kill-whole-line
    "C-SPC" #'ivy-avy
    "C-<return>" #'ivy-dispatching-done-hydra
-   "<esc>" #'minibuffer-keyboard-quit)
+   "<escape>" #'minibuffer-keyboard-quit)
   :custom
   (ivy-count-format "(%d/%d) ")
   (ivy-height 20)
