@@ -1915,7 +1915,7 @@ defined as lowercase."
       (call-interactively #'indent-for-tab-command))))
 
 
-;;;; version control
+;;;; git / version control
 
 (use-package autorevert
   :config
