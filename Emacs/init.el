@@ -1955,8 +1955,6 @@ defined as lowercase."
   :commands
   w--hydra-git/body
   :config
-  (require 'evil-magit)
-  (require 'magithub)
   (magit-wip-after-save-mode)
   (magit-wip-after-apply-mode)
   (magit-wip-before-change-mode)
@@ -2008,7 +2006,7 @@ defined as lowercase."
     ("!" magit-git-command)))
 
 (use-package evil-magit
-  :defer t
+  :demand t
   :after magit
   :config
   (dolist (hook '(magit-log-mode-hook magit-status-mode-hook ))
@@ -2041,7 +2039,7 @@ defined as lowercase."
    "q" nil))
 
 (use-package magithub
-  :defer t
+  :demand t
   :after magit
   :config
   (magithub-feature-autoinject t)
@@ -2483,7 +2481,6 @@ defined as lowercase."
   :defer t
   :ensure nil
   :config
-  (require 'flycheck-package)
   (defun w--emacs-lisp-mode-hook ()
     (setq evil-shift-width 2)
     (w--set-major-mode-hydra #'w--hydra-emacs-lisp/body)
@@ -2510,7 +2507,8 @@ defined as lowercase."
   :delight)
 
 (use-package flycheck-package
-  :defer t
+  :demand t
+  :after elisp-mode
   :config
   (flycheck-package-setup))
 
@@ -2823,12 +2821,11 @@ defined as lowercase."
   (setq pip-packages '(this is a fake package listing)))
 
 (use-package cython-mode
-  :defer t
-  :config
-  (require 'flycheck-cython))
+  :defer t)
 
 (use-package flycheck-cython
-  :defer t)
+  :demand t
+  :after cython-mode)
 
 
 ;;;; major-mode: restructuredtext
