@@ -2147,31 +2147,31 @@ defined as lowercase."
 ;;;; flycheck
 
 (use-package flycheck
-  :config
-  (global-flycheck-mode)
   :custom
   (flycheck-checker-error-threshold 1000)
   (flycheck-display-errors-delay 1.0)
   (flycheck-idle-change-delay 3)
-  (flycheck-mode-line-prefix "✓"))
+  (flycheck-mode-line-prefix "✓")
+  :config
+  (global-flycheck-mode)
 
-(w--make-hydra w--hydra-flycheck nil
-  "flycheck"
-  "_c_ errors"
-  ("c" flycheck-list-errors)
-  ("o" flycheck-list-errors)
-  "_n_/_e_/_p_ nav"
-  ("n" flycheck-next-error nil :exit nil)
-  ("e" flycheck-previous-error nil :exit nil)
-  ("p" flycheck-previous-error nil :exit nil)
-  "_t_oggle"
-  ("t" flycheck-mode))
+  (w--make-hydra w--hydra-flycheck nil
+    "flycheck"
+    "_c_ errors"
+    ("c" flycheck-list-errors)
+    ("o" flycheck-list-errors)
+    "_n_/_e_/_p_ nav"
+    ("n" flycheck-next-error nil :exit nil)
+    ("e" flycheck-previous-error nil :exit nil)
+    ("p" flycheck-previous-error nil :exit nil)
+    "_t_oggle"
+    ("t" flycheck-mode))
 
-(defun w--flycheck-last-error ()
-  "Jump to the last flycheck error."
-  (interactive)
-  (goto-char (point-max))
-  (flycheck-previous-error))
+  (defun w--flycheck-last-error ()
+    "Jump to the last flycheck error."
+    (interactive)
+    (goto-char (point-max))
+    (flycheck-previous-error)))
 
 
 ;;;; toggles
