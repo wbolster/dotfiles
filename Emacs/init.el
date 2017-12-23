@@ -1893,7 +1893,7 @@ defined as lowercase."
    "C-p" #'company-select-previous
    "C-<return>" #'company-select-next
    "<tab>" #'company-complete-common-or-cycle
-   "/" #'counsel-company)
+   "/" #'w--company-switch-to-counsel-company)
   :custom
   (company-auto-complete 'company-explicit-action-p)
   (company-dabbrev-code-everywhere t)
@@ -1912,7 +1912,11 @@ defined as lowercase."
     (interactive)
     (if (looking-at "\\_>")
         (company-manual-begin)
-      (call-interactively #'indent-for-tab-command))))
+      (call-interactively #'indent-for-tab-command)))
+  (defun w--company-switch-to-counsel-company ()
+    (interactive)
+    (company-abort)
+    (counsel-company)))
 
 
 ;;;; git / version control
