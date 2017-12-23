@@ -628,6 +628,29 @@ defined as lowercase."
     "_z_ cycle"
     ("z" recenter-top-bottom nil :exit nil)))
 
+(use-package drag-stuff
+  :general
+  (:states 'visual
+   "C-h" #'w--evil-visual-shift-left
+   "C-n" #'drag-stuff-down
+   "C-e" #'drag-stuff-up
+   "C-i" #'w--evil-visual-shift-right)
+  :config
+  (defun w--evil-visual-restore-line-wise ()
+    (evil-normal-state)
+    (evil-visual-restore)
+    (evil-visual-line))
+  (evil-define-operator w--evil-visual-shift-left (beg end &optional count)
+    :type line
+    (interactive "<r><vc>")
+    (evil-shift-left beg end count)
+    (w--evil-visual-restore-line-wise))
+  (evil-define-operator w--evil-visual-shift-right (beg end &optional count)
+    :type line
+    (interactive "<r><vc>")
+    (evil-shift-right beg end count)
+    (w--evil-visual-restore-line-wise)))
+
 (use-package evil-args
   :general
   (:keymaps 'evil-inner-text-objects-map
@@ -1267,29 +1290,6 @@ defined as lowercase."
   :defer t
   :delight
   (outline-minor-mode " ‣"))
-
-
-;;;; move lines
-
-(use-package drag-stuff
-  :config
-  (evil-define-key* 'normal global-map
-    (kbd "M-n") 'drag-stuff-down
-    (kbd "M-e") 'drag-stuff-up
-    (kbd "M-h") 'evil-shift-left-line
-    (kbd "M-i") 'evil-shift-right-line)
-  ;; todo: C-[hnei] in visual mode?
-  (evil-define-key* 'visual global-map
-    (kbd "M-h") (lambda (beg end)
-                  (interactive "r")
-                  (evil-shift-left beg end)
-                  (evil-force-normal-state)
-                  (call-interactively 'evil-visual-restore))
-    (kbd "M-i") (lambda (beg end)
-                  (interactive "r")
-                  (evil-shift-right beg end)
-                  (evil-force-normal-state)
-                  (call-interactively 'evil-visual-restore))))
 
 
 ;;;; expand-region
