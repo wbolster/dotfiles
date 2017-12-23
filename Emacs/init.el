@@ -2295,8 +2295,9 @@ defined as lowercase."
 
 (use-package helpful
   :general
-  ("C-h f" 'helpful-callable)
-  ("C-h v" 'helpful-variable))
+  ("C-h f" #'helpful-callable)
+  ("C-h v" #'helpful-variable)
+  ("C-h k" #'helpful-key)
 
 
 ;;;; custom
