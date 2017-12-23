@@ -1250,10 +1250,12 @@ defined as lowercase."
    (kbd "C-0") #'syntactic-close))
 
 
-;;;; filling
+;;;; text wrapping and filling
 
 (use-package emacs
-  :delight (auto-fill-function " ↲"))
+  :delight
+  (auto-fill-function " ↲")
+  (visual-line-mode " ⇉"))
 
 (defun w--evil-fill-paragraph-dwim ()
   "Fill the current paragraph."
