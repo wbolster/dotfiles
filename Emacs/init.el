@@ -2409,12 +2409,20 @@ defined as lowercase."
 
 (use-package compile
   :defer t
+  :custom
+  (compilation-always-kill t)
+  :general
+  (:keymaps 'compilation-mode-map
+   :states '(motion normal)
+   "C-e" #'compilation-previous-error
+   "C-n" #'compilation-next-error
+   "C-p" #'compilation-previous-error)
+
   :config
-  (setq compilation-always-kill t)
-  (evil-define-key* '(motion normal) compilation-mode-map
-    (kbd "C-e") 'compilation-previous-error
-    (kbd "C-n") 'compilation-next-error
-    (kbd "C-p") 'compilation-previous-error)
+  (w--make-hydra w--hydra-compilation nil
+    "compilation"
+    "_r_ecompile"
+    ("r" recompile))
 
   (defun w--compilation-mode-hook ()
     (w--hide-trailing-whitespace)
@@ -2424,38 +2432,36 @@ defined as lowercase."
   (defun w--compilation-finished (buffer status)
     (with-current-buffer buffer
       (evil-normal-state)))
-  (add-hook 'compilation-finish-functions #'w--compilation-finished)
 
-  (w--make-hydra w--hydra-compilation nil
-    "compilation"
-    "_r_ecompile"
-    ("r" recompile)))
+  (add-hook 'compilation-finish-functions #'w--compilation-finished))
 
 (use-package comint
   :defer t
   :ensure nil
+  :custom
+  (comint-move-point-for-output 'all)
+  :general
+  (:keymaps 'comint-mode-map
+   "<escape>" #'evil-normal-state)
+  (:keymaps 'comint-mode-map
+   :states 'normal
+   "<return>" #'w--comint-goto-end
+   "C-e" #'comint-previous-prompt
+   "C-n" #'comint-next-prompt
+   "C-p" #'comint-previous-prompt)
+  (:keymaps 'comint-mode-map
+   :states 'insert
+   "<return>" #'comint-send-input
+   "C-n" #'comint-next-input
+   "C-p" #'comint-previous-input)
   :config
-  (setq comint-move-point-for-output 'all)
   (add-hook 'comint-mode-hook #'w--compilation-mode-hook)
   (evil-set-initial-state 'comint-mode 'insert)
-  ;; fixme use :bind
+
   (defun w--comint-goto-end ()
     (interactive)
     (goto-char (point-max))
-    (call-interactively #'evil-append))
-  (define-key comint-mode-map
-    (kbd "ESC") #'evil-normal-state)
-  (evil-define-key*
-   'normal comint-mode-map
-   (kbd "RET") 'w--comint-goto-end
-   (kbd "C-e") 'comint-previous-prompt
-   (kbd "C-n") 'comint-next-prompt
-   (kbd "C-p") 'comint-previous-prompt)
-  (evil-define-key*
-   'insert comint-mode-map
-   (kbd "RET") 'comint-send-input
-   (kbd "C-n") 'comint-next-input
-   (kbd "C-p") 'comint-previous-input))
+    (call-interactively #'evil-append)))
 
 
 ;;;; major mode: docker
