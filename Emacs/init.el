@@ -2298,6 +2298,11 @@ defined as lowercase."
   ("C-h f" #'helpful-callable)
   ("C-h v" #'helpful-variable)
   ("C-h k" #'helpful-key)
+  (:keymaps 'helpful-mode-map
+   :states 'normal
+   "gr" #'helpful-update
+   "<tab>" #'helpful-forward-button
+   "S-<tab>" #'helpful-backward-button))
 
 
 ;;;; custom
