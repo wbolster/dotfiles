@@ -927,7 +927,7 @@ defined as lowercase."
   :delight
   :custom
   (indent-guide-char "·")
-  (indent-guide-delay 0)
+  (indent-guide-delay 1)
   (indent-guide-recursive t)
   (indent-guide-threshold 7)
   :custom-face
