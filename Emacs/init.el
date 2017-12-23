@@ -2283,7 +2283,8 @@ defined as lowercase."
   ("~" w--hydra-text-case/body)
   ("`" w--hydra-text-case/body))
 
-(evil-define-key* 'motion global-map
+(general-define-key
+ :states 'motion
   "," #'w--hydra-leader/body
   "\\" #'w--hydra-leader/body)
 
