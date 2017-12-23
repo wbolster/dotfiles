@@ -2202,8 +2202,8 @@ defined as lowercase."
   "_t_runcate"
   ("t" toggle-truncate-lines)
   "_v_isual-line"
-  ("V" toggle-word-wrap)
   ("v" visual-line-mode)
+  ("V" toggle-word-wrap)
   "_w_riteroom"
   ("w" writeroom-mode)
   ("W" (progn
