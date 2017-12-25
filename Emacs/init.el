@@ -1622,7 +1622,8 @@ defined as lowercase."
  help-window-select t
  split-height-threshold nil
  split-width-threshold 120
- split-window-preferred-function 'visual-fill-column-split-window-sensibly)
+ split-window-preferred-function 'visual-fill-column-split-window-sensibly
+ switch-to-buffer-in-dedicated-window 'pop)
 
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
