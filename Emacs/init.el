@@ -1876,7 +1876,7 @@ defined as lowercase."
    "C-w" #'ivy-backward-kill-word
    "C-u" #'kill-whole-line
    "C-SPC" #'ivy-avy
-   "C-<return>" #'ivy-dispatching-done-hydra
+   "C-<return>" #'ivy-dispatching-done-hydra  ;; alternative actions
    "<escape>" #'minibuffer-keyboard-quit)
   :custom
   (ivy-count-format "(%d/%d) ")
