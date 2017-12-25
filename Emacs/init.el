@@ -483,6 +483,7 @@ defined as lowercase."
   :demand t
   :init
   (setq
+   evil-respect-visual-line-mode t
    evil-want-C-u-scroll t
    evil-want-C-w-in-emacs-state t)
   :custom
