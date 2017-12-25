@@ -678,40 +678,39 @@ defined as lowercase."
    "SPC" #'w--hydra-teleport/body)
 
   :config
-  (evilem-default-keybindings "C-M-S-s-<f12>")  ;; xxx: for side effects only
   (w--make-hydra w--hydra-teleport nil
     "teleport"
     "_w_,_f_,_b_,_gf_ word"
-    ("w" evilem--motion-function-evil-forward-word-begin)
-    ("W" evilem--motion-function-evil-forward-WORD-begin)
-    ("f" evilem--motion-function-evil-forward-word-end)
-    ("F" evilem--motion-function-evil-forward-WORD-end)
-    ("b" evilem--motion-function-evil-backward-word-begin)
-    ("B" evilem--motion-function-evil-backward-WORD-begin)
-    ("gf" evilem--motion-function-evil-backward-word-end)
-    ("gF" evilem--motion-function-evil-backward-WORD-end)
+    ("w" evilem-motion-forward-word-begin)
+    ("W" evilem-motion-forward-WORD-begin)
+    ("f" evilem-motion-forward-word-end)
+    ("F" evilem-motion-forward-WORD-end)
+    ("b" evilem-motion-backward-word-begin)
+    ("B" evilem-motion-backward-WORD-begin)
+    ("gf" evilem-motion-backward-word-end)
+    ("gF" evilem-motion-backward-WORD-end)
     "_n_,_e_,_l_ line"
-    ("e" evilem--motion-function-previous-line)
-    ("E" avy-goto-line-above)
-    ("n" evilem--motion-function-next-line)
-    ("N" avy-goto-line-below)
-    ("l" avy-goto-line)
+    ("e" evilem-motion-previous-line)
+    ("E" evil-avy-goto-line-above)
+    ("n" evilem-motion-next-line)
+    ("N" evil-avy-goto-line-below)
+    ("l" evil-avy-goto-line)
     ("L" w--avy-goto-line-any-window)
     "_t_,_j_,_SPC_ char"
-    ("SPC" avy-goto-char-timer)
-    ("S-SPC" (avy-goto-char-timer t))
-    ("t" evilem--motion-evil-find-char)
-    ("T" evilem--motion-evil-find-char-to)
-    ("j" evilem--motion-evil-find-char-backward)
-    ("J" evilem--motion-evil-find-char-to-backward)
+    ("SPC" evil-avy-goto-char-timer)
+    ("S-SPC" (evil-avy-goto-char-timer t))
+    ("t" evilem-motion-find-char)
+    ("T" evilem-motion-find-char-to)
+    ("j" evilem-motion-find-char-backward)
+    ("J" evilem-motion-find-char-to-backward)
     "_k_,_K_,_/_,_?_ search"
-    ("k" evilem--motion-function-evil-search-next)
-    ("K" evilem--motion-function-evil-search-previous)
-    ("/" evilem--motion-function-evil-search-next)
-    ("?" evilem--motion-function-evil-search-previous)
+    ("k" evilem-motion-search-next)
+    ("K" evilem-motion-search-previous)
+    ("/" evilem-motion-search-next)
+    ("?" evilem-motion-search-previous)
     "_o_ new line"
-    ("o" (progn (avy-goto-line) (call-interactively 'evil-open-below)))
-    ("O" (progn (avy-goto-line) (call-interactively 'evil-open-above)))
+    ("o" (progn (evil-avy-goto-line) (call-interactively 'evil-open-below)))
+    ("O" (progn (evil-avy-goto-line) (call-interactively 'evil-open-above)))
     "_d_ delete"
     ("d" w--avy-evil-delete-line)
     ("D" w--avy-evil-delete-lines)
@@ -725,6 +724,33 @@ defined as lowercase."
     ("pY" (save-excursion (forward-line) (call-interactively 'avy-copy-region)))
     ("Py" (save-excursion (call-interactively 'avy-copy-line)))
     ("PY" (save-excursion (call-interactively 'avy-copy-region))))
+
+  ;; declare generated heads that just jump around as evil motions, so
+  ;; that they can be used for jumping around in visual state.
+  (mapc
+   'evil-declare-motion
+   '(w--hydra-teleport/evilem-motion-forward-word-begin-and-exit
+     w--hydra-teleport/evilem-motion-forward-WORD-begin-and-exit
+     w--hydra-teleport/evilem-motion-forward-word-end-and-exit
+     w--hydra-teleport/evilem-motion-forward-WORD-end-and-exit
+     w--hydra-teleport/evilem-motion-backward-word-begin-and-exit
+     w--hydra-teleport/evilem-motion-backward-WORD-begin-and-exit
+     w--hydra-teleport/evilem-motion-backward-word-end-and-exit
+     w--hydra-teleport/evilem-motion-backward-WORD-end-and-exit
+     w--hydra-teleport/evilem-motion-previous-line-and-exit
+     w--hydra-teleport/evil-avy-goto-line-above-and-exit
+     w--hydra-teleport/evilem-motion-next-line-and-exit
+     w--hydra-teleport/evil-avy-goto-line-below-and-exit
+     w--hydra-teleport/evil-avy-goto-line-and-exit
+     w--hydra-teleport/evil-avy-goto-char-timer-and-exit
+     w--hydra-teleport/evilem-motion-find-char-and-exit
+     w--hydra-teleport/evilem-motion-find-char-to-and-exit
+     w--hydra-teleport/evilem-motion-find-char-backward-and-exit
+     w--hydra-teleport/evilem-motion-find-char-to-backward-and-exit
+     w--hydra-teleport/evilem-motion-search-next-and-exit
+     w--hydra-teleport/evilem-motion-search-previous-and-exit
+     w--hydra-teleport/evilem-motion-search-next-and-exit
+     w--hydra-teleport/evilem-motion-search-previous-and-exit))
 
   ;; todo: commented stuff below needs rethinking and cleaning up
   ;; (evil-define-key* 'normal global-map
