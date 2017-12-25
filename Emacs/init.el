@@ -2510,6 +2510,8 @@ defined as lowercase."
   :config
   (defun w--emacs-lisp-mode-hook ()
     (setq evil-shift-width 2)
+    (make-variable-buffer-local 'evil-lookup-func)
+    (setq evil-lookup-func (lambda () (call-interactively 'helpful-symbol)))
     (w--set-major-mode-hydra #'w--hydra-emacs-lisp/body)
     ;; (evil-cleverparens-mode)  ;; fixme: useless with colemak
     (rainbow-delimiters-mode))
