@@ -931,6 +931,26 @@ defined as lowercase."
    "*" #'evil-visualstar/begin-search-forward
    "#" #'evil-visualstar/begin-search-backward))
 
+(use-package expand-region
+  :custom
+  (expand-region-fast-keys-enabled nil)
+  :general
+  (:states 'visual
+   "<tab>" #'w--hydra-expand-region/er/expand-region)
+  :init
+  (when (display-graphic-p)
+    ;; avoid clashes with ctrl-i
+    (define-key function-key-map [tab] nil))
+  :config
+  (w--make-hydra w--hydra-expand-region (:foreign-keys run)
+    "expand-region"
+    "_<tab>_ expand"
+    ("<tab>" er/expand-region :exit nil)
+    "_u_ndo"
+    ("u" (er/expand-region -1) :exit nil)
+    "_r_eset"
+    ("r" (er/expand-region 0) :exit t)))
+
 (use-package key-chord
   :config
   (key-chord-mode +1))
@@ -1350,23 +1370,6 @@ defined as lowercase."
   :defer t
   :delight
   (outline-minor-mode " ‣"))
-
-
-;;;; expand-region
-
-(use-package expand-region
-  :config
-  (setq expand-region-fast-keys-enabled nil)
-  (evil-define-key* 'visual global-map
-    (kbd "TAB") 'w--hydra-expand-region/er/expand-region)
-  (w--make-hydra w--hydra-expand-region nil
-    "expand-region"
-    "_<tab>_ expand"
-    ("<tab>" er/expand-region :exit nil)
-    "_u_ndo"
-    ("u" (er/expand-region -1) :exit nil)
-    "_r_eset"
-    ("r" (er/expand-region 0) :exit t)))
 
 
 ;;;; narrowing
