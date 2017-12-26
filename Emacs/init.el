@@ -958,6 +958,21 @@ defined as lowercase."
 (use-package undo-tree
   :delight)
 
+(defun w--narrow-dwim ()
+  "Narrow (or widen) to defun or region."
+  (interactive)
+  (cond
+   ((region-active-p)
+    (narrow-to-region (region-beginning) (region-end))
+    (deactivate-mark)
+    (message "Showing region only"))
+   ((buffer-narrowed-p)
+    (widen)
+    (message "Showing everything"))
+   (t
+    (narrow-to-defun)
+    (message "Showing defun only"))))
+
 
 ;;;; scrolling
 
@@ -1370,24 +1385,6 @@ defined as lowercase."
   :defer t
   :delight
   (outline-minor-mode " ‣"))
-
-
-;;;; narrowing
-
-(defun w--narrow-dwim ()
-  "Narrow (or widen) to defun or region."
-  (interactive)
-  (cond
-   ((region-active-p)
-    (narrow-to-region (region-beginning) (region-end))
-    (deactivate-mark)
-    (message "Showing region only"))
-   ((buffer-narrowed-p)
-    (widen)
-    (message "Showing everything"))
-   (t
-    (narrow-to-defun)
-    (message "Showing defun only"))))
 
 
 ;;;; copy-as-format
