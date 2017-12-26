@@ -752,6 +752,37 @@ defined as lowercase."
      w--hydra-teleport/evilem-motion-search-next-and-exit
      w--hydra-teleport/evilem-motion-search-previous-and-exit))
 
+  ;; make the basic motions also work in evil operator state
+  (defvar w--teleport-motion-keymap (make-sparse-keymap)
+    "Keymap with basic avy/easymotion jumps.")
+  (general-define-key
+   :keymaps 'w--teleport-motion-keymap
+    "w" #'evilem-motion-forward-word-begin
+    "W" #'evilem-motion-forward-WORD-begin
+    "f" #'evilem-motion-forward-word-end
+    "F" #'evilem-motion-forward-WORD-end
+    "b" #'evilem-motion-backward-word-begin
+    "B" #'evilem-motion-backward-WORD-begin
+    "gf" #'evilem-motion-backward-word-end
+    "gF" #'evilem-motion-backward-WORD-end
+    "e" #'evilem-motion-previous-line
+    "E" #'evil-avy-goto-line-above
+    "n" #'evilem-motion-next-line
+    "N" #'evil-avy-goto-line-below
+    "l" #'evil-avy-goto-line
+    "SPC" #'evil-avy-goto-char-timer
+    "t" #'evilem-motion-find-char
+    "T" #'evilem-motion-find-char-to
+    "j" #'evilem-motion-find-char-backward
+    "J" #'evilem-motion-find-char-to-backward
+    "k" #'evilem-motion-search-next
+    "K" #'evilem-motion-search-previous
+    "/" #'evilem-motion-search-next
+    "?" #'evilem-motion-search-previous)
+  (general-define-key
+   :states 'operator
+    "SPC" w--teleport-motion-keymap)
+
   ;; todo: commented stuff below needs rethinking and cleaning up
   ;; (evil-define-key* 'normal global-map
   ;;   (kbd "SPC a") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-append))
