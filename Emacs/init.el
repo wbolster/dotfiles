@@ -885,6 +885,12 @@ defined as lowercase."
   :custom-face
   (evil-snipe-matches-face ((t (:inherit lazy-highlight)))))
 
+(use-package evil-string-inflection
+  :general
+  (:keymaps 'normal
+   "g~" #'evil-operator-string-inflection
+   "g`" #'evil-operator-string-inflection))
+
 (use-package evil-surround
   :config
   (evil-add-to-alist
@@ -1419,30 +1425,6 @@ defined as lowercase."
       (let ((current-prefix-arg t))
         (copy-as-format))
       (pop-mark))))
-
-;;;; text case
-
-(use-package string-inflection
-  :commands
-  w--hydra-text-case/body
-  :config
-  (w--make-hydra w--hydra-text-case
-      (:post w--hydra-evil-repeat-record-command)
-    "text case"
-    "_c_ycle"
-    ("c" string-inflection-all-cycle)
-    ("`" string-inflection-all-cycle)
-    ("~" string-inflection-all-cycle)
-    "_a_ camel"
-    ("a" string-inflection-camelcase)
-    ("A" string-inflection-lower-camelcase)
-    "_l_isp"
-    ("l" string-inflection-lisp)
-    "_s_nake"
-    ("s" string-inflection-underscore)
-    ("S" string-inflection-upcase)
-    "_u_pper"
-    ("u" string-inflection-upcase)))
 
 
 ;;;; projects
@@ -2335,10 +2317,7 @@ defined as lowercase."
   ("SPC" whitespace-cleanup)
   "_,_ major mode"
   ("," w--major-mode-hydra)
-  ("\\" w--major-mode-hydra)
-  "_~_ case"
-  ("~" w--hydra-text-case/body)
-  ("`" w--hydra-text-case/body))
+  ("\\" w--major-mode-hydra))
 
 (general-define-key
  :states 'motion
