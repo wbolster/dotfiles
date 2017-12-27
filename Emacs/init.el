@@ -2524,6 +2524,7 @@ defined as lowercase."
     (setq evil-lookup-func (lambda () (call-interactively 'helpful-symbol)))
     (w--set-major-mode-hydra #'w--hydra-emacs-lisp/body)
     ;; (evil-cleverparens-mode)  ;; fixme: useless with colemak
+    (highlight-parentheses-mode -1)
     (rainbow-delimiters-mode))
   (add-hook 'emacs-lisp-mode-hook 'w--emacs-lisp-mode-hook)
   (w--make-hydra w--hydra-emacs-lisp nil
