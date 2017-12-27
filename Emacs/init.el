@@ -676,6 +676,12 @@ defined as lowercase."
   :general
   (:states 'motion
    "SPC" #'w--hydra-teleport/body)
+  :commands
+  evilem-make-motion
+  evilem-make-motion-plain
+  evilem-create
+  evilem-create-plain
+  evilem-define
 
   :config
   (w--make-hydra w--hydra-teleport nil
