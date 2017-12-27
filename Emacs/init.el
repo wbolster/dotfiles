@@ -2420,7 +2420,6 @@ defined as lowercase."
   :defer t
   :config
   (defun w--prog-mode-hook ()
-    (abbrev-mode)
     (evil-swap-keys-swap-number-row)
     (auto-fill-mode)
     (column-number-mode)
