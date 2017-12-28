@@ -1297,9 +1297,10 @@ defined as lowercase."
   (interactive)
   (condition-case err (while t (next-error)) (user-error nil)))
 
-(evil-define-key* '(motion normal) global-map
-  (kbd "[ SPC") (lambda () (interactive) (save-excursion (evil-insert-newline-above)))
-  (kbd "] SPC") (lambda () (interactive) (save-excursion (evil-insert-newline-below)))
+(general-define-key
+ :states '(motion normal)
+  "[ SPC" (lambda () (interactive) (save-excursion (evil-insert-newline-above)))
+  "] SPC" (lambda () (interactive) (save-excursion (evil-insert-newline-below)))
   "[b" 'evil-prev-buffer
   "]b" 'evil-next-buffer
   "[c" 'flycheck-previous-error
@@ -1322,8 +1323,8 @@ defined as lowercase."
   "]w" 'evil-window-next
   "[z" 'outline-previous-visible-heading
   "]z" 'outline-next-visible-heading
-  (kbd "C-,") 'evil-prev-buffer
-  (kbd "C-.") 'evil-next-buffer)
+  "C-," 'evil-prev-buffer
+  "C-." 'evil-next-buffer)
 
 
 ;;;; parens
