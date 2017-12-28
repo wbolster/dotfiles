@@ -2693,8 +2693,20 @@ defined as lowercase."
 (use-package python
   :defer t
   :interpreter ("python" . python-mode)
-  :config
+  :general
+  (:keymaps 'python-mode-map
+   :states 'normal
+   [remap evil-join] #'w--evil-join-python
+   [backspace] 'python-nav-backward-up-list)
+  (:keymaps 'python-mode-map
+   :states 'insert
+   "C-l" 'multi-line)
+  (:keymaps 'python-mode-map
+   :states '(operator visual)
+   "H" 'python-nav-backward-sexp-safe
+   "I" 'python-nav-forward-sexp-safe)
 
+  :config
   (dolist (open '("(" "{" "["))
     (sp-local-pair
      'python-mode open nil
@@ -2707,26 +2719,23 @@ defined as lowercase."
     (evil-swap-keys-swap-underscore-dash)
     (outline-minor-mode)
     (python-docstring-mode))
-
   (add-hook 'python-mode-hook 'w--python-mode-hook)
 
-  (evilem-make-motion
-   w--easymotion-python
-   (list
-    ;; Collect interesting positions around point, and all visible
-    ;; blocks in the window. Results are ordered: forward after point,
-    ;; then backward from point.
-    'python-nav-end-of-statement 'python-nav-end-of-block 'python-nav-forward-block
-    'python-nav-beginning-of-statement 'python-nav-beginning-of-block 'python-nav-backward-block)
-   :pre-hook (setq evil-this-type 'line))
-
+  ;; todo: integrate this with the global easymotion hydra
+  ;; (evilem-make-motion
+  ;;  w--easymotion-python
+  ;;  (list
+  ;;   ;; Collect interesting positions around point, and all visible
+  ;;   ;; blocks in the window. Results are ordered: forward after point,
+  ;;   ;; then backward from point.
+  ;;   'python-nav-end-of-statement 'python-nav-end-of-block 'python-nav-forward-block
+  ;;   'python-nav-beginning-of-statement 'python-nav-beginning-of-block 'python-nav-backward-block)
+  ;;  :pre-hook (setq evil-this-type 'line))
   ;; (evil-define-key* 'motion python-mode-map
   ;;   (kbd "SPC TAB") 'w--easymotion-python)
-
-  (defun w--swiper-python-definitions ()
-    (interactive)
-    (swiper "^\\s-*\\(def\\|class\\)\\s- "))
-
+  ;; (defun w--swiper-python-definitions ()
+  ;;   (interactive)
+    ;; (swiper "^\\s-*\\(def\\|class\\)\\s- "))
   ;; (evil-define-key* 'motion python-mode-map
   ;;   (kbd "SPC /") 'w--swiper-python-definitions)
 
@@ -2760,26 +2769,6 @@ defined as lowercase."
         ;; remove trailing comma (e.g. after last function argument)
         ;; when joining any closing paren from the next line.
         (delete-char -1)))))
-
-  (evil-define-key* 'normal python-mode-map
-    [remap evil-join] 'w--evil-join-python)
-
-  (use-package evil-text-object-python
-    :config
-    (defun w--evil-forward-char-or-python-statement (count)
-      "Intelligently pick a statement or a character."
-      (interactive "p")
-      (cond
-       ((eq this-command 'evil-change)
-        (evil-text-object-python-inner-statement count))
-       ((memq this-command '(evil-delete evil-shift-left evil-shift-right))
-        (evil-text-object-python-outer-statement count))
-       (t (evil-forward-char count))))
-    (evil-define-key* '(operator visual) python-mode-map
-      "ul" 'evil-text-object-python-inner-statement
-      "al" 'evil-text-object-python-outer-statement)
-    (evil-define-key* 'operator python-mode-map
-      [remap evil-forward-char] 'w--evil-forward-char-or-python-statement))
 
   (defun w--python-insert-statement (position statement)
     "Insert a new STATEMENT before or after the statement at point."
@@ -2846,18 +2835,30 @@ defined as lowercase."
     ("t" w--pytest nil)
     ("T" (w--pytest t) nil)
     "_v_ariable"
-    ("v" w--python-refactor-make-variable nil))
+    ("v" w--python-refactor-make-variable nil)))
 
-  (evil-define-key* 'insert python-mode-map
-    (kbd "C-l") 'multi-line)
-
-  (evil-define-key* '(operator visual) python-mode-map
-    "H" 'python-nav-backward-sexp-safe
-    ;; "L" 'python-nav-forward-sexp-safe  ;; qwerty
-    "I" 'python-nav-forward-sexp-safe)
-
-  (evil-define-key* 'normal python-mode-map
-    [backspace] 'python-nav-backward-up-list))
+(use-package evil-text-object-python
+  :demand t
+  :after python
+  :general
+  (:keymaps 'python-mode-map
+   :states '(operator visual)
+   "ul" #'evil-text-object-python-inner-statement
+   "al" #'evil-text-object-python-outer-statement)
+  (:keymaps 'python-mode-map
+   :states 'operator
+   [remap evil-forward-char] #'w--evil-forward-char-or-python-statement)
+  :config
+  (defun w--evil-forward-char-or-python-statement (count)
+    "Intelligently pick a statement or a character."
+    (interactive "p")
+    (cond
+     ((eq this-command 'evil-change)
+      (evil-text-object-python-inner-statement count))
+     ((memq this-command '(evil-delete evil-shift-left evil-shift-right))
+      (evil-text-object-python-outer-statement count))
+     (t
+      (evil-forward-char count)))))
 
 (use-package python-docstring
   :defer t
