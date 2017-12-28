@@ -2882,22 +2882,26 @@ defined as lowercase."
 
 (use-package rst
   :defer t
-  :config
-  (setq
-   rst-default-indent 0
-   rst-indent-comment 2
-   rst-indent-field 2
-   rst-indent-literal-normal 2
-   rst-preferred-adornments '((?= over-and-under 0)
+  :custom
+  (rst-default-indent 0)
+  (rst-indent-comment 2)
+  (rst-indent-field 2)
+  (rst-indent-literal-normal 2)
+  (rst-preferred-adornments '((?= over-and-under 0)
                               (?= simple 0)
                               (?- simple 0)
                               (?~ simple 0)
                               (?+ simple 0)
                               (?` simple 0)
                               (?# simple 0)
-                              (?@ simple 0))
-   rst-preferred-bullets '(?- ?*))
+                              (?@ simple 0)))
+  (rst-preferred-bullets '(?- ?*))
+  :general
+  (:keymaps 'rst-mode-map
+   :states 'insert
+   "'" #'w--typo-cycle-quotation-marks)
 
+  :config
   (defun w--rst-mode-hook ()
     (setq
      evil-shift-width 2
@@ -2906,17 +2910,15 @@ defined as lowercase."
     (modify-syntax-entry ?_ "w")
     (evil-swap-keys-swap-question-mark-slash)
     (typo-mode)
-    (evil-define-key*
-     'insert rst-mode-map
-     "'" #'w--typo-cycle-quotation-marks)
     (make-variable-buffer-local 'typo-mode-map)
     (define-key typo-mode-map "`" nil))
   (add-hook 'rst-mode-hook 'w--rst-mode-hook)
 
-  (evilem-make-motion
-   w--easymotion-rst
-   (list 'rst-forward-section 'rst-backward-section)
-   :pre-hook (setq evil-this-type 'line))
+  ;; todo: integrate this with the global easymotion hydra
+  ;; (evilem-make-motion
+  ;;  w--easymotion-rst
+  ;;  (list 'rst-forward-section 'rst-backward-section)
+  ;;  :pre-hook (setq evil-this-type 'line))
   ;; (evil-define-key* 'motion rst-mode-map
   ;;   (kbd "SPC TAB") 'w--easymotion-rst)
 
