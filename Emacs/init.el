@@ -2336,14 +2336,15 @@ defined as lowercase."
 
 (use-package helpful
   :general
-  ("C-h f" #'helpful-callable)
-  ("C-h v" #'helpful-variable)
-  ("C-h k" #'helpful-key)
+  (:prefix "C-h"
+   "f" #'helpful-callable
+   "v" #'helpful-variable
+   "k" #'helpful-key)
   (:keymaps 'helpful-mode-map
    :states 'normal
    "gr" #'helpful-update
-   "<tab>" #'helpful-forward-button
-   "S-<tab>" #'helpful-backward-button))
+   "<tab>" #'forward-button
+   "S-<tab>" #'backward-button))
 
 
 ;;;; custom
