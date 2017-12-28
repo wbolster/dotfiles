@@ -1851,7 +1851,8 @@ defined as lowercase."
   ("-" evil-window-decrease-width nil :exit nil))
 
 ;; replace evil-window-map completely
-(evil-define-key* '(emacs motion) global-map
+(general-define-key
+ :states '(emacs motion)
   (kbd "C-w") 'w--hydra-window/body)
 
 
