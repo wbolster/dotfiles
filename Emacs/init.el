@@ -2616,17 +2616,19 @@ defined as lowercase."
 
 (use-package markdown-mode
   :defer t
+  :custom
+  (markdown-asymmetric-header t)
+  :general
+  (:keymaps 'markdown-mode-map
+   :states 'insert
+   "'" #'w--typo-cycle-quotation-marks)
   :config
-  (setq markdown-asymmetric-header t)
   (defun w--markdown-mode-hook ()
     (setq
      evil-shift-width 2
      fill-column 999999)
     (w--set-major-mode-hydra #'w--hydra-markdown/body)
     (evil-swap-keys-swap-question-mark-slash)
-    (evil-define-key*
-     'insert markdown-mode-map
-     "'" #'w--typo-cycle-quotation-marks)
     (make-variable-buffer-local 'typo-mode-map)
     (define-key typo-mode-map "`" nil))
   (add-hook 'markdown-mode-hook 'w--markdown-mode-hook)
