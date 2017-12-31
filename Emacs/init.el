@@ -2255,7 +2255,7 @@ defined as lowercase."
   ("w" writeroom-mode)
   ("W" (progn
          (delete-other-windows)
-         (writeroom-mode 'toggle)))
+         (writeroom-mode)))
   "_SPC_ whitespace"
   ("SPC" whitespace-mode)
   ("S-SPC" w--toggle-show-trailing-whitespace)
