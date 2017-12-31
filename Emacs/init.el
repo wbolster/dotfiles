@@ -1315,10 +1315,12 @@ defined as lowercase."
   "]E" 'w--last-error
   "[m" 'smerge-prev
   "]m" 'smerge-next
-  "[s" 'highlight-symbol-prev
-  "]s" 'highlight-symbol-next
-  "[S" 'highlight-symbol-prev-in-defun
-  "]S" 'highlight-symbol-next-in-defun
+  "[o" 'highlight-symbol-prev
+  "]o" 'highlight-symbol-next
+  "[O" 'highlight-symbol-prev-in-defun
+  "]O" 'highlight-symbol-next-in-defun
+  "]s" (lambda () (interactive) (evil-forward-word) (call-interactively 'evil-next-flyspell-error))
+  "[s" 'evil-prev-flyspell-error
   "[w" 'evil-window-prev
   "]w" 'evil-window-next
   "[z" 'outline-previous-visible-heading
