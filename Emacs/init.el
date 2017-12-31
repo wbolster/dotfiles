@@ -2164,6 +2164,7 @@ defined as lowercase."
   :custom
   (writeroom-global-effects nil)
   (writeroom-maximize-window nil)
+  (writeroom-mode-line t)
   :commands
   w--writeroom-narrower
   w--writeroom-wider
