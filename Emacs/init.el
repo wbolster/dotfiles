@@ -2652,7 +2652,17 @@ defined as lowercase."
     "_i_mage"
     ("i" markdown-insert-image)
     "_n_umber"
-    ("n" markdown-cleanup-list-numbers)))
+    ("n" markdown-cleanup-list-numbers)
+    "_q_uote"
+    ("q" w--markdown-blockquote-dwim))
+  (defun w--markdown-blockquote-dwim ()
+    (interactive)
+    (if (region-active-p)
+        (call-interactively #'markdown-blockquote-region)
+      (save-excursion
+        (markdown-blockquote-region
+         (line-beginning-position)
+         (line-end-position))))))
 
 
 ;;;; major mode: latex
