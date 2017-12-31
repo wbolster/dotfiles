@@ -2619,6 +2619,11 @@ defined as lowercase."
   :defer t
   :custom
   (markdown-asymmetric-header t)
+  :custom-face
+  (markdown-comment-face
+   ((t (:inherit font-lock-comment-face
+        :foreground unspecified
+        :strike-through unspecified))))
   :general
   (:keymaps 'markdown-mode-map
    :states 'insert
