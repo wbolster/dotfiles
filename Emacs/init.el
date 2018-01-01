@@ -494,6 +494,8 @@ defined as lowercase."
   :custom
   (evil-insert-state-message nil)
   (evil-cross-lines t)
+  ;; state tag before position info, which smart-mode-line put elsewhere
+  (evil-mode-line-format '(before . mode-line-front-space))
   :general
   (:states 'motion
    "z z" #'w--hydra-recenter/recenter-top-bottom)
