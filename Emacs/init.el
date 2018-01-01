@@ -2248,6 +2248,8 @@ defined as lowercase."
          (column-number-mode 'toggle)))
   "_o_utline"
   ("o" outline-minor-mode)
+  "_s_pell"
+  ("s" flyspell-mode)
   "_t_runcate"
   ("t" toggle-truncate-lines)
   "_v_isual-line"
