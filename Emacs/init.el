@@ -470,11 +470,16 @@ defined as lowercase."
 
 (use-package delight)
 
-(use-package powerline
-  :config
-  (powerline-center-evil-theme)
+(use-package smart-mode-line
   :custom
-  (powerline-default-separator nil))
+  (sml/line-number-format "%l")
+  (sml/col-number-format "%c")
+  (sml/modified-char "‼")
+  (sml/name-width '(1 . 40))
+  (sml/projectile-replacement-format "%s:")
+  (sml/use-projectile-p 'before-prefixes)
+  :config
+  (sml/setup))
 
 
 ;;;; evil and editing
