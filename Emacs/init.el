@@ -219,6 +219,8 @@ defined as lowercase."
 (use-package desktop
   :config
   (desktop-save-mode)
+  (add-to-list 'desktop-globals-to-save 'swiper-history)
+  (add-to-list 'desktop-globals-to-clear 'swiper-history)
   :custom
   (desktop-restore-eager 5))
 
@@ -474,6 +476,8 @@ defined as lowercase."
   :custom
   (sml/line-number-format "%l")
   (sml/col-number-format "%c")
+  (sml/mode-width 0)
+  (sml/shorten-modes nil)
   (sml/modified-char "‼")
   (sml/name-width '(1 . 40))
   (sml/projectile-replacement-format "%s:")
