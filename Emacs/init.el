@@ -485,6 +485,12 @@ defined as lowercase."
   :config
   (sml/setup))
 
+(use-package which-func
+  :ensure nil
+  :config
+  (dolist (s '("[" "]"))
+    (setq which-func-format (remove s which-func-format))))
+
 
 ;;;; evil and editing
 
