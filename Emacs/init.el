@@ -1007,7 +1007,6 @@ defined as lowercase."
 
 (setq-default
  indent-tabs-mode nil
- show-trailing-whitespace t
  tab-width 4)
 
 (use-package whitespace
@@ -1020,12 +1019,6 @@ defined as lowercase."
       " ⎵"))
   :config
   (global-whitespace-cleanup-mode))
-
-(defun w--hide-trailing-whitespace ()
-  "Helper to hide trailing whitespace, intended for mode hooks."
-  (setq show-trailing-whitespace nil))
-
-(add-hook 'buffer-menu-mode-hook 'w--hide-trailing-whitespace)
 
 (defun w--toggle-show-trailing-whitespace ()
   "Toggle `show-trailing-whitespace`."
@@ -1059,9 +1052,7 @@ defined as lowercase."
               minibuffer-local-map
               minibuffer-local-must-match-map
               minibuffer-local-ns-map)
-   "<escape>" #'minibuffer-keyboard-quit)
-  :init
-  (add-hook 'minibuffer-setup-hook #'w--hide-trailing-whitespace))
+   "<escape>" #'minibuffer-keyboard-quit))
 
 
 ;;;; line navigation
@@ -2016,7 +2007,6 @@ defined as lowercase."
   (magit-wip-before-change-mode)
   (add-to-list 'magit-repository-directories '("~/Projects/" . 2))
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
-  (add-hook 'magit-popup-mode-hook 'w--hide-trailing-whitespace)
   (defun w--magit-status-other-repository ()
     "Open git status for another repository."
     (interactive)
@@ -2412,6 +2402,7 @@ defined as lowercase."
   :config
   ;; todo: use adaptive-wrap-prefix-mode in addition to visual-line-mode
   (defun w--text-mode-hook ()
+    (setq show-trailing-whitespace t)
     (auto-fill-mode)
     (guess-language-mode)
     (visual-line-mode))
@@ -2437,6 +2428,7 @@ defined as lowercase."
   :defer t
   :config
   (defun w--prog-mode-hook ()
+    (setq show-trailing-whitespace t)
     (evil-swap-keys-swap-number-row)
     (auto-fill-mode)
     (column-number-mode)
@@ -2483,7 +2475,6 @@ defined as lowercase."
     ("r" recompile))
 
   (defun w--compilation-mode-hook ()
-    (w--hide-trailing-whitespace)
     (w--set-major-mode-hydra #'w--hydra-compilation/body))
   (add-hook 'compilation-mode-hook #'w--compilation-mode-hook)
 
