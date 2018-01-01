@@ -289,6 +289,9 @@ defined as lowercase."
   "_b_uffer"
   ("b" ivy-switch-buffer)
   ("B" ivy-switch-buffer-other-window)
+  "_c_lone"
+  ("c" clone-indirect-buffer)
+  ("C" clone-indirect-buffer-other-window)
   "_h_ide"
   ("h" bury-buffer)
   ("H" unbury-buffer)
