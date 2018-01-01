@@ -2226,6 +2226,8 @@ defined as lowercase."
   "_b_ackgound"
   ("b" w--toggle-dark-light-theme)
   ("B" w--set-theme-from-environment)
+  "_c_ flycheck"
+  ("c" flycheck-mode)
   "_d_iff"
   ("d" diff-hl-mode)
   "_f_ill"
