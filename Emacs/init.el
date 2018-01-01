@@ -560,6 +560,9 @@ defined as lowercase."
   ;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
   (evil-add-command-properties 'evil-yank-line :motion 'evil-end-of-line)
 
+  ;; major modes may use a different lookup function
+  (make-variable-buffer-local 'evil-lookup-func)
+
   ;; type numbers by holding alt using home row keys and by having a
   ;; "numpad overlay" starting at the home position for my right hand.
   (--each (-zip-pair (split-string "arstdhneio'luy7890km.," "" t)
@@ -2350,21 +2353,6 @@ defined as lowercase."
   "\\" #'w--hydra-leader/body)
 
 
-;;;; help
-
-(use-package helpful
-  :general
-  (:prefix "C-h"
-   "f" #'helpful-callable
-   "v" #'helpful-variable
-   "k" #'helpful-key)
-  (:keymaps 'helpful-mode-map
-   :states 'normal
-   "gr" #'helpful-update
-   "<tab>" #'forward-button
-   "S-<tab>" #'backward-button))
-
-
 ;;;; custom
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
@@ -2546,9 +2534,9 @@ defined as lowercase."
   :ensure nil
   :config
   (defun w--emacs-lisp-mode-hook ()
-    (setq evil-shift-width 2)
-    (make-variable-buffer-local 'evil-lookup-func)
-    (setq evil-lookup-func (lambda () (call-interactively 'helpful-symbol)))
+    (setq
+     evil-lookup-func 'w--helpful-evil-lookup-func
+     evil-shift-width 2)
     (w--set-major-mode-hydra #'w--hydra-emacs-lisp/body)
     ;; (evil-cleverparens-mode)  ;; fixme: useless with colemak
     (highlight-parentheses-mode -1)
@@ -2599,7 +2587,37 @@ defined as lowercase."
   :ensure nil
   :general
   (:keymaps 'help-mode-map
-   "q" nil))
+   "q" nil)
+  :config
+  (defun w--help-mode-hook ()
+    (setq evil-lookup-func 'w--helpful-evil-lookup-func))
+  (add-hook 'help-mode-hook 'w--help-mode-hook))
+
+
+;;;; major mode: helpful
+
+(use-package helpful
+  :general
+  (:prefix "C-h"
+   "f" #'helpful-callable
+   "v" #'helpful-variable
+   "k" #'helpful-key)
+  (:keymaps 'helpful-mode-map
+   :states 'normal
+   "gr" #'helpful-update
+   "<tab>" #'forward-button
+   "S-<tab>" #'backward-button)
+  :commands
+  w--helpful-evil-lookup-func
+  :config
+  (defun w--helpful-mode-hook ()
+    (setq
+     evil-lookup-func 'w--helpful-evil-lookup-func
+     evil-shift-width 2))
+  (add-hook 'helpful-mode-hook 'w--helpful-mode-hook)
+  (defun w--helpful-evil-lookup-func ()
+    (call-interactively #'helpful-symbol)))
+
 
 ;;;; major mode: jinja
 
