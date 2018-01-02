@@ -500,8 +500,8 @@ defined as lowercase."
   :config
   (defun w--which-func-cleanup-function (s)
     (->> s
-     (s-chop-prefix "[")
-     (s-chop-suffix "]")))
+         (s-chop-prefix "[")
+         (s-chop-suffix "]")))
   (setq
    which-func-cleanup-function #'w--which-func-cleanup-function
    which-func-unknown nil))
