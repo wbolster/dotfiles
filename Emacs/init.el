@@ -485,6 +485,9 @@ defined as lowercase."
   (sml/name-width '(1 . 40))
   (sml/projectile-replacement-format "%s:")
   (sml/use-projectile-p 'before-prefixes)
+  :custom-face
+  (mode-line ((t (:height 0.8))))
+  (mode-line-inactive ((t (:inherit mode-line))))
   :config
   (sml/setup))
 
