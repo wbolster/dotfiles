@@ -960,7 +960,7 @@ defined as lowercase."
 (use-package evil-swap-keys
   :config
   (global-evil-swap-keys-mode)
-  :delight " ⇵")
+  :delight " ↧")
 
 (use-package evil-textobj-anyblock
   ;; todo perhaps replace with https://github.com/noctuid/targets.el
