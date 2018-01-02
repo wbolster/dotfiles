@@ -1042,9 +1042,7 @@ defined as lowercase."
 
 (use-package whitespace-cleanup-mode
   :delight
-  '(:eval
-    (unless whitespace-cleanup-mode-initially-clean
-      " ⎵"))
+  '(:eval (unless whitespace-cleanup-mode-initially-clean " ⎵"))
   :config
   (global-whitespace-cleanup-mode))
 
