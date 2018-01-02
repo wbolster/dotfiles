@@ -493,6 +493,7 @@ defined as lowercase."
 
 (use-package which-func
   :ensure nil
+  :defer t
   :custom-face
   (which-func ((t (:foreground unspecified))))
   :config
