@@ -66,6 +66,7 @@
  disabled-command-function nil
  echo-keystrokes 0.5
  inhibit-startup-screen t
+ initial-major-mode 'text-mode
  initial-scratch-message nil)
 
 ;; no gnu/agitprop kthxbye
