@@ -2405,7 +2405,7 @@ defined as lowercase."
 
 (use-package typo
   :defer t
-  :delight "”"
+  :delight " ”"
   :config
   (setq-default typo-language "prefer-single")
   (add-to-list 'typo-quotation-marks '("prefer-single" "‘" "’" "“" "”"))
