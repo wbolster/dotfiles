@@ -1354,7 +1354,7 @@ defined as lowercase."
 ;;;; parens
 
 (use-package smartparens
-  :delight
+  :delight " )"
   :config
   (require 'smartparens-config)
   (smartparens-global-mode)
@@ -2289,6 +2289,11 @@ defined as lowercase."
   ("!" global-evil-swap-keys-mode)
   "_._ indent-guide"
   ("." indent-guide-mode)
+  "_(_ smartparens"
+  ("9" smartparens-mode)
+  ("(" smartparens-mode)
+  ("0" smartparens-mode)
+  (")" smartparens-mode)
   "_=_ balanced-windows"
   ("=" w--balanced-windows-mode))
 
