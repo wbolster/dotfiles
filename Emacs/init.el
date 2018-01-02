@@ -701,9 +701,10 @@ defined as lowercase."
   (global-evil-colemak-basics-mode))
 
 (use-package evil-commentary
-  :delight
-  :config
-  (evil-commentary-mode))
+  :general
+  (:states 'normal
+   "gc" #'evil-commentary
+   "gy" #'evil-commentary-yank))
 
 (use-package evil-easymotion
   :general
