@@ -1995,11 +1995,11 @@ defined as lowercase."
 ;;;; git / version control
 
 (use-package autorevert
-  :config
-  (global-auto-revert-mode)
+  :delight auto-revert-mode
   :custom
   (auto-revert-check-vc-info t)
-  :delight (auto-revert-mode" ↶"))
+  :config
+  (global-auto-revert-mode))
 
 (use-package magit
   :defer t
