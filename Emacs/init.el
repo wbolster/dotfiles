@@ -1382,6 +1382,14 @@ defined as lowercase."
   (auto-fill-function " ↲")
   (visual-line-mode " ⇉"))
 
+(use-package adaptive-wrap
+  :defer t
+  :init
+  (add-hook 'visual-line-mode-hook #'w--activate-adaptive-wrap-prefix-mode)
+  :config
+  (defun w--activate-adaptive-wrap-prefix-mode ()
+    (adaptive-wrap-prefix-mode (if visual-line-mode 1 -1))))
+
 (defun w--evil-fill-paragraph-dwim ()
   "Fill the current paragraph."
   (interactive)
@@ -2410,7 +2418,6 @@ defined as lowercase."
   :ensure nil
   :defer t
   :config
-  ;; todo: use adaptive-wrap-prefix-mode in addition to visual-line-mode
   (defun w--text-mode-hook ()
     (setq show-trailing-whitespace t)
     (auto-fill-mode)
