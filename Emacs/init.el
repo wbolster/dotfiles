@@ -2260,18 +2260,16 @@ defined as lowercase."
          (column-number-mode 'toggle)))
   "_o_utline"
   ("o" outline-minor-mode)
-  "_s_pell"
-  ("s" flyspell-mode)
-  "_t_runcate"
-  ("t" toggle-truncate-lines)
-  "_v_isual-line"
-  ("v" visual-line-mode)
-  ("V" toggle-word-wrap)
-  "_w_riteroom"
-  ("w" writeroom-mode)
-  ("W" (progn
+  "_r_ writeroom"
+  ("r" writeroom-mode)
+  ("R" (progn
          (delete-other-windows)
          (writeroom-mode)))
+  "_s_pell"
+  ("s" flyspell-mode)
+  "_w_rapping"
+  ("w" visual-line-mode)
+  ("W" toggle-truncate-lines)
   "_SPC_ whitespace"
   ("SPC" whitespace-mode)
   ("S-SPC" w--toggle-show-trailing-whitespace)
