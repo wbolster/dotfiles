@@ -1114,10 +1114,7 @@ defined as lowercase."
 
 ;;;; search
 
-(use-package isearch
-  :ensure nil
-  :init
-  (provide 'isearch)  ; fake feature for emacs 25
+(use-package emacs  ;; isearch
   :custom
   (isearch-allow-prefix nil)
   (isearch-forward t)  ;; initial direction; useful after swiper
@@ -1144,10 +1141,7 @@ defined as lowercase."
         (deactivate-mark))
       thing)))
 
-(use-package replace
-  :ensure nil
-  :init
-  (provide 'replace)  ; fake feature for emacs 25
+(use-package emacs  ;; replace
   :config
   (defun w--query-replace-thing-at-point-dwim ()
     "Return 'query-replace' for the active region or the symbol at point."
@@ -1175,10 +1169,7 @@ defined as lowercase."
     ("q" query-replace)
     ("Q" query-replace-regexp)))
 
-(use-package occur
-  :ensure nil
-  :init
-  (provide 'occur)  ; fake feature since it is actually inside replace.el
+(use-package emacs  ;; occur
   :general
   (:keymaps 'occur-mode-map
    :states '(motion normal)
