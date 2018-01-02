@@ -664,6 +664,10 @@ defined as lowercase."
     "_z_ cycle"
     ("z" recenter-top-bottom nil :exit nil)))
 
+(use-package aggressive-indent
+  :defer t
+  :delight " ⇥")
+
 (use-package drag-stuff
   :general
   (:states 'visual
@@ -2538,6 +2542,7 @@ defined as lowercase."
      evil-shift-width 2)
     (w--set-major-mode-hydra #'w--hydra-emacs-lisp/body)
     ;; (evil-cleverparens-mode)  ;; fixme: useless with colemak
+    (aggressive-indent-mode)
     (highlight-parentheses-mode -1)
     (rainbow-delimiters-mode))
   (add-hook 'emacs-lisp-mode-hook 'w--emacs-lisp-mode-hook)
@@ -2637,6 +2642,7 @@ defined as lowercase."
      js-indent-level 2
      evil-shift-width tab-width)
     (w--set-major-mode-hydra #'w--hydra-json/body)
+    (aggressive-indent-mode)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-double-single-quotes))
   (add-hook 'json-mode-hook #'w--json-mode-hook)
