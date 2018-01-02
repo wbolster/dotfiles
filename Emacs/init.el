@@ -2215,7 +2215,7 @@ defined as lowercase."
   (flycheck-checker-error-threshold 1000)
   (flycheck-display-errors-delay 1.0)
   (flycheck-idle-change-delay 3)
-  (flycheck-mode-line-prefix "✓")
+  (flycheck-mode-line-prefix "✔")
   :config
   (global-flycheck-mode)
 
