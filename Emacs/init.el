@@ -982,10 +982,6 @@ defined as lowercase."
   :general
   (:states 'visual
    "<tab>" #'w--hydra-expand-region/er/expand-region)
-  :init
-  (when (display-graphic-p)
-    ;; avoid clashes with ctrl-i
-    (define-key function-key-map [tab] nil))
   :config
   (w--make-hydra w--hydra-expand-region (:foreign-keys run)
     "expand-region"
