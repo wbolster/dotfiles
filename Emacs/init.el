@@ -2708,7 +2708,7 @@ defined as lowercase."
     (w--set-major-mode-hydra #'w--hydra-markdown/body)
     (evil-swap-keys-swap-question-mark-slash)
     (typo-mode +1)
-    (make-variable-buffer-local 'typo-mode-map)
+    (make-local-variable 'typo-mode-map)
     (define-key typo-mode-map "`" nil)
     (visual-line-mode))
   (add-hook 'markdown-mode-hook 'w--markdown-mode-hook)
@@ -3001,7 +3001,7 @@ defined as lowercase."
     (modify-syntax-entry ?_ "w")
     (evil-swap-keys-swap-question-mark-slash)
     (typo-mode)
-    (make-variable-buffer-local 'typo-mode-map)
+    (make-local-variable 'typo-mode-map)
     (define-key typo-mode-map "`" nil))
   (add-hook 'rst-mode-hook 'w--rst-mode-hook)
 
