@@ -2262,9 +2262,6 @@ defined as lowercase."
   "_l_ine"
   ("l" hl-line-mode)
   ("L" global-hl-line-mode)
-  "_m_aximize"
-  ("m" toggle-frame-maximized)
-  ("M" toggle-frame-fullscreen)
   "_n_umber"
   ("n" w--line-numbers-cycle)
   ("N" (progn
