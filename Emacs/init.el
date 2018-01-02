@@ -978,6 +978,7 @@ defined as lowercase."
    "#" #'evil-visualstar/begin-search-backward))
 
 (use-package expand-region
+  :defer t
   :custom
   (expand-region-fast-keys-enabled nil)
   :general
