@@ -417,26 +417,26 @@ defined as lowercase."
    "C-=" 'default-text-scale-increase)
   :config
   (when (display-graphic-p)
-    (add-hook 'after-init-hook #'w--default-text-scale-reset)))
+    (add-hook 'after-init-hook #'w--default-text-scale-reset))
 
-(defvar w--default-text-scale-height
-  (face-attribute 'default :height)  ;; inherit from startup environment
-  "The default text scale height.")
+  (defvar w--default-text-scale-height
+    (face-attribute 'default :height)  ;; inherit from startup environment
+    "The default text scale height.")
 
-(if (<= w--default-text-scale-height 60)
-    ;; when started as an emacs daemon process, the default face's
-    ;; height attribute is bogus. use a sane default in that case.
-    (setq w--default-text-scale-height 100))
+  (if (<= w--default-text-scale-height 60)
+      ;; when started as an emacs daemon process, the default face's
+      ;; height attribute is bogus. use a sane default in that case.
+      (setq w--default-text-scale-height 100))
 
-(defun w--default-text-scale-reset ()
-  "Reset default text scale."
-  (interactive)
-  (w--default-text-scale-set w--default-text-scale-height))
+  (defun w--default-text-scale-reset ()
+    "Reset default text scale."
+    (interactive)
+    (w--default-text-scale-set w--default-text-scale-height))
 
-(defun w--default-text-scale-set (height)
-  "Set default text scale to HEIGHT."
-  (interactive "nHeight (e.g. 110) ")
-  (default-text-scale-increment (- height (face-attribute 'default :height))))
+  (defun w--default-text-scale-set (height)
+    "Set default text scale to HEIGHT."
+    (interactive "nHeight (e.g. 110) ")
+    (default-text-scale-increment (- height (face-attribute 'default :height)))))
 
 (defvar w--faces-bold '(magit-popup-argument)
   "Faces that may retain their bold appearance.")
