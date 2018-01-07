@@ -535,10 +535,10 @@ defined as lowercase."
    "o" #'w--evil-text-object-symbol-dwim
    "C-a" #'w--evil-text-object-whole-buffer)
   (:states 'operator
-    ;; the empty text object is a trick to make it possible to
-    ;; quickly swap two text objects using evil-exchange "gx";
-    ;; "gxp" move previously marked text without moving anything
-    ;; back to the original location, or vice versa.
+   ;; the empty text object is a trick to make it possible to
+   ;; quickly swap two text objects using evil-exchange "gx";
+   ;; "gxp" move previously marked text without moving anything
+   ;; back to the original location, or vice versa.
    "p" #'w--evil-empty-text-object)
   (:keymaps 'evil-outer-text-objects-map
    "g" #'w--evil-text-object-whole-buffer)
