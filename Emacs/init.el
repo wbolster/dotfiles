@@ -2554,6 +2554,22 @@ defined as lowercase."
     (call-interactively #'evil-append)))
 
 
+;;;; major mode: customize
+
+(use-package cus-edit
+  :ensure nil
+  :general
+  (:keymaps 'custom-mode-map
+   :states 'normal
+   "<return>" #'Custom-newline
+   "C-e" #'widget-backward
+   "C-n" #'widget-forward
+   "C-p" #'widget-backward
+   "ZZ" #'Custom-buffer-done)
+  :config
+  (evil-set-initial-state 'Custom-mode 'normal))
+
+
 ;;;; major mode: docker
 
 (use-package dockerfile-mode
