@@ -495,16 +495,13 @@ defined as lowercase."
 (use-package which-func
   :ensure nil
   :defer t
+  :custom
+  (which-func-unknown "")
   :custom-face
   (which-func ((t (:foreground unspecified))))
   :config
-  (defun w--which-func-cleanup-function (s)
-    (->> s
-         (s-chop-prefix "[")
-         (s-chop-suffix "]")))
-  (setq
-   which-func-cleanup-function #'w--which-func-cleanup-function
-   which-func-unknown nil))
+  (dolist (s '("[" "]"))
+    (setq which-func-format (remove s which-func-format))))
 
 
 ;;;; evil and editing
