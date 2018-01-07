@@ -401,6 +401,10 @@ defined as lowercase."
  evil-replace-state-cursor (list solarized-color-red 'hbar)
  evil-operator-state-cursor (list solarized-color-magenta 'hollow))
 
+(use-package dimmer
+  :config
+  (dimmer-mode))
+
 
 ;;;; fonts
 
