@@ -2479,8 +2479,7 @@ defined as lowercase."
     ;; (show-paren-mode)  ; fixme: needed?
     (highlight-parentheses-mode)
     (highlight-symbol-mode)
-    (indent-guide-mode)
-    (which-function-mode))
+    (indent-guide-mode))
   (add-hook 'prog-mode-hook 'w--prog-mode-hook))
 
 
@@ -2576,7 +2575,8 @@ defined as lowercase."
     ;; (evil-cleverparens-mode)  ;; fixme: useless with colemak
     (aggressive-indent-mode)
     (highlight-parentheses-mode -1)
-    (rainbow-delimiters-mode))
+    (rainbow-delimiters-mode)
+    (which-function-mode))
   (add-hook 'emacs-lisp-mode-hook 'w--emacs-lisp-mode-hook)
   (w--make-hydra w--hydra-emacs-lisp nil
     "elisp"
