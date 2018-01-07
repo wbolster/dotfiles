@@ -331,6 +331,9 @@ defined as lowercase."
 
 ;;;; theme
 
+(defvar w--dark-theme 'solarized-dark "The preferred dark theme.")
+(defvar w--light-theme 'solarized-light "The preferred light theme.")
+
 (use-package solarized-theme
   :custom
   (solarized-emphasize-indicators nil)
@@ -341,13 +344,20 @@ defined as lowercase."
   (solarized-height-plus-1 1.0)
   (solarized-height-plus-2 1.0)
   (solarized-height-plus-3 1.0)
-  (solarized-height-plus-4 1.0))
+  (solarized-height-plus-4 1.0)
 
-(defvar w--dark-theme 'solarized-dark "The preferred dark theme.")
-(defvar w--light-theme 'solarized-light "The preferred light theme.")
-
-(load-theme w--dark-theme t t)
-(load-theme w--light-theme t t)
+  :config
+  (load-theme w--dark-theme t t)
+  (load-theme w--light-theme t t)
+  (setq
+   solarized-color-yellow  "#b58900"
+   solarized-color-orange  "#cb4b16"
+   solarized-color-red     "#dc322f"
+   solarized-color-magenta "#d33682"
+   solarized-color-violet  "#6c71c4"
+   solarized-color-blue    "#268bd2"
+   solarized-color-cyan    "#2aa198"
+   solarized-color-green   "#859900"))
 
 (defun w--toggle-dark-light-theme ()
   "Toggle between a dark and light theme."
@@ -383,16 +393,6 @@ defined as lowercase."
   (w--activate-theme (file-exists-p "~/.config/dark-theme")))
 
 (w--set-theme-from-environment)
-
-(setq
- solarized-color-yellow  "#b58900"
- solarized-color-orange  "#cb4b16"
- solarized-color-red     "#dc322f"
- solarized-color-magenta "#d33682"
- solarized-color-violet  "#6c71c4"
- solarized-color-blue    "#268bd2"
- solarized-color-cyan    "#2aa198"
- solarized-color-green   "#859900")
 
 (setq
  evil-normal-state-cursor (list solarized-color-yellow 'box)
