@@ -591,7 +591,9 @@ defined as lowercase."
     (interactive)
     (lazy-highlight-cleanup t)
     (remove-overlays nil nil 'category 'evil-snipe)
-    (evil-force-normal-state))
+    (evil-force-normal-state)
+    (when (eq (evil-initial-state-for-buffer) 'motion)
+      (evil-change-to-initial-state)))
 
   (defun w--evil-transpose-chars ()
     "Invoke 'transpose-chars' on the right chars in insert state."
