@@ -1415,10 +1415,13 @@ defined as lowercase."
 (use-package adaptive-wrap
   :defer t
   :init
-  (add-hook 'visual-line-mode-hook #'w--activate-adaptive-wrap-prefix-mode)
+  (add-hook 'visual-line-mode-hook #'w--maybe-activate-adaptive-wrap-prefix-mode)
+  :commands
+  w--maybe-activate-adaptive-wrap-prefix-mode
   :config
-  (defun w--activate-adaptive-wrap-prefix-mode ()
-    (adaptive-wrap-prefix-mode (if visual-line-mode 1 -1))))
+  (defun w--maybe-activate-adaptive-wrap-prefix-mode ()
+    (when (derived-mode-p 'text-mode)
+      (adaptive-wrap-prefix-mode (if visual-line-mode 1 -1)))))
 
 (defun w--evil-fill-paragraph-dwim ()
   "Fill the current paragraph."
