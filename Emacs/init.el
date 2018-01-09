@@ -706,8 +706,12 @@ defined as lowercase."
   :delight
   :init
   (setq evil-colemak-basics-char-jump-commands 'evil-snipe)
+  :commands
+  w--evil-colemak-basics-disable
   :config
-  (global-evil-colemak-basics-mode))
+  (global-evil-colemak-basics-mode)
+  (defun w--evil-colemak-basics-disable ()
+    (evil-colemak-basics-mode -1)))
 
 (use-package evil-commentary
   :general
@@ -2111,7 +2115,7 @@ defined as lowercase."
   :after magit
   :config
   (dolist (hook '(magit-log-mode-hook magit-status-mode-hook ))
-    (add-hook hook (fn (evil-colemak-basics-mode -1))))
+    (add-hook hook #'w--evil-colemak-basics-disable))
   ;; todo: make ,q use the various magit-*-bury-buffer functions, then
   ;; unbind q to force ,q usage.
   :general
