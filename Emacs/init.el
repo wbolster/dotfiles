@@ -1049,6 +1049,14 @@ defined as lowercase."
   :config
   (key-chord-mode +1))
 
+(use-package keyfreq
+  :config
+  (setq  ;; https://github.com/emacscollective/no-littering/pull/74
+   keyfreq-file (no-littering-expand-var-file-name "keyfreq.el")
+   keyfreq-file-lock (no-littering-expand-var-file-name "keyfreq.lock"))
+  (keyfreq-mode)
+  (keyfreq-autosave-mode))
+
 (use-package undo-tree
   :delight)
 
