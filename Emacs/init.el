@@ -1602,6 +1602,8 @@ defined as lowercase."
 ;;;; jumping around
 
 (use-package avy
+  :commands
+  avy-with  ;; used by evil-easymotion helpers
   :general
   (:keymaps 'isearch-mode-map
    "C-'" #'avy-isearch)
