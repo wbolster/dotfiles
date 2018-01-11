@@ -3006,6 +3006,23 @@ defined as lowercase."
   :after cython-mode)
 
 
+;;;; major-mode: profiling-report
+
+(use-package profiler
+  :general
+  (:keymaps 'profiler-report-mode-map
+   :states 'motion
+   "<tab>" #'profiler-report-toggle-entry
+   "<return>" #'profiler-report-toggle-entry
+   "C-e" #'profiler-report-previous-entry
+   "C-n" #'profiler-report-next-entry
+   "C-p" #'profiler-report-previous-entry
+   "r" #'profiler-report-render-calltree
+   "R" #'profiler-report-render-reversed-calltree)
+  :config
+  (evil-set-initial-state 'profiler-report-mode 'motion))
+
+
 ;;;; major-mode: restructuredtext
 
 (use-package rst
