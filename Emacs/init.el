@@ -2861,7 +2861,7 @@ defined as lowercase."
   ;;   (kbd "SPC TAB") 'w--easymotion-python)
   ;; (defun w--swiper-python-definitions ()
   ;;   (interactive)
-    ;; (swiper "^\\s-*\\(def\\|class\\)\\s- "))
+  ;; (swiper "^\\s-*\\(def\\|class\\)\\s- "))
   ;; (evil-define-key* 'motion python-mode-map
   ;;   (kbd "SPC /") 'w--swiper-python-definitions)
 
