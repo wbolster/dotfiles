@@ -247,6 +247,35 @@ defined as lowercase."
     (let ((ivy-inhibit-action t))
       (find-file-other-window (counsel-recentf)))))
 
+(use-package ranger
+  :custom
+  (ranger-cleanup-eagerly t)
+  (ranger-deer-show-details t)
+  (ranger-excluded-extensions nil)
+  (ranger-max-tabs 1)
+  (ranger-show-hidden t)
+  :general
+  (:keymaps 'ranger-mode-map
+   "h" #'ranger-up-directory
+   "n" #'ranger-next-file
+   "e" #'ranger-prev-file
+   ;; "i" #'ranger-find-file
+   "i" #'w--ranger-find-directory
+   "k" #'ranger-search-next
+   "K" #'ranger-search-previous
+   "q" nil
+   "/" #'ranger-search)
+  :config
+  (add-hook 'ranger-mode-hook #'w--evil-colemak-basics-disable)
+  ;; fixme: is using auxiliary keymap correct?
+  (evil-set-auxiliary-keymap ranger-mode-map 'motion ranger-mode-map)
+  (defun w--ranger-find-directory ()
+    (interactive)
+    (let ((name (dired-get-filename nil t)))
+      (if (file-directory-p name)
+          (ranger-find-file name)
+        (user-error "Not a directory.")))))
+
 (use-package sudo-edit
   :defer t)
 
@@ -268,6 +297,7 @@ defined as lowercase."
   "Ask for confirmation for modified but unsaved buffers."
   (if (and (buffer-modified-p)
            (not (buffer-file-name))
+           (not (member major-mode '(dired-mode ranger-mode)))
            (w--buffer-worth-saving-p (buffer-name)))
       (y-or-n-p
        (format
@@ -310,8 +340,8 @@ defined as lowercase."
 (w--make-hydra w--hydra-find-file nil
   "open"
   "_d_irectory"
-  ("d" dired-jump)
-  ("D" dired-jump-other-window)
+  ("d" deer)
+  ("D" deer-jump-other-window)
   "_f_ile"
   ("f" counsel-find-file)
   ("F" find-file-other-window)
