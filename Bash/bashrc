@@ -165,9 +165,11 @@ if [[ "$PS1" ]]; then
         local prompt_timer=""
         if [[ -n "${_timer_start}" ]]; then
             local seconds_elapsed=$((SECONDS - _timer_start))
+            local current_date
+            current_date=$(date --iso-8601=seconds)
             if [[ $seconds_elapsed -ge 10 ]]; then
                 seconds_elapsed=$(_fmt_seconds_elapsed ${seconds_elapsed})
-                prompt_timer+="${seconds_elapsed} elapsed"
+                prompt_timer+="${seconds_elapsed} elapsed; finished at ${current_date}"
             fi
             _timer_start=""
         fi
