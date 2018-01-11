@@ -501,11 +501,13 @@ defined as lowercase."
   :defer t
   :custom
   (which-func-unknown "")
+  (which-func-modes nil)
   :custom-face
   (which-func ((t (:foreground unspecified))))
   :config
   (dolist (s '("[" "]"))
-    (setq which-func-format (remove s which-func-format))))
+    (setq which-func-format (remove s which-func-format)))
+  (which-function-mode))
 
 
 ;;;; evil and editing
@@ -2606,9 +2608,9 @@ defined as lowercase."
     ;; (evil-cleverparens-mode)  ;; fixme: useless with colemak
     (aggressive-indent-mode)
     (highlight-parentheses-mode -1)
-    (rainbow-delimiters-mode)
-    (which-function-mode))
+    (rainbow-delimiters-mode))
   (add-hook 'emacs-lisp-mode-hook 'w--emacs-lisp-mode-hook)
+  (add-to-list 'which-func-modes 'emacs-lisp-mode)
   (w--make-hydra w--hydra-emacs-lisp nil
     "elisp"
     "_b_ eval-buffer"
@@ -2828,6 +2830,7 @@ defined as lowercase."
    "I" 'python-nav-forward-sexp-safe)
 
   :config
+  (add-to-list 'which-func-modes 'python-mode)
   (dolist (open '("(" "{" "["))
     (sp-local-pair
      'python-mode open nil
