@@ -2,23 +2,23 @@
 
 # print str() representation, instead of the default repr(),
 # intended as additions to the default 'p' and 'pp'.
-alias ps p str(%1)
-alias pps pp str(%1)
+alias ps p str(%*)
+alias pps pp str(%*)
 
 # pretty-print often used expressions: locals and class instance
 # attributes.
 alias ppl pp locals()
-alias ppi pp %1.__dict__
-alias pv p vars(%1)
-alias ppv pp vars(%1)
+alias ppi pp (%*).__dict__
+alias pv p vars(%*)
+alias ppv pp vars(%*)
 
 alias ipython __import__('IPython').embed()
 
 # pretty-print sqlalchemy queries
-alias pq print((%1).compile(compile_kwargs=dict(literal_binds=True)))
+alias pq print((%*).compile(compile_kwargs=dict(literal_binds=True)))
 
 # pretty-print lxml elements
-alias ppx print(__import__('lxml.etree').etree.tounicode(%1, pretty_print=True))
+alias ppx print(__import__('lxml.etree').etree.tounicode((%*), pretty_print=True))
 
 # tracebacks that omit third-party code
 # fixme: this is not perfect
