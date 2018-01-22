@@ -2963,9 +2963,9 @@ defined as lowercase."
      position
      (format "import IPython; IPython.embed()  # FIXME")))
 
-  (defun w--python-refactor-make-variable (beg end)
+  (evil-define-operator w--python-refactor-make-variable (beg end type)
     "Refactor the current region into a named variable."
-    (interactive "r")
+    (interactive "<R>")
     (let ((name (read-string "Variable name: "))
           (code (delete-and-extract-region beg end)))
       (insert name)
