@@ -2529,6 +2529,7 @@ defined as lowercase."
   :config
   (defun w--prog-mode-hook ()
     (setq show-trailing-whitespace t)
+    (setq-local comment-auto-fill-only-comments t)
     (evil-swap-keys-swap-number-row)
     (auto-fill-mode)
     (column-number-mode)
