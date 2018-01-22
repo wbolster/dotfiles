@@ -2979,7 +2979,7 @@ defined as lowercase."
     (let ((thing (w--thing-at-point-dwim)))
       (w--python-insert-statement
        'before
-       (format "import %s" thing))))
+       (format "import %s  # fixme: move to proper place" thing))))
 
   (require 'w--pytest)
   (evil-set-initial-state 'w--pytest-mode 'insert)
