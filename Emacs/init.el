@@ -558,6 +558,8 @@ defined as lowercase."
   :general
   (:states 'motion
    ";" #'evil-ex
+   "z e" #'evil-scroll-line-up
+   "z n" #'evil-scroll-line-down
    "z z" #'w--hydra-recenter/recenter-top-bottom)
   (:states '(motion normal)
    [escape] #'w--evil-force-normal-state)
