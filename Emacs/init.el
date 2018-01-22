@@ -1356,6 +1356,7 @@ defined as lowercase."
 (use-package highlight-symbol
   :delight
   :custom
+  (highlight-symbol-highlight-single-occurrence nil)
   (highlight-symbol-idle-delay 1.0)
   (highlight-symbol-on-navigation-p t)
   :general
