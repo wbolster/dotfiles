@@ -3127,6 +3127,80 @@ defined as lowercase."
   (add-hook 'sh-mode-hook 'w--sh-mode-hook))
 
 
+;;;; major-mode: sql
+
+(use-package sql
+  :defer t
+  :commands
+  w--evil-sql-format
+  w--sql-format
+  :general
+  (:keymaps 'sql-mode-map
+   :states 'normal
+   "gq" #'w--evil-sql-format
+   "Q" #'fill-paragraph)
+  (:keymaps 'sql-mode-map
+   :states 'visual
+   "Q" #'w--evil-sql-format)
+  :config
+  (defun w--sql-mode-hook ()
+    (setq-local fill-paragraph-function #'w--sql-fill-paragraph))
+  (add-hook 'sql-mode-hook 'w--sql-mode-hook)
+  (defun w--sql-fill-paragraph (justify)
+    (save-restriction
+      (let ((beg (save-excursion (backward-paragraph) (point)))
+            (end (save-excursion (forward-paragraph) (forward-char -1) (point)))
+            (current-symbol)
+            (current-symbol-regexp)
+            (current-symbol-nth)
+            (pos-in-current-symbol))
+        (narrow-to-region beg end)
+        (setq current-symbol (thing-at-point 'symbol))
+        (unless current-symbol
+          ;; point not at symbol, try finding one at the left
+          (forward-symbol -1)
+          (forward-symbol 1)
+          (backward-char)
+          (setq current-symbol (thing-at-point 'symbol)))
+        (when current-symbol
+          ;; keep track of the position
+          (setq current-symbol-regexp (regexp-quote (downcase current-symbol))
+                pos-in-current-symbol (- (point)
+                                         (car (bounds-of-thing-at-point 'symbol))))
+          (beginning-of-thing 'symbol)
+          (setq current-symbol-nth (how-many current-symbol-regexp)))
+        ;; reformat
+        (w--sql-format (point-min) (point-max))
+        (when current-symbol
+          ;; try to restore the position
+          (goto-char (point-max))
+          (re-search-backward current-symbol-regexp nil t current-symbol-nth)
+          (forward-char pos-in-current-symbol))
+        t)))
+  (defun w--sql-format-buffer ()
+    "Format all SQL in the buffer."
+    (interactive)
+    (w--sql-format (point-min) (point-max)))
+  (defun w--sql-format (beg end)
+    "Format SQL between BEG and END."
+    (interactive "r")
+    ;; The external tool can be installed using ‘pipsi install sqlparse’.
+    (unless (executable-find "sqlformat")
+      (user-error "External sqlformat program not found. Hint: pipsi install sqlparse"))
+    ;; todo: cleanup trailing newlines
+    (shell-command-on-region
+     beg end
+     "sqlformat -k upper -r -; printf '\\n'"
+     nil t nil t)
+    (save-restriction
+      (narrow-to-region beg end)
+      (whitespace-cleanup)))
+  (evil-define-operator w--evil-sql-format (beg end type)
+    "Evil operator to format SQL."
+    (interactive "<R>")
+    (w--sql-format beg end)))
+
+
 ;;;; major-mode: yaml
 
 (use-package yaml-mode
