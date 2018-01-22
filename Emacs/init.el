@@ -1308,6 +1308,10 @@ defined as lowercase."
   w--hydra-ag/body
   w--counsel-ag-project
   w--counsel-ag-project-all-files
+  :general
+  (:keymaps 'ag-mode-map
+   :states 'motion
+   "gr" #'recompile)
   :config
   (defun w--ag-mode-hook ()
     (toggle-truncate-lines t))
