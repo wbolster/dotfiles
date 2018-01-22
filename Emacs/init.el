@@ -218,12 +218,13 @@ defined as lowercase."
       `((".*" ,(no-littering-expand-var-file-name "backup/") t)))
 
 (use-package desktop
+  :custom
+  (desktop-restore-eager 5)
+  (desktop-auto-save-timeout 10)
   :config
   (desktop-save-mode)
   (add-to-list 'desktop-globals-to-save 'swiper-history)
-  (add-to-list 'desktop-globals-to-clear 'swiper-history)
-  :custom
-  (desktop-restore-eager 5))
+  (add-to-list 'desktop-globals-to-clear 'swiper-history))
 
 (defvar
   w--recentf-ignore-dirs
