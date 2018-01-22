@@ -2879,7 +2879,8 @@ defined as lowercase."
      :unless '(sp-point-before-word-p)))
 
   (defun w--python-mode-hook ()
-    (setq fill-column 72)
+    (setq fill-column 79)
+    (setq-local comment-fill-column 72)
     (w--set-major-mode-hydra #'w--hydra-python/body)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-underscore-dash)
