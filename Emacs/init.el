@@ -1367,6 +1367,16 @@ defined as lowercase."
    "C-p" #'w--evil-paste-pop-or-highlight-symbol-prev
    "C-n" #'w--evil-paste-pop-next-or-highlight-symbol-next)
   :config
+  (defun w--highlight-symbol-dwim ()
+    "Toggle highlighting of the symbol at point (or the active region's content)."
+    (interactive)
+    (setq deactivate-mark t)
+    (let ((regexp (highlight-symbol-get-symbol)))
+      (when (region-active-p)
+        (setq regexp (regexp-quote (buffer-substring (region-beginning) (region-end)))))
+      (when (string-equal highlight-symbol regexp)
+        (highlight-symbol-remove-symbol regexp))
+      (highlight-symbol regexp)))
   (defun w--evil-paste-pop-or-highlight-symbol-prev (count)
     "Either paste-pop (with COUNT) or jump to previous symbol occurence."
     (interactive "p")
@@ -2404,7 +2414,7 @@ defined as lowercase."
   "_g_it"
   ("g" w--hydra-git/body)
   "_h_ighlight"
-  ("h" (highlight-symbol (w--thing-at-point-dwim)))
+  ("h" w--highlight-symbol-dwim)
   ("H" highlight-symbol-remove-all)
   "_m_erge"
   ("m" w--hydra-merge/body)
