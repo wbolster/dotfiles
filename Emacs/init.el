@@ -557,6 +557,7 @@ defined as lowercase."
   (evil-mode-line-format '(before . mode-line-front-space))
   :general
   (:states 'motion
+   ";" #'evil-ex
    "z z" #'w--hydra-recenter/recenter-top-bottom)
   (:states '(motion normal)
    [escape] #'w--evil-force-normal-state)
