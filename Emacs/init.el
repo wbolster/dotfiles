@@ -1309,7 +1309,9 @@ defined as lowercase."
   w--counsel-ag-project
   w--counsel-ag-project-all-files
   :config
-  (add-hook 'ag-mode-hook (fn: toggle-truncate-lines t))
+  (defun w--ag-mode-hook ()
+    (toggle-truncate-lines t))
+  (add-hook 'ag-mode-hook #'w--ag-mode-hook)
   (w--make-hydra w--hydra-ag nil
     "ag"
     "_a_ project"
