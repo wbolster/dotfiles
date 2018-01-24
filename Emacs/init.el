@@ -1425,8 +1425,8 @@ defined as lowercase."
 
 (general-define-key
  :states '(motion normal)
-  "[ SPC" (lambda () (interactive) (save-excursion (evil-insert-newline-above)))
-  "] SPC" (lambda () (interactive) (save-excursion (evil-insert-newline-below)))
+  "[ SPC" (w--ilambda (save-excursion (evil-insert-newline-above)))
+  "] SPC" (w--ilambda (save-excursion (evil-insert-newline-below)))
   "[b" 'evil-prev-buffer
   "]b" 'evil-next-buffer
   "[c" 'flycheck-previous-error
@@ -1445,7 +1445,9 @@ defined as lowercase."
   "]o" 'highlight-symbol-next
   "[O" 'highlight-symbol-prev-in-defun
   "]O" 'highlight-symbol-next-in-defun
-  "]s" (lambda () (interactive) (evil-forward-word) (call-interactively 'evil-next-flyspell-error))
+  "]s" (w--ilambda
+        (evil-forward-word)
+        (call-interactively 'evil-next-flyspell-error))
   "[s" 'evil-prev-flyspell-error
   "[w" 'evil-window-prev
   "]w" 'evil-window-next
