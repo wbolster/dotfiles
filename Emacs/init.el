@@ -51,6 +51,20 @@
 
 (use-package s)
 
+(defmacro w--ilambda (&rest body)
+  "Concisely create a lambda with an ‘(interactive)’ spec.
+
+BODY is normal function body. However, if the first expression is
+a string literal, it will be used as an argument for (interactive),
+and BODY can refer to it as ‘arg’."
+  (let ((interactive-spec))
+    (when (stringp (car body))
+      (setq interactive-spec (list (car body))
+            body (cdr body)))
+    `(lambda (&optional arg)
+       (interactive ,@interactive-spec)
+       ,@body)))
+
 
 ;;;; basics
 
