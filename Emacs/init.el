@@ -1689,7 +1689,7 @@ defined as lowercase."
   :general
   (:keymaps 'dired-mode-map
    :states '(motion normal)
-    "-" #'dired-jump))
+   "-" #'dired-jump))
 
 (defvar w--jump-commands
   ;; todo: this should use a property on the symbol
@@ -1742,8 +1742,8 @@ defined as lowercase."
   (dumb-jump-selector 'ivy)
   :general
   (:states 'motion
-    "gd" #'dumb-jump-go-current-window
-    "gD" #'dumb-jump-go-other-window)
+   "gd" #'dumb-jump-go-current-window
+   "gD" #'dumb-jump-go-other-window)
   :config
   (defun w--jump-around-advice (fn &rest args)
     ;; TODO: figure out whether the buffer changed. if the jump was in
