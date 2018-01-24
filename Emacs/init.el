@@ -2198,11 +2198,24 @@ defined as lowercase."
   :demand t
   :after magit
   :config
-  (dolist (hook '(magit-log-mode-hook magit-status-mode-hook ))
-    (add-hook hook #'w--evil-colemak-basics-disable))
+  (--each '(git-rebase-mode-hook
+            magit-log-mode-hook
+            magit-status-mode-hook)
+    (add-hook it #'w--evil-colemak-basics-disable))
   ;; todo: make ,q use the various magit-*-bury-buffer functions, then
   ;; unbind q to force ,q usage.
   :general
+  (:keymaps 'git-rebase-mode-map
+   :states 'normal
+   "c" #'git-rebase-edit
+   "d" #'git-rebase-kill-line
+   "i" #'git-rebase-insert
+   "n" #'forward-line
+   "p" #'git-rebase-pick
+   "e" #'git-rebase-backward-line
+   "l" #'git-rebase-undo
+   "C-e" #'git-rebase-move-line-up
+   "C-n" #'git-rebase-move-line-down)
   (:keymaps 'magit-mode-map
    :states '(normal visual)
    [escape] nil
