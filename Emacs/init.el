@@ -3095,6 +3095,9 @@ defined as lowercase."
    "r" #'profiler-report-render-calltree
    "R" #'profiler-report-render-reversed-calltree)
   :config
+  (defun w--profiler-report-mode-hook ()
+    (setq evil-lookup-func 'w--helpful-evil-lookup-func))
+  (add-hook 'profiler-report-mode-hook 'w--profiler-report-mode-hook)
   (evil-set-initial-state 'profiler-report-mode 'motion))
 
 
