@@ -2693,6 +2693,7 @@ defined as lowercase."
     ("d" eval-defun)
     "_e_val-last-sexp"
     ("e" eval-last-sexp)
+    ("E" pp-eval-last-sexp)
     "_h_elp"
     ("h" helpful-at-point)
     "_m_acro-expand"
