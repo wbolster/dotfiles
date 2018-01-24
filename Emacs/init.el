@@ -576,6 +576,8 @@ defined as lowercase."
    ";" #'evil-ex
    "z e" #'evil-scroll-line-up
    "z n" #'evil-scroll-line-down
+   "<mouse-6>" (w--ilambda "P" (evil-scroll-column-left (or arg 4)))
+   "<mouse-7>" (w--ilambda "P" (evil-scroll-column-right (or arg 4)))
    "z z" #'w--hydra-recenter/recenter-top-bottom)
   (:states '(motion normal)
    [escape] #'w--evil-force-normal-state)
