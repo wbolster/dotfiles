@@ -1015,7 +1015,10 @@ defined as lowercase."
    ?\q '("‘" . "’")
    ?\“ '("“" . "”")
    ?\” '("“" . "”")
-   ?\Q '("“" . "”"))
+   ?\Q '("“" . "”")
+   ;; ¿question? ¡answer!
+   ?\? '("¿" . "?")
+   ?\! '("¡" . "!"))
   (setq-default evil-surround-pairs-alist evil-surround-pairs-alist)
   :general
   (:states 'operator
