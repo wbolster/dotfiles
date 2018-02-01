@@ -1275,7 +1275,8 @@ defined as lowercase."
    "RET" #'occur-mode-goto-occurrence
    "C-e" #'occur-prev
    "C-n" #'occur-next
-   "C-p" #'occur-prev)
+   "C-p" #'occur-prev
+   "g r" #'revert-buffer)
   :config
   (evil-set-initial-state 'occur-mode 'motion)
   (defun w--occur-mode-hook ()
