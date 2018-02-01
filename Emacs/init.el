@@ -2388,6 +2388,8 @@ defined as lowercase."
     ("n" flycheck-next-error nil :exit nil)
     ("e" flycheck-previous-error nil :exit nil)
     ("p" flycheck-previous-error nil :exit nil)
+    "_q_ close"
+    ("q" w--flycheck-close-errors)
     "_t_oggle"
     ("t" flycheck-mode))
 
@@ -2395,7 +2397,14 @@ defined as lowercase."
     "Jump to the last flycheck error."
     (interactive)
     (goto-char (point-max))
-    (flycheck-previous-error)))
+    (flycheck-previous-error))
+
+  (defun w--flycheck-close-errors ()
+    "Close the error buffer, if any."
+    (interactive)
+    (let ((buffer (get-buffer flycheck-error-list-buffer)))
+      (when buffer
+        (quit-windows-on buffer)))))
 
 
 ;;;; toggles
