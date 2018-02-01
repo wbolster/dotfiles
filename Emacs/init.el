@@ -1509,6 +1509,26 @@ defined as lowercase."
     (when (derived-mode-p 'text-mode)
       (adaptive-wrap-prefix-mode (if visual-line-mode 1 -1)))))
 
+(defvar w--wrap-lines-saved-fill-column nil
+  "Saved fill-column value.")
+
+(define-minor-mode w--wrap-lines-mode
+  "Smart combination of auto-fill, visual-line, and visual-fill-column."
+  nil " ⇉" nil
+  (if w--wrap-lines-mode
+      (progn
+        (setq w--wrap-lines-saved-fill-column fill-column
+              visual-fill-column-width fill-column
+              fill-column most-positive-fixnum)
+        (auto-fill-mode -1)
+        (visual-line-mode)
+        (visual-fill-column-mode))
+    (setq fill-column w--wrap-lines-saved-fill-column
+          visual-fill-column-width nil)
+    (visual-line-mode -1)
+    (visual-fill-column-mode -1)
+    (auto-fill-mode)))
+
 (defun w--evil-fill-paragraph-dwim ()
   "Fill the current paragraph."
   (interactive)
@@ -2412,7 +2432,7 @@ defined as lowercase."
   "_s_pell"
   ("s" flyspell-mode)
   "_w_rapping"
-  ("w" visual-line-mode)
+  ("w" w--wrap-lines-mode)
   ("W" toggle-truncate-lines)
   "_SPC_ whitespace"
   ("SPC" whitespace-mode)
