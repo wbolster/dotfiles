@@ -587,8 +587,7 @@ defined as lowercase."
    [remap evil-end-of-line] #'w--evil-end-of-line
    [remap evil-first-non-blank] #'w--evil-first-non-blank)
   (:states '(operator visual)
-   "o" #'w--evil-text-object-symbol-dwim
-   "C-a" #'w--evil-text-object-whole-buffer)
+   "o" #'w--evil-text-object-symbol-dwim)
   (:states 'operator
    ;; the empty text object is a trick to make it possible to
    ;; quickly swap two text objects using evil-exchange "gx";
