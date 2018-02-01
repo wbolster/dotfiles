@@ -2125,7 +2125,7 @@ defined as lowercase."
   (global-company-mode)
   (defun w--indent-or-complete ()
     (interactive)
-    (if (looking-at "\\_>")
+    (if (or (looking-at "\\_>") (looking-back "/"))
         (company-manual-begin)
       (call-interactively #'indent-for-tab-command)))
   (defun w--company-switch-to-counsel-company ()
