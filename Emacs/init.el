@@ -264,6 +264,7 @@ defined as lowercase."
 
 (use-package ranger
   :after evil
+  :defer t
   :custom
   (ranger-cleanup-eagerly t)
   (ranger-deer-show-details nil)
