@@ -953,6 +953,7 @@ defined as lowercase."
 (use-package evil-goggles
   :config
   (evil-goggles-mode)
+  (evil-goggles-use-magit-faces)
   :delight
   :custom
   (evil-goggles-duration 1)
