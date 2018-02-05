@@ -1637,13 +1637,15 @@ defined as lowercase."
      "Find file in complete project: "
      (projectile-make-relative-to-root
       (directory-files-recursively (projectile-project-root) pattern))
-     :action
-     (lambda (filename)
-       (find-file (concat
-                   (file-name-as-directory (projectile-project-root))
-                   filename)))
+     :action #'w--projectile-find-file-relative
      :require-match t
      :history 'file-name-history))
+
+  (defun w--projectile-find-file-relative (name)
+    (find-file
+     (concat
+      (file-name-as-directory (projectile-project-root))
+      filename)))
 
   (defun w--projectile-project-bury-buffers ()
     "Quit all windows and bury all buffers for the current project."
