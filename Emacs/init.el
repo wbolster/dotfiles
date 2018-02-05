@@ -1769,9 +1769,21 @@ defined as lowercase."
   (dumb-jump-selector 'ivy)
   :general
   (:states 'motion
-   "gd" #'dumb-jump-go-current-window
-   "gD" #'dumb-jump-go-other-window)
+   "gd" #'w--dumb-jump-go
+   "gD" #'w--dumb-jump-go-other-window)
   :config
+  (defun w--dumb-jump-go ()
+    (interactive)
+    (let ((s (w--thing-at-point-dwim t)))
+      ;; dumb-jump does not have proper extensibility via
+      ;; defcustom variable for this. :(
+      (when (derived-mode-p 'rst-mode)
+        (setq s (s-chop-suffix "_" s)))
+      (dumb-jump-go nil nil s)))
+  (defun w--dumb-jump-go-other-window ()
+    (interactive)
+    (let ((dumb-jump-window 'other))
+      (w--dumb-jump-go)))
   (defun w--jump-around-advice (fn &rest args)
     ;; TODO: figure out whether the buffer changed. if the jump was in
     ;; the same buffer, check whether the target was already between
