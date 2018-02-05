@@ -2175,6 +2175,12 @@ defined as lowercase."
   (magit-wip-before-change-mode)
   (add-to-list 'magit-repository-directories '("~/Projects/" . 2))
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
+  (magit-define-popup-switch 'magit-log-popup
+    ?m "Omit merge commits" "--no-merges")
+  (magit-define-popup-action 'magit-log-popup
+    ?w "Wip" 'magit-wip-log-current)
+  (magit-define-popup-switch 'magit-log-popup
+    ?1 "First parent" "--first-parent")
   (defun w--magit-status-other-repository ()
     "Open git status for another repository."
     (interactive)
