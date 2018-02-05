@@ -3188,12 +3188,51 @@ defined as lowercase."
      rst-mode-abbrev-table nil)
     (w--set-major-mode-hydra #'w--hydra-rst/body)
     (modify-syntax-entry ?_ "w")
+    (modify-syntax-entry ?- "w")
     (evil-swap-keys-swap-question-mark-slash)
+    (evil-swap-keys-swap-colon-semicolon)
     (flyspell-mode)
     (typo-mode)
     (make-local-variable 'typo-mode-map)
-    (define-key typo-mode-map "`" nil))
+    (define-key typo-mode-map "`" nil)
+    (make-local-variable 'evil-surround-pairs-alist)
+    (evil-add-to-alist
+     'evil-surround-pairs-alist
+     ?b '("**" . "**")  ;; strong
+     ?c '("``" . "``")  ;; inline code
+     ?d '(":doc:`" . " <...>`")  ;; doc link
+     ?e '("*" . "*")  ;; emphasis
+     ?l '("`" . " <...>`_")  ;; hyperlink
+     ?t '(":term:`" . "`")))  ;; glossary term
   (add-hook 'rst-mode-hook 'w--rst-mode-hook)
+  (w--make-hydra w--hydra-rst nil
+    "restructuredtext"
+    "_a_djust"
+    ("a" rst-adjust)
+    "_e_mphasise"
+    ("e" w--evil-rst-emphasise)
+    "_l_ist"
+    ("l" w--evil-rst-bullet-list)
+    ("L" w--evil-rst-bullet-list-all)
+    "_s_trong"
+    ("s" w--evil-rst-strong)
+    "_w_rap"
+    ("w" w--evil-rst-wrap))
+  ;; (setq dumb-jump-find-rules nil)
+  (require 'dumb-jump)
+  (add-to-list
+   'dumb-jump-language-file-exts
+   '(:language "rst" :ext "rst" :agtype "restructuredtext" :rgtype "rst"))
+  (add-to-list
+   'dumb-jump-find-rules
+   '(:language "rst"
+     :type "variable"
+     :supports ("ag" "grep" "rg" "git-grep")
+     ;; :regex "\\.\\.\\s+_JJJ:"  ;; seems to work
+     :regex "\\.\\.\\s+\(_|\\\|\)JJJ\(:|\\\|\)"
+     :tests (".. _test:" "  .. _test:\n" ".. |test|")
+     :not (".. _tester" "  ..image:: test.png" ".. test::")))
+  ;; (custom-initialize-default dumb-jump-find-rules)
 
   ;; todo: integrate this with the global easymotion hydra
   ;; (evilem-make-motion
@@ -3202,11 +3241,46 @@ defined as lowercase."
   ;;  :pre-hook (setq evil-this-type 'line))
   ;; (evil-define-key* 'motion rst-mode-map
   ;;   (kbd "SPC TAB") 'w--easymotion-rst)
-
-  (w--make-hydra w--hydra-rst nil
-    "restructuredtext"
-    "_a_djust"
-    ("a" rst-adjust)))
+  (evil-define-operator w--evil-rst-bullet-list (beg end &optional count)
+    :type line
+    (interactive "<r>P")
+    (let ((all (not (null count))))
+      (rst-bullet-list-region beg end all)))
+  (evil-define-operator w--evil-rst-bullet-list-all (beg end)
+    :type line
+    (interactive "<r>")
+    (w--evil-rst-bullet-list beg end t))
+  (evil-define-operator w--evil-rst-wrap (beg end type open close)
+    (interactive "<R><C>")
+    (let ((end-marker (make-marker)))
+      (set-marker end-marker end)
+      (set-marker-insertion-type end-marker t)
+      (save-excursion
+        (goto-char beg)
+        (when (and (eq type 'line)
+                   (bolp)
+                   (looking-at adaptive-fill-regexp))
+          (goto-char (match-end 0)))
+        (insert open)
+        (goto-char end-marker)
+        (when (eq type 'line)
+          (backward-char))
+        (insert (or close open)))
+      (set-marker end-marker nil)))
+  (evil-define-operator w--evil-rst-emphasise (beg end type)
+    (interactive "<R>")
+    (w--evil-rst-wrap beg end type "*"))
+  (evil-define-operator w--evil-rst-strong (beg end type)
+    (interactive "<R>")
+    (w--evil-rst-wrap beg end type "**"))
+  (defun w--rst-header-1 ()
+    (interactive)
+    ;; todo: this is incomplete
+    (let ((beg (line-beginning-position))
+          (end (line-end-position)))
+      (save-restriction
+        (narrow-to-region beg end)
+        (rst-adjust-section-title)))))
 
 
 ;;;; major-mode: shell
