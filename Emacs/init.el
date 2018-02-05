@@ -2805,7 +2805,8 @@ defined as lowercase."
   (:prefix "C-h"
    "f" #'helpful-callable
    "v" #'helpful-variable
-   "k" #'helpful-key)
+   "k" #'helpful-key
+   "o" #'helpful-symbol)
   (:keymaps 'helpful-mode-map
    :states 'normal
    "gr" #'helpful-update
