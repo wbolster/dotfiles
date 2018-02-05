@@ -2552,6 +2552,7 @@ defined as lowercase."
     ("text (txt)" . text-mode)
     ("c" . c-mode)
     ("elisp" . emacs-lisp-mode)
+    ("elisp interaction" . lisp-interaction-mode)
     ("jinja (j2)" . jinja2-mode)
     ("json" . json-mode)
     ("markdown (md)" . markdown-mode)
