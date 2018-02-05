@@ -2196,9 +2196,9 @@ defined as lowercase."
       (magithub-browse)))
   (w--make-hydra w--hydra-git nil
     "git"
-    "_b_lame"
-    ("b" magit-blame)
-    ("B" magit-log-buffer-file)
+    "_a_nnotate"
+    ("a" magit-blame)
+    ("A" magit-log-buffer-file)
     "_c_ommit"
     ("c" magit-commit)
     ("C" magit-commit-popup)
