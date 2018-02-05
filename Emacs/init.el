@@ -3076,10 +3076,6 @@ defined as lowercase."
        'before
        (format "import %s  # fixme: move to proper place" thing))))
 
-  (require 'w--pytest)
-  (evil-set-initial-state 'w--pytest-mode 'insert)
-  (add-hook 'w--pytest-finished-hooks #'evil-force-normal-state)
-
   (w--make-hydra w--hydra-python nil
     "python"
     "_b_reakpoint"
@@ -3094,8 +3090,8 @@ defined as lowercase."
     ("r" (w--python-insert-ipython-repl 'after) nil)
     ("R" (w--python-insert-ipython-repl 'before) nil)
     "_t_ pytest"
-    ("t" w--pytest nil)
-    ("T" (w--pytest t) nil)
+    ("t" python-pytest-popup nil)
+    ("T" python-pytest-repeat nil)
     "_v_ariable"
     ("v" w--python-refactor-make-variable nil)))
 
