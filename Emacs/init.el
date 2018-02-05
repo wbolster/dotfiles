@@ -2386,6 +2386,7 @@ defined as lowercase."
   (flycheck-display-errors-delay 1.0)
   (flycheck-idle-change-delay 3)
   (flycheck-mode-line-prefix "✔")
+  (flycheck-emacs-lisp-load-path 'inherit)
   :config
   (global-flycheck-mode)
 
