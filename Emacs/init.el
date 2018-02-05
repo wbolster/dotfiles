@@ -2280,9 +2280,13 @@ defined as lowercase."
   (magithub-api-timeout 10)
   (magithub-pull-request-arguments '("-o"))
   :general
-  (:keymaps 'magithub-map  ;; colemak tweaks
+  (:keymaps 'magithub-map
+   ;; colemak tweaks
    "e" nil
-   "c" #'magithub-edit-thing))
+   "c" #'magithub-edit-thing
+   ;; do not override rebase key binding
+   "r" nil
+   "R" #'magithub-reply-thing))
 
 (use-package git-link
   :defer t
