@@ -300,7 +300,8 @@ defined as lowercase."
 (use-package terminal-here
   :defer t
   :custom
-  (terminal-here-project-root-function 'projectile-project-root))
+  (terminal-here-project-root-function 'projectile-project-root)
+  (terminal-here-command-flag "-x"))
 
 (defun w--buffer-worth-saving-p (name)
   "Does the buffer NAME indicate it may be worth saving?"
