@@ -2980,6 +2980,9 @@ defined as lowercase."
    :states '(operator visual)
    "H" 'python-nav-backward-sexp-safe
    "I" 'python-nav-forward-sexp-safe)
+  (:keymaps 'inferior-python-mode-map
+   :states 'insert
+   "<tab>" #'python-shell-completion-complete-or-indent)
 
   :config
   (add-to-list 'which-func-modes 'python-mode)
