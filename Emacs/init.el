@@ -757,6 +757,7 @@ defined as lowercase."
 
 (use-package evil-colemak-basics
   :after evil-snipe
+  :demand t
   :delight
   :init
   (setq evil-colemak-basics-char-jump-commands 'evil-snipe)
