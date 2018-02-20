@@ -2683,6 +2683,7 @@ defined as lowercase."
     ("r" recompile))
 
   (defun w--compilation-mode-hook ()
+    (smartparens-mode -1)
     (w--set-major-mode-hydra #'w--hydra-compilation/body))
   (add-hook 'compilation-mode-hook #'w--compilation-mode-hook)
 
