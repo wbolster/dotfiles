@@ -285,6 +285,7 @@ defined as lowercase."
    "/" #'ranger-search)
   :config
   (add-hook 'ranger-mode-hook #'w--evil-colemak-basics-disable)
+  (add-to-list 'direnv-non-file-modes 'ranger-mode)
   ;; fixme: is using auxiliary keymap correct?
   (evil-set-auxiliary-keymap ranger-mode-map 'motion ranger-mode-map)
   (defun w--ranger-find-directory ()
