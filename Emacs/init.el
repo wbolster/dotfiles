@@ -3241,6 +3241,7 @@ defined as lowercase."
     (typo-mode)
     (make-local-variable 'typo-mode-map)
     (define-key typo-mode-map "`" nil)
+    (require 'evil-surround)
     (make-local-variable 'evil-surround-pairs-alist)
     (evil-add-to-alist
      'evil-surround-pairs-alist
