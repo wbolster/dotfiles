@@ -862,10 +862,10 @@ defined as lowercase."
      w--hydra-teleport/evilem-motion-search-previous-and-exit))
 
   ;; make the basic motions also work in evil operator state
-  (defvar w--teleport-motion-keymap (make-sparse-keymap)
+  (defvar w--teleport-map (make-sparse-keymap)
     "Keymap with basic avy/easymotion jumps.")
   (general-define-key
-   :keymaps 'w--teleport-motion-keymap
+   :keymaps 'w--teleport-map
     "w" #'evilem-motion-forward-word-begin
     "W" #'evilem-motion-forward-WORD-begin
     "f" #'evilem-motion-forward-word-end
@@ -890,7 +890,7 @@ defined as lowercase."
     "?" #'evilem-motion-search-previous)
   (general-define-key
    :states 'operator
-    "SPC" w--teleport-motion-keymap)
+    "SPC" w--teleport-map)
 
   ;; todo: commented stuff below needs rethinking and cleaning up
   ;; (evil-define-key* 'normal global-map
