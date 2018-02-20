@@ -3151,6 +3151,28 @@ defined as lowercase."
   :custom
   (python-fill-docstring-style 'symmetric))
 
+(use-package python-pytest
+  :demand t
+  :after python
+  :general
+  (:keymaps 'python-pytest-mode-map
+   :states 'motion
+   "g r" #'python-pytest-repeat)
+  :config
+  (w--make-hydra w--hydra-python-pytest nil
+    "python-pytest"
+    "_r_epeat"
+    ("r" python-pytest-repeat nil)
+    "_t_ pytest"
+    ("t" python-pytest-popup nil)
+    ("T" python-pytest-repeat nil))
+  (defun w--python-pytest-mode-hook ()
+    (w--set-major-mode-hydra #'w--hydra-python-pytest/body))
+  (evil-set-initial-state 'python-pytest-mode 'insert)
+  (add-hook 'python-pytest-mode-hook 'w--python-pytest-mode-hook)
+  (add-hook 'python-pytest-finished-hook #'evil-force-normal-state)
+  (add-to-list 'direnv-non-file-modes 'python-pytest-mode))
+
 
 ;;;; major-mode: cython
 
