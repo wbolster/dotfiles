@@ -3137,17 +3137,20 @@ defined as lowercase."
      (t
       (evil-forward-char count)))))
 
+(use-package pip-requirements
+  :defer t
+  :config
+  ;; avoid network traffic when opening a requirements.txt file
+  (setq pip-packages '(this is a fake package listing)))
+
 (use-package python-docstring
   :defer t
   :delight
   :custom
   (python-fill-docstring-style 'symmetric))
 
-(use-package pip-requirements
-  :defer t
-  :config
-  ;; avoid network traffic when opening a requirements.txt file
-  (setq pip-packages '(this is a fake package listing)))
+
+;;;; major-mode: cython
 
 (use-package cython-mode
   :defer t)
