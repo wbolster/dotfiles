@@ -2157,6 +2157,7 @@ defined as lowercase."
   :delight auto-revert-mode
   :custom
   (auto-revert-check-vc-info t)
+  (auto-revert-interval 15)
   :config
   (global-auto-revert-mode))
 
