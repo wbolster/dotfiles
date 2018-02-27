@@ -2336,6 +2336,10 @@ defined as lowercase."
   :custom
   (ediff-split-window-function 'split-window-horizontally))
 
+(use-package vc
+  :custom
+  (vc-handled-backends nil))
+
 (use-package vdiff
   :defer t)
 
