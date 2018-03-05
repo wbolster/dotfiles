@@ -2905,11 +2905,10 @@ defined as lowercase."
    "'" #'w--typo-cycle-quotation-marks)
   :config
   (defun w--markdown-mode-hook ()
-    (setq
-     evil-shift-width 2
-     fill-column 999999)
+    (setq evil-shift-width 2)
     (w--set-major-mode-hydra #'w--hydra-markdown/body)
     (evil-swap-keys-swap-question-mark-slash)
+    (auto-fill-mode -1)
     (flyspell-mode)
     (typo-mode)
     (make-local-variable 'typo-mode-map)
