@@ -2410,6 +2410,15 @@ defined as lowercase."
   (flycheck-idle-change-delay 3)
   (flycheck-mode-line-prefix "✔")
   (flycheck-emacs-lisp-load-path 'inherit)
+
+  :general
+  (:keymaps 'flycheck-error-list-mode-map
+   :states 'motion
+   "n" #'flycheck-error-list-next-error
+   "e" #'flycheck-error-list-previous-error
+   "p" #'flycheck-error-list-previous-error
+   "<return>" #'flycheck-error-list-goto-error)
+
   :config
   (global-flycheck-mode)
 
