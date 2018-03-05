@@ -3180,6 +3180,8 @@ defined as lowercase."
     "_t_ pytest"
     ("t" python-pytest-popup nil)
     ("T" python-pytest-repeat nil))
+  (magit-define-popup-option 'python-pytest-popup
+    ?n "count" "--count=")
   (defun w--python-pytest-mode-hook ()
     (w--set-major-mode-hydra #'w--hydra-python-pytest/body))
   (evil-set-initial-state 'python-pytest-mode 'insert)
