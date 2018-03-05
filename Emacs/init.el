@@ -1518,7 +1518,7 @@ defined as lowercase."
 
 (define-minor-mode w--wrap-lines-mode
   "Smart combination of auto-fill, visual-line, and visual-fill-column."
-  nil " ⇉" nil
+  nil " ⇶" nil
   (if w--wrap-lines-mode
       (progn
         (setq w--wrap-lines-saved-fill-column fill-column
