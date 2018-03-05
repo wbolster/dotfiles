@@ -544,7 +544,8 @@ defined as lowercase."
   (mode-line ((t (:height 0.8))))
   (mode-line-inactive ((t (:inherit mode-line))))
   :config
-  (sml/setup))
+  (sml/setup)
+  (set-face-attribute 'sml/modified nil :foreground solarized-color-red))
 
 (use-package which-func
   :ensure nil
