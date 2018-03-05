@@ -3184,8 +3184,7 @@ defined as lowercase."
     (w--set-major-mode-hydra #'w--hydra-python-pytest/body))
   (evil-set-initial-state 'python-pytest-mode 'insert)
   (add-hook 'python-pytest-mode-hook 'w--python-pytest-mode-hook)
-  (add-hook 'python-pytest-finished-hook #'evil-force-normal-state)
-  (add-to-list 'direnv-non-file-modes 'python-pytest-mode))
+  (add-hook 'python-pytest-finished-hook #'evil-force-normal-state))
 
 
 ;;;; major-mode: cython
