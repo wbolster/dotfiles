@@ -3,10 +3,10 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "python-pytest" "python-pytest.el" (23179 61121
-;;;;;;  137419 935000))
+;;;### (autoloads nil "python-pytest" "python-pytest.el" (23198 41216
+;;;;;;  39709 342000))
 ;;; Generated autoloads from python-pytest.el
- (autoload 'python-pytest-popup "pytest" nil t)
+ (autoload 'python-pytest-popup "python-pytest" nil t)
 
 (autoload 'python-pytest "python-pytest" "\
 Run pytest with ARGS.
