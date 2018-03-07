@@ -2749,7 +2749,9 @@ defined as lowercase."
    "C-e" #'widget-backward
    "C-n" #'widget-forward
    "C-p" #'widget-backward
-   "ZZ" #'Custom-buffer-done)
+   "ZZ" #'Custom-buffer-done
+   "<down-mouse-1>" #'widget-button-click
+   "<down-mouse-2>" #'widget-button-click)
   :config
   (evil-set-initial-state 'Custom-mode 'normal))
 
