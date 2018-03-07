@@ -2425,14 +2425,11 @@ defined as lowercase."
   (w--make-hydra w--hydra-flycheck nil
     "flycheck"
     "_c_ errors"
-    ("c" flycheck-list-errors)
-    ("o" flycheck-list-errors)
+    ("c" w--flycheck-toggle-error-window)
     "_n_/_e_/_p_ nav"
     ("n" flycheck-next-error nil :exit nil)
     ("e" flycheck-previous-error nil :exit nil)
     ("p" flycheck-previous-error nil :exit nil)
-    "_q_ close"
-    ("q" w--flycheck-close-errors)
     "_t_oggle"
     ("t" flycheck-mode))
 
@@ -2442,12 +2439,13 @@ defined as lowercase."
     (goto-char (point-max))
     (flycheck-previous-error))
 
-  (defun w--flycheck-close-errors ()
-    "Close the error buffer, if any."
+  (defun w--flycheck-toggle-error-window ()
+    "Show or hide the flycheck error list."
     (interactive)
     (let ((buffer (get-buffer flycheck-error-list-buffer)))
-      (when buffer
-        (quit-windows-on buffer)))))
+      (if (and buffer (get-buffer-window buffer))
+          (quit-windows-on buffer)
+        (flycheck-list-errors)))))
 
 
 ;;;; toggles
