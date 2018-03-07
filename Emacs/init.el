@@ -2329,8 +2329,8 @@ defined as lowercase."
   w--diff-hl-previous-hunk
   :config
   (w--mark-as-jump-commands
-    'w--diff-hl-next-hunk
-    'w--diff-hl-previous-hunk)
+   'w--diff-hl-next-hunk
+   'w--diff-hl-previous-hunk)
   (defun w--diff-hl-previous-hunk ()
     "Jump to the previous hunk."
     (interactive)
@@ -2340,7 +2340,12 @@ defined as lowercase."
     "Jump to the next hunk."
     (interactive)
     (diff-hl-mode)
-    (diff-hl-next-hunk)))
+    (diff-hl-next-hunk))
+  (defun w--diff-hl-update-around-advice (fn &rest args)
+    (let ((vc-handled-backends '(Git)))
+      (apply fn args)))
+  (add-hook 'diff-hl-mode-hook #'diff-hl-update)
+  (advice-add 'diff-hl-update :around #'w--diff-hl-update-around-advice))
 
 (use-package ediff
   :defer t
