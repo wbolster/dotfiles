@@ -1,0 +1,21 @@
+/*
+ * Put this in ~/.config/gtk-3.0/gtk.css
+ *
+ * @import url("../../Configuration/Gtk/gtk.css");
+ *
+ */
+
+@binding-set evince-scroll-colemak
+{
+  unbind "j";
+  unbind "k";
+  unbind "l";
+  bind "n" { "scroll" (step-forward, vertical) };
+  bind "e" { "scroll" (step-backward, vertical) };
+  bind "i" { "scroll" (step-forward, horizontal) };
+}
+
+evview
+{
+  -gtk-key-bindings: evince-scroll-colemak;
+}
