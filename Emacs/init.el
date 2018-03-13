@@ -3267,6 +3267,7 @@ defined as lowercase."
     (evil-swap-keys-swap-question-mark-slash)
     (evil-swap-keys-swap-colon-semicolon)
     (flyspell-mode)
+    (sphinx-mode)
     (typo-mode)
     (make-local-variable 'typo-mode-map)
     (define-key typo-mode-map "`" nil)
@@ -3357,6 +3358,8 @@ defined as lowercase."
       (save-restriction
         (narrow-to-region beg end)
         (rst-adjust-section-title)))))
+
+(use-package sphinx-mode)
 
 
 ;;;; major-mode: shell
