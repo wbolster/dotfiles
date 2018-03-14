@@ -1295,7 +1295,6 @@ defined as lowercase."
   (evil-set-initial-state 'occur-mode 'motion)
   (defun w--occur-mode-hook ()
     (toggle-truncate-lines t)
-    (next-error-follow-minor-mode)
     (w--set-major-mode-hydra #'w--hydra-occur/body))
   (add-hook 'occur-mode-hook #'w--occur-mode-hook)
 
