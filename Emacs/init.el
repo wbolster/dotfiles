@@ -1694,6 +1694,7 @@ point stays the same after piping through the external program. "
   (copy-as-format-default "slack")
   (copy-as-format-format-alist  ;; only retain formats i use
    '(("github" copy-as-format--github)
+     ("jira" copy-as-format--jira)
      ("markdown" copy-as-format--markdown)
      ("rst" copy-as-format--rst)
      ("slack" copy-as-format--slack)))
