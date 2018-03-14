@@ -3393,9 +3393,7 @@ point stays the same after piping through the external program. "
     (typo-mode)
     (make-local-variable 'typo-mode-map)
     (define-key typo-mode-map "`" nil)
-    (require 'evil-surround)
-    (evil-add-to-alist
-     'evil-surround-pairs-alist
+    (w--add-evil-surround-pairs
      ?b '("**" . "**")  ;; strong
      ?c '("``" . "``")  ;; inline code
      ?C '(".. code-block::\n\n" . "")  ;; code-block
