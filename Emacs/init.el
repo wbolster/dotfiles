@@ -1578,7 +1578,85 @@ defined as lowercase."
   (outline-minor-mode " ‣"))
 
 
-;;;; copy-as-format
+;;;; formatting
+
+(use-package external-format
+  :load-path "lisp/")
+
+(defun w--external-format (beg end command)
+  "Transform BEG til END through COMMAND in a sane way.
+
+The number of leading and trailing newlines (if any) will be kept
+the same, to avoid bad interaction with surrounding text.
+
+This also tries to retain the cursor position using a heuristic
+that assumes that the number of occurrences of the symbol at
+point stays the same after piping through the external program. "
+  (let ((sym)
+        (sym-regexp)
+        (nth-occurrence)
+        (offset-in-sym))
+    (save-restriction
+      (narrow-to-region beg end)
+      (setq sym (thing-at-point 'symbol))
+      (unless sym
+        ;; point not at symbol, try finding one at the left
+        (forward-symbol -1)
+        (forward-symbol 1)
+        (backward-char)
+        (setq sym (thing-at-point 'symbol)))
+      (when sym
+        ;; keep track of the position
+        (setq sym-regexp (regexp-quote (downcase sym))
+              offset-in-sym (- (point)
+                               (car (bounds-of-thing-at-point 'symbol))))
+        (beginning-of-thing 'symbol)
+        (setq nth-occurrence (how-many sym-regexp)))
+      ;; reformat
+      (w--external-format--call (point-min) (point-max) command)
+      (when sym
+        ;; try to restore the position
+        (goto-char (point-max))
+        (re-search-backward sym-regexp nil t nth-occurrence)
+        (forward-char offset-in-sym)))))
+
+(defun w--external-format--call (beg end command)
+  "Pipe BEG til END through COMMAND, retaining leading and trailing newlines."
+  (let ((out-buffer (get-buffer-create " *external formatting*"))
+        (err-buffer (get-buffer-create "*external formatting errors*"))
+        (leading-newlines 0)
+        (trailing-newlines 0))
+    (with-current-buffer err-buffer
+      (erase-buffer))
+    (copy-to-buffer out-buffer beg end)
+    (with-current-buffer out-buffer
+      (goto-char (point-min))
+      (when (looking-at "\n\+")
+        (setq leading-newlines (- (match-end 0) (point-min))))
+      (goto-char (point-max))
+      (when (looking-back "\n\+" nil t)
+        (setq trailing-newlines (- (point-max) (match-beginning 0))))
+      (shell-command-on-region
+       (point-min) (point-max)
+       command
+       nil t err-buffer t)
+      (goto-char (point-min))
+      (skip-chars-forward "\n")
+      (delete-region (point-min) (point))
+      (dotimes (_ leading-newlines)
+        (insert "\n"))
+      (goto-char (point-max))
+      (skip-chars-backward "\n")
+      (delete-region (point) (point-max))
+      (dotimes (_ trailing-newlines)
+        (insert "\n")))
+    (delete-region beg end)
+    (goto-char beg)
+    (insert-buffer out-buffer)
+    (kill-buffer out-buffer)
+    (if (zerop (buffer-size err-buffer))
+        (kill-buffer err-buffer)
+      (display-buffer err-buffer))))
 
 ;; todo https://github.com/sshaw/copy-as-format/issues/2
 (use-package copy-as-format
@@ -3379,9 +3457,6 @@ defined as lowercase."
 
 (use-package sql
   :defer t
-  :commands
-  w--evil-sql-format
-  w--sql-format
   :general
   (:keymaps 'sql-mode-map
    :states 'normal
@@ -3392,61 +3467,29 @@ defined as lowercase."
    "Q" #'w--evil-sql-format)
   :config
   (defun w--sql-mode-hook ()
+    (setq external-format-shell-command "sqlformat -k upper -r -")
     (setq-local fill-paragraph-function #'w--sql-fill-paragraph))
   (add-hook 'sql-mode-hook 'w--sql-mode-hook)
-  (defun w--sql-fill-paragraph (justify)
-    (save-restriction
-      (let ((beg (save-excursion (backward-paragraph) (point)))
-            (end (save-excursion (forward-paragraph) (forward-char -1) (point)))
-            (current-symbol)
-            (current-symbol-regexp)
-            (current-symbol-nth)
-            (pos-in-current-symbol))
-        (narrow-to-region beg end)
-        (setq current-symbol (thing-at-point 'symbol))
-        (unless current-symbol
-          ;; point not at symbol, try finding one at the left
-          (forward-symbol -1)
-          (forward-symbol 1)
-          (backward-char)
-          (setq current-symbol (thing-at-point 'symbol)))
-        (when current-symbol
-          ;; keep track of the position
-          (setq current-symbol-regexp (regexp-quote (downcase current-symbol))
-                pos-in-current-symbol (- (point)
-                                         (car (bounds-of-thing-at-point 'symbol))))
-          (beginning-of-thing 'symbol)
-          (setq current-symbol-nth (how-many current-symbol-regexp)))
-        ;; reformat
-        (w--sql-format (point-min) (point-max))
-        (when current-symbol
-          ;; try to restore the position
-          (goto-char (point-max))
-          (re-search-backward current-symbol-regexp nil t current-symbol-nth)
-          (forward-char pos-in-current-symbol))
-        t)))
-  (defun w--sql-format-buffer ()
-    "Format all SQL in the buffer."
-    (interactive)
-    (w--sql-format (point-min) (point-max)))
   (defun w--sql-format (beg end)
     "Format SQL between BEG and END."
     (interactive "r")
-    ;; The external tool can be installed using ‘pipsi install sqlparse’.
     (unless (executable-find "sqlformat")
       (user-error "External sqlformat program not found. Hint: pipsi install sqlparse"))
-    ;; todo: cleanup trailing newlines
-    (shell-command-on-region
-     beg end
-     "sqlformat -k upper -r -; printf '\\n'"
-     nil t nil t)
-    (save-restriction
-      (narrow-to-region beg end)
-      (whitespace-cleanup)))
+    (w--external-format beg end "sqlformat -k upper -r -"))
   (evil-define-operator w--evil-sql-format (beg end type)
     "Evil operator to format SQL."
     (interactive "<R>")
-    (w--sql-format beg end)))
+    (w--sql-format beg end))
+  (defun w--sql-fill-paragraph (justify)
+    (let ((beg (save-excursion
+                 (backward-paragraph)
+                 (point)))
+          (end (save-excursion
+                 (forward-paragraph)
+                 (forward-char -1)
+                 (point))))
+      (w--sql-format beg end)
+      t)))
 
 
 ;;;; major-mode: yaml
