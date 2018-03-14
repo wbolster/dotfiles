@@ -1061,6 +1061,7 @@ defined as lowercase."
    ?\? '("¿" . "?")
    ?\! '("¡" . "!"))
   (setq-default evil-surround-pairs-alist evil-surround-pairs-alist)
+  (make-variable-buffer-local 'evil-surround-pairs-alist)
   :general
   (:states 'operator
    "s" 'evil-surround-edit
@@ -3377,7 +3378,6 @@ point stays the same after piping through the external program. "
     (make-local-variable 'typo-mode-map)
     (define-key typo-mode-map "`" nil)
     (require 'evil-surround)
-    (make-local-variable 'evil-surround-pairs-alist)
     (evil-add-to-alist
      'evil-surround-pairs-alist
      ?b '("**" . "**")  ;; strong
