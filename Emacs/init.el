@@ -2801,8 +2801,6 @@ point stays the same after piping through the external program. "
 
 ;;;; major mode: programming (generic)
 
-(modify-syntax-entry ?_ "w")
-
 (use-package fic-mode
   :defer t
   :init
