@@ -502,6 +502,16 @@ defined as lowercase."
     (interactive "nHeight (e.g. 110) ")
     (default-text-scale-increment (- height (face-attribute 'default :height)))))
 
+(defvar w--ui-font-family "Sans"
+  "Name of the font-family used by the desktop environment's user interface.")
+
+(when (s-equals-p (getenv "XDG_CURRENT_DESKTOP") "GNOME")
+  (let* ((font-name
+          (w--gsettings-get "org.gnome.desktop.interface" "font-name"))
+         (font-name-without-size
+          (s-replace-regexp "\\(.*\\) [0-9.]+" "\\1" font-name)))
+    (setq w--ui-font-family font-name-without-size)))
+
 (defvar w--faces-bold '(magit-popup-argument)
   "Faces that may retain their bold appearance.")
 
@@ -555,11 +565,14 @@ defined as lowercase."
   (sml/projectile-replacement-format "%s:")
   (sml/use-projectile-p 'before-prefixes)
   :custom-face
-  (mode-line ((t (:height 0.8))))
+  (mode-line ((t (:height 0.9))))
   (mode-line-inactive ((t (:inherit mode-line))))
+  (sml/filename ((t (:weight normal))))
   :config
   (sml/setup)
-  (set-face-attribute 'sml/modified nil :foreground solarized-color-red))
+  (set-face-attribute 'mode-line nil :family w--ui-font-family)
+  (set-face-attribute 'sml/modified nil :foreground solarized-color-red)
+  (set-face-attribute 'sml/filename nil :foreground solarized-color-blue))
 
 (use-package which-func
   :ensure nil
