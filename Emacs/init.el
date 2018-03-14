@@ -3276,6 +3276,7 @@ defined as lowercase."
      'evil-surround-pairs-alist
      ?b '("**" . "**")  ;; strong
      ?c '("``" . "``")  ;; inline code
+     ?C '(".. code-block::\n\n" . "")  ;; code-block
      ?d '(":doc:`" . " <...>`")  ;; doc link
      ?e '("*" . "*")  ;; emphasis
      ?l '("`" . " <...>`_")  ;; hyperlink
