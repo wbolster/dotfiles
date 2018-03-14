@@ -1441,44 +1441,70 @@ defined as lowercase."
 ;; (use-package rg)
 ;; perhaps use ,/ for rg hydra?
 
-(use-package highlight-symbol
+(use-package symbol-overlay
   :delight
+
   :custom
-  (highlight-symbol-highlight-single-occurrence nil)
-  (highlight-symbol-idle-delay 1.0)
-  (highlight-symbol-on-navigation-p t)
+  (symbol-overlay-idle-time 1.0)
+
   :general
   (:states 'motion
-   "C-p" #'highlight-symbol-prev
-   "C-n" #'highlight-symbol-next)
+   "C-p" #'symbol-overlay-jump-prev
+   "C-n" #'symbol-overlay-jump-next)
   (:states 'normal
-   "C-p" #'w--evil-paste-pop-or-highlight-symbol-prev
-   "C-n" #'w--evil-paste-pop-next-or-highlight-symbol-next)
+   "C-p" #'w--evil-paste-pop-or-previous-symbol
+   "C-n" #'w--evil-paste-pop-next-or-next-symbol)
+
   :config
-  (defun w--highlight-symbol-dwim ()
+  (setq symbol-overlay-map (make-sparse-keymap))
+
+  (set-face-attribute
+   'symbol-overlay-default-face nil
+   :foreground solarized-color-magenta
+   :inherit 'unspecified)
+  (--zip-with
+   (set-face-attribute
+    it nil
+    :foreground "#002b36"
+    :background other)
+   symbol-overlay-faces
+   (list solarized-color-yellow-l
+         solarized-color-orange-l
+         solarized-color-red-l
+         solarized-color-magenta-l
+         solarized-color-violet-l
+         solarized-color-blue-l
+         solarized-color-cyan-l
+         solarized-color-green-l))
+
+  (defun w--symbol-overlay-put-dwim ()
     "Toggle highlighting of the symbol at point (or the active region's content)."
     (interactive)
     (setq deactivate-mark t)
-    (let ((regexp (highlight-symbol-get-symbol)))
-      (when (region-active-p)
-        (setq regexp (regexp-quote (buffer-substring (region-beginning) (region-end)))))
-      (when (string-equal highlight-symbol regexp)
-        (highlight-symbol-remove-symbol regexp))
-      (highlight-symbol regexp)))
-  (defun w--evil-paste-pop-or-highlight-symbol-prev (count)
-    "Either paste-pop (with COUNT) or jump to previous symbol occurence."
+    (let* ((regexp
+            (if (region-active-p)
+                (regexp-quote (buffer-substring (region-beginning) (region-end)))
+              (symbol-overlay-get-symbol)))
+           (keyword (symbol-overlay-assoc regexp)))
+      (if keyword
+          (symbol-overlay-maybe-remove keyword)
+        (symbol-overlay-put-all regexp nil))))
+
+  (defun w--evil-paste-pop-or-previous-symbol (count)
+    "Either paste-pop (with COUNT) or jump to previous symbol occurrence."
     (interactive "p")
     (condition-case nil
         (evil-paste-pop count)
       (user-error
-       (highlight-symbol-prev))))
-  (defun w--evil-paste-pop-next-or-highlight-symbol-next (count)
-    "Either paste-pop-next (with COUNT) or jump to next symbol occurence."
+       (symbol-overlay-jump-prev))))
+
+  (defun w--evil-paste-pop-next-or-next-symbol (count)
+    "Either paste-pop-next (with COUNT) or jump to next symbol occurrence."
     (interactive "p")
     (condition-case nil
         (evil-paste-pop-next count)
       (user-error
-       (highlight-symbol-next)))))
+       (symbol-overlay-jump-next)))))
 
 
 ;;;; previous/next navigation
@@ -1509,10 +1535,10 @@ defined as lowercase."
   "]E" 'w--last-error
   "[m" 'smerge-prev
   "]m" 'smerge-next
-  "[o" 'highlight-symbol-prev
-  "]o" 'highlight-symbol-next
-  "[O" 'highlight-symbol-prev-in-defun
-  "]O" 'highlight-symbol-next-in-defun
+  "[o" 'symbol-overlay-jump-prev
+  "]o" 'symbol-overlay-jump-next
+  "[O" 'symbol-overlay-switch-backward
+  "]O" 'symbol-overlay-switch-forward
   "]s" (w--ilambda
         (evil-forward-word)
         (call-interactively 'evil-next-flyspell-error))
@@ -2605,8 +2631,8 @@ point stays the same after piping through the external program. "
   "_f_ill"
   ("f" auto-fill-mode)
   ("F" fci-mode)
-  "_h_ighlight-symbol"
-  ("h" highlight-symbol-mode)
+  "_h_ighlight"
+  ("h" symbol-overlay-mode)
   "_l_ine"
   ("l" hl-line-mode)
   ("L" global-hl-line-mode)
@@ -2667,8 +2693,8 @@ point stays the same after piping through the external program. "
   "_g_it"
   ("g" w--hydra-git/body)
   "_h_ighlight"
-  ("h" w--highlight-symbol-dwim)
-  ("H" highlight-symbol-remove-all)
+  ("h" w--symbol-overlay-put-dwim)
+  ("H" symbol-overlay-remove-all)
   "_m_erge"
   ("m" w--hydra-merge/body)
   "_n_arrow"
@@ -2801,7 +2827,7 @@ point stays the same after piping through the external program. "
     (flyspell-prog-mode)
     ;; (show-paren-mode)  ; fixme: needed?
     (highlight-parentheses-mode)
-    (highlight-symbol-mode)
+    (symbol-overlay-mode)
     (indent-guide-mode))
   (add-hook 'prog-mode-hook 'w--prog-mode-hook))
 
