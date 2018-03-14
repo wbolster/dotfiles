@@ -2752,9 +2752,8 @@ point stays the same after piping through the external program. "
   :config
   (defun w--text-mode-hook ()
     (setq show-trailing-whitespace t)
-    (auto-fill-mode)
     (guess-language-mode)
-    (visual-line-mode))
+    (w--wrap-lines-mode))
   (add-hook 'text-mode-hook 'w--text-mode-hook))
 
 
