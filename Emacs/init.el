@@ -3020,29 +3020,38 @@ point stays the same after piping through the external program. "
   :defer t
   :custom
   (markdown-asymmetric-header t)
+
   :custom-face
+  (markdown-code-face ((t (:inherit unspecified))))
   (markdown-comment-face
    ((t (:inherit font-lock-comment-face
         :foreground unspecified
         :strike-through unspecified))))
+
   :general
   (:keymaps 'markdown-mode-map
    :states 'insert
    "'" #'w--typo-cycle-quotation-marks)
+
   :config
   (defun w--markdown-mode-hook ()
     (setq evil-shift-width 2)
     (w--set-major-mode-hydra #'w--hydra-markdown/body)
     (evil-swap-keys-swap-question-mark-slash)
-    (auto-fill-mode -1)
     (flyspell-mode)
     (typo-mode)
-    (make-local-variable 'typo-mode-map)
-    (define-key typo-mode-map "`" nil)
-    (visual-line-mode))
+    (w--add-evil-surround-pairs
+     ?b '("**" . "**")  ;; strong emphasiss
+     ?c '("`" . "`")  ;; inline code
+     ?e '("*" . "*")  ;; emphasis
+     (make-local-variable 'typo-mode-map)
+     (define-key typo-mode-map "`" nil)))
+
   (add-hook 'markdown-mode-hook 'w--markdown-mode-hook)
+
   (evil-declare-repeat 'markdown-promote)
   (evil-declare-repeat 'markdown-demote)
+
   (w--make-hydra w--hydra-markdown nil
     "markdown"
     "_1__2__3__4__5_ _!__@_ _h_eader"
@@ -3063,6 +3072,7 @@ point stays the same after piping through the external program. "
     ("n" markdown-cleanup-list-numbers)
     "_q_uote"
     ("q" w--markdown-blockquote-dwim))
+
   (defun w--markdown-blockquote-dwim ()
     (interactive)
     (if (region-active-p)
