@@ -115,6 +115,20 @@ and BODY can refer to it as ‘arg’."
   :config
   (direnv-mode))
 
+;; gnome
+(defun w--gsettings-get (schema name)
+  (let* ((command
+          (format "gsettings get %s %s"
+                  (shell-quote-argument schema)
+                  (shell-quote-argument name)))
+         (output (shell-command-to-string command))
+         (clean-output
+          (->> output
+               (s-trim)
+               (s-chop-prefix "'")
+               (s-chop-suffix "'"))))
+    clean-output))
+
 ;; os-x specific
 (when (eq system-type 'darwin)
   (general-define-key "s-q" nil)
