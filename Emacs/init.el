@@ -1040,6 +1040,17 @@ defined as lowercase."
    "g`" #'evil-operator-string-inflection))
 
 (use-package evil-surround
+  :general
+  (:states 'operator
+   "s" 'evil-surround-edit
+   "S" 'evil-Surround-edit)
+  (:states 'visual
+   "S" 'evil-surround-region
+   "gS" 'evil-Surround-region)
+
+  :commands
+  w--add-evil-surround-pairs
+
   :config
   (evil-add-to-alist
    'evil-surround-pairs-alist
@@ -1062,13 +1073,9 @@ defined as lowercase."
    ?\! '("¡" . "!"))
   (setq-default evil-surround-pairs-alist evil-surround-pairs-alist)
   (make-variable-buffer-local 'evil-surround-pairs-alist)
-  :general
-  (:states 'operator
-   "s" 'evil-surround-edit
-   "S" 'evil-Surround-edit)
-  (:states 'visual
-   "S" 'evil-surround-region
-   "gS" 'evil-Surround-region))
+
+  (defun w--add-evil-surround-pairs (&rest args)
+    (apply 'evil-add-to-alist 'evil-surround-pairs-alist args)))
 
 (use-package evil-swap-keys
   :config
