@@ -2457,8 +2457,6 @@ point stays the same after piping through the external program. "
 (use-package magithub
   :demand t
   :after magit
-  :config
-  (magithub-feature-autoinject t)
   :custom
   (magithub-api-timeout 10)
   (magithub-pull-request-arguments '("-o"))
@@ -2469,7 +2467,12 @@ point stays the same after piping through the external program. "
    "c" #'magithub-edit-thing
    ;; do not override rebase key binding
    "r" nil
-   "R" #'magithub-reply-thing))
+   "R" #'magithub-reply-thing)
+  :init
+  ;; fixme: https://github.com/vermiculus/magithub/issues/299
+  (define-error 'ghub-404 "Not Found" 'ghub-http-error)
+  :config
+  (magithub-feature-autoinject t))
 
 (use-package git-link
   :defer t
