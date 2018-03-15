@@ -2963,6 +2963,15 @@ point stays the same after piping through the external program. "
     "_r_ eval-region"
     ("r" eval-region)))
 
+(use-package el-patch
+  :demand t
+  :after elisp-mode)
+
+(use-package lisp-indent-patch
+  :load-path "lisp/"
+  :demand t
+  :after elisp-mode)
+
 (use-package eldoc
   :defer t
   :delight)
