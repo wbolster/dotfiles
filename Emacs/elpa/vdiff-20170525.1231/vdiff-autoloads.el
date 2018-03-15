@@ -3,7 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "vdiff" "vdiff.el" (23101 14165 692540 462000))
+;;;### (autoloads nil "vdiff" "vdiff.el" (23209 39235 612692 340000))
 ;;; Generated autoloads from vdiff.el
 
 (autoload 'vdiff-files "vdiff" "\

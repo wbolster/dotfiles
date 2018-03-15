@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "rich-minority" "rich-minority.el" (23114 17792
-;;;;;;  35032 840000))
+;;;### (autoloads nil "rich-minority" "rich-minority.el" (23209 39167
+;;;;;;  277 155000))
 ;;; Generated autoloads from rich-minority.el
 
 (autoload 'rm--mode-list-as-string-list "rich-minority" "\

@@ -2087,8 +2087,7 @@ is set, show literally instead of actual buffer."
        fileset
        (executable-find "du"))
       (with-temp-buffer
-        (apply 'call-process "env" nil t nil "LC_ALL=C" "du" "-sch" fileset)
-        ;; (apply 'call-process "du" nil t nil "-sch" fileset)
+        (apply 'call-process "du" nil t nil "-sch" fileset)
         (format "%s"
                 (progn
                   (re-search-backward "\\(^[0-9.,]+[a-za-z]+\\).*total$")

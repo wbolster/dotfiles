@@ -47,10 +47,9 @@
                    (looking-at prefix-search)))
           (setq block-end (point))
           (sphinx-src-font-lock-fontify-block lang block-start block-end)
-          ;; (add-face-text-property
-          ;;  block-highlight-start block-end
-          ;;  '(:inherit fixed-pitch :background "#232a2b") 'append)
-          ))
+          (add-face-text-property
+           block-highlight-start block-end
+           '(:inherit fixed-pitch :background "#232a2b") 'append)))
     (error nil)))
 
 

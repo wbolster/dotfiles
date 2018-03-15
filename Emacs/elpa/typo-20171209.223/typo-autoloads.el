@@ -3,7 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "typo" "typo.el" (23101 14172 992575 768000))
+;;;### (autoloads nil "typo" "typo.el" (23209 39240 348720 780000))
 ;;; Generated autoloads from typo.el
 
 (autoload 'typo-mode "typo" "\

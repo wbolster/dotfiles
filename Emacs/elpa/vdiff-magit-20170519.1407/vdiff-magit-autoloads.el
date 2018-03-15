@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "vdiff-magit" "vdiff-magit.el" (23156 39744
-;;;;;;  98744 275000))
+;;;### (autoloads nil "vdiff-magit" "vdiff-magit.el" (23210 16434
+;;;;;;  427238 977000))
 ;;; Generated autoloads from vdiff-magit.el
  (autoload 'vdiff-magit-popup "vdiff-magit" nil t)
 

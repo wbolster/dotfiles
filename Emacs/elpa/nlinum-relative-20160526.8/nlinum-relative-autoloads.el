@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "nlinum-relative" "nlinum-relative.el" (23101
-;;;;;;  14125 636346 772000))
+;;;### (autoloads nil "nlinum-relative" "nlinum-relative.el" (23209
+;;;;;;  39187 364401 19000))
 ;;; Generated autoloads from nlinum-relative.el
 
 (autoload 'nlinum-relative-on "nlinum-relative" "\

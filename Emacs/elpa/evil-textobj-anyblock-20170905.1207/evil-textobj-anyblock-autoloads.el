@@ -4,7 +4,7 @@
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
 ;;;### (autoloads nil "evil-textobj-anyblock" "evil-textobj-anyblock.el"
-;;;;;;  (23101 14122 992333 990000))
+;;;;;;  (23209 39180 872361 592000))
 ;;; Generated autoloads from evil-textobj-anyblock.el
  (autoload 'evil-textobj-anyblock-inner-block "evil-textobj-anyblock" nil t)
  (autoload 'evil-textobj-anyblock-a-block "evil-textobj-anyblock" nil t)

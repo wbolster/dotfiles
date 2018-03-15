@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "sphinx-mode" "sphinx-mode.el" (23207 50024
-;;;;;;  217650 701000))
+;;;### (autoloads nil "sphinx-mode" "sphinx-mode.el" (23209 39252
+;;;;;;  964796 412000))
 ;;; Generated autoloads from sphinx-mode.el
 
 (autoload 'sphinx-mode "sphinx-mode" "\
@@ -15,7 +15,7 @@ Sphinx minor mode.
 ;;;***
 
 ;;;### (autoloads nil nil ("sphinx-mode-pkg.el" "sphinx-src.el")
-;;;;;;  (23207 50024 209650 654000))
+;;;;;;  (23209 39252 956796 364000))
 
 ;;;***
 

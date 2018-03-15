@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "symbol-overlay" "symbol-overlay.el" (23201
-;;;;;;  16292 971232 162000))
+;;;### (autoloads nil "symbol-overlay" "symbol-overlay.el" (23209
+;;;;;;  39190 676421 112000))
 ;;; Generated autoloads from symbol-overlay.el
 
 (autoload 'symbol-overlay-mode "symbol-overlay" "\

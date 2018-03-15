@@ -3,7 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "ranger" "ranger.el" (23123 51284 144698 111000))
+;;;### (autoloads nil "ranger" "ranger.el" (23209 39162 976252 612000))
 ;;; Generated autoloads from ranger.el
 
 (defvar ranger-key [16] "\
