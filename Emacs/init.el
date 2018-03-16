@@ -3436,8 +3436,6 @@ point stays the same after piping through the external program. "
      evil-shift-width 2
      rst-mode-abbrev-table nil)
     (w--set-major-mode-hydra #'w--hydra-rst/body)
-    (modify-syntax-entry ?_ "w")
-    (modify-syntax-entry ?- "w")
     (evil-swap-keys-swap-question-mark-slash)
     (evil-swap-keys-swap-colon-semicolon)
     (flyspell-mode)
