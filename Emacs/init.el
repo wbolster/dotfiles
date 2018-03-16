@@ -462,6 +462,9 @@ defined as lowercase."
 
 (defun w--tweak-faces ()
   "Tweak some font faces."
+  (set-face-attribute
+   'fixed-pitch nil
+   :family (face-attribute 'default :family))
   (set-face-attribute  ;; less contrasting region (evil visual state)
    'region nil
    :background nil :foreground nil
