@@ -3531,7 +3531,12 @@ point stays the same after piping through the external program. "
         (narrow-to-region beg end)
         (rst-adjust-section-title)))))
 
-(use-package sphinx-mode)
+(use-package sphinx-mode
+  :demand t
+  :delight sphinx-mode
+  :after rst
+  :config
+  (setq sphinx-mode-map (make-sparse-keymap)))
 
 
 ;;;; major-mode: shell
