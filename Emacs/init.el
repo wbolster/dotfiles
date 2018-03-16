@@ -3075,6 +3075,7 @@ point stays the same after piping through the external program. "
   :defer t
   :custom
   (markdown-asymmetric-header t)
+  (markdown-fontify-code-blocks-natively t)
 
   :custom-face
   (markdown-code-face ((t (:inherit unspecified))))
