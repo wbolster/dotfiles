@@ -3361,6 +3361,8 @@ point stays the same after piping through the external program. "
 (use-package python-pytest
   :demand t
   :after python
+  :custom
+  (python-pytest-arguments '("--color"))
   :general
   (:keymaps 'python-pytest-mode-map
    :states 'motion
