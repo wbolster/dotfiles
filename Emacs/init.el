@@ -2474,9 +2474,6 @@ point stays the same after piping through the external program. "
    ;; do not override rebase key binding
    "r" nil
    "R" #'magithub-reply-thing)
-  :init
-  ;; fixme: https://github.com/vermiculus/magithub/issues/299
-  (define-error 'ghub-404 "Not Found" 'ghub-http-error)
   :config
   (magithub-feature-autoinject t))
 
