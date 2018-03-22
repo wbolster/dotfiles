@@ -630,7 +630,7 @@ defined as lowercase."
    "<mouse-7>" (w--ilambda "P" (evil-scroll-column-right (or arg 4)))
    "z z" #'w--hydra-recenter/recenter-top-bottom)
   (:states '(motion normal)
-   [escape] #'w--evil-force-normal-state)
+   [escape] #'w--evil-normal-state-cleanup)
   (:states '(motion normal visual)
    [remap evil-next-line] #'w--evil-next-line
    [remap evil-previous-line] #'w--evil-previous-line
@@ -698,11 +698,14 @@ defined as lowercase."
         (concat "M-" key)
         (lambda () (interactive) (insert num)))))
 
-  (defun w--evil-force-normal-state ()
+  (defun w--evil-normal-state-cleanup ()
     "Like `evil-force-normal-state', with some extra cleanups."
     (interactive)
-    (lazy-highlight-cleanup t)
-    (remove-overlays nil nil 'category 'evil-snipe)
+    (when (eq last-command 'w--evil-normal-state-cleanup)
+      ;; clean up visual noise when called twice in row
+      (lazy-highlight-cleanup t)
+      (remove-overlays nil nil 'category 'evil-snipe)
+      (symbol-overlay-remove-all))
     (evil-force-normal-state)
     (when (eq (evil-initial-state-for-buffer) 'motion)
       (evil-change-to-initial-state)))
