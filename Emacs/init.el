@@ -3300,6 +3300,8 @@ point stays the same after piping through the external program. "
     "Add an import statement for the thing at point."
     (interactive)
     (let ((thing (w--thing-at-point-dwim)))
+      (unless thing
+        (user-error "No thing at point"))
       (w--python-insert-statement
        'before
        (format "import %s  # fixme: move to proper place" thing))))
