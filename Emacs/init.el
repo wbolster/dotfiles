@@ -485,6 +485,8 @@ defined as lowercase."
  evil-operator-state-cursor (list solarized-color-magenta 'hollow))
 
 (use-package dimmer
+  :custom
+  (dimmer-fraction .25)
   :config
   (dimmer-mode))
 
