@@ -811,6 +811,23 @@ defined as lowercase."
     (evil-shift-right beg end count)
     (w--evil-visual-restore-line-wise)))
 
+(use-package edit-indirect
+  :config
+  (defvar w--edit-indirect-original-indentation 0
+    "Original indentation of the edited region.")
+  (defun w--edit-indirect-dedent ()
+    (require 'rst)
+    (let ((indentation (rst-find-leftmost-column (point-min) (point-max))))
+      (message "indentation is %s" indentation)
+      (setq-local w--edit-indirect-original-indentation indentation)
+      (when (> indentation 0)
+        (indent-rigidly (point-min) (point-max) (- indentation)))))
+  (defun w--edit-indirect-reindent ()
+    (when (> w--edit-indirect-original-indentation 0)
+      (indent-rigidly (point-min) (point-max) w--edit-indirect-original-indentation)))
+  (add-hook 'edit-indirect-after-creation-hook #'w--edit-indirect-dedent t)
+  (add-hook 'edit-indirect-before-commit-hook #'w--edit-indirect-reindent t))
+
 (use-package evil-args
   :general
   (:keymaps 'evil-inner-text-objects-map
