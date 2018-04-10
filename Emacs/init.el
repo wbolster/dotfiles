@@ -1643,6 +1643,13 @@ defined as lowercase."
     (visual-fill-column-mode -1)
     (auto-fill-mode)))
 
+(defun w--sensible-wrap-mode ()
+  (interactive)
+  (let ((mode (if (derived-mode-p 'text-mode)
+                  'w--wrap-lines-mode
+                'visual-line-mode)))
+    (call-interactively mode)))
+
 (defun w--evil-fill-paragraph-dwim ()
   "Fill the current paragraph."
   (interactive)
@@ -2682,7 +2689,7 @@ point stays the same after piping through the external program. "
   "_s_pell"
   ("s" flyspell-mode)
   "_w_rapping"
-  ("w" w--wrap-lines-mode)
+  ("w" w--sensible-wrap-mode)
   ("W" toggle-truncate-lines)
   "_SPC_ whitespace"
   ("SPC" whitespace-mode)
