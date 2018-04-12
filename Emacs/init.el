@@ -2565,7 +2565,19 @@ point stays the same after piping through the external program. "
   (vdiff-closed-fold-face ((t (:inherit magit-diff-context-highlight)))))
 
 (use-package vdiff-magit
-  :defer t)
+  :demand t
+  :after magit
+  :custom
+  (vdiff-magit-stage-is-2way t)
+  :general
+  (:keymaps 'magit-mode-map
+   "e" #'vdiff-magit-dwim
+   "E" #'vdiff-magit-popup)
+  :config
+  (magit-define-popup-action 'magit-dispatch-popup
+    ?v "vdiff dwim" 'vdiff-magit-dwim)
+  (magit-define-popup-action 'magit-dispatch-popup
+    ?V "Change vdiff" 'vdiff-magit-popup))
 
 (w--make-hydra w--hydra-merge nil
   "merge"
