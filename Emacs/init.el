@@ -2574,6 +2574,10 @@ point stays the same after piping through the external program. "
   :custom
   (vdiff-subtraction-style 'single)
   (vdiff-subtraction-fill-char ?·)
+  :general
+  (:keymaps 'vdiff-mode-map
+   :states 'normal
+   [remap evil-save-modified-and-close] 'vdiff-quit)
   :custom-face
   (vdiff-addition-face ((t (:inherit magit-diff-added))))
   (vdiff-change-face ((t (:inherit magit-diff-base))))
