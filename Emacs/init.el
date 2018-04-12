@@ -1032,9 +1032,6 @@ defined as lowercase."
    "gX" 'evil-exchange-cancel))
 
 (use-package evil-goggles
-  :config
-  (evil-goggles-mode)
-  (evil-goggles-use-magit-faces)
   :delight
   :custom
   (evil-goggles-duration 1)
@@ -1042,7 +1039,10 @@ defined as lowercase."
   (evil-goggles-blocking-duration .2)
   (evil-goggles-pulse t)
   :custom-face
-  (evil-goggles-default-face ((t (:inherit highlight)))))
+  (evil-goggles-default-face ((t (:inherit highlight))))
+  :config
+  (evil-goggles-mode)
+  (evil-goggles-use-magit-faces))
 
 (use-package evil-indent-plus
   :general
