@@ -3507,7 +3507,9 @@ point stays the same after piping through the external program. "
     (sphinx-mode)
     (typo-mode)
     (make-local-variable 'typo-mode-map)
-    (define-key typo-mode-map "`" nil)
+    (general-define-key
+     :keymaps 'typo-mode-map
+      "`" nil)
     (w--add-evil-surround-pairs
      ?b '("**" . "**")  ;; strong
      ?c '("``" . "``")  ;; inline code
