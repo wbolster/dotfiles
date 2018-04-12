@@ -2546,6 +2546,25 @@ point stays the same after piping through the external program. "
   :custom
   (ediff-split-window-function 'split-window-horizontally))
 
+(use-package smerge-mode
+  :config
+  (w--make-hydra w--hydra-merge nil
+    "merge"
+    "_n_/_e_/_p_ nav"
+    ("n" smerge-next nil :exit nil)
+    ("e" smerge-prev nil :exit nil)
+    ("p" smerge-prev nil :exit nil)
+    "_c_urrent"
+    ("c" smerge-keep-current)
+    "_m_ine"
+    ("m" smerge-keep-mine)
+    "_b_ase"
+    ("b" smerge-keep-base)
+    "_o_ther"
+    ("o" smerge-keep-other)
+    "_a_ll"
+    ("a" smerge-keep-all)))
+
 (use-package vc
   :custom
   (vc-handled-backends nil))
@@ -2579,24 +2598,6 @@ point stays the same after piping through the external program. "
   (magit-define-popup-action 'magit-dispatch-popup
     ?V "Change vdiff" 'vdiff-magit-popup))
 
-(w--make-hydra w--hydra-merge nil
-  "merge"
-  "_c_urrent"
-  ("c" smerge-keep-current)
-  "_m_ine"
-  ("m" smerge-keep-mine)
-  "_b_ase"
-  ("b" smerge-keep-base)
-  "_o_ther"
-  ("o" smerge-keep-other)
-  "_a_ll"
-  ("a" smerge-keep-all)
-  "go to"
-  "_n_ext"
-  ("n" smerge-next nil :exit nil)
-  "_p_revious"
-  ("e" smerge-prev nil :exit nil)
-  ("p" smerge-prev nil :exit nil))
 
 
 ;;;; writeroom
