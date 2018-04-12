@@ -2551,7 +2551,18 @@ point stays the same after piping through the external program. "
   (vc-handled-backends nil))
 
 (use-package vdiff
-  :defer t)
+  :defer t
+  :custom
+  (vdiff-subtraction-style 'single)
+  (vdiff-subtraction-fill-char ?·)
+  :custom-face
+  (vdiff-addition-face ((t (:inherit magit-diff-added))))
+  (vdiff-change-face ((t (:inherit magit-diff-base))))
+  (vdiff-subtraction-face ((t (:inherit magit-diff-removed))))
+  (vdiff-refine-added ((t (:inherit magit-diff-added-highlight))))
+  (vdiff-refine-changed ((t (:inherit magit-diff-base-highlight))))
+  (vdiff-open-fold-face ((t (:inherit magit-diff-context))))
+  (vdiff-closed-fold-face ((t (:inherit magit-diff-context-highlight)))))
 
 (use-package vdiff-magit
   :defer t)
