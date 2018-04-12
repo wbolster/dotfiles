@@ -2461,7 +2461,8 @@ point stays the same after piping through the external program. "
    :states '(motion normal)
    "C-n" #'magit-blame-next-chunk
    "C-e" #'magit-blame-previous-chunk
-   "C-p" #'magit-blame-previous-chunk)
+   "C-p" #'magit-blame-previous-chunk
+   "<tab>" #'magit-blame-toggle-headings)
   (:keymaps 'magit-diff-mode-map
    "SPC" nil
    "DEL" nil)
