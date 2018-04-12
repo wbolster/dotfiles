@@ -2596,8 +2596,37 @@ point stays the same after piping through the external program. "
   (magit-define-popup-action 'magit-dispatch-popup
     ?v "vdiff dwim" 'vdiff-magit-dwim)
   (magit-define-popup-action 'magit-dispatch-popup
-    ?V "Change vdiff" 'vdiff-magit-popup))
+    ?V "Change vdiff" 'vdiff-magit-popup)
 
+  (w--make-hydra w--hydra-vdiff nil
+    "vdiff"
+    "_n_/_e_/_p_ nav"
+    ("n" vdiff-next-hunk :exit nil)
+    ("e" vdiff-previous-hunk :exit nil)
+    ("p" vdiff-previous-hunk :exit nil)
+    ("N" vdiff-next-fold :exit nil)
+    ("E" vdiff-previous-fold :exit nil)
+    ("P" vdiff-previous-fold :exit nil)
+    "_c_lose"
+    ("c" vdiff-close-fold)
+    ("C" vdiff-close-all-folds)
+    "_f_/_x_ refine"
+    ("f" vdiff-refine-this-hunk)
+    ("F" vdiff-refine-all-hunks)
+    ("x" vdiff-remove-refinements-in-hunk)
+    "_o_pen"
+    ("o" vdiff-open-fold)
+    ("O" vdiff-open-all-folds)
+    "_r_eceive"
+    ("r" vdiff-receive-changes)
+    ("R" vdiff-receive-changes-and-step :exit nil)
+    "_s_end"
+    ("s" vdiff-send-changes)
+    ("S" vdiff-send-changes-and-step :exit nil)
+    "_u_pdate"
+    ("u" vdiff-refresh)
+    "_d_ hydra"
+    ("d" vdiff-hydra/body)))
 
 
 ;;;; writeroom
@@ -2751,6 +2780,8 @@ point stays the same after piping through the external program. "
   ("b" w--hydra-buffer/body)
   "_c_heck"
   ("c" w--hydra-flycheck/body)
+  "_d_iff"
+  ("d" w--hydra-vdiff/body)
   "_f_ind"
   ("f" w--hydra-find-file/body)
   "_g_it"
