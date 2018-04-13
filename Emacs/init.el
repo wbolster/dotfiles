@@ -129,6 +129,17 @@ and BODY can refer to it as ‘arg’."
                (s-chop-suffix "'"))))
     clean-output))
 
+(defvar w--ui-font-family "Sans"
+  "Name of the font-family used by the desktop environment's user interface.")
+
+(when (s-equals-p (getenv "XDG_CURRENT_DESKTOP") "GNOME")
+  (let* ((font-name
+          (w--gsettings-get "org.gnome.desktop.interface" "font-name"))
+         (font-name-without-size
+          (s-replace-regexp "\\(.*\\) [0-9.]+" "\\1" font-name)))
+    (setq w--ui-font-family font-name-without-size)))
+
+
 ;; os-x specific
 (when (eq system-type 'darwin)
   (general-define-key "s-q" nil)
@@ -413,6 +424,7 @@ defined as lowercase."
   :config
   (load-theme w--dark-theme t t)
   (load-theme w--light-theme t t)
+  (enable-theme w--light-theme)
   (setq
    solarized-color-yellow    "#b58900"
    solarized-color-orange    "#cb4b16"
@@ -444,21 +456,23 @@ defined as lowercase."
   (interactive)
   (w--activate-theme (eq (first custom-enabled-themes) w--light-theme)))
 
+(defvar w--theme-changed-hook nil
+  "Hook to run after the theme has changed. Useful for patching font faces.")
+
 (defun w--activate-theme (dark)
   "Load configured theme. When DARK is nil, load a light theme."
   (setq frame-background-mode (if dark 'dark 'light))
   (mapc 'frame-set-background-mode (frame-list))
+  ;; (set-frame-parameter nil 'background-mode (if dark 'dark 'light))
+  (--each custom-enabled-themes
+    (disable-theme it))
   (let ((theme (if dark w--dark-theme w--light-theme)))
     (enable-theme theme))
-  (w--tweak-faces))
+  (run-hooks 'w--theme-changed-hook)
+  (run-with-idle-timer .5 nil #'redraw-display))
 
-(defun w--disable-themes-advice (theme)
-  "Disable all enabled themes except THEME."
-  (unless (eq theme 'user)
-    (--each custom-enabled-themes
-      (disable-theme it))))
-
-(advice-add 'enable-theme :before #'w--disable-themes-advice)
+(defvar w--faces-bold '(magit-popup-argument)
+  "Faces that may retain their bold appearance.")
 
 (defun w--tweak-faces ()
   "Tweak some font faces."
@@ -468,14 +482,20 @@ defined as lowercase."
   (set-face-attribute  ;; less contrasting region (evil visual state)
    'region nil
    :background nil :foreground nil
-   :inherit 'secondary-selection))
+   :inherit 'secondary-selection)
+  (dolist (face (face-list))
+    (set-face-attribute face nil :underline nil)
+    (unless (member face w--faces-bold)
+      (set-face-attribute face nil :weight 'normal))))
+
+(add-hook 'w--theme-changed-hook #'w--tweak-faces)
 
 (defun w--set-theme-from-environment ()
   "Set the theme based on presence/absence of a configuration file."
   (interactive)
   (w--activate-theme (file-exists-p "~/.config/dark-theme")))
 
-(w--set-theme-from-environment)
+(add-hook 'emacs-startup-hook #'w--set-theme-from-environment)
 
 (setq
  evil-normal-state-cursor (list solarized-color-yellow 'box)
@@ -523,33 +543,6 @@ defined as lowercase."
     (interactive "nHeight (e.g. 110) ")
     (default-text-scale-increment (- height (face-attribute 'default :height)))))
 
-(defvar w--ui-font-family "Sans"
-  "Name of the font-family used by the desktop environment's user interface.")
-
-(when (s-equals-p (getenv "XDG_CURRENT_DESKTOP") "GNOME")
-  (let* ((font-name
-          (w--gsettings-get "org.gnome.desktop.interface" "font-name"))
-         (font-name-without-size
-          (s-replace-regexp "\\(.*\\) [0-9.]+" "\\1" font-name)))
-    (setq w--ui-font-family font-name-without-size)))
-
-(defvar w--faces-bold '(magit-popup-argument)
-  "Faces that may retain their bold appearance.")
-
-(defun w--make-faces-boring ()
-  "Remove unwanted attributes from font faces."
-  (interactive)
-  (dolist (face (face-list))
-    (set-face-attribute face nil :underline nil)
-    (unless (member face w--faces-bold)
-      (set-face-attribute face nil :weight 'normal))))
-
-(w--make-faces-boring)
-
-(advice-add
- 'load-theme
- :after (fn: w--make-faces-boring))
-
 (w--make-hydra w--hydra-zoom nil
   "zoom"
   "_i_n"
@@ -585,15 +578,16 @@ defined as lowercase."
   (sml/name-width '(1 . 40))
   (sml/projectile-replacement-format "%s:")
   (sml/use-projectile-p 'before-prefixes)
-  :custom-face
-  (mode-line ((t (:height 0.9))))
-  (mode-line-inactive ((t (:inherit mode-line))))
-  (sml/filename ((t (:weight normal))))
   :config
   (sml/setup)
-  (set-face-attribute 'mode-line nil :family w--ui-font-family)
-  (set-face-attribute 'sml/modified nil :foreground solarized-color-red)
-  (set-face-attribute 'sml/filename nil :foreground solarized-color-blue))
+
+  (defun w--smart-mode-line-tweak-faces ()
+    (set-face-attribute 'mode-line nil :family w--ui-font-family :height 0.9)
+    (set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
+    (set-face-attribute 'sml/modified nil :foreground solarized-color-red)
+    (set-face-attribute 'sml/filename nil :foreground solarized-color-blue))
+
+  (add-hook 'w--theme-changed-hook #'w--smart-mode-line-tweak-faces t))
 
 (use-package which-func
   :ensure nil
@@ -1483,24 +1477,29 @@ defined as lowercase."
   :config
   (setq symbol-overlay-map (make-sparse-keymap))
 
-  (set-face-attribute
-   'symbol-overlay-default-face nil
-   :foreground solarized-color-magenta
-   :inherit 'unspecified)
-  (--zip-with
-   (set-face-attribute
-    it nil
-    :foreground "#002b36"
-    :background other)
-   symbol-overlay-faces
-   (list solarized-color-yellow-l
-         solarized-color-orange-l
-         solarized-color-red-l
-         solarized-color-magenta-l
-         solarized-color-violet-l
-         solarized-color-blue-l
-         solarized-color-cyan-l
-         solarized-color-green-l))
+  (defun w--symbol-overlay-tweak-faces ()
+    (set-face-attribute
+     'symbol-overlay-default-face nil
+     :foreground solarized-color-magenta
+     :inherit 'unspecified)
+    (--zip-with
+     (set-face-attribute
+      it nil
+      :foreground "#fdf6e3"
+      :foreground "#002b36"
+      :foreground (face-attribute 'default :background)
+      :background other)
+     symbol-overlay-faces
+     (list solarized-color-yellow-l
+           solarized-color-orange-l
+           solarized-color-red-l
+           solarized-color-magenta-l
+           solarized-color-violet-l
+           solarized-color-blue-l
+           solarized-color-cyan-l
+           solarized-color-green-l)))
+
+  (add-hook 'w--theme-changed-hook #'w--symbol-overlay-tweak-faces t)
 
   (defun w--symbol-overlay-put-dwim ()
     "Toggle highlighting of the symbol at point (or the active region's content)."
@@ -2002,14 +2001,22 @@ point stays the same after piping through the external program. "
   :custom
   (nav-flash-delay 5)
   :config
-  (add-hook 'post-command-hook #'w--maybe-nav-flash)
-  (dolist (hook w--jump-hooks)
-    (add-hook hook #'w--maybe-nav-flash))
+  (defun w--nav-flash-tweak-faces ()
+    (set-face-attribute
+     'nav-flash-face nil
+     :background 'unspecified
+     :foreground 'unspecified
+     :inherit 'highlight))
+  (add-hook 'w--theme-changed-hook #'w--nav-flash-tweak-faces t)
 
   (defun w--maybe-nav-flash ()
     "Highlight point when run after a jump command."
     (when (member this-command w--jump-commands)
-      (nav-flash-show))))
+      (nav-flash-show)))
+
+  (add-hook 'post-command-hook #'w--maybe-nav-flash)
+  (dolist (hook w--jump-hooks)
+    (add-hook hook #'w--maybe-nav-flash)))
 
 (use-package dumb-jump
   :custom
