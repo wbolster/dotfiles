@@ -1705,17 +1705,19 @@ defined as lowercase."
           (-when-let*
               ((items
                 (-as-> (imenu--make-index-alist t) items
-                       (delete (assoc "*Rescan*" items) items)
                        (-flatten items)
                        (-filter 'listp items)))
                (positions
                 (-as-> (-map #'cdr items) positions
                        (-filter 'identity positions)
                        (-map-when 'markerp 'marker-position positions)
+                       (-filter 'natnump positions)
                        (cons (point-min) positions)
                        (-snoc positions (point-max))
+                       (-sort '< positions)
                        (-uniq positions)))
-               (ranges (-zip-pair positions (cdr positions))))
+               (ranges
+                (-zip-pair positions (cdr positions))))
             (let (position-a position-b beg end offset acc)
               (--each ranges
                 (setq position-a (car it)
