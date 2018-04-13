@@ -1679,7 +1679,54 @@ defined as lowercase."
   :defer t)
 
 
-;;;; outline
+;;;; outline / folding
+
+(use-package origami
+  :custom
+  (origami-show-fold-header t)
+
+  :custom-face
+  (origami-fold-header-face ((t (:background unspecified))))
+  (origami-fold-header-face ((t (:inherit highlight))))
+  (origami-fold-header-face ((t (:inherit secondary-selection))))
+  (origami-fold-header-face ((t (:inherit magit-diff-context))))
+  (origami-fold-header-face ((t (:inherit magit-diff-context-highlight))))
+
+  :commands
+  w--origami-parser-imenu-flat
+
+  :config
+  (defun w--origami-parser-imenu-flat (create)
+    "Origami parser producing folds for each imenu entry, without nesting."
+    (lambda (content)
+      (let ((orig-major-mode major-mode))
+        (with-temp-buffer
+          (insert content)
+          (funcall orig-major-mode)
+          (-when-let*
+              ((items
+                (-as-> (imenu--make-index-alist t) items
+                       (delete (assoc "*Rescan*" items) items)
+                       (-flatten items)
+                       (-filter 'listp items)))
+               (positions
+                (-as-> (-map #'cdr items) positions
+                       (-filter 'identity positions)
+                       (-map-when 'markerp 'marker-position positions)
+                       (cons (point-min) positions)
+                       (-snoc positions (point-max))
+                       (-uniq positions)))
+               (ranges (-zip-pair positions (cdr positions))))
+            (let (position-a position-b beg end offset acc)
+              (--each ranges
+                (setq position-a (car it)
+                      position-b (cdr it))
+                (goto-char position-a)
+                (setq beg (line-beginning-position)
+                      end (1- position-b)
+                      offset (- (min (line-end-position) end) beg)
+                      acc (cons (funcall create beg end offset nil) acc)))
+              (reverse acc))))))))
 
 (use-package outline
   :defer t
@@ -2737,8 +2784,6 @@ point stays the same after piping through the external program. "
   ("N" (progn
          (line-number-mode 'toggle)
          (column-number-mode 'toggle)))
-  "_o_utline"
-  ("o" outline-minor-mode)
   "_r_ writeroom"
   ("r" writeroom-mode)
   ("R" (progn
@@ -3299,8 +3344,11 @@ point stays the same after piping through the external program. "
     (w--set-major-mode-hydra #'w--hydra-python/body)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-underscore-dash)
-    (outline-minor-mode)
-    (python-docstring-mode))
+    (origami-mode)
+    (python-docstring-mode)
+    (evil-add-to-alist
+     'origami-parser-alist
+     'python-mode 'w--origami-parser-imenu-flat))
   (add-hook 'python-mode-hook 'w--python-mode-hook)
 
   ;; todo: integrate this with the global easymotion hydra
@@ -3540,8 +3588,12 @@ point stays the same after piping through the external program. "
     (evil-swap-keys-swap-question-mark-slash)
     (evil-swap-keys-swap-colon-semicolon)
     (flyspell-mode)
+    (origami-mode)
     (sphinx-mode)
     (typo-mode)
+    (evil-add-to-alist
+     'origami-parser-alist
+     'rst-mode 'w--origami-parser-imenu-flat)
     (make-local-variable 'typo-mode-map)
     (general-define-key
      :keymaps 'typo-mode-map
