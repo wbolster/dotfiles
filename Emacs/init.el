@@ -3701,6 +3701,22 @@ point stays the same after piping through the external program. "
   (setq sphinx-mode-map (make-sparse-keymap)))
 
 
+;;;; major-mode: rust
+
+(use-package rust-mode
+  :defer t
+  :config
+  (defun w--rust-mode-hook ()
+    (evil-swap-keys-swap-underscore-dash)
+    (evil-swap-keys-swap-double-single-quotes)
+    (evil-swap-keys-swap-square-curly-brackets)
+    (origami-mode)
+    (evil-add-to-alist
+     'origami-parser-alist
+     'rust-mode 'w--origami-parser-imenu-flat))
+  (add-hook 'rust-mode-hook 'w--rust-mode-hook))
+
+
 ;;;; major-mode: shell
 
 (use-package sh-script
