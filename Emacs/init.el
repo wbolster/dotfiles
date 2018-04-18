@@ -619,6 +619,8 @@ defined as lowercase."
   (evil-mode-line-format '(before . mode-line-front-space))
   :general
   (:states 'motion
+   "<tab>" 'evil-toggle-fold
+   "C-<tab>" 'evil-jump-forward
    ";" #'evil-ex
    "z e" #'evil-scroll-line-up
    "z n" #'evil-scroll-line-down
