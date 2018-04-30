@@ -2432,6 +2432,9 @@ point stays the same after piping through the external program. "
   (magit-wip-after-apply-mode)
   (magit-wip-before-change-mode)
   :custom
+  (magit-blame-heading-format "%-10a %C %s")
+  (magit-blame-time-format "%F")
+  (magit-blame-mode-lighter " annotate")
   (magit-branch-prefer-remote-upstream '("master"))
   (magit-branch-read-upstream-first 'fallback)
   (magit-cherry-pick-arguments '("-x"))
