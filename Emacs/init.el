@@ -1208,6 +1208,7 @@ defined as lowercase."
 
 (setq
  indicate-buffer-boundaries 'left
+ recenter-positions '(top middle bottom)
  scroll-conservatively 101
  scroll-margin 5)
 
