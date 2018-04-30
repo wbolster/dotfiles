@@ -497,12 +497,16 @@ defined as lowercase."
 
 (add-hook 'emacs-startup-hook #'w--set-theme-from-environment)
 
-(setq
- evil-normal-state-cursor (list solarized-color-yellow 'box)
- evil-visual-state-cursor (list solarized-color-orange 'hollow)
- evil-insert-state-cursor  (list solarized-color-yellow 'bar)
- evil-replace-state-cursor (list solarized-color-red 'hbar)
- evil-operator-state-cursor (list solarized-color-magenta 'hollow))
+(defun w--tweak-evil-cursor ()
+  (setq
+   evil-motion-state-cursor (list solarized-color-yellow 'box)
+   evil-normal-state-cursor (list solarized-color-yellow 'box)
+   evil-visual-state-cursor (list solarized-color-yellow 'hollow)
+   evil-insert-state-cursor  (list solarized-color-yellow 'bar)
+   evil-replace-state-cursor (list solarized-color-magenta 'hbar)
+   evil-operator-state-cursor (list solarized-color-magenta 'hollow)))
+
+(add-hook 'w--theme-changed-hook #'w--tweak-evil-cursor)
 
 (use-package dimmer
   :custom
