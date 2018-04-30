@@ -2893,12 +2893,12 @@ point stays the same after piping through the external program. "
   ("SPC" whitespace-cleanup)
   "_,_ major mode"
   ("," w--major-mode-hydra)
-  ("\\" w--major-mode-hydra))
+  ("'" w--major-mode-hydra))
 
 (general-define-key
  :states 'motion
   "," #'w--hydra-leader/body
-  "\\" #'w--hydra-leader/body)
+  "'" #'w--hydra-leader/body)
 
 
 ;;;; custom
