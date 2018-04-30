@@ -1692,16 +1692,15 @@ defined as lowercase."
   (origami-show-fold-header t)
 
   :custom-face
-  (origami-fold-header-face ((t (:background unspecified))))
-  (origami-fold-header-face ((t (:inherit highlight))))
-  (origami-fold-header-face ((t (:inherit secondary-selection))))
-  (origami-fold-header-face ((t (:inherit magit-diff-context))))
-  (origami-fold-header-face ((t (:inherit magit-diff-context-highlight))))
+  (origami-fold-replacement-face ((t (:inherit magit-diff-context-highlight))))
+  (origami-fold-fringe-face ((t (:inherit magit-diff-context-highlight))))
 
   :commands
   w--origami-parser-imenu-flat
 
   :config
+  (face-spec-reset-face 'origami-fold-header-face)
+
   (defun w--origami-parser-imenu-flat (create)
     "Origami parser producing folds for each imenu entry, without nesting."
     (lambda (content)
