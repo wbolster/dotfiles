@@ -1957,16 +1957,16 @@ point stays the same after piping through the external program. "
 ;;;; jumping around
 
 (use-package avy
-  :commands
-  avy-with  ;; used by evil-easymotion helpers
-  :general
-  (:keymaps 'isearch-mode-map
-   "C-'" #'avy-isearch)
   :custom
   (avy-all-windows nil)
   (avy-all-windows-alt t)
   (avy-background t)
-  (avy-keys (string-to-list "arstneio")))
+  (avy-keys (string-to-list "arstneio"))
+  :commands
+  avy-with  ;; used by evil-easymotion helpers
+  :general
+  (:keymaps 'isearch-mode-map
+   "C-'" #'avy-isearch))
 
 (use-package dired
   :ensure nil
