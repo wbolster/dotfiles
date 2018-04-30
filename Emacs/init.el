@@ -1571,8 +1571,8 @@ defined as lowercase."
   "[s" 'evil-prev-flyspell-error
   "[w" 'evil-window-prev
   "]w" 'evil-window-next
-  "[z" 'outline-previous-visible-heading
-  "]z" 'outline-next-visible-heading
+  "[z" 'origami-backward-fold-same-level
+  "]z" 'origami-forward-fold
   "C-," 'evil-prev-buffer
   "C-." 'evil-next-buffer)
 
