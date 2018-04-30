@@ -880,18 +880,17 @@ defined as lowercase."
     ("N" evil-avy-goto-line-below)
     ("l" evil-avy-goto-line)
     ("L" w--avy-goto-line-any-window)
-    "_t_,_j_,_SPC_ char"
+    "_t_,_j_,_SPC_,_/_ char"
     ("SPC" evil-avy-goto-char-timer)
     ("S-SPC" (evil-avy-goto-char-timer t))
     ("t" evilem-motion-find-char)
     ("T" evilem-motion-find-char-to)
     ("j" evilem-motion-find-char-backward)
     ("J" evilem-motion-find-char-to-backward)
-    "_k_,_K_,_/_,_?_ search"
+    "_k_ search"
     ("k" evilem-motion-search-next)
     ("K" evilem-motion-search-previous)
-    ("/" evilem-motion-search-next)
-    ("?" evilem-motion-search-previous)
+    ("/" evil-avy-goto-char-timer)
     "_o_ new line"
     ("o" (progn (evil-avy-goto-line) (call-interactively 'evil-open-below)))
     ("O" (progn (evil-avy-goto-line) (call-interactively 'evil-open-above)))
