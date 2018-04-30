@@ -3650,7 +3650,7 @@ point stays the same after piping through the external program. "
     ("s" w--evil-rst-strong)
     "_w_rap"
     ("w" w--evil-rst-wrap))
-  ;; (setq dumb-jump-find-rules nil)
+
   (require 'dumb-jump)
   (add-to-list
    'dumb-jump-language-file-exts
