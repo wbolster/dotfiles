@@ -3526,7 +3526,10 @@ point stays the same after piping through the external program. "
   :demand t
   :after python
   :custom
-  (python-pytest-arguments '("--color" "--failed-first"))
+  (python-pytest-arguments
+   '("--color"
+     "--failed-first"
+     "--maxfail=10"))
   :general
   (:keymaps 'python-pytest-mode-map
    :states 'motion
