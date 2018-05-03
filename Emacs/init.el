@@ -3059,8 +3059,10 @@ point stays the same after piping through the external program. "
 (use-package comint
   :defer t
   :ensure nil
+
   :custom
   (comint-move-point-for-output 'all)
+
   :general
   (:keymaps 'comint-mode-map
    "<escape>" #'evil-normal-state)
@@ -3075,6 +3077,7 @@ point stays the same after piping through the external program. "
    "<return>" #'comint-send-input
    "C-n" #'comint-next-input
    "C-p" #'comint-previous-input)
+
   :config
   (add-hook 'comint-mode-hook #'w--compilation-mode-hook)
   (evil-set-initial-state 'comint-mode 'insert)
