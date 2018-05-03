@@ -3078,6 +3078,9 @@ point stays the same after piping through the external program. "
     (goto-char (point-max))
     (call-interactively #'evil-append)))
 
+(use-package xterm-color
+  :defer t)
+
 
 ;;;; major mode: customize
 
