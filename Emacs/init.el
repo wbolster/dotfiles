@@ -2541,7 +2541,10 @@ point stays the same after piping through the external program. "
    "DEL" nil)
   (:keymaps 'magit-hunk-section-map
    "<return>" #'magit-diff-visit-file-other-window)
-  (:keymaps 'magit-status-mode-map
+  (:keymaps '(magit-diff-mode-map
+              magit-log-mode-map
+              magit-revision-mode-map
+              magit-status-mode-map)
    :states 'normal
    "q" nil
    "'" nil)
