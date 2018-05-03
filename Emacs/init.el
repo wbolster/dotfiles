@@ -1563,12 +1563,12 @@ defined as lowercase."
   "]e" 'next-error
   "[E" 'first-error
   "]E" 'w--last-error
+  "[h" 'symbol-overlay-switch-backward
+  "]h" 'symbol-overlay-switch-forward
   "[m" 'smerge-prev
   "]m" 'smerge-next
   "[o" 'symbol-overlay-jump-prev
   "]o" 'symbol-overlay-jump-next
-  "[O" 'symbol-overlay-switch-backward
-  "]O" 'symbol-overlay-switch-forward
   "]s" (w--ilambda
         (evil-forward-word)
         (call-interactively 'evil-next-flyspell-error))
