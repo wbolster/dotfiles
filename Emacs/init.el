@@ -3039,9 +3039,15 @@ point stays the same after piping through the external program. "
     "_r_ecompile"
     ("r" recompile))
 
+  (defun w--compilation-use-xterm-color-filter ()
+    (remove-hook 'comint-output-filter-functions 'ansi-color-process-output t)
+    (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter t))
+
   (defun w--compilation-mode-hook ()
     (smartparens-mode -1)
-    (w--set-major-mode-hydra #'w--hydra-compilation/body))
+    (w--set-major-mode-hydra #'w--hydra-compilation/body)
+    (w--compilation-use-xterm-color-filter)
+    (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom))
   (add-hook 'compilation-mode-hook #'w--compilation-mode-hook)
 
   (defun w--compilation-finished (buffer status)
@@ -3560,6 +3566,7 @@ point stays the same after piping through the external program. "
   (magit-define-popup-option 'python-pytest-popup
     ?n "count" "--count=")
   (defun w--python-pytest-mode-hook ()
+    (w--compilation-use-xterm-color-filter)
     (w--set-major-mode-hydra #'w--hydra-python-pytest/body))
   (evil-set-initial-state 'python-pytest-mode 'insert)
   (add-hook 'python-pytest-mode-hook 'w--python-pytest-mode-hook)
