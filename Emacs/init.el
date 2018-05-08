@@ -1665,15 +1665,15 @@ defined as lowercase."
 
 (defun w--sensible-wrap-mode-1 ()
   (interactive)
-  (if (derived-mode-p 'prog-mode)
-      (call-interactively 'toggle-truncate-lines)
-    (call-interactively 'w--wrap-lines-mode)))
+  (if (derived-mode-p 'text-mode)
+      (call-interactively 'w--wrap-lines-mode)
+    (call-interactively 'toggle-truncate-lines)))
 
 (defun w--sensible-wrap-mode-2 ()
   (interactive)
-  (if (derived-mode-p 'prog-mode)
-      (call-interactively 'visual-line-mode)
-    (call-interactively 'toggle-truncate-lines)))
+  (if (derived-mode-p 'text-mode)
+      (call-interactively 'toggle-truncate-lines)
+    (call-interactively 'visual-line-mode)))
 
 (defun w--evil-fill-paragraph-dwim ()
   "Fill the current paragraph."
