@@ -2502,6 +2502,11 @@ point stays the same after piping through the external program. "
   (magit-wip-before-change-mode)
   (add-to-list 'magit-repository-directories '("~/Projects/" . 2))
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
+  (--each '(magit-blob-mode
+            magit-diff-mode
+            magit-log-mode
+            magit-status-mode)
+    (add-to-list 'direnv-non-file-modes it))
   (magit-define-popup-switch 'magit-log-popup
     ?m "Omit merge commits" "--no-merges")
   (magit-define-popup-action 'magit-log-popup
