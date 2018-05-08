@@ -1535,6 +1535,30 @@ defined as lowercase."
           (symbol-overlay-maybe-remove keyword)
         (symbol-overlay-put-all regexp nil))))
 
+  (defun w--symbol-overlay-jump-any (direction)
+    (-when-let*
+        ((positions
+          (->> (symbol-overlay-get-list)
+               (-remove
+                (lambda (ov)
+                  (< (overlay-start ov) (point) (overlay-end ov))))
+               (-map 'overlay-start)
+               (-sort '<)
+               (-uniq)))
+         (target-position
+          (if (eq direction 'forward)
+              (-first (-partial '< (point)) positions)
+            (-last (-partial '> (point)) positions))))
+      (goto-char target-position)))
+
+  (defun w--symbol-overlay-jump-next-any ()
+    (interactive)
+    (w--symbol-overlay-jump-any 'forward))
+
+  (defun w--symbol-overlay-jump-previous-any ()
+    (interactive)
+    (w--symbol-overlay-jump-any 'backward))
+
   (defun w--evil-paste-pop-or-previous-symbol (count)
     "Either paste-pop (with COUNT) or jump to previous symbol occurrence."
     (interactive "p")
@@ -1578,8 +1602,8 @@ defined as lowercase."
   "]e" 'next-error
   "[E" 'first-error
   "]E" 'w--last-error
-  "[h" 'symbol-overlay-switch-backward
-  "]h" 'symbol-overlay-switch-forward
+  "[h" 'w--symbol-overlay-jump-previous-any
+  "]h" 'w--symbol-overlay-jump-next-any
   "[m" 'smerge-prev
   "]m" 'smerge-next
   "[o" 'symbol-overlay-jump-prev
