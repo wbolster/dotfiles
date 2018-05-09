@@ -3615,7 +3615,6 @@ point stays the same after piping through the external program. "
     (w--compilation-use-xterm-color-filter)
     (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom t)
     (w--set-major-mode-hydra #'w--hydra-python-pytest/body))
-  (evil-set-initial-state 'python-pytest-mode 'insert)
   (add-hook 'python-pytest-mode-hook 'w--python-pytest-mode-hook)
   (add-hook 'python-pytest-finished-hook #'evil-force-normal-state))
 
