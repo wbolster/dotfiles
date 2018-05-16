@@ -1744,6 +1744,14 @@ defined as lowercase."
   :config
   (face-spec-reset-face 'origami-fold-header-face)
 
+  (defun w--origami-mode-toggle ()
+    (interactive)
+    (origami-mode 'toggle)
+    (when origami-mode
+      (if (> (point) 1)
+          (origami-show-only-node (current-buffer) (point))
+        (origami-close-all-nodes (current-buffer)))))
+
   (defun w--origami-parser-imenu-flat (create)
     "Origami parser producing folds for each imenu entry, without nesting."
     (lambda (content)
@@ -2884,6 +2892,8 @@ point stays the same after piping through the external program. "
   "_w_rapping"
   ("w" w--sensible-wrap-mode-1)
   ("W" w--sensible-wrap-mode-2)
+  "_z_ folding"
+  ("z" (w--origami-mode-toggle))
   "_SPC_ whitespace"
   ("SPC" whitespace-mode)
   ("S-SPC" w--toggle-show-trailing-whitespace)
