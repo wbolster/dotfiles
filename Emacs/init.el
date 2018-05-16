@@ -2469,12 +2469,11 @@ point stays the same after piping through the external program. "
 
 (use-package magit
   :defer t
-  :init
-  (add-hook 'find-file-hook (fn: require 'magit))
   :delight
   (magit-wip-after-save-local-mode)
   (magit-wip-after-apply-mode)
   (magit-wip-before-change-mode)
+
   :custom
   (magit-blame-heading-format "%-10a %C %s")
   (magit-blame-time-format "%F")
@@ -2495,28 +2494,37 @@ point stays the same after piping through the external program. "
   (magit-tag-arguments '("--annotate"))
   :commands
   w--hydra-git/body
+
+  :init
+  (add-hook 'find-file-hook (fn: require 'magit))
+
   :config
   (magit-wip-after-save-mode)
   (magit-wip-after-apply-mode)
   (magit-wip-before-change-mode)
+
   (add-to-list 'magit-repository-directories '("~/Projects/" . 2))
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
+
   (--each '(magit-blob-mode
             magit-diff-mode
             magit-log-mode
             magit-status-mode)
     (add-to-list 'direnv-non-file-modes it))
+
   (magit-define-popup-switch 'magit-log-popup
     ?m "Omit merge commits" "--no-merges")
   (magit-define-popup-action 'magit-log-popup
     ?w "Wip" 'magit-wip-log-current)
   (magit-define-popup-switch 'magit-log-popup
     ?1 "First parent" "--first-parent")
+
   (defun w--magit-status-other-repository ()
     "Open git status for another repository."
     (interactive)
     (setq current-prefix-arg t)
     (call-interactively 'magit-status))
+
   (defun w--git-web-browse ()
     "Open a web browser for the current git repo or file."
     (interactive)
@@ -2525,6 +2533,7 @@ point stays the same after piping through the external program. "
           (call-interactively #'git-link)
           (setq kill-ring (cdr kill-ring)))
       (magithub-browse)))
+
   (w--make-hydra w--hydra-git nil
     "git"
     "_a_nnotate"
