@@ -2492,6 +2492,10 @@ point stays the same after piping through the external program. "
   (magit-rebase-arguments '("--autostash"))
   (magit-show-refs-arguments '("--sort=-committerdate"))
   (magit-tag-arguments '("--annotate"))
+
+  :custom-face
+  (magit-mode-line-process ((t (:inherit magit-mode-line-process-error))))
+
   :commands
   w--hydra-git/body
 
