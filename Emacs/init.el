@@ -2068,7 +2068,6 @@ point stays the same after piping through the external program. "
      'nav-flash-face nil
      :background 'unspecified
      :foreground 'unspecified
-     :inherit 'highlight
      :inherit 'magit-diff-base-highlight))
   (add-hook 'w--theme-changed-hook #'w--nav-flash-tweak-faces t)
 
