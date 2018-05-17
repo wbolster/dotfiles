@@ -2832,6 +2832,8 @@ point stays the same after piping through the external program. "
   :config
   (global-flycheck-mode)
 
+  (add-hook 'flycheck-before-syntax-check-hook 'direnv--maybe-update-environment)
+
   (w--make-hydra w--hydra-flycheck nil
     "flycheck"
     "_c_ errors"
