@@ -2606,6 +2606,7 @@ point stays the same after piping through the external program. "
    "<return>" #'magit-diff-visit-file-other-window)
   (:keymaps '(magit-diff-mode-map
               magit-log-mode-map
+              magit-process-mode-map
               magit-revision-mode-map
               magit-status-mode-map)
    :states 'normal
