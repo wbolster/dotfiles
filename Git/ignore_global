@@ -14,3 +14,6 @@ __pycache__/
 # direnv
 .direnv/
 .envrc
+
+# emacs
+.dumbjump
