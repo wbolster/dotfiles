@@ -3618,6 +3618,7 @@ point stays the same after piping through the external program. "
   (:keymaps 'python-pytest-mode-map
    :states 'motion
    "g r" #'python-pytest-repeat)
+
   :config
   (w--make-hydra w--hydra-python-pytest nil
     "python-pytest"
@@ -3628,12 +3629,18 @@ point stays the same after piping through the external program. "
     ("T" python-pytest-repeat nil))
   (magit-define-popup-option 'python-pytest-popup
     ?n "count" "--count=")
+
   (defun w--python-pytest-mode-hook ()
+    (setq-local company-backends '(company-dabbrev-code))
     (w--compilation-use-xterm-color-filter)
     (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom t)
     (w--set-major-mode-hydra #'w--hydra-python-pytest/body))
   (add-hook 'python-pytest-mode-hook 'w--python-pytest-mode-hook)
-  (add-hook 'python-pytest-finished-hook #'evil-force-normal-state))
+
+  (add-hook 'python-pytest-finished-hook #'evil-force-normal-state)
+
+  (require 'company)
+  (add-to-list 'company-dabbrev-code-modes 'python-pytest-mode))
 
 
 ;;;; major-mode: cython
