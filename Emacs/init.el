@@ -3135,7 +3135,6 @@ point stays the same after piping through the external program. "
    "<escape>" #'evil-normal-state)
   (:keymaps 'comint-mode-map
    :states 'normal
-   "<return>" #'w--comint-goto-end
    "C-e" #'comint-previous-prompt
    "C-n" #'comint-next-prompt
    "C-p" #'comint-previous-prompt)
@@ -3146,13 +3145,7 @@ point stays the same after piping through the external program. "
    "C-p" #'comint-previous-input)
 
   :config
-  (add-hook 'comint-mode-hook #'w--compilation-mode-hook)
-  (evil-set-initial-state 'comint-mode 'insert)
-
-  (defun w--comint-goto-end ()
-    (interactive)
-    (goto-char (point-max))
-    (call-interactively #'evil-append)))
+  (add-hook 'comint-mode-hook #'w--compilation-mode-hook))
 
 (use-package xterm-color
   :defer t)
