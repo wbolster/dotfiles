@@ -110,7 +110,6 @@ and BODY can refer to it as ‘arg’."
 
 (use-package direnv
   :custom
-  (direnv-always-show-summary t)
   (direnv-show-paths-in-summary nil)
   :config
   (direnv-mode))
