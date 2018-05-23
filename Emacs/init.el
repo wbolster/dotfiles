@@ -671,7 +671,7 @@ defined as lowercase."
    "C-<" #'evil-shift-left-line  ;; chars as in normal mode);
    "C-." #'evil-shift-right-line ;; used instead of standard vim
    "C->" #'evil-shift-right-line ;; bindings C-d and C-t.
-   "C-=" #'evil-indent-line)
+   "C-=" (w--ilambda (save-excursion (call-interactively #'evil-indent-line))))
 
   :config
   (evil-mode)
