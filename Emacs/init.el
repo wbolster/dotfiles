@@ -367,6 +367,8 @@ defined as lowercase."
   "_c_lone"
   ("c" clone-indirect-buffer)
   ("C" clone-indirect-buffer-other-window)
+  "_e_ rename"
+  ("e" rename-buffer)
   "_h_ide"
   ("h" bury-buffer)
   ("H" unbury-buffer)
