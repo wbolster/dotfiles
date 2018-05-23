@@ -709,7 +709,9 @@ defined as lowercase."
       ;; clean up visual noise when called twice in row
       (lazy-highlight-cleanup t)
       (remove-overlays nil nil 'category 'evil-snipe)
-      (symbol-overlay-remove-all))
+      (symbol-overlay-remove-all)
+      (let ((inhibit-message t))
+        (evil-exchange-cancel)))
     (evil-force-normal-state)
     (when (eq (evil-initial-state-for-buffer) 'motion)
       (evil-change-to-initial-state)))
