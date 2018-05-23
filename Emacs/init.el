@@ -661,6 +661,7 @@ defined as lowercase."
    "C-e" #'end-of-visual-line
    "C-h" [backspace]
    "C-k" #'w--kill-line-dwim
+   "C-m" #'comment-indent-new-line
    "C-n" #'next-line
    "C-o" #'evil-normal-state
    "C-p" #'previous-line
