@@ -1042,6 +1042,8 @@ defined as lowercase."
     (call-interactively 'avy-goto-line)))
 
 (use-package evil-exchange
+  :custom
+  (evil-exchange-highlight-face 'magit-diff-base)
   :general
   (:states '(normal visual)
    "gx" 'evil-exchange
