@@ -3492,14 +3492,15 @@ point stays the same after piping through the external program. "
     (let ((first-line-is-comment (save-excursion
                                    (evil-first-non-blank)
                                    (looking-at-p "#")))
-          (joined-line-is-comment (looking-at " #")))
+          (joined-line-is-comment (looking-at " *#")))
       (cond
        (joined-line-is-comment
         (if first-line-is-comment
             ;; remove # when joining two comment lines
             (delete-region (point) (match-end 0))
           ;; pep8 mandates two spaces before inline comments
-          (insert " ")
+          (delete-region (match-beginning 0) (match-end 0))
+          (insert "  #")
           (forward-char)))
        ((looking-at-p " \\\.")
         ;; remove space when the joined line starts with period, which
