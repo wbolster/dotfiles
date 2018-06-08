@@ -589,6 +589,7 @@ defined as lowercase."
   (defun w--smart-mode-line-tweak-faces ()
     (set-face-attribute 'mode-line nil :family w--ui-font-family :height 0.9)
     (set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
+    (set-face-attribute 'header-line nil :background 'unspecified :inherit 'mode-line)
     (set-face-attribute 'sml/modified nil :foreground solarized-color-red)
     (set-face-attribute 'sml/filename nil :foreground solarized-color-blue))
 
