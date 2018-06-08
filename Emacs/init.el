@@ -1543,7 +1543,7 @@ defined as lowercase."
         (symbol-overlay-put-all regexp nil))))
 
   (defun w--symbol-overlay-jump-any (direction)
-    (-when-let*
+    (-if-let*
         ((positions
           (->> (symbol-overlay-get-list)
                (-remove
@@ -1556,7 +1556,8 @@ defined as lowercase."
           (if (eq direction 'forward)
               (-first (-partial '< (point)) positions)
             (-last (-partial '> (point)) positions))))
-      (goto-char target-position)))
+        (goto-char target-position)
+      (user-error "No more highlighted symbols")))
 
   (defun w--symbol-overlay-jump-next-any ()
     (interactive)
