@@ -3154,6 +3154,7 @@ point stays the same after piping through the external program. "
    "C-p" #'comint-previous-input)
 
   :config
+  (evil-set-initial-state 'comint-mode 'normal)
   (add-hook 'comint-mode-hook #'w--compilation-mode-hook))
 
 (use-package xterm-color
