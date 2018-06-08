@@ -2448,6 +2448,7 @@ point stays the same after piping through the external program. "
   :custom
   (company-auto-complete 'company-explicit-action-p)
   (company-dabbrev-code-everywhere t)
+  (company-dabbrev-code-other-buffers 'code)
   (company-dabbrev-downcase nil)
   (company-dabbrev-ignore-case t)
   (company-idle-delay nil)
