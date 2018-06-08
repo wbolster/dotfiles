@@ -2488,8 +2488,8 @@ point stays the same after piping through the external program. "
   (magit-wip-before-change-mode)
 
   :custom
-  (magit-blame-heading-format "%-10a %C %s")
-  (magit-blame-time-format "%F")
+  (magit-blame-heading-format "%C %-10a %s")
+  (magit-blame-time-format "%Y%m%d")
   (magit-blame-mode-lighter " annotate")
   (magit-branch-prefer-remote-upstream '("master"))
   (magit-branch-read-upstream-first 'fallback)
