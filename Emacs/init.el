@@ -914,6 +914,8 @@ defined as lowercase."
     "_k_ search"
     ("k" evilem-motion-search-next)
     ("K" evilem-motion-search-previous)
+    "_h_ symbol"
+    ("h" w--easymotion-symbol-overlay)
     ("/" evil-avy-goto-char-timer)
     "_o_ new line"
     ("o" (progn (evil-avy-goto-line) (call-interactively 'evil-open-below)))
@@ -950,6 +952,7 @@ defined as lowercase."
      w--hydra-teleport/evil-avy-goto-line-below-and-exit
      w--hydra-teleport/evil-avy-goto-line-and-exit
      w--hydra-teleport/evil-avy-goto-char-timer-and-exit
+     w--hydra-teleport/w--easymotion-symbol-overlay-and-exit
      w--hydra-teleport/evilem-motion-find-char-and-exit
      w--hydra-teleport/evilem-motion-find-char-to-and-exit
      w--hydra-teleport/evilem-motion-find-char-backward-and-exit
@@ -977,6 +980,7 @@ defined as lowercase."
     "n" #'evilem-motion-next-line
     "N" #'evil-avy-goto-line-below
     "l" #'evil-avy-goto-line
+    "h" #'w--easymotion-symbol-overlay
     "SPC" #'evil-avy-goto-char-timer
     "t" #'evilem-motion-find-char
     "T" #'evilem-motion-find-char-to
@@ -990,6 +994,14 @@ defined as lowercase."
    :states 'operator
     "SPC" w--teleport-map)
 
+  (evilem-make-motion
+   w--easymotion-symbol-overlay
+   (list
+    ;; Collect interesting positions around point, and all visible
+    ;; blocks in the window. Results are ordered: forward after point,
+    ;; then backward from point.
+    'w--symbol-overlay-jump-next-any
+    'w--symbol-overlay-jump-previous-any))
   ;; todo: commented stuff below needs rethinking and cleaning up
   ;; (evil-define-key* 'normal global-map
   ;;   (kbd "SPC a") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-append))
