@@ -1674,7 +1674,7 @@ defined as lowercase."
 (use-package emacs
   :delight
   (auto-fill-function " ↲")
-  (visual-line-mode " ⇉"))
+  (visual-line-mode (:eval (unless w--wrap-lines-mode " ⇉"))))
 
 (use-package adaptive-wrap
   :defer t
