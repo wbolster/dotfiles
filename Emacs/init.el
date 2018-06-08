@@ -2613,6 +2613,7 @@ point stays the same after piping through the external program. "
   (:keymaps '(magit-diff-mode-map
               magit-log-mode-map
               magit-process-mode-map
+              magit-refs-mode
               magit-revision-mode-map
               magit-status-mode-map)
    :states 'normal
