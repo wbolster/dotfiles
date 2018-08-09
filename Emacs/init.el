@@ -2802,6 +2802,7 @@ point stays the same after piping through the external program. "
   :custom
   (vdiff-subtraction-style 'single)
   (vdiff-subtraction-fill-char ?·)
+  (vdiff-3way-layout-function 'w--vdiff-3way-layout-function-vertical)
   :general
   (:keymaps 'vdiff-mode-map
    :states 'normal
@@ -2813,7 +2814,13 @@ point stays the same after piping through the external program. "
   (vdiff-refine-added ((t (:inherit magit-diff-added-highlight))))
   (vdiff-refine-changed ((t (:inherit magit-diff-base-highlight))))
   (vdiff-open-fold-face ((t (:inherit magit-diff-context))))
-  (vdiff-closed-fold-face ((t (:inherit magit-diff-context-highlight)))))
+  (vdiff-closed-fold-face ((t (:inherit magit-diff-context-highlight))))
+  :config
+  (defun w--vdiff-3way-layout-function-vertical (buffer-a buffer-b buffer-c)
+    (delete-other-windows)
+    (switch-to-buffer buffer-a)
+    (set-window-buffer (split-window-horizontally) buffer-c)
+    (set-window-buffer (split-window-horizontally) buffer-b)))
 
 (use-package vdiff-magit
   :demand t
