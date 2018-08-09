@@ -3718,15 +3718,60 @@ point stays the same after piping through the external program. "
 
   (defun w--python-pytest-mode-hook ()
     (setq-local company-backends '(company-dabbrev-code))
+    (origami-mode)
     (w--compilation-use-xterm-color-filter)
     (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom t)
-    (w--set-major-mode-hydra #'w--hydra-python-pytest/body))
+    (w--set-major-mode-hydra #'w--hydra-python-pytest/body)
+    (modify-syntax-entry ?/ ".")
+    (when-let ((project-root (projectile-project-root)))
+      (add-to-list 'prettify-symbols-alist `(,project-root . ?…)))
+    (when-let ((venv-path (getenv "VIRTUAL_ENV")))
+      (add-to-list 'prettify-symbols-alist `(,venv-path . ?…)))
+    (prettify-symbols-mode))
   (add-hook 'python-pytest-mode-hook 'w--python-pytest-mode-hook)
 
   (add-hook 'python-pytest-finished-hook #'evil-force-normal-state)
 
   (require 'company)
-  (add-to-list 'company-dabbrev-code-modes 'python-pytest-mode))
+  (add-to-list 'company-dabbrev-code-modes 'python-pytest-mode)
+
+  (defun w--python-pytest-origami-parser (create)
+    (lambda (content)
+      (let ((orig-major-mode major-mode))
+        (with-temp-buffer
+          (insert content)
+          (goto-char (point-min))
+          (let ((nodes nil)
+                (node nil)
+                (pos (point-min)))
+            (while (search-forward-regexp "^===" nil t)
+              (beginning-of-line)
+              (setq node (funcall
+                          create
+                          pos
+                          (1- (point))
+                          (save-excursion
+                            (goto-char pos)
+                            (- (line-end-position) (line-beginning-position)))
+                          nil)
+                    nodes (cons node nodes)
+                    pos (point))
+              (forward-char))
+            (setq node (funcall
+                        create
+                        (1- (point))
+                        (point-max)
+                        (progn
+                          (end-of-line)
+                          (current-column))
+                        nil)
+                  nodes (cons node nodes))
+            (reverse nodes))))))
+
+  (require 'origami)
+  (evil-add-to-alist
+   'origami-parser-alist
+   'python-pytest-mode 'w--python-pytest-origami-parser))
 
 
 ;;;; major-mode: cython
