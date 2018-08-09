@@ -524,21 +524,41 @@ if [[ "$PS1" ]]; then
                 eval "$(direnv export bash)"
             fi
         };
-        direnv-freeze() {
+        _direnv_freeze() {
             if [[ $# -eq 1 ]]; then
                 echo "direnv: setting up shell environment for directory $1"
                 pushd "$1" > /dev/null || return 1
                 eval "$(direnv export bash)"
                 popd > /dev/null
             fi
-            echo "direnv: disabling shell hook; use direnv-thaw to enable again"
+            echo "direnv: disabling shell hook; use 'direnv thaw' to enable again"
             _direnv_hook_enabled=0
         }
-        direnv-thaw() {
+        _direnv_thaw() {
             echo "direnv: enabling shell hook"
             _direnv_hook_enabled=1
         }
-        complete -F _cd direnv-freeze
+        complete -F _cd _direnv_freeze
+        direnv ()
+        {
+            local command;
+            command="$1";
+            if [ "$#" -gt 0 ]; then
+                shift;
+            fi;
+            case "$command" in
+                '')
+                    command direnv
+                    ;;
+                freeze | thaw)
+                    _direnv_"${command}" "$@"
+                    ;;
+                *)
+                    command direnv "${command}" "$@"
+                    ;;
+            esac
+        }
+
     fi
 
     # Development
