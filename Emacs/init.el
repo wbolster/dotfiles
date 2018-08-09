@@ -702,6 +702,9 @@ defined as lowercase."
        :states 'insert
         (concat "M-" key)
         (lambda () (interactive) (insert num)))))
+  (general-define-key
+   :states 'insert
+    "M-DEL" 'backward-delete-char-untabify)
 
   (defun w--evil-normal-state-cleanup ()
     "Like `evil-force-normal-state', with some extra cleanups."
