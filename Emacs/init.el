@@ -2064,42 +2064,36 @@ point stays the same after piping through the external program. "
    :states '(motion normal)
    "-" #'dired-jump))
 
-(defvar w--jump-commands
-  ;; todo: this should use a property on the symbol
-  ;; (evil does something similar)
-  '(evil-backward-paragraph
-    evil-backward-section-begin
-    evil-backward-section-end
-    evil-forward-paragraph
-    evil-forward-section-begin
-    evil-forward-section-end
-    evil-goto-first-line
-    evil-goto-line
-    evil-goto-mark
-    evil-goto-mark-line
-    evil-scroll-down
-    evil-scroll-page-down
-    evil-scroll-page-up
-    evil-scroll-up
-    evil-window-bottom
-    evil-window-middle
-    evil-window-top
-    ivy-done
-    recenter-top-bottom
-    switch-to-buffer))
+(defun w--declare-jump (command)
+  "Declare COMMAND to be nonrepeatable."
+  (evil-add-command-properties command :jump t))
 
-(defvar w--jump-hooks
-  '(evil-jumps-post-jump-hook
-    focus-in-hook
-    next-error-hook))
-
-(defun w--mark-as-jump-commands (&rest commands)
-  "Mark COMMANDS as jump commands."
-  (setq w--jump-commands (-union w--jump-commands commands)))
+(--each '(evil-backward-paragraph
+          evil-backward-section-begin
+          evil-backward-section-end
+          evil-forward-paragraph
+          evil-forward-section-begin
+          evil-forward-section-end
+          evil-goto-first-line
+          evil-goto-line
+          evil-goto-mark
+          evil-goto-mark-line
+          evil-scroll-down
+          evil-scroll-page-down
+          evil-scroll-page-up
+          evil-scroll-up
+          evil-window-bottom
+          evil-window-middle
+          evil-window-top
+          ivy-done
+          recenter-top-bottom
+          switch-to-buffer)
+  (w--declare-jump it))
 
 (use-package nav-flash
   :custom
   (nav-flash-delay 5)
+
   :config
   (defun w--nav-flash-tweak-faces ()
     (set-face-attribute
@@ -2111,12 +2105,13 @@ point stays the same after piping through the external program. "
 
   (defun w--maybe-nav-flash ()
     "Highlight point when run after a jump command."
-    (when (member this-command w--jump-commands)
+    (when (evil-get-command-property this-command :jump)
       (nav-flash-show)))
 
-  (add-hook 'post-command-hook #'w--maybe-nav-flash)
-  (dolist (hook w--jump-hooks)
-    (add-hook hook #'w--maybe-nav-flash)))
+  (add-hook 'evil-jumps-post-jump-hook #'nav-flash-show)
+  (add-hook 'focus-in-hook #'nav-flash-show)
+  (add-hook 'next-error-hook #'nav-flash-show)
+  (add-hook 'post-command-hook #'w--maybe-nav-flash))
 
 (use-package dumb-jump
   :custom
@@ -2125,7 +2120,9 @@ point stays the same after piping through the external program. "
   (:states 'motion
    "gd" #'w--dumb-jump-go
    "gD" #'w--dumb-jump-go-other-window)
+
   :config
+
   (defun w--dumb-jump-go ()
     (interactive)
     (let ((s (w--thing-at-point-dwim t)))
@@ -2134,10 +2131,15 @@ point stays the same after piping through the external program. "
       (when (derived-mode-p 'rst-mode)
         (setq s (s-chop-suffix "_" s)))
       (dumb-jump-go nil nil s)))
+
   (defun w--dumb-jump-go-other-window ()
     (interactive)
     (let ((dumb-jump-window 'other))
       (w--dumb-jump-go)))
+
+  (w--declare-jump 'w--dumb-jump-go)
+  (w--declare-jump 'w--dumb-jump-go-other-window)
+
   (defun w--jump-around-advice (fn &rest args)
     ;; TODO: figure out whether the buffer changed. if the jump was in
     ;; the same buffer, check whether the target was already between
@@ -2154,6 +2156,7 @@ point stays the same after piping through the external program. "
       (unless (and (eq (current-buffer) original-buffer)
                    (eq (point) original-point))
         (nav-flash-show))))
+
   (advice-add 'dumb-jump-go :around #'w--jump-around-advice))
 
 
@@ -2748,9 +2751,8 @@ point stays the same after piping through the external program. "
   w--diff-hl-next-hunk
   w--diff-hl-previous-hunk
   :config
-  (w--mark-as-jump-commands
-   'w--diff-hl-next-hunk
-   'w--diff-hl-previous-hunk)
+  (w--declare-jump 'w--diff-hl-next-hunk)
+  (w--declare-jump 'w--diff-hl-previous-hunk)
   (defun w--diff-hl-previous-hunk ()
     "Jump to the previous hunk."
     (interactive)
