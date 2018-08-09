@@ -2574,7 +2574,7 @@ point stays the same after piping through the external program. "
   (magit-display-file-buffer-function 'magit-display-file-buffer-other-window)
   (magit-fetch-arguments '("--prune"))
   (magit-list-refs-sortby '("-creatordate"))
-  (magit-log-arguments '("--graph" "--color" "--decorate" "--follow" "-n256"))
+  (magit-log-arguments '("--graph" "--color" "--decorate" "--follow" "-n256" "++order=topo"))
   (magit-merge-arguments '("--no-ff"))
   (magit-popup-show-help-echo nil)
   (magit-prefer-remote-upstream t)
