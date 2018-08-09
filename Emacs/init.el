@@ -1990,7 +1990,7 @@ point stays the same after piping through the external program. "
     (find-file
      (concat
       (file-name-as-directory (projectile-project-root))
-      filename)))
+      name)))
 
   (defun w--projectile-project-bury-buffers ()
     "Quit all windows and bury all buffers for the current project."
