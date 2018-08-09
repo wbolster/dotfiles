@@ -997,11 +997,12 @@ defined as lowercase."
   (evilem-make-motion
    w--easymotion-symbol-overlay
    (list
-    ;; Collect interesting positions around point, and all visible
-    ;; blocks in the window. Results are ordered: forward after point,
-    ;; then backward from point.
     'w--symbol-overlay-jump-next-any
     'w--symbol-overlay-jump-previous-any))
+  (evilem-make-motion
+   w--easymotion-symbol-overlay
+   '(w--symbol-overlay-jump-next-any w--symbol-overlay-jump-previous-any))
+
   ;; todo: commented stuff below needs rethinking and cleaning up
   ;; (evil-define-key* 'normal global-map
   ;;   (kbd "SPC a") (lambda () (interactive) (avy-goto-char-timer) (call-interactively 'evil-append))
@@ -1579,6 +1580,20 @@ defined as lowercase."
     (interactive)
     (w--symbol-overlay-jump-any 'backward))
 
+  (defun w--symbol-overlay-jump-first ()
+    (interactive)
+    (unless (symbol-overlay-get-list)
+      (user-error "No highlighted symbols"))
+    (goto-char (point-min))
+    (w--symbol-overlay-jump-next-any))
+
+  (defun w--symbol-overlay-jump-last ()
+    (interactive)
+    (unless (symbol-overlay-get-list)
+      (user-error "No highlighted symbols"))
+    (goto-char (point-max))
+    (w--symbol-overlay-jump-previous-any))
+
   (defun w--evil-paste-pop-or-previous-symbol (count)
     "Either paste-pop (with COUNT) or jump to previous symbol occurrence."
     (interactive "p")
@@ -1624,6 +1639,8 @@ defined as lowercase."
   "]E" 'w--last-error
   "[h" 'w--symbol-overlay-jump-previous-any
   "]h" 'w--symbol-overlay-jump-next-any
+  "[H" 'w--symbol-overlay-jump-first
+  "]H" 'w--symbol-overlay-jump-last
   "[m" 'smerge-prev
   "]m" 'smerge-next
   "[o" 'symbol-overlay-jump-prev
