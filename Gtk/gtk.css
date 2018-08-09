@@ -13,6 +13,8 @@
   bind "n" { "scroll" (step-forward, vertical) };
   bind "e" { "scroll" (step-backward, vertical) };
   bind "i" { "scroll" (step-forward, horizontal) };
+  bind "s" { "scroll" (step-forward, vertical) };
+  bind "r" { "scroll" (step-backward, vertical) };
 }
 
 evview
