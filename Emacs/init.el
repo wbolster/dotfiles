@@ -2049,6 +2049,7 @@ point stays the same after piping through the external program. "
   (avy-all-windows nil)
   (avy-all-windows-alt t)
   (avy-background t)
+  (avy-style 'de-bruijn)
   (avy-keys (string-to-list "arstneio"))
   :commands
   avy-with  ;; used by evil-easymotion helpers
