@@ -1,4 +1,4 @@
 #!/bin/bash
 
 script_dir=$(cd `dirname "$0"`; pwd; cd - 2>&1 >> /dev/null)
-eval `cat symlinks.conf | sed -re '/^\s*(^#.*)?$/d' | awk -F' -> ' '{print "rm ~/"$1"; ln -s '$script_dir'/"$2" ~/"$1}'`
+eval `cat $script_dir/symlinks.conf | sed -re '/^\s*(^#.*)?$/d' | awk -F' -> ' '{print "rm ~/"$1"; ln -s '$script_dir'/"$2" ~/"$1}'`
