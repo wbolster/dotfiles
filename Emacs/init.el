@@ -3983,6 +3983,8 @@ point stays the same after piping through the external program. "
 
 (use-package sql
   :defer t
+  :mode
+  ("\\.?psqlrc" . sql-mode)
   :general
   (:keymaps 'sql-mode-map
    :states 'normal
