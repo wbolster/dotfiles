@@ -4020,6 +4020,19 @@ point stays the same after piping through the external program. "
       t)))
 
 
+;;;; major-mode: xml
+
+(use-package nxml-mode
+  :ensure nil
+  :defer t
+  :config
+  (defun w--nxml-format-buffer ()
+    (interactive)
+    (let ((beg (point-min))
+          (end (point-max)))
+      (w--external-format beg end "xmllint --format -"))))
+
+
 ;;;; major-mode: yaml
 
 (use-package yaml-mode
