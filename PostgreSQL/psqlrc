@@ -1,35 +1,51 @@
 -- psql configuration
 -- vim: ft=sql
+-- https://www.postgresql.org/docs/current/static/app-psql.html
 
+-- reduce noisy output on startup
+\set QUIET on
+
+-- behaviour
+\set AUTOCOMMIT off
+\set IGNOREEOF 2
+\set ON_ERROR_ROLLBACK interactive
+\set ON_ERROR_STOP on
 \set VERBOSITY verbose
+\timing on
+
+-- completion and history
+\set COMP_KEYWORD_CASE upper
+\set HISTCONTROL ignoredups
 
 -- display options
+\pset columns 100000
 \pset format wrapped
 \pset linestyle unicode
 \pset null '✗'
-\pset pager on
-\pset pager_min_lines 20
 \x auto
+\set PROMPT1 '\ndb %[%033[0;33;32m%]postgresql://%n@%M/%~%[%033[0m%]\n%[%033[0;33;32m%]%x%R%# %[%033[0m%]'
+\set PROMPT2 '    '
 
--- timings
-\timing on
-
--- prompt, inspired by https://speakerdeck.com/mitsuhiko/modern-and-different-postgresql
-\set PROMPT1 '%[%033[0;33;32m%]%/%[%033[0m%]@%[%033[0;33;33m%]%M%[%033[0m%] %[%033[0;33;36m%]%x%[%033[0m%]%R '
-\set PROMPT2 '%R> '
-
--- completion
-\set COMP_KEYWORD_CASE upper
-\set HISTCONTROL ignoredups
+-- pager
+\setenv PAGER less
+\setenv LESS -SFXi
+\pset pager always
+\pset pager_min_lines 0
 
 -- explain plans
 \set e 'EXPLAIN '
 \set ea 'EXPLAIN ANALYZE'
+\set ev 'EXPLAIN VERBOSE'
+\set eav 'EXPLAIN (ANALYZE, VERBOSE)'
+\set eva 'EXPLAIN (ANALYZE, VERBOSE)'
+\set eavb 'EXPLAIN (ANALYZE, BUFFERS, VERBOSE)'
 \set evab 'EXPLAIN (ANALYZE, BUFFERS, VERBOSE)'
 
 -- activity
-\set activity 'SELECT pid, client_port, backend_type, (clock_timestamp() - query_start) AS query_runtime, (clock_timestamp() - state_change) AS since_last_state_change, state, query FROM pg_stat_activity WHERE (state IS NOT NULL AND state != \'idle\') AND pid != pg_backend_pid();'
+\set activity 'SELECT pid, client_port, backend_type, (clock_timestamp() - xact_start) AS xact_runtime, (clock_timestamp() - query_start) AS query_runtime, (clock_timestamp() - state_change) AS since_state_change, state, wait_event_type, wait_event, pg_blocking_pids(pid) AS blocked_by, query FROM pg_stat_activity WHERE (state IS NOT NULL AND state != \'idle\') AND pid != pg_backend_pid() ORDER BY since_state_change DESC;'
 
 -- disk usage, https://wiki.postgresql.org/wiki/Disk_Usage
 \set sizes 'SELECT *, pg_size_pretty(total_bytes) AS total, pg_size_pretty(index_bytes) AS INDEX, pg_size_pretty(toast_bytes) AS toast, pg_size_pretty(table_bytes) AS TABLE FROM (SELECT *, total_bytes-index_bytes-COALESCE(toast_bytes,0) AS table_bytes FROM (SELECT c.oid,nspname AS table_schema, relname AS TABLE_NAME, c.reltuples AS row_estimate, pg_total_relation_size(c.oid) AS total_bytes, pg_indexes_size(c.oid) AS index_bytes, pg_total_relation_size(reltoastrelid) AS toast_bytes FROM pg_class c LEFT JOIN pg_namespace n ON n.oid = c.relnamespace WHERE relkind = \'r\') a) a WHERE a.table_schema NOT IN (\'pg_catalog\', \'information_schema\') ORDER BY 5 DESC, 2, 3;'
 \set sizes_details 'SELECT nspname || \'.\' || relname AS "relation", pg_size_pretty(pg_relation_size(C.oid)) AS "size", (SELECT relname FROM pg_class C2 WHERE C2.reltoastrelid = C.oid) AS toast_for FROM pg_class C LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace) WHERE nspname NOT IN (\'pg_catalog\', \'information_schema\') ORDER BY pg_relation_size(C.oid) DESC;'
+
+\set QUIET off
