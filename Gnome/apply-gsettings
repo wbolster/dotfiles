@@ -10,7 +10,8 @@ gsettings set org.gnome.desktop.interface clock-show-date true
 gsettings set org.gnome.desktop.interface cursor-blink false
 gsettings set org.gnome.desktop.interface gtk-key-theme "'Emacs'"
 
-gsettings set org.gnome.shell.calendar show-weekdate true
+gsettings set org.gnome.desktop.calendar show-weekdate true
+
 
 
 #
