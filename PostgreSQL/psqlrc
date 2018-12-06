@@ -6,7 +6,7 @@
 \set QUIET on
 
 -- behaviour
-\set AUTOCOMMIT off
+-- \set AUTOCOMMIT off  -- cause pg_stat_activity not to refresh :(
 \set IGNOREEOF 2
 \set ON_ERROR_ROLLBACK interactive
 \set ON_ERROR_STOP on
