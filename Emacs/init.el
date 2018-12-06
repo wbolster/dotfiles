@@ -3653,6 +3653,8 @@ point stays the same after piping through the external program. "
     "_b_reakpoint"
     ("b" (w--python-insert-pdb-trace "pdb") nil)
     ("B" (w--python-insert-pdb-trace "ipdb") nil)
+    "_gq_ blacken"
+    ("gq" blacken-buffer)
     "_i_mport"
     ("i" w--python-insert-import-statement nil)
     "_l_ multi-line"
@@ -3666,6 +3668,11 @@ point stays the same after piping through the external program. "
     ("T" python-pytest-repeat nil)
     "_v_ariable"
     ("v" w--python-refactor-make-variable nil)))
+
+(use-package blacken
+  :demand t
+  :after python
+  :delight " ❤")
 
 (use-package evil-text-object-python
   :demand t
