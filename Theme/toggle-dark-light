@@ -6,11 +6,11 @@ file=~/.config/dark-theme
 
 # gtk_theme_light='Adwaita'
 # gtk_theme_dark='Adwaita-dark'
-gtk_theme_light='Adapta'
-gtk_theme_dark='Adapta-Nokto'
+gtk_theme_light='Adapta-Eta'
+gtk_theme_dark='Adapta-Nokto-Eta'
 
-gnome_shell_theme_light='Adapta'
-gnome_shell_theme_dark='Adapta-Nokto'
+gnome_shell_theme_light='Adapta-Eta'
+gnome_shell_theme_dark='Adapta-Nokto-Eta'
 
 
 set_gnome_theme() {
