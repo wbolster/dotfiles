@@ -42,7 +42,7 @@ gsettings set org.gnome.desktop.wm.preferences action-double-click-titlebar "'to
 gsettings set org.gnome.desktop.wm.preferences action-middle-click-titlebar "'lower'"
 gsettings set org.gnome.desktop.wm.preferences audible-bell false
 gsettings set org.gnome.desktop.wm.preferences disable-workarounds true
-gsettings set org.gnome.desktop.wm.preferences focus-mode "'sloppy'"
+gsettings set org.gnome.desktop.wm.preferences focus-mode "'click'"
 gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Super>'
 gsettings set org.gnome.desktop.wm.preferences resize-with-right-button true
 gsettings set org.gnome.desktop.wm.preferences visual-bell false
