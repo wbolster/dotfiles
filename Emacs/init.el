@@ -623,6 +623,7 @@ defined as lowercase."
   (evil-cross-lines t)
   ;; state tag before position info, which smart-mode-line put elsewhere
   (evil-mode-line-format '(before . mode-line-front-space))
+  (evil-shift-round nil)
   :general
   (:states 'motion
    "<tab>" 'evil-toggle-fold
