@@ -3336,6 +3336,12 @@ point stays the same after piping through the external program. "
   :defer t)
 
 
+;;;; major mode: groovy
+
+(use-package groovy-mode
+  :defer t)
+
+
 ;;;; major mode: help
 
 (use-package help-mode
