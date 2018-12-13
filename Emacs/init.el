@@ -4002,6 +4002,7 @@ point stays the same after piping through the external program. "
    "Q" #'w--evil-sql-format)
   :config
   (defun w--sql-mode-hook ()
+    (setq evil-shift-width 2)
     (setq external-format-shell-command "sqlformat -k upper -r -")
     (setq-local fill-paragraph-function #'w--sql-fill-paragraph))
   (add-hook 'sql-mode-hook 'w--sql-mode-hook)
