@@ -3620,13 +3620,13 @@ point stays the same after piping through the external program. "
     "Insert a pdb trace statement using PDB-MODULE before the current statement."
     (w--python-insert-statement
      'before
-     (format "import %s; %s.set_trace()  # FIXME" pdb-module pdb-module)))
+     (format "__import__(\"%s\").set_trace()  # FIXME" pdb-module pdb-module)))
 
   (defun w--python-insert-ipython-repl (position)
-    "Insert an IPython repl statement before the current statement."
+    "Insert an IPython repl statement before or after the current statement."
     (w--python-insert-statement
      position
-     (format "import IPython; IPython.embed()  # FIXME")))
+     (format "__import__(\"IPython\").embed()  # FIXME")))
 
   (evil-define-operator w--python-refactor-make-variable (beg end type)
     "Refactor the current region into a named variable."
