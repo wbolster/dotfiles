@@ -13,12 +13,16 @@ _deduplicate_path_components() {
 # Set a sensible $PATH and $MANPATH:
 # - OSX and Homebrew: add Homebrew's sbin/, and use GNU coreutils
 # - Add a few "standard" dirs inside $HOME
-MANPATH="$(MANPATH='' manpath -g)"
-if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
-    brew_prefix=$(brew --prefix)
-    PATH="${brew_prefix}/opt/coreutils/libexec/gnubin:${brew_prefix}/sbin:${PATH}"
-    MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman:${MANPATH}"
-    unset brew_prefix
+if [[ "$OSTYPE" == darwin* ]]; then
+    MANPATH="$(MANPATH='' manpath)"
+    if [[ -n $(type brew 2>/dev/null) ]]; then
+        brew_prefix=$(brew --prefix)
+        PATH="${brew_prefix}/opt/findutils/libexec/gnubin:${brew_prefix}/opt/coreutils/libexec/gnubin:${brew_prefix}/sbin:${brew_prefix}/bin:${PATH}"
+        MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman:${MANPATH}"
+        unset brew_prefix
+    fi
+else
+    MANPATH="$(MANPATH='' manpath -g 2>/dev/null)"
 fi
 for dir in ~/.cargo/bin ~/.npm/bin ~/.pyenv/shims ~/.local/bin ~/bin; do
     if [[ -d "${dir}" ]]; then
@@ -31,6 +35,7 @@ if [[ -d ~/.local/man ]]; then
 fi
 PATH=$(_deduplicate_path_components "${PATH}")
 MANPATH=$(_deduplicate_path_components "${MANPATH}")
+export MANPATH
 
 # Make sure $HOSTNAME is set
 if [[ -z "${HOSTNAME}" ]]; then
