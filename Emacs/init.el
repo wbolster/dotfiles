@@ -2955,6 +2955,11 @@ point stays the same after piping through the external program. "
           (quit-windows-on buffer)
         (flycheck-list-errors)))))
 
+(use-package flycheck-color-mode-line
+  :demand t
+  :after flycheck
+  :hook
+  (flycheck-mode . flycheck-color-mode-line-mode))
 
 ;;;; toggles
 
