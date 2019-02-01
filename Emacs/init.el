@@ -3454,7 +3454,6 @@ point stays the same after piping through the external program. "
   (defun w--markdown-mode-hook ()
     (setq evil-shift-width 2)
     (w--set-major-mode-hydra #'w--hydra-markdown/body)
-    (evil-swap-keys-swap-question-mark-slash)
     (flyspell-mode)
     (typo-mode)
     (w--add-evil-surround-pairs
@@ -3873,7 +3872,6 @@ point stays the same after piping through the external program. "
      evil-shift-width 2
      rst-mode-abbrev-table nil)
     (w--set-major-mode-hydra #'w--hydra-rst/body)
-    (evil-swap-keys-swap-question-mark-slash)
     (evil-swap-keys-swap-colon-semicolon)
     (flyspell-mode)
     (origami-mode)
