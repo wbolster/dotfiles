@@ -3239,7 +3239,8 @@ point stays the same after piping through the external program. "
    :states 'normal
    "C-e" #'comint-previous-prompt
    "C-n" #'comint-next-prompt
-   "C-p" #'comint-previous-prompt)
+   "C-p" #'comint-previous-prompt
+   "<return>" 'w--comint-find-file-or-goto-end)
   (:keymaps 'comint-mode-map
    :states 'insert
    "<return>" #'comint-send-input
@@ -3248,7 +3249,15 @@ point stays the same after piping through the external program. "
 
   :config
   (evil-set-initial-state 'comint-mode 'normal)
-  (add-hook 'comint-mode-hook #'w--compilation-mode-hook))
+  (add-hook 'comint-mode-hook #'w--compilation-mode-hook)
+
+  (defun w--comint-find-file-or-goto-end ()
+    (interactive)
+    (condition-case nil
+        (evil-find-file-at-point-with-line)
+      (user-error
+       (goto-char (point-max))
+       (evil-append-line 0)))))
 
 (use-package xterm-color
   :defer t)
