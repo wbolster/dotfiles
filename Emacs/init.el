@@ -2915,6 +2915,7 @@ point stays the same after piping through the external program. "
   (flycheck-idle-change-delay 3)
   (flycheck-mode-line-prefix "✔")
   (flycheck-emacs-lisp-load-path 'inherit)
+  (flycheck-python-flake8-executable "flake8")
 
   :general
   (:keymaps 'flycheck-error-list-mode-map
