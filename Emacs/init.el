@@ -306,6 +306,7 @@ defined as lowercase."
    "k" #'ranger-search-next
    "K" #'ranger-search-previous
    "q" nil
+   "'" nil
    "/" #'ranger-search)
   :config
   (add-hook 'ranger-mode-hook #'w--evil-colemak-basics-disable)
