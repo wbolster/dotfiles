@@ -2574,6 +2574,7 @@ point stays the same after piping through the external program. "
   (magit-blame-mode-lighter " annotate")
   (magit-branch-prefer-remote-upstream '("master"))
   (magit-branch-read-upstream-first 'fallback)
+  (magit-bury-buffer-function 'magit-mode-quit-window)
   (magit-completing-read-function 'ivy-completing-read)
   (magit-display-file-buffer-function 'magit-display-file-buffer-other-window)
   (magit-fetch-arguments '("--prune"))
