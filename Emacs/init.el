@@ -3891,12 +3891,23 @@ point stays the same after piping through the external program. "
      ?d '(":doc:`" . " <...>`")  ;; doc link
      ?e '("*" . "*")  ;; emphasis
      ?l '("`" . " <...>`_")  ;; hyperlink
-     ?t '(":term:`" . "`")))  ;; glossary term
+     ?t '(":term:`" . "`"))  ;; glossary term
+    (make-local-variable 'evil-inner-text-objects-map)
+    (general-define-key
+     :keymaps 'evil-inner-text-objects-map
+      "c" #'w--evil-rst-inner-code-block)
+    (general-define-key
+     :keymaps 'evil-outer-text-objects-map
+      "c" #'w--evil-rst-a-code-block))
+
   (add-hook 'rst-mode-hook 'w--rst-mode-hook)
+
   (w--make-hydra w--hydra-rst nil
     "restructuredtext"
     "_a_djust"
     ("a" rst-adjust)
+    "_c_ edit code block"
+    ("c" w--rst-edit-code-block-dwim)
     "_e_mphasise"
     ("e" w--evil-rst-emphasise)
     "_l_ist"
@@ -3921,6 +3932,61 @@ point stays the same after piping through the external program. "
      :tests (".. _test:" "  .. _test:\n" ".. |test|")
      :not (".. _tester" "  ..image:: test.png" ".. test::")))
   ;; (custom-initialize-default dumb-jump-find-rules)
+
+  (defvar w--rst-code-block-language-major-modes-mapping
+    '(("elisp" . emacs-lisp-mode))
+    "Mapping of code block languages to major modes.")
+
+  (defun w--rst-goto-beginning-of-block ()
+    (let ((language))
+      (search-backward "::")
+      (goto-char (match-end 0))
+      (setq language
+            (s-trim (buffer-substring-no-properties
+                     (point) (line-end-position))))
+      (when (string-empty-p language)
+        (setq language nil))
+      (forward-line)
+      (while (and (looking-at-p "$") (not (eobp)))
+        (forward-line))
+      language))
+
+  (defun w--evil-rst-code-block (type)
+    "Find the range of an inner/outer code block."
+    (let* (language
+           (range
+            (save-excursion
+              (setq language (w--rst-goto-beginning-of-block))
+              (if (eq type 'inner)
+                  (evil-indent-plus-i-indent)
+                (evil-indent-plus-a-indent)))))
+      (unless (<= (first range) (point) (second range) )
+        (user-error "Not in a block"))
+      (cons language range)))
+
+  (evil-define-text-object w--evil-rst-a-code-block (count &optional beg end type)
+    (cdr (w--evil-rst-code-block 'outer)))
+
+  (evil-define-text-object w--evil-rst-inner-code-block (count &optional beg end type)
+    (cdr (w--evil-rst-code-block 'inner)))
+
+  (defun w--rst-edit-code-block-dwim ()
+    (interactive)
+    (let* ((block (w--evil-rst-code-block 'inner))
+           (language (car block))
+           (range (cdr block))
+           (block-major-mode
+            (or
+             (cdr (assoc language w--rst-code-block-language-major-modes-mapping))
+             (when language (intern (s-concat language "-mode")))))
+           (edit-indirect-guess-mode-function
+            (lambda (parent-buffer beg end)
+              (if (and block-major-mode (symbolp block-major-mode))
+                  (funcall block-major-mode)
+                ;; (python-mode)
+                (edit-indirect-default-guess-mode parent-buffer beg end)
+                ))))
+      (edit-indirect-region (first range) (1+ (second range)) t)))
 
   ;; todo: integrate this with the global easymotion hydra
   ;; (evilem-make-motion
