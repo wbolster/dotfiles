@@ -3677,7 +3677,7 @@ point stays the same after piping through the external program. "
     ("b" (w--python-insert-pdb-trace "pdb") nil)
     ("B" (w--python-insert-pdb-trace "ipdb") nil)
     "_gq_ blacken"
-    ("gq" blacken-buffer)
+    ("gq" w--blacken-dwim)
     "_i_mport"
     ("i" w--python-insert-import-statement nil)
     "_l_ multi-line"
@@ -3695,7 +3695,18 @@ point stays the same after piping through the external program. "
 (use-package blacken
   :demand t
   :after python
-  :delight " ❤")
+  :delight " ❤"
+  :config
+  (defun w--blacken-region (start end)
+    "Replace region with Python code formatted using black-macchiato."
+    (interactive "r")
+    (shell-command-on-region start end "black-macchiato" t t))
+  (defun w--blacken-dwim ()
+    "Run black on the region or buffer."
+    (interactive)
+    (if (region-active-p)
+        (w--blacken-region (region-beginning) (region-end))
+      (blacken-buffer))))
 
 (use-package evil-text-object-python
   :demand t
