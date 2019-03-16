@@ -3538,6 +3538,7 @@ point stays the same after piping through the external program. "
 (use-package python
   :defer t
   :interpreter ("python" . python-mode)
+  :mode ("\\.pyi\\'" . python-mode)
   :general
   (:keymaps 'python-mode-map
    :states 'normal
