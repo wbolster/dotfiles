@@ -2721,6 +2721,7 @@ point stays the same after piping through the external program. "
     "c" #'git-rebase-edit
     "d" #'git-rebase-kill-line
     "i" #'git-rebase-insert
+    "g" nil
     "n" #'forward-line
     "p" #'git-rebase-pick
     "e" #'git-rebase-backward-line
