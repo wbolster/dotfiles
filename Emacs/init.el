@@ -2670,24 +2670,24 @@ point stays the same after piping through the external program. "
   (w--make-hydra w--hydra-git nil
     "git"
     "_a_nnotate"
-    ("a" magit-blame)
+    ("a" magit-blame-addition)
     ("A" magit-log-buffer-file)
     "_c_ommit"
-    ("c" magit-commit)
-    ("C" magit-commit-popup)
+    ("c" magit-commit-create)
+    ("C" magit-commit)
     "_d_iff"
-    ("d" magit-diff)
-    ("D" magit-diff-popup)
+    ("d" magit-diff-dwim)
+    ("D" magit-diff)
     "_f_ile"
     ("f" magit-find-file)
     ("F" magit-find-file-other-window)
     "_g_ popup"
-    ("g" magit-dispatch-popup)
+    ("g" magit-dispatch)
     "_l_og"
     ("l" magit-log-current)
     ("L" magit-log-all)
     "_r_efs"
-    ("r" magit-show-refs-popup)
+    ("r" magit-show-refs)
     "_s_tatus"
     ("s" magit-status)
     ("S" w--magit-status-other-repository)
