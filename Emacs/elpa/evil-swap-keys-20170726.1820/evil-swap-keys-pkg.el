@@ -1,0 +1,2 @@
+;;; -*- no-byte-compile: t -*-
+(define-package "evil-swap-keys" "20170726.1820" "intelligently swap keys on text input with evil" '((emacs "24")) :commit "56bc201e265a6bd482a7c41a7c81d2238341ef3a" :keywords '("evil" "key" "swap" "numbers" "symbols") :authors '(("Wouter Bolsterlee" . "wouter@bolsterl.ee")) :maintainer '("Wouter Bolsterlee" . "wouter@bolsterl.ee") :url "https://github.com/wbolster/evil-swap-keys")

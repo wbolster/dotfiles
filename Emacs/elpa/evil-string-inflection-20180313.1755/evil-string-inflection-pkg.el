@@ -1,0 +1,2 @@
+;;; -*- no-byte-compile: t -*-
+(define-package "evil-string-inflection" "20180313.1755" "snake_case -> CamelCase -> etc. for text objects" '((emacs "24") (evil "1.2.13") (string-inflection "1.0.6")) :commit "008b74a9b2994abfb4ff5b679b8a5a26fd45e98a" :authors '(("Filipe Silva" . "filipe.silva@gmail.com")) :maintainer '("Filipe Silva" . "filipe.silva@gmail.com") :url "https://github.com/ninrod/evil-string-inflection")

@@ -1,0 +1,2 @@
+;;; -*- no-byte-compile: t -*-
+(define-package "terminal-here" "20180513.833" "Run an external terminal in current directory" '((emacs "24") (cl-lib "0.5")) :commit "bc7f3477133df0142d3e49e6eb8eaf4468b57865" :keywords '("tools" "frames") :authors '(("David Shepherd" . "davidshepherd7@gmail.com")) :maintainer '("David Shepherd" . "davidshepherd7@gmail.com") :url "https://github.com/davidshepherd7/terminal-here")
