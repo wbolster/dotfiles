@@ -1509,6 +1509,7 @@ defined as lowercase."
 ;; perhaps use ,/ for rg hydra?
 
 (use-package symbol-overlay
+  :demand t
   :delight
 
   :custom
