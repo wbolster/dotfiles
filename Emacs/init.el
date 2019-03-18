@@ -2733,6 +2733,7 @@ point stays the same after piping through the external program. "
 (use-package magit-imerge)
 
 (use-package magithub
+  :disabled
   :demand t
   :after magit
   :custom
@@ -2747,7 +2748,9 @@ point stays the same after piping through the external program. "
    "r" nil
    "R" #'magithub-reply-thing)
   :config
-  (magithub-feature-autoinject t))
+  (magithub-feature-autoinject t)
+  ;; https://github.com/vermiculus/magithub/issues/308
+  (remove-hook 'magit-status-headers-hook #'magithub-maybe-insert-ci-status-header))
 
 (use-package git-link
   :defer t
