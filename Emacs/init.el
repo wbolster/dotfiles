@@ -2877,7 +2877,7 @@ point stays the same after piping through the external program. "
    "e" #'vdiff-magit-dwim
    "E" #'vdiff-magit-popup)
   :config
-  ; todo: migrate to transient.el?
+  ;; todo: migrate to transient.el?
   (magit-define-popup-action 'magit-dispatch-popup
     ?v "vdiff dwim" 'vdiff-magit-dwim)
   (magit-define-popup-action 'magit-dispatch-popup
