@@ -574,6 +574,8 @@ defined as lowercase."
 
 (use-package delight)
 
+(use-package nyan-mode)
+
 (use-package smart-mode-line
   :custom
   (sml/line-number-format "%l")
