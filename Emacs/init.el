@@ -2532,9 +2532,7 @@ point stays the same after piping through the external program. "
 
 (use-package ivy-rich
   :config
-  (dolist (command '(ivy-switch-buffer ivy-switch-buffer-other-window))
-    (ivy-set-display-transformer
-     command 'ivy-rich-switch-buffer-transformer)))
+  (ivy-rich-mode 1))
 
 (use-package counsel
   :delight
