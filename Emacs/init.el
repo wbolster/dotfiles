@@ -2554,6 +2554,13 @@ point stays the same after piping through the external program. "
     (company-abort)
     (counsel-company)))
 
+(use-package company-lsp
+  :disabled
+  :demand t
+  :after company
+  :config
+  (add-to-list 'company-backends 'company-lsp))
+
 
 ;;;; git / version control
 
@@ -3165,6 +3172,9 @@ point stays the same after piping through the external program. "
      "BUG" "bug"
      "XXX" "xxx")))
 
+(use-package lsp-mode
+  :disabled)
+
 (use-package prog-mode
   :ensure nil
   :defer t
@@ -3698,6 +3708,9 @@ point stays the same after piping through the external program. "
     ("T" python-pytest-repeat nil)
     "_v_ariable"
     ("v" w--python-refactor-make-variable nil)))
+
+(use-package lsp-python
+  :disabled)
 
 (use-package blacken
   :demand t
