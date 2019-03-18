@@ -1664,6 +1664,29 @@ defined as lowercase."
   "C-," 'evil-prev-buffer
   "C-." 'evil-next-buffer)
 
+;; todo: this is not very useful currently
+(w--make-hydra w--hydra-navigation-forward nil
+  "nav"
+  ("[" w--hydra-navigation-backward/body)
+  ("]" nil)
+  "_b_uffer"
+  ("b" evil-next-buffer)
+  ("B" evil-next-buffer :exit nil)
+  ("[" w--hydra-navigation-backward/body)
+  "_z_ folds"
+  ("z" origami-forward-fold)
+  ("Z" origami-forward-fold :exit nil))
+
+(w--make-hydra w--hydra-navigation-backward nil
+  "nav"
+  ("[" nil)
+  ("]" w--hydra-navigation-forward/body)
+  "_b_uffer"
+  ("b" evil-prev-buffer)
+  ("B" evil-prev-buffer :exit nil)
+  "_z_ folds"
+  ("z" origami-backward-fold-same-level)
+  ("Z" origami-backward-fold-same-level :exit nil))
 
 ;;;; parens
 
