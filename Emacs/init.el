@@ -3717,8 +3717,9 @@ point stays the same after piping through the external program. "
   :general
   (:keymaps 'python-mode-map
    :states '(operator visual)
-   "ul" #'evil-text-object-python-inner-statement
-   "al" #'evil-text-object-python-outer-statement)
+   "ul" 'evil-text-object-python-inner-statement
+   "al" 'evil-text-object-python-outer-statement
+   "uf" 'evil-text-object-python-function)
   (:keymaps 'python-mode-map
    :states 'operator
    [remap evil-forward-char] #'w--evil-forward-char-or-python-statement)
