@@ -1567,7 +1567,7 @@ defined as lowercase."
   (defun w--symbol-overlay-jump-any (direction)
     (-if-let*
         ((positions
-          (->> (symbol-overlay-get-list)
+          (->> (symbol-overlay-get-list 0)
                (-remove
                 (lambda (ov)
                   (< (overlay-start ov) (point) (overlay-end ov))))
@@ -2646,6 +2646,7 @@ point stays the same after piping through the external program. "
             magit-status-mode)
     (add-to-list 'direnv-non-file-modes it))
 
+  ;; todo: migrate to transient.el
   (magit-define-popup-switch 'magit-log-popup
     ?m "Omit merge commits" "--no-merges")
   (magit-define-popup-action 'magit-log-popup
@@ -2876,6 +2877,7 @@ point stays the same after piping through the external program. "
    "e" #'vdiff-magit-dwim
    "E" #'vdiff-magit-popup)
   :config
+  ; todo: migrate to transient.el?
   (magit-define-popup-action 'magit-dispatch-popup
     ?v "vdiff dwim" 'vdiff-magit-dwim)
   (magit-define-popup-action 'magit-dispatch-popup
