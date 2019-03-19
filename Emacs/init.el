@@ -51,6 +51,10 @@
 
 (use-package s)
 
+(use-package transient
+  :custom
+  (transient-show-common-commands t))
+
 (defmacro w--ilambda (&rest body)
   "Concisely create a lambda with an ‘(interactive)’ spec.
 
