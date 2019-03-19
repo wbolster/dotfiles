@@ -1507,7 +1507,26 @@ defined as lowercase."
 
 ;; todo: switch to rg/ripgrep
 ;; (use-package rg)
-;; perhaps use ,/ for rg hydra?
+
+;; todo: switch to deadgrep
+;; perhaps use ,/ for hydra?
+(use-package deadgrep
+  :general
+  (:keymaps 'deadgrep-mode-map
+   :states '(motion normal)
+   "g" nil
+   "g r" 'deadgrep-restart
+   "C-n" 'deadgrep-forward
+   "C-e" 'deadgrep-backward
+   "C-p" 'deadgrep-backward
+   "<return>" 'deadgrep-visit-result-other-window
+   "<tab>" #'deadgrep-toggle-file-results
+   )
+  :config
+  (w--make-hydra w--hydra-search nil
+    "search"
+    "_/_ search"
+    ("/" deadgrep)))
 
 (use-package symbol-overlay
   :demand t
@@ -3101,6 +3120,8 @@ point stays the same after piping through the external program. "
   ("z" w--hydra-zoom/body)
   "_SPC_ whitespace"
   ("SPC" whitespace-cleanup)
+  "_/_ search"
+  ("/" w--hydra-search/body)
   "_,_ major mode"
   ("," w--major-mode-hydra)
   ("'" w--major-mode-hydra))
