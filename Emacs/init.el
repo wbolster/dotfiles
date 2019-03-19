@@ -2610,16 +2610,10 @@ point stays the same after piping through the external program. "
   (magit-bury-buffer-function 'magit-mode-quit-window)
   (magit-completing-read-function 'ivy-completing-read)
   (magit-display-file-buffer-function 'magit-display-file-buffer-other-window)
-  (magit-fetch-arguments '("--prune"))
   (magit-list-refs-sortby '("-creatordate"))
-  (magit-log-arguments '("--graph" "--color" "--decorate" "--follow" "-n256" "++order=topo"))
-  (magit-merge-arguments '("--no-ff"))
   (magit-popup-show-help-echo nil)
   (magit-prefer-remote-upstream t)
   (magit-process-popup-time 10)
-  (magit-rebase-arguments '("--autostash"))
-  (magit-show-refs-arguments '("--sort=-committerdate"))
-  (magit-tag-arguments '("--annotate"))
 
   :custom-face
   (magit-mode-line-process ((t (:inherit magit-mode-line-process-error))))
@@ -2645,12 +2639,8 @@ point stays the same after piping through the external program. "
     (add-to-list 'direnv-non-file-modes it))
 
   ;; todo: migrate to transient.el
-  (magit-define-popup-switch 'magit-log-popup
-    ?m "Omit merge commits" "--no-merges")
   (magit-define-popup-action 'magit-log-popup
     ?w "Wip" 'magit-wip-log-current)
-  (magit-define-popup-switch 'magit-log-popup
-    ?1 "First parent" "--first-parent")
 
   (defun w--magit-status-other-repository ()
     "Open git status for another repository."
