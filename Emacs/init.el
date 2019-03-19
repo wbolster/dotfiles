@@ -2738,17 +2738,17 @@ point stays the same after piping through the external program. "
   (general-define-key
    :keymaps 'git-rebase-mode-map
    :states 'normal
-    "c" #'git-rebase-edit
-    "d" #'git-rebase-kill-line
-    "i" #'git-rebase-insert
-    "g" nil
-    "n" #'forward-line
-    "p" #'git-rebase-pick
-    "e" #'git-rebase-backward-line
-    "l" #'git-rebase-undo
-    "C-e" #'git-rebase-move-line-up
-    "C-p" #'git-rebase-move-line-up
-    "C-n" #'git-rebase-move-line-down))
+   "c" #'git-rebase-edit
+   "d" #'git-rebase-kill-line
+   "i" #'git-rebase-insert
+   "g" nil
+   "n" #'forward-line
+   "p" #'git-rebase-pick
+   "e" #'git-rebase-backward-line
+   "l" #'git-rebase-undo
+   "C-e" #'git-rebase-move-line-up
+   "C-p" #'git-rebase-move-line-up
+   "C-n" #'git-rebase-move-line-down))
 
 (use-package magit-imerge)
 
