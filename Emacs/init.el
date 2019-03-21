@@ -3793,6 +3793,8 @@ point stays the same after piping through the external program. "
 
 (use-package pip-requirements
   :defer t
+  :mode
+  ("requirements-.*\\.in\\'" . pip-requirements-mode)
   :config
   ;; avoid network traffic when opening a requirements.txt file
   (setq pip-packages '(this is a fake package listing)))
