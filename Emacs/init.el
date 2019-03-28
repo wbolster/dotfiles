@@ -3724,6 +3724,20 @@ point stays the same after piping through the external program. "
      position
      (format "__import__(\"IPython\").embed()  # FIXME")))
 
+  (defun w--python-print-expression ()
+    (interactive)
+    (let ((thing (w--thing-at-point-dwim)))
+      (w--python-insert-statement
+       'before
+       (format "print(f\"%s: {%s}\")" thing thing))))
+
+  (defun w--python-print-expression-repr ()
+    (interactive)
+    (let ((thing (w--thing-at-point-dwim)))
+      (w--python-insert-statement
+       'before
+       (format "print(f\"%s: {%s!r}\")" thing thing))))
+
   (evil-define-operator w--python-refactor-make-variable (beg end type)
     "Refactor the current region into a named variable."
     (interactive "<R>")
