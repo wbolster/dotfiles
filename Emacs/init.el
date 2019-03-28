@@ -2805,6 +2805,10 @@ point stays the same after piping through the external program. "
   :config
   (transient-suffix-put 'magit-dispatch "@" :key "h"))
 
+(use-package git-commit
+  :custom
+  (git-commit-fill-column 72))
+
 (use-package git-link
   :defer t
   :custom
