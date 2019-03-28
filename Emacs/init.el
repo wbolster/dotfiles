@@ -2714,6 +2714,9 @@ point stays the same after piping through the external program. "
 (use-package evil-magit
   :demand t
   :after magit
+  :hook
+  (magit-log-mode . w--evil-colemak-basics-disable)
+  (magit-status-mode . w--evil-colemak-basics-disable)
   :general
   ;; todo: make ,q use the various magit-*-bury-buffer functions, then
   ;; unbind q to force ,q usage.
@@ -2747,28 +2750,27 @@ point stays the same after piping through the external program. "
               magit-status-mode-map)
    :states 'normal
    "q" nil
-   "'" nil)
-  :config
-  (--each '(git-rebase-mode-hook
-            magit-log-mode-hook
-            magit-status-mode-hook)
-    (add-hook it #'w--evil-colemak-basics-disable))
-  ;; force load git-rebase-mode (included with magit). evil-magit also
-  ;; assigns evil keys for this git-rebase-mode-map when it is loaded.
-  ;; local config should be applied afterwards since it overwrites
-  ;; some of those key bindings.
-  (require 'git-rebase)
-  (general-define-key
-   :keymaps 'git-rebase-mode-map
+   "'" nil))
+
+(use-package git-rebase
+  :demand t
+  :ensure nil  ;; included with magit
+  :after magit evil-magit
+  :hook
+  (git-rebase-mode . w--evil-colemak-basics-disable)
+  :general
+  (:keymaps 'git-rebase-mode-map
+   :states '(normal visual)
+   "g" nil
+   "n" #'evil-next-line
+   "e" #'evil-previous-line
+   "l" #'git-rebase-undo)
+  (:keymaps 'git-rebase-mode-map
    :states 'normal
    "c" #'git-rebase-edit
    "d" #'git-rebase-kill-line
    "i" #'git-rebase-insert
-   "g" nil
-   "n" #'forward-line
    "p" #'git-rebase-pick
-   "e" #'git-rebase-backward-line
-   "l" #'git-rebase-undo
    "C-e" #'git-rebase-move-line-up
    "C-p" #'git-rebase-move-line-up
    "C-n" #'git-rebase-move-line-down))
