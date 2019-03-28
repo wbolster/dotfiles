@@ -3,6 +3,7 @@
 /elpa/*.signed
 /custom.el
 /elpa/archives/
+/elpa/emacsql-sqlite*/
 /elpa/gnupg/
 /init-local.el
 /var/

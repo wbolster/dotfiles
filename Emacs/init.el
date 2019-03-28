@@ -2795,6 +2795,16 @@ point stays the same after piping through the external program. "
   ;; https://github.com/vermiculus/magithub/issues/308
   (remove-hook 'magit-status-headers-hook #'magithub-maybe-insert-ci-status-header))
 
+(use-package forge
+  :after magit evil-magit
+  :demand t
+  :general
+  (:keymaps 'magit-mode-map
+   "'" nil
+   "h" 'forge-dispatch)
+  :config
+  (transient-suffix-put 'magit-dispatch "@" :key "h"))
+
 (use-package git-link
   :defer t
   :custom
