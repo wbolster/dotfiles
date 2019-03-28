@@ -54,7 +54,13 @@
 (use-package transient
   :custom
   (transient-show-common-commands t)
-  (transient-show-popup 1))
+  (transient-show-popup 1)
+  :general
+  ;; Key mapping approach is based on what transient-bind-q-to-quit does.
+  (:keymaps 'transient-base-map
+   "<escape>" 'transient-quit-one)
+  (:keymaps 'transient-sticky-map
+   "<escape>" 'transient-quit-seq))
 
 (defmacro w--ilambda (&rest body)
   "Concisely create a lambda with an ‘(interactive)’ spec.
