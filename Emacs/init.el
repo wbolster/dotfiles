@@ -3705,11 +3705,12 @@ point stays the same after piping through the external program. "
         (insert-before-markers statement "\n" indent)
         (python-nav-backward-statement)))))
 
-  (defun w--python-insert-pdb-trace (pdb-module)
+  (defun w--python-insert-pdb-trace ()
     "Insert a pdb trace statement using PDB-MODULE before the current statement."
+    (interactive)
     (w--python-insert-statement
      'before
-     (format "__import__(\"%s\").set_trace()  # FIXME" pdb-module pdb-module)))
+     "__import__(\"pdb\").set_trace()  # FIXME"))
 
   (defun w--python-insert-ipython-repl (position)
     "Insert an IPython repl statement before or after the current statement."
@@ -3740,8 +3741,7 @@ point stays the same after piping through the external program. "
   (w--make-hydra w--hydra-python nil
     "python"
     "_b_reakpoint"
-    ("b" (w--python-insert-pdb-trace "pdb") nil)
-    ("B" (w--python-insert-pdb-trace "ipdb") nil)
+    ("b" w--python-insert-pdb-trace nil)
     "_gq_ blacken"
     ("gq" w--blacken-dwim)
     "_i_mport"
