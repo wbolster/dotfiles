@@ -2527,12 +2527,12 @@ point stays the same after piping through the external program. "
   :delight
   :general
   (:keymaps 'ivy-minibuffer-map
-   "C-h" #'ivy-backward-delete-char
-   "C-w" #'ivy-backward-kill-word
-   "C-u" #'kill-whole-line
-   "C-SPC" #'ivy-avy
-   "C-<return>" #'ivy-dispatching-done-hydra  ;; alternative actions
-   "<escape>" #'minibuffer-keyboard-quit)
+   "C-h" 'ivy-backward-delete-char
+   "C-w" 'ivy-backward-kill-word
+   "C-u" 'kill-whole-line
+   "C-SPC" 'ivy-avy
+   "C-<return>" 'ivy-immediate-done
+   "<escape>" 'minibuffer-keyboard-quit)
   :custom
   (ivy-count-format "(%d/%d) ")
   (ivy-height 20)
