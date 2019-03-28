@@ -3847,7 +3847,7 @@ point stays the same after piping through the external program. "
     (w--set-major-mode-hydra #'w--hydra-python-pytest/body)
     (modify-syntax-entry ?/ ".")
     (when-let ((project-root (projectile-project-root)))
-      (add-to-list 'prettify-symbols-alist `(,project-root . ?…)))
+      (add-to-list 'prettify-symbols-alist `(,(s-chop-suffix "/" project-root) . ?…)))
     (when-let ((venv-path (getenv "VIRTUAL_ENV")))
       (add-to-list 'prettify-symbols-alist `(,venv-path . ?…)))
     (prettify-symbols-mode))
