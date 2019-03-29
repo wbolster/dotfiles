@@ -334,7 +334,13 @@ defined as lowercase."
         (user-error "Not a directory.")))))
 
 (use-package sudo-edit
-  :defer t)
+  :defer t
+  :commands w--sudo-edit-file
+  :config
+  (defun w--sudo-edit-file ()
+    (interactive)
+    (setq current-prefix-arg t)
+    (call-interactively 'sudo-edit)))
 
 (use-package terminal-here
   :defer t
@@ -397,26 +403,19 @@ defined as lowercase."
   "_r_evert"
   ("r" revert-buffer))
 
-(w--make-hydra w--hydra-find-file nil
-  "open"
-  "_d_irectory"
-  ("d" deer)
-  ("D" deer-jump-other-window)
-  "_f_ile"
-  ("f" counsel-find-file)
-  ("F" find-file-other-window)
-  "_n_ew"
-  ("n" evil-buffer-new)
-  ("N" w--evil-buffer-new-other-window)
-  "_r_ecent"
-  ("r" counsel-recentf)
-  ("R" w--counsel-recentf-other-window)
-  "_s_udo"
-  ("s" sudo-edit)
-  ("S" (sudo-edit t))
-  "_!_ terminal"
-  ("!" terminal-here)
-  ("1" terminal-here))
+(define-transient-command w--file-dispatch ()
+  ["open"
+   [("d" "directory" deer)
+    ("D" "directory ↗" deer-jump-other-window)]
+   [("f" "file" counsel-find-file)
+    ("F" "file ↗" find-file-other-window)]
+   [("n" "new" evil-buffer-new)
+    ("N" "new ↗" w--evil-buffer-new-other-window)]
+   [("r" "recent" counsel-recentf)
+    ("R"  "recent ↗" w--counsel-recentf-other-window)]
+   [("s" "sudoedit" sudo-edit)
+    ("S" "sudoedit other" w--sudo-edit-file)]
+   [("t" "terminal" terminal-here)]])
 
 
 ;;;; theme
@@ -3112,7 +3111,7 @@ point stays the same after piping through the external program. "
   "_d_iff"
   ("d" w--hydra-vdiff/body)
   "_f_ind"
-  ("f" w--hydra-find-file/body)
+  ("f" w--file-dispatch)
   "_g_it"
   ("g" w--hydra-git/body)
   "_h_ighlight"
