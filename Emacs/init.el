@@ -252,7 +252,10 @@ defined as lowercase."
   (:keymaps 'transient-sticky-map
    "<escape>" 'transient-quit-seq))
 
-(use-package which-key)
+(use-package which-key
+  :delight
+  :config
+  (which-key-mode))
 
 
 ;;;; buffers, files, directories
