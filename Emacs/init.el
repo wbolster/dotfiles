@@ -253,6 +253,8 @@ defined as lowercase."
   (:keymaps 'transient-sticky-map
    "<escape>" 'transient-quit-seq))
 
+(use-package which-key)
+
 
 ;;;; buffers, files, directories
 
@@ -3426,7 +3428,9 @@ point stays the same after piping through the external program. "
   :defer t)
 
 (use-package gitconfig-mode
-  :defer t)
+  :defer t
+  :mode
+  ("\\.gitconfig.*\\'" . gitconfig-mode))
 
 (use-package gitignore-mode
   :defer t)
