@@ -243,6 +243,7 @@ defined as lowercase."
          ("<escape>" nil :exit t)))))
 
 (use-package transient
+  :demand t
   :custom
   (transient-show-popup 1)
   :general
