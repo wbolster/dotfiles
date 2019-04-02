@@ -527,9 +527,7 @@ defined as lowercase."
 
 (use-package dimmer
   :custom
-  (dimmer-fraction .25)
-  :config
-  (dimmer-mode))
+  (dimmer-fraction .25))
 
 
 ;;;; fonts
