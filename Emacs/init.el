@@ -2123,6 +2123,19 @@ point stays the same after piping through the external program. "
   (:keymaps 'isearch-mode-map
    "C-'" #'avy-isearch))
 
+(use-package beacon
+  :delight
+  :custom
+  (beacon-blink-delay 2)
+  (beacon-blink-duration 5)
+  (beacon-blink-when-point-moves-vertically 10)
+  :config
+  (beacon-mode)
+  (defun w--beacon-tweak-faces ()
+    (setq beacon-color
+          (face-attribute 'evil-goggles-default-face :background nil t)))
+  (add-hook 'w--theme-changed-hook #'w--beacon-tweak-faces t))
+
 (use-package dired
   :ensure nil
   :general
@@ -2155,29 +2168,6 @@ point stays the same after piping through the external program. "
           recenter-top-bottom
           switch-to-buffer)
   (w--declare-jump it))
-
-(use-package nav-flash
-  :custom
-  (nav-flash-delay 5)
-
-  :config
-  (defun w--nav-flash-tweak-faces ()
-    (set-face-attribute
-     'nav-flash-face nil
-     :background 'unspecified
-     :foreground 'unspecified
-     :inherit 'magit-diff-base-highlight))
-  (add-hook 'w--theme-changed-hook #'w--nav-flash-tweak-faces t)
-
-  (defun w--maybe-nav-flash ()
-    "Highlight point when run after a jump command."
-    (when (evil-get-command-property this-command :jump)
-      (nav-flash-show)))
-
-  (add-hook 'evil-jumps-post-jump-hook #'nav-flash-show)
-  (add-hook 'focus-in-hook #'nav-flash-show)
-  (add-hook 'next-error-hook #'nav-flash-show)
-  (add-hook 'post-command-hook #'w--maybe-nav-flash))
 
 (use-package dumb-jump
   :custom
@@ -2221,7 +2211,7 @@ point stays the same after piping through the external program. "
         (recenter-top-bottom 0))
       (unless (and (eq (current-buffer) original-buffer)
                    (eq (point) original-point))
-        (nav-flash-show))))
+        (beacon-blink))))
 
   (advice-add 'dumb-jump-go :around #'w--jump-around-advice))
 
