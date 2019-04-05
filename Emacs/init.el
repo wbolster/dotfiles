@@ -2124,14 +2124,14 @@ point stays the same after piping through the external program. "
 (use-package beacon
   :delight
   :custom
-  (beacon-blink-delay 2)
-  (beacon-blink-duration 5)
-  (beacon-blink-when-point-moves-vertically 10)
+  (beacon-blink-when-point-moves-vertically 5)
+  (beacon-size 20)
   :config
+  (add-to-list 'beacon-dont-blink-predicates 'region-active-p)
   (beacon-mode)
   (defun w--beacon-tweak-faces ()
     (setq beacon-color
-          (face-attribute 'evil-goggles-default-face :background nil t)))
+          (face-attribute 'lazy-highlight :background nil t)))
   (add-hook 'w--theme-changed-hook #'w--beacon-tweak-faces t))
 
 (use-package dired
