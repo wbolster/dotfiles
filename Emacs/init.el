@@ -1393,18 +1393,14 @@ defined as lowercase."
       (when use-boundaries
         (setq thing (format "\\_<%s\\_>" thing)))
       (query-replace-regexp thing replacement)))
-  (w--make-hydra w--hydra-replace nil
-    "replace"
-    "_p_roject"
-    ("p" projectile-replace)
-    ("P" projectile-replace-regexp)
-    "_r_ dwim"
-    ("r" w--query-replace-thing-at-point-dwim)
-    "_s_ymbol"
-    ("s" w--query-replace-thing-at-point-dwim)
-    "_q_uery"
-    ("q" query-replace)
-    ("Q" query-replace-regexp)))
+  (define-transient-command w--replace-dispatch nil
+    ["replace"
+     [("r" "dwim" w--query-replace-thing-at-point-dwim)
+      ("s" "dwim" w--query-replace-thing-at-point-dwim)]
+     [("p" "project" projectile-replace)
+      ("P" "project (regexp)" projectile-replace-regexp)]
+     [("q" "replace" query-replace)
+      ("Q" "replace regexp"query-replace-regexp)]]))
 
 (use-package emacs  ;; occur
   :general
@@ -3121,7 +3117,7 @@ point stays the same after piping through the external program. "
   ("q" bury-buffer)
   ("Q" unbury-buffer)
   "_r_eplace"
-  ("r" w--hydra-replace/body)
+  ("r" w--replace-dispatch)
   "_s_ave"
   ("s" save-buffer)
   ("S" save-some-buffers)
