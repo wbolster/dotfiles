@@ -382,34 +382,26 @@ defined as lowercase."
   (w--evil-window-next-or-vsplit)
   (call-interactively #'evil-buffer-new))
 
-(w--make-hydra w--hydra-buffer nil
-  "buffer"
-  "_b_uffer"
-  ("b" ivy-switch-buffer)
-  ("B" ivy-switch-buffer-other-window)
-  "_c_lone"
-  ("c" clone-indirect-buffer)
-  ("C" clone-indirect-buffer-other-window)
-  "_e_ rename"
-  ("e" rename-buffer)
-  "_h_ide"
-  ("h" bury-buffer)
-  ("H" unbury-buffer)
-  "_k_ill"
-  ("k" kill-this-buffer)
-  ("K" kill-buffer-and-window)
-  "_m_ajor mode"
-  ("m" w--switch-major-mode)
-  "_n_ew"
-  ("n" evil-buffer-new)
-  ("N" w--evil-buffer-new-other-window)
-  "_r_evert"
-  ("r" revert-buffer))
+(define-transient-command w--buffer-dispatch ()
+  ["buffer"
+   [("b" "switch" ivy-switch-buffer)
+    ("B" "switch ↗"ivy-switch-buffer-other-window)]
+   [("n" "new" evil-buffer-new)
+    ("N" "new ↗" w--evil-buffer-new-other-window) ]
+   [("c" "clone" clone-indirect-buffer)
+    ("C" "clone ↗" clone-indirect-buffer-other-window)]]
+  ["hiding/closing"
+   [("h" "hide" bury-buffer)
+    ("H" "unhide" unbury-buffer)]
+   [("k" "kill" kill-this-buffer)
+    ("K" "kill+window" kill-buffer-and-window)]]
+  ["misc"
+   [("e" "rename" rename-buffer)
+    ("m" "switch major mode" w--switch-major-mode)
+    ("r" "revert" revert-buffer)]])
 
 (define-transient-command w--file-dispatch ()
-  ["open"
-   [("d" "directory" deer)
-    ("D" "directory ↗" deer-jump-other-window)]
+  ["file"
    [("f" "file" counsel-find-file)
     ("F" "file ↗" find-file-other-window)]
    [("n" "new" evil-buffer-new)
@@ -417,8 +409,12 @@ defined as lowercase."
    [("r" "recent" counsel-recentf)
     ("R"  "recent ↗" w--counsel-recentf-other-window)]
    [("s" "sudoedit" sudo-edit)
-    ("S" "sudoedit other" w--sudo-edit-file)]
-   [("t" "terminal" terminal-here)]])
+    ("S" "sudoedit other" w--sudo-edit-file)]]
+  ["misc"
+   [("d" "directory" deer)
+    ("D" "directory ↗" deer-jump-other-window)]
+   [("!" "terminal" terminal-here)
+    ("1" "terminal" terminal-here)]])
 
 
 ;;;; theme
@@ -3100,7 +3096,7 @@ point stays the same after piping through the external program. "
   "_a_g"
   ("a" w--hydra-ag/body)
   "_b_uffer"
-  ("b" w--hydra-buffer/body)
+  ("b" w--buffer-dispatch)
   "_c_heck"
   ("c" w--hydra-flycheck/body)
   "_d_iff"
