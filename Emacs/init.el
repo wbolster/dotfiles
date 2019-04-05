@@ -2569,6 +2569,7 @@ point stays the same after piping through the external program. "
    "C-<return>" #'company-select-next
    "<tab>" #'company-complete-common-or-cycle
    "/" #'w--company-switch-to-counsel-company)
+
   :custom
   (company-auto-complete 'company-explicit-action-p)
   (company-dabbrev-code-everywhere t)
@@ -2580,15 +2581,22 @@ point stays the same after piping through the external program. "
   (company-require-match nil)
   (company-selection-wrap-around t)
   (company-transformers '(company-sort-by-occurrence))
+
   :config
   (add-to-list 'company-auto-complete-chars ?\( )
   (add-to-list 'company-backends 'company-files)
   (global-company-mode)
+
+  (defun w--company-tweak-faces ()
+    (set-face-attribute 'company-tooltip-selection nil :inherit region))
+  (add-hook 'w--theme-changed-hook #'w--company-tweak-faces t)
+
   (defun w--indent-or-complete ()
     (interactive)
     (if (or (looking-at "\\_>") (looking-back "/"))
         (company-manual-begin)
       (call-interactively #'indent-for-tab-command)))
+
   (defun w--company-switch-to-counsel-company ()
     (interactive)
     (company-abort)
