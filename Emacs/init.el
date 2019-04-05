@@ -496,10 +496,6 @@ defined as lowercase."
   (set-face-attribute
    'fixed-pitch nil
    :family (face-attribute 'default :family))
-  (set-face-attribute  ;; less contrasting region (evil visual state)
-   'region nil
-   :background nil :foreground nil
-   :inherit 'secondary-selection)
   (dolist (face (face-list))
     (set-face-attribute face nil :underline nil)
     (unless (member face w--faces-bold)
