@@ -726,10 +726,12 @@ defined as lowercase."
     "Like `evil-force-normal-state', with some extra cleanups."
     (interactive)
     (when (eq last-command 'w--evil-normal-state-cleanup)
-      ;; clean up visual noise when called twice in row
+      ;; clean up some more when called twice in row
       (lazy-highlight-cleanup t)
       (remove-overlays nil nil 'category 'evil-snipe)
       (symbol-overlay-remove-all)
+      (when (functionp 'evil-mc-undo-all-cursors)
+        (evil-mc-undo-all-cursors))
       (let ((inhibit-message t))
         (evil-exchange-cancel)))
     (evil-force-normal-state)
@@ -1110,6 +1112,14 @@ defined as lowercase."
    "I" #'evil-indent-plus-a-indent-up
    "J" #'evil-indent-plus-a-indent-up-down
    "TAB" #'evil-indent-plus-a-indent-up))
+
+(use-package evil-mc
+  :disabled
+  :general
+  (:keymaps 'evil-colemak-basics-keymap
+   :states 'visual
+   "A" #'evil-mc-make-cursor-in-visual-selection-end
+   "U" #'evil-mc-make-cursor-in-visual-selection-beg))
 
 (use-package evil-numbers
   :general
