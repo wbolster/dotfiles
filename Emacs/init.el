@@ -579,7 +579,8 @@ defined as lowercase."
 
 (use-package delight)
 
-(use-package nyan-mode)
+(use-package nyan-mode
+  :defer t)
 
 (use-package smart-mode-line
   :custom
@@ -868,7 +869,7 @@ defined as lowercase."
    "a" #'evil-outer-arg))
 
 (use-package evil-colemak-basics
-  :after evil-snipe
+  :after evil evil-snipe
   :demand t
   :delight
   :init
@@ -2551,6 +2552,7 @@ point stays the same after piping through the external program. "
 
 (use-package company
   :delight
+  :defer t
   :general
   (:states 'insert
    "C-<return>" #'company-manual-begin
@@ -2770,7 +2772,8 @@ point stays the same after piping through the external program. "
    "C-p" #'git-rebase-move-line-up
    "C-n" #'git-rebase-move-line-down))
 
-(use-package magit-imerge)
+(use-package magit-imerge
+  :after magit)
 
 (use-package magithub
   :disabled
@@ -2803,6 +2806,7 @@ point stays the same after piping through the external program. "
   (transient-suffix-put 'magit-dispatch "@" :key "h"))
 
 (use-package git-commit
+  :defer t
   :custom
   (git-commit-fill-column 72))
 
@@ -2842,6 +2846,7 @@ point stays the same after piping through the external program. "
   (ediff-split-window-function 'split-window-horizontally))
 
 (use-package smerge-mode
+  :defer t
   :config
   (w--make-hydra w--hydra-merge nil
     "merge"
@@ -2891,7 +2896,7 @@ point stays the same after piping through the external program. "
 
 (use-package vdiff-magit
   :demand t
-  :after magit
+  :after magit vdiff
   :custom
   (vdiff-magit-stage-is-2way t)
   :general
