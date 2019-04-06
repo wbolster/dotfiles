@@ -716,11 +716,11 @@ defined as lowercase."
     (-let [(key . num) it]
       (general-define-key
        :states 'insert
-        (concat "M-" key)
-        (lambda () (interactive) (insert num)))))
+       (concat "M-" key)
+       (lambda () (interactive) (insert num)))))
   (general-define-key
    :states 'insert
-    "M-DEL" 'backward-delete-char-untabify)
+   "M-DEL" 'backward-delete-char-untabify)
 
   (defun w--evil-normal-state-cleanup ()
     "Like `evil-force-normal-state', with some extra cleanups."
