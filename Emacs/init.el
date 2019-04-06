@@ -445,31 +445,30 @@ defined as lowercase."
   (load-theme w--dark-theme t t)
   (load-theme w--light-theme t t)
   (enable-theme w--light-theme)
-  (setq
-   solarized-color-yellow    "#b58900"
-   solarized-color-orange    "#cb4b16"
-   solarized-color-red       "#dc322f"
-   solarized-color-magenta   "#d33682"
-   solarized-color-violet    "#6c71c4"
-   solarized-color-blue      "#268bd2"
-   solarized-color-cyan      "#2aa198"
-   solarized-color-green     "#859900"
-   solarized-color-yellow-d  "#7B6000"
-   solarized-color-yellow-l  "#DEB542"
-   solarized-color-orange-d  "#8B2C02"
-   solarized-color-orange-l  "#F2804F"
-   solarized-color-red-d     "#990A1B"
-   solarized-color-red-l     "#FF6E64"
-   solarized-color-magenta-d "#93115C"
-   solarized-color-magenta-l "#F771AC"
-   solarized-color-violet-d  "#3F4D91"
-   solarized-color-violet-l  "#9EA0E5"
-   solarized-color-blue-d    "#00629D"
-   solarized-color-blue-l    "#69B7F0"
-   solarized-color-cyan-d    "#00736F"
-   solarized-color-cyan-l    "#69CABF"
-   solarized-color-green-d   "#546E00"
-   solarized-color-green-l   "#B4C342"))
+  (defvar solarized-color-yellow    "#b58900")
+  (defvar solarized-color-orange    "#cb4b16")
+  (defvar solarized-color-red       "#dc322f")
+  (defvar solarized-color-magenta   "#d33682")
+  (defvar solarized-color-violet    "#6c71c4")
+  (defvar solarized-color-blue      "#268bd2")
+  (defvar solarized-color-cyan      "#2aa198")
+  (defvar solarized-color-green     "#859900")
+  (defvar solarized-color-yellow-d  "#7B6000")
+  (defvar solarized-color-yellow-l  "#DEB542")
+  (defvar solarized-color-orange-d  "#8B2C02")
+  (defvar solarized-color-orange-l  "#F2804F")
+  (defvar solarized-color-red-d     "#990A1B")
+  (defvar solarized-color-red-l     "#FF6E64")
+  (defvar solarized-color-magenta-d "#93115C")
+  (defvar solarized-color-magenta-l "#F771AC")
+  (defvar solarized-color-violet-d  "#3F4D91")
+  (defvar solarized-color-violet-l  "#9EA0E5")
+  (defvar solarized-color-blue-d    "#00629D")
+  (defvar solarized-color-blue-l    "#69B7F0")
+  (defvar solarized-color-cyan-d    "#00736F")
+  (defvar solarized-color-cyan-l    "#69CABF")
+  (defvar solarized-color-green-d   "#546E00")
+  (defvar solarized-color-green-l   "#B4C342"))
 
 (defun w--toggle-dark-light-theme ()
   "Toggle between a dark and light theme."
