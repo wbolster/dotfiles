@@ -2580,7 +2580,7 @@ point stays the same after piping through the external program. "
   (global-company-mode)
 
   (defun w--company-tweak-faces ()
-    (set-face-attribute 'company-tooltip-selection nil :inherit region))
+    (set-face-attribute 'company-tooltip-selection nil :inherit 'region))
   (add-hook 'w--theme-changed-hook #'w--company-tweak-faces t)
 
   (defun w--indent-or-complete ()
