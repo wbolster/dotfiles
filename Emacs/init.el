@@ -467,7 +467,7 @@ defined as lowercase."
 (defun w--toggle-dark-light-theme ()
   "Toggle between a dark and light theme."
   (interactive)
-  (w--activate-theme (eq (first custom-enabled-themes) w--light-theme)))
+  (w--activate-theme (eq (-first-item custom-enabled-themes) w--light-theme)))
 
 (defvar w--theme-changed-hook nil
   "Hook to run after the theme has changed. Useful for patching font faces.")
