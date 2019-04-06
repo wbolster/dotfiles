@@ -8,6 +8,13 @@
 
 ;;;; bootstrap
 
+;; reduce gc during startup
+(defvar w--original-gc-cons-threshold gc-cons-threshold)
+(defun w--reset-gc-cons-threshold ()
+  (setq gc-cons-threshold w--original-gc-cons-threshold))
+(setq gc-cons-threshold (* 100 1024 1024))
+(add-hook 'emacs-startup-hook #'w--reset-gc-cons-threshold)
+
 (require 'package)
 (setq
  package-archives '(("melpa" . "https://melpa.org/packages/")
