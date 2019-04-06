@@ -3829,6 +3829,17 @@ point stays the same after piping through the external program. "
      (t
       (evil-forward-char count)))))
 
+(use-package evil-python-movement
+  :demand t
+  :after python
+  :general
+  (:keymaps 'python-mode-map
+   :states 'normal
+   "[{" 'evil-python-movement-lsb-lsb
+   "]}" 'evil-python-movement-rsb-rsb
+   "[[" 'evil-python-movement-lsb-m
+   "]]" 'evil-python-movement-rsb-m))
+
 (use-package pip-requirements
   :defer t
   :mode
