@@ -3496,6 +3496,16 @@ point stays the same after piping through the external program. "
     (call-interactively #'helpful-symbol)))
 
 
+;;;; major mode: html
+
+(use-package sgml-mode
+  :defer t
+  :config
+  (defun w--html-mode-hook ()
+    (setq evil-shift-width 2))
+  (add-hook 'html-mode-hook 'w--html-mode-hook)
+  (add-hook 'mhtml-mode-hook 'w--html-mode-hook))
+
 ;;;; major mode: jinja
 
 (use-package jinja2-mode
