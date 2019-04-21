@@ -1459,10 +1459,10 @@ defined as lowercase."
   (swiper-goto-start-of-match t)
   :general
   (:states 'motion
-   "/" #'swiper
-   "?" #'w--swiper-dwim)
+   "/" #'swiper-isearch
+   "?" #'swiper)
   (:states 'visual
-   "/" 'w--swiper-dwim)
+   "/" 'swiper-isearch)
   :config
   (defun w--swiper-dwim ()
     "Start `swiper` searching for the thing at point."
