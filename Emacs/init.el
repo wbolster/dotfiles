@@ -1903,6 +1903,8 @@ defined as lowercase."
 
 ;;;; formatting
 
+(use-package reformatter)
+
 (use-package external-format
   :load-path "lisp/")
 
