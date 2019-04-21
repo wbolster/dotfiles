@@ -2824,7 +2824,12 @@ point stays the same after piping through the external program. "
 (use-package git-commit
   :defer t
   :custom
-  (git-commit-fill-column 72))
+  (git-commit-fill-column 72)
+  :config
+  (defun w--git-commit-mode-hook ()
+    (when git-commit-mode
+      (w--wrap-lines-mode -1)))
+  (add-hook 'git-commit-mode-hook #'w--git-commit-mode-hook))
 
 (use-package git-link
   :defer t
