@@ -2821,7 +2821,8 @@ point stays the same after piping through the external program. "
    "'" nil
    "h" 'forge-dispatch)
   :config
-  (transient-suffix-put 'magit-dispatch "@" :key "h"))
+  (transient-suffix-put 'magit-dispatch "@" :key "h")
+  (transient-append-suffix 'forge-dispatch "f n" '("w" "web" git-link-homepage)))
 
 (use-package git-commit
   :defer t
