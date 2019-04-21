@@ -1905,6 +1905,12 @@ defined as lowercase."
 
 (use-package reformatter)
 
+(use-package reformatter-dwim
+  :load-path "lisp/"
+  :general
+  (:states '(normal visual)
+   "g =" 'reformatter-dwim-evil))
+
 (use-package external-format
   :load-path "lisp/")
 
@@ -3650,8 +3656,7 @@ point stays the same after piping through the external program. "
   (:keymaps 'python-mode-map
    :states 'normal
    [remap evil-join] #'w--evil-join-python
-   [backspace] 'python-nav-backward-up-list
-   "g =" 'black-macchiato-evil)
+   [backspace] 'python-nav-backward-up-list)
   (:keymaps 'python-mode-map
    :states 'insert
    "C-l" 'multi-line)
@@ -3673,6 +3678,7 @@ point stays the same after piping through the external program. "
   (defun w--python-mode-hook ()
     (setq fill-column 79)
     (setq-local comment-fill-column 72)
+    (setq reformatter-dwim-reformatter 'black-macchiato)
     (modify-syntax-entry ?_ "w")
     (w--set-major-mode-hydra #'w--hydra-python/body)
     (evil-swap-keys-swap-colon-semicolon)
