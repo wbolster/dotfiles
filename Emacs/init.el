@@ -1909,7 +1909,9 @@ defined as lowercase."
   :load-path "lisp/"
   :general
   (:states '(normal visual)
-   "g =" 'reformatter-dwim-evil))
+   "g =" 'reformatter-dwim-evil)
+  (:states 'normal
+   "g +" 'reformatter-dwim-on-save-mode))
 
 (use-package external-format
   :load-path "lisp/")
