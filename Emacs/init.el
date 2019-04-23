@@ -4235,6 +4235,7 @@ point stays the same after piping through the external program. "
   :config
   (defun w--sql-mode-hook ()
     (setq evil-shift-width 2)
+    (setq reformatter-dwim-reformatter 'sqlformat)
     (setq external-format-shell-command "sqlformat -k upper -r -")
     (setq-local fill-paragraph-function #'w--sql-fill-paragraph))
   (add-hook 'sql-mode-hook 'w--sql-mode-hook)
@@ -4258,6 +4259,12 @@ point stays the same after piping through the external program. "
                  (point))))
       (w--sql-format beg end)
       t)))
+
+(use-package sqlformat
+  :demand t
+  :after sql
+  :custom
+  (sqlformat-args '("--keywords" "upper" "--reindent")))
 
 
 ;;;; major-mode: xml
