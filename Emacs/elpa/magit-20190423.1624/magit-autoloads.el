@@ -1258,9 +1258,15 @@ Show log for the definition at point.
 
 (autoload 'magit-log-merged "magit-log" "\
 Show log for the merge of COMMIT into BRANCH.
+
 More precisely, find merge commit M that brought COMMIT into
-BRANCH, and show the log of the range \"M^..M\".  This command
-requires git-when-merged, which is available from
+BRANCH, and show the log of the range \"M^1..M\" or if \"--graph\"
+is a member of ARGS, then \"M^1^..M\" to include the merge-base.
+
+If COMMIT is directly on BRANCH, then show approximately twenty
+surrounding commits instead.
+
+This command requires git-when-merged, which is available from
 https://github.com/mhagger/git-when-merged.
 
 \(fn COMMIT BRANCH &optional ARGS FILES)" t nil)

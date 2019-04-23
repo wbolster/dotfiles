@@ -1,6 +1,6 @@
 ;;; visual-fill-column.el --- fill-column for visual-line-mode  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015-2018 Joost Kremers
+;; Copyright (C) 2015-2019 Joost Kremers
 ;; Copyright (C) 2016 Martin Rudalics
 ;; All rights reserved.
 
@@ -8,7 +8,7 @@
 ;; Maintainer: Joost Kremers <joostkremers@fastmail.fm>
 ;; Created: 2015
 ;; Version: 1.9
-;; Package-Version: 20190204.1559
+;; Package-Version: 20190422.2154
 ;; Package-Requires: ((emacs "24.3"))
 
 ;; This file is NOT part of GNU Emacs.
@@ -72,11 +72,13 @@ this option is set to a value, it is used instead."
   :init-value nil :lighter nil :global nil
   :keymap
   (let ((map (make-sparse-keymap)))
-    (define-key map (vector 'left-margin mouse-wheel-down-event) 'mwheel-scroll)
-    (define-key map (vector 'left-margin mouse-wheel-up-event) 'mwheel-scroll)
-    (define-key map (vector 'right-margin mouse-wheel-down-event) 'mwheel-scroll)
-    (define-key map (vector 'right-margin mouse-wheel-up-event) 'mwheel-scroll)
-    map)
+    (when (bound-and-true-p mouse-wheel-mode)
+      (progn
+        (define-key map (vector 'left-margin mouse-wheel-down-event) 'mwheel-scroll)
+        (define-key map (vector 'left-margin mouse-wheel-up-event) 'mwheel-scroll)
+        (define-key map (vector 'right-margin mouse-wheel-down-event) 'mwheel-scroll)
+        (define-key map (vector 'right-margin mouse-wheel-up-event) 'mwheel-scroll))
+      map))
   (if visual-fill-column-mode
       (visual-fill-column-mode--enable)
     (visual-fill-column-mode--disable)))
@@ -190,7 +192,11 @@ and `text-scale-mode-step'."
                   1.0)))
     (truncate (/ (+ (window-width window)
                     (or (car margins) 0)
-                    (or (cdr margins) 0))
+                    (or (cdr margins) 0)
+                    (or (and (boundp 'display-line-numbers-width)
+                             (numberp display-line-numbers-width)
+                             (- display-line-numbers-width))
+                        0))
                  (float scale)))))
 
 (defun visual-fill-column--set-margins ()
@@ -206,9 +212,7 @@ and `text-scale-mode-step'."
          (left (if visual-fill-column-center-text
                    (/ margins 2)
                  0))
-         (right (if visual-fill-column-center-text
-                    (/ margins 2)
-                  margins)))
+         (right (- margins left)))
 
     ;; put an explicitly R2L buffer on the right side of the window
     (when (and (eq bidi-paragraph-direction 'right-to-left)
