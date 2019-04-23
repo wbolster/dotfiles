@@ -4264,7 +4264,7 @@ point stays the same after piping through the external program. "
   :demand t
   :after sql
   :custom
-  (sqlformat-args '("--keywords" "upper" "--reindent")))
+  (sqlformat-args '("--keywords" "upper")))
 
 
 ;;;; major-mode: xml
