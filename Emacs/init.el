@@ -3529,12 +3529,12 @@ point stays the same after piping through the external program. "
   :config
   (defun w--json-mode-hook ()
     (setq
+     reformatter-dwim-reformatter 'json-reformatter-jq
      tab-width 2
      json-reformat:indent-width tab-width
      js-indent-level 2
      evil-shift-width tab-width)
     (w--set-major-mode-hydra #'w--hydra-json/body)
-    (aggressive-indent-mode)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-double-single-quotes))
   (add-hook 'json-mode-hook #'w--json-mode-hook)
@@ -3544,6 +3544,11 @@ point stays the same after piping through the external program. "
     ("p" (progn
            (json-pretty-print-buffer-ordered)
            (goto-char (point-min))))))
+
+(use-package json-reformatter-jq
+  :load-path "lisp/"
+  :demand t
+  :after json-mode)
 
 
 ;;;; major mode: markdown
