@@ -4,7 +4,7 @@
 
 ;; Author: wouter bolsterlee <wouter@bolsterl.ee>
 ;; Keywords: languages
-;; Package-Version: 20190424.2020
+;; Package-Version: 20190425.925
 ;; URL: https://github.com/wbolster/emacs-json-reformatter-jq
 ;; Package-Requires: ((emacs "24") (reformatter "0.3"))
 ;; Version: 1
@@ -62,7 +62,7 @@
 (defcustom json-reformatter-jq-sort-keys t
   "Whether to sort keys."
   :group 'json-reformatter-jq
-  :type 'string)
+  :type 'boolean)
 
 (defcustom json-reformatter-jq-extra-args nil
   "Extra arguments to pass to jq."
