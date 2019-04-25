@@ -3546,7 +3546,6 @@ point stays the same after piping through the external program. "
            (goto-char (point-min))))))
 
 (use-package json-reformatter-jq
-  :load-path "lisp/"
   :demand t
   :after json-mode)
 
