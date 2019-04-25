@@ -3529,21 +3529,13 @@ point stays the same after piping through the external program. "
   :config
   (defun w--json-mode-hook ()
     (setq
-     reformatter-dwim-reformatter 'json-reformatter-jq
      tab-width 2
-     json-reformat:indent-width tab-width
-     js-indent-level 2
-     evil-shift-width tab-width)
-    (w--set-major-mode-hydra #'w--hydra-json/body)
+     evil-shift-width tab-width
+     js-indent-level tab-width
+     reformatter-dwim-reformatter 'json-reformatter-jq)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-double-single-quotes))
-  (add-hook 'json-mode-hook #'w--json-mode-hook)
-  (w--make-hydra w--hydra-json nil
-    "json"
-    "_p_ pretty-print"
-    ("p" (progn
-           (json-pretty-print-buffer-ordered)
-           (goto-char (point-min))))))
+  (add-hook 'json-mode-hook #'w--json-mode-hook))
 
 (use-package json-reformatter-jq
   :demand t
