@@ -4240,29 +4240,8 @@ point stays the same after piping through the external program. "
   (defun w--sql-mode-hook ()
     (setq evil-shift-width 2)
     (setq reformatter-dwim-reformatter 'sqlformat)
-    (setq external-format-shell-command "sqlformat -k upper -r -")
     (setq-local fill-paragraph-function #'w--sql-fill-paragraph))
-  (add-hook 'sql-mode-hook 'w--sql-mode-hook)
-  (defun w--sql-format (beg end)
-    "Format SQL between BEG and END."
-    (interactive "r")
-    (unless (executable-find "sqlformat")
-      (user-error "External sqlformat program not found. Hint: pipsi install sqlparse"))
-    (w--external-format beg end "sqlformat -k upper -r -"))
-  (evil-define-operator w--evil-sql-format (beg end type)
-    "Evil operator to format SQL."
-    (interactive "<R>")
-    (w--sql-format beg end))
-  (defun w--sql-fill-paragraph (justify)
-    (let ((beg (save-excursion
-                 (backward-paragraph)
-                 (point)))
-          (end (save-excursion
-                 (forward-paragraph)
-                 (forward-char -1)
-                 (point))))
-      (w--sql-format beg end)
-      t)))
+  (add-hook 'sql-mode-hook 'w--sql-mode-hook))
 
 (use-package sqlformat
   :demand t
