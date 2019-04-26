@@ -529,10 +529,6 @@ defined as lowercase."
 
 (add-hook 'w--theme-changed-hook #'w--tweak-evil-cursor)
 
-(use-package dimmer
-  :custom
-  (dimmer-fraction .25))
-
 
 ;;;; fonts
 
