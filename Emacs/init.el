@@ -32,6 +32,10 @@
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
+(use-package quelpa)
+
+(use-package quelpa-use-package)
+
 (use-package auto-compile
   :custom
   (auto-compile-update-autoloads t)
