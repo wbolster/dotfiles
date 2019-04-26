@@ -3536,13 +3536,14 @@ point stays the same after piping through the external program. "
      tab-width 2
      evil-shift-width tab-width
      js-indent-level tab-width
-     reformatter-dwim-reformatter 'json-reformatter-jq)
+     reformatter-dwim-reformatter 'jq-format)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-double-single-quotes))
   (add-hook 'json-mode-hook #'w--json-mode-hook))
 
-(use-package json-reformatter-jq
+(use-package jq-format
   :demand t
+  :quelpa (jq-format :fetcher github :repo wbolster/emacs-jq-format)
   :after json-mode)
 
 

@@ -1,11 +1,11 @@
-;;; json-reformatter-jq.el --- reformat json using jq  -*- lexical-binding: t; -*-
+;;; jq-format.el --- Reformat JSON and JSONLines using jq  -*- lexical-binding: t; -*-
 
 ;; Copyright © 2019 wouter bolsterlee
 
 ;; Author: wouter bolsterlee <wouter@bolsterl.ee>
 ;; Keywords: languages
-;; Package-Version: 20190425.925
-;; URL: https://github.com/wbolster/emacs-json-reformatter-jq
+;; Package-Version: 20190426.2131
+;; URL: https://github.com/wbolster/emacs-jq-format
 ;; Package-Requires: ((emacs "24") (reformatter "0.3"))
 ;; Version: 1
 
@@ -50,49 +50,49 @@
 
 (require 'reformatter)
 
-(defgroup json-reformatter-jq nil
+(defgroup jq-format nil
   "JSON reformatting using jq."
-  :group 'json-reformat)
+  :group 'json)
 
-(defcustom json-reformatter-jq-command "jq"
+(defcustom jq-format-command "jq"
   "Name of the jq executable."
-  :group 'json-reformatter-jq
+  :group 'jq-format
   :type 'string)
 
-(defcustom json-reformatter-jq-sort-keys t
+(defcustom jq-format-sort-keys t
   "Whether to sort keys."
-  :group 'json-reformatter-jq
+  :group 'jq-format
   :type 'boolean)
 
-(defcustom json-reformatter-jq-extra-args nil
+(defcustom jq-format-extra-args nil
   "Extra arguments to pass to jq."
-  :group 'json-reformatter-jq
+  :group 'jq-format
   :type '(repeat string))
 
-;;;###autoload (autoload 'json-reformatter-jq-buffer "json-reformatter-jq" nil t)
-;;;###autoload (autoload 'json-reformatter-jq-region "json-reformatter-jq" nil t)
-;;;###autoload (autoload 'json-reformatter-jq-on-save-mode "json-reformatter-jq" nil t)
-(reformatter-define json-reformatter-jq
-  :program json-reformatter-jq-command
-  :args (json-reformatter-jq--make-args)
+;;;###autoload (autoload 'jq-format-json-buffer "jq-format" nil t)
+;;;###autoload (autoload 'jq-format-json-region "jq-format" nil t)
+;;;###autoload (autoload 'jq-format-json-on-save-mode "jq-format" nil t)
+(reformatter-define jq-format-json
+  :program jq-format-command
+  :args (jq-format--make-args)
   :lighter " JSONFmt"
-  :group 'json-reformatter-jq)
+  :group 'jq-format)
 
-;;;###autoload (autoload 'jsonlines-reformatter-jq-buffer "json-reformatter-jq" nil t)
-;;;###autoload (autoload 'jsonlines-reformatter-jq-region "json-reformatter-jq" nil t)
-;;;###autoload (autoload 'jsonlines-reformatter-jq-on-save-mode "json-reformatter-jq" nil t)
-(reformatter-define jsonlines-reformatter-jq
-  :program json-reformatter-jq-command
-  :args (append '("--compact-output") (json-reformatter-jq--make-args))
+;;;###autoload (autoload 'jq-format-jsonlines-buffer "jq-format" nil t)
+;;;###autoload (autoload 'jq-format-jsonlines-region "jq-format" nil t)
+;;;###autoload (autoload 'jq-format-jsonlines-on-save-mode "jq-format" nil t)
+(reformatter-define jq-format-jsonlines
+  :program jq-format-command
+  :args (append '("--compact-output") (jq-format--make-args))
   :lighter " JSONLFmt"
-  :group 'json-reformatter-jq)
+  :group 'jq-format)
 
-(defun json-reformatter-jq--make-args ()
+(defun jq-format--make-args ()
   "Helper to build the argument list for jq."
   (append
-   (when json-reformatter-jq-sort-keys '("--sort-keys"))
-   json-reformatter-jq-extra-args
+   (when jq-format-sort-keys '("--sort-keys"))
+   jq-format-extra-args
    '("." "-")))
 
-(provide 'json-reformatter-jq)
-;;; json-reformatter-jq.el ends here
+(provide 'jq-format)
+;;; jq-format.el ends here
