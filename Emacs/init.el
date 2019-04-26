@@ -1623,10 +1623,12 @@ defined as lowercase."
   (defun w--symbol-overlay-jump-next-any ()
     (interactive)
     (w--symbol-overlay-jump-any 'forward))
+  (add-to-list 'beacon-dont-blink-commands 'w--symbol-overlay-jump-next-any)
 
   (defun w--symbol-overlay-jump-previous-any ()
     (interactive)
     (w--symbol-overlay-jump-any 'backward))
+  (add-to-list 'beacon-dont-blink-commands 'w--symbol-overlay-jump-previous-any)
 
   (defun w--symbol-overlay-jump-first ()
     (interactive)
