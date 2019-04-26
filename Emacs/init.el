@@ -3828,6 +3828,8 @@ point stays the same after piping through the external program. "
   :disabled)
 
 (use-package black-macchiato
+  :demand t
+  :after python
   :load-path "lisp/")
 
 (use-package evil-text-object-python
