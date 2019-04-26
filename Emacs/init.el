@@ -32,7 +32,9 @@
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
-(use-package quelpa)
+(use-package quelpa
+  :custom
+  (quelpa-update-melpa-p nil))
 
 (use-package quelpa-use-package)
 
