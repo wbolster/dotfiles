@@ -1146,6 +1146,7 @@ defined as lowercase."
    "g~" #'evil-operator-string-inflection
    "g`" #'evil-operator-string-inflection))
 
+;; todo: try out evil-embrace
 (use-package evil-surround
   :general
   (:states 'operator
