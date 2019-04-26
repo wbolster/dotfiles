@@ -31,7 +31,7 @@ to perform almost all of their daily version control tasks directly from
 within Emacs.  While many fine Git clients exist, only Magit and Git
 itself deserve to be called porcelains.
 
-This manual is for Magit version 2.90.1 (v2.90.1-554-gaf28fc1e6+1).
+This manual is for Magit version 2.90.1 (v2.90.1-585-g157aaca67+1).
 
      Copyright (C) 2015-2019 Jonas Bernoulli <jonas@bernoul.li>
 
@@ -164,7 +164,8 @@ References Buffer
 
 Manipulating
 
-* Repository Setup::
+* Creating Repository::
+* Cloning Repository::
 * Staging and Unstaging::
 * Applying::
 * Committing::
@@ -3572,14 +3573,15 @@ These commands are available in diff buffers.
      From a diff, visit the corresponding file at the appropriate
      position.
 
-     If the diff shows changes in the worktree, the index, or ‘HEAD’,
-     then visit the actual file.  Otherwise, when the diff is about an
-     older commit or a range, then visit the appropriate blob.
-
      If point is on a removed line, then visit the blob for the first
      parent of the commit which removed that line, i.e.  the last commit
      where that line still existed.  Otherwise visit the blob for the
      commit whose changes are being shown.
+
+     If point is on a added or context line, then visit the blob that
+     adds that line, or if the diff shows changes in multiple commits,
+     then the last of those commits.  If the diff shows unstaged or
+     staged changes, then visit the worktree file.
 
      Interactively, when the file or blob to be displayed is already
      being displayed in another window of the same frame, then just
@@ -4526,7 +4528,8 @@ File: magit.info,  Node: Manipulating,  Next: Transferring,  Prev: Inspecting,  
 
 * Menu:
 
-* Repository Setup::
+* Creating Repository::
+* Cloning Repository::
 * Staging and Unstaging::
 * Applying::
 * Committing::
@@ -4539,10 +4542,10 @@ File: magit.info,  Node: Manipulating,  Next: Transferring,  Prev: Inspecting,  
 * Stashing::
 
 
-File: magit.info,  Node: Repository Setup,  Next: Staging and Unstaging,  Up: Manipulating
+File: magit.info,  Node: Creating Repository,  Next: Cloning Repository,  Up: Manipulating
 
-6.1 Repository Setup
-====================
+6.1 Creating Repository
+=======================
 
 ‘M-x magit-init’     (‘magit-init’)
 
@@ -4554,24 +4557,140 @@ File: magit.info,  Node: Repository Setup,  Next: Staging and Unstaging,  Up: Ma
      directory is the root of the existing repository, then the user has
      to confirm that it should be reinitialized.
 
-‘M-x magit-clone’     (‘magit-clone’)
+
+File: magit.info,  Node: Cloning Repository,  Next: Staging and Unstaging,  Prev: Creating Repository,  Up: Manipulating
 
-     This command clones a repository and then shows the status buffer
-     for the new repository.
+6.2 Cloning Repository
+======================
 
-     The user is queried for a remote url and a local directory.
+To clone a remote or local repository use ‘C’, which is bound to the
+command ‘magit-clone’.  This command either act as a transient prefix
+command, which binds several infix arguments and suffix commands, or it
+can invoke ‘git clone’ directly, depending on whether a prefix argument
+is used and on the value of ‘magit-clone-always-transient’.
+
+ -- User Option: magit-clone-always-transient
+
+     This option controls whether the command ‘magit-clone’ always acts
+     as a transient prefix command, regardless of whether a prefix
+     argument is used or not.  If ‘t’, then that command always acts as
+     a transient prefix.  If ‘nil’, then a prefix argument has to be
+     used for it to act as a transient.
+
+‘C’     (‘magit-clone’)
+
+     This command either acts as a transient prefix command as described
+     above or does the same thing as ‘transient-clone-regular’ as
+     described below.
+
+     If it acts as a transient prefix, then it binds the following
+     suffix commands and several infix arguments.
+
+‘C C’     (‘magit-clone-regular’)
+
+     This command creates a regular clone of an existing repository.
+     The repository and the target directory are read from the user.
+
+‘C s’     (‘magit-clone-shallow’)
+
+     This command creates a shallow clone of an existing repository.
+     The repository and the target directory are read from the user.  By
+     default the depth of the cloned history is a single commit, but
+     with a prefix argument the depth is read from the user.
+
+‘C b’     (‘magit-clone-bare’)
+
+     This command creates a bare clone of an existing repository.  The
+     repository and the target directory are read from the user.
+
+‘C m’     (‘magit-clone-mirror’)
+
+     This command creates a mirror of an existing repository.  The
+     repository and the target directory are read from the user.
+
+   The following suffixes are disabled by default.  See *note
+(transient)Enabling and Disabling Suffixes:: for how to enable them.
+
+‘C d’     (‘magit-clone-shallow-since’)
+
+     This command creates a shallow clone of an existing repository.
+     Only commits that were committed after a date are cloned, which is
+     read from the user.  The repository and the target directory are
+     also read from the user.
+
+‘C e’     (‘magit-clone-shallow-exclude’)
+
+     This command creates a shallow clone of an existing repository.
+     This reads a branch or tag from the user.  Commits that are
+     reachable from that are not cloned.  The repository and the target
+     directory are also read from the user.
+
+ -- User Option: magit-clone-set-remote-head
+
+     This option controls whether cloning causes the reference
+     ‘refs/remotes/<remote>/HEAD’ to be created in the clone.  The
+     default is to do so.
+
+     Actually ‘git clone’ itself does that and cannot be told to not do
+     it.  Therefore setting this to ‘nil’ causes Magit to remove that
+     reference after cloning.
 
  -- User Option: magit-clone-set-remote.pushDefault
 
-     Whether to set the value of ‘remote.pushDefault’ after cloning.
+     This option controls whether the value of the Git variable
+     ‘remote.pushDefault’ is set after cloning.
 
-     If ‘t’, then set without asking.  If ‘nil’, then don’t set.  If
-     ‘ask’, then ask the user every time she clones a repository.
+        • If ‘t’, then it is always set without asking.
+
+        • If ‘ask’, then the users are asked every time they clone a
+          repository.
+
+        • If ‘nil’, then it is never set.
+
+ -- User Option: magit-clone-default-directory
+
+     This option control the default directory name used when reading
+     the destination for a cloning operation.
+
+        • If ‘nil’ (the default), then the value of ‘default-directory’
+          is used.
+
+        • If a directory, then that is used.
+
+        • If a function, then that is called with the remote url as the
+          only argument and the returned value is used.
+
+ -- User Option: magit-clone-name-alist
+
+     This option maps regular expressions, which match repository names,
+     to repository urls, making it possible for users to enter short
+     names instead of urls when cloning repositories.
+
+     Each element has the form ‘(REGEXP HOSTNAME USER)’.  When the user
+     enters a name when a cloning command asks for a name or url, then
+     that is looked up in this list.  The first element whose REGEXP
+     matches is used.
+
+     The format specified by option ‘magit-clone-url-format’ is used to
+     turn the name into an url, using HOSTNAME and the repository name.
+     If the provided name contains a slash, then that is used.
+     Otherwise if the name omits the owner of the repository, then the
+     default user specified in the matched entry is used.
+
+     If USER contains a dot, then it is treated as a Git variable and
+     the value of that is used as the username.  Otherwise it is used as
+     the username itself.
+
+ -- User Option: magit-clone-url-format
+
+     The format specified by this option is used when turning repository
+     names into urls.  ‘%h’ is the hostname and ‘%n’ is the repository
+     name, including the name of the owner.
 
 
-File: magit.info,  Node: Staging and Unstaging,  Next: Applying,  Prev: Repository Setup,  Up: Manipulating
+File: magit.info,  Node: Staging and Unstaging,  Next: Applying,  Prev: Cloning Repository,  Up: Manipulating
 
-6.2 Staging and Unstaging
+6.3 Staging and Unstaging
 =========================
 
 Like Git, Magit can of course stage and unstage complete files.  Unlike
@@ -4668,7 +4787,7 @@ apply variants are described in the next section.
 
 File: magit.info,  Node: Staging from File-Visiting Buffers,  Up: Staging and Unstaging
 
-6.2.1 Staging from File-Visiting Buffers
+6.3.1 Staging from File-Visiting Buffers
 ----------------------------------------
 
 Fine-grained un-/staging has to be done from the status or a diff
@@ -4694,7 +4813,7 @@ visited in the current buffer right from inside that buffer.
 
 File: magit.info,  Node: Applying,  Next: Committing,  Prev: Staging and Unstaging,  Up: Manipulating
 
-6.3 Applying
+6.4 Applying
 ============
 
 Magit provides several "apply variants": stage, unstage, discard,
@@ -4748,7 +4867,7 @@ appropriate (i.e.  when ‘git apply’ is used internally).
 
 File: magit.info,  Node: Committing,  Next: Branching,  Prev: Applying,  Up: Manipulating
 
-6.4 Committing
+6.5 Committing
 ==============
 
 When the user initiates a commit, Magit calls ‘git commit’ without any
@@ -4766,7 +4885,7 @@ using the file’s content as message.
 
 File: magit.info,  Node: Initiating a Commit,  Next: Editing Commit Messages,  Up: Committing
 
-6.4.1 Initiating a Commit
+6.5.1 Initiating a Commit
 -------------------------
 
 Also see *note (gitman)git-commit::.
@@ -4863,7 +4982,7 @@ Also see *note (gitman)git-commit::.
 
 File: magit.info,  Node: Editing Commit Messages,  Prev: Initiating a Commit,  Up: Committing
 
-6.4.2 Editing Commit Messages
+6.5.2 Editing Commit Messages
 -----------------------------
 
 After initiating a commit as described in the previous section, two new
@@ -5120,7 +5239,7 @@ when certain rules are violated.
 
 File: magit.info,  Node: Branching,  Next: Merging,  Prev: Committing,  Up: Manipulating
 
-6.5 Branching
+6.6 Branching
 =============
 
 * Menu:
@@ -5133,7 +5252,7 @@ File: magit.info,  Node: Branching,  Next: Merging,  Prev: Committing,  Up: Mani
 
 File: magit.info,  Node: The Two Remotes,  Next: Branch Commands,  Up: Branching
 
-6.5.1 The Two Remotes
+6.6.1 The Two Remotes
 ---------------------
 
 The upstream branch of some local branch is the branch into which the
@@ -5183,7 +5302,7 @@ Pushing::).
 
 File: magit.info,  Node: Branch Commands,  Next: Branch Git Variables,  Prev: The Two Remotes,  Up: Branching
 
-6.5.2 Branch Commands
+6.6.2 Branch Commands
 ---------------------
 
 The transient prefix command ‘magit-branch’ is used to create and
@@ -5460,7 +5579,7 @@ them.  Those features are available from separate transient command.
 
 File: magit.info,  Node: Branch Git Variables,  Next: Auxiliary Branch Commands,  Prev: Branch Commands,  Up: Branching
 
-6.5.3 Branch Git Variables
+6.6.3 Branch Git Variables
 --------------------------
 
 These variables can be set from the transient prefix command
@@ -5597,7 +5716,7 @@ e.g.:
 
 File: magit.info,  Node: Auxiliary Branch Commands,  Prev: Branch Git Variables,  Up: Branching
 
-6.5.4 Auxiliary Branch Commands
+6.6.4 Auxiliary Branch Commands
 -------------------------------
 
 These commands are not available from the transient ‘magit-branch’ by
@@ -5626,7 +5745,7 @@ default.
 
 File: magit.info,  Node: Merging,  Next: Resolving Conflicts,  Prev: Branching,  Up: Manipulating
 
-6.6 Merging
+6.7 Merging
 ===========
 
 Also see *note (gitman)git-merge::.  For information on how to resolve
@@ -5725,7 +5844,7 @@ following suffix commands.
 
 File: magit.info,  Node: Resolving Conflicts,  Next: Rebasing,  Prev: Merging,  Up: Manipulating
 
-6.7 Resolving Conflicts
+6.8 Resolving Conflicts
 =======================
 
 When merging branches (or otherwise combining or changing history)
@@ -5834,7 +5953,7 @@ complex conflicts, the latter is usually overkill.
 
 File: magit.info,  Node: Rebasing,  Next: Cherry Picking,  Prev: Resolving Conflicts,  Up: Manipulating
 
-6.8 Rebasing
+6.9 Rebasing
 ============
 
 Also see *note (gitman)git-rebase::.  For information on how to resolve
@@ -5968,7 +6087,7 @@ following suffix commands.
 
 File: magit.info,  Node: Editing Rebase Sequences,  Next: Information About In-Progress Rebase,  Up: Rebasing
 
-6.8.1 Editing Rebase Sequences
+6.9.1 Editing Rebase Sequences
 ------------------------------
 
 ‘C-c C-c’     (‘with-editor-finish’)
@@ -6108,7 +6227,7 @@ commands become relevant.
 
 File: magit.info,  Node: Information About In-Progress Rebase,  Prev: Editing Rebase Sequences,  Up: Rebasing
 
-6.8.2 Information About In-Progress Rebase
+6.9.2 Information About In-Progress Rebase
 ------------------------------------------
 
 While a rebase sequence is in progress, the status buffer features a
@@ -6289,8 +6408,8 @@ commits make the same change?".
 
 File: magit.info,  Node: Cherry Picking,  Next: Resetting,  Prev: Rebasing,  Up: Manipulating
 
-6.9 Cherry Picking
-==================
+6.10 Cherry Picking
+===================
 
 Also see *note (gitman)git-cherry-pick::.
 
@@ -6396,8 +6515,8 @@ instead features the following suffix commands.
 
 File: magit.info,  Node: Reverting,  Up: Cherry Picking
 
-6.9.1 Reverting
----------------
+6.10.1 Reverting
+----------------
 
 ‘V’     (‘magit-revert’)
 
@@ -6440,7 +6559,7 @@ instead features the following suffix commands.
 
 File: magit.info,  Node: Resetting,  Next: Stashing,  Prev: Cherry Picking,  Up: Manipulating
 
-6.10 Resetting
+6.11 Resetting
 ==============
 
 Also see *note (gitman)git-reset::.
@@ -6489,7 +6608,7 @@ Also see *note (gitman)git-reset::.
 
 File: magit.info,  Node: Stashing,  Prev: Resetting,  Up: Manipulating
 
-6.11 Stashing
+6.12 Stashing
 =============
 
 Also see *note (gitman)git-stash::.
@@ -7616,135 +7735,4 @@ files are being committed.
 
 * Wip Graph::
 * Legacy Wip Modes::
-
-
-File: magit.info,  Node: Wip Graph,  Next: Legacy Wip Modes,  Up: Wip Modes
-
-8.7.1 Wip Graph
----------------
-
- -- User Option: magit-wip-merge-branch
-
-     This option controls whether the current branch is merged into the
-     wip refs after a new commit was created on the branch.
-
-     If non-nil and the current branch has new commits, then it is
-     merged into the wip ref before creating a new wip commit.  This
-     makes it easier to inspect wip history and the wip commits are
-     never garbage collected.
-
-     If nil and the current branch has new commits, then the wip ref is
-     reset to the tip of the branch before creating a new wip commit.
-     With this setting wip commits are eventually garbage collected.
-
-   When ‘magit-wip-merge-branch’ is ‘t’, then the history looks like
-this:
-
-       *--*--*--*--*--*       refs/wip/index/refs/heads/master
-      /     /     /
-     A-----B-----C            refs/heads/master
-
-   When ‘magit-wip-merge-branch’ is ‘nil’, then creating a commit on the
-real branch and then making a change causes the wip refs to be recreated
-to fork from the new commit.  But the old commits on the wip refs are
-not lost.  They are still available from the reflog.  To make it easier
-to see when the fork point of a wip ref was changed, an additional
-commit with the message "restart autosaving" is created on it (‘xxO’
-commits below are such boundary commits).
-
-   Starting with
-
-           BI0---BI1    refs/wip/index/refs/heads/master
-          /
-     A---B              refs/heads/master
-          \
-           BW0---BW1    refs/wip/wtree/refs/heads/master
-
-   and committing the staged changes and editing and saving a file would
-result in
-
-           BI0---BI1        refs/wip/index/refs/heads/master
-          /
-     A---B---C              refs/heads/master
-          \   \
-           \   CW0---CW1    refs/wip/wtree/refs/heads/master
-            \
-             BW0---BW1      refs/wip/wtree/refs/heads/master@{2}
-
-   The fork-point of the index wip ref is not changed until some change
-is being staged.  Likewise just checking out a branch or creating a
-commit does not change the fork-point of the working tree wip ref.  The
-fork-points are not adjusted until there actually is a change that
-should be committed to the respective wip ref.
-
-
-File: magit.info,  Node: Legacy Wip Modes,  Prev: Wip Graph,  Up: Wip Modes
-
-8.7.2 Legacy Wip Modes
-----------------------
-
-It is recommended that you use the mode ‘magit-wip-mode’ (which see) and
-ignore the existence of the following modes, which are preserved for
-historic reasons.
-
-   Setting the following variables directly does not take effect; either
-use the Custom interface to do so or call the respective mode functions.
-
- -- User Option: magit-wip-after-save-mode
-
-     When this mode is enabled, then saving a buffer that visits a file
-     tracked in a Git repository causes its current state to be
-     committed to the working tree wip ref for the current branch.
-
- -- User Option: magit-wip-after-apply-mode
-
-     When this mode is enabled, then applying (i.e.  staging, unstaging,
-     discarding, reversing, and regularly applying) a change to a file
-     tracked in a Git repository causes its current state to be
-     committed to the index and/or working tree wip refs for the current
-     branch.
-
-   If you only ever edit files using Emacs and only ever interact with
-Git using Magit, then the above two modes should be enough to protect
-each and every change from accidental loss.  In practice nobody does
-that.  Two additional modes exists that do commit to the wip refs before
-making changes that could cause the loss of earlier changes.
-
- -- User Option: magit-wip-before-change-mode
-
-     When this mode is enabled, then certain commands commit the
-     existing changes to the files they are about to make changes to.
-
- -- User Option: magit-wip-initial-backup-mode
-
-     When this mode is enabled, then the current version of a file is
-     committed to the worktree wip ref before the buffer visiting that
-     file is saved for the first time since the buffer was created.
-
-     This backs up the same version of the file that ‘backup-buffer’
-     would save.  While ‘backup-buffer’ uses a backup file, this mode
-     uses the same worktree wip ref as used by the other Magit Wip
-     modes.  Like ‘backup-buffer’, it only does this once; unless you
-     kill the buffer and visit the file again only one backup will be
-     created per Emacs session.
-
-     This mode ignores the variables that affect ‘backup-buffer’ and can
-     be used along-side that function, which is recommended because it
-     only backs up files that are tracked in a Git repository.
-
- -- User Option: magit-wip-after-save-local-mode-lighter
-
-     Mode-line lighter for ‘magit-wip-after-save-local-mode’.
-
- -- User Option: magit-wip-after-apply-mode-lighter
-
-     Mode-line lighter for ‘magit-wip-after-apply-mode’.
-
- -- User Option: magit-wip-before-change-mode-lighter
-
-     Mode-line lighter for ‘magit-wip-before-change-mode’.
-
- -- User Option: magit-wip-initial-backup-mode-lighter
-
-     Mode-line lighter for ‘magit-wip-initial-backup-mode’.
 

@@ -12,7 +12,7 @@
 ;; Maintainer: Jonas Bernoulli <jonas@bernoul.li>
 
 ;; Package-Requires: ((emacs "25.1") (dash "20180910") (with-editor "20181103"))
-;; Package-Version: 20190413.1201
+;; Package-Version: 20190426.1503
 ;; Keywords: git tools vc
 ;; Homepage: https://github.com/magit/magit
 
@@ -961,13 +961,15 @@ Added to `font-lock-extend-region-functions'."
 This is intended for use as `git-commit-major-mode' for projects
 that expect `symbols' to look like this.  I.e. like they look in
 Elisp doc-strings, including this one.  Unlike in doc-strings,
-\"strings\" also look different than the other text."
+\"strings\" and *bold text* also look different than the other
+text."
   (setq font-lock-defaults '(git-commit-elisp-text-mode-keywords)))
 
 (defvar git-commit-elisp-text-mode-keywords
   `((,(concat "[`‘]\\(" lisp-mode-symbol-regexp "\\)['’]")
      (1 font-lock-constant-face prepend))
-    ("\"[^\"]*\"" (0 font-lock-string-face prepend))))
+    ("\"[^\"]*\"" (0 font-lock-string-face prepend))
+    ("\\*[^*]*\\*" (0 'bold prepend))))
 
 ;;; _
 (provide 'git-commit)

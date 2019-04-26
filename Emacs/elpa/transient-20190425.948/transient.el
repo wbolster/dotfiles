@@ -799,9 +799,10 @@ example, sets a variable use `define-infix-command' instead.
          (error "Needed command or argument, got %S" car)))
       (while (keywordp car)
         (let ((k pop))
-          (if (eq k :class)
-              (setq class pop)
-            (setq args (plist-put args k pop))))))
+          (cl-case k
+            (:class (setq class pop))
+            (:level (setq level pop))
+            (t (setq args (plist-put args k pop)))))))
     (unless (plist-get args :key)
       (when-let ((shortarg (plist-get args :shortarg)))
         (setq args (plist-put args :key shortarg))))
@@ -1459,10 +1460,18 @@ EDIT may be non-nil."
      (if-not         (not (funcall if-not)))
      (if-non-nil          (symbol-value if-non-nil))
      (if-nil         (not (symbol-value if-nil)))
-     (if-mode             (eq major-mode if-mode))
-     (if-not-mode    (not (eq major-mode if-not-mode)))
-     (if-derived          (derived-mode-p if-derived))
-     (if-not-derived (not (derived-mode-p if-not-derived)))
+     (if-mode             (if (atom if-mode)
+                              (eq major-mode if-mode)
+                            (memq major-mode if-mode)))
+     (if-not-mode    (not (if (atom if-not-mode)
+                              (eq major-mode if-not-mode)
+                            (memq major-mode if-not-mode))))
+     (if-derived          (if (atom if-derived)
+                              (derived-mode-p if-derived)
+                            (apply #'derived-mode-p if-derived)))
+     (if-not-derived (not (if (atom if-not-derived)
+                              (derived-mode-p if-not-derived)
+                            (apply #'derived-mode-p if-not-derived))))
      (t))))
 
 ;;; Flow-Control
@@ -2096,6 +2105,10 @@ The last value is \"don't use any of these switches\"."
       (car choices))))
 
 ;;;; Readers
+
+(defun transient-read-directory (prompt _initial-input _history)
+  "Read a directory."
+  (expand-file-name (read-directory-name prompt)))
 
 (defun transient-read-existing-directory (prompt _initial-input _history)
   "Read an existing directory."
