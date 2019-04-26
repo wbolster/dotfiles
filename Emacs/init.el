@@ -1551,6 +1551,7 @@ defined as lowercase."
 (use-package symbol-overlay
   :demand t
   :delight
+  :after beacon
 
   :custom
   (symbol-overlay-idle-time 1.0)
