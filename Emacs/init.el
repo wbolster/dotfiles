@@ -3545,7 +3545,6 @@ point stays the same after piping through the external program. "
 
 (use-package jq-format
   :demand t
-  :quelpa (jq-format :fetcher github :repo wbolster/emacs-jq-format)
   :after json-mode)
 
 
