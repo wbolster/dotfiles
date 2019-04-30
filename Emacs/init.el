@@ -3538,12 +3538,15 @@ point stays the same after piping through the external program. "
      tab-width 2
      evil-shift-width tab-width
      js-indent-level tab-width
-     reformatter-dwim-reformatter 'jq-format)
+     reformatter-dwim-reformatter 'jq-format-json)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-double-single-quotes))
   (add-hook 'json-mode-hook #'w--json-mode-hook))
 
 (use-package jq-format
+  :delight
+  (jq-format-json-on-save-mode " ❤")
+  (jq-format-jsonlines-on-save-mode " ❤")
   :demand t
   :after json-mode)
 
