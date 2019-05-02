@@ -3544,11 +3544,11 @@ point stays the same after piping through the external program. "
   (add-hook 'json-mode-hook #'w--json-mode-hook))
 
 (use-package jq-format
+  :demand t
+  :after json-mode
   :delight
   (jq-format-json-on-save-mode " ❤")
-  (jq-format-jsonlines-on-save-mode " ❤")
-  :demand t
-  :after json-mode)
+  (jq-format-jsonlines-on-save-mode " ❤"))
 
 
 ;;;; major mode: markdown
