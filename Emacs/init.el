@@ -2661,7 +2661,6 @@ point stays the same after piping through the external program. "
   (magit-branch-read-upstream-first 'fallback)
   (magit-bury-buffer-function 'magit-mode-quit-window)
   (magit-completing-read-function 'ivy-completing-read)
-  (magit-display-file-buffer-function 'magit-display-file-buffer-other-window)
   (magit-list-refs-sortby '("-creatordate"))
   (magit-popup-show-help-echo nil)
   (magit-prefer-remote-upstream t)
