@@ -3681,7 +3681,7 @@ point stays the same after piping through the external program. "
   (defun w--python-mode-hook ()
     (setq fill-column 79)
     (setq-local comment-fill-column 72)
-    (setq reformatter-dwim-reformatter 'black-macchiato)
+    (setq reformatter-dwim-reformatter 'python-black)
     (modify-syntax-entry ?_ "w")
     (w--set-major-mode-hydra #'w--hydra-python/body)
     (evil-swap-keys-swap-colon-semicolon)
@@ -3825,10 +3825,10 @@ point stays the same after piping through the external program. "
 (use-package lsp-python
   :disabled)
 
-(use-package black-macchiato
+(use-package python-black
   :demand t
   :after python
-  :load-path "lisp/")
+  :quelpa (python-black :fetcher github :repo "wbolster/emacs-python-black"))
 
 (use-package evil-text-object-python
   :demand t
