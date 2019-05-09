@@ -128,25 +128,22 @@ and BODY can refer to it as ‘arg’."
   (direnv-mode))
 
 ;; gnome
-(defun w--gsettings-get (schema name)
-  (let* ((command
-          (format "gsettings get %s %s"
-                  (shell-quote-argument schema)
-                  (shell-quote-argument name)))
-         (output (shell-command-to-string command))
-         (clean-output
-          (->> output
-               (s-trim)
-               (s-chop-prefix "'")
-               (s-chop-suffix "'"))))
-    clean-output))
+
+(use-package gvariant
+  :quelpa (gvariant :fetcher github :repo "wbolster/emacs-gvariant"))
+
+(use-package gsettings
+  :quelpa (gsettings :fetcher github :repo "wbolster/emacs-gsettings")
+  :config
+  (when (fboundp 'gsettings-apply-gnome-settings)
+    (gsettings-apply-gnome-settings)))
 
 (defvar w--ui-font-family "Sans"
   "Name of the font-family used by the desktop environment's user interface.")
 
 (when (s-equals-p (getenv "XDG_CURRENT_DESKTOP") "GNOME")
   (let* ((font-name
-          (w--gsettings-get "org.gnome.desktop.interface" "font-name"))
+          (gsettings-get "org.gnome.desktop.interface" "font-name"))
          (font-name-without-size
           (s-replace-regexp "\\(.*\\) [0-9.]+" "\\1" font-name)))
     (setq w--ui-font-family font-name-without-size)))
