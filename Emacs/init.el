@@ -3828,6 +3828,8 @@ point stays the same after piping through the external program. "
 (use-package python-black
   :demand t
   :after python
+  :delight
+  (python-black-on-save-mode " ❤")
   :quelpa (python-black :fetcher github :repo "wbolster/emacs-python-black"))
 
 (use-package evil-text-object-python
