@@ -392,6 +392,13 @@ defined as lowercase."
   (w--evil-window-next-or-vsplit)
   (call-interactively #'evil-buffer-new))
 
+(defun w--open-gui-file-browser ()
+  (interactive)
+  (when-let ((file-name (buffer-file-name))
+             (directory-name (file-name-directory file-name))
+             (file-exists (file-exists-p directory-name)))
+    (call-process "xdg-open" nil 0 nil directory-name)))
+
 (define-transient-command w--buffer-dispatch ()
   ["buffer"
    [("b" "switch" ivy-switch-buffer)
