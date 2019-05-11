@@ -122,8 +122,6 @@ and BODY can refer to it as ‘arg’."
   (exec-path-from-shell-initialize))
 
 (use-package direnv
-  :custom
-  (direnv-show-paths-in-summary nil)
   :config
   (direnv-mode))
 
