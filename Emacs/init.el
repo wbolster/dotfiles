@@ -96,22 +96,10 @@ and BODY can refer to it as ‘arg’."
  initial-major-mode 'text-mode
  initial-scratch-message nil)
 
-;; no gnu/agitprop kthxbye
-(defun display-startup-echo-area-message ()
-  "Do not display progaganda."
-  ;; the 'inhibit-startup-echo-area-message' variable
-  ;; requires hard-coding a user name for it to work.
-  ;; annoying. resist the gnu/extremists by turning
-  ;; the propaganda function into a no-op.
-  (message ""))
-(general-define-key  ;; unbind useless shortcuts to gpl etc.
- :prefix "C-h"
- "g" nil
- "C-c" nil
- "C-m" nil
- "C-o" nil
- "C-w" nil)
-
+(use-package agitprop
+  :load-path "lisp/"
+  :config
+  (agitprop-resist))
 
 ;;;; environment
 
