@@ -6,16 +6,13 @@
 
 ;;; Code:
 
-;;;; bootstrap
+;; Packages
 
-;; reduce gc during startup
-(defvar w--original-gc-cons-threshold gc-cons-threshold)
-(defun w--reset-gc-cons-threshold ()
-  (setq gc-cons-threshold w--original-gc-cons-threshold))
-(setq gc-cons-threshold (* 100 1024 1024))
-(add-hook 'emacs-startup-hook #'w--reset-gc-cons-threshold)
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
-(require 'package)
+(eval-and-compile
+  (require 'package))
+
 (setq
  package-archives '(("melpa" . "https://melpa.org/packages/")
                     ("melpa-stable" . "https://stable.melpa.org/packages/")
@@ -26,11 +23,14 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-(require 'use-package)
-(setq use-package-always-ensure t)
-(setq use-package-compute-statistics t)
 
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(eval-when-compile
+  (require 'use-package))
+
+(use-package use-package
+  :custom
+  (use-package-always-ensure t)
+  (use-package-compute-statistics t))
 
 (use-package quelpa
   :custom
@@ -44,13 +44,28 @@
   :config
   (auto-compile-on-load-mode))
 
+
+;; Emacs startup
+
+(progn
+  ;; Reduce garbage collection during startup.
+  (defvar w--original-gc-cons-threshold gc-cons-threshold
+    "Original gc-cons-threshold value.")
+
+  (defun w--reset-gc-cons-threshold ()
+    "Reset the original gc-cons-threshold value."
+    (setq gc-cons-threshold w--original-gc-cons-threshold))
+
+  (setq gc-cons-threshold (* 100 1024 1024))
+  (add-hook 'emacs-startup-hook #'w--reset-gc-cons-threshold))
+
 (use-package benchmark-init
   :config
   (benchmark-init/activate)
   (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 
-;;;; helper libraries
+;; Packages (early loading)
 
 (use-package dash
   :config
@@ -62,46 +77,34 @@
 
 (use-package general)
 
-(use-package s)
-
-(defmacro w--ilambda (&rest body)
-  "Concisely create a lambda with an ‘(interactive)’ spec.
-
-BODY is normal function body. However, if the first expression is
-a string literal, it will be used as an argument for (interactive),
-and BODY can refer to it as ‘arg’."
-  (let ((interactive-spec))
-    (when (stringp (car body))
-      (setq interactive-spec (list (car body))
-            body (cdr body)))
-    `(lambda (&optional arg)
-       (interactive ,@interactive-spec)
-       ,@body)))
-
-
-;;;; basics
-
 (use-package no-littering)
+
+(use-package s)
 
 (use-package tls
   :custom
   (tls-checktrust 'ask))
 
-(fset 'yes-or-no-p 'y-or-n-p)
 
-(setq
- disabled-command-function nil
- echo-keystrokes 0.5
- inhibit-startup-screen t
- initial-major-mode 'text-mode
- initial-scratch-message nil)
+;; Helpers
 
-(use-package agitprop
-  :load-path "lisp/"
-  :config
-  (agitprop-resist))
+(eval-and-compile
+  (defmacro w--ilambda (&rest body)
+    "Concisely create a lambda with an ‘(interactive)’ spec.
 
-;;;; environment
+BODY is normal function body. However, if the first expression is
+a string literal, it will be used as an argument for (interactive),
+and BODY can refer to it as ‘arg’."
+    (let ((interactive-spec))
+      (when (stringp (car body))
+        (setq interactive-spec (list (car body))
+              body (cdr body)))
+      `(lambda (&optional arg)
+         (interactive ,@interactive-spec)
+         ,@body))))
+
+
+;; Environment
 
 (use-package exec-path-from-shell
   :custom
@@ -121,29 +124,49 @@ and BODY can refer to it as ‘arg’."
 (defvar w--ui-font-family "Sans"
   "Name of the font-family used by the desktop environment's user interface.")
 
-(when (s-equals-p (getenv "XDG_CURRENT_DESKTOP") "GNOME")
+(use-package emacs
+  ;; gnome specific
+  :if (and window-system (string-equal (getenv "XDG_CURRENT_DESKTOP") "GNOME"))
+  :config
   (let* ((font-name
           (gsettings-get "org.gnome.desktop.interface" "font-name"))
          (font-name-without-size
           (s-replace-regexp "\\(.*\\) [0-9.]+" "\\1" font-name)))
     (setq w--ui-font-family font-name-without-size)))
 
-
-;; os-x specific
-(when (eq system-type 'darwin)
-  (general-define-key "s-q" nil)
-  (setq
-   ns-right-alternate-modifier 'none
-   ns-use-native-fullscreen nil))
-
-
-;;;; server
+(use-package emacs
+  ;; os-x specific
+  :if (and window-system (eq system-type 'darwin))
+  :general
+  ("s-q" nil)
+  :custom
+  (ns-right-alternate-modifier 'none)
+  (ns-use-native-fullscreen nil))
 
 (use-package server
   :if window-system
   :config
   (unless (server-running-p)
     (server-start)))
+
+;; Basics
+
+(use-package emacs
+  :custom
+  (disabled-command-function nil)
+  (echo-keystrokes 0.5)
+  (inhibit-startup-screen t)
+  (initial-major-mode 'text-mode)
+  (initial-scratch-message nil)
+  :config
+  (fset 'yes-or-no-p 'y-or-n-p))
+
+(use-package agitprop
+  :load-path "lisp/"
+  :config
+  (agitprop-resist))
+
+;;;; server
 
 (use-package edit-server
   ;; this is used by the ‘edit with emacs’ chrome extension:
