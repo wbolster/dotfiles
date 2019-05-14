@@ -4110,10 +4110,10 @@ point stays the same after piping through the external program. "
         (user-error "Not in a block"))
       (cons language range)))
 
-  (evil-define-text-object w--evil-rst-a-code-block (count &optional beg end type)
+  (evil-define-text-object w--evil-rst-a-code-block (count &optional _beg _end _type)
     (cdr (w--evil-rst-code-block 'outer)))
 
-  (evil-define-text-object w--evil-rst-inner-code-block (count &optional beg end type)
+  (evil-define-text-object w--evil-rst-inner-code-block (count &optional _beg _end _type)
     (cdr (w--evil-rst-code-block 'inner)))
 
   (defun w--rst-edit-code-block-dwim ()
