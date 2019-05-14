@@ -113,13 +113,7 @@ and BODY can refer to it as ‘arg’."
   :config
   (direnv-mode))
 
-;; gnome
-
-(use-package gvariant
-  :quelpa (gvariant :fetcher github :repo "wbolster/emacs-gvariant"))
-
 (use-package gsettings
-  :quelpa (gsettings :fetcher github :repo "wbolster/emacs-gsettings")
   :config
   (when (fboundp 'gsettings-apply-gnome-settings)
     (gsettings-apply-gnome-settings)))
