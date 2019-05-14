@@ -4046,7 +4046,7 @@ point stays the same after piping through the external program. "
     (make-local-variable 'typo-mode-map)
     (general-define-key
      :keymaps 'typo-mode-map
-      "`" nil)
+     "`" nil)
     (w--add-evil-surround-pairs
      ?b '("**" . "**")  ;; strong
      ?c '("``" . "``")  ;; inline code
@@ -4058,10 +4058,10 @@ point stays the same after piping through the external program. "
     (make-local-variable 'evil-inner-text-objects-map)
     (general-define-key
      :keymaps 'evil-inner-text-objects-map
-      "c" #'w--evil-rst-inner-code-block)
+     "c" #'w--evil-rst-inner-code-block)
     (general-define-key
      :keymaps 'evil-outer-text-objects-map
-      "c" #'w--evil-rst-a-code-block))
+     "c" #'w--evil-rst-a-code-block))
 
   (add-hook 'rst-mode-hook 'w--rst-mode-hook)
 
