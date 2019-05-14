@@ -1819,6 +1819,9 @@ defined as lowercase."
   (auto-fill-mode -1))
 
 (use-package fill-column-indicator
+  ;; todo: try display-fill-column-indicator-mode once it's in a
+  ;; released emacs version
+  ;; http://git.savannah.gnu.org/cgit/emacs.git/commit/etc/NEWS?id=ab4619e7c37b3b9caa2aa24405585dc05292d961
   :defer
   :custom
   (fci-rule-width 2))
