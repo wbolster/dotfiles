@@ -3455,7 +3455,7 @@ point stays the same after piping through the external program. "
 
 (use-package flycheck-package
   :demand t
-  :after elisp-mode
+  :after (elisp-mode flycheck)
   :config
   (flycheck-package-setup))
 
@@ -3847,7 +3847,7 @@ point stays the same after piping through the external program. "
 
 (use-package evil-text-object-python
   :demand t
-  :after python
+  :after (evil python)
   :general
   (:keymaps 'python-mode-map
    :states '(operator visual)
@@ -3871,7 +3871,7 @@ point stays the same after piping through the external program. "
 
 (use-package evil-python-movement
   :demand t
-  :after python
+  :after (evil python)
   :general
   (:keymaps 'python-mode-map
    :states 'normal
@@ -3983,7 +3983,7 @@ point stays the same after piping through the external program. "
 
 (use-package flycheck-cython
   :demand t
-  :after cython-mode)
+  :after (cython-mode flycheck))
 
 
 ;;;; major-mode: profiling-report
