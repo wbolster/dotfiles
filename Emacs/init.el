@@ -3672,7 +3672,8 @@ point stays the same after piping through the external program. "
   (:keymaps 'python-mode-map
    :states 'normal
    [remap evil-join] #'w--evil-join-python
-   [backspace] 'python-nav-backward-up-list)
+   [backspace] 'python-nav-backward-up-list
+   "<return>" 'w--python-reformat-current-statement)
   (:keymaps 'python-mode-map
    :states 'insert
    "C-l" 'multi-line)
@@ -3816,6 +3817,12 @@ point stays the same after piping through the external program. "
       (w--python-insert-statement
        'before
        (format "import %s  # fixme: move to proper place" thing))))
+
+  (defun w--python-reformat-current-statement nil
+    "Reformat the current statement."
+    (interactive)
+    (-let [(beg end) (evil-text-object-python-outer-statement)]
+      (python-black-region beg end t)))
 
   (w--make-hydra w--hydra-python nil
     "python"
