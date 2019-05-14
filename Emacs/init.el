@@ -166,7 +166,7 @@ and BODY can refer to it as ‘arg’."
 
 (use-package hydra
   :demand t
-  :config
+  :preface
   (defvar w--hydra-hint-delay 1
     "Delay before showing help.")
 
