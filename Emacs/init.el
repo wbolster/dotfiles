@@ -637,17 +637,27 @@ defined as lowercase."
 
 (use-package evil
   :demand t
+
   :init
   (setq
    evil-respect-visual-line-mode t
    evil-want-C-u-scroll t
    evil-want-C-w-in-emacs-state t)
+
   :custom
   (evil-insert-state-message nil)
   (evil-cross-lines t)
   ;; state tag before position info, which smart-mode-line put elsewhere
   (evil-mode-line-format '(before . mode-line-front-space))
   (evil-shift-round nil)
+  (evil-emacs-state-tag "e ")
+  (evil-insert-state-tag "i ")
+  (evil-motion-state-tag "m ")
+  (evil-normal-state-tag "  ")
+  (evil-operator-state-tag "o ")
+  (evil-replace-state-tag "r ")
+  (evil-visual-state-tag "v ")
+
   :general
   (:states 'motion
    "<tab>" 'evil-toggle-fold
@@ -702,15 +712,6 @@ defined as lowercase."
 
   :config
   (evil-mode)
-
-  (setq
-   evil-emacs-state-tag "e "
-   evil-insert-state-tag "i "
-   evil-motion-state-tag "m "
-   evil-normal-state-tag "  "
-   evil-operator-state-tag "o "
-   evil-replace-state-tag "r "
-   evil-visual-state-tag "v ")
 
   ;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
   (evil-add-command-properties 'evil-yank-line :motion 'evil-end-of-line)
