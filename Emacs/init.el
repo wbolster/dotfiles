@@ -337,9 +337,12 @@ defined as lowercase."
    "q" nil
    "'" nil
    "/" #'ranger-search)
+
   :config
   (add-hook 'ranger-mode-hook #'w--evil-colemak-basics-disable)
-  (add-to-list 'direnv-non-file-modes 'ranger-mode)
+  (with-eval-after-load 'direnv
+    (add-to-list 'direnv-non-file-modes 'ranger-mode))
+
   ;; fixme: is using auxiliary keymap correct?
   (evil-set-auxiliary-keymap ranger-mode-map 'motion ranger-mode-map)
   (defun w--ranger-find-directory ()
@@ -2694,11 +2697,12 @@ point stays the same after piping through the external program. "
   (add-to-list 'magit-repository-directories '("~/Projects/" . 2))
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
 
-  (--each '(magit-blob-mode
-            magit-diff-mode
-            magit-log-mode
-            magit-status-mode)
-    (add-to-list 'direnv-non-file-modes it))
+  (with-eval-after-load 'direnv
+    (--each '(magit-blob-mode
+              magit-diff-mode
+              magit-log-mode
+              magit-status-mode)
+      (add-to-list 'direnv-non-file-modes it)))
 
   ;; todo: migrate to transient.el
   (magit-define-popup-action 'magit-log-popup
@@ -3044,7 +3048,8 @@ point stays the same after piping through the external program. "
   :config
   (global-flycheck-mode)
 
-  (add-hook 'flycheck-before-syntax-check-hook 'direnv--maybe-update-environment)
+  (with-eval-after-load 'direnv
+    (add-hook 'flycheck-before-syntax-check-hook 'direnv--maybe-update-environment))
 
   (w--make-hydra w--hydra-flycheck nil
     "flycheck"
