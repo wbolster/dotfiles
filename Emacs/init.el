@@ -347,7 +347,7 @@ defined as lowercase."
     (let ((name (dired-get-filename nil t)))
       (if (file-directory-p name)
           (ranger-find-file name)
-        (user-error "Not a directory.")))))
+        (user-error "Not a directory")))))
 
 (use-package sudo-edit
   :defer t
