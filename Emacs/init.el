@@ -47,7 +47,8 @@
 
 ;; Emacs startup
 
-(progn
+(use-package emacs
+  :config
   ;; Reduce garbage collection during startup.
   (defvar w--original-gc-cons-threshold gc-cons-threshold
     "Original gc-cons-threshold value.")
