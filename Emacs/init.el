@@ -4281,12 +4281,12 @@ point stays the same after piping through the external program. "
 (use-package nxml-mode
   :ensure nil
   :defer t
-  :config
-  (defun w--nxml-format-buffer ()
-    (interactive)
-    (let ((beg (point-min))
-          (end (point-max)))
-      (w--external-format beg end "xmllint --format -"))))
+  :config)
+
+(use-package xml-format
+  :load-path "lisp/"
+  :demand t
+  :after nxml-mode)
 
 
 ;;;; major-mode: yaml
