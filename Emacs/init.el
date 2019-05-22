@@ -1762,12 +1762,6 @@ defined as lowercase."
   :defer t
   :delight)
 
-(use-package evil-cleverparens
-  :defer t
-  :config
-  (setq
-   evil-cleverparens-swap-move-by-word-and-symbol t))
-
 (use-package syntactic-close
   :general
   (:states 'insert
@@ -3429,7 +3423,6 @@ point stays the same after piping through the external program. "
      evil-lookup-func 'w--helpful-evil-lookup-func
      evil-shift-width 2)
     (w--set-major-mode-hydra #'w--hydra-emacs-lisp/body)
-    ;; (evil-cleverparens-mode)  ;; fixme: useless with colemak
     (aggressive-indent-mode)
     (highlight-parentheses-mode -1)
     (rainbow-delimiters-mode))
