@@ -3032,6 +3032,9 @@ point stays the same after piping through the external program. "
 ;;;; flycheck
 
 (use-package flycheck
+  :demand t
+  :after direnv
+
   :custom
   (flycheck-checker-error-threshold 1000)
   (flycheck-display-errors-delay 1.0)
@@ -3051,8 +3054,7 @@ point stays the same after piping through the external program. "
   :config
   (global-flycheck-mode)
 
-  (with-eval-after-load 'direnv
-    (add-hook 'flycheck-before-syntax-check-hook 'direnv--maybe-update-environment))
+  (add-hook 'flycheck-before-syntax-check-hook 'direnv--maybe-update-environment)
 
   (w--make-hydra w--hydra-flycheck nil
     "flycheck"
