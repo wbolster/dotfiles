@@ -318,15 +318,17 @@ defined as lowercase."
       (find-file-other-window (counsel-recentf)))))
 
 (use-package ranger
-  :after evil
-  :defer t
+  :after (dired evil)
+  :demand t
+
   :custom
   (ranger-cleanup-eagerly t)
   (ranger-deer-show-details nil)
   (ranger-excluded-extensions nil)
-  (ranger-max-tabs 1)
   (ranger-override-dired 'deer)
+  (ranger-max-tabs 1)
   (ranger-show-hidden t)
+
   :general
   (:keymaps 'ranger-mode-map
    "h" #'ranger-up-directory
