@@ -3349,7 +3349,7 @@ point stays the same after piping through the external program. "
     (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom))
   (add-hook 'compilation-mode-hook #'w--compilation-mode-hook)
 
-  (defun w--compilation-finished (buffer status)
+  (defun w--compilation-finished (buffer _status)
     (with-current-buffer buffer
       (evil-normal-state)))
 
