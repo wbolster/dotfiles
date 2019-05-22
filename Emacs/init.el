@@ -49,29 +49,25 @@
   (use-package-always-ensure t)
   (use-package-compute-statistics t))
 
-(use-package quelpa
-  :custom
-  (quelpa-update-melpa-p nil))
-
-(use-package quelpa-use-package)
-
 (use-package auto-compile
   :custom
   (auto-compile-update-autoloads t)
   :config
   (auto-compile-on-load-mode))
 
+(use-package quelpa
+  :custom
+  (quelpa-update-melpa-p nil))
+
+(use-package quelpa-use-package)
 
 
-
+;; Helpers
 
 (use-package benchmark-init
   :config
   (benchmark-init/activate)
   (add-hook 'after-init-hook 'benchmark-init/deactivate))
-
-
-;; Packages (early loading)
 
 (use-package dash
   :config
@@ -90,9 +86,6 @@
 (use-package tls
   :custom
   (tls-checktrust 'ask))
-
-
-;; Helpers
 
 (eval-and-compile
   (defmacro w--ilambda (&rest body)
@@ -185,7 +178,7 @@ and BODY can refer to it as ‘arg’."
    '("github\\.com" . markdown-mode)))
 
 
-;;;; key bindings and menus
+;; Key bindings and menus
 
 (use-package hydra
   :demand t
@@ -278,17 +271,19 @@ defined as lowercase."
   (which-key-mode))
 
 
-;;;; buffers, files, directories
+;; Buffers, files, directories
 
-(setq
- create-lockfiles nil
- find-file-visit-truename t
- make-backup-files nil)
-(setq
- auto-save-file-name-transforms
- `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-(setq backup-directory-alist
-      `((".*" ,(no-littering-expand-var-file-name "backup/") t)))
+(use-package emacs
+  :custom
+  (create-lockfiles nil)
+  (find-file-visit-truename t)
+  (make-backup-files nil)
+  :config
+  (setq
+   auto-save-file-name-transforms
+   `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+  (setq backup-directory-alist
+        `((".*" ,(no-littering-expand-var-file-name "backup/") t))))
 
 (use-package desktop
   :custom
