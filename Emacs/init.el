@@ -108,15 +108,16 @@ and BODY can refer to it as ‘arg’."
 
 ;; Environment
 
+(use-package direnv
+  :after exec-path-from-shell
+  :config
+  (direnv-mode))
+
 (use-package exec-path-from-shell
   :custom
   (exec-path-from-shell-check-startup-files nil)
   :config
   (exec-path-from-shell-initialize))
-
-(use-package direnv
-  :config
-  (direnv-mode))
 
 (use-package gsettings
   :config
