@@ -6,6 +6,22 @@
 
 ;;; Code:
 
+;; Startup
+
+(use-package emacs
+  :config
+  ;; Reduce garbage collection during startup.
+  (defvar w--original-gc-cons-threshold gc-cons-threshold
+    "Original gc-cons-threshold value.")
+
+  (defun w--reset-gc-cons-threshold ()
+    "Reset the original gc-cons-threshold value."
+    (setq gc-cons-threshold w--original-gc-cons-threshold))
+
+  (setq gc-cons-threshold (* 100 1024 1024))
+  (add-hook 'emacs-startup-hook #'w--reset-gc-cons-threshold))
+
+
 ;; Packages
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
@@ -46,20 +62,8 @@
   (auto-compile-on-load-mode))
 
 
-;; Emacs startup
 
-(use-package emacs
-  :config
-  ;; Reduce garbage collection during startup.
-  (defvar w--original-gc-cons-threshold gc-cons-threshold
-    "Original gc-cons-threshold value.")
 
-  (defun w--reset-gc-cons-threshold ()
-    "Reset the original gc-cons-threshold value."
-    (setq gc-cons-threshold w--original-gc-cons-threshold))
-
-  (setq gc-cons-threshold (* 100 1024 1024))
-  (add-hook 'emacs-startup-hook #'w--reset-gc-cons-threshold))
 
 (use-package benchmark-init
   :config
