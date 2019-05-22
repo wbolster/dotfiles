@@ -173,9 +173,8 @@ and BODY can refer to it as ‘arg’."
   :config
   (agitprop-resist))
 
-;;;; server
-
 (use-package edit-server
+  :disabled
   ;; this is used by the ‘edit with emacs’ chrome extension:
   ;; https://chrome.google.com/webstore/detail/edit-with-emacs/ljobjlafonikaiipfkggjbhkghgicgoh
   :if window-system
