@@ -358,9 +358,9 @@ defined as lowercase."
 
 (use-package sudo-edit
   :defer t
-  :commands w--sudo-edit-file
+  :commands w--sudo-find-file
   :config
-  (defun w--sudo-edit-file ()
+  (defun w--sudo-find-file ()
     (interactive)
     (setq current-prefix-arg t)
     (call-interactively 'sudo-edit)))
@@ -436,7 +436,7 @@ defined as lowercase."
    [("r" "recent" counsel-recentf)
     ("R"  "recent ↗" w--counsel-recentf-other-window)]
    [("s" "sudoedit" sudo-edit)
-    ("S" "sudoedit other" w--sudo-edit-file)]]
+    ("S" "sudoedit other" w--sudo-find-file)]]
   ["misc"
    [("d" "directory" deer)
     ("D" "directory ↗" deer-jump-other-window)]
