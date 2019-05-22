@@ -1493,7 +1493,7 @@ defined as lowercase."
 (use-package ag
   :defer t
   :custom
-  (ag-project-root-function 'w--ag-project-root)
+  (ag-project-root-function 'projectile-project-root)
   (ag-reuse-buffers t)
   :commands
   w--hydra-ag/body
@@ -1520,11 +1520,6 @@ defined as lowercase."
     "_r_egex"
     ("r" ag-project-regexp)
     ("R" ag-regexp))
-
-  (defun w--ag-project-root (directory)
-    "Find project root for DIRECTORY; used for ag-project-root-function."
-    (let ((default-directory directory))
-      (projectile-project-root)))
 
   (defun w--counsel-ag-project (&optional unrestricted)
     "Run counsel-ag on the current project, defaulting to the symbol at point."
