@@ -296,25 +296,26 @@ defined as lowercase."
   (add-to-list 'desktop-globals-to-save 'swiper-history)
   (add-to-list 'desktop-globals-to-clear 'swiper-history))
 
-(defvar
-  w--recentf-ignore-dirs
-  (list
-   no-littering-etc-directory
-   no-littering-var-directory)
-  "Directories to ignore in recentf listings.")
-
 (use-package recentf
   :custom
   (recentf-auto-cleanup 300)
   (recentf-max-saved-items 500)
   :config
-  (recentf-mode)
-  (dolist (dir w--recentf-ignore-dirs)
-    (add-to-list 'recentf-exclude (concat (regexp-quote dir) ".*")))
+  (defvar
+    w--recentf-ignore-dirs
+    (list
+     no-littering-etc-directory
+     no-littering-var-directory)
+    "Directories to ignore in recentf listings.")
+
+  (--each w--recentf-ignore-dirs
+    (add-to-list 'recentf-exclude (concat (regexp-quote it) ".*")))
 
   (defun w--counsel-recentf-other-window ()
     "Like `counsel-recentf', but opens the file in another window."
     (interactive)
+    (require 'ivy)
+    (defvar ivy-inhibit-action)
     (let ((ivy-inhibit-action t))
       (find-file-other-window (counsel-recentf)))))
 
