@@ -8,14 +8,13 @@
 
 ;; Startup
 
-(use-package emacs
-  :config
-  ;; Reduce garbage collection during startup.
+;; Reduce garbage collection during startup.
+(progn
   (defvar w--original-gc-cons-threshold gc-cons-threshold
-    "Original gc-cons-threshold value.")
+    "Original ‘gc-cons-threshold’ value.")
 
   (defun w--reset-gc-cons-threshold ()
-    "Reset the original gc-cons-threshold value."
+    "Reset the original ‘gc-cons-threshold’ value."
     (setq gc-cons-threshold w--original-gc-cons-threshold))
 
   (setq gc-cons-threshold (* 100 1024 1024))
