@@ -3666,6 +3666,7 @@ point stays the same after piping through the external program. "
   :defer t
   :interpreter ("python" . python-mode)
   :mode ("\\.pyi\\'" . python-mode)
+
   :general
   (:keymaps 'python-mode-map
    :states 'normal
@@ -3678,7 +3679,11 @@ point stays the same after piping through the external program. "
   (:keymaps 'python-mode-map
    :states '(operator visual)
    "H" 'python-nav-backward-sexp-safe
-   "I" 'python-nav-forward-sexp-safe)
+   "I" 'python-nav-forward-sexp-safe
+   "ae" 'evil-indent-plus-a-indent-up
+   "an" 'evil-indent-plus-a-indent-up-down
+   "ue" 'evil-indent-plus-i-indent-up
+   "un" 'evil-indent-plus-i-indent-up-down)
   (:keymaps 'inferior-python-mode-map
    :states 'insert
    "<tab>" #'python-shell-completion-complete-or-indent)
