@@ -3411,17 +3411,36 @@ point stays the same after piping through the external program. "
 (use-package elisp-mode
   :defer t
   :ensure nil
+  :general
+  (:keymaps '(emacs-lisp-mode-map lisp-interaction-mode-map)
+   :states 'insert
+   "C-d" 'lispy-delete)
+  (:keymaps '(emacs-lisp-mode-map lisp-interaction-mode-map)
+   :states '(motion normal visual)
+   "H" 'lispyville-backward-sexp
+   "I" 'lispyville-forward-sexp
+   "(" 'lispyville-left
+   ")" 'lispyville-right)
+  (:keymaps '(emacs-lisp-mode-map lisp-interaction-mode-map)
+   :states '(normal visual)
+   "D" 'lispy-delete)
+
   :config
   (defun w--emacs-lisp-mode-hook ()
     (setq
      evil-lookup-func 'w--helpful-evil-lookup-func
      evil-shift-width 2)
     (w--set-major-mode-hydra #'w--hydra-emacs-lisp/body)
+    (smartparens-mode -1)
+    (lispy-mode)
+    (lispyville-mode)
     (aggressive-indent-mode)
     (highlight-parentheses-mode -1)
     (rainbow-delimiters-mode))
+
   (add-hook 'emacs-lisp-mode-hook 'w--emacs-lisp-mode-hook)
   (add-to-list 'which-func-modes 'emacs-lisp-mode)
+
   (w--make-hydra w--hydra-emacs-lisp nil
     "elisp"
     "_b_ eval-buffer"
@@ -3446,6 +3465,26 @@ point stays the same after piping through the external program. "
   :load-path "lisp/"
   :demand t
   :after elisp-mode)
+
+(use-package lispy
+  :after elisp-mode
+  :delight " 🎂"
+  :config
+  (lispy-set-key-theme '(lispy)))
+
+(use-package lispyville
+  :after elisp-mode
+  :delight
+  :custom
+  (lispyville-key-theme
+   '(operators
+     c-w
+     prettify
+     (atom-movement t)
+     commentary
+     slurp/barf-cp))
+  :config
+  (lispyville-set-key-theme))
 
 (use-package eldoc
   :defer t
