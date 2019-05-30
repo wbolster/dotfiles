@@ -801,11 +801,11 @@ defined as lowercase."
   ;; something like this:
   ;; (evil-redirect-digit-argument evil-motion-state-map "0" 'evil-beginning-of-line)
 
-  (evil-define-text-object w--evil-text-object-whole-buffer (count &optional beg end type)
+  (evil-define-text-object w--evil-text-object-whole-buffer (count &optional _beg _end _type)
     "Text object for the whole buffer."
     (evil-range (point-min) (point-max) 'line))
 
-  (evil-define-text-object w--evil-empty-text-object (count &optional beg end type)
+  (evil-define-text-object w--evil-empty-text-object (count &optional _beg _end _type)
     "Empty text object."
     (evil-range (point) (point)))
 
@@ -1782,7 +1782,7 @@ defined as lowercase."
       (adaptive-wrap-prefix-mode (if visual-line-mode 1 -1)))))
 
 (defvar w--wrap-lines-saved-fill-column nil
-  "Saved fill-column value.")
+  "Saved ‘fill-column’ value.")
 
 (define-minor-mode w--wrap-lines-mode
   "Smart combination of auto-fill, visual-line, and visual-fill-column."
