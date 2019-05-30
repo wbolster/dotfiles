@@ -3421,9 +3421,6 @@ point stays the same after piping through the external program. "
    "I" 'lispyville-forward-sexp
    "(" 'lispyville-left
    ")" 'lispyville-right)
-  (:keymaps '(emacs-lisp-mode-map lisp-interaction-mode-map)
-   :states '(normal visual)
-   "D" 'lispy-delete)
 
   :config
   (defun w--emacs-lisp-mode-hook ()
