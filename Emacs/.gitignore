@@ -1,3 +1,4 @@
+/.cask/
 /elpa/**/*.elc
 /elpa/**/dir
 /elpa/*.signed
