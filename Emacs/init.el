@@ -3268,9 +3268,8 @@ point stays the same after piping through the external program. "
 
 (use-package fic-mode
   :defer t
-  :init
-  (setq
-   fic-highlighted-words
+  :custom
+  (fic-highlighted-words
    '("FIXME" "fixme"
      "TODO" "todo"
      "BUG" "bug"
