@@ -3983,7 +3983,6 @@ point stays the same after piping through the external program. "
 
   (add-hook 'python-pytest-finished-hook #'evil-force-normal-state)
 
-  (require 'company)
   (add-to-list 'company-dabbrev-code-modes 'python-pytest-mode)
 
   (defun w--python-pytest-origami-parser (create)
