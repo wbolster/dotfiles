@@ -2636,7 +2636,7 @@ point stays the same after piping through the external program. "
 
   (defun w--indent-or-complete ()
     (interactive)
-    (if (or (looking-at "\\_>") (looking-back "/"))
+    (if (or (looking-at "\\_>") (looking-back "/" nil))
         (company-manual-begin)
       (call-interactively #'indent-for-tab-command)))
 
