@@ -2008,7 +2008,7 @@ point stays the same after piping through the external program. "
         (insert "\n")))
     (delete-region beg end)
     (goto-char beg)
-    (insert-buffer out-buffer)
+    (insert-buffer-substring out-buffer)
     (kill-buffer out-buffer)
     (if (zerop (buffer-size err-buffer))
         (kill-buffer err-buffer)
