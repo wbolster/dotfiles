@@ -2909,14 +2909,14 @@ point stays the same after piping through the external program. "
     ("n" smerge-next nil :exit nil)
     ("e" smerge-prev nil :exit nil)
     ("p" smerge-prev nil :exit nil)
-    "_c_urrent"
-    ("c" smerge-keep-current)
-    "_m_ine"
-    ("m" smerge-keep-mine)
     "_b_ase"
     ("b" smerge-keep-base)
-    "_o_ther"
-    ("o" smerge-keep-other)
+    "_c_urrent"
+    ("c" smerge-keep-current)
+    "_l_ower"
+    ("l" smerge-keep-lower)
+    "_u_pper"
+    ("u" smerge-keep-upper)
     "_a_ll"
     ("a" smerge-keep-all)))
 
