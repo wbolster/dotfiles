@@ -440,7 +440,8 @@ defined as lowercase."
    [("d" "directory" deer)
     ("D" "directory ↗" deer-jump-other-window)]
    [("!" "terminal" terminal-here)
-    ("1" "terminal" terminal-here)]])
+    ("1" "terminal" terminal-here)]
+   [("g" "gui browser" w--open-gui-file-browser)]])
 
 
 ;;;; theme
