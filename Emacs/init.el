@@ -821,7 +821,7 @@ defined as lowercase."
 
   (evil-define-text-object w--evil-text-object-symbol-dwim (count &optional beg end type)
     "Intelligently pick evil-inner-symbol or evil-a-symbol."
-    (if (eq this-command 'evil-delete)
+    (if (memq this-command '(evil-delete lispyville-delete))
         (evil-a-symbol count beg end type)
       (evil-inner-symbol count beg end type)))
 
