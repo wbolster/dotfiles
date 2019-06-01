@@ -6,10 +6,10 @@
 
 ;;; Code:
 
-;; Startup
+;;; Startup
 
-;; Reduce garbage collection during startup.
 (progn
+  ;; Reduce garbage collection during startup.
   (defvar w--original-gc-cons-threshold gc-cons-threshold
     "Original ‘gc-cons-threshold’ value.")
 
@@ -21,7 +21,7 @@
   (add-hook 'emacs-startup-hook #'w--reset-gc-cons-threshold))
 
 
-;; Packages
+;;; Packages
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
@@ -61,7 +61,7 @@
 (use-package quelpa-use-package)
 
 
-;; Helpers
+;;; Helpers
 
 (use-package benchmark-init
   :config
@@ -102,7 +102,7 @@ and BODY can refer to it as ‘arg’."
          ,@body))))
 
 
-;; Environment
+;;; Environment
 
 (use-package direnv
   :after exec-path-from-shell
@@ -149,7 +149,7 @@ and BODY can refer to it as ‘arg’."
     (server-start)))
 
 
-;; Basics
+;;; Basics
 
 (use-package emacs
   :custom
@@ -186,7 +186,7 @@ and BODY can refer to it as ‘arg’."
    '("github\\.com" . markdown-mode)))
 
 
-;; Key bindings and menus
+;;; Key bindings and menus
 
 (use-package hydra
   :demand t
@@ -279,7 +279,7 @@ defined as lowercase."
   (which-key-mode))
 
 
-;; Buffers, files, directories
+;;; Buffers, files, directories
 
 (use-package emacs
   :custom
@@ -3245,7 +3245,7 @@ point stays the same after piping through the external program. "
     (funcall fn)))
 
 
-;;;; major mode: text (generic)
+;;; Major mode: text (generic)
 
 (use-package typo
   :defer t
@@ -3268,7 +3268,7 @@ point stays the same after piping through the external program. "
   (add-hook 'text-mode-hook 'w--text-mode-hook))
 
 
-;;;; major mode: programming (generic)
+;;; Major mode: programming (generic)
 
 (use-package fic-mode
   :defer t
@@ -3299,7 +3299,7 @@ point stays the same after piping through the external program. "
   (add-hook 'prog-mode-hook 'w--prog-mode-hook))
 
 
-;;;; major-mode: c
+;;; Major mode: c
 
 (use-package cc-mode
   :defer t
@@ -3312,7 +3312,7 @@ point stays the same after piping through the external program. "
   (add-hook 'c-mode-hook 'w--c-mode-hook))
 
 
-;;;; major-mode: compilation and comint
+;;; Major mode: compilation and comint
 
 (use-package compile
   :defer t
@@ -3386,7 +3386,7 @@ point stays the same after piping through the external program. "
   :defer t)
 
 
-;;;; major mode: customize
+;;; Major mode: customize
 
 (use-package cus-edit
   :ensure nil
@@ -3404,14 +3404,24 @@ point stays the same after piping through the external program. "
   (evil-set-initial-state 'Custom-mode 'normal))
 
 
-;;;; major mode: docker
+;;; Major mode: cython
+
+(use-package cython-mode
+  :defer t)
+
+(use-package flycheck-cython
+  :demand t
+  :after (cython-mode flycheck))
+
+
+;;; Major mode: docker
 
 (use-package dockerfile-mode
   :defer t
   :mode "Dockerfile[-_\\.].*")
 
 
-;;;; major mode: emacs lisp
+;;; Major mode: emacs lisp
 
 (use-package elisp-mode
   :defer t
@@ -3499,7 +3509,7 @@ point stays the same after piping through the external program. "
   (flycheck-package-setup))
 
 
-;;;; major mode: git related
+;;; Major mode: git
 
 (use-package gitattributes-mode
   :defer t)
@@ -3513,13 +3523,13 @@ point stays the same after piping through the external program. "
   :defer t)
 
 
-;;;; major mode: groovy
+;;; Major mode: groovy
 
 (use-package groovy-mode
   :defer t)
 
 
-;;;; major mode: help
+;;; Major mode: help
 
 (use-package help-mode
   :defer t
@@ -3533,7 +3543,7 @@ point stays the same after piping through the external program. "
   (add-hook 'help-mode-hook 'w--help-mode-hook))
 
 
-;;;; major mode: helpful
+;;; Major mode: helpful
 
 (use-package helpful
   :general
@@ -3559,7 +3569,7 @@ point stays the same after piping through the external program. "
     (call-interactively #'helpful-symbol)))
 
 
-;;;; major mode: html
+;;; Major mode: html
 
 (use-package sgml-mode
   :defer t
@@ -3569,14 +3579,14 @@ point stays the same after piping through the external program. "
   (add-hook 'html-mode-hook 'w--html-mode-hook)
   (add-hook 'mhtml-mode-hook 'w--html-mode-hook))
 
-;;;; major mode: jinja
+;;; Major mode: jinja
 
 (use-package jinja2-mode
   :defer t
   :mode "\\.j2\\'")
 
 
-;;;; major mode: json
+;;; Major mode: json
 
 (use-package json-mode
   :defer t
@@ -3599,7 +3609,7 @@ point stays the same after piping through the external program. "
   (jq-format-jsonlines-on-save-mode " ❤"))
 
 
-;;;; major mode: markdown
+;;; Major mode: markdown
 
 (use-package markdown-mode
   :defer t
@@ -3668,7 +3678,7 @@ point stays the same after piping through the external program. "
          (line-end-position))))))
 
 
-;;;; major mode: org
+;;; Major mode: org
 
 (use-package org
   :defer t
@@ -3695,7 +3705,7 @@ point stays the same after piping through the external program. "
   (evil-org-set-key-theme))
 
 
-;;;; major mode: python
+;;; Major mode: python
 
 (use-package python
   :defer t
@@ -4015,17 +4025,7 @@ point stays the same after piping through the external program. "
    'python-pytest-mode 'w--python-pytest-origami-parser))
 
 
-;;;; major-mode: cython
-
-(use-package cython-mode
-  :defer t)
-
-(use-package flycheck-cython
-  :demand t
-  :after (cython-mode flycheck))
-
-
-;;;; major-mode: profiling-report
+;;; Major mode: profiling-report
 
 (use-package profiler
   :general
@@ -4045,7 +4045,7 @@ point stays the same after piping through the external program. "
   (evil-set-initial-state 'profiler-report-mode 'motion))
 
 
-;;;; major-mode: restructuredtext
+;;; Major mode: restructuredtext
 
 (use-package rst
   :defer t
@@ -4246,7 +4246,7 @@ point stays the same after piping through the external program. "
   (setq sphinx-mode-map (make-sparse-keymap)))
 
 
-;;;; major-mode: rust
+;;; Major mode: rust
 
 (use-package rust-mode
   :defer t
@@ -4262,7 +4262,7 @@ point stays the same after piping through the external program. "
   (add-hook 'rust-mode-hook 'w--rust-mode-hook))
 
 
-;;;; major-mode: shell
+;;; Major mode: shell
 
 (use-package sh-script
   :defer t
@@ -4275,7 +4275,7 @@ point stays the same after piping through the external program. "
   (add-hook 'sh-mode-hook 'w--sh-mode-hook))
 
 
-;;;; major-mode: sql
+;;; Major mode: sql
 
 (use-package sql
   :defer t
@@ -4303,7 +4303,7 @@ point stays the same after piping through the external program. "
   (sqlformat-command 'pgformatter))
 
 
-;;;; major-mode: xml
+;;; Major mode: xml
 
 (use-package nxml-mode
   :ensure nil
@@ -4316,7 +4316,7 @@ point stays the same after piping through the external program. "
   :after nxml-mode)
 
 
-;;;; major-mode: yaml
+;;; Major mode: yaml
 
 (use-package yaml-mode
   :defer t
@@ -4328,7 +4328,7 @@ point stays the same after piping through the external program. "
   (add-hook 'yaml-mode-hook 'w--yaml-mode-hook))
 
 
-;;;; local configuration (not in version control)
+;;; Local configuration
 
 (load (concat user-emacs-directory "init-local") t)
 
