@@ -1761,7 +1761,7 @@ defined as lowercase."
   :general
   (:states 'insert
    ;; this is a zero, i.e. C-) without shift
-   (kbd "C-0") #'syntactic-close))
+   "C-0" #'syntactic-close))
 
 
 ;;;; text wrapping and filling
