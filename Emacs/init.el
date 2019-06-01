@@ -3668,12 +3668,6 @@ point stays the same after piping through the external program. "
          (line-end-position))))))
 
 
-;;;; major mode: latex
-
-;; fixme: optional auctex?
-(setq TeX-engine 'xetex)
-
-
 ;;;; major mode: org
 
 (use-package org
