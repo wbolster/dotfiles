@@ -1300,27 +1300,29 @@ defined as lowercase."
 
 ;;;; whitespace
 
-(setq
- require-final-newline 'visit-save
- sentence-end-double-space nil)
-
-(setq-default
- indent-tabs-mode nil
- tab-width 4)
+(use-package emacs
+  :custom
+  (require-final-newline 'visit-save)
+  (sentence-end-double-space nil)
+  :config
+  (setq-default
+   indent-tabs-mode nil
+   tab-width 4))
 
 (use-package whitespace
-  :defer t)
+  :defer t
+  :config)
+
+(define-minor-mode w--show-trailing-whitespace-mode
+  "Show or hide trailing whitespace."
+  nil nil nil
+  (setq show-trailing-whitespace w--show-trailing-whitespace-mode))
 
 (use-package whitespace-cleanup-mode
   :delight
   '(:eval (unless whitespace-cleanup-mode-initially-clean " ⎵"))
   :config
   (global-whitespace-cleanup-mode))
-
-(defun w--toggle-show-trailing-whitespace ()
-  "Toggle `show-trailing-whitespace`."
-  (interactive)
-  (setq show-trailing-whitespace (not show-trailing-whitespace)))
 
 (use-package indent-guide
   :defer t
@@ -3114,7 +3116,7 @@ point stays the same after piping through the external program. "
   ("z" (w--origami-mode-toggle))
   "_SPC_ whitespace"
   ("SPC" whitespace-mode)
-  ("S-SPC" w--toggle-show-trailing-whitespace)
+  ("S-SPC" w--show-trailing-whitespace-mode)
   "_1_ num/sym"
   ("1" global-evil-swap-keys-mode)
   ("!" global-evil-swap-keys-mode)
@@ -3256,7 +3258,7 @@ point stays the same after piping through the external program. "
   :defer t
   :config
   (defun w--text-mode-hook ()
-    (setq show-trailing-whitespace t)
+    (w--show-trailing-whitespace-mode)
     (guess-language-mode)
     (w--wrap-lines-mode))
   (add-hook 'text-mode-hook 'w--text-mode-hook))
@@ -3282,15 +3284,15 @@ point stays the same after piping through the external program. "
   :defer t
   :config
   (defun w--prog-mode-hook ()
-    (setq show-trailing-whitespace t)
     (setq-local comment-auto-fill-only-comments t)
     (auto-fill-mode)
     (column-number-mode)
     (fic-mode)
     (flyspell-prog-mode)
     (highlight-parentheses-mode)
+    (indent-guide-mode)
     (symbol-overlay-mode)
-    (indent-guide-mode))
+    (w--show-trailing-whitespace-mode))
   (add-hook 'prog-mode-hook 'w--prog-mode-hook))
 
 
