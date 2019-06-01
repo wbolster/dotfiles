@@ -148,6 +148,7 @@ and BODY can refer to it as ‘arg’."
   (unless (server-running-p)
     (server-start)))
 
+
 ;; Basics
 
 (use-package emacs
@@ -157,8 +158,16 @@ and BODY can refer to it as ‘arg’."
   (inhibit-startup-screen t)
   (initial-major-mode 'text-mode)
   (initial-scratch-message nil)
+
   :config
-  (fset 'yes-or-no-p 'y-or-n-p))
+  (fset 'yes-or-no-p 'y-or-n-p)
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+
+  (defun w--load-custom-file ()
+    "Load the file with automatically saved customization settings."
+    (load custom-file 'noerror))
+
+  (add-hook 'emacs-startup-hook #'w--load-custom-file))
 
 (use-package agitprop
   :load-path "lisp/"
@@ -3201,15 +3210,10 @@ point stays the same after piping through the external program. "
  "'" #'w--hydra-leader/body)
 
 
-;;;; custom
-
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file 'noerror)
-
-
-;;;; major modes
+;;; Major modes
 
 (setq-default major-mode 'text-mode)
+
 (defvar w--major-modes
   '(("normal" . normal-mode)
     ("fundamental" . fundamental-mode)
