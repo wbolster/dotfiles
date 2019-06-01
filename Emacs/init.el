@@ -4235,7 +4235,7 @@ point stays the same after piping through the external program. "
           (end (line-end-position)))
       (save-restriction
         (narrow-to-region beg end)
-        (rst-adjust-section-title)))))
+        (rst-adjust-section-title nil)))))
 
 (use-package sphinx-mode
   :demand t
