@@ -3288,7 +3288,6 @@ point stays the same after piping through the external program. "
     (column-number-mode)
     (fic-mode)
     (flyspell-prog-mode)
-    ;; (show-paren-mode)  ; fixme: needed?
     (highlight-parentheses-mode)
     (symbol-overlay-mode)
     (indent-guide-mode))
