@@ -3801,7 +3801,7 @@ point stays the same after piping through the external program. "
         ;;       .limit(...)
         ;;       .offset(...))
         (delete-region (point) (1+ (point))))
-       ((and (looking-at-p "[)}\\]") (looking-back ","))
+       ((and (looking-at-p "[)}\\]") (looking-back "," nil))
         ;; remove trailing comma (e.g. after last function argument)
         ;; when joining any closing paren from the next line.
         (delete-char -1)))))
