@@ -411,6 +411,7 @@ defined as lowercase."
   (call-interactively #'evil-buffer-new))
 
 (defun w--open-gui-file-browser ()
+  "Open a GUI browser for the directory containing the current file."
   (interactive)
   (when-let ((file-name (buffer-file-name))
              (directory-name (file-name-directory file-name))
