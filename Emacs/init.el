@@ -563,6 +563,7 @@ defined as lowercase."
    "C-0" 'w--default-text-scale-reset
    "C--" 'default-text-scale-decrease
    "C-=" 'default-text-scale-increase)
+
   :config
   (when (display-graphic-p)
     (add-hook 'after-init-hook #'w--default-text-scale-reset))
@@ -585,26 +586,6 @@ defined as lowercase."
     "Set default text scale to HEIGHT."
     (interactive "nHeight (e.g. 110) ")
     (default-text-scale-increment (- height (face-attribute 'default :height)))))
-
-(w--make-hydra w--hydra-zoom nil
-  "zoom"
-  "_i_n"
-  ("i" default-text-scale-increase :exit nil)
-  ("+" default-text-scale-increase :exit nil)
-  ("=" default-text-scale-increase :exit nil)
-  "_o_ut"
-  ("o" default-text-scale-decrease :exit nil)
-  ("-" default-text-scale-decrease :exit nil)
-  "_z_ normal"
-  ("z" w--default-text-scale-reset)
-  ("0" w--default-text-scale-reset)
-  "writeroom"
-  "_n_arrower"
-  ("n" w--writeroom-narrower :exit nil)
-  "_w_ider"
-  ("w" w--writeroom-wider :exit nil)
-  "_r_eset"
-  ("r" w--writeroom-reset))
 
 
 ;;;; mode line
@@ -3195,8 +3176,6 @@ point stays the same after piping through the external program. "
   ("x" counsel-M-x)
   "_y_ copy format"
   ("y" w--evil-copy-as-format)
-  "_z_oom"
-  ("z" w--hydra-zoom/body)
   "_SPC_ whitespace"
   ("SPC" whitespace-cleanup)
   "_/_ search"
