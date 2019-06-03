@@ -889,7 +889,7 @@ defined as lowercase."
     (when (> w--edit-indirect-original-indentation 0)
       (indent-rigidly (point-min) (point-max) w--edit-indirect-original-indentation)))
 
-  (evil-define-operator w--evil-edit-indirect (beg end type)
+  (evil-define-operator w--evil-edit-indirect (beg end _type)
     (interactive "<R>")
     (edit-indirect-region beg end t))
 
@@ -3847,7 +3847,7 @@ point stays the same after piping through the external program. "
        'before
        (format "print(f\"%s: {%s!r}\")" thing thing))))
 
-  (evil-define-operator w--python-refactor-make-variable (beg end type)
+  (evil-define-operator w--python-refactor-make-variable (beg end _type)
     "Refactor the current region into a named variable."
     (interactive "<R>")
     (let ((name (read-string "Variable name: "))
