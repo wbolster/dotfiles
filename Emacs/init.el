@@ -2706,7 +2706,7 @@ point stays the same after piping through the external program. "
         (let ((git-link-open-in-browser t))
           (call-interactively #'git-link)
           (setq kill-ring (cdr kill-ring)))
-      (magithub-browse)))
+      (call-interactively #'git-link)))
 
   (w--make-hydra w--hydra-git nil
     "git"
