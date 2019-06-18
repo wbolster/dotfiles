@@ -3657,6 +3657,12 @@ point stays the same after piping through the external program. "
          (line-beginning-position)
          (line-end-position))))))
 
+(use-package markdown-toc
+  :demand t
+  :after markdown-mode
+  :custom
+  (markdown-toc-header-toc-title ""))
+
 
 ;;; Major mode: org
 
