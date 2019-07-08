@@ -2541,46 +2541,8 @@ point stays the same after piping through the external program. "
 (use-package emacs
   :delight (abbrev-mode " ⋯"))
 
-(use-package flx)
-
-(use-package smex)
-
-(use-package ivy
-  :demand t
-  :delight
-  :general
-  (:keymaps 'ivy-minibuffer-map
-   "C-h" 'ivy-backward-delete-char
-   "C-w" 'ivy-backward-kill-word
-   "C-u" 'kill-whole-line
-   "C-SPC" 'ivy-avy
-   "C-<return>" 'ivy-immediate-done
-   "<escape>" 'minibuffer-keyboard-quit)
-  :custom
-  (ivy-count-format "(%d/%d) ")
-  (ivy-height 20)
-  (ivy-initial-inputs-alist nil)
-  (ivy-wrap t)
-  :config
-  (ivy-mode 1)
-  (add-hook 'window-size-change-functions #'w--adjust-ivy-height)
-  (defun w--clamp-number (num low high)
-    "Clamp NUM between LOW and HIGH."
-    (min high (max num low)))
-  (defun w--adjust-ivy-height (frame)
-    "Adjust ivy-height based on the current FRAME height."
-    (let* ((total-lines (frame-text-lines frame))
-           (lines (truncate (* total-lines w--ivy-height-percentage 0.01)))
-           (new-height (w--clamp-number lines 10 20)))
-      (setq ivy-height new-height))))
-
-(use-package ivy-hydra)
-
-(use-package ivy-rich
-  :config
-  (ivy-rich-mode 1))
-
 (use-package counsel
+  :after ivy
   :delight
   :config
   (counsel-mode))
@@ -2638,6 +2600,45 @@ point stays the same after piping through the external program. "
   :config
   (add-to-list 'company-backends 'company-lsp))
 
+(use-package flx)
+
+(use-package ivy
+  :demand t
+  :delight
+  :general
+  (:keymaps 'ivy-minibuffer-map
+   "C-h" 'ivy-backward-delete-char
+   "C-w" 'ivy-backward-kill-word
+   "C-u" 'kill-whole-line
+   "C-SPC" 'ivy-avy
+   "C-<return>" 'ivy-immediate-done
+   "<escape>" 'minibuffer-keyboard-quit)
+  :custom
+  (ivy-count-format "(%d/%d) ")
+  (ivy-height 20)
+  (ivy-initial-inputs-alist nil)
+  (ivy-wrap t)
+  :config
+  (ivy-mode 1)
+  (add-hook 'window-size-change-functions #'w--adjust-ivy-height)
+  (defun w--clamp-number (num low high)
+    "Clamp NUM between LOW and HIGH."
+    (min high (max num low)))
+  (defun w--adjust-ivy-height (frame)
+    "Adjust ivy-height based on the current FRAME height."
+    (let* ((total-lines (frame-text-lines frame))
+           (lines (truncate (* total-lines w--ivy-height-percentage 0.01)))
+           (new-height (w--clamp-number lines 10 20)))
+      (setq ivy-height new-height))))
+
+(use-package ivy-hydra)
+
+(use-package ivy-rich
+  :after counsel
+  :config
+  (ivy-rich-mode 1))
+
+(use-package smex)
 
 ;;;; git / version control
 
