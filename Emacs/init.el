@@ -370,7 +370,9 @@ defined as lowercase."
 
 (use-package sudo-edit
   :defer t
-  :commands w--sudo-find-file
+  :commands
+  sudo-edit
+  w--sudo-find-file
   :config
   (defun w--sudo-find-file ()
     (interactive)
@@ -379,6 +381,8 @@ defined as lowercase."
 
 (use-package terminal-here
   :defer t
+  :commands
+  terminal-here
   :custom
   (terminal-here-project-root-function 'projectile-project-root)
   (terminal-here-command-flag "-x"))
@@ -1791,7 +1795,8 @@ defined as lowercase."
   :defer t)
 
 (use-package visual-fill-column
-  :defer t)
+  :defer t
+  :commands visual-fill-column-mode)
 
 (defvar w--wrap-lines-saved-fill-column nil
   "Saved ‘fill-column’ value.")
@@ -2529,6 +2534,8 @@ point stays the same after piping through the external program. "
 
 (use-package guess-language
   :defer t
+  :commands
+  guess-language-mode
   :custom
   (guess-language-languages '(en de fr nl sv)))
 
