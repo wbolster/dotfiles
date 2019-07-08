@@ -262,6 +262,10 @@ defined as lowercase."
          ,@heads
          ("<escape>" nil :exit t)))))
 
+(use-package magit-popup
+  :custom
+  (magit-popup-show-help-echo nil))
+
 (use-package transient
   :demand t
   :custom
@@ -2661,7 +2665,6 @@ point stays the same after piping through the external program. "
   (magit-bury-buffer-function 'magit-mode-quit-window)
   (magit-completing-read-function 'ivy-completing-read)
   (magit-list-refs-sortby '("-creatordate"))
-  (magit-popup-show-help-echo nil)
   (magit-prefer-remote-upstream t)
   (magit-process-popup-time 10)
 
