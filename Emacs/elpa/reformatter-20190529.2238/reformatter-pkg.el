@@ -1,0 +1,2 @@
+;;; -*- no-byte-compile: t -*-
+(define-package "reformatter" "20190529.2238" "Define commands which run reformatters on the current buffer" '((emacs "24.3")) :commit "b29fdd346d0d06bef4cafc75adbde51a46392e90" :keywords '("convenience" "tools") :authors '(("Steve Purcell" . "steve@sanityinc.com")) :maintainer '("Steve Purcell" . "steve@sanityinc.com") :url "https://github.com/purcell/reformatter.el")

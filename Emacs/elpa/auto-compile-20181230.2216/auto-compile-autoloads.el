@@ -6,8 +6,9 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "auto-compile" "auto-compile.el" (0 0 0 0))
-;;; Generated autoloads from auto-compile.el
+;;;### (autoloads nil "auto-compile" "../../../../.emacs.d/elpa/auto-compile-20181230.2216/auto-compile.el"
+;;;;;;  "e78b02c83140da46c17eda0a65636037")
+;;; Generated autoloads from ../../../../.emacs.d/elpa/auto-compile-20181230.2216/auto-compile.el
 
 (autoload 'auto-compile-mode "auto-compile" "\
 Compile Emacs Lisp source files after the visiting buffers are saved.
@@ -113,8 +114,21 @@ byte code file would be loaded instead.
 Also see the related `auto-compile-on-save-mode'.
 
 \(fn &optional ARG)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "auto-compile"
+;;;;;;  "../../../../.emacs.d/elpa/auto-compile-20181230.2216/auto-compile.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../.emacs.d/elpa/auto-compile-20181230.2216/auto-compile.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "auto-compile" '("auto-compile-" "require" "load" "mode-line-" "save-buffers-kill-" "byte-compile-log-warning" "turn-on-auto-compile-mode")))
+
+;;;***
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../.emacs.d/elpa/auto-compile-20181230.2216/auto-compile-autoloads.el"
+;;;;;;  "../../../../.emacs.d/elpa/auto-compile-20181230.2216/auto-compile.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

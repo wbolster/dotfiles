@@ -6,20 +6,6 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "flycheck-package" "flycheck-package.el" (0
-;;;;;;  0 0 0))
-;;; Generated autoloads from flycheck-package.el
-
-(autoload 'flycheck-package-setup "flycheck-package" "\
-Setup flycheck-package.
-Add `flycheck-emacs-lisp-package' to `flycheck-checkers'.
-
-\(fn)" t nil)
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "flycheck-package" '("flycheck-package--start")))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

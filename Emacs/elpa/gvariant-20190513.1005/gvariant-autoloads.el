@@ -6,13 +6,6 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "gvariant" "gvariant.el" (0 0 0 0))
-;;; Generated autoloads from gvariant.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "gvariant" '("gvariant-")))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
