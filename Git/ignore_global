@@ -10,6 +10,7 @@
 *.py[co]
 __pycache__/
 *.egg-info/
+.mypy_cache/
 
 # direnv
 .direnv/
