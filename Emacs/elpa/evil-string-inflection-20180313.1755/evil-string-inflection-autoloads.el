@@ -6,6 +6,20 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
+;;;### (autoloads nil "evil-string-inflection" "evil-string-inflection.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from evil-string-inflection.el
+
+(autoload 'evil-string-inflection "evil-string-inflection.el" "\
+Define a new evil operator that cicles underscore -> UPCASE -> CamelCase." t)
+
+;;;***
+
+;;;### (autoloads nil nil ("evil-string-inflection-pkg.el") (0 0
+;;;;;;  0 0))
+
+;;;***
+
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

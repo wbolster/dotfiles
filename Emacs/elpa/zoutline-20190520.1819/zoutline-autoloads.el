@@ -6,6 +6,17 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
+;;;### (autoloads nil "zoutline" "zoutline.el" (0 0 0 0))
+;;; Generated autoloads from zoutline.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "zoutline" '("zo-")))
+
+;;;***
+
+;;;### (autoloads nil nil ("zoutline-pkg.el") (0 0 0 0))
+
+;;;***
+
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

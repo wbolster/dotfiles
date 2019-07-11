@@ -6,6 +6,18 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
+;;;### (autoloads nil "flycheck-cython" "flycheck-cython.el" (0 0
+;;;;;;  0 0))
+;;; Generated autoloads from flycheck-cython.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "flycheck-cython" '("flycheck-cython-map-source-file")))
+
+;;;***
+
+;;;### (autoloads nil nil ("flycheck-cython-pkg.el") (0 0 0 0))
+
+;;;***
+
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

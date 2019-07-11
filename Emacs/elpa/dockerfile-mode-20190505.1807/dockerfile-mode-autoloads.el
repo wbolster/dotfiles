@@ -6,6 +6,37 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
+;;;### (autoloads nil "dockerfile-mode" "dockerfile-mode.el" (0 0
+;;;;;;  0 0))
+;;; Generated autoloads from dockerfile-mode.el
+
+(autoload 'dockerfile-build-buffer "dockerfile-mode" "\
+Build an image called IMAGE-NAME based upon the buffer.
+If prefix arg NO-CACHE is set, don't cache the image.
+
+\(fn IMAGE-NAME &optional NO-CACHE)" t nil)
+
+(autoload 'dockerfile-build-no-cache-buffer "dockerfile-mode" "\
+Build an image called IMAGE-NAME based upon the buffer without cache.
+
+\(fn IMAGE-NAME)" t nil)
+
+(autoload 'dockerfile-mode "dockerfile-mode" "\
+A major mode to edit Dockerfiles.
+\\{dockerfile-mode-map}
+
+\(fn)" t nil)
+
+(add-to-list 'auto-mode-alist '("Dockerfile\\(?:\\..*\\)?\\'" . dockerfile-mode))
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "dockerfile-mode" '("dockerfile-")))
+
+;;;***
+
+;;;### (autoloads nil nil ("dockerfile-mode-pkg.el") (0 0 0 0))
+
+;;;***
+
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

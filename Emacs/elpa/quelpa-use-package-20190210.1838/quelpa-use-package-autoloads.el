@@ -6,6 +6,18 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
+;;;### (autoloads nil "quelpa-use-package" "quelpa-use-package.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from quelpa-use-package.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "quelpa-use-package" '("quelpa-use-package-" "use-package-")))
+
+;;;***
+
+;;;### (autoloads nil nil ("quelpa-use-package-pkg.el") (0 0 0 0))
+
+;;;***
+
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

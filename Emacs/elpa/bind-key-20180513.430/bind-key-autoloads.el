@@ -5,10 +5,11 @@
 (add-to-list 'load-path (directory-file-name
                          (or (file-name-directory #$) (car load-path))))
 
+
+;;;***
 
-;;;### (autoloads nil "bind-key" "../../../../.emacs.d/elpa/bind-key-20180513.430/bind-key.el"
-;;;;;;  "c372e1fc2cb768b8c0db8a4f4ccf0a9e")
-;;; Generated autoloads from ../../../../.emacs.d/elpa/bind-key-20180513.430/bind-key.el
+;;;### (autoloads nil "bind-key" "bind-key.el" (0 0 0 0))
+;;; Generated autoloads from bind-key.el
 
 (autoload 'bind-key "bind-key" "\
 Bind KEY-NAME to COMMAND in KEYMAP (`global-map' if not passed).
@@ -71,20 +72,12 @@ function symbol (unquoted).
 Display all the personal keybindings defined by `bind-key'.
 
 \(fn)" t nil)
-
-;;;### (autoloads "actual autoloads are elsewhere" "bind-key" "../../../../.emacs.d/elpa/bind-key-20180513.430/bind-key.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from ../../../../.emacs.d/elpa/bind-key-20180513.430/bind-key.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "bind-key" '("compare-keybindings" "get-binding-description" "bind-key" "personal-keybindings" "override-global-m")))
 
 ;;;***
-
-;;;***
 
-;;;### (autoloads nil nil ("../../../../.emacs.d/elpa/bind-key-20180513.430/bind-key-autoloads.el"
-;;;;;;  "../../../../.emacs.d/elpa/bind-key-20180513.430/bind-key.el")
-;;;;;;  (0 0 0 0))
+;;;### (autoloads nil nil ("bind-key-pkg.el") (0 0 0 0))
 
 ;;;***
 
