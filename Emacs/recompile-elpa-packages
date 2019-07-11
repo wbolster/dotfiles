@@ -1,5 +1,15 @@
 #!/bin/sh
-set -e -x
+
+set -e -u
+
 emacs --batch \
     --eval '(package-initialize)' \
     --eval '(byte-recompile-directory "elpa" 0 t)'
+
+cd elpa/
+for dir in $(find . -name '*-autoloads.el' -print0 | xargs -0 dirname | sort); do
+    package=$(echo "$dir" | sed -e 's,^./,,' -e 's/-[^-]\+$//')
+    emacs --batch \
+         --eval "(require 'package)" \
+         --eval "(package-generate-autoloads \"${package}\" \"${dir}\")"
+done
