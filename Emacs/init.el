@@ -4304,7 +4304,14 @@ point stays the same after piping through the external program. "
 (use-package nxml-mode
   :ensure nil
   :defer t
-  :config)
+  :hook
+  (nxml-mode . w--nxml-mode-hook)
+  :config
+  (defun w--nxml-mode-hook ()
+    (modify-syntax-entry ?< ".")
+    (modify-syntax-entry ?> ".")
+    (modify-syntax-entry ?/ ".")
+    (modify-syntax-entry ?: "_")))
 
 (use-package xml-format
   :load-path "lisp/"
