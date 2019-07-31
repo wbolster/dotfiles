@@ -4286,8 +4286,7 @@ point stays the same after piping through the external program. "
   :config
   (defun w--sql-mode-hook ()
     (setq evil-shift-width 2)
-    (setq reformatter-dwim-reformatter 'sqlformat)
-    (setq-local fill-paragraph-function #'w--sql-fill-paragraph))
+    (setq reformatter-dwim-reformatter 'sqlformat))
   (add-hook 'sql-mode-hook 'w--sql-mode-hook))
 
 (use-package sqlformat
