@@ -1389,7 +1389,11 @@ defined as lowercase."
   (lazy-highlight-cleanup nil)
   (lazy-highlight-initial-delay 0.5)
   (lazy-highlight-max-at-a-time nil)
-  (search-default-mode t))
+  (search-default-mode t)
+  :general
+  (:keymaps 'isearch-mode-map
+   "C-'" 'avy-isearch
+   "C-/" 'swiper-isearch-toggle))
 
 (use-package thingatpt
   :config
@@ -1473,10 +1477,14 @@ defined as lowercase."
   (swiper-goto-start-of-match t)
   :general
   (:states 'motion
-   "/" #'swiper-isearch
-   "?" #'swiper)
+   "/" 'swiper-isearch
+   "?" 'swiper
+   "C-/" 'swiper-all)
   (:states 'visual
-   "/" 'swiper-isearch)
+   "/" 'swiper-isearch
+   "C-/" 'swiper-all)
+  (:keymaps 'swiper-map
+   "C-s" 'swiper-isearch-toggle)
   :config
   (defun w--swiper-dwim ()
     "Start `swiper` searching for the thing at point."
@@ -2140,10 +2148,7 @@ point stays the same after piping through the external program. "
   (avy-style 'de-bruijn)
   (avy-keys (string-to-list "arstneio"))
   :commands
-  avy-with  ;; used by evil-easymotion helpers
-  :general
-  (:keymaps 'isearch-mode-map
-   "C-'" #'avy-isearch))
+  avy-with) ;; used by evil-easymotion helpers
 
 (use-package beacon
   :delight
