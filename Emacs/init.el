@@ -533,7 +533,6 @@ defined as lowercase."
    'fixed-pitch nil
    :family (face-attribute 'default :family))
   (dolist (face (face-list))
-    (set-face-attribute face nil :underline nil)
     (unless (member face w--faces-bold)
       (set-face-attribute face nil :weight 'normal))))
 
