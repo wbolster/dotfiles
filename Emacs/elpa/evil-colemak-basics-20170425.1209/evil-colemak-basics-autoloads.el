@@ -41,10 +41,6 @@ See `evil-colemak-basics-mode' for more information on Evil-Colemak-Basics mode.
 
 ;;;***
 
-;;;### (autoloads nil nil ("evil-colemak-basics-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

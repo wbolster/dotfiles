@@ -41,11 +41,6 @@ values used in the user's shell.
 
 ;;;***
 
-;;;### (autoloads nil nil ("exec-path-from-shell-pkg.el") (0 0 0
-;;;;;;  0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

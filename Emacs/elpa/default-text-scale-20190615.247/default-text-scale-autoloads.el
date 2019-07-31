@@ -46,10 +46,6 @@ Change the size of the \"default\" face in every frame.
 
 ;;;***
 
-;;;### (autoloads nil nil ("default-text-scale-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

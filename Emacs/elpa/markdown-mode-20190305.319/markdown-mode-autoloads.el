@@ -42,10 +42,6 @@ Toggle native previewing on save for a specific markdown file.
 
 ;;;***
 
-;;;### (autoloads nil nil ("markdown-mode-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

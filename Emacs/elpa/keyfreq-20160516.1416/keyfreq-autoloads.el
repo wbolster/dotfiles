@@ -52,10 +52,6 @@ Save keyfreq data now.
 
 ;;;***
 
-;;;### (autoloads nil nil ("keyfreq-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

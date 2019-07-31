@@ -52,10 +52,6 @@ Define easymotions for all motions evil defines by default
 
 ;;;***
 
-;;;### (autoloads nil nil ("evil-easymotion-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

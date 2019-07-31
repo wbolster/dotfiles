@@ -98,10 +98,6 @@ Like `org-narrow-to-subtree', except using `fancy-narrow-to-region'.
 
 ;;;***
 
-;;;### (autoloads nil nil ("fancy-narrow-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

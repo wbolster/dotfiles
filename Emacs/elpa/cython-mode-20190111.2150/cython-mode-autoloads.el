@@ -34,10 +34,6 @@ Major mode for Cython development, derived from Python mode.
 
 ;;;***
 
-;;;### (autoloads nil nil ("cython-mode-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

@@ -42,10 +42,6 @@ for a file to visit if current buffer is not visiting a file.
 
 ;;;***
 
-;;;### (autoloads nil nil ("sudo-edit-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

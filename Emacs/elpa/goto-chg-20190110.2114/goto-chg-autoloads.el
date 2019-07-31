@@ -46,10 +46,6 @@ See `goto-last-change' for use of prefix argument.
 
 ;;;***
 
-;;;### (autoloads nil nil ("goto-chg-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

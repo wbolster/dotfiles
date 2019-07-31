@@ -44,10 +44,6 @@ call this function in `noninteractive' sessions.
 
 ;;;***
 
-;;;### (autoloads nil nil ("shut-up-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

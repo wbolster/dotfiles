@@ -20,10 +20,6 @@ Add `flycheck-emacs-lisp-package' to `flycheck-checkers'.
 
 ;;;***
 
-;;;### (autoloads nil nil ("flycheck-package-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

@@ -30,10 +30,6 @@ Move the cursor out of the nearest enclosing matching pairs.
 
 ;;;***
 
-;;;### (autoloads nil nil ("evil-args-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

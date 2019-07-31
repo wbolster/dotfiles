@@ -28,10 +28,6 @@ Like `smex', but limited to commands that are relevant to the active major mode.
 
 ;;;***
 
-;;;### (autoloads nil nil ("smex-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

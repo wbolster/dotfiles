@@ -30,10 +30,6 @@ Uses `terminal-here-project-root-function' to determine the project root.
 
 ;;;***
 
-;;;### (autoloads nil nil ("terminal-here-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

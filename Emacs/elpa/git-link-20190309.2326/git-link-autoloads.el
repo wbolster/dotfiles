@@ -41,10 +41,6 @@ is non-nil also call `browse-url'.
 
 ;;;***
 
-;;;### (autoloads nil nil ("git-link-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

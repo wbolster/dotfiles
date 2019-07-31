@@ -33,10 +33,6 @@ Major mode for editing pip requirements files.
 
 ;;;***
 
-;;;### (autoloads nil nil ("pip-requirements-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

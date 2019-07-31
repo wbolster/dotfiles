@@ -45,10 +45,6 @@ See `nlinum-mode' for more information on Nlinum mode.
 
 ;;;***
 
-;;;### (autoloads nil nil ("nlinum-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

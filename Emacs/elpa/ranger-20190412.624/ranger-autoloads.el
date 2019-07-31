@@ -2,6 +2,9 @@
 ;;
 ;;; Code:
 
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
 ;;;### (autoloads nil "ranger" "ranger.el" (0 0 0 0))
 ;;; Generated autoloads from ranger.el
@@ -61,11 +64,6 @@ Major mode emulating the ranger file manager in `dired'.
 
 ;;;***
 
-;;;### (autoloads nil nil ("ranger-pkg.el") (0 0 0 0))
-
-;;;***
-
-(provide 'ranger-autoloads)
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

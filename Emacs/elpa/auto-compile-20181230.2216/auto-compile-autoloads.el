@@ -5,8 +5,6 @@
 (add-to-list 'load-path (directory-file-name
                          (or (file-name-directory #$) (car load-path))))
 
-
-;;;***
 
 ;;;### (autoloads nil "auto-compile" "auto-compile.el" (0 0 0 0))
 ;;; Generated autoloads from auto-compile.el
@@ -117,10 +115,6 @@ Also see the related `auto-compile-on-save-mode'.
 \(fn &optional ARG)" t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "auto-compile" '("auto-compile-" "require" "load" "mode-line-" "save-buffers-kill-" "byte-compile-log-warning" "turn-on-auto-compile-mode")))
-
-;;;***
-
-;;;### (autoloads nil nil ("auto-compile-pkg.el") (0 0 0 0))
 
 ;;;***
 

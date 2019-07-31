@@ -30,11 +30,6 @@ Otherwise behave as if called interactively.
 
 ;;;***
 
-;;;### (autoloads nil nil ("flycheck-color-mode-line-pkg.el") (0
-;;;;;;  0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

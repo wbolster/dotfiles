@@ -40,10 +40,6 @@ to prevent the mode being treated as a minor mode.
 
 ;;;***
 
-;;;### (autoloads nil nil ("delight-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

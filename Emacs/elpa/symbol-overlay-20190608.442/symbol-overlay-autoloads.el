@@ -104,10 +104,6 @@ Rename symbol at point on all its occurrences.
 
 ;;;***
 
-;;;### (autoloads nil nil ("symbol-overlay-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

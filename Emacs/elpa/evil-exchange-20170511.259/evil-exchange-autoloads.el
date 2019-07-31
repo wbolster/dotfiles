@@ -31,10 +31,6 @@ Setting evil-exchange key bindings in a vim-compatible way
 
 ;;;***
 
-;;;### (autoloads nil nil ("evil-exchange-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

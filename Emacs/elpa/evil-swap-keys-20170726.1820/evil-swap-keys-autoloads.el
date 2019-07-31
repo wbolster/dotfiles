@@ -91,10 +91,6 @@ Swap the question mark and slash.
 
 ;;;***
 
-;;;### (autoloads nil nil ("evil-swap-keys-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

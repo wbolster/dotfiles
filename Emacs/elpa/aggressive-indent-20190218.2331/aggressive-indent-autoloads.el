@@ -61,10 +61,6 @@ See `aggressive-indent-mode' for more information on Aggressive-Indent mode.
 
 ;;;***
 
-;;;### (autoloads nil nil ("aggressive-indent-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

@@ -45,10 +45,6 @@ Return non-nil if the current buffer appears to be intended as a package.
 
 ;;;***
 
-;;;### (autoloads nil nil ("package-lint-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

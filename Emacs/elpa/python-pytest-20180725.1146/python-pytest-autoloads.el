@@ -74,10 +74,6 @@ With a prefix ARG, allow editing.
 
 ;;;***
 
-;;;### (autoloads nil nil ("python-pytest-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

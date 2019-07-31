@@ -64,10 +64,6 @@ this time, in which case it won't display at all.
 
 ;;;***
 
-;;;### (autoloads nil nil ("spinner-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

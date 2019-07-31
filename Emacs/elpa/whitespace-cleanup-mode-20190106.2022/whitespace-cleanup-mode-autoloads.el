@@ -45,11 +45,6 @@ See `whitespace-cleanup-mode' for more information on Whitespace-Cleanup mode.
 
 ;;;***
 
-;;;### (autoloads nil nil ("whitespace-cleanup-mode-pkg.el") (0 0
-;;;;;;  0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

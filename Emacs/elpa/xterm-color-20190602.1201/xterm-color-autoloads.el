@@ -71,10 +71,6 @@ xterm-color.el with other functionally similar libraries.
 
 ;;;***
 
-;;;### (autoloads nil nil ("xterm-color-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

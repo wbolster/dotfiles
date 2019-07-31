@@ -24,10 +24,6 @@ Install the \"sqlparse\" (Python) package to get \"sqlformat\", or
 
 ;;;***
 
-;;;### (autoloads nil nil ("sqlformat-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

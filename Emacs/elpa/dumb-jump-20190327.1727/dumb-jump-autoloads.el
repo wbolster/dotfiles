@@ -70,10 +70,6 @@ Minor mode for jumping to variable and function definitions
 
 ;;;***
 
-;;;### (autoloads nil nil ("dumb-jump-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

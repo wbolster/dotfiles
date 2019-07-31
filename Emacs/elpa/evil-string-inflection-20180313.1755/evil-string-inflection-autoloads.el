@@ -15,11 +15,6 @@ Define a new evil operator that cicles underscore -> UPCASE -> CamelCase." t)
 
 ;;;***
 
-;;;### (autoloads nil nil ("evil-string-inflection-pkg.el") (0 0
-;;;;;;  0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

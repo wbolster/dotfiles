@@ -24,10 +24,6 @@ DISPLAY-ERRORS is non-nil, shows a buffer if the formatting fails.
 
 ;;;***
 
-;;;### (autoloads nil nil ("python-black-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

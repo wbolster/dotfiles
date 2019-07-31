@@ -101,10 +101,6 @@ See `evil-snipe-override-local-mode' for more information on Evil-Snipe-Override
 
 ;;;***
 
-;;;### (autoloads nil nil ("evil-snipe-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

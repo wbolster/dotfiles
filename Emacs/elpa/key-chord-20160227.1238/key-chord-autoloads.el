@@ -63,10 +63,6 @@ If COMMAND is nil, the key-chord is removed.
 
 ;;;***
 
-;;;### (autoloads nil nil ("key-chord-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

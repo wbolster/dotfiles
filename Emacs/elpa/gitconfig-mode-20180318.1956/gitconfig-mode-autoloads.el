@@ -21,10 +21,6 @@ A major mode for editing .gitconfig files.
 
 ;;;***
 
-;;;### (autoloads nil nil ("gitconfig-mode-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

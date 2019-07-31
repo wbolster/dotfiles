@@ -40,10 +40,6 @@ See `indent-guide-mode' for more information on Indent-Guide mode.
 
 ;;;***
 
-;;;### (autoloads nil nil ("indent-guide-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

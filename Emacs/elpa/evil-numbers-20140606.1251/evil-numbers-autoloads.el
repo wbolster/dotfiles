@@ -32,10 +32,6 @@ This function uses `evil-numbers/inc-at-pt'
 
 ;;;***
 
-;;;### (autoloads nil nil ("evil-numbers-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

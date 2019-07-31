@@ -53,10 +53,6 @@ FILE must be relative to the top directory of the repository.
 
 ;;;***
 
-;;;### (autoloads nil nil ("vdiff-magit-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

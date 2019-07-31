@@ -26,11 +26,6 @@ both operator state and visual state.
 
 ;;;***
 
-;;;### (autoloads nil nil ("evil-text-object-python-pkg.el") (0 0
-;;;;;;  0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

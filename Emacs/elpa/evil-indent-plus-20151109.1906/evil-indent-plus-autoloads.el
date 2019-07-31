@@ -25,10 +25,6 @@ Set the default evil-indent-plus keybindings.
 
 ;;;***
 
-;;;### (autoloads nil nil ("evil-indent-plus-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

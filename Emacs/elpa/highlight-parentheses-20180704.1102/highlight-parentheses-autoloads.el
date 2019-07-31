@@ -41,11 +41,6 @@ See `highlight-parentheses-mode' for more information on Highlight-Parentheses m
 
 ;;;***
 
-;;;### (autoloads nil nil ("highlight-parentheses-pkg.el") (0 0 0
-;;;;;;  0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

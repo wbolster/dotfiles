@@ -33,10 +33,6 @@ Toggle ivy-rich mode globally.
 
 ;;;***
 
-;;;### (autoloads nil nil ("ivy-rich-pkg.el") (0 0 0 0))
-
-;;;***
-
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
