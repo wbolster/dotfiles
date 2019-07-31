@@ -1527,13 +1527,11 @@ defined as lowercase."
     ("R" ag-regexp))
 
   (defun w--counsel-ag-project (&optional unrestricted)
-    "Run counsel-ag on the current project, defaulting to the symbol at point."
+    "Run ‘counsel-ag’ on the current project."
     (interactive)
-    (counsel-ag
-     (w--thing-at-point-dwim)
-     (projectile-project-root)
-     (if unrestricted "--unrestricted" "")
-     (if unrestricted "search all project files" "search project files")))
+    (let ((extra-args (if unrestricted "--unrestricted" ""))
+          (prompt (if unrestricted "search all project files: " "search project files: ")))
+      (counsel-ag nil (projectile-project-root) extra-args prompt)))
 
   (defun w--counsel-ag-project-all-files ()
     "Run counsel-ag on all files within the project root."
