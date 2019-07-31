@@ -2768,12 +2768,13 @@ point stays the same after piping through the external program. "
    "<tab>" #'magit-section-cycle
    "C-<tab>" #'magit-section-toggle
    "C-w" 'w--hydra-window/body)
-  (:keymaps 'magit-blame-mode-map
+  (:keymaps 'magit-blame-read-only-mode-map
    :states '(motion normal)
    "C-n" #'magit-blame-next-chunk
    "C-e" #'magit-blame-previous-chunk
    "C-p" #'magit-blame-previous-chunk
-   "<tab>" #'magit-blame-toggle-headings)
+   "<tab>" #'magit-blame-toggle-headings
+   "<return>" 'magit-show-commit)
   (:keymaps 'magit-diff-mode-map
    "SPC" nil
    "DEL" nil)
