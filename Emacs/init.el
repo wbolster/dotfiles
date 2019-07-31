@@ -3940,7 +3940,7 @@ point stays the same after piping through the external program. "
 
 (use-package python-pytest
   :demand t
-  :after python
+  :after company python
   :custom
   (python-pytest-arguments
    '("--color"
