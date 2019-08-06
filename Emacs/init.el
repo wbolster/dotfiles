@@ -68,6 +68,8 @@
   (benchmark-init/activate)
   (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
+(use-package crux)
+
 (use-package dash
   :config
   (dash-enable-font-lock))
@@ -429,15 +431,16 @@ defined as lowercase."
    [("n" "new" evil-buffer-new)
     ("N" "new ↗" w--evil-buffer-new-other-window) ]
    [("c" "clone" clone-indirect-buffer)
-    ("C" "clone ↗" clone-indirect-buffer-other-window)]]
+    ("C" "clone ↗" clone-indirect-buffer-other-window)]
+   [("e" "rename" crux-rename-file-and-buffer)
+    ("E" "rename buf only" rename-buffer)]]
   ["hiding/closing"
    [("h" "hide" bury-buffer)
     ("H" "unhide" unbury-buffer)]
    [("k" "kill" kill-this-buffer)
     ("K" "kill+window" kill-buffer-and-window)]]
   ["misc"
-   [("e" "rename" rename-buffer)
-    ("m" "switch major mode" w--switch-major-mode)
+   [("m" "switch major mode" w--switch-major-mode)
     ("r" "revert" revert-buffer)]])
 
 (define-transient-command w--file-dispatch ()
