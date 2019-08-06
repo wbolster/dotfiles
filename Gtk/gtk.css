@@ -21,3 +21,7 @@ evview
 {
   -gtk-key-bindings: evince-scroll-colemak;
 }
+
+vte-terminal {
+    padding: 10px;
+}
