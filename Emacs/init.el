@@ -1676,6 +1676,21 @@ defined as lowercase."
       (user-error
        (symbol-overlay-jump-next)))))
 
+(use-package zeal-at-point
+  :defer
+  :general
+  (:states 'motion
+   "g/" 'w--zeal-at-point-dwim)
+  :commands
+  w--zeal-at-point-dwim
+  :config
+  (defun w--zeal-at-point-dwim ()
+    "Open ‘zeal’, defaulting to the thing at point."
+    (interactive)
+    (->> (or (w--thing-at-point-dwim) "")
+         (zeal-at-point-maybe-add-docset)
+         (read-string "Zeal search: ")
+         (zeal-at-point-run-search))))
 
 ;;;; previous/next navigation
 
