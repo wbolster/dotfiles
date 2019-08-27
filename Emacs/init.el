@@ -2447,9 +2447,13 @@ defined as lowercase."
   "_w_ cycle"
   ("w" w--evil-window-next-or-vsplit)
   ("C-w" w--evil-window-next-or-vsplit)
-  "_+_/_-_ width"
+  "_+_/_-_/C-hnei width/height"
   ("+" evil-window-increase-width nil :exit nil)
-  ("-" evil-window-decrease-width nil :exit nil))
+  ("-" evil-window-decrease-width nil :exit nil)
+  ("C-h" evil-window-decrease-width nil :exit nil)
+  ("C-n" evil-window-decrease-height nil :exit nil)
+  ("C-e" evil-window-increase-height nil :exit nil)
+  ("C-i" evil-window-increase-width nil :exit nil))
 
 ;; replace evil-window-map completely
 (general-define-key
