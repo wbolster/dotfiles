@@ -1,0 +1,44 @@
+;;; balanced-windows-mode.el --- Keep windows balanced -*- lexical-binding: t; -*-
+
+;; Author: wouter bolsterlee <wouter@bolsterl.ee>
+;; Keywords: convenience
+;; URL: https://github.com/wbolster/emacs-balanced-windows
+;; Package-Requires: ((emacs "25"))
+;; Version: 1.0.0
+
+;;; Commentary:
+
+;; Automatically keep windows balanced.
+
+;;; Code:
+
+(defgroup balanced-windows nil
+  "Keep windows balanced."
+  :group 'convenience
+  :prefix "balanced-windows-")
+
+(defcustom balanced-windows-functions
+  '(delete-window quit-window split-window)
+  "Functions needing advice to keep windows balanced."
+  :group 'balanced-windows
+  :type '(repeat function))
+
+(defun balanced-windows--advice (&rest _ignored)
+  "Balance windows (intended as :after advice); any args are ignored."
+  (balance-windows))
+
+;;;###autoload
+(define-minor-mode balanced-windows-mode
+  "Global minor mode to keep windows balanced at all times."
+  :global t
+  (dolist (fn balanced-windows-functions)
+    (if balanced-windows-mode
+        (advice-add fn :after 'balanced-windows--advice)
+      (advice-remove fn 'balanced-windows--advice)))
+  (when balanced-windows-mode
+    (balance-windows))
+  (when (boundp 'evil-mode)
+    (setq evil-auto-balance-windows balanced-windows-mode)))
+
+(provide 'balanced-windows-mode)
+;;; balanced-windows-mode.el ends here

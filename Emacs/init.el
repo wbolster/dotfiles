@@ -2221,32 +2221,16 @@ defined as lowercase."
   (defun w--fit-window-to-buffer-max (window )
     (fit-window-to-buffer window 10)))
 
+(use-package balanced-windows-mode
+  :load-path "lisp/"
+  :config
+  (balanced-windows-mode))
+
 (use-package winner
   :custom
   (winner-dont-bind-my-keys t)
   :config
   (winner-mode))
-
-(defvar w--balanced-windows-functions
-  '(delete-window quit-window split-window)
-  "Functions needing advice to keep windows balanced.")
-
-(defun w--balance-windows-advice (&rest _ignored)
-  "Balance windows (intended as ;after advice); ARGS are ignored."
-  (balance-windows))
-
-(define-minor-mode w--balanced-windows-mode
-  "Global minor mode to keep windows balanced at all times."
-  :global t
-  (setq evil-auto-balance-windows w--balanced-windows-mode)
-  (dolist (fn w--balanced-windows-functions)
-    (if w--balanced-windows-mode
-        (advice-add fn :after #'w--balance-windows-advice)
-      (advice-remove fn #'w--balance-windows-advice)))
-  (when w--balanced-windows-mode
-    (balance-windows)))
-
-(w--balanced-windows-mode)
 
 (defun w--evil-window-next-or-vsplit ()
   "Focus next window, or vsplit if it is the only window in this frame."
@@ -3096,7 +3080,7 @@ defined as lowercase."
   ("0" smartparens-mode)
   (")" smartparens-mode)
   "_=_ balanced-windows"
-  ("=" w--balanced-windows-mode))
+  ("=" balanced-windows-mode))
 
 
 ;;;; leader key
