@@ -649,11 +649,14 @@ defined as lowercase."
    evil-want-C-w-in-emacs-state t)
 
   :custom
-  (evil-insert-state-message nil)
   (evil-cross-lines t)
-  ;; state tag before position info, which smart-mode-line put elsewhere
-  (evil-mode-line-format '(before . mode-line-front-space))
+  (evil-insert-state-message nil)
   (evil-shift-round nil)
+  (evil-split-window-below t)
+  (evil-vsplit-window-right t)
+
+  ;; small state tag before position info, which smart-mode-line put elsewhere
+  (evil-mode-line-format '(before . mode-line-front-space))
   (evil-emacs-state-tag "e ")
   (evil-insert-state-tag "i ")
   (evil-motion-state-tag "m ")
@@ -2194,8 +2197,6 @@ defined as lowercase."
 
 (setq
  default-frame-alist '((width . 160) (height . 48))
- evil-split-window-below t
- evil-vsplit-window-right t
  frame-resize-pixelwise t
  frame-title-format "%b — emacs"
  help-window-select t
