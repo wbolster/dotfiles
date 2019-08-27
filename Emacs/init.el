@@ -2202,6 +2202,16 @@ defined as lowercase."
   (switch-to-buffer-in-dedicated-window 'pop)
   (window-resize-pixelwise t)
 
+  (display-buffer-alist
+   '(("\\*Flycheck errors\\*" .
+      (display-buffer-in-side-window
+       (side . bottom)
+       (slot . 0)
+       (preserve-size . (nil . t))
+       (window-height . w--fit-window-to-buffer-max)
+       (window-parameters . ((no-other-window . t)
+                             (no-delete-other-windows . t)))))))
+
   :config
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
