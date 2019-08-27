@@ -2189,26 +2189,33 @@ defined as lowercase."
 ;; next to each other in a horizontal fashion, i.e. screen
 ;; divided into columns.
 
+(use-package emacs
+  :custom
+  (default-frame-alist '((width . 160) (height . 48)))
+  (fit-window-to-buffer-horizontally t)
+  (frame-resize-pixelwise t)
+  (frame-title-format "%b — emacs")
+  (help-window-select t)
+  (split-height-threshold nil)
+  (split-width-threshold 120)
+  (split-window-preferred-function 'visual-fill-column-split-window-sensibly)
+  (switch-to-buffer-in-dedicated-window 'pop)
+  (window-resize-pixelwise t)
+
+  :config
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (blink-cursor-mode -1)
+
+  (defun w--fit-window-to-buffer-max (window )
+    (fit-window-to-buffer window 10)))
+
 (use-package winner
   :custom
   (winner-dont-bind-my-keys t)
   :config
   (winner-mode))
-
-(setq
- default-frame-alist '((width . 160) (height . 48))
- frame-resize-pixelwise t
- frame-title-format "%b — emacs"
- help-window-select t
- split-height-threshold nil
- split-width-threshold 120
- split-window-preferred-function 'visual-fill-column-split-window-sensibly
- switch-to-buffer-in-dedicated-window 'pop)
-
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(blink-cursor-mode -1)
 
 (defvar w--balanced-windows-functions
   '(delete-window quit-window split-window)
