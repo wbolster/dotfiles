@@ -121,3 +121,5 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot "'<
 
 # extensions
 dconf write /org/gnome/shell/extensions/invert-window/invert-window-shortcut '["<Shift><Super>l"]'
+dconf write /org/gnome/shell/extensions/draw-on-your-screen/toggle-drawing '["<Super>d"]'
+dconf write /org/gnome/shell/extensions/draw-on-your-screen/erase-drawing '["<Shift><Super>d"]'
