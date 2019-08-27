@@ -3650,7 +3650,7 @@ defined as lowercase."
    :states 'normal
    [remap evil-join] #'w--evil-join-python
    [backspace] 'python-nav-backward-up-list
-   "<return>" 'python-black-statement)
+   "<return>" 'python-black-partial-dwim)
   (:keymaps 'python-mode-map
    :states 'insert
    "C-l" 'multi-line)
@@ -3824,8 +3824,7 @@ defined as lowercase."
   :demand t
   :after python
   :delight
-  (python-black-on-save-mode " ❤")
-  :quelpa (python-black :fetcher github :repo "wbolster/emacs-python-black"))
+  (python-black-on-save-mode " ❤"))
 
 (use-package evil-text-object-python
   :demand t

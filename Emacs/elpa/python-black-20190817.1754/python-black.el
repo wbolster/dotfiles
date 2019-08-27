@@ -2,10 +2,10 @@
 
 ;; Author: wouter bolsterlee <wouter@bolsterl.ee>
 ;; Keywords: languages
-;; Package-Version: 20190515.1536
+;; Package-Version: 20190817.1754
 ;; URL: https://github.com/wbolster/emacs-python-black
 ;; Package-Requires: ((emacs "25") (dash "2.16.0") (reformatter "0.3"))
-;; Version: 0.1.0
+;; Version: 1.0.0
 
 ;; Copyright 2019 wouter bolsterlee. Licensed under the 3-Clause BSD License.
 
@@ -66,6 +66,20 @@ DISPLAY-ERRORS is non-nil, shows a buffer if the formatting fails."
                       (line-end-position)))
                (non-empty? (not (= beg end))))
     (python-black-region beg (1+ end) display-errors)))
+
+;;;###autoload
+(defun python-black-partial-dwim (&optional display-errors)
+  "Reformats the active region or the current statement.
+
+This runs ‘python-black-region’ or ‘python-black-statement’ depending
+on whether the region is currently active.
+
+When called interactively with a prefix argument, or when
+DISPLAY-ERRORS is non-nil, shows a buffer if the formatting fails."
+  (interactive "p")
+  (if (region-active-p)
+      (python-black-region (region-beginning) (region-end) display-errors)
+    (python-black-statement display-errors)))
 
 (defun python-black--command (beg end)
   "Helper to decide which command to run for span BEG to END."

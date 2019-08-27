@@ -20,6 +20,17 @@ DISPLAY-ERRORS is non-nil, shows a buffer if the formatting fails.
 
 \(fn &optional DISPLAY-ERRORS)" t nil)
 
+(autoload 'python-black-partial-dwim "python-black" "\
+Reformats the active region or the current statement.
+
+This runs ‘python-black-region’ or ‘python-black-statement’ depending
+on whether the region is currently active.
+
+When called interactively with a prefix argument, or when
+DISPLAY-ERRORS is non-nil, shows a buffer if the formatting fails.
+
+\(fn &optional DISPLAY-ERRORS)" t nil)
+
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "python-black" '("python-black-")))
 
 ;;;***
