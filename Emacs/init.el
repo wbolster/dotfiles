@@ -2990,6 +2990,7 @@ defined as lowercase."
   (global-flycheck-mode)
 
   (add-hook 'flycheck-before-syntax-check-hook 'direnv--maybe-update-environment)
+  (add-hook 'flycheck-error-list-after-refresh-hook 'w--flycheck-hide-error-list-header)
 
   (w--make-hydra w--hydra-flycheck nil
     "flycheck"
@@ -3014,7 +3015,13 @@ defined as lowercase."
     (let ((buffer (get-buffer flycheck-error-list-buffer)))
       (if (and buffer (get-buffer-window buffer))
           (quit-windows-on buffer)
-        (flycheck-list-errors)))))
+        (flycheck-list-errors))))
+
+  (defun w--flycheck-hide-error-list-header ()
+    "Hide the error list header line."
+    (when-let ((buffer (get-buffer "*Flycheck errors*")))
+      (with-current-buffer buffer
+        (setq header-line-format nil)))))
 
 (use-package flycheck-color-mode-line
   :demand t
