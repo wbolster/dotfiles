@@ -1,10 +1,13 @@
-;;; balanced-windows-mode.el --- Keep windows balanced -*- lexical-binding: t; -*-
+;;; balanced-windows.el --- Keep windows balanced -*- lexical-binding: t; -*-
 
 ;; Author: wouter bolsterlee <wouter@bolsterl.ee>
 ;; Keywords: convenience
+;; Package-Version: 20190828.1134
 ;; URL: https://github.com/wbolster/emacs-balanced-windows
 ;; Package-Requires: ((emacs "25"))
 ;; Version: 1.0.0
+
+;; Copyright 2019 wouter bolsterlee. Licensed under the 3-Clause BSD License.
 
 ;;; Commentary:
 
@@ -14,7 +17,7 @@
 
 (defgroup balanced-windows nil
   "Keep windows balanced."
-  :group 'convenience
+  :group 'windows
   :prefix "balanced-windows-")
 
 (defcustom balanced-windows-functions
@@ -37,8 +40,8 @@
       (advice-remove fn 'balanced-windows--advice)))
   (when balanced-windows-mode
     (balance-windows))
-  (when (boundp 'evil-mode)
+  (when (featurep 'evil)
     (setq evil-auto-balance-windows balanced-windows-mode)))
 
-(provide 'balanced-windows-mode)
-;;; balanced-windows-mode.el ends here
+(provide 'balanced-windows)
+;;; balanced-windows.el ends here
