@@ -3607,6 +3607,9 @@ defined as lowercase."
     ("i" markdown-insert-image)
     "_n_umber"
     ("n" markdown-cleanup-list-numbers)
+    "_p_review"
+    ("p" markdown-preview)
+    ("P" markdown-live-preview-mode)
     "_q_uote"
     ("q" w--markdown-blockquote-dwim))
 
