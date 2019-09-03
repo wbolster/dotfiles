@@ -2223,7 +2223,6 @@ defined as lowercase."
     (fit-window-to-buffer window 10)))
 
 (use-package balanced-windows
-  :quelpa (balanced-windows :fetcher github :repo "wbolster/emacs-balanced-windows")
   :config
   (balanced-windows-mode))
 

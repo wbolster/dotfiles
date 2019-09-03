@@ -2,7 +2,7 @@
 
 ;; Author: wouter bolsterlee <wouter@bolsterl.ee>
 ;; Keywords: convenience
-;; Package-Version: 20190828.1134
+;; Package-Version: 20190903.549
 ;; URL: https://github.com/wbolster/emacs-balanced-windows
 ;; Package-Requires: ((emacs "25"))
 ;; Version: 1.0.0
@@ -14,6 +14,7 @@
 ;; Automatically keep windows balanced.
 
 ;;; Code:
+(defvar evil-auto-balance-windows)
 
 (defgroup balanced-windows nil
   "Keep windows balanced."
@@ -36,8 +37,8 @@
   :global t
   (dolist (fn balanced-windows-functions)
     (if balanced-windows-mode
-        (advice-add fn :after 'balanced-windows--advice)
-      (advice-remove fn 'balanced-windows--advice)))
+        (advice-add fn :after #'balanced-windows--advice)
+      (advice-remove fn #'balanced-windows--advice)))
   (when balanced-windows-mode
     (balance-windows))
   (when (featurep 'evil)
