@@ -37,11 +37,11 @@ Typically, a major mode hook should set this buffer-local variable."
     (funcall-interactively fun display-errors)))
 
 ;;;###autoload
-(defun reformatter-dwim-on-save-mode (&optional arg)
+(define-minor-mode reformatter-dwim-on-save-mode
   "Toggle automatic reformatting when saving."
-  (interactive "p")
+  nil nil nil
   (let ((fun (reformatter-dwim--command 'on-save-mode)))
-    (funcall-interactively fun arg)))
+    (funcall fun 'toggle)))
 
 ;;;###autoload
 (evil-define-operator reformatter-dwim-evil (beg end _type)
