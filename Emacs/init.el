@@ -3700,6 +3700,8 @@ defined as lowercase."
     (evil-swap-keys-swap-underscore-dash)
     (origami-mode)
     (python-docstring-mode)
+    (w--add-evil-surround-pairs
+     ?` '("``" . "``")) ;; for reStructuredText literals in docstrings
     (evil-add-to-alist
      'origami-parser-alist
      'python-mode 'w--origami-parser-imenu-flat))
