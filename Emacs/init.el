@@ -3579,9 +3579,9 @@ defined as lowercase."
     (w--add-evil-surround-pairs
      ?b '("**" . "**")  ;; strong emphasiss
      ?c '("`" . "`")  ;; inline code
-     ?e '("*" . "*")  ;; emphasis
-     (make-local-variable 'typo-mode-map)
-     (define-key typo-mode-map "`" nil)))
+     ?e '("*" . "*"))  ;; emphasis
+    (make-local-variable 'typo-mode-map)
+    (define-key typo-mode-map "`" nil))
 
   (add-hook 'markdown-mode-hook 'w--markdown-mode-hook)
 
