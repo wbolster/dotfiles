@@ -2894,11 +2894,10 @@ defined as lowercase."
    "e" #'vdiff-magit-dwim
    "E" #'vdiff-magit-popup)
   :config
-  ;; todo: migrate to transient.el?
-  (magit-define-popup-action 'magit-dispatch-popup
-    ?v "vdiff dwim" 'vdiff-magit-dwim)
-  (magit-define-popup-action 'magit-dispatch-popup
-    ?V "Change vdiff" 'vdiff-magit-popup)
+  (transient-suffix-put 'magit-dispatch "e" :description "vdiff (dwim)")
+  (transient-suffix-put 'magit-dispatch "e" :command 'vdiff-magit-dwim)
+  (transient-suffix-put 'magit-dispatch "E" :description "vdiff")
+  (transient-suffix-put 'magit-dispatch "E" :command 'vdiff-magit)
 
   (w--make-hydra w--hydra-vdiff nil
     "vdiff"
