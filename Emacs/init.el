@@ -427,7 +427,7 @@ defined as lowercase."
 (define-transient-command w--buffer-dispatch ()
   ["buffer"
    [("b" "switch" ivy-switch-buffer)
-    ("B" "switch ↗"ivy-switch-buffer-other-window)]
+    ("B" "switch ↗" ivy-switch-buffer-other-window)]
    [("n" "new" evil-buffer-new)
     ("N" "new ↗" w--evil-buffer-new-other-window) ]
    [("c" "clone" clone-indirect-buffer)
