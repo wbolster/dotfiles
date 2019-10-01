@@ -1,5 +1,11 @@
 ;;; reformatter-dwim.el --- dwim reformatter helpers -*- lexical-binding: t; -*-
 
+;;; Commentary:
+
+;; Several do-what-i-mean helpers for reformatter.el based formatters.
+
+;;; Code:
+
 (require 'subr-x)
 (require 'evil)
 (require 'reformatter)
@@ -24,14 +30,20 @@ Typically, a major mode hook should set this buffer-local variable."
 
 ;;;###autoload
 (defun reformatter-dwim-region (beg end &optional display-errors)
-  "Reformat the region from BEG to END."
+  "Reformat the region from BEG to END.
+
+When called interactively, or with prefix argument
+DISPLAY-ERRORS, shows a buffer if the formatting fails."
   (interactive "rp")
   (let ((fun (reformatter-dwim--command 'region)))
     (funcall-interactively fun beg end display-errors)))
 
 ;;;###autoload
 (defun reformatter-dwim-buffer (&optional display-errors)
-  "Reformat the current buffer."
+  "Reformat the current buffer.
+
+When called interactively, or with prefix argument
+DISPLAY-ERRORS, shows a buffer if the formatting fails."
   (interactive "p")
   (let ((fun (reformatter-dwim--command 'buffer)))
     (funcall-interactively fun display-errors)))
@@ -50,6 +62,10 @@ Typically, a major mode hook should set this buffer-local variable."
   :repeat nil
   (interactive "<R>")
   (reformatter-dwim-region beg end))
+
+(defun reformatter-dwim-select (formatter)
+  "Use the FORMATTER (a symbol) for ‘dwim’ formatting."
+  (setq reformatter-dwim-reformatter formatter))
 
 (defun reformatter-dwim--command (suffix)
   "Get the currently configured reformatter function.
