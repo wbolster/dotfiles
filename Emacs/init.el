@@ -4263,7 +4263,8 @@ defined as lowercase."
     (modify-syntax-entry ?< ".")
     (modify-syntax-entry ?> ".")
     (modify-syntax-entry ?/ ".")
-    (modify-syntax-entry ?: "_")))
+    (modify-syntax-entry ?: "_")
+    (reformatter-dwim-select 'xml-format)))
 
 (use-package xml-format
   :load-path "lisp/"
