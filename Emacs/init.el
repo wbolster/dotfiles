@@ -3012,10 +3012,10 @@ defined as lowercase."
   (defun w--flycheck-toggle-error-window ()
     "Show or hide the flycheck error list."
     (interactive)
-    (let ((buffer (get-buffer flycheck-error-list-buffer)))
-      (if (and buffer (get-buffer-window buffer))
-          (quit-windows-on buffer)
-        (flycheck-list-errors))))
+    (if-let* ((buffer (get-buffer flycheck-error-list-buffer))
+              (window (get-buffer-window buffer)))
+        (quit-windows-on buffer)
+      (flycheck-list-errors)))
 
   (defun w--flycheck-hide-error-list-header ()
     "Hide the error list header line."
