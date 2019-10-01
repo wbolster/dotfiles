@@ -2992,16 +2992,25 @@ defined as lowercase."
   (add-hook 'flycheck-before-syntax-check-hook 'direnv--maybe-update-environment)
   (add-hook 'flycheck-error-list-after-refresh-hook 'w--flycheck-hide-error-list-header)
 
-  (w--make-hydra w--hydra-flycheck nil
-    "flycheck"
-    "_c_ errors"
-    ("c" w--flycheck-toggle-error-window)
-    "_n_/_e_/_p_ nav"
-    ("n" flycheck-next-error nil :exit nil)
-    ("e" flycheck-previous-error nil :exit nil)
-    ("p" flycheck-previous-error nil :exit nil)
-    "_t_oggle"
-    ("t" flycheck-mode))
+  (define-transient-command w--flycheck-dispatch ()
+    ["flycheck"
+     [("c" "show/hide" w--flycheck-toggle-error-window)]
+     [("t" "toggle" flycheck-mode)]]
+    ["nav"
+     [("n" "next" flycheck-next-error :transient t)]
+     [("e" "previous" flycheck-previous-error :transient t)]
+     [("p" "previous" flycheck-previous-error :transient t)]]
+    ["setup"
+     [("s" "select checker" flycheck-select-checker)]
+     [("v" "verify" flycheck-verify-setup)]]
+    ["misc"
+     [("!" "as compile" w--flycheck-compile-current)]
+     [("o" "other as compile" flycheck-compile)]])
+
+  (defun w--flycheck-compile-current ()
+    "Run ‘flycheck-compile’ using the current checker."
+    (interactive)
+    (flycheck-compile flycheck-checker))
 
   (defun w--flycheck-last-error ()
     "Jump to the last flycheck error."
@@ -3099,7 +3108,7 @@ defined as lowercase."
   "_b_uffer"
   ("b" w--buffer-dispatch)
   "_c_heck"
-  ("c" w--hydra-flycheck/body)
+  ("c" w--flycheck-dispatch)
   "_d_iff"
   ("d" w--hydra-vdiff/body)
   "_f_ind"
