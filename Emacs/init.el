@@ -3701,6 +3701,8 @@ defined as lowercase."
     (python-docstring-mode)
     (w--add-evil-surround-pairs
      ?` '("``" . "``")) ;; for reStructuredText literals in docstrings
+    (when (flycheck-locate-config-file flycheck-python-mypy-ini 'python-mypy)
+      (flycheck-select-checker 'python-mypy))
     (evil-add-to-alist
      'origami-parser-alist
      'python-mode 'w--origami-parser-imenu-flat))
