@@ -3535,8 +3535,8 @@ defined as lowercase."
     (setq
      tab-width 2
      evil-shift-width tab-width
-     js-indent-level tab-width
-     reformatter-dwim-reformatter 'jq-format-json)
+     js-indent-level tab-width)
+    (reformatter-dwim-select 'jq-format-json)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-double-single-quotes))
   (add-hook 'json-mode-hook #'w--json-mode-hook))
@@ -3692,7 +3692,7 @@ defined as lowercase."
   (defun w--python-mode-hook ()
     (setq fill-column 79)
     (setq-local comment-fill-column 72)
-    (setq reformatter-dwim-reformatter 'python-black)
+    (reformatter-dwim-select 'python-black)
     (modify-syntax-entry ?_ "w")
     (w--set-major-mode-hydra #'w--hydra-python/body)
     (evil-swap-keys-swap-colon-semicolon)
@@ -4241,7 +4241,7 @@ defined as lowercase."
   :config
   (defun w--sql-mode-hook ()
     (setq evil-shift-width 2)
-    (setq reformatter-dwim-reformatter 'sqlformat))
+    (reformatter-dwim-select 'sqlformat))
   (add-hook 'sql-mode-hook 'w--sql-mode-hook))
 
 (use-package sqlformat
