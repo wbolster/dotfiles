@@ -2722,7 +2722,8 @@ defined as lowercase."
    "SPC" nil
    "DEL" nil)
   (:keymaps 'magit-hunk-section-map
-   "<return>" #'magit-diff-visit-file-other-window)
+   "<return>" #'magit-diff-visit-file-other-window
+   "C-<return>" #'magit-diff-visit-worktree-file-other-window)
   (:keymaps '(magit-diff-mode-map
               magit-log-mode-map
               magit-process-mode-map
