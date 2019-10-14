@@ -1108,6 +1108,8 @@ defined as lowercase."
    "gX" 'evil-exchange-cancel))
 
 (use-package evil-goggles
+  :demand
+  :after magit
   :delight
   :custom
   (evil-goggles-duration 1)
