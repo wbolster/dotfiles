@@ -1596,22 +1596,22 @@ defined as lowercase."
      'symbol-overlay-default-face nil
      :foreground solarized-color-magenta
      :inherit 'unspecified)
-    (--zip-with
-     (set-face-attribute
-      it nil
-      :foreground "#fdf6e3"
-      :foreground "#002b36"
-      :foreground (face-attribute 'default :background)
-      :background other)
-     symbol-overlay-faces
-     (list solarized-color-yellow-l
-           solarized-color-orange-l
-           solarized-color-red-l
-           solarized-color-magenta-l
-           solarized-color-violet-l
-           solarized-color-blue-l
-           solarized-color-cyan-l
-           solarized-color-green-l)))
+    (let ((solarized-colors
+           (list solarized-color-yellow-l
+                 solarized-color-orange-l
+                 solarized-color-red-l
+                 solarized-color-magenta-l
+                 solarized-color-violet-l
+                 solarized-color-blue-l
+                 solarized-color-cyan-l
+                 solarized-color-green-l)))
+      (--zip-with
+       (set-face-attribute
+        it nil
+        :foreground (face-attribute 'default :background)
+        :background other)
+       symbol-overlay-faces
+       solarized-colors)))
 
   (defun w--symbol-overlay-put-dwim ()
     "Toggle highlighting of the symbol at point (or the active region's content)."
