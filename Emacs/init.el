@@ -2996,18 +2996,17 @@ defined as lowercase."
 
   (define-transient-command w--flycheck-dispatch ()
     ["flycheck"
-     [("c" "show/hide" w--flycheck-toggle-error-window)]
-     [("t" "toggle" flycheck-mode)]]
-    ["nav"
-     [("n" "next" flycheck-next-error :transient t)]
-     [("e" "previous" flycheck-previous-error :transient t)]
-     [("p" "previous" flycheck-previous-error :transient t)]]
+     [("c" "toggle error window" w--flycheck-toggle-error-window)
+      ("C" "toggle checking" flycheck-mode)]
+     [("m" "compile" w--flycheck-compile-current)
+      ("M" "compile other" flycheck-compile)]]
     ["setup"
      [("s" "select checker" flycheck-select-checker)]
-     [("v" "verify" flycheck-verify-setup)]]
-    ["misc"
-     [("!" "as compile" w--flycheck-compile-current)]
-     [("o" "other as compile" flycheck-compile)]])
+     [("v" "verify setup" flycheck-verify-setup)]]
+    ["navigation"
+     [("n" "next" flycheck-next-error :transient t)]
+     [("e" "previous" flycheck-previous-error :transient t)]
+     [("p" "previous" flycheck-previous-error :transient t)]])
 
   (defun w--flycheck-compile-current ()
     "Run ‘flycheck-compile’ using the current checker."
