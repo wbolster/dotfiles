@@ -45,6 +45,7 @@
 
 (use-package use-package
   :custom
+  (use-package-hook-name-suffix nil)
   (use-package-always-ensure t)
   (use-package-compute-statistics t))
 
@@ -64,9 +65,10 @@
 ;;; Helpers
 
 (use-package benchmark-init
+  :demand
+  :hook (after-init-hook . benchmark-init/deactivate)
   :config
-  (benchmark-init/activate)
-  (add-hook 'after-init-hook 'benchmark-init/deactivate))
+  (benchmark-init/activate))
 
 (use-package crux)
 
@@ -154,6 +156,7 @@ and BODY can refer to it as ‘arg’."
 ;;; Basics
 
 (use-package emacs
+  :hook (emacs-startup-hook . w--load-custom-file)
   :custom
   (disabled-command-function nil)
   (echo-keystrokes 0.5)
@@ -167,9 +170,7 @@ and BODY can refer to it as ‘arg’."
 
   (defun w--load-custom-file ()
     "Load the file with automatically saved customization settings."
-    (load custom-file 'noerror))
-
-  (add-hook 'emacs-startup-hook #'w--load-custom-file))
+    (load custom-file 'noerror)))
 
 (use-package agitprop
   :load-path "lisp/"
@@ -356,8 +357,9 @@ defined as lowercase."
    "'" nil
    "/" #'ranger-search)
 
+  :hook (ranger-mode-hook . w--evil-colemak-basics-disable)
+
   :config
-  (add-hook 'ranger-mode-hook #'w--evil-colemak-basics-disable)
   (with-eval-after-load 'direnv
     (add-to-list 'direnv-non-file-modes 'ranger-mode))
 
@@ -468,6 +470,8 @@ defined as lowercase."
 (defvar w--light-theme 'solarized-light "The preferred light theme.")
 
 (use-package solarized-theme
+  :demand t
+  :hook (emacs-startup-hook . w--set-theme-from-environment)
   :custom
   (solarized-emphasize-indicators nil)
   (solarized-scale-org-headlines nil)
@@ -547,8 +551,6 @@ defined as lowercase."
   (interactive)
   (w--activate-theme (file-exists-p "~/.config/dark-theme")))
 
-(add-hook 'emacs-startup-hook #'w--set-theme-from-environment)
-
 (defun w--tweak-evil-cursor ()
   (setq
    evil-motion-state-cursor (list solarized-color-yellow 'box)
@@ -565,6 +567,8 @@ defined as lowercase."
 
 (use-package default-text-scale
   :demand t
+  :if (display-graphic-p)
+  :hook (after-init-hook . w--default-text-scale-reset)
   :general
   (:states 'motion
    "C-0" 'w--default-text-scale-reset
@@ -572,9 +576,6 @@ defined as lowercase."
    "C-=" 'default-text-scale-increase)
 
   :config
-  (when (display-graphic-p)
-    (add-hook 'after-init-hook #'w--default-text-scale-reset))
-
   (defvar w--default-text-scale-height
     (face-attribute 'default :height)  ;; inherit from startup environment
     "The default text scale height.")
@@ -612,6 +613,9 @@ defined as lowercase."
   (sml/name-width '(1 . 40))
   (sml/projectile-replacement-format "%s:")
   (sml/use-projectile-p 'before-prefixes)
+
+  :hook (w--theme-changed-hook . w--smart-mode-line-tweak-faces)
+
   :config
   (sml/setup)
 
@@ -620,9 +624,7 @@ defined as lowercase."
     (set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
     (set-face-attribute 'header-line nil :background 'unspecified :inherit 'mode-line)
     (set-face-attribute 'sml/modified nil :foreground solarized-color-red)
-    (set-face-attribute 'sml/filename nil :foreground solarized-color-blue))
-
-  (add-hook 'w--theme-changed-hook #'w--smart-mode-line-tweak-faces t))
+    (set-face-attribute 'sml/filename nil :foreground solarized-color-blue)))
 
 (use-package which-func
   :ensure nil
@@ -856,6 +858,10 @@ defined as lowercase."
     (w--evil-visual-restore-line-wise)))
 
 (use-package edit-indirect
+  :hook
+  (edit-indirect-after-creation-hook . w--edit-indirect-dedent)
+  (edit-indirect-before-commit-hook . w--edit-indirect-reindent)
+
   :general
   (:states 'normal
    "gb" #'w--evil-edit-indirect)
@@ -882,10 +888,7 @@ defined as lowercase."
 
   (evil-define-operator w--evil-edit-indirect (beg end _type)
     (interactive "<R>")
-    (edit-indirect-region beg end t))
-
-  (add-hook 'edit-indirect-after-creation-hook #'w--edit-indirect-dedent t)
-  (add-hook 'edit-indirect-before-commit-hook #'w--edit-indirect-reindent t))
+    (edit-indirect-region beg end t)))
 
 (use-package evil-args
   :general
@@ -1444,6 +1447,7 @@ defined as lowercase."
       ("Q" "replace regexp"query-replace-regexp)]]))
 
 (use-package emacs  ;; occur
+  :hook (occur-mode-hook . w--occur-mode-hook)
   :general
   (:keymaps 'occur-mode-map
    :states '(motion normal)
@@ -1457,7 +1461,6 @@ defined as lowercase."
   (defun w--occur-mode-hook ()
     (toggle-truncate-lines t)
     (w--set-major-mode-hydra #'w--hydra-occur/body))
-  (add-hook 'occur-mode-hook #'w--occur-mode-hook)
 
   (w--make-hydra w--hydra-occur nil
     "occur"
@@ -1506,6 +1509,7 @@ defined as lowercase."
   :custom
   (ag-project-root-function 'projectile-project-root)
   (ag-reuse-buffers t)
+  :hook (ag-mode-hook . w--ag-mode-hook)
   :commands
   w--hydra-ag/body
   w--counsel-ag-project
@@ -1517,7 +1521,6 @@ defined as lowercase."
   :config
   (defun w--ag-mode-hook ()
     (toggle-truncate-lines t))
-  (add-hook 'ag-mode-hook #'w--ag-mode-hook)
   (w--make-hydra w--hydra-ag nil
     "ag"
     "_a_ project"
@@ -1571,7 +1574,7 @@ defined as lowercase."
   :demand t
   :delight
   :after beacon
-
+  :hook (w--theme-changed-hook . w--symbol-overlay-tweak-faces)
   :custom
   (symbol-overlay-idle-time 1.0)
 
@@ -1607,8 +1610,6 @@ defined as lowercase."
            solarized-color-blue-l
            solarized-color-cyan-l
            solarized-color-green-l)))
-
-  (add-hook 'w--theme-changed-hook #'w--symbol-overlay-tweak-faces t)
 
   (defun w--symbol-overlay-put-dwim ()
     "Toggle highlighting of the symbol at point (or the active region's content)."
@@ -1796,11 +1797,7 @@ defined as lowercase."
   (visual-line-mode (:eval (unless w--wrap-lines-mode " ⇉"))))
 
 (use-package adaptive-wrap
-  :defer t
-  :init
-  (add-hook 'visual-line-mode-hook #'w--maybe-activate-adaptive-wrap-prefix-mode)
-  :commands
-  w--maybe-activate-adaptive-wrap-prefix-mode
+  :hook (visual-line-mode-hook . w--maybe-activate-adaptive-wrap-prefix-mode)
   :config
   (defun w--maybe-activate-adaptive-wrap-prefix-mode ()
     (when (derived-mode-p 'text-mode)
@@ -2096,13 +2093,13 @@ defined as lowercase."
   :custom
   (beacon-blink-when-point-moves-vertically 5)
   (beacon-size 20)
+  :hook (w--theme-changed-hook . w--beacon-tweak-faces)
   :config
   (add-to-list 'beacon-dont-blink-predicates 'region-active-p)
   (beacon-mode)
   (defun w--beacon-tweak-faces ()
     (setq beacon-color
-          (face-attribute 'lazy-highlight :background nil t)))
-  (add-hook 'w--theme-changed-hook #'w--beacon-tweak-faces t))
+          (face-attribute 'lazy-highlight :background nil t))))
 
 (use-package dired
   :ensure nil
@@ -2498,6 +2495,8 @@ defined as lowercase."
 (use-package company
   :delight
   :defer t
+  :hook (w--theme-changed-hook . w--company-tweak-faces)
+
   :general
   (:states 'insert
    "C-<return>" #'company-manual-begin
@@ -2528,7 +2527,6 @@ defined as lowercase."
 
   (defun w--company-tweak-faces ()
     (set-face-attribute 'company-tooltip-selection nil :inherit 'region))
-  (add-hook 'w--theme-changed-hook #'w--company-tweak-faces t)
 
   (defun w--indent-or-complete ()
     (interactive)
@@ -2553,6 +2551,7 @@ defined as lowercase."
 (use-package ivy
   :demand t
   :delight
+  :hook (window-size-change-functions . w--adjust-ivy-height)
   :general
   (:keymaps 'ivy-minibuffer-map
    "C-h" 'ivy-backward-delete-char
@@ -2568,7 +2567,6 @@ defined as lowercase."
   (ivy-wrap t)
   :config
   (ivy-mode 1)
-  (add-hook 'window-size-change-functions #'w--adjust-ivy-height)
   (defun w--clamp-number (num low high)
     "Clamp NUM between LOW and HIGH."
     (min high (max num low)))
@@ -2695,8 +2693,8 @@ defined as lowercase."
   :demand t
   :after magit
   :hook
-  (magit-log-mode . w--evil-colemak-basics-disable)
-  (magit-status-mode . w--evil-colemak-basics-disable)
+  (magit-log-mode-hook . w--evil-colemak-basics-disable)
+  (magit-status-mode-hook . w--evil-colemak-basics-disable)
   :general
   ;; todo: make ,q use the various magit-*-bury-buffer functions, then
   ;; unbind q to force ,q usage.
@@ -2737,8 +2735,7 @@ defined as lowercase."
   :demand t
   :ensure nil  ;; included with magit
   :after magit evil-magit
-  :hook
-  (git-rebase-mode . w--evil-colemak-basics-disable)
+  :hook (git-rebase-mode-hook . w--evil-colemak-basics-disable)
   :general
   (:keymaps 'git-rebase-mode-map
    :states '(normal visual)
@@ -2794,11 +2791,11 @@ defined as lowercase."
   :defer t
   :custom
   (git-commit-fill-column 72)
+  :hook (git-commit-mode-hook . w--git-commit-mode-hook)
   :config
   (defun w--git-commit-mode-hook ()
     (when git-commit-mode
-      (w--wrap-lines-mode -1)))
-  (add-hook 'git-commit-mode-hook #'w--git-commit-mode-hook))
+      (w--wrap-lines-mode -1))))
 
 (use-package git-link
   :defer t
@@ -2807,7 +2804,8 @@ defined as lowercase."
 
 (use-package diff-hl
   :hook
-  (magit-post-refresh . diff-hl-magit-post-refresh)
+  (magit-post-refresh-hook . diff-hl-magit-post-refresh)
+  (diff-hl-mode-hook . diff-hl-update)
   :commands
   w--diff-hl-next-hunk
   w--diff-hl-previous-hunk
@@ -2827,7 +2825,6 @@ defined as lowercase."
   (defun w--diff-hl-update-around-advice (fn &rest args)
     (let ((vc-handled-backends '(Git)))
       (apply fn args)))
-  (add-hook 'diff-hl-mode-hook #'diff-hl-update)
   (advice-add 'diff-hl-update :around #'w--diff-hl-update-around-advice))
 
 (use-package ediff
@@ -2986,11 +2983,12 @@ defined as lowercase."
    "p" #'flycheck-error-list-previous-error
    "<return>" #'flycheck-error-list-goto-error)
 
+  :hook
+  (flycheck-before-syntax-check-hook . direnv--maybe-update-environment)
+  (flycheck-error-list-after-refresh-hook . w--flycheck-hide-error-list-header)
+
   :config
   (global-flycheck-mode)
-
-  (add-hook 'flycheck-before-syntax-check-hook 'direnv--maybe-update-environment)
-  (add-hook 'flycheck-error-list-after-refresh-hook 'w--flycheck-hide-error-list-header)
 
   (define-transient-command w--flycheck-dispatch ()
     ["flycheck"
@@ -3035,8 +3033,7 @@ defined as lowercase."
 (use-package flycheck-color-mode-line
   :demand t
   :after flycheck
-  :hook
-  (flycheck-mode . flycheck-color-mode-line-mode))
+  :hook (flycheck-mode-hook . flycheck-color-mode-line-mode))
 
 ;;;; toggles
 
@@ -3209,12 +3206,12 @@ defined as lowercase."
 (use-package text-mode
   :ensure nil
   :defer t
+  :hook (text-mode-hook . w--text-mode-hook)
   :config
   (defun w--text-mode-hook ()
     (w--show-trailing-whitespace-mode)
     (guess-language-mode)
-    (w--wrap-lines-mode))
-  (add-hook 'text-mode-hook 'w--text-mode-hook))
+    (w--wrap-lines-mode)))
 
 
 ;;; Major mode: programming (generic)
@@ -3234,6 +3231,7 @@ defined as lowercase."
 (use-package prog-mode
   :ensure nil
   :defer t
+  :hook (prog-mode-hook . w--prog-mode-hook)
   :config
   (defun w--prog-mode-hook ()
     (setq-local comment-auto-fill-only-comments t)
@@ -3244,21 +3242,20 @@ defined as lowercase."
     (highlight-parentheses-mode)
     (indent-guide-mode)
     (symbol-overlay-mode)
-    (w--show-trailing-whitespace-mode))
-  (add-hook 'prog-mode-hook 'w--prog-mode-hook))
+    (w--show-trailing-whitespace-mode)))
 
 
 ;;; Major mode: c
 
 (use-package cc-mode
   :defer t
+  :hook (c-mode-hook . w--c-mode-hook)
   :config
   (defun w--c-mode-hook ()
     (setq evil-shift-width 2)
     (evil-swap-keys-swap-double-single-quotes)
     (evil-swap-keys-swap-square-curly-brackets)
-    (evil-swap-keys-swap-underscore-dash))
-  (add-hook 'c-mode-hook 'w--c-mode-hook))
+    (evil-swap-keys-swap-underscore-dash)))
 
 
 ;;; Major mode: compilation and comint
@@ -3273,6 +3270,10 @@ defined as lowercase."
    "C-e" #'compilation-previous-error
    "C-n" #'compilation-next-error
    "C-p" #'compilation-previous-error)
+
+  :hook
+  (compilation-mode-hook . w--compilation-mode-hook)
+  (compilation-finish-functions . w--compilation-finished)
 
   :config
   (w--make-hydra w--hydra-compilation nil
@@ -3289,13 +3290,10 @@ defined as lowercase."
     (w--set-major-mode-hydra #'w--hydra-compilation/body)
     (w--compilation-use-xterm-color-filter)
     (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom))
-  (add-hook 'compilation-mode-hook #'w--compilation-mode-hook)
 
   (defun w--compilation-finished (buffer _status)
     (with-current-buffer buffer
-      (evil-normal-state)))
-
-  (add-hook 'compilation-finish-functions #'w--compilation-finished))
+      (evil-normal-state))))
 
 (use-package comint
   :defer t
@@ -3319,9 +3317,11 @@ defined as lowercase."
    "C-n" #'comint-next-input
    "C-p" #'comint-previous-input)
 
+  :hook
+  (comint-mode-hook . w--compilation-mode-hook)
+
   :config
   (evil-set-initial-state 'comint-mode 'normal)
-  (add-hook 'comint-mode-hook #'w--compilation-mode-hook)
 
   (defun w--comint-find-file-or-goto-end ()
     (interactive)
@@ -3385,6 +3385,7 @@ defined as lowercase."
    "I" 'lispyville-forward-sexp
    "(" 'lispyville-left
    ")" 'lispyville-right)
+  :hook (emacs-lisp-mode-hook . w--emacs-lisp-mode-hook)
 
   :config
   (defun w--emacs-lisp-mode-hook ()
@@ -3399,7 +3400,6 @@ defined as lowercase."
     (highlight-parentheses-mode -1)
     (rainbow-delimiters-mode))
 
-  (add-hook 'emacs-lisp-mode-hook 'w--emacs-lisp-mode-hook)
   (add-to-list 'which-func-modes 'emacs-lisp-mode)
 
   (w--make-hydra w--hydra-emacs-lisp nil
@@ -3486,10 +3486,10 @@ defined as lowercase."
   :general
   (:keymaps 'help-mode-map
    "q" nil)
+  :hook (help-mode-hook . w--help-mode-hook)
   :config
   (defun w--help-mode-hook ()
-    (setq evil-lookup-func 'w--helpful-evil-lookup-func))
-  (add-hook 'help-mode-hook 'w--help-mode-hook))
+    (setq evil-lookup-func 'w--helpful-evil-lookup-func)))
 
 
 ;;; Major mode: helpful
@@ -3508,12 +3508,12 @@ defined as lowercase."
    "S-<tab>" #'backward-button)
   :commands
   w--helpful-evil-lookup-func
+  :hook (helpful-mode-hook . w--helpful-mode-hook)
   :config
   (defun w--helpful-mode-hook ()
     (setq
      evil-lookup-func 'w--helpful-evil-lookup-func
      evil-shift-width 2))
-  (add-hook 'helpful-mode-hook 'w--helpful-mode-hook)
   (defun w--helpful-evil-lookup-func ()
     (call-interactively #'helpful-symbol)))
 
@@ -3522,11 +3522,12 @@ defined as lowercase."
 
 (use-package sgml-mode
   :defer t
+  :hook
+  (html-mode-hook . w--html-mode-hook)
+  (mhtml-mode-hook . w--html-mode-hook)
   :config
   (defun w--html-mode-hook ()
-    (setq evil-shift-width 2))
-  (add-hook 'html-mode-hook 'w--html-mode-hook)
-  (add-hook 'mhtml-mode-hook 'w--html-mode-hook))
+    (setq evil-shift-width 2)))
 
 ;;; Major mode: jinja
 
@@ -3539,6 +3540,7 @@ defined as lowercase."
 
 (use-package json-mode
   :defer t
+  :hook (json-mode-hook . w--json-mode-hook)
   :config
   (defun w--json-mode-hook ()
     (setq
@@ -3547,8 +3549,7 @@ defined as lowercase."
      js-indent-level tab-width)
     (reformatter-dwim-select 'jq-format-json)
     (evil-swap-keys-swap-colon-semicolon)
-    (evil-swap-keys-swap-double-single-quotes))
-  (add-hook 'json-mode-hook #'w--json-mode-hook))
+    (evil-swap-keys-swap-double-single-quotes)))
 
 (use-package jq-format
   :demand t
@@ -3578,6 +3579,9 @@ defined as lowercase."
    :states 'insert
    "'" #'w--typo-cycle-quotation-marks)
 
+  :hook
+  (markdown-mode-hook . w--markdown-mode-hook)
+
   :config
   (defun w--markdown-mode-hook ()
     (setq evil-shift-width 2)
@@ -3591,7 +3595,6 @@ defined as lowercase."
     (make-local-variable 'typo-mode-map)
     (define-key typo-mode-map "`" nil))
 
-  (add-hook 'markdown-mode-hook 'w--markdown-mode-hook)
 
   (evil-declare-repeat 'markdown-promote)
   (evil-declare-repeat 'markdown-demote)
@@ -3640,10 +3643,10 @@ defined as lowercase."
 
 (use-package org
   :defer t
+  :hook (org-mode-hook . w--org-mode-hook)
   :config
   (defun w--org-mode-hook ()
     (evil-org-mode))
-  (add-hook 'org-mode-hook 'w--org-mode-hook)
   :custom
   (org-ellipsis " [...]"))
 
@@ -3668,6 +3671,7 @@ defined as lowercase."
 (use-package python
   :defer t
   :interpreter ("python" . python-mode)
+  :hook (python-mode-hook . w--python-mode-hook)
   :mode ("\\.pyi\\'" . python-mode)
 
   :general
@@ -3715,7 +3719,6 @@ defined as lowercase."
     (evil-add-to-alist
      'origami-parser-alist
      'python-mode 'w--origami-parser-imenu-flat))
-  (add-hook 'python-mode-hook 'w--python-mode-hook)
 
   ;; todo: integrate this with the global easymotion hydra
   ;; (evilem-make-motion
@@ -3917,6 +3920,10 @@ defined as lowercase."
    :states 'motion
    "g r" #'python-pytest-repeat)
 
+  :hook
+  (python-pytest-mode-hook . w--python-pytest-mode-hook)
+  (python-pytest-finished-hook . evil-force-normal-state)
+
   :config
   (w--make-hydra w--hydra-python-pytest nil
     "python-pytest"
@@ -3940,9 +3947,6 @@ defined as lowercase."
     (when-let ((venv-path (getenv "VIRTUAL_ENV")))
       (add-to-list 'prettify-symbols-alist `(,venv-path . ?…)))
     (prettify-symbols-mode))
-  (add-hook 'python-pytest-mode-hook 'w--python-pytest-mode-hook)
-
-  (add-hook 'python-pytest-finished-hook #'evil-force-normal-state)
 
   (add-to-list 'company-dabbrev-code-modes 'python-pytest-mode)
 
@@ -3998,10 +4002,11 @@ defined as lowercase."
    "C-p" #'profiler-report-previous-entry
    "r" #'profiler-report-render-calltree
    "R" #'profiler-report-render-reversed-calltree)
+  :hook
+  (profiler-report-mode-hook . w--profiler-report-mode-hook)
   :config
   (defun w--profiler-report-mode-hook ()
     (setq evil-lookup-func 'w--helpful-evil-lookup-func))
-  (add-hook 'profiler-report-mode-hook 'w--profiler-report-mode-hook)
   (evil-set-initial-state 'profiler-report-mode 'motion))
 
 
@@ -4027,6 +4032,8 @@ defined as lowercase."
   (:keymaps 'rst-mode-map
    :states 'insert
    "'" #'w--typo-cycle-quotation-marks)
+
+  :hook (rst-mode-hook . w--rst-mode-hook)
 
   :config
   (defun w--rst-mode-hook ()
@@ -4061,8 +4068,6 @@ defined as lowercase."
     (general-define-key
      :keymaps 'evil-outer-text-objects-map
      "c" #'w--evil-rst-a-code-block))
-
-  (add-hook 'rst-mode-hook 'w--rst-mode-hook)
 
   (w--make-hydra w--hydra-rst nil
     "restructuredtext"
@@ -4210,6 +4215,7 @@ defined as lowercase."
 
 (use-package rust-mode
   :defer t
+  :hook (rust-mode-hook . w--rust-mode-hook)
   :config
   (defun w--rust-mode-hook ()
     (evil-swap-keys-swap-underscore-dash)
@@ -4218,8 +4224,7 @@ defined as lowercase."
     (origami-mode)
     (evil-add-to-alist
      'origami-parser-alist
-     'rust-mode 'w--origami-parser-imenu-flat))
-  (add-hook 'rust-mode-hook 'w--rust-mode-hook))
+     'rust-mode 'w--origami-parser-imenu-flat)))
 
 
 ;;; Major mode: shell
@@ -4229,10 +4234,10 @@ defined as lowercase."
   :mode
   ("bashrc\\'" . sh-mode)
   ("\\.bashrc-.*\\'" . sh-mode)
+  :hook (sh-mode-hook . w--sh-mode-hook)
   :config
   (defun w--sh-mode-hook ()
-    (evil-swap-keys-swap-pipe-backslash))
-  (add-hook 'sh-mode-hook 'w--sh-mode-hook))
+    (evil-swap-keys-swap-pipe-backslash)))
 
 
 ;;; Major mode: sql
@@ -4249,11 +4254,11 @@ defined as lowercase."
   (:keymaps 'sql-mode-map
    :states 'visual
    "Q" #'w--evil-sql-format)
+  :hook (sql-mode-hook . w--sql-mode-hook)
   :config
   (defun w--sql-mode-hook ()
     (setq evil-shift-width 2)
-    (reformatter-dwim-select 'sqlformat))
-  (add-hook 'sql-mode-hook 'w--sql-mode-hook))
+    (reformatter-dwim-select 'sqlformat)))
 
 (use-package sqlformat
   :demand t
@@ -4267,8 +4272,7 @@ defined as lowercase."
 (use-package nxml-mode
   :ensure nil
   :defer t
-  :hook
-  (nxml-mode . w--nxml-mode-hook)
+  :hook (nxml-mode-hook . w--nxml-mode-hook)
   :config
   (defun w--nxml-mode-hook ()
     (modify-syntax-entry ?< ".")
@@ -4287,12 +4291,12 @@ defined as lowercase."
 
 (use-package yaml-mode
   :defer t
+  :hook (yaml-mode-hook . w--yaml-mode-hook)
   :config
   (defun w--yaml-mode-hook ()
     (setq evil-shift-width yaml-indent-offset)
     (evil-swap-keys-swap-colon-semicolon)
-    (evil-swap-keys-swap-double-single-quotes))
-  (add-hook 'yaml-mode-hook 'w--yaml-mode-hook))
+    (evil-swap-keys-swap-double-single-quotes)))
 
 
 ;;; Local configuration
