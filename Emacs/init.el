@@ -2787,7 +2787,8 @@ defined as lowercase."
    "'" nil
    "h" 'forge-dispatch)
   :config
-  (transient-suffix-put 'magit-dispatch "@" :key "h")
+  (with-demoted-errors "%S"
+    (transient-suffix-put 'magit-dispatch "@" :key "h"))
   (transient-append-suffix 'forge-dispatch "f n" '("w" "web" git-link-homepage)))
 
 (use-package git-commit
