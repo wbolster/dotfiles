@@ -2998,6 +2998,7 @@ defined as lowercase."
     ["flycheck"
      [("c" "toggle error window" w--flycheck-toggle-error-window)
       ("C" "toggle checking" flycheck-mode)]
+     [("b" "buffer" flycheck-buffer)]
      [("m" "compile" w--flycheck-compile-current)
       ("M" "compile other" flycheck-compile)]]
     ["setup"
