@@ -119,6 +119,14 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot "'<Primary
 gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot-clip "'<Alt>Print'"
 gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot "'<Primary><Alt>Print'"
 
+#
+# apps and extensions
+#
+
+# nautilus
+gsettings set org.gnome.nautilus.preferences recursive-search "'never'"
+gsettings set org.gnome.nautilus.preferences default-folder-viewer "'list-view'"
+
 # extensions
 dconf write /org/gnome/shell/extensions/invert-window/invert-window-shortcut '["<Shift><Super>l"]'
 dconf write /org/gnome/shell/extensions/draw-on-your-screen/toggle-drawing '["<Super>d"]'
