@@ -1941,6 +1941,7 @@ defined as lowercase."
 (use-package reformatter)
 
 (use-package reformatter-dwim
+  :demand t
   :load-path "lisp/"
   :general
   (:states '(normal visual)
