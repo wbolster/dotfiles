@@ -1,5 +1,4 @@
 -- psql configuration
--- vim: ft=sql
 -- https://www.postgresql.org/docs/current/static/app-psql.html
 
 -- reduce noisy output on startup
