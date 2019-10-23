@@ -2988,6 +2988,7 @@ defined as lowercase."
    "<return>" #'flycheck-error-list-goto-error)
 
   :hook
+  (flycheck-mode-hook . w--flycheck-show-error-other-file-mode)
   (flycheck-before-syntax-check-hook . direnv--maybe-update-environment)
   (flycheck-error-list-after-refresh-hook . w--flycheck-hide-error-list-header)
 
@@ -2996,11 +2997,12 @@ defined as lowercase."
 
   (define-transient-command w--flycheck-dispatch ()
     ["flycheck"
+     [("b" "buffer" flycheck-buffer)
+      ("m" "compile" w--flycheck-compile-current)
+      ("M" "compile other" flycheck-compile)]
      [("c" "toggle error window" w--flycheck-toggle-error-window)
-      ("C" "toggle checking" flycheck-mode)]
-     [("b" "buffer" flycheck-buffer)]
-     [("m" "compile" w--flycheck-compile-current)
-      ("M" "compile other" flycheck-compile)]]
+      ("C" "toggle checking" flycheck-mode)
+      ("o" "toggle other file errors" w--flycheck-show-error-other-file-mode)]]
     ["setup"
      [("s" "select checker" flycheck-select-checker)]
      [("v" "verify setup" flycheck-verify-setup)]]
@@ -3027,6 +3029,13 @@ defined as lowercase."
               (window (get-buffer-window buffer)))
         (quit-windows-on buffer)
       (flycheck-list-errors)))
+
+  (define-minor-mode w--flycheck-show-error-other-file-mode
+    "Quickly toggle showing of errors from other files"
+    nil nil nil
+    (setq flycheck-relevant-error-other-file-show w--flycheck-show-error-other-file-mode)
+    (when flycheck-mode
+      (flycheck-buffer)))
 
   (defun w--flycheck-hide-error-list-header ()
     "Hide the error list header line."
