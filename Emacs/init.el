@@ -2206,24 +2206,15 @@ defined as lowercase."
   (switch-to-buffer-in-dedicated-window 'pop)
   (window-resize-pixelwise t)
 
-  (display-buffer-alist
-   '(("\\*Flycheck errors\\*" .
-      (display-buffer-in-side-window
-       (side . bottom)
-       (slot . 0)
-       (preserve-size . (nil . t))
-       (window-height . w--fit-window-to-buffer-max)
-       (window-parameters . ((no-other-window . t)
-                             (no-delete-other-windows . t)))))))
-
   :config
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
   (blink-cursor-mode -1)
 
-  (defun w--fit-window-to-buffer-max (window )
-    (fit-window-to-buffer window 10)))
+  (defun w--fit-bottom-error-window-to-buffer (window)
+    "Size request for a small error window at the bottom."
+    (fit-window-to-buffer window 10 5)))
 
 (use-package balanced-windows
   :config
@@ -2998,6 +2989,17 @@ defined as lowercase."
 
   :config
   (global-flycheck-mode)
+
+  (add-to-list
+   'display-buffer-alist
+   '("\\*Flycheck errors\\*" .
+     (display-buffer-in-side-window
+      (side . bottom)
+      (slot . 0)
+      (preserve-size . (nil . t))
+      (window-height . w--fit-bottom-error-window-to-buffer)
+      (window-parameters . ((no-other-window . t)
+                            (no-delete-other-windows . t))))))
 
   (define-transient-command w--flycheck-dispatch ()
     ["flycheck"
