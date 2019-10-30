@@ -471,6 +471,8 @@ defined as lowercase."
 
 (use-package solarized-theme
   :demand t
+  ;; TODO
+  ;; :if (display-graphic-p)
   :hook (emacs-startup-hook . w--set-theme-from-environment)
   :custom
   (solarized-emphasize-indicators nil)
