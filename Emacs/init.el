@@ -2111,6 +2111,9 @@ defined as lowercase."
    :states '(motion normal)
    "-" #'dired-jump))
 
+(use-package dired-x
+  :ensure nil)
+
 (defun w--declare-jump (command)
   "Declare COMMAND to be nonrepeatable."
   (evil-add-command-properties command :jump t))
