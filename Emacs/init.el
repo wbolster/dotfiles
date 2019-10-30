@@ -3729,6 +3729,7 @@ defined as lowercase."
     (w--set-major-mode-hydra #'w--hydra-python/body)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-underscore-dash)
+    (lispyville-mode)
     (origami-mode)
     (python-docstring-mode)
     (w--add-evil-surround-pairs
@@ -3894,9 +3895,9 @@ defined as lowercase."
     "Intelligently pick a statement or a character."
     (interactive "p")
     (cond
-     ((eq this-command 'evil-change)
+     ((memq this-command '(evil-change lispyville-change))
       (evil-text-object-python-inner-statement count))
-     ((memq this-command '(evil-delete evil-shift-left evil-shift-right))
+     ((memq this-command '(evil-delete evil-shift-left evil-shift-right lispyville-delete))
       (evil-text-object-python-outer-statement count))
      (t
       (evil-forward-char count)))))
