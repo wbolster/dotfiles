@@ -3448,13 +3448,13 @@ defined as lowercase."
 
 (use-package lispy
   :after elisp-mode
-  :delight " 🎂"
+  :delight
   :config
   (lispy-set-key-theme '(lispy)))
 
 (use-package lispyville
   :after elisp-mode
-  :delight
+  :delight " 🎂"
   :custom
   (lispyville-key-theme
    '(operators
