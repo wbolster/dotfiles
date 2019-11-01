@@ -2103,7 +2103,7 @@ defined as lowercase."
   :hook (w--theme-changed-hook . w--beacon-tweak-faces)
   :config
   (add-to-list 'beacon-dont-blink-predicates 'region-active-p)
-  (beacon-mode)
+  ;; (beacon-mode)
   (defun w--beacon-tweak-faces ()
     (setq beacon-color
           (face-attribute 'lazy-highlight :background nil t))))
@@ -2199,6 +2199,9 @@ defined as lowercase."
 
 (use-package emacs
   :custom
+  (blink-cursor-blinks 1)
+  (blink-cursor-delay .5)
+  (blink-cursor-interval .5)
   (default-frame-alist '((width . 160) (height . 48)))
   (fit-window-to-buffer-horizontally t)
   (frame-resize-pixelwise t)
@@ -2214,7 +2217,7 @@ defined as lowercase."
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
-  (blink-cursor-mode -1)
+  (blink-cursor-mode)
 
   (defun w--fit-bottom-error-window-to-buffer (window)
     "Size request for a small error window at the bottom."
