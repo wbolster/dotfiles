@@ -1174,6 +1174,8 @@ defined as lowercase."
   (:states 'operator
    "s" 'evil-surround-edit
    "S" 'evil-Surround-edit)
+  (:states 'normal
+   "S" 'evil-surround-region)
   (:states 'visual
    "S" 'evil-surround-region
    "gS" 'evil-Surround-region)
