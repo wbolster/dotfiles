@@ -3410,7 +3410,9 @@ defined as lowercase."
    "H" 'lispyville-backward-sexp
    "I" 'lispyville-forward-sexp
    "(" 'lispyville-left
-   ")" 'lispyville-right)
+   ")" 'lispyville-right
+   ">" 'lispyville->
+   "<" 'lispyville-<)
   :hook (emacs-lisp-mode-hook . w--emacs-lisp-mode-hook)
 
   :config
@@ -3468,8 +3470,7 @@ defined as lowercase."
      c-w
      prettify
      (atom-movement t)
-     commentary
-     slurp/barf-cp))
+     commentary))
   :config
   (lispyville-set-key-theme))
 
@@ -3736,6 +3737,7 @@ defined as lowercase."
     (w--set-major-mode-hydra #'w--hydra-python/body)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-underscore-dash)
+    (smartparens-mode -1)
     (lispyville-mode)
     (origami-mode)
     (python-docstring-mode)
