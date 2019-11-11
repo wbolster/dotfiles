@@ -8,6 +8,8 @@
 
 ;;; Startup
 
+(setq load-prefer-newer t)
+
 (progn
   ;; Reduce garbage collection during startup.
   (defvar w--original-gc-cons-threshold gc-cons-threshold
