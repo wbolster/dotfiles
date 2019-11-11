@@ -3943,7 +3943,8 @@ defined as lowercase."
   (python-pytest-arguments
    '("--color"
      "--failed-first"
-     "--maxfail=10"))
+     "--maxfail=10"
+     "--verbose"))
   :general
   (:keymaps 'python-pytest-mode-map
    :states 'motion
