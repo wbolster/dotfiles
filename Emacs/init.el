@@ -2479,7 +2479,7 @@ defined as lowercase."
 (use-package guess-language
   :defer t
   :custom
-  (guess-language-languages '(en de fr nl sv)))
+  (guess-language-languages '(en nl)))
 
 
 ;;;; completion
