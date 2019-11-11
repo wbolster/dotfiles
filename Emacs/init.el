@@ -3739,8 +3739,8 @@ defined as lowercase."
     (w--set-major-mode-hydra #'w--hydra-python/body)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-underscore-dash)
-    (smartparens-mode -1)
-    (lispyville-mode)
+    (smartparens-mode) ;; todo
+    ;; (lispyville-mode)
     (origami-mode)
     (python-docstring-mode)
     (w--add-evil-surround-pairs
