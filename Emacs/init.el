@@ -3863,20 +3863,22 @@ defined as lowercase."
   (w--make-hydra w--hydra-python nil
     "python"
     "_b_reakpoint"
-    ("b" w--python-insert-pdb-trace nil)
+    ("b" w--python-insert-pdb-trace)
+    "_c_overage"
+    ("c" python-coverage-overlay-mode)
     "_i_mport"
-    ("i" w--python-insert-import-statement nil)
+    ("i" w--python-insert-import-statement)
     "_l_ multi-line"
-    ("l" multi-line nil)
-    ("L" multi-line-single-line nil)
+    ("l" multi-line)
+    ("L" multi-line-single-line)
     "_r_epl"
-    ("r" (w--python-insert-ipython-repl 'after) nil)
-    ("R" (w--python-insert-ipython-repl 'before) nil)
+    ("r" (w--python-insert-ipython-repl 'after))
+    ("R" (w--python-insert-ipython-repl 'before))
     "_t_ pytest"
-    ("t" python-pytest-popup nil)
-    ("T" python-pytest-repeat nil)
+    ("t" python-pytest-popup)
+    ("T" python-pytest-repeat)
     "_v_ariable"
-    ("v" w--python-refactor-make-variable nil)))
+    ("v" w--python-refactor-make-variable)))
 
 (use-package lsp-python
   :disabled)
