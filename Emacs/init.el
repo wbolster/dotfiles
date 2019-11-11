@@ -2858,9 +2858,9 @@ defined as lowercase."
     "_a_ll"
     ("a" smerge-keep-all)))
 
-(use-package vc
-  :custom
-  (vc-handled-backends nil))
+(use-package vc)
+;; :custom
+;; (vc-handled-backends nil)
 
 (use-package vdiff
   :defer t
