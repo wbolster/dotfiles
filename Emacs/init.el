@@ -190,6 +190,18 @@ and BODY can refer to it as ‘arg’."
    'edit-server-url-major-mode-alist
    '("github\\.com" . markdown-mode)))
 
+(use-package savehist
+  :custom
+  (savehist-autosave-interval 60)
+  :config
+  (--each '(kill-ring
+            kmacro-ring
+            last-kbd-macro
+            regexp-search-ring
+            search-ring
+            shell-command-history)
+    (add-to-list 'savehist-additional-variables it))
+  (savehist-mode))
 
 ;;; Key bindings and menus
 
