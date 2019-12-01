@@ -59,14 +59,11 @@ gsettings set org.gnome.desktop.wm.preferences audible-bell false
 gsettings set org.gnome.desktop.wm.preferences disable-workarounds true
 gsettings set org.gnome.desktop.wm.preferences focus-mode "'click'"
 gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Super>'
-gsettings set org.gnome.desktop.wm.preferences num-workspaces 6
 gsettings set org.gnome.desktop.wm.preferences resize-with-right-button true
 gsettings set org.gnome.desktop.wm.preferences visual-bell false
 
 gsettings set org.gnome.desktop.wm.keybindings close "['<Alt>F4', '<Shift><Super>q', '<Control><Super>q', '<Alt><Super>q']"
 gsettings set org.gnome.desktop.wm.keybindings minimize "[]"
-
-gsettings set org.gnome.mutter dynamic-workspaces false
 
 # maximised/full screen
 gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Alt>F11', '<Shift><Super>f']"
@@ -80,7 +77,7 @@ gsettings set org.gnome.mutter.keybindings toggle-tiled-right "['<Super>period']
 gsettings set org.gnome.desktop.wm.keybindings cycle-windows "['<Super>Space']"
 gsettings set org.gnome.desktop.wm.keybindings cycle-windows-backward "['<Shift><Super>Space']"
 
-# hjkl-style window/workspace navigation (with colemak keys)
+# hjkl-style window/workspace navigation; with colemak keys this is hnei, not hjkl
 gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Super>i']"
 gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Super>h']"
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down "['<Super>n']"
@@ -88,7 +85,9 @@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up "['<Super>
 gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-down "['<Shift><Super>n']"
 gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-up "['<Shift><Super>e']"
 
-# numbered workspaces
+# workspaces
+gsettings set org.gnome.mutter dynamic-workspaces false
+gsettings set org.gnome.desktop.wm.preferences num-workspaces 6
 gsettings set org.gnome.shell.keybindings switch-to-application-1 "[]"
 gsettings set org.gnome.shell.keybindings switch-to-application-2 "[]"
 gsettings set org.gnome.shell.keybindings switch-to-application-3 "[]"
@@ -119,13 +118,23 @@ gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-9 "['<Shift><Su
 
 
 #
+# screenshots
+#
+
+gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot-clip "['Print']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot "['<Primary>Print']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot-clip "['<Shift>Print']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot "['<Primary><Shift>Print']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot-clip "['<Alt>Print']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot "['<Primary><Alt>Print']"
+
+#
 # shortcuts
 #
 
 gsettings set org.gnome.shell.keybindings toggle-overview "['<Super>s']"
 gsettings set org.gnome.shell.keybindings focus-active-notification "[]"
 
-# applications
 gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>g']"
 gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>w']"
 
@@ -137,26 +146,23 @@ dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/cus
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command "'${HOME}/Configuration/Theme/toggle-dark-light'"
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name "'Toggle dark theme'"
 
-# screenshots
-gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot-clip "['Print']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot "['<Primary>Print']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot-clip "['<Shift>Print']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot "['<Primary><Shift>Print']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot-clip "['<Alt>Print']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot "['<Primary><Alt>Print']"
-
 #
-# apps and extensions
-#
-
 # nautilus
+#
+
 gsettings set org.gnome.nautilus.preferences recursive-search "'never'"
 gsettings set org.gnome.nautilus.preferences default-folder-viewer "'list-view'"
 
+#
 # dconf-editor
+#
+
 gsettings set ca.desrt.dconf-editor.Settings show-warning false
 
-# extensions
+#
+# gnome-shell extensions
+#
+
 dconf write /org/gnome/shell/extensions/draw-on-your-screen/erase-drawing '["<Shift><Super>d"]'
 dconf write /org/gnome/shell/extensions/draw-on-your-screen/toggle-drawing '["<Super>d"]'
 dconf write /org/gnome/shell/extensions/invert-window/invert-window-shortcut '["<Shift><Super>l"]'
