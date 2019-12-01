@@ -58,8 +58,8 @@ gsettings set org.gnome.desktop.wm.preferences action-middle-click-titlebar "'lo
 gsettings set org.gnome.desktop.wm.preferences audible-bell false
 gsettings set org.gnome.desktop.wm.preferences disable-workarounds true
 gsettings set org.gnome.desktop.wm.preferences focus-mode "'click'"
-gsettings set org.gnome.desktop.wm.preferences num-workspaces 6
 gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Super>'
+gsettings set org.gnome.desktop.wm.preferences num-workspaces 6
 gsettings set org.gnome.desktop.wm.preferences resize-with-right-button true
 gsettings set org.gnome.desktop.wm.preferences visual-bell false
 
@@ -69,8 +69,8 @@ gsettings set org.gnome.desktop.wm.keybindings minimize "[]"
 gsettings set org.gnome.mutter dynamic-workspaces false
 
 # maximised/full screen
-gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Alt>F10', '<Super>f']"
 gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Alt>F11', '<Shift><Super>f']"
+gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Alt>F10', '<Super>f']"
 
 # left/right with </> keys (without shift)
 gsettings set org.gnome.mutter.keybindings toggle-tiled-left "['<Super>comma']"
@@ -157,6 +157,6 @@ gsettings set org.gnome.nautilus.preferences default-folder-viewer "'list-view'"
 gsettings set ca.desrt.dconf-editor.Settings show-warning false
 
 # extensions
-dconf write /org/gnome/shell/extensions/invert-window/invert-window-shortcut '["<Shift><Super>l"]'
-dconf write /org/gnome/shell/extensions/draw-on-your-screen/toggle-drawing '["<Super>d"]'
 dconf write /org/gnome/shell/extensions/draw-on-your-screen/erase-drawing '["<Shift><Super>d"]'
+dconf write /org/gnome/shell/extensions/draw-on-your-screen/toggle-drawing '["<Super>d"]'
+dconf write /org/gnome/shell/extensions/invert-window/invert-window-shortcut '["<Shift><Super>l"]'
