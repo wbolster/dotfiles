@@ -127,6 +127,14 @@ gsettings set org.gnome.shell.keybindings focus-active-notification "[]"
 gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>g']"
 gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>w']"
 
+gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding "'<Super>t'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command "'gnome-terminal'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name "'Open terminal'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding "'<Super>l'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command "'${HOME}/Configuration/Theme/toggle-dark-light'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name "'Toggle dark theme'"
+
 # screenshots
 gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot-clip "['Print']"
 gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot "['<Primary>Print']"
