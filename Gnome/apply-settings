@@ -7,6 +7,7 @@ set -e -u -x
 #
 
 gsettings set org.gnome.desktop.interface clock-show-date true
+gsettings set org.gnome.desktop.interface clock-show-weekday true
 gsettings set org.gnome.desktop.interface cursor-blink false
 gsettings set org.gnome.desktop.interface gtk-key-theme "'Emacs'"
 
