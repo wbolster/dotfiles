@@ -24,8 +24,16 @@ gsettings set org.gnome.settings-daemon.plugins.color night-light-temperature 27
 
 gsettings set org.gnome.desktop.input-sources per-window false
 gsettings set org.gnome.desktop.input-sources show-all-sources true
-gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us+colemak'), ('xkb', 'eu')]"
-gsettings set org.gnome.desktop.input-sources xkb-options "['altwin:swap_lalt_lwin', 'compose:rctrl', 'ctrl:nocaps', 'nbsp:level4']"
+gsettings set org.gnome.desktop.input-sources sources "[
+    ('xkb', 'us+colemak'),
+    ('xkb', 'eu')
+]"
+gsettings set org.gnome.desktop.input-sources xkb-options "[
+    'altwin:swap_lalt_lwin',
+    'compose:rctrl',
+    'ctrl:nocaps',
+    'nbsp:level4'
+]"
 
 gsettings set org.gnome.desktop.wm.keybindings switch-input-source "['<Super>apostrophe']"
 gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "['<Shift><Super>apostrophe']"
