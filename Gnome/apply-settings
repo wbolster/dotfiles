@@ -154,6 +154,34 @@ gsettings set org.gnome.nautilus.preferences recursive-search "'never'"
 gsettings set org.gnome.nautilus.preferences default-folder-viewer "'list-view'"
 
 #
+# gnome-terminal
+#
+
+gnome_terminal_keybindings_schema_path="org.gnome.Terminal.Legacy.Keybindings:/org/gnome/terminal/legacy/keybindings/"
+
+gsettings set "$gnome_terminal_keybindings_schema_path" move-tab-left '<Primary>comma'
+gsettings set "$gnome_terminal_keybindings_schema_path" move-tab-right '<Primary>period'
+gsettings set "$gnome_terminal_keybindings_schema_path" new-tab '<Primary>Return'
+gsettings set "$gnome_terminal_keybindings_schema_path" new-window '<Primary><Shift>Return'
+gsettings set "$gnome_terminal_keybindings_schema_path" next-tab '<Primary>space'
+gsettings set "$gnome_terminal_keybindings_schema_path" prev-tab '<Primary>BackSpace'
+gsettings set "$gnome_terminal_keybindings_schema_path" switch-to-tab-10 'disabled'
+gsettings set "$gnome_terminal_keybindings_schema_path" switch-to-tab-1 '<Primary>1'
+gsettings set "$gnome_terminal_keybindings_schema_path" switch-to-tab-2 '<Primary>2'
+gsettings set "$gnome_terminal_keybindings_schema_path" switch-to-tab-3 '<Primary>3'
+gsettings set "$gnome_terminal_keybindings_schema_path" switch-to-tab-4 '<Primary>4'
+gsettings set "$gnome_terminal_keybindings_schema_path" switch-to-tab-5 '<Primary>5'
+gsettings set "$gnome_terminal_keybindings_schema_path" switch-to-tab-6 '<Primary>6'
+gsettings set "$gnome_terminal_keybindings_schema_path" switch-to-tab-7 '<Primary>7'
+gsettings set "$gnome_terminal_keybindings_schema_path" switch-to-tab-8 '<Primary>8'
+gsettings set "$gnome_terminal_keybindings_schema_path" switch-to-tab-9 'disabled'
+gsettings set "$gnome_terminal_keybindings_schema_path" switch-to-tab-last '<Primary>9'
+gsettings set "$gnome_terminal_keybindings_schema_path" toggle-menubar 'disabled'
+gsettings set "$gnome_terminal_keybindings_schema_path" zoom-in '<Primary>equal'
+gsettings set "$gnome_terminal_keybindings_schema_path" zoom-normal '<Primary>0'
+gsettings set "$gnome_terminal_keybindings_schema_path" zoom-out '<Primary>minus'
+
+#
 # dconf-editor
 #
 
