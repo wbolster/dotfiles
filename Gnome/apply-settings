@@ -143,6 +143,9 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot "['
 gsettings set org.gnome.nautilus.preferences recursive-search "'never'"
 gsettings set org.gnome.nautilus.preferences default-folder-viewer "'list-view'"
 
+# dconf-editor
+gsettings set ca.desrt.dconf-editor.Settings show-warning false
+
 # extensions
 dconf write /org/gnome/shell/extensions/invert-window/invert-window-shortcut '["<Shift><Super>l"]'
 dconf write /org/gnome/shell/extensions/draw-on-your-screen/toggle-drawing '["<Super>d"]'
