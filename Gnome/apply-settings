@@ -56,12 +56,15 @@ gsettings set org.gnome.desktop.wm.preferences action-middle-click-titlebar "'lo
 gsettings set org.gnome.desktop.wm.preferences audible-bell false
 gsettings set org.gnome.desktop.wm.preferences disable-workarounds true
 gsettings set org.gnome.desktop.wm.preferences focus-mode "'click'"
+gsettings set org.gnome.desktop.wm.preferences num-workspaces 6
 gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Super>'
 gsettings set org.gnome.desktop.wm.preferences resize-with-right-button true
 gsettings set org.gnome.desktop.wm.preferences visual-bell false
 
 gsettings set org.gnome.desktop.wm.keybindings close "['<Alt>F4', '<Shift><Super>q', '<Control><Super>q', '<Alt><Super>q']"
 gsettings set org.gnome.desktop.wm.keybindings minimize "[]"
+
+gsettings set org.gnome.mutter dynamic-workspaces false
 
 # maximised/full screen
 gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Alt>F10', '<Super>f']"
