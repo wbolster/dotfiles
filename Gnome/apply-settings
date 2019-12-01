@@ -33,12 +33,16 @@ gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click true
 #
 
 gsettings set org.gnome.desktop.notifications show-in-lock-screen false
+
 gsettings set org.gnome.desktop.privacy hide-identity true
 gsettings set org.gnome.desktop.privacy show-full-name-in-top-bar false
+
 gsettings set org.gnome.desktop.screensaver lock-delay 300
 gsettings set org.gnome.desktop.screensaver show-full-name-in-top-bar false
 gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver "['<Super>BackSpace']"
 
+gsettings set org.gnome.system.location enabled true
+gsettings set org.gnome.system.location max-accuracy-level "'country'"
 
 #
 # window management
