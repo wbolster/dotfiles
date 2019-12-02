@@ -100,7 +100,7 @@ if [[ "$PS1" ]]; then
     # types. (The "screen" term does not have it, for example.)
     _prompt_newline_warning_enabled=0;
     _prompt_enable_newline_warning() {
-        if [[ ! -z "$(echo -en "\e[6n")" ]]; then
+        if [[ -n "$(echo -en "\e[6n")" ]]; then
             _prompt_newline_warning_enabled=1;
             _cursor_column() {
                 exec < /dev/tty
@@ -611,7 +611,7 @@ if [[ "$PS1" ]]; then
         local prog="$1"
         shift
         if [[ ! -f "$prog" ]]; then
-            prog="$(which "$prog")"
+            prog="$(command -v "$prog")"
         fi
         local profile_file
         profile_file="$(mktemp 'python-cprofile-XXXXXX.prof')"
@@ -622,10 +622,10 @@ if [[ "$PS1" ]]; then
         echo "Profile stored in ${profile_file}" > /dev/stderr
     }
     py-pdb() {
-        python -m pdb "$(which "$1")" "${@:2}"
+        python -m pdb "$(command -v "$1")" "${@:2}"
     }
     py-ipdb() {
-        python -m ipdb "$(which "$1")" "${@:2}"
+        python -m ipdb "$(command -v "$1")" "${@:2}"
     }
     pytestf() {
         _run_verbose pytest --tb=short --color=yes --looponfail --verbose --verbose "$@"
@@ -654,7 +654,7 @@ if [[ "$PS1" ]]; then
     # GUI applications
     if [[ "$OSTYPE" == darwin* ]]; then
         alias g='open'
-    elif [[ ! -z "$DISPLAY" ]]; then
+    elif [[ -n "$DISPLAY" ]]; then
         alias g='xdg-open'
     fi
 
@@ -719,7 +719,7 @@ if [[ "$PS1" ]]; then
     fi
 
     # iTerm profile tricks
-    if [[ ! -z "$ITERM_PROFILE" && -z "$INSIDE_EMACS" ]]; then
+    if [[ -n "$ITERM_PROFILE" && -z "$INSIDE_EMACS" ]]; then
         _ITERM_PROFILE_FILE=~/.config/iterm-profile
         _iterm_profile() {
             printf "\e]50;SetProfile=%s\a" "$1"
@@ -740,7 +740,7 @@ if [[ "$PS1" ]]; then
     show() {
         (
             set -e
-            if [[ -z "$@" || ("$#" == 1 && "$1" == "-") ]]; then
+            if [[ "$#" == 0 || ("$#" == 1 && "$1" == "-") ]]; then
                 # In case no args are specified or only "-" is passed, set "$@" to
                 # /dev/stdin so that the logic below works as intended without
                 # having to special case the "stdin as a pipe" scenario.
@@ -770,13 +770,13 @@ if [[ "$PS1" ]]; then
                             # uses file names only); detect a few file types using
                             # hashbang (#!) lines.
                             case $(head -c 100 "$file" | head -n 1 | grep '^#!') in
-                                (*bash*)    lexer=bash ;;
-                                (*make*)    lexer=make ;;
-                                (*node*)    lexer=js ;;
-                                (*perl*)    lexer=perl ;;
-                                (*python*)  lexer=python ;;
-                                (*ruby*)    lexer=ruby ;;
-                                (*sh*)      lexer=sh ;;
+                                (*bash*)    lexer="bash" ;;
+                                (*make*)    lexer="make" ;;
+                                (*node*)    lexer="js" ;;
+                                (*perl*)    lexer="perl" ;;
+                                (*python*)  lexer="python" ;;
+                                (*ruby*)    lexer="ruby" ;;
+                                (*sh*)      lexer="sh" ;;
                             esac
                         fi
                         if [[ "${lexer}" != "text" ]]; then
