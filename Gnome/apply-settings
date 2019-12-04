@@ -75,6 +75,8 @@ gsettings set org.gnome.desktop.wm.preferences visual-bell false
 gsettings set org.gnome.desktop.wm.keybindings close "['<Alt>F4', '<Shift><Super>q', '<Control><Super>q', '<Alt><Super>q']"
 gsettings set org.gnome.desktop.wm.keybindings minimize "[]"
 
+gsettings set org.gnome.mutter attach-modal-dialogs false
+
 # maximised/full screen
 gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Alt>F11', '<Shift><Super>f']"
 gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Alt>F10', '<Super>f']"
