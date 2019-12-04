@@ -248,6 +248,13 @@ gsettings set ca.desrt.dconf-editor.Settings relocatable-schemas-user-paths "{
 # gnome-shell extensions
 #
 
+dconf write /org/gnome/shell/extensions/dash-to-dock/animate-show-apps false
+dconf write /org/gnome/shell/extensions/dash-to-dock/apply-custom-theme true
+dconf write /org/gnome/shell/extensions/dash-to-dock/hot-keys false
+dconf write /org/gnome/shell/extensions/dash-to-dock/intellihide-mode "'ALL_WINDOWS'"
+dconf write /org/gnome/shell/extensions/dash-to-dock/show-trash false
+
 dconf write /org/gnome/shell/extensions/draw-on-your-screen/erase-drawing '["<Shift><Super>d"]'
 dconf write /org/gnome/shell/extensions/draw-on-your-screen/toggle-drawing '["<Super>d"]'
+
 dconf write /org/gnome/shell/extensions/invert-window/invert-window-shortcut '["<Shift><Super>l"]'
