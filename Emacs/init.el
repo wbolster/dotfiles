@@ -2890,9 +2890,9 @@ defined as lowercase."
     "_a_ll"
     ("a" smerge-keep-all)))
 
-(use-package vc)
-;; :custom
-;; (vc-handled-backends nil)
+(use-package vc
+  :config
+  (setq vc-handled-backends (delq 'Git vc-handled-backends)))
 
 (use-package vdiff
   :defer t
