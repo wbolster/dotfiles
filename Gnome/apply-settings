@@ -147,6 +147,12 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot "['
 gsettings set org.gnome.shell.keybindings toggle-overview "['<Super>s']"
 gsettings set org.gnome.shell.keybindings focus-active-notification "[]"
 
+gsettings set org.gnome.settings-daemon.plugins.media-keys increase-text-size "['<Super>equal']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys decrease-text-size "['<Super>minus']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys magnifier-zoom-in "['<Shift><Super>plus']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys magnifier-zoom-out "['<Shift><Super>underscore']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys magnifier "['<Super><Shift>0']"
+
 gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>g']"
 gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>w']"
 
