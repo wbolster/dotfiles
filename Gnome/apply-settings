@@ -261,6 +261,11 @@ dconf write /org/gnome/shell/extensions/dash-to-dock/hot-keys false
 dconf write /org/gnome/shell/extensions/dash-to-dock/intellihide-mode "'ALL_WINDOWS'"
 dconf write /org/gnome/shell/extensions/dash-to-dock/show-trash false
 
+dconf write /org/gnome/shell/extensions/donotdisturb-button/available-icon "'/usr/share/icons/Adwaita/scalable/status/user-available-symbolic.svg'"
+dconf write /org/gnome/shell/extensions/donotdisturb-button/busy-icon "'/usr/share/icons/Adwaita/scalable/status/user-busy-symbolic.svg'"
+dconf write /org/gnome/shell/extensions/donotdisturb-button/panel-icon-center false
+dconf write /org/gnome/shell/extensions/donotdisturb-button/panel-icon-left false
+dconf write /org/gnome/shell/extensions/donotdisturb-button/shortcut "['<Shift><Super>v']"
 
 dconf write /org/gnome/shell/extensions/draw-on-your-screen/erase-drawing "['<Shift><Super>d']"
 dconf write /org/gnome/shell/extensions/draw-on-your-screen/toggle-drawing "['<Super>d']"
