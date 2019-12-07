@@ -534,6 +534,15 @@ if [[ "$PS1" ]]; then
     }
     alias p='maybe-pager'
 
+    # Man pages
+    export MANOPT="--no-hyphenation --no-justification"
+    man () {
+        # Format for the terminal width up to the specified maximum.
+        local width
+        width=$(printf "%s\n$COLUMNS\n80\n" "$(tput cols)" | grep '^[0-9]\+$' | sort -n | head -1)
+        MANWIDTH=$width command man "$@"
+    }
+
     # Detect direnv (https://github.com/direnv/direnv). The regular loading
     # method does not cooperate well with our $PROMPT_COMMAND (it breaks $?
     # detection).
