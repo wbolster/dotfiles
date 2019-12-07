@@ -180,6 +180,7 @@ gsettings set org.gtk.Settings.FileChooser expand-folders false
 # gnome-terminal
 #
 
+gsettings set org.gnome.Terminal.Legacy.Settings menu-accelerator-enabled false
 gsettings set org.gnome.Terminal.ProfilesList default "'b1f6a55b-ffff-4bba-9ac3-04527db074c4'"
 gsettings set org.gnome.Terminal.ProfilesList list "['b1f6a55b-ffff-4bba-9ac3-04527db074c4']"
 
