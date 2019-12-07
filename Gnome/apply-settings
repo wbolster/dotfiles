@@ -273,4 +273,6 @@ dconf write /org/gnome/shell/extensions/donotdisturb-button/shortcut "['<Shift><
 dconf write /org/gnome/shell/extensions/draw-on-your-screen/erase-drawing "['<Shift><Super>d']"
 dconf write /org/gnome/shell/extensions/draw-on-your-screen/toggle-drawing "['<Super>d']"
 
+dconf write /org/gnome/shell/extensions/gtktitlebar/hide-window-titlebars "'both'"
+
 dconf write /org/gnome/shell/extensions/invert-window/invert-window-shortcut "['<Shift><Super>l']"
