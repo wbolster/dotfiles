@@ -2237,7 +2237,7 @@ defined as lowercase."
   (default-frame-alist '((width . 160) (height . 48)))
   (fit-window-to-buffer-horizontally t)
   (frame-resize-pixelwise t)
-  (frame-title-format "%b — emacs")
+  (frame-title-format "%b")
   (help-window-select t)
   (split-height-threshold nil)
   (split-width-threshold 120)
