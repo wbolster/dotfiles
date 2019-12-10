@@ -59,6 +59,15 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver "['<Super
 gsettings set org.gnome.system.location enabled true
 gsettings set org.gnome.system.location max-accuracy-level "'country'"
 
+
+#
+# gtk+ inspector
+#
+
+gsettings set org.gtk.Settings.Debug enable-inspector-keybinding true
+gsettings set org.gtk.Settings.Debug inspector-warning false
+
+
 #
 # window management
 #
