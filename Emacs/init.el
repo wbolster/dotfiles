@@ -1398,10 +1398,27 @@ defined as lowercase."
 
 ;;;; line navigation
 
+(use-package display-line-numbers
+  :defer t
+  :commands
+  w--display-line-numbers-cycle
+  :config
+  (defun w--display-line-numbers-cycle ()
+    (interactive)
+    (let* ((options '(t visual relative))
+           (new-index (mod (1+ (or (-elem-index display-line-numbers options) -1)) (length options)))
+           (new-value (nth new-index options)))
+      (unless display-line-numbers-mode
+        (display-line-numbers-mode))
+      (message "Line numbering style: %s" new-value)
+      (setq display-line-numbers new-value))))
+
 (use-package nlinum
+  :disabled
   :defer t)
 
 (use-package nlinum-relative
+  :disabled
   :defer t
   :custom-face
   (nlinum-relative-current-face
@@ -3113,10 +3130,8 @@ defined as lowercase."
   ("l" hl-line-mode)
   ("L" global-hl-line-mode)
   "_n_umber"
-  ("n" w--line-numbers-cycle)
-  ("N" (progn
-         (line-number-mode 'toggle)
-         (column-number-mode 'toggle)))
+  ("n" display-line-numbers-mode)
+  ("N" w--display-line-numbers-cycle)
   "_r_ writeroom"
   ("r" writeroom-mode)
   ("R" (progn
