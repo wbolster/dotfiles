@@ -677,8 +677,21 @@ if [[ "$PS1" ]]; then
     alias locale-en='unset LANGUAGE; export LANG=en_GB.UTF-8'
     alias locale-nl='unset LANGUAGE; export LANG=nl_NL.UTF-8'
 
-    # Debian and Ubuntu
-    if type apt-get &>/dev/null; then
+    # Linux package management
+    if type pikaur &>/dev/null; then
+        # Arch Linux
+        alias i='pikaur -S'
+        alias u='pikaur -Syu'
+    elif type yay &>/dev/null; then
+        # Arch Linux
+        alias i='yay -S'
+        alias u='yay -Syu'
+    elif type pacman &>/dev/null; then
+        # Arch Linux
+        alias i='pacman -S'
+        alias u='pacman -Syu'
+    elif type apt-get &>/dev/null; then
+        # Debian and Ubuntu
         alias apt='sudo apt'
         alias apt-get='sudo apt-get'
         alias aptitude='sudo aptitude'
