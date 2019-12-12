@@ -271,6 +271,7 @@ dconf write /org/gnome/shell/extensions/dash-to-dock/animate-show-apps false
 dconf write /org/gnome/shell/extensions/dash-to-dock/apply-custom-theme true
 dconf write /org/gnome/shell/extensions/dash-to-dock/hot-keys false
 dconf write /org/gnome/shell/extensions/dash-to-dock/intellihide-mode "'ALL_WINDOWS'"
+dconf write /org/gnome/shell/extensions/dash-to-dock/show-mounts false
 dconf write /org/gnome/shell/extensions/dash-to-dock/show-trash false
 
 dconf write /org/gnome/shell/extensions/donotdisturb-button/available-icon "'/usr/share/icons/Adwaita/scalable/status/user-available-symbolic.svg'"
