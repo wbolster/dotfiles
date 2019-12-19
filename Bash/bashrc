@@ -95,6 +95,10 @@ if [[ "$PS1" ]]; then
     fi
 
     # Git status in prompt using __git_ps1()
+    git_prompt_sh="/usr/share/git/completion/git-prompt.sh"
+    if [[ -f "${git_prompt_sh}" ]]; then
+        source "${git_prompt_sh}"
+    fi
     export GIT_PS1_SHOWDIRTYSTATE=1
     export GIT_PS1_SHOWUPSTREAM="git verbose"
 
