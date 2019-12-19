@@ -85,6 +85,7 @@ gsettings set org.gnome.desktop.wm.keybindings close "['<Alt>F4', '<Shift><Super
 gsettings set org.gnome.desktop.wm.keybindings minimize "[]"
 
 gsettings set org.gnome.mutter attach-modal-dialogs false
+gsettings set org.gnome.mutter center-new-windows true
 
 # maximised/full screen
 gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Alt>F11', '<Shift><Super>f']"
