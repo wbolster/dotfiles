@@ -85,9 +85,11 @@ if [[ "$PS1" ]]; then
     vte_sh="/etc/profile.d/vte.sh"
     if [[ -f "${vte_sh}" ]]; then
         source "${vte_sh}"
+    fi
+    if type __vte_osc7 &>/dev/null; then
+        # Redefine the function to use escape sequences that do
+        # not leave visual artefacts.
         __vte_osc7 () {
-            # Redefine the function to use escape sequences that do
-            # not leave visual artefacts.
             printf "\[\e]7;file://%s%s\a\]" "${HOSTNAME:-}" "$(__vte_urlencode "${PWD}")"
         }
     else
