@@ -548,7 +548,11 @@ if [[ "$PS1" ]]; then
     alias lessr='less -R'
     maybe-pager() {
         if [[ -t 1 ]]; then  # stdout is a terminal
-            less -FRX
+            if type less &>/dev/null; then
+                less -FRX
+            else
+                more
+            fi
         else
             command cat
         fi
