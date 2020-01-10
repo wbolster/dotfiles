@@ -142,7 +142,9 @@ set directory-=.
 noremap <C-l> :bnext<Return>
 noremap <C-h> :bprevious<Return>
 set hidden
-set autochdir
+if has("autochdir")
+  set autochdir
+endif
 set suffixes+=.aux,.bbl,.blg,.dvi,.idx,.log,.out,.pdf,.toc,.pyc,.pyo
 if strlen($VIRTUAL_ENV) != 0
   " Make :find work for packages installed in the active virtualenv
