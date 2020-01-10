@@ -4,17 +4,19 @@ set -e -u
 
 file=~/.config/dark-theme
 
-# gtk_theme_light='Adwaita'
-# gtk_theme_dark='Adwaita-dark'
+gtk_theme_light='Adwaita'
+gtk_theme_dark='Adwaita-dark'
 # gtk_theme_light='Adapta-Eta'
 # gtk_theme_dark='Adapta-Nokto-Eta'
-gtk_theme_light='Arc-solid'
-gtk_theme_dark='Arc-Dark-solid'
+# gtk_theme_light='Arc-solid'
+# gtk_theme_dark='Arc-Dark-solid'
 
+gnome_shell_theme_light=''
+gnome_shell_theme_dark=''
 # gnome_shell_theme_light='Adapta-Eta'
 # gnome_shell_theme_dark='Adapta-Nokto-Eta'
-gnome_shell_theme_light='Arc-solid'
-gnome_shell_theme_dark='Arc-Dark-solid'
+# gnome_shell_theme_light='Arc-solid'
+# gnome_shell_theme_dark='Arc-Dark-solid'
 
 
 set_gnome_theme() {
