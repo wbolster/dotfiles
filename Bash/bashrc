@@ -61,6 +61,21 @@ if [[ "$PS1" ]]; then
         echo "$*"
     }
 
+    if ! type rev &>/dev/null; then
+        # the rev(1) program is not available on all systems
+        # https://stackoverflow.com/questions/11461625/reverse-the-order-of-characters-in-a-string
+        rev() {
+            while read -r line
+            do
+                reversed=""
+                for (( i=0 ; i<${#line} ; i++ )); do
+                    reversed="${line:i:1}${reversed}";
+                done
+                echo "${reversed}"
+            done
+        }
+    fi
+
     shorten_path() {
         # shorten a directory name. keep last n components intact and
         # truncate the components in front of it (with special
