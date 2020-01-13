@@ -265,9 +265,11 @@ gsettings set ca.desrt.dconf-editor.Settings relocatable-schemas-user-paths "{
 # gnome-shell extensions
 #
 
+# caffeine
 dconf write /org/gnome/shell/extensions/caffeine/enable-fullscreen false
 dconf write /org/gnome/shell/extensions/caffeine/show-notifications false
 
+# dash to dock
 dconf write /org/gnome/shell/extensions/dash-to-dock/animate-show-apps false
 dconf write /org/gnome/shell/extensions/dash-to-dock/apply-custom-theme true
 dconf write /org/gnome/shell/extensions/dash-to-dock/hot-keys false
@@ -275,16 +277,89 @@ dconf write /org/gnome/shell/extensions/dash-to-dock/intellihide-mode "'ALL_WIND
 dconf write /org/gnome/shell/extensions/dash-to-dock/show-mounts false
 dconf write /org/gnome/shell/extensions/dash-to-dock/show-trash false
 
+# do not disturb
 dconf write /org/gnome/shell/extensions/donotdisturb-button/available-icon "'/usr/share/icons/Adwaita/scalable/status/user-available-symbolic.svg'"
 dconf write /org/gnome/shell/extensions/donotdisturb-button/busy-icon "'/usr/share/icons/Adwaita/scalable/status/user-busy-symbolic.svg'"
 dconf write /org/gnome/shell/extensions/donotdisturb-button/panel-icon-center false
 dconf write /org/gnome/shell/extensions/donotdisturb-button/panel-icon-left false
 dconf write /org/gnome/shell/extensions/donotdisturb-button/shortcut "['<Shift><Super>v']"
 
+# draw on your screen
 dconf write /org/gnome/shell/extensions/draw-on-your-screen/erase-drawing "['<Shift><Super>d']"
 dconf write /org/gnome/shell/extensions/draw-on-your-screen/toggle-drawing "['<Super>d']"
 
+# gtk title bar
 dconf write /org/gnome/shell/extensions/gtktitlebar/hide-window-titlebars "'both'"
 
+# invert window
 dconf write /org/gnome/shell/extensions/invert-window/invert-window-shortcut "['<Shift><Super>l']"
 dconf write /org/gnome/shell/extensions/invert-window-preserving-hue/invert-window-preserving-hue-shortcut "['<Shift><Super>l']"
+
+# paperwm
+gsettings_paperwm () {
+    extension_id="paperwm@hedning:matrix.org"
+    GSETTINGS_SCHEMA_DIR="$HOME/.local/share/gnome-shell/extensions/${extension_id}/schemas" gsettings "$@"
+}
+gsettings_paperwm_bind () {
+    gsettings_paperwm set org.gnome.Shell.Extensions.PaperWM.Keybindings "$@"
+}
+
+if gnome-extensions list | grep -q -F -x 'paperwm@hedning:matrix.org'; then
+    gsettings_paperwm set org.gnome.Shell.Extensions.PaperWM animation-time 0.2
+    gsettings_paperwm set org.gnome.Shell.Extensions.PaperWM cycle-width-steps '[0.33333333333333333, 0.5, 0.66666666666666666, 0.8]'
+    gsettings_paperwm set org.gnome.Shell.Extensions.PaperWM horizontal-margin 0
+    gsettings_paperwm set org.gnome.Shell.Extensions.PaperWM use-default-background true
+    gsettings_paperwm set org.gnome.Shell.Extensions.PaperWM vertical-margin 0
+    gsettings_paperwm set org.gnome.Shell.Extensions.PaperWM vertical-margin-bottom 0
+    gsettings_paperwm set org.gnome.Shell.Extensions.PaperWM window-gap 0
+
+    gsettings set org.gnome.desktop.wm.keybindings cycle-windows "[]"
+    gsettings set org.gnome.desktop.wm.keybindings cycle-windows-backward "[]"
+    gsettings set org.gnome.desktop.wm.keybindings switch-windows "[]"
+    gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "[]"
+    gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "[]"
+    gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "[]"
+    gsettings set org.gnome.mutter.keybindings toggle-tiled-left "[]"
+    gsettings set org.gnome.mutter.keybindings toggle-tiled-right "[]"
+
+    gsettings_paperwm_bind barf-out "['<Super>period']"
+    gsettings_paperwm_bind close-window "[]"
+    gsettings_paperwm_bind cycle-height "[]"
+    gsettings_paperwm_bind live-alt-tab "['<Super>Space']"
+    gsettings_paperwm_bind live-alt-tab-backward "['<Shift><Super>Space']"
+    gsettings_paperwm_bind move-down "[]"
+    gsettings_paperwm_bind move-down-workspace "[]"
+    gsettings_paperwm_bind move-left "['<Shift><Super>h']"
+    gsettings_paperwm_bind move-monitor-above "[]"
+    gsettings_paperwm_bind move-monitor-below "[]"
+    gsettings_paperwm_bind move-monitor-left "[]"
+    gsettings_paperwm_bind move-monitor-right "[]"
+    gsettings_paperwm_bind move-previous-workspace "[]"
+    gsettings_paperwm_bind move-previous-workspace-backward "[]"
+    gsettings_paperwm_bind move-right "['<Shift><Super>i']"
+    gsettings_paperwm_bind move-up "[]"
+    gsettings_paperwm_bind move-up-workspace "[]"
+    gsettings_paperwm_bind new-window "[]"
+    gsettings_paperwm_bind paper-toggle-fullscreen "['<Shift><Super>f']"
+    gsettings_paperwm_bind previous-workspace "[]"
+    gsettings_paperwm_bind previous-workspace-backward "[]"
+    gsettings_paperwm_bind slurp-in "['<Super>comma']"
+    gsettings_paperwm_bind switch-down "[]"
+    gsettings_paperwm_bind switch-down-workspace "[]"
+    gsettings_paperwm_bind switch-first "[]"
+    gsettings_paperwm_bind switch-last "[]"
+    gsettings_paperwm_bind switch-left "[]"
+    gsettings_paperwm_bind switch-monitor-above "[]"
+    gsettings_paperwm_bind switch-monitor-below "[]"
+    gsettings_paperwm_bind switch-monitor-left "[]"
+    gsettings_paperwm_bind switch-monitor-right "[]"
+    gsettings_paperwm_bind switch-next "['<Super>i']"
+    gsettings_paperwm_bind switch-previous "['<Super>h']"
+    gsettings_paperwm_bind switch-right "[]"
+    gsettings_paperwm_bind switch-up "[]"
+    gsettings_paperwm_bind switch-up-workspace "[]"
+    gsettings_paperwm_bind take-window "[]"
+    gsettings_paperwm_bind toggle-maximize-width "['<Super>f']"
+    gsettings_paperwm_bind toggle-scratch "['<Shift><Super>Return', '<Primary><Super>Return']"
+    gsettings_paperwm_bind toggle-scratch-layer "['<Super>Return']"
+fi
