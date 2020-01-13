@@ -719,14 +719,10 @@ defined as lowercase."
   (:keymaps 'evil-outer-text-objects-map
    "g" #'w--evil-text-object-whole-buffer)
   (:states 'insert
-   (general-chord "qw") #'evil-normal-state
-   (general-chord "qq") #'evil-normal-state
-   (general-chord "wq") #'evil-normal-state
    "<return>" #'comment-indent-new-line
    "C-a" #'w--evil-first-non-blank
    "C-c" #'evil-normal-state
    "C-d" #'delete-char
-   "C-g" #'evil-normal-state
    "C-e" #'end-of-visual-line
    "C-h" [backspace]
    "C-k" #'w--kill-line-dwim
@@ -742,6 +738,11 @@ defined as lowercase."
    "C-." #'evil-shift-right-line ;; used instead of standard vim
    "C->" #'evil-shift-right-line ;; bindings C-d and C-t.
    "C-=" (w--ilambda (save-excursion (call-interactively #'evil-indent-line))))
+  (:state '(insert replace)
+   (general-chord "qw") #'evil-normal-state
+   (general-chord "qq") #'evil-normal-state
+   (general-chord "wq") #'evil-normal-state
+   "C-g" #'evil-normal-state)
 
   :config
   (evil-mode)
