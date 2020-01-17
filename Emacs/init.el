@@ -3748,6 +3748,15 @@ defined as lowercase."
   (evil-org-set-key-theme))
 
 
+;;; Major mode: pkgbuild
+
+(use-package pkgbuild-mode
+  :custom
+  (pkgbuild-update-sums-on-save nil)
+  :custom-face
+  (pkgbuild-error-face ((t (:inherit error)))))
+
+
 ;;; Major mode: python
 
 (use-package python
