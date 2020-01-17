@@ -277,6 +277,7 @@ defined as lowercase."
          ,(w--hydra-make-docstring docstrings)
          ,@(w--hydra-missing-uppercase-heads heads)
          ,@heads
+         ("C-g" nil :exit t)
          ("<escape>" nil :exit t)))))
 
 (use-package magit-popup
