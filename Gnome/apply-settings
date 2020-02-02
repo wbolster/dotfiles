@@ -305,6 +305,8 @@ gsettings_paperwm_bind () {
 }
 
 if gnome-extensions list | grep -q -F -x 'paperwm@hedning:matrix.org'; then
+    gsettings set org.gnome.shell.overrides edge-tiling false
+
     gsettings_paperwm set org.gnome.Shell.Extensions.PaperWM animation-time 0.2
     gsettings_paperwm set org.gnome.Shell.Extensions.PaperWM cycle-width-steps '[0.33333333333333333, 0.5, 0.66666666666666666, 0.8]'
     gsettings_paperwm set org.gnome.Shell.Extensions.PaperWM horizontal-margin 0
@@ -330,14 +332,14 @@ if gnome-extensions list | grep -q -F -x 'paperwm@hedning:matrix.org'; then
     gsettings_paperwm_bind live-alt-tab-backward "['<Shift><Super>Space', '<Control><Super>Space']"
     gsettings_paperwm_bind move-down "[]"
     gsettings_paperwm_bind move-down-workspace "[]"
-    gsettings_paperwm_bind move-left "['<Shift><Super>h', '<Control><Super>h']"
+    gsettings_paperwm_bind move-left "['<Shift><Super>h', '<Control><Super>h', '<Control><Super>Left']"
     gsettings_paperwm_bind move-monitor-above "[]"
     gsettings_paperwm_bind move-monitor-below "[]"
     gsettings_paperwm_bind move-monitor-left "[]"
     gsettings_paperwm_bind move-monitor-right "[]"
     gsettings_paperwm_bind move-previous-workspace "[]"
     gsettings_paperwm_bind move-previous-workspace-backward "[]"
-    gsettings_paperwm_bind move-right "['<Shift><Super>i', '<Control><Super>i']"
+    gsettings_paperwm_bind move-right "['<Shift><Super>i', '<Control><Super>i', '<Control><Super>right']"
     gsettings_paperwm_bind move-up "[]"
     gsettings_paperwm_bind move-up-workspace "[]"
     gsettings_paperwm_bind new-window "[]"
@@ -354,8 +356,8 @@ if gnome-extensions list | grep -q -F -x 'paperwm@hedning:matrix.org'; then
     gsettings_paperwm_bind switch-monitor-below "[]"
     gsettings_paperwm_bind switch-monitor-left "[]"
     gsettings_paperwm_bind switch-monitor-right "[]"
-    gsettings_paperwm_bind switch-next "['<Super>i']"
-    gsettings_paperwm_bind switch-previous "['<Super>h']"
+    gsettings_paperwm_bind switch-next "['<Super>i', '<Super>Right']"
+    gsettings_paperwm_bind switch-previous "['<Super>h', '<Super>Left']"
     gsettings_paperwm_bind switch-right "[]"
     gsettings_paperwm_bind switch-up "[]"
     gsettings_paperwm_bind switch-up-workspace "[]"
