@@ -7,6 +7,9 @@ branch-name = symbolic-ref --short HEAD
 personal-repo = "!f() { /bin/echo -n 'Old value: '; git config user.email; git config user.email wouter@bolsterl.ee; /bin/echo -n 'New value: '; git config user.email; }; f"
 whoami = "!f() { printf '%s <%s>\n' \"$(git config --get user.name)\" \"$(git config --get user.email)\" ; }; f"
 
+# It's not all bad
+praise = blame
+
 # Committing
 ci = commit
 amend = commit --amend
