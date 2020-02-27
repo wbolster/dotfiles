@@ -3349,6 +3349,7 @@ defined as lowercase."
   :general
   (:keymaps 'compilation-mode-map
    :states '(motion normal)
+   "g r" #'recompile
    "C-e" #'compilation-previous-error
    "C-n" #'compilation-next-error
    "C-p" #'compilation-previous-error)
