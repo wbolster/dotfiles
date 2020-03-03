@@ -25,6 +25,10 @@
 
 ;;; Packages
 
+;; Make everything relative to where this file actually lives.
+(setq user-emacs-directory
+      (concat "~/" (file-name-directory (file-symlink-p user-init-file))))
+
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 (eval-and-compile
