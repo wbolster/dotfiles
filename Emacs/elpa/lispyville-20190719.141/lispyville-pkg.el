@@ -1,2 +1,0 @@
-;;; -*- no-byte-compile: t -*-
-(define-package "lispyville" "20190719.141" "A minor mode for integrating evil with lispy." '((lispy "0") (evil "1.2.12") (cl-lib "0.5") (emacs "24.4")) :commit "56198f1c4488a52a0d0512c717dff36e8b9fbfd0" :keywords '("vim" "evil" "lispy" "lisp" "parentheses") :authors '(("Fox Kiester" . "noct@posteo.net")) :maintainer '("Fox Kiester" . "noct@posteo.net") :url "https://github.com/noctuid/lispyville")
