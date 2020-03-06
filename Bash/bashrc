@@ -894,6 +894,7 @@ if [[ "$PS1" ]]; then
     type sudoedit &>/dev/null || alias sudoedit="sudo -e"
     type hd &>/dev/null || alias hd="hexdump"
     type rgrep &>/dev/null || alias rgrep="grep -r"
+    type zstd &>/dev/null && alias zstd-max="zstd -T0 --long -19"
 fi
 
 
