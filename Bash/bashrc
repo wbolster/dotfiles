@@ -24,7 +24,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
 else
     MANPATH="$(MANPATH='' manpath -g 2>/dev/null)"
 fi
-for dir in ~/.cargo/bin ~/.npm/bin ~/.pyenv/shims ~/.local/bin ~/bin; do
+for dir in /opt/bin ~/.cargo/bin ~/.npm/bin ~/.pyenv/shims ~/.local/bin ~/bin; do
     if [[ -d "${dir}" ]]; then
         PATH="${dir}:${PATH}"
     fi
