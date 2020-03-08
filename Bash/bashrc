@@ -97,18 +97,10 @@ if [[ "$PS1" ]]; then
     # libvte uses a helper script to echo the current directory in an
     # escape sequence in the the prompt. gnome-terminal uses this to
     # open new terminal tabs/windows in the same directory.
+    __vte_osc7 () { :; }  # do-nothing stub
     vte_sh="/etc/profile.d/vte.sh"
     if [[ -f "${vte_sh}" ]]; then
         source "${vte_sh}"
-    fi
-    if type __vte_osc7 &>/dev/null; then
-        # Redefine the function to use escape sequences that do
-        # not leave visual artefacts.
-        __vte_osc7 () {
-            printf "\[\e]7;file://%s%s\a\]" "${HOSTNAME:-}" "$(__vte_urlencode "${PWD}")"
-        }
-    else
-        __vte_osc7 () { :; }  # do-nothing stub
     fi
 
     # Git status in prompt using __git_ps1()
@@ -357,11 +349,11 @@ if [[ "$PS1" ]]; then
 
         # Primary prompt
         PS1="\n"
-        PS1+="$(__vte_osc7)"
         PS1+="${term_title}"
         PS1+="${status_line_previous:+${status_line_previous%% }\n}"
         PS1+="${prompt_status_line_other:+${prompt_status_line_other%% }\n}"
         PS1+="${prompt_sign_colour}\\$""${colour_normal} "
+        PS1+="$(__vte_osc7)"
 
         # Additional prompts
         PS2="${prompt_sign_colour}> ${colour_normal}"  # Secondary prompt (continuation lines)
