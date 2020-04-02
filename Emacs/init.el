@@ -2698,6 +2698,18 @@ defined as lowercase."
   (add-to-list 'magit-repository-directories '("~/Projects/" . 2))
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
 
+  ;; hide author names from magit-blame annotations;
+  ;; it's usually about why/what/when, not who.
+  (setf (->> magit-blame-styles
+             (alist-get 'headings)
+             (alist-get 'heading-format))
+        "%C %s\n")
+  (setf (->> magit-blame-styles
+             (alist-get 'margin)
+             (alist-get 'margin-format)
+             (second))
+        " %C")
+
   (with-eval-after-load 'direnv
     (--each '(magit-blob-mode
               magit-diff-mode
