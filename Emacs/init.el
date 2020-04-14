@@ -4023,7 +4023,8 @@ defined as lowercase."
   :defer t
   :delight
   :custom
-  (python-fill-docstring-style 'symmetric))
+  (python-fill-docstring-style 'symmetric)
+  (python-docstring-sentence-end-double-space nil))
 
 (use-package python-pytest
   :demand t
