@@ -288,6 +288,11 @@ dconf write /org/gnome/shell/extensions/donotdisturb-button/shortcut "['<Shift><
 dconf write /org/gnome/shell/extensions/draw-on-your-screen/erase-drawing "['<Shift><Super>d']"
 dconf write /org/gnome/shell/extensions/draw-on-your-screen/toggle-drawing "['<Super>d']"
 
+# emoji selector
+dconf write /org/gnome/shell/extensions/emoji-selector/emoji-keybinding "['<Super>semicolon']"
+dconf write /org/gnome/shell/extensions/emoji-selector/nbcols 16
+dconf write /org/gnome/shell/extensions/emoji-selector/emojisize 32
+
 # gtk title bar
 dconf write /org/gnome/shell/extensions/gtktitlebar/hide-window-titlebars "'both'"
 
