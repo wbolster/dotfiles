@@ -2923,7 +2923,7 @@ defined as lowercase."
 
 (use-package vc
   :config
-  (setq vc-handled-backends (delq 'Git vc-handled-backends)))
+  (setq vc-handled-backends nil))
 
 (use-package vdiff
   :defer t
