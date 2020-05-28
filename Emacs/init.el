@@ -3453,6 +3453,13 @@ defined as lowercase."
 
 ;;; Major mode: docker
 
+(use-package docker
+  :defer t
+  :custom-face
+  (docker-face-status-error ((t (:inherit error))))
+  (docker-face-status-success ((t (:inherit success))))
+  (docker-face-status-warning ((t (:inherit warning)))))
+
 (use-package dockerfile-mode
   :defer t
   :mode "Dockerfile[-_\\.].*")
