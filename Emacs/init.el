@@ -2063,7 +2063,7 @@ defined as lowercase."
   (projectile-switch-project-action 'projectile-vc)
 
   :commands
-  w--hydra-project/body
+  w--project-dispatch
 
   :init
   (add-hook 'find-file-hook (fn: require 'projectile))
@@ -2105,45 +2105,34 @@ defined as lowercase."
             (quit-window nil window)))
         (bury-buffer buffer))))
 
-  (w--make-hydra w--hydra-project nil
-    "project"
-    "_a_ll files"
-    ("a" w--projectile-find-file-all)
-    "_b_uffer"
-    ("b" projectile-switch-to-buffer)
-    ("B" projectile-switch-to-buffer-other-window)
-    "_d_ir"
-    ("d" projectile-find-dir)
-    ("D" projectile-find-dir-other-window)
-    "_f_ile"
-    ("f" projectile-find-file)
-    ("F" projectile-find-file-other-window)
-    "_k_ill"
-    ("k" projectile-kill-buffers)
-    "_o_ccur"
-    ("o" projectile-multi-occur)
-    "_p_roject"
-    ("p" projectile-switch-project)
-    ("P" projectile-switch-open-project)
-    "_q_ bury"
-    ("q" w--projectile-project-bury-buffers)
-    "_r_eplace"
-    ("r" projectile-replace)
-    ("R" projectile-replace-regexp)
-    "_s_ave"
-    ("s" projectile-save-project-buffers)
-    "_t_est/impl"
-    ("t" projectile-toggle-between-implementation-and-test)
-    ("T" projectile-find-implementation-or-test-other-window)
-    "_-_ top dir"
-    ("-" projectile-dired)
-    "_/__?_ counsel-ag"
-    ("/" w--counsel-ag-project)
-    ("?" w--counsel-ag-project-all-files)
-    "_!_ terminal"
-    ("!" terminal-here-project-launch)
-    ("1" terminal-here-project-launch)))
-
+  (define-transient-command w--project-dispatch ()
+    ["project"
+     [("p" "switch" projectile-switch-project)
+      ("P" "switch open" projectile-switch-open-project)]]
+    ["buffers, files, directories"
+     [("f" "file" projectile-find-file)
+      ("F" "file ↗" projectile-find-file-other-window)
+      ("a" "all files" w--projectile-find-file-all)]
+     [("b" "switch" projectile-switch-to-buffer)
+      ("B" "switch ↗" projectile-switch-to-buffer-other-window)]
+     [("d" "dir" projectile-find-dir)
+      ("D" "dir ↗" projectile-find-dir-other-window)
+      ("-" "top dir" projectile-dired)]
+     [("t" "test" projectile-toggle-between-implementation-and-test)
+      ("T" "test ↗" projectile-find-implementation-or-test-other-window)]
+     ["_!_ terminal"
+      ("!" "terminal" terminal-here-project-launch)
+      ("1" "terminal" terminal-here-project-launch)]
+     [("s" "save all" projectile-save-project-buffers)]]
+    ["search, replace"
+     [("/" "search" w--counsel-ag-project)
+      ("?" "search live" w--counsel-ag-project-all-files)]
+     [("o" "occur" projectile-multi-occur)]
+     [("r" "replace" projectile-replace)
+      ("R" "replace regexp" projectile-replace-regexp)]]
+    ["misc"
+     [("k" "kill all" projectile-kill-buffers)
+      ("q" "bury all" w--projectile-project-bury-buffers)]]))
 
 ;;;; jumping around
 
@@ -3221,7 +3210,7 @@ defined as lowercase."
   "_o_ccur"
   ("o" w--occur-dwim)
   "_p_roject"
-  ("p" w--hydra-project/body)
+  ("p" w--project-dispatch)
   "_q_ bury buffer"
   ("q" bury-buffer)
   ("Q" unbury-buffer)
