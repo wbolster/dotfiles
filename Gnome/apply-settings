@@ -220,7 +220,6 @@ gsettings set "${gnome_terminal_keybindings}" zoom-in '<Primary>equal'
 gsettings set "${gnome_terminal_keybindings}" zoom-normal '<Primary>0'
 gsettings set "${gnome_terminal_keybindings}" zoom-out '<Primary>minus'
 
-gsettings set "${gnome_terminal_profile}" allow-bold false
 gsettings set "${gnome_terminal_profile}" audible-bell false
 gsettings set "${gnome_terminal_profile}" background-color "'rgb(253,246,227)'"
 gsettings set "${gnome_terminal_profile}" bold-is-bright false
