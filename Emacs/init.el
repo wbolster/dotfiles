@@ -2696,7 +2696,7 @@ defined as lowercase."
   (setf (->> magit-blame-styles
              (alist-get 'margin)
              (alist-get 'margin-format)
-             (second))
+             (cadr))
         " %C")
 
   (with-eval-after-load 'direnv
