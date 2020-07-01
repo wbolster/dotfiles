@@ -1,0 +1,2 @@
+;;; -*- no-byte-compile: t -*-
+(define-package "virtual-auto-fill" "20200217.2333" "Readably display text without adding line breaks" '((emacs "25.2") (adaptive-wrap "0.7") (visual-fill-column "1.9")) :commit "91fb699ead3f86663e56b48a10adeb5723ca7b84" :keywords '("convenience" "mail" "outlines" "files" "wp") :authors '(("Luis Gerhorst" . "virtual-auto-fill@luisgerhorst.de")) :maintainer '("Luis Gerhorst" . "virtual-auto-fill@luisgerhorst.de") :url "https://github.com/luisgerhorst/virtual-auto-fill")

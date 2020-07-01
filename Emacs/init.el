@@ -1888,6 +1888,8 @@ defined as lowercase."
 (defvar w--wrap-lines-saved-fill-column nil
   "Saved ‘fill-column’ value.")
 
+(use-package virtual-auto-fill)
+
 (define-minor-mode w--wrap-lines-mode
   "Smart combination of auto-fill, visual-line, and visual-fill-column."
   nil " ⇶" nil
@@ -1896,26 +1898,26 @@ defined as lowercase."
         (setq w--wrap-lines-saved-fill-column fill-column
               visual-fill-column-width fill-column
               fill-column most-positive-fixnum)
-        (auto-fill-mode -1)
-        (visual-line-mode)
-        (visual-fill-column-mode))
+        ;; (auto-fill-mode -1)
+        ;; (visual-line-mode)
+        ;; (visual-fill-column-mode)
+        (virtual-auto-fill-mode))
     (setq fill-column w--wrap-lines-saved-fill-column
           visual-fill-column-width nil)
-    (visual-line-mode -1)
-    (visual-fill-column-mode -1)
-    (auto-fill-mode)))
+    ;; (visual-line-mode -1)
+    ;; (visual-fill-column-mode -1)
+    ;; (auto-fill-mode)
+    (virtual-auto-fill-mode -1)))
 
 (defun w--sensible-wrap-mode-1 ()
   (interactive)
-  (if (derived-mode-p 'text-mode)
-      (call-interactively 'w--wrap-lines-mode)
-    (call-interactively 'toggle-truncate-lines)))
+  (let ((mode (if (derived-mode-p 'text-mode) 'w--wrap-lines-mode 'toggle-truncate-lines)))
+    (call-interactively mode)))
 
 (defun w--sensible-wrap-mode-2 ()
   (interactive)
-  (if (derived-mode-p 'text-mode)
-      (call-interactively 'toggle-truncate-lines)
-    (call-interactively 'visual-line-mode)))
+  (let ((mode (if (derived-mode-p 'text-mode) 'toggle-truncate-lines 'visual-line-mode)))
+    (call-interactively mode)))
 
 (defun w--evil-fill-paragraph-dwim ()
   "Fill the current paragraph."
@@ -2864,7 +2866,7 @@ defined as lowercase."
   :config
   (defun w--git-commit-mode-hook ()
     (when git-commit-mode
-      (w--wrap-lines-mode -1))))
+      (virtual-auto-fill-mode -1))))
 
 (use-package git-link
   :defer t
@@ -3298,7 +3300,7 @@ defined as lowercase."
   (defun w--text-mode-hook ()
     (w--show-trailing-whitespace-mode)
     (guess-language-mode)
-    (w--wrap-lines-mode)))
+    (virtual-auto-fill-mode)))
 
 
 ;;; Major mode: programming (generic)
