@@ -38,3 +38,7 @@ _history_path = os.path.expanduser("~/.pdb_history")
 if os.path.exists(_history_path): readline.read_history_file(_history_path)
 def _save_history(path): import readline; readline.write_history_file(path)
 atexit.register(_save_history, _history_path)
+
+# pressing ‘enter’ after spawning the interactive prompt prints the value of
+# the last expression, so clear it explicitly.
+None
