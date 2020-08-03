@@ -6,6 +6,7 @@
 ;; Author: Eivind Fonn <evfonn@gmail.com>
 ;; Version: 1.0.0
 ;; Package-Version: 20151109.1906
+;; Package-Commit: 0c7501e6efed661242c3a20e0a6c79a6455c2c40
 ;; Keywords: convenience evil
 ;; URL: http://github.com/TheBB/evil-indent-plus
 ;; Package-Requires: ((evil "0") (cl-lib "0.5"))

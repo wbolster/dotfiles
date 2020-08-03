@@ -6,6 +6,7 @@
 ;; Maintainer: Luis Gerhorst <virtual-auto-fill@luisgerhorst.de>
 ;; URL: https://github.com/luisgerhorst/virtual-auto-fill
 ;; Package-Version: 20200217.2333
+;; Package-Commit: 291f6178a5423f01f2f69d6bc48603d4f605b61a
 ;; Keywords: convenience, mail, outlines, files, wp
 ;; Created: Sun 26. Jan 2020
 ;; Version: 0.1

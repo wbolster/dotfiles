@@ -6,6 +6,7 @@
 ;; Maintainer: Junpeng Qiu <qjpchmail@gmail.com>
 ;; URL: https://github.com/cute-jumper/parsec.el
 ;; Package-Version: 20180730.16
+;; Package-Commit: 2cbbbc2254aa7bcaa4fb5e07c8c1bf2f381dba26
 ;; Version: 0.1.3
 ;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
 ;; Keywords: extensions

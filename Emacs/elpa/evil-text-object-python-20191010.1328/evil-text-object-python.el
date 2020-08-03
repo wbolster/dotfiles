@@ -3,6 +3,7 @@
 ;; Author: Wouter Bolsterlee <wouter@bolsterl.ee>
 ;; Version: 1.0.1
 ;; Package-Version: 20191010.1328
+;; Package-Commit: 39d22fc524f0413763f291267eaab7f4e7984318
 ;; Package-Requires: ((emacs "25") (evil "1.2.14") (dash "2.16.0"))
 ;; Keywords: convenience languages tools
 ;; URL: https://github.com/wbolster/evil-text-object-python

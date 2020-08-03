@@ -1,0 +1,2 @@
+;;; -*- no-byte-compile: t -*-
+(define-package "evil-colemak-basics" "20200630.1936" "Basic Colemak key bindings for evil-mode" '((emacs "24.3") (evil "1.2.12") (evil-snipe "2.0.3")) :commit "dcdf5c3e844f6eef2bf9d6a502cf8c81b3edaff2" :keywords '("convenience" "emulations" "colemak" "evil") :authors '(("Wouter Bolsterlee" . "wouter@bolsterl.ee")) :maintainer '("Wouter Bolsterlee" . "wouter@bolsterl.ee") :url "https://github.com/wbolster/evil-colemak-basics")

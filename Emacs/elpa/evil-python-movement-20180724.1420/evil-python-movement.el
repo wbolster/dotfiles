@@ -5,6 +5,7 @@
 ;; Author: Felipe Lema <felipelema en mortemale punto org>
 ;; URL: https://bitbucket.org/FelipeLema/evil-python-movement.el/
 ;; Package-Version: 20180724.1420
+;; Package-Commit: 9936b3b7f8d96415d517c1f3604637889484a637
 ;; Package-Requires: ((emacs "25.1") (cl-lib "0.5") (dash "2.13.0") (evil "1.0") (s "1.12.0"))
 
 ;; Version: 1.0

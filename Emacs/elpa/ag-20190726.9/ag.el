@@ -6,6 +6,7 @@
 ;; Created: 11 January 2013
 ;; Version: 0.48
 ;; Package-Version: 20190726.9
+;; Package-Commit: bd81d68466e44301505629454dfc689b6c17d94b
 ;; Package-Requires: ((dash "2.8.0") (s "1.9.0") (cl-lib "0.5"))
 ;;; Commentary:
 

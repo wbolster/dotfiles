@@ -7,6 +7,7 @@
 ;;               Michael Markert <markert.michael@gmail.com>
 ;; URL: http://github.com/cofi/evil-numbers
 ;; Package-Version: 20140606.1251
+;; Package-Commit: 6ea1c8c3a9b37bed63d48f1128e9a4910e68187e
 ;; Git-Repository: git://github.com/cofi/evil-numbers.git
 ;; Created: 2011-09-02
 ;; Version: 0.4

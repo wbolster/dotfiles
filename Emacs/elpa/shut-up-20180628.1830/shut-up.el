@@ -7,6 +7,7 @@
 ;; Maintainer: Johan Andersson <johan.rejeep@gmail.com>
 ;; Package-Requires: ((cl-lib "0.3") (emacs "24"))
 ;; Package-Version: 20180628.1830
+;; Package-Commit: 081d6b01e3ba0e60326558e545c4019219e046ce
 ;; Version: 0.3.2
 ;; URL: http://github.com/rejeep/shut-up.el
 

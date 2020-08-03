@@ -5,6 +5,7 @@
 ;; Created: 29 Nov 2013
 ;; Version: 0.0.3
 ;; Package-Version: 20180131.2354
+;; Package-Commit: 0fc3263f44e95acd3e9d91057677621ce4d297ee
 ;; URL: https://github.com/jinzhu/zeal-at-point
 ;;
 ;; This file is NOT part of GNU Emacs.

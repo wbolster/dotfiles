@@ -1,0 +1,2 @@
+;;; -*- no-byte-compile: t -*-
+(define-package "python-pytest" "20200730.1937" "helpers to run pytest" '((emacs "24.4") (dash "2.12.0") (dash-functional "2.12.0") (magit-popup "2.12.0") (projectile "0.14.0") (s "1.12.0")) :commit "6e6ba842be81924d85dfabd564ae73549e4cbdd9" :keywords '("pytest" "test" "python" "languages" "processes" "tools") :authors '(("wouter bolsterlee" . "wouter@bolsterl.ee")) :maintainer '("wouter bolsterlee" . "wouter@bolsterl.ee") :url "https://github.com/wbolster/emacs-python-pytest")

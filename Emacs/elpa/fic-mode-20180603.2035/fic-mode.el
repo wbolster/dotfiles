@@ -1,5 +1,6 @@
 ;;; fic-mode.el --- Show FIXME/TODO/BUG(...) in special face only in comments and strings
 ;; Package-Version: 20180603.2035
+;; Package-Commit: a05fc36ed54ba0c6dc22ac216a6a72cf191ca13d
 ;;--------------------------------------------------------------------
 ;;
 ;; Copyright (C) 2010, Trey Jackson <bigfaceworm(at)gmail(dot)com>

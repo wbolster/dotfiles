@@ -3,6 +3,7 @@
 ;; Author: wouter bolsterlee <wouter@bolsterl.ee>
 ;; Keywords: convenience
 ;; Package-Version: 20190903.1120
+;; Package-Commit: 1da5354ad8a9235d13928e2ee0863f3642ccdd13
 ;; URL: https://github.com/wbolster/emacs-balanced-windows
 ;; Package-Requires: ((emacs "25"))
 ;; Version: 1.0.0

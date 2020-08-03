@@ -4,7 +4,7 @@
     (cl-lib "0.5")
     (dash "2.12.0")
     (shut-up "0.3.2"))
-  :keywords
+  :commit "d5ae863ced0adeb7032ada398005f27a6c669d79" :keywords
   '("multi" "line" "length" "whitespace" "programming" "tools" "convenience" "files")
   :authors
   '(("Ivan Malison" . "IvanMalison@gmail.com"))

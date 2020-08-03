@@ -5,6 +5,7 @@
 ;; Package-Version: 20190523.258
 ;; Package-X-Original-Version: 0.0.8
 ;; Keywords: github, slack, jira, hipchat, gitlab, bitbucket, org-mode, pod, rst, asciidoc, tools, convenience
+;; Package-Commit: a0962b670e26b723ce304b14e3397da453aef84e
 ;; URL: https://github.com/sshaw/copy-as-format
 ;; Package-Requires: ((cl-lib "0.5"))
 

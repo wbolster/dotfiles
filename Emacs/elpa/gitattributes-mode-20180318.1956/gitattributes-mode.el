@@ -7,6 +7,7 @@
 ;; Homepage: https://github.com/magit/git-modes
 ;; Keywords: convenience vc git
 ;; Package-Version: 20180318.1956
+;; Package-Commit: 55468314a5f6b77d2c96be62c7005ac94545e217
 
 ;; This file is NOT part of GNU Emacs.
 
