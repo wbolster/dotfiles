@@ -2671,7 +2671,7 @@ defined as lowercase."
   (magit-branch-read-upstream-first 'fallback)
   (magit-bury-buffer-function 'magit-mode-quit-window)
   (magit-completing-read-function 'ivy-completing-read)
-  (magit-list-refs-sortby '("-creatordate"))
+  (magit-list-refs-sortby '("-committerdate"))
   (magit-prefer-remote-upstream t)
   (magit-process-popup-time 10)
 
