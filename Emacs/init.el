@@ -93,6 +93,7 @@
 (use-package s)
 
 (use-package tls
+  :ensure nil
   :custom
   (tls-checktrust 'ask))
 
