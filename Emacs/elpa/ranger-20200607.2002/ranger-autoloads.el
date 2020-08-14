@@ -39,6 +39,11 @@ or call the function `ranger-override-dired-mode'.")
 (autoload 'ranger-override-dired-mode "ranger" "\
 Toggle ranger to override dired using `ranger-override-dired-fn'.
 
+If called interactively, enable Ranger-Override-Dired mode if ARG
+is positive, and disable it if ARG is zero or negative.  If
+called from Lisp, also enable the mode if ARG is omitted or nil,
+and toggle it if ARG is `toggle'; disable the mode otherwise.
+
 \(fn &optional ARG)" t nil)
 
 (autoload 'ranger "ranger" "\
@@ -49,9 +54,7 @@ Launch dired in ranger-mode.
 (when ranger-override-dired (ranger-override-dired-mode t))
 
 (autoload 'ranger-override-dired-fn "ranger" "\
-Open dired as deer unless already in ranger-mode
-
-\(fn)" nil nil)
+Open dired as deer unless already in ranger-mode" nil nil)
 
 (autoload 'ranger-mode "ranger" "\
 Major mode emulating the ranger file manager in `dired'.
@@ -60,7 +63,7 @@ Major mode emulating the ranger file manager in `dired'.
 
 \(fn)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ranger" '("r--" "ranger-" "deer-")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ranger" '("deer-" "r--" "ranger-")))
 
 ;;;***
 

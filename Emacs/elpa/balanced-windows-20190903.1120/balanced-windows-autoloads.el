@@ -23,6 +23,11 @@ or call the function `balanced-windows-mode'.")
 (autoload 'balanced-windows-mode "balanced-windows" "\
 Global minor mode to keep windows balanced at all times.
 
+If called interactively, enable Balanced-Windows mode if ARG is
+positive, and disable it if ARG is zero or negative.  If called
+from Lisp, also enable the mode if ARG is omitted or nil, and
+toggle it if ARG is `toggle'; disable the mode otherwise.
+
 \(fn &optional ARG)" t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "balanced-windows" '("balanced-windows-")))

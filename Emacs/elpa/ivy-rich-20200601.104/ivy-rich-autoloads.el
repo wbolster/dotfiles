@@ -22,12 +22,14 @@ or call the function `ivy-rich-mode'.")
 (autoload 'ivy-rich-mode "ivy-rich" "\
 Toggle ivy-rich mode globally.
 
+If called interactively, enable Ivy-Rich mode if ARG is positive,
+and disable it if ARG is zero or negative.  If called from Lisp,
+also enable the mode if ARG is omitted or nil, and toggle it if
+ARG is `toggle'; disable the mode otherwise.
+
 \(fn &optional ARG)" t nil)
 
-(autoload 'ivy-rich-reload "ivy-rich" "\
-
-
-\(fn)" nil nil)
+(autoload 'ivy-rich-reload "ivy-rich" nil nil nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ivy-rich" '("ivy-rich-")))
 

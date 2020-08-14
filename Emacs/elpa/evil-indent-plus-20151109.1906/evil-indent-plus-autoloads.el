@@ -17,9 +17,7 @@
  (autoload 'evil-indent-plus-a-indent-up-down "evil-indent-plus" nil t)
 
 (autoload 'evil-indent-plus-default-bindings "evil-indent-plus" "\
-Set the default evil-indent-plus keybindings.
-
-\(fn)" nil nil)
+Set the default evil-indent-plus keybindings." nil nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-indent-plus" '("evil-indent-plus--")))
 

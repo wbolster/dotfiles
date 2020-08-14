@@ -59,9 +59,7 @@ you will be asked to select two files.
 (autoload 'vdiff-current-file "vdiff" "\
 Start vdiff between current buffer and its file on disk.
 This command can be used instead of `revert-buffer'.  If there is
-nothing to revert then this command fails.
-
-\(fn)" t nil)
+nothing to revert then this command fails." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "vdiff" '("vdiff-")))
 

@@ -12,6 +12,11 @@
 (autoload 'typo-mode "typo" "\
 Minor mode for typographic editing.
 
+If called interactively, enable Typo mode if ARG is positive, and
+disable it if ARG is zero or negative.  If called from Lisp, also
+enable the mode if ARG is omitted or nil, and toggle it if ARG is
+`toggle'; disable the mode otherwise.
+
 This mode changes some default keybindings to enter typographic
 glyphs. In particular, this changes how quotation marks, the
 dash, the dot, and the angle brackets work.
@@ -33,6 +38,11 @@ for a description of this minor mode.")
 (autoload 'typo-global-mode "typo" "\
 Minor mode for typographic editing.
 
+If called interactively, enable Typo-Global mode if ARG is
+positive, and disable it if ARG is zero or negative.  If called
+from Lisp, also enable the mode if ARG is omitted or nil, and
+toggle it if ARG is `toggle'; disable the mode otherwise.
+
 This mode provides a prefix map under C-c 8 which complements the
 default C-x 8 prefix map.
 
@@ -40,7 +50,7 @@ default C-x 8 prefix map.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "typo" '("typo-" "define-typo-cycle")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "typo" '("define-typo-cycle" "typo-")))
 
 ;;;***
 

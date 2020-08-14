@@ -45,9 +45,7 @@ $ git imerge drop [ARGS] <range>
 Resume an incremental merge.
 This can resume a previous git-imerge sequence that was suspended
 with `magit-imerge-suspend'.  More generally, it marks a previous
-incremental merge as the active one.
-
-\(fn)" t nil)
+incremental merge as the active one." t nil)
  (autoload 'magit-imerge "magit-imerge" nil t)
 
 (eval-after-load 'magit '(progn (unless (featurep 'jkl) (define-key magit-mode-map "i" 'magit-imerge)) (transient-append-suffix 'magit-dispatch "F" '("i" "Incremental merging" magit-imerge))))

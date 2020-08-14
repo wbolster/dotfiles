@@ -20,9 +20,7 @@ End position.")
 (make-variable-buffer-local 'fancy-narrow--end)
 
 (autoload 'fancy-narrow-active-p "fancy-narrow" "\
-If the current buffer fancy-narrowed?
-
-\(fn)" nil nil)
+If the current buffer fancy-narrowed?" nil nil)
 
 (autoload 'fancy-narrow-to-region "fancy-narrow" "\
 Like `narrow-to-region', except it still displays the unreachable text.
@@ -43,9 +41,7 @@ To widen the region again afterwards use `fancy-widen'.
 \(fn START END)" t nil)
 
 (autoload 'fancy-widen "fancy-narrow" "\
-Undo narrowing from `fancy-narrow-to-region'.
-
-\(fn)" t nil)
+Undo narrowing from `fancy-narrow-to-region'." t nil)
 
 (defvar fancy-narrow-mode nil "\
 Non-nil if Fancy-Narrow mode is enabled.
@@ -56,6 +52,11 @@ for a description of this minor mode.")
 
 (autoload 'fancy-narrow-mode "fancy-narrow" "\
 Global minor mode that binds the fancy-narrow functions.
+
+If called interactively, enable Fancy-Narrow mode if ARG is
+positive, and disable it if ARG is zero or negative.  If called
+from Lisp, also enable the mode if ARG is omitted or nil, and
+toggle it if ARG is `toggle'; disable the mode otherwise.
 
 The keys used are the same used by the non-fancy functions.
 Binds that are replaced are:
@@ -70,9 +71,7 @@ Binds that are replaced are:
 \(fn &optional ARG)" t nil)
 
 (autoload 'org-fancy-narrow-to-block "fancy-narrow" "\
-Like `org-narrow-to-block', except using `fancy-narrow-to-region'.
-
-\(fn)" t nil)
+Like `org-narrow-to-block', except using `fancy-narrow-to-region'." t nil)
 
 (autoload 'fancy-narrow-to-defun "fancy-narrow" "\
 Like `narrow-to-defun', except using `fancy-narrow-to-region'.
@@ -80,9 +79,7 @@ Like `narrow-to-defun', except using `fancy-narrow-to-region'.
 \(fn &optional ARG)" t nil)
 
 (autoload 'org-fancy-narrow-to-element "fancy-narrow" "\
-Like `org-narrow-to-element', except using `fancy-narrow-to-region'.
-
-\(fn)" t nil)
+Like `org-narrow-to-element', except using `fancy-narrow-to-region'." t nil)
 
 (autoload 'fancy-narrow-to-page "fancy-narrow" "\
 Like `narrow-to-page', except using `fancy-narrow-to-region'.
@@ -90,9 +87,7 @@ Like `narrow-to-page', except using `fancy-narrow-to-region'.
 \(fn &optional ARG)" t nil)
 
 (autoload 'org-fancy-narrow-to-subtree "fancy-narrow" "\
-Like `org-narrow-to-subtree', except using `fancy-narrow-to-region'.
-
-\(fn)" t nil)
+Like `org-narrow-to-subtree', except using `fancy-narrow-to-region'." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "fancy-narrow" '("fancy-narrow-")))
 

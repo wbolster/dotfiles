@@ -13,6 +13,11 @@
 (autoload 'guess-language-mode "guess-language" "\
 Toggle guess-language mode.
 
+If called interactively, enable Guess-Language mode if ARG is
+positive, and disable it if ARG is zero or negative.  If called
+from Lisp, also enable the mode if ARG is omitted or nil, and
+toggle it if ARG is `toggle'; disable the mode otherwise.
+
 Interactively with no argument, this command toggles the mode.
 A positive prefix argument enables the mode, any other prefix
 argument disables it.  From Lisp, argument omitted or nil enables

@@ -9,7 +9,7 @@
 ;;;### (autoloads nil "ivy-hydra" "ivy-hydra.el" (0 0 0 0))
 ;;; Generated autoloads from ivy-hydra.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ivy-hydra" '("ivy-" "hydra-ivy")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ivy-hydra" '("hydra-ivy" "ivy-")))
 
 ;;;***
 

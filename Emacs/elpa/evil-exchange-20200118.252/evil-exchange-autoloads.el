@@ -13,19 +13,13 @@
 Exchange two regions with evil motion." t)
 
 (autoload 'evil-exchange-cancel "evil-exchange" "\
-Cancel current pending exchange.
-
-\(fn)" t nil)
+Cancel current pending exchange." t nil)
 
 (autoload 'evil-exchange-install "evil-exchange" "\
-Setting evil-exchange key bindings.
-
-\(fn)" nil nil)
+Setting evil-exchange key bindings." nil nil)
 
 (autoload 'evil-exchange-cx-install "evil-exchange" "\
-Setting evil-exchange key bindings in a vim-compatible way
-
-\(fn)" t nil)
+Setting evil-exchange key bindings in a vim-compatible way" t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-exchange" '("evil-exchange")))
 

@@ -15,9 +15,16 @@
 (autoload 'whitespace-cleanup-mode "whitespace-cleanup-mode" "\
 Automatically call `whitespace-cleanup' on save.
 
+If called interactively, enable Whitespace-Cleanup mode if ARG is
+positive, and disable it if ARG is zero or negative.  If called
+from Lisp, also enable the mode if ARG is omitted or nil, and
+toggle it if ARG is `toggle'; disable the mode otherwise.
+
 \(fn &optional ARG)" t nil)
 
 (put 'whitespace-cleanup-mode 'safe-local-variable 'booleanp)
+
+(put 'global-whitespace-cleanup-mode 'globalized-minor-mode t)
 
 (defvar global-whitespace-cleanup-mode nil "\
 Non-nil if Global Whitespace-Cleanup mode is enabled.

@@ -11,14 +11,10 @@
 ;;; Generated autoloads from default-text-scale.el
 
 (autoload 'default-text-scale-increase "default-text-scale" "\
-Increase the height of the default face by `default-text-scale-amount'.
-
-\(fn)" t nil)
+Increase the height of the default face by `default-text-scale-amount'." t nil)
 
 (autoload 'default-text-scale-decrease "default-text-scale" "\
-Decrease the height of the default face by `default-text-scale-amount'.
-
-\(fn)" t nil)
+Decrease the height of the default face by `default-text-scale-amount'." t nil)
 
 (autoload 'default-text-scale-reset "default-text-scale" "\
 Reset the height of the default face.
@@ -39,6 +35,11 @@ or call the function `default-text-scale-mode'.")
 
 (autoload 'default-text-scale-mode "default-text-scale" "\
 Change the size of the \"default\" face in every frame.
+
+If called interactively, enable Default-Text-Scale mode if ARG is
+positive, and disable it if ARG is zero or negative.  If called
+from Lisp, also enable the mode if ARG is omitted or nil, and
+toggle it if ARG is `toggle'; disable the mode otherwise.
 
 \(fn &optional ARG)" t nil)
 

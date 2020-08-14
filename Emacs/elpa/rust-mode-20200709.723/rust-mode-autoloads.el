@@ -19,11 +19,9 @@ Major mode for Rust code.
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 
 (autoload 'rust-dbg-wrap-or-unwrap "rust-mode" "\
-Either remove or add the dbg! macro.
+Either remove or add the dbg! macro." t nil)
 
-\(fn)" t nil)
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "rust-mode" '("rust" "cargo-compilation-regexps")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "rust-mode" '("cargo-compilation-regexps" "rust")))
 
 ;;;***
 

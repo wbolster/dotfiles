@@ -16,6 +16,11 @@ With no argument, this command toggles the mode.  Non-null prefix
 argument turns on the mode.  Null prefix argument turns off the
 mode.
 
+If called interactively, enable Groovy-Electric mode if ARG is
+positive, and disable it if ARG is zero or negative.  If called
+from Lisp, also enable the mode if ARG is omitted or nil, and
+toggle it if ARG is `toggle'; disable the mode otherwise.
+
 When Groovy Electric mode is enabled, simple, double and back
 quotes as well as braces are paired auto-magically. Expansion
 does not occur inside comments and strings. Note that you must
@@ -55,9 +60,7 @@ Key bindings:
 ;;; Generated autoloads from inf-groovy.el
 
 (autoload 'inf-groovy-keys "inf-groovy" "\
-Set local key defs for inf-groovy in groovy-mode
-
-\(fn)" nil nil)
+Set local key defs for inf-groovy in groovy-mode" nil nil)
 
 (autoload 'inferior-groovy-mode "inf-groovy" "\
 Major mode for interacting with an inferior groovy (groovysh) process.
@@ -92,9 +95,7 @@ Tab indents for groovy; with argument, shifts rest
 C-M-q does Tab on each line starting within following expression.
 Paragraphs are separated only by blank lines.  # start comments.
 If you accidentally suspend your process, use \\[comint-continue-subjob]
-to continue it.
-
-\(fn)" t nil)
+to continue it." t nil)
 
 (autoload 'run-groovy "inf-groovy" "\
 Run an inferior Groovy process, input and output via buffer *groovy*.
@@ -110,7 +111,7 @@ process buffer for a list of commands.
 
 (eval-after-load 'groovy-mode (lambda nil (add-hook 'groovy-mode-hook 'inf-groovy-keys)))
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "inf-groovy" '("inf" "groovy" "switch-to-groovy" "remove-in-string")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "inf-groovy" '("groovy" "inf" "remove-in-string" "switch-to-groovy")))
 
 ;;;***
 

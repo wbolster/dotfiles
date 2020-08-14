@@ -41,9 +41,7 @@ If pulling is too slow, then also consider setting the Git variable
 \(fn &optional REPO UNTIL)" t nil)
 
 (autoload 'forge-pull-notifications "forge-commands" "\
-Fetch notifications for all repositories from the current forge.
-
-\(fn)" t nil)
+Fetch notifications for all repositories from the current forge." t nil)
 
 (autoload 'forge-pull-topic "forge-commands" "\
 Pull the API data for the current topic.
@@ -54,9 +52,7 @@ topic N to pull instead.
 
 (autoload 'forge-browse-dwim "forge-commands" "\
 Visit a topic, branch or commit using a browser.
-Prefer a topic over a branch and that over a commit.
-
-\(fn)" t nil)
+Prefer a topic over a branch and that over a commit." t nil)
 
 (autoload 'forge-browse-commit "forge-commands" "\
 Visit the url corresponding to REV using a browser.
@@ -64,9 +60,7 @@ Visit the url corresponding to REV using a browser.
 \(fn REV)" t nil)
 
 (autoload 'forge-copy-url-at-point-as-kill "forge-commands" "\
-Copy the url of the thing at point.
-
-\(fn)" t nil)
+Copy the url of the thing at point." t nil)
 
 (autoload 'forge-browse-branch "forge-commands" "\
 Visit the url corresponding BRANCH using a browser.
@@ -79,14 +73,10 @@ Visit the url corresponding to REMOTE using a browser.
 \(fn REMOTE)" t nil)
 
 (autoload 'forge-browse-topic "forge-commands" "\
-Visit the current topic using a browser.
-
-\(fn)" t nil)
+Visit the current topic using a browser." t nil)
 
 (autoload 'forge-browse-pullreqs "forge-commands" "\
-Visit the pull-requests of the current repository using a browser.
-
-\(fn)" t nil)
+Visit the pull-requests of the current repository using a browser." t nil)
 
 (autoload 'forge-browse-pullreq "forge-commands" "\
 Visit the url corresponding to pullreq N using a browser.
@@ -94,9 +84,7 @@ Visit the url corresponding to pullreq N using a browser.
 \(fn N)" t nil)
 
 (autoload 'forge-browse-issues "forge-commands" "\
-Visit the issues of the current repository using a browser.
-
-\(fn)" t nil)
+Visit the issues of the current repository using a browser." t nil)
 
 (autoload 'forge-browse-issue "forge-commands" "\
 Visit the current issue using a browser.
@@ -106,14 +94,10 @@ read an issue N to visit.
 \(fn N)" t nil)
 
 (autoload 'forge-browse-post "forge-commands" "\
-Visit the current post using a browser.
-
-\(fn)" t nil)
+Visit the current post using a browser." t nil)
 
 (autoload 'forge-visit-topic "forge-commands" "\
-View the current topic in a separate buffer.
-
-\(fn)" t nil)
+View the current topic in a separate buffer." t nil)
 
 (autoload 'forge-visit-pullreq "forge-commands" "\
 View the current pull-request in a separate buffer.
@@ -130,9 +114,7 @@ read an issue N to visit instead.
 \(fn N)" t nil)
 
 (autoload 'forge-visit-repository "forge-commands" "\
-View the current repository in a separate buffer.
-
-\(fn)" t nil)
+View the current repository in a separate buffer." t nil)
 
 (autoload 'forge-branch-pullreq "forge-commands" "\
 Create and configure a new branch from a pull-request.
@@ -162,17 +144,13 @@ is added anyway.  Currently this only supports Github and Gitlab.
 \(fn FORK REMOTE)" t nil)
 
 (autoload 'forge-list-notifications "forge-commands" "\
-List notifications.
-
-\(fn)" t nil)
+List notifications." t nil)
 
 (autoload 'forge-add-pullreq-refspec "forge-commands" "\
 Configure Git to fetch all pull-requests.
 This is done by adding \"+refs/pull/*/head:refs/pullreqs/*\"
 to the value of `remote.REMOTE.fetch', where REMOTE is the
-upstream remote.  Also fetch from REMOTE.
-
-\(fn)" t nil)
+upstream remote.  Also fetch from REMOTE." t nil)
 
 (autoload 'forge-add-repository "forge-commands" "\
 Add a repository to the database.
@@ -213,9 +191,7 @@ you to manually clean up the local database.
 Move the current database file to the trash.
 This is useful after the database scheme has changed, which will
 happen a few times while the forge functionality is still under
-heavy development.
-
-\(fn)" t nil)
+heavy development." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "forge-commands" '("forge-")))
 
@@ -293,9 +269,7 @@ List them in a separate buffer.
 List open issues from all your Github repositories.
 Options `forge-owned-accounts' and `forge-owned-blacklist'
 controls which repositories are considered to be owned by you.
-Only Github is supported for now.
-
-\(fn)" t nil)
+Only Github is supported for now." t nil)
 
 (autoload 'forge-list-pullreqs "forge-list" "\
 List pull-requests of the current repository in a separate buffer.
@@ -318,24 +292,18 @@ List them in a separate buffer.
 List open pull-requests from all your Github repositories.
 Options `forge-owned-accounts' and `forge-owned-blacklist'
 controls which repositories are considered to be owned by you.
-Only Github is supported for now.
-
-\(fn)" t nil)
+Only Github is supported for now." t nil)
 
 (autoload 'forge-list-repositories "forge-list" "\
 List known repositories in a separate buffer.
-Here \"known\" means that an entry exists in the local database.
-
-\(fn)" t nil)
+Here \"known\" means that an entry exists in the local database." t nil)
 
 (autoload 'forge-list-owned-repositories "forge-list" "\
 List your own known repositories in a separate buffer.
 Here \"known\" means that an entry exists in the local database
 and options `forge-owned-accounts' and `forge-owned-blacklist'
 controls which repositories are considered to be owned by you.
-Only Github is supported for now.
-
-\(fn)" t nil)
+Only Github is supported for now." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "forge-list" '("forge-")))
 
@@ -386,7 +354,7 @@ Only Github is supported for now.
 ;;;### (autoloads nil "forge-topic" "forge-topic.el" (0 0 0 0))
 ;;; Generated autoloads from forge-topic.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "forge-topic" '("forge-" "bug-reference-fontify")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "forge-topic" '("bug-reference-fontify" "forge-")))
 
 ;;;***
 

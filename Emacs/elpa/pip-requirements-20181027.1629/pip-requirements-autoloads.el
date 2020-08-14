@@ -20,9 +20,7 @@
 Setup Auto-Complete for Pip Requirements.
 
 See URL `https://github.com/auto-complete/auto-complete' for
-information about Auto Complete.
-
-\(fn)" nil nil)
+information about Auto Complete." nil nil)
 
 (autoload 'pip-requirements-mode "pip-requirements" "\
 Major mode for editing pip requirements files.

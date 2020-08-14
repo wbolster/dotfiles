@@ -13,18 +13,14 @@
 Launch a terminal in the current working directory.
 
 This is the directory of the current buffer unless you have
-changed it by running `cd'.
-
-\(fn)" t nil)
+changed it by running `cd'." t nil)
 
 (defalias 'terminal-here 'terminal-here-launch)
 
 (autoload 'terminal-here-project-launch "terminal-here" "\
 Launch a terminal in the current project root.
 
-Uses `terminal-here-project-root-function' to determine the project root.
-
-\(fn)" t nil)
+Uses `terminal-here-project-root-function' to determine the project root." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "terminal-here" '("terminal-here-")))
 

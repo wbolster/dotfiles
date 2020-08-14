@@ -12,9 +12,7 @@
 
 (autoload 'flycheck-package-setup "flycheck-package" "\
 Setup flycheck-package.
-Add `flycheck-emacs-lisp-package' to `flycheck-checkers'.
-
-\(fn)" t nil)
+Add `flycheck-emacs-lisp-package' to `flycheck-checkers'." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "flycheck-package" '("flycheck-package--start")))
 

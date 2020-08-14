@@ -49,9 +49,7 @@ Show help for variable named SYMBOL.
 \(fn SYMBOL)" t nil)
 
 (autoload 'helpful-at-point "helpful" "\
-Show help for the symbol at point.
-
-\(fn)" t nil)
+Show help for the symbol at point." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "helpful" '("helpful-")))
 

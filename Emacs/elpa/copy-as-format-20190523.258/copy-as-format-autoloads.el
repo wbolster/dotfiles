@@ -15,9 +15,7 @@ Copy the current line or active region and add it to the kill ring as
 GitHub/Slack/JIRA/HipChat/... formatted code.  Format defaults to
 `copy-as-format-default'.  The buffer will not be modified.
 
-With a prefix argument prompt for the format.
-
-\(fn)" t nil)
+With a prefix argument prompt for the format." t nil)
  (autoload 'copy-as-format-asciidoc  "copy-as-format" nil t)
  (autoload 'copy-as-format-bitbucket "copy-as-format" nil t)
  (autoload 'copy-as-format-disqus    "copy-as-format" nil t)

@@ -15,9 +15,7 @@ Search for the word at point in Zeal.
 \(fn &optional EDIT-SEARCH)" t nil)
 
 (autoload 'zeal-at-point-set-docset "zeal-at-point" "\
-Set current buffer's docset.
-
-\(fn)" t nil)
+Set current buffer's docset." t nil)
 
 (autoload 'zeal-at-point-search "zeal-at-point" "\
 Prompt and search in zeal.

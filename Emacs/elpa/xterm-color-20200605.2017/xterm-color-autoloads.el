@@ -58,24 +58,18 @@ You may want to call this if you change `xterm-color-names' or
 take place in a pre-existing buffer that has had xterm-color initialized.
 
 Since the cache is buffer-local and created on-demand when needed, this has no
-effect when called from a buffer that does not have a cache.
-
-\(fn)" t nil)
+effect when called from a buffer that does not have a cache." t nil)
 
 (autoload 'xterm-color-test "xterm-color" "\
-Create, display and render a new buffer containing ANSI control sequences.
-
-\(fn)" t nil)
+Create, display and render a new buffer containing ANSI control sequences." t nil)
 
 (autoload 'xterm-color-test-raw "xterm-color" "\
 Create and display a new buffer containing ANSI SGR control sequences.
 ANSI sequences are not processed. One can use a different Emacs package,
 such as ansi-color.el to do so. This is really meant to be used for easy
-comparisons/benchmarks with libraries that offer similar functionality.
+comparisons/benchmarks with libraries that offer similar functionality." t nil)
 
-\(fn)" t nil)
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "xterm-color" '("xterm-color-" "+xterm-color--table-256+")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "xterm-color" '("+xterm-color--table-256+" "xterm-color-")))
 
 ;;;***
 

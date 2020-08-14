@@ -1,0 +1,2 @@
+;;; Generated package description from /home/wbolster/Configuration/Emacs/elpa/pkgbuild-mode-20200811.1844/pkgbuild-mode.el  -*- no-byte-compile: t -*-
+(define-package "pkgbuild-mode" "20200811.1844" "Interface to the ArchLinux package manager" '((emacs "25.1")) :commit "a1aa12b068c5c8b66147584714b47c729ce3867f" :keywords '("languages") :authors '(("Juergen Hoetzel" . "juergen@hoetzel.info")) :maintainer '("Juergen Hoetzel" . "juergen@hoetzel.info") :url "https://github.com/juergenhoetzel/pkgbuild-mode")

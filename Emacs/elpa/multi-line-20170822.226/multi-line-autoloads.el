@@ -10,14 +10,10 @@
 ;;; Generated autoloads from multi-line.el
 
 (autoload 'multi-line-enable-mode-hooks "multi-line" "\
-Set default language specific strategies for multi-line.
-
-\(fn)" t nil)
+Set default language specific strategies for multi-line." t nil)
 
 (autoload 'multi-line-disable-mode-hooks "multi-line" "\
-Remove default language specific strategies for multi-line.
-
-\(fn)" t nil)
+Remove default language specific strategies for multi-line." t nil)
 
 (autoload 'multi-line "multi-line" "\
 Multi-line the statement at point.
@@ -27,9 +23,7 @@ When ARG is provided single-line the statement at point instead.
 \(fn ARG)" t nil)
 
 (autoload 'multi-line-single-line "multi-line" "\
-Single-line the statement at point.
-
-\(fn)" t nil)
+Single-line the statement at point." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "multi-line" '("multi-line-")))
 
@@ -80,14 +74,10 @@ Single-line the statement at point.
 ;;; Generated autoloads from multi-line-highlight.el
 
 (autoload 'multi-line-clear-highlights "multi-line-highlight" "\
-Remove any existing multi-line highlight overlays.
-
-\(fn)" t nil)
+Remove any existing multi-line highlight overlays." t nil)
 
 (autoload 'multi-line-highlight-current-candidates "multi-line-highlight" "\
-Highlight the positions at which multi-line will consider adding newlines.
-
-\(fn)" t nil)
+Highlight the positions at which multi-line will consider adding newlines." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "multi-line-highlight" '("multi-line-")))
 

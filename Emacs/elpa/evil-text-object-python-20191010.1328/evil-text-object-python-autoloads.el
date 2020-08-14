@@ -18,9 +18,7 @@ Add text object key bindings.
 
 This function should be added to a major mode hook.  It modifies
 buffer-local keymaps and adds bindings for Python text objects for
-both operator state and visual state.
-
-\(fn)" t nil)
+both operator state and visual state." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-text-object-python" '("evil-text-object-python-")))
 

@@ -12,38 +12,28 @@
 (autoload 'buf-move-up "buffer-move" "\
 Swap the current buffer and the buffer above the split.
    If there is no split, ie now window above the current one, an
-   error is signaled.
-
-\(fn)" t nil)
+   error is signaled." t nil)
 
 (autoload 'buf-move-down "buffer-move" "\
 Swap the current buffer and the buffer under the split.
    If there is no split, ie now window under the current one, an
-   error is signaled.
-
-\(fn)" t nil)
+   error is signaled." t nil)
 
 (autoload 'buf-move-left "buffer-move" "\
 Swap the current buffer and the buffer on the left of the split.
    If there is no split, ie now window on the left of the current
-   one, an error is signaled.
-
-\(fn)" t nil)
+   one, an error is signaled." t nil)
 
 (autoload 'buf-move-right "buffer-move" "\
 Swap the current buffer and the buffer on the right of the split.
    If there is no split, ie now window on the right of the current
-   one, an error is signaled.
-
-\(fn)" t nil)
+   one, an error is signaled." t nil)
 
 (autoload 'buf-move "buffer-move" "\
 Begin moving the current buffer to different windows.
 
 Use the arrow keys to move in the desired direction.  Pressing
-any other key exits this function.
-
-\(fn)" t nil)
+any other key exits this function." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "buffer-move" '("buf")))
 

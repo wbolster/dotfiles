@@ -48,9 +48,7 @@ Open `shell' in CONTAINER.  When READ-SHELL is not nil, ask the user for it.
 \(fn CONTAINER &optional READ-SHELL)" t nil)
 
 (autoload 'docker-containers "docker-container" "\
-List docker containers.
-
-\(fn)" t nil)
+List docker containers." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "docker-container" '("docker-container-")))
 
@@ -72,9 +70,7 @@ Pull the image named NAME.  If ALL is set, use \"-a\".
 \(fn NAME &optional ALL)" t nil)
 
 (autoload 'docker-images "docker-image" "\
-List docker images.
-
-\(fn)" t nil)
+List docker images." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "docker-image" '("docker-image-")))
 
@@ -95,9 +91,7 @@ Parse and set environment variables from \"docker-machine env NAME\" output.
 \(fn NAME)" t nil)
 
 (autoload 'docker-machines "docker-machine" "\
-List docker machines.
-
-\(fn)" t nil)
+List docker machines." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "docker-machine" '("docker-machine-")))
 
@@ -108,9 +102,7 @@ List docker machines.
 ;;; Generated autoloads from docker-network.el
 
 (autoload 'docker-networks "docker-network" "\
-List docker networks.
-
-\(fn)" t nil)
+List docker networks." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "docker-network" '("docker-network-")))
 
@@ -132,9 +124,7 @@ Enter `dired' in the volume named NAME.
 \(fn NAME)" t nil)
 
 (autoload 'docker-volumes "docker-volume" "\
-List docker volumes.
-
-\(fn)" t nil)
+List docker volumes." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "docker-volume" '("docker-volume-")))
 

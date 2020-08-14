@@ -8,7 +8,7 @@
     (magit "20190408")
     (markdown-mode "2.3")
     (transient "0.1.0"))
-  :commit "2c487465d0b78ffe34252b47fcc06e27039330c4")
+  :commit "feee7e2fce3f87f7aa113c5edcb1896127ee9d12" :url "https://github.com/magit/forge")
 ;; Local Variables:
 ;; no-byte-compile: t
 ;; End:

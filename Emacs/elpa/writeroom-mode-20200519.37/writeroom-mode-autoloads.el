@@ -13,7 +13,14 @@
 (autoload 'writeroom-mode "writeroom-mode" "\
 Minor mode for distraction-free writing.
 
+If called interactively, enable Writeroom mode if ARG is
+positive, and disable it if ARG is zero or negative.  If called
+from Lisp, also enable the mode if ARG is omitted or nil, and
+toggle it if ARG is `toggle'; disable the mode otherwise.
+
 \(fn &optional ARG)" t nil)
+
+(put 'global-writeroom-mode 'globalized-minor-mode t)
 
 (defvar global-writeroom-mode nil "\
 Non-nil if Global Writeroom mode is enabled.
@@ -37,7 +44,7 @@ See `writeroom-mode' for more information on Writeroom mode.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "writeroom-mode" '("writeroom-" "tool-bar-lines" "turn-on-writeroom-mode" "bottom-divider-width" "sticky" "internal-border-width" "menu-bar-lines" "vertical-scroll-bars" "alpha" "fullscreen" "define-writeroom-global-effect")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "writeroom-mode" '("alpha" "bottom-divider-width" "define-writeroom-global-effect" "fullscreen" "internal-border-width" "menu-bar-lines" "sticky" "tool-bar-lines" "turn-on-writeroom-mode" "vertical-scroll-bars" "writeroom-")))
 
 ;;;***
 

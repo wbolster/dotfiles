@@ -168,8 +168,8 @@ Allow `el-patch' to patch definitions of the given TYPE.
 TYPE is a symbol like `defun', `define-minor-mode', etc. This
 updates `el-patch-deftype-alist' (which see) with the provided
 keyword arguments and defines a macro named like
-`el-patch-defun', `el-patch-define-minor-mode', etc." (declare (indent defun)) (ignore locate) (unless classify (error "You must specify `:classify' in calls to `el-patch-deftype'")) (\` (progn (setf (alist-get (quote (\, type)) el-patch-deftype-alist) (copy-tree (quote (\, kwargs)))) (defmacro (\, (or macro-name (intern (format "el-patch-%S" type)))) (name &rest args) (\, (format "Use `el-patch' to override a `%S' form.
-The ARGS are the same as for `%S'." type type)) (\,@ (when declare (\` ((declare (\,@ declare)))))) (list (function el-patch--definition) (cl-list* (quote (\, type)) name args))))))
+`el-patch-defun', `el-patch-define-minor-mode', etc." (declare (indent defun)) (ignore locate) (unless classify (error "You must specify `:classify' in calls to `el-patch-deftype'")) `(progn (setf (alist-get ',type el-patch-deftype-alist) (copy-tree ',kwargs)) (defmacro ,(or macro-name (intern (format "el-patch-%S" type))) (name &rest args) ,(format "Use `el-patch' to override a `%S' form.
+The ARGS are the same as for `%S'." type type) ,@(when declare `((declare ,@declare))) (list #'el-patch--definition (cl-list* ',type name args)))))
 
 (el-patch-deftype cl-defun :classify el-patch-classify-function :locate el-patch-locate-function :declare ((doc-string 3) (indent defun)))
 
@@ -219,9 +219,7 @@ Validate all currently defined patches.
 Runs `el-patch-pre-validate-hook' and
 `el-patch-post-validate-hook'.
 
-See `el-patch-validate'.
-
-\(fn)" t nil)
+See `el-patch-validate'." t nil)
 
 (autoload 'el-patch-feature "el-patch" "\
 Declare that some patches are only defined after FEATURE is loaded.

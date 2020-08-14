@@ -23,12 +23,17 @@ or call the function `nyan-mode'.")
 Use NyanCat to show buffer size and position in mode-line.
 You can customize this minor mode, see option `nyan-mode'.
 
+If called interactively, enable Nyan mode if ARG is positive, and
+disable it if ARG is zero or negative.  If called from Lisp, also
+enable the mode if ARG is omitted or nil, and toggle it if ARG is
+`toggle'; disable the mode otherwise.
+
 Note: If you turn this mode on then you probably want to turn off
 option `scroll-bar-mode'.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "nyan-mode" '("nyan-" "+nyan-")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "nyan-mode" '("+nyan-" "nyan-")))
 
 ;;;***
 

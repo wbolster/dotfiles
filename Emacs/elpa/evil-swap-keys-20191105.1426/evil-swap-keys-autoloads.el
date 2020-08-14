@@ -13,7 +13,14 @@
 (autoload 'evil-swap-keys-mode "evil-swap-keys" "\
 Minor mode to intelligently swap keyboard keys during text input.
 
+If called interactively, enable Evil-Swap-Keys mode if ARG is
+positive, and disable it if ARG is zero or negative.  If called
+from Lisp, also enable the mode if ARG is omitted or nil, and
+toggle it if ARG is `toggle'; disable the mode otherwise.
+
 \(fn &optional ARG)" t nil)
+
+(put 'global-evil-swap-keys-mode 'globalized-minor-mode t)
 
 (defvar global-evil-swap-keys-mode nil "\
 Non-nil if Global Evil-Swap-Keys mode is enabled.
@@ -48,44 +55,28 @@ Add a two-way mapping to swap keys FROM and TO.
 \(fn FROM TO)" nil nil)
 
 (autoload 'evil-swap-keys-swap-number-row "evil-swap-keys" "\
-Swap the keys on the number row.
-
-\(fn)" t nil)
+Swap the keys on the number row." t nil)
 
 (autoload 'evil-swap-keys-swap-underscore-dash "evil-swap-keys" "\
-Swap the underscore and the dash.
-
-\(fn)" t nil)
+Swap the underscore and the dash." t nil)
 
 (autoload 'evil-swap-keys-swap-colon-semicolon "evil-swap-keys" "\
-Swap the colon and semicolon.
-
-\(fn)" t nil)
+Swap the colon and semicolon." t nil)
 
 (autoload 'evil-swap-keys-swap-tilde-backtick "evil-swap-keys" "\
-Swap the backtick and tilde.
-
-\(fn)" t nil)
+Swap the backtick and tilde." t nil)
 
 (autoload 'evil-swap-keys-swap-double-single-quotes "evil-swap-keys" "\
-Swap the double and single quotes.
-
-\(fn)" t nil)
+Swap the double and single quotes." t nil)
 
 (autoload 'evil-swap-keys-swap-square-curly-brackets "evil-swap-keys" "\
-Swap the square and curly brackets.
-
-\(fn)" t nil)
+Swap the square and curly brackets." t nil)
 
 (autoload 'evil-swap-keys-swap-pipe-backslash "evil-swap-keys" "\
-Swap the pipe and backslash.
-
-\(fn)" t nil)
+Swap the pipe and backslash." t nil)
 
 (autoload 'evil-swap-keys-swap-question-mark-slash "evil-swap-keys" "\
-Swap the question mark and slash.
-
-\(fn)" t nil)
+Swap the question mark and slash." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-swap-keys" '("evil-swap-keys-")))
 

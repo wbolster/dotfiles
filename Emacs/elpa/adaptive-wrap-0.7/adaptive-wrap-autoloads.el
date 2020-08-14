@@ -12,9 +12,14 @@
 (autoload 'adaptive-wrap-prefix-mode "adaptive-wrap" "\
 Wrap the buffer text with adaptive filling.
 
+If called interactively, enable Adaptive-Wrap-Prefix mode if ARG
+is positive, and disable it if ARG is zero or negative.  If
+called from Lisp, also enable the mode if ARG is omitted or nil,
+and toggle it if ARG is `toggle'; disable the mode otherwise.
+
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "adaptive-wrap" '("lookup-key" "adaptive-wrap-")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "adaptive-wrap" '("adaptive-wrap-" "lookup-key")))
 
 ;;;***
 
