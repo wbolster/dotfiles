@@ -211,6 +211,7 @@ and BODY can refer to it as ‘arg’."
 ;;; Key bindings and menus
 
 (use-package hydra
+  :after ivy
   :demand t
   :preface
   (defvar w--hydra-hint-delay 1
@@ -1550,6 +1551,7 @@ defined as lowercase."
       (evil-normal-state))))
 
 (use-package swiper
+  :after ivy
   :custom
   (swiper-action-recenter t)
   (swiper-goto-start-of-match t)
@@ -2548,7 +2550,8 @@ defined as lowercase."
   :after ivy
   :delight
   :config
-  (counsel-mode))
+  (counsel-mode)
+  (ivy-configure 'counsel-M-x :initial-input ""))
 
 (use-package company
   :delight
@@ -2621,7 +2624,6 @@ defined as lowercase."
   :custom
   (ivy-count-format "(%d/%d) ")
   (ivy-height 20)
-  (ivy-initial-inputs-alist nil)
   (ivy-wrap t)
   :config
   (ivy-mode 1)
@@ -2638,7 +2640,7 @@ defined as lowercase."
 (use-package ivy-hydra)
 
 (use-package ivy-rich
-  :after counsel
+  :after (ivy counsel)
   :config
   (ivy-rich-mode 1))
 
