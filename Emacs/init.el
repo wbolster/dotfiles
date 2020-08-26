@@ -2712,10 +2712,6 @@ defined as lowercase."
               magit-status-mode)
       (add-to-list 'direnv-non-file-modes it)))
 
-  ;; todo: migrate to transient.el
-  (magit-define-popup-action 'magit-log-popup
-    ?w "Wip" 'magit-wip-log-current)
-
   (defun w--magit-status-other-repository ()
     "Open git status for another repository."
     (interactive)
