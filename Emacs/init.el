@@ -2114,30 +2114,31 @@ defined as lowercase."
     ["project"
      [("p" "switch" projectile-switch-project)
       ("P" "switch open" projectile-switch-open-project)]]
-    ["buffers, files, directories"
+    ["buffers"
+     [("b" "switch" projectile-switch-to-buffer)
+      ("B" "switch ↗" projectile-switch-to-buffer-other-window)]
+     [("k" "kill all" projectile-kill-buffers)
+      ("q" "bury all" w--projectile-project-bury-buffers)]
+     [("s" "save all" projectile-save-project-buffers)]]
+    ["files/directories"
      [("f" "file" projectile-find-file)
       ("F" "file ↗" projectile-find-file-other-window)
       ("a" "all files" w--projectile-find-file-all)]
-     [("b" "switch" projectile-switch-to-buffer)
-      ("B" "switch ↗" projectile-switch-to-buffer-other-window)]
      [("d" "dir" projectile-find-dir)
       ("D" "dir ↗" projectile-find-dir-other-window)
       ("-" "top dir" projectile-dired)]
      [("t" "test" projectile-toggle-between-implementation-and-test)
-      ("T" "test ↗" projectile-find-implementation-or-test-other-window)]
-     ["_!_ terminal"
-      ("!" "terminal" terminal-here-project-launch)
-      ("1" "terminal" terminal-here-project-launch)]
-     [("s" "save all" projectile-save-project-buffers)]]
-    ["search, replace"
+      ("T" "test ↗" projectile-find-implementation-or-test-other-window)]]
+    ["search/replace"
      [("/" "search" w--counsel-ag-project)
       ("?" "search live" w--counsel-ag-project-all-files)]
      [("o" "occur" projectile-multi-occur)]
      [("r" "replace" projectile-replace)
       ("R" "replace regexp" projectile-replace-regexp)]]
-    ["misc"
-     [("k" "kill all" projectile-kill-buffers)
-      ("q" "bury all" w--projectile-project-bury-buffers)]]))
+    ["external tools"
+     [("c" "compile" projectile-compile-project)]
+     [("!" "terminal" terminal-here-project-launch)
+      ("1" "terminal" terminal-here-project-launch)]]))
 
 ;;;; jumping around
 
