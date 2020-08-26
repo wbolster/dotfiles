@@ -3,4 +3,5 @@
  (magit-merge "--no-ff")
  (magit-rebase "--autostash")
  (magit-show-refs "--sort=-committerdate")
- (magit-tag "--annotate"))
+ (magit-tag "--annotate")
+ (python-pytest-dispatch "--color" "--verbose" "--maxfail=10"))
