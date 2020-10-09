@@ -453,7 +453,7 @@ defined as lowercase."
              (file-exists (file-exists-p directory-name)))
     (call-process "xdg-open" nil 0 nil directory-name)))
 
-(define-transient-command w--buffer-dispatch ()
+(transient-define-prefix w--buffer-dispatch ()
   ["buffer"
    [("b" "switch" ivy-switch-buffer)
     ("B" "switch ↗" ivy-switch-buffer-other-window)]
@@ -472,7 +472,7 @@ defined as lowercase."
    [("m" "switch major mode" w--switch-major-mode)
     ("r" "revert" revert-buffer)]])
 
-(define-transient-command w--file-dispatch ()
+(transient-define-prefix w--file-dispatch ()
   ["file"
    [("f" "file" counsel-find-file)
     ("F" "file ↗" find-file-other-window)]
@@ -1506,7 +1506,7 @@ defined as lowercase."
       (when use-boundaries
         (setq thing (format "\\_<%s\\_>" thing)))
       (query-replace-regexp thing replacement)))
-  (define-transient-command w--replace-dispatch nil
+  (transient-define-prefix w--replace-dispatch nil
     ["replace"
      [("r" "dwim" w--query-replace-thing-at-point-dwim)
       ("s" "dwim" w--query-replace-thing-at-point-dwim)]
@@ -2109,7 +2109,7 @@ defined as lowercase."
             (quit-window nil window)))
         (bury-buffer buffer))))
 
-  (define-transient-command w--project-dispatch ()
+  (transient-define-prefix w--project-dispatch ()
     ["project"
      [("p" "switch" projectile-switch-project)
       ("P" "switch open" projectile-switch-open-project)]]
@@ -3074,7 +3074,7 @@ defined as lowercase."
       (window-parameters . ((no-other-window . t)
                             (no-delete-other-windows . t))))))
 
-  (define-transient-command w--flycheck-dispatch ()
+  (transient-define-prefix w--flycheck-dispatch ()
     ["flycheck"
      [("b" "buffer" flycheck-buffer)
       ("m" "compile" w--flycheck-compile-current)
