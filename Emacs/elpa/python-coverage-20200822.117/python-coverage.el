@@ -2,7 +2,7 @@
 
 ;; Author: wouter bolsterlee <wouter@bolsterl.ee>
 ;; Version: 1.0.0
-;; Package-Version: 20191104.2138
+;; Package-Version: 20200822.117
 ;; Package-Requires: ((emacs "25.1") (dash "2.16.0") (dash-functional "1.2.0") (s "1.12.0") (xml+ "1"))
 ;; Keywords: languages, processes, tools
 ;; URL: https://github.com/wbolster/emacs-python-coverage
@@ -52,7 +52,7 @@ non-obtrusive colored blocks adjacent to the left margin."
   :group 'python-coverage)
 
 (defface python-coverage-overlay-partial
-  '((t :inherit magit-diff-removed-highlight))
+  '((t :inherit magit-diff-added))
   "Overlay face for partial (branch) coverage."
   :group 'python-coverage)
 
@@ -454,8 +454,8 @@ The EVENT causes the overlays in BUFFER to get refreshed."
               (--map
                (python-coverage--flycheck-error it checker)
                coverage-info)))
-        (prog1 context
-          (funcall callback 'finished errors)))
+        (funcall callback 'finished errors)
+        context)
     (error
      (funcall callback 'errored (error-message-string err))
      (signal (car err) (cdr err)))))
