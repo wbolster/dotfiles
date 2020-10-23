@@ -2166,12 +2166,14 @@ defined as lowercase."
 
 (use-package dired
   :ensure nil
+  :defer t
   :general
   (:keymaps 'dired-mode-map
    :states '(motion normal)
    "-" #'dired-jump))
 
 (use-package dired-x
+  :after dired
   :ensure nil)
 
 (defun w--declare-jump (command)
