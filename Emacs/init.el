@@ -3531,6 +3531,7 @@ defined as lowercase."
 
 (use-package lispy
   :after elisp-mode
+  :defer t
   :delight
   :config
   (lispy-set-key-theme '(lispy)))
