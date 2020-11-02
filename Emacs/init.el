@@ -3408,7 +3408,9 @@ defined as lowercase."
    :states 'insert
    "<return>" #'comint-send-input
    "C-n" #'comint-next-input
-   "C-p" #'comint-previous-input)
+   "C-p" #'comint-previous-input
+   "C-r" #'comint-history-isearch-backward
+   "C-/" #'w--comint-ivy-history)
 
   :hook
   (comint-mode-hook . w--compilation-mode-hook)
@@ -3422,7 +3424,14 @@ defined as lowercase."
         (evil-find-file-at-point-with-line)
       (user-error
        (goto-char (point-max))
-       (evil-append-line 0)))))
+       (evil-append-line 0))))
+
+  (defun w--comint-ivy-history ()
+    (interactive)
+    (insert (ivy-read
+             "Command history: "
+             (-uniq (ring-elements comint-input-ring))
+             :require-match t))))
 
 (use-package xterm-color
   :defer t)
