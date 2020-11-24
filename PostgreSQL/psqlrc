@@ -42,7 +42,7 @@
 
 -- activity
 \set activity_query_length 100
-\set activity 'SELECT pid, client_port, backend_type AS type, application_name AS app, backend_xid AS xid, (clock_timestamp() - xact_start) AS xact_runtime, (clock_timestamp() - query_start) AS query_runtime, (clock_timestamp() - state_change) AS since_state_change, state, wait_event_type, wait_event, pg_blocking_pids(pid) AS blocked_by, LEFT(REPLACE(query, E\'\\n\', \' \'), CASE WHEN :activity_query_length = 0 THEN 999999 ELSE :activity_query_length END) AS query FROM pg_stat_activity WHERE (state IS NOT NULL AND state != \'idle\') AND pid != pg_backend_pid() ORDER BY since_state_change DESC;'
+\set activity 'SELECT pid, client_port, backend_type AS type, application_name AS app, backend_xid AS xid, (clock_timestamp() - xact_start) AS xact_runtime, CASE WHEN state = \'active\' THEN (clock_timestamp() - query_start) END AS query_runtime, (clock_timestamp() - state_change) AS since_state_change, state, wait_event_type, wait_event, pg_blocking_pids(pid) AS blocked_by, LEFT(REPLACE(query, E\'\\n\', \' \'), CASE WHEN :activity_query_length = 0 THEN 999999 ELSE :activity_query_length END) AS query FROM pg_stat_activity WHERE (state IS NOT NULL AND state != \'idle\') AND pid != pg_backend_pid() ORDER BY since_state_change DESC;'
 
 -- settings
 \set settings 'SELECT name, setting FROM pg_settings ORDER BY name;'
