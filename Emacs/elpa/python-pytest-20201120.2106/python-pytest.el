@@ -2,8 +2,8 @@
 
 ;; Author: wouter bolsterlee <wouter@bolsterl.ee>
 ;; Version: 3.0.0
-;; Package-Version: 20200810.1648
-;; Package-Commit: 10ad9afc840ac2d9d5616abf4bd92ab8fee2ce48
+;; Package-Version: 20201120.2106
+;; Package-Commit: 4a1c4c8915c12e540d41aae1d4e326a2362da541
 ;; Package-Requires: ((emacs "24.4") (dash "2.12.0") (dash-functional "2.12.0") (transient "20200719") (projectile "0.14.0") (s "1.12.0"))
 ;; Keywords: pytest, test, python, languages, processes, tools
 ;; URL: https://github.com/wbolster/emacs-python-pytest
@@ -130,8 +130,8 @@ When non-nil only ‘test_foo()’ will match, and nothing else."
     ("-s" "no output capture" "--capture=no")
     (python-pytest:-v)]]
   ["Selection, filtering, ordering"
-   [("-k" "only names matching expression" "-k=")
-    ("-m" "only marks matching expression" "-m=")
+   [(python-pytest:-k)
+    (python-pytest:-m)
     "                                          "] ;; visual alignment
    [("--dm" "run doctests" "--doctest-modules")
     ("--nf" "new first" "--new-first")
@@ -376,7 +376,8 @@ With a prefix ARG, allow editing."
           (user-error "Aborting; pytest still running")))
       (when process
         (delete-process process))
-      (erase-buffer)
+      (let ((inhibit-read-only t))
+        (erase-buffer))
       (unless (eq major-mode 'python-pytest-mode)
         (python-pytest-mode))
       (compilation-forget-errors)
@@ -418,9 +419,7 @@ With a prefix ARG, allow editing."
   "Transform ARGS so that pytest understands them."
   (-->
    args
-   (python-pytest--switch-to-option it "--color" "--color=yes" "--color=no")
-   (python-pytest--quote-string-option it "-k")
-   (python-pytest--quote-string-option it "-m")))
+   (python-pytest--switch-to-option it "--color" "--color=yes" "--color=no")))
 
 (defun python-pytest--switch-to-option (args name on-replacement off-replacement)
   "Look in ARGS for switch NAME and turn it into option with a value.
@@ -441,6 +440,29 @@ When present ON-REPLACEMENT is substituted, else OFF-REPLACEMENT is appended."
           (python-pytest--shell-quote it)
           (format "%s %s" option it)))
    args))
+
+(defun python-pytest--read-quoted-argument-for-short-flag (prompt initial-input history)
+  "Read a quoted string for use as a argument after a short-form command line flag."
+  (let* ((input (read-from-minibuffer prompt initial-input nil nil history))
+         (quoted-input (python-pytest--shell-quote input))
+         (formatted-input (format " %s" quoted-input)))
+    formatted-input))
+
+(transient-define-argument python-pytest:-k ()
+  :description "only names matching expression"
+  :class 'transient-option
+  :argument "-k"
+  :allow-empty nil
+  :key "-k"
+  :reader 'python-pytest--read-quoted-argument-for-short-flag)
+
+(transient-define-argument python-pytest:-m ()
+  :description "only marks matching expression"
+  :class 'transient-option
+  :argument "-m"
+  :allow-empty nil
+  :key "-m"
+  :reader 'python-pytest--read-quoted-argument-for-short-flag)
 
 (transient-define-argument python-pytest:-v ()
   :description "verbosity"
@@ -593,8 +615,9 @@ Example: ‘MyABCThingy.__repr__’ becomes ‘test_my_abc_thingy_repr’."
 
 ;; third party integration
 
-(defvar direnv-non-file-modes)
-(add-to-list 'direnv-non-file-modes 'python-pytest-mode)
+(with-eval-after-load 'direnv
+  (defvar direnv-non-file-modes)
+  (add-to-list 'direnv-non-file-modes 'python-pytest-mode))
 
 
 (provide 'python-pytest)
