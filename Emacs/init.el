@@ -746,7 +746,6 @@ defined as lowercase."
    "C-=" (w--ilambda (save-excursion (call-interactively #'evil-indent-line))))
   (:state '(insert replace)
    (general-chord "qw") #'evil-normal-state
-   (general-chord "qq") #'evil-normal-state
    (general-chord "wq") #'evil-normal-state
    "C-g" #'evil-normal-state)
 
