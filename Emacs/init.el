@@ -4066,7 +4066,7 @@ defined as lowercase."
    '("--color"
      "--failed-first"
      "--maxfail=10"
-     "--verbose"))
+     "--verbose --verbose"))
   :general
   (:keymaps 'python-pytest-mode-map
    :states 'motion
