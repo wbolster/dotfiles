@@ -2153,7 +2153,7 @@ defined as lowercase."
   (avy-all-windows-alt t)
   (avy-background t)
   (avy-style 'de-bruijn)
-  (avy-keys (string-to-list "arstneio"))
+  (avy-keys (string-to-list "arstneiofu"))
   :commands
   avy-with) ;; used by evil-easymotion helpers
 
