@@ -4448,7 +4448,11 @@ defined as lowercase."
   (defun w--yaml-mode-hook ()
     (setq evil-shift-width yaml-indent-offset)
     (evil-swap-keys-swap-colon-semicolon)
-    (evil-swap-keys-swap-double-single-quotes)))
+    (evil-swap-keys-swap-double-single-quotes)
+    (origami-mode)
+    (evil--add-to-alist
+     'origami-parser-alist
+     'yaml-mode 'w--origami-parser-imenu-flat)))
 
 
 ;;; Local configuration
