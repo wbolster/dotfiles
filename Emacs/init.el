@@ -2787,7 +2787,8 @@ defined as lowercase."
    "C-p" #'magit-section-backward
    "<tab>" #'magit-section-cycle
    "C-<tab>" #'magit-section-toggle
-   "C-w" 'w--hydra-window/body)
+   "C-w" 'w--hydra-window/body
+   "/" 'swiper-isearch)
   (:keymaps 'magit-blame-read-only-mode-map
    :states '(motion normal)
    "C-n" #'magit-blame-next-chunk
