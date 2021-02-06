@@ -2108,6 +2108,12 @@ defined as lowercase."
             (quit-window nil window)))
         (bury-buffer buffer))))
 
+  (defun w--projectile-open-gui-file-browser ()
+    "Open a GUI browser for the directory containing the current file."
+    (interactive)
+    (when-let ((directory-name (projectile-project-root)))
+      (call-process "xdg-open" nil 0 nil directory-name)))
+
   (transient-define-prefix w--project-dispatch ()
     ["project"
      [("p" "switch" projectile-switch-project)
@@ -2126,7 +2132,8 @@ defined as lowercase."
       ("D" "dir ↗" projectile-find-dir-other-window)
       ("-" "top dir" projectile-dired)]
      [("t" "test" projectile-toggle-between-implementation-and-test)
-      ("T" "test ↗" projectile-find-implementation-or-test-other-window)]]
+      ("T" "test ↗" projectile-find-implementation-or-test-other-window)]
+     [("g" "gui browser" w--projectile-open-gui-file-browser)]]
     ["search/replace"
      [("/" "search" w--counsel-ag-project)
       ("?" "search live" w--counsel-ag-project-all-files)]
