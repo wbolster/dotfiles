@@ -3639,6 +3639,20 @@ defined as lowercase."
 
 ;;; Major mode: html
 
+(defgroup prettier nil
+  "Formatting using Prettier"
+  :group 'languages)
+(reformatter-define prettier-format-html
+  :program "prettier"
+  :args '("--parser=html")
+  :lighter " Prettier"
+  :group 'prettier)
+(reformatter-define prettier-format-js
+  :program "prettier"
+  :args '("--parser=babel")
+  :lighter " Prettier"
+  :group 'prettier)
+
 (use-package sgml-mode
   :defer t
   :hook
@@ -3646,6 +3660,7 @@ defined as lowercase."
   (mhtml-mode-hook . w--html-mode-hook)
   :config
   (defun w--html-mode-hook ()
+    (reformatter-dwim-select 'prettier-format-html)
     (setq evil-shift-width 2)))
 
 ;;; Major mode: jinja
