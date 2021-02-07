@@ -2877,7 +2877,16 @@ defined as lowercase."
   :config
   (defun w--git-commit-mode-hook ()
     (when git-commit-mode
-      (virtual-auto-fill-mode -1))))
+      (virtual-auto-fill-mode -1)))
+
+  (defun w--gitlab-insert-merge-request-template ()
+    (interactive)
+    (-if-let* ((template-dir ".gitlab/merge_request_templates/")
+               (dir (locate-dominating-file (or (buffer-file-name) default-directory) template-dir))
+               (template-file
+                (read-file-name "Template: " (concat dir template-dir)) nil t 'file-regular-p))
+        (insert-file-contents template-file)
+      (user-error "No merge request templates found"))))
 
 (use-package git-link
   :defer t
