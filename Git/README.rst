@@ -2,7 +2,7 @@
 git config
 ==========
 
-include config from ``~/.gitconfig``. avoid symlinking, so that per-machine config can be added outside the version control for the main config. see below for examples.
+include the version controlled config from ``~/.gitconfig``. avoid symlinking, so that per-machine config can be added outside the version control for the main config. see below for examples.
 
 ::
 
@@ -19,7 +19,7 @@ in ``~/.gitconfig``::
   [includeIf "gitdir:~/example/"]
   path = .gitconfig_example
 
-in ``~/.gitconfig_foo``::
+in ``~/.gitconfig_example``::
 
   [user]
   email = someone@example
@@ -31,7 +31,7 @@ in ``~/.gitconfig_foo``::
 gnome libsecret credential storage
 ==================================
 
-useful for remotes that don't ssh key auth, e.g. for https remotes
+useful for remotes that don't use ssh key auth, e.g. https remotes
 
 ::
 
