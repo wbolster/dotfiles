@@ -37,3 +37,12 @@ useful for remotes that don't use ssh key auth, e.g. https remotes
 
   [credential]
   helper = /usr/lib/git-core/git-credential-libsecret
+
+
+custom remote urls
+==================
+
+::
+
+  [url "ssh://git@gitea-host:port/user/…"]
+  insteadOf = gitea:
