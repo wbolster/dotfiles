@@ -123,6 +123,9 @@ tool = gvimdiff
 [diff "po"]
 textconv=msgcat --no-location --no-wrap --sort-output
 
+[init]
+defaultBranch = main
+
 [interactive]
 singlekey = true
 
