@@ -264,6 +264,13 @@ gsettings set ca.desrt.dconf-editor.Settings relocatable-schemas-user-paths "{
 # gnome-shell extensions
 #
 
+# arch linux updates
+if [ -f /etc/arch-release ]; then
+    dconf write /org/gnome/shell/extensions/arch-update/check-cmd "'/usr/bin/checkupdates+aur'"
+    dconf write /org/gnome/shell/extensions/arch-update/update-cmd \
+        "'gnome-terminal -e \\'sh -c \"pikaur -Syu; echo; echo; echo done – press enter to exit; read\" \\' '"
+fi
+
 # caffeine
 dconf write /org/gnome/shell/extensions/caffeine/enable-fullscreen false
 dconf write /org/gnome/shell/extensions/caffeine/show-notifications false
