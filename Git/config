@@ -156,3 +156,5 @@ stat = true
 [rerere]
 enabled = true
 
+[url "ssh://git@github.com:"]
+insteadOf = github:
