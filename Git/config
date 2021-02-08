@@ -1,3 +1,7 @@
+[user]
+name = wouter bolsterlee
+email = wouter@bolsterl.ee
+
 [alias]
 
 # Generic
@@ -149,6 +153,3 @@ stat = true
 [rerere]
 enabled = true
 
-[user]
-name = wouter bolsterlee
-email = wouter@bolsterl.ee
