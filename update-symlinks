@@ -3,22 +3,19 @@
 import logging
 import os
 import sys
-
-DEFAULT_SYMLINKS_FILE = 'symlinks.conf'
-LOGGING_FORMAT = '%(levelname)s: %(message)s'
-LINK_SEPARATOR = ' -> '
-HOME_DIR = os.path.realpath(os.path.expanduser('~'))
+from typing import Sequence, Tuple
 
 logger = logging.getLogger(__name__)
 
 
-def bailout(msg, *args):
-    logging.error(msg, *args)
-    logging.error("Exiting...")
-    sys.exit(1)
+DEFAULT_SYMLINKS_FILE = "symlinks.conf"
+LOGGING_FORMAT = "%(levelname)s: %(message)s"
+LINK_SEPARATOR = " -> "
+HOME_DIR = os.path.realpath(os.path.expanduser("~"))
 
-if __name__ == '__main__':
-    config_dir = os.path.realpath(os.path.join(os.path.dirname(__file__)))
+
+def update_symlinks():
+    config_dir = os.getcwd()
 
     try:
         symlinks_file = sys.argv[1]
@@ -27,46 +24,84 @@ if __name__ == '__main__':
 
     logging.basicConfig(format=LOGGING_FORMAT, level=logging.DEBUG)
 
-    os.chdir(HOME_DIR)
+    with open(symlinks_file) as fp:
+        symlinks_file_contents = fp.read()
 
-    for line in open(symlinks_file):
+    symlinks = tokenize_file(symlinks_file_contents)
 
+    for symlink_from, symlink_to in symlinks:
+
+        from_path = normalize_from(symlink_from)
+        to_path = normalize_to(symlink_to)
+
+        if should_link(from_path, to_path):
+            logger.info(f"Linking {from_path} -> {to_path}")
+            if os.path.lexists(from_path):
+                os.unlink(from_path)
+            os.symlink(to_path, from_path)
+
+
+def should_link(from_path: str, to_path: str) -> bool:
+    if not os.path.lexists(from_path):
+        return True
+    if not os.path.islink(from_path):
+        bailout(f"'{from_path}' exists; move it out of the way first")
+
+    link_to = os.path.realpath(from_path)
+    if os.path.exists(from_path) and os.path.samefile(link_to, to_path):
+        logger.info(f"{from_path} already setup correctly")
+        return False
+    else:
+        logger.warn(f"Overwriting existing symlink {from_path} -> {link_to})")
+        return True
+
+
+def tokenize_file(symlinks_file_contents: str) -> Sequence[Tuple[str, str]]:
+    symlinks = []
+    lines = symlinks_file_contents.split("\n")
+    for line_nr, line in enumerate(lines):
         line = line.strip()
-
-        if line == '' or line.startswith('#'):
+        if line == "" or line.startswith("#"):
             continue
-
-        if LINK_SEPARATOR not in line:
-            bailout("Line does not contain arrow: %r", line)
-
-        symlink_from, symlink_to = line.split(LINK_SEPARATOR)
+        symlink_from, _, symlink_to = line.partition(LINK_SEPARATOR)
         symlink_from = symlink_from.strip()
         symlink_to = symlink_to.strip()
+        if not (symlink_to and symlink_from):
+            bailout(f"Invalid symlink line at {line_nr}: {line}")
+        symlinks.append((symlink_from, symlink_to))
+    return symlinks
 
-        if symlink_to.startswith('~') or symlink_to.startswith('/') or symlink_to.startswith('..'):
-            bailout("Destination path is not relative to configuration directory: %r", symlink_to)
 
-        if not symlink_from.startswith('~/'):
-            symlink_from = '~/%s' % symlink_from
-        symlink_from = symlink_from.rstrip('/')
+def normalize_from(symlink_from: str) -> str:
+    """
+    From-symlinks are either absolute or relative from the home dir.
+    """
+    if not symlink_from.startswith("/"):
+        return os.path.expanduser("~/" + symlink_from)
+    return symlink_from
 
-        symlink_from_full = os.path.expanduser(symlink_from)
-        symlink_to_full = os.path.relpath(os.path.join(config_dir, symlink_to), HOME_DIR)
 
-        should_link = True
-        if os.path.lexists(symlink_from_full):
-            if not os.path.islink(symlink_from_full):
-                bailout("'%s' exists; move it out of the way first", symlink_from)
+def normalize_to(symlink_to: str) -> str:
+    """
+    To-symlinks must all be relative from the cwd.
+    """
+    if (
+        symlink_to.startswith("~")
+        or symlink_to.startswith("/")
+        or symlink_to.startswith("..")
+    ):
+        bailout(
+            "Destination path is not relative to configuration directory: %r",
+            symlink_to,
+        )
+    return os.path.abspath(symlink_to)
 
-            if os.path.exists(symlink_from_full) and os.path.samefile(os.path.realpath(symlink_from_full), symlink_to_full):
-                logger.info("%s already setup correctly", symlink_from_full)
-                should_link = False
-            else:
-                logger.warn("Overwriting existing symlink %s (pointed to %s)",
-                            symlink_from, os.path.realpath(symlink_from_full))
 
-        if should_link:
-            logger.info("Linking %s -> %s", symlink_from, symlink_to_full)
-            if os.path.lexists(symlink_from_full):
-                os.unlink(symlink_from_full)
-            os.symlink(symlink_to_full, symlink_from_full)
+def bailout(msg, *args):
+    logging.error(msg, *args)
+    logging.error("Exiting...")
+    sys.exit(1)
+
+
+if __name__ == "__main__":
+    update_symlinks()
