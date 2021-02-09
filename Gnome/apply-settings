@@ -299,8 +299,9 @@ dconf write /org/gnome/shell/extensions/draw-on-your-screen/toggle-drawing "['<S
 
 # emoji selector
 dconf write /org/gnome/shell/extensions/emoji-selector/emoji-keybinding "['<Super>semicolon']"
-dconf write /org/gnome/shell/extensions/emoji-selector/nbcols 16
 dconf write /org/gnome/shell/extensions/emoji-selector/emojisize 32
+dconf write /org/gnome/shell/extensions/emoji-selector/gender 0
+dconf write /org/gnome/shell/extensions/emoji-selector/nbcols 16
 
 # gtk title bar
 dconf write /org/gnome/shell/extensions/gtktitlebar/hide-window-titlebars "'both'"
