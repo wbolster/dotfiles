@@ -15,7 +15,7 @@ HOME_DIR = os.path.realpath(os.path.expanduser("~"))
 
 
 def update_symlinks():
-    config_dir = os.getcwd()
+    config_dir = os.path.realpath(os.path.join(os.path.dirname(__file__)))
 
     try:
         symlinks_file = sys.argv[1]
