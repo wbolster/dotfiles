@@ -2649,6 +2649,8 @@ defined as lowercase."
 
 (use-package ivy-rich
   :after (ivy counsel)
+  :custom
+  (ivy-rich-parse-remote-buffer nil)
   :config
   (ivy-rich-mode 1))
 
