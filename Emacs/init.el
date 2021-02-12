@@ -4430,6 +4430,17 @@ defined as lowercase."
   (sqlformat-command 'pgformatter))
 
 
+;;; Major mode: toml
+
+(use-package conf-mode
+  :hook (conf-toml-mode-hook . w--conf-toml-mode-hook)
+  :config
+  (defun w--conf-toml-mode-hook ()
+    (setq
+     tab-width 2
+     evil-shift-width tab-width)))
+
+
 ;;; Major mode: xml
 
 (use-package nxml-mode
