@@ -3681,6 +3681,25 @@ defined as lowercase."
   :mode "\\.j2\\'")
 
 
+;;; Major mode: javascript
+
+(use-package js2-mode
+  :defer t
+  :hook
+  (js-mode-hook . w--js-mode-hook)
+  (js-mode-hook . js2-minor-mode)
+  :config
+  (defun w--js-mode-hook ()
+    (modify-syntax-entry ?_ "w")
+    (setq
+     tab-width 2
+     evil-shift-width tab-width
+     js-indent-level tab-width)
+    (reformatter-dwim-select 'prettier-format-js)))
+
+(use-package rjsx-mode)
+
+
 ;;; Major mode: json
 
 (use-package json-mode
