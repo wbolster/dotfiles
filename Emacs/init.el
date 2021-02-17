@@ -861,7 +861,7 @@ defined as lowercase."
 
 (use-package aggressive-indent
   :defer t
-  :delight " ⇥")
+  :delight " ⇤")
 
 (use-package drag-stuff
   :general
@@ -1362,7 +1362,14 @@ defined as lowercase."
   :config
   (setq-default
    indent-tabs-mode nil
-   tab-width 4))
+   tab-width 4)
+  (unless (functionp 'indent-tabs-mode)
+    ;; For some reason, indent-tabs-mode is not a real minor mode, but
+    ;; the variable of the same name can be set/unset at will. That's
+    ;; what a minor mode does as well, so define one with she same name.
+    (define-minor-mode indent-tabs-mode
+      "Minor mode to make up for an Emacs oddity."
+      nil " ⇥" nil)))
 
 (use-package whitespace
   :defer t
