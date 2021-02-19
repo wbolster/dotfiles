@@ -4230,7 +4230,6 @@ defined as lowercase."
      evil-shift-width 2
      rst-mode-abbrev-table nil)
     (w--set-major-mode-hydra #'w--hydra-rst/body)
-    (evil-swap-keys-swap-colon-semicolon)
     (flyspell-mode)
     (origami-mode)
     (sphinx-mode)
