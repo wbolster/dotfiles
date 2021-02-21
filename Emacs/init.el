@@ -2758,8 +2758,7 @@ defined as lowercase."
     ("d" magit-diff-dwim)
     ("D" magit-diff)
     "_f_ile"
-    ("f" magit-find-file)
-    ("F" magit-find-file-other-window)
+    ("f" 'magit-file-dispatch)
     "_g_ popup"
     ("g" magit-dispatch)
     "_l_og"
