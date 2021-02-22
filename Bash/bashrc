@@ -703,7 +703,11 @@ if [[ "$PS1" ]]; then
     alias locale-nl='unset LANGUAGE; export LANG=nl_NL.UTF-8'
 
     # Linux package management
-    if type pikaur &>/dev/null; then
+    if type paru &>/dev/null; then
+        # Arch Linux
+        alias i='paru -S'
+        alias u='paru -Syu'
+    elif type pikaur &>/dev/null; then
         # Arch Linux
         alias i='pikaur -S'
         alias u='pikaur -Syu'
