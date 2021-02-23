@@ -256,7 +256,10 @@ packages
 
 aur helper::
 
+  pacman -S base-devel rustup
+
   su - $user
+  rustup toolchain install stable
   git clone https://aur.archlinux.org/paru.git
   cd paru
   makepkg -si
