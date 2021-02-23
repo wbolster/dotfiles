@@ -342,6 +342,7 @@ system::
   man-pages
   moreutils
   nvme-cli
+  openssh
   powertop
   python
   screen
@@ -370,15 +371,10 @@ desktop environment::
   noto-fonts-emoji
   pacman-contrib
   polkit-gnome
-  syncthing
-  xterm
-  EOF
-
-utilities::
-
-  sudo -u $user paru -S - << EOF
   ripgrep
+  syncthing
   xdg-utils
+  xterm
   EOF
 
 services
