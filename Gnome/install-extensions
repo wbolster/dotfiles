@@ -2,9 +2,10 @@
 
 set -e -u -x
 
-pipx install gnome-extensions-cli
-
-~/.local/pipx/venvs/gnome-extensions-cli/bin/python -m pip install pygobject
+if ! type gnome-extensions-cli; then
+    pipx install gnome-extensions-cli
+    ~/.local/pipx/venvs/gnome-extensions-cli/bin/python -m pip install pygobject
+fi
 
 install_extension () {
     gnome-extensions-cli install "$1"
