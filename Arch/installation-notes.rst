@@ -329,7 +329,7 @@ packages
 
 system::
 
-  paru -S - << EOF
+  sudo -u $user paru -S - << EOF
   base-devel
   bash-completion
   binutils
@@ -344,7 +344,7 @@ system::
   nvme-cli
   powertop
   python
-  script
+  screen
   strace
   sysstat
   tmux
@@ -355,7 +355,7 @@ system::
 
 desktop environment::
 
-  paru -S - << EOF
+  sudo -u $user paru -S - << EOF
   bluez-utils
   checkupdates+aur
   emacs
@@ -376,7 +376,7 @@ desktop environment::
 
 utilities::
 
-  paru -S - << EOF
+  sudo -u $user paru -S - << EOF
   ripgrep
   xdg-utils
   EOF
@@ -390,6 +390,7 @@ services
   systemctl enable bluetooth
   systemctl enable linux-modules-cleanup
   systemctl enable fstrim.timer
+  systemctl enable NetworkManager
   systemctl enable sshd
   systemctl enable gdm
 
@@ -403,8 +404,8 @@ reboot
 - maybe enroll secure boot keys in bios
 - enable secure boot
 - set bios admin password
-
-🤞
+- 🤞
+- use ``nmtui`` to connect to wi-fi
 
 references
 ==========
