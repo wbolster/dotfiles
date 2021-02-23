@@ -364,6 +364,7 @@ desktop environment::
 
   paru -S - << EOF
   bluez-utils
+  checkupdates+aur
   emacs
   firefox
   gnome
@@ -374,6 +375,7 @@ desktop environment::
   libreoffice-fresh
   noto-fonts
   noto-fonts-emoji
+  pacman-contrib
   polkit-gnome
   syncthing
   xterm
