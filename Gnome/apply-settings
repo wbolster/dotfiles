@@ -332,7 +332,7 @@ gsettings_paperwm_bind () {
 
 if gnome-extensions list | grep -q -F -x 'paperwm@hedning:matrix.org'; then
     gsettings set org.gnome.shell.overrides edge-tiling false
-    gsettings get org.gnome.mutter workspaces-only-on-primary false
+    gsettings set org.gnome.mutter workspaces-only-on-primary false
 
     gsettings_paperwm set org.gnome.Shell.Extensions.PaperWM animation-time 0.2
     gsettings_paperwm set org.gnome.Shell.Extensions.PaperWM cycle-width-steps '[0.33333333333333333, 0.5, 0.66666666666666666, 0.8]'
