@@ -1,0 +1,417 @@
+=============================
+arch linux installation notes
+=============================
+
+installing on a reasonably modern laptop (uefi, ssd, …), e.g. dell xps
+
+⚠ the machine will be completely wiped! ⚠
+
+getting started
+===============
+
+- put disk in ahci mode instead of raid; dell xps
+- disable secure boot (temporarily)
+- delete/clear secure boot PK (and other keys)
+- boot arch from boot media; use ports on the left side on dell xps
+
+keyboard
+========
+
+::
+
+  loadkeys colemak  # 🤓
+  # loadkeys us  # 😞
+
+network
+=======
+
+wi-fi::
+
+  iwctl station list
+  iwctl station wlan0 get-networks
+  iwctl station wlan0 connect <ESSID>
+
+ntp::
+
+  timedatectl set-ntp true
+
+prepare for remote install (optional)::
+
+  passwd  # temporary password
+  ip addr show
+
+…and continue from another machine::
+
+  ssh -o PubkeyAuthentication=no root@...
+
+disk layout
+===========
+
+show block devices::
+
+  blkid
+  lsblk
+  lsblk --fs
+
+choose the target disk::
+
+  disk=/dev/nvme0n1
+
+wipe disk using nvme sanitize::
+
+  nvme id-ctrl --human-readable $disk  # look for sanicap
+  nvme sanitize $disk --sanact=0x02
+  watch --interval 1 nvme sanitize-log $disk
+
+‼ wait until completed. status should *not* be ``0x102``, e.g.
+
+::
+
+  Sanitize Progress                      (SPROG) :  65535
+  Sanitize Status                        (SSTAT) :  0x101
+
+create a new gpt layout::
+
+  sgdisk --zap-all $disk
+  sgdisk --clear \
+         --new=1:2048:+1GiB --typecode=1:ef00 --change-name=1:EFI \
+         --new=2:0:0 --typecode=2:8304 --change-name=2:encrypted-system \
+         $disk
+  gdisk -l $disk
+
+TODO sfdisk
+
+create a new gpt layout using discoverable partition types::
+
+  wipefs $disk
+  cat << EOF | sfdisk $disk
+  label: gpt
+  size=1GiB, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B, name="EFI"
+  type=4F68BCE3-E8CD-4DB1-96E7-FBCAF984B709, name="encrypted-system"
+  EOF
+
+prepare efi partition (for ``/boot``)::
+
+  mkfs.fat -F32 -n EFI /dev/disk/by-partlabel/EFI
+
+prepare luks::
+
+  blockdev=/dev/disk/by-partlabel/encrypted-system
+  cryptsetup luksFormat --label=encrypted-system $blockdev
+  cryptsetup luksAddKey $blockdev  # add backup key
+  cryptsetup luksDump $blockdev  # verify luks2, crypto params, etc.
+  cryptsetup --allow-discards --persistent open $blockdev system
+
+prepare ``btrfs`` with subvolumes::
+
+  subvolumes="home srv swap"
+
+  mkfs.btrfs --force --label system /dev/mapper/system
+  mount LABEL=system /mnt
+  btrfs subvolume create /mnt/@
+  btrfs subvolume set-default /mnt/@
+  btrfs subvolume create /mnt/@snapshots
+  for s in $subvolumes; do btrfs subvolume create /mnt/@$s; done
+  umount /mnt
+
+prepare final system layout::
+
+  o_btrfs=defaults,X-mount.mkdir,compress=zstd:1,noatime
+  mount -o $o_btrfs LABEL=system /mnt
+  mount -o X-mount.mkdir LABEL=EFI /mnt/boot
+  mount -o $o_btrfs,subvol=@snapshots LABEL=system /mnt/.snapshots
+  for s in $subvolumes; do
+    mount -o "${o_btrfs},subvol=@${s}" LABEL=system /mnt/$s;
+  done
+  mount | grep /mnt
+
+swap file
+=========
+
+::
+
+  swap_size=8G
+
+  sw=/mnt/swap/swapfile
+  touch $sw
+  chmod 600 $sw
+  chattr +C $sw  # disable cow
+  btrfs property set $sw compression none
+  fallocate --length $swap_size $sw
+  mkswap $sw
+  swapon $sw
+  cat /proc/swaps
+
+bootstrap
+=========
+
+install system::
+
+  pacstrap /mnt base linux linux-headers linux-lts linux-lts-headers linux-firmware btrfs-progs etckeeper intel-ucode networkmanager vim
+
+minimal ``fstab``::
+
+  genfstab -L /mnt >> /mnt/etc/fstab.generated  # not used; too much unnecessary noise
+  {
+    echo "LABEL=system / btrfs compress=zstd:1,noatime 0 0"
+    echo "LABEL=system /.snapshots btrfs noatime,subvolume=@snapshots 0 0"
+    for s in $subvolumes; do
+      echo "LABEL=system /$s btrfs noatime,subvolume=@$s 0 0"
+    done
+  } >> /mnt/etc/fstab
+  cat /mnt/etc/fstab
+
+enter new system
+================
+
+`ensure password-less root logins work`__, also when doing this over a ssh connection::
+
+  sed -i -e 's/^root:\*:/root::/' /mnt/etc/shadow
+
+  cp -a /mnt/etc/securetty /mnt/etc/securetty.backup
+  (for i in $(seq 0 9); do printf 'pts/%s\n' $i; done) >> /mnt/etc/securetty
+
+__ https://bugs.archlinux.org/task/45903
+
+open ``root`` shell (instead of ``arch-chroot`` which can't use some systemd stuff)::
+
+  systemd-nspawn --boot --directory=/mnt
+
+once inside::
+
+  mv /etc/securetty.backup /etc/securetty
+
+time and date
+=============
+
+::
+
+  timezone=Europe/Amsterdam
+
+  timedatectl set-ntp 1
+  timedatectl set-timezone $timezone
+
+locales
+=======
+
+::
+
+  cat << EOF >> /etc/locale.gen
+  en_GB.UTF-8 UTF-8
+  en_US.UTF-8 UTF-8
+  nl_NL.UTF-8 UTF-8
+  EOF
+
+  locale-gen
+  localectl set-locale LANG=$(< /etc/locale.gen grep '^[^#]' | head -n 1 | cut -d' ' -f1)
+
+keyboard
+========
+
+::
+
+  touch /etc/vconsole.conf
+  echo 'KEYMAP=colemak' >> /etc/vconsole.conf
+
+hostname
+========
+
+::
+
+  hostname=my-laptop
+
+  hostnamectl set-hostname ${hostname}
+  hostname=$(hostnamectl status --static)
+
+note: ``/etc/hosts`` `stays empty`__
+
+__ https://www.freedesktop.org/software/systemd/man/nss-myhostname.html#
+
+etckeeper
+=========
+
+::
+
+  git config --global user.name root
+  git config --global user.email "root@$(hostnamectl status --static)"
+  etckeeper init
+  etckeeper commit -m 'initial import'
+
+user account
+============
+
+root password::
+
+  passwd
+
+user account::
+
+  user=wbolster
+
+  useradd -m $user
+  passwd $user  # user password
+
+admin access for ``sudo`` + ``polkit``::
+
+  usermod -aG wheel $user
+  echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel
+
+packages
+========
+
+🌈😎::
+
+  sed -i -e 's/^#\(Color\)$/\1/' /etc/pacman.conf
+
+aur helper::
+
+  su - $user
+  git clone https://aur.archlinux.org/paru.git
+  cd paru
+  makepkg -si
+  exit  # back to root shell
+
+booting
+=======
+
+secure boot::
+
+  sudo -u $user paru -S efitools gnu-efi sbkeys sbsigntools
+
+  dir=/etc/secure-boot
+  mkdir $dir
+  cd $dir
+
+  sbkeys  # enter name
+
+  mkdir PK KEK db
+  ln -s ../PK.auth PK/
+  ln -s ../KEK.auth KEK/
+  ln -s ../DB.auth db/
+
+  sbkeysync --verbose --pk --keystore $dir
+
+alternatively, copy the ``*.auth`` files to ``/boot`` and enroll from bios menu.
+
+initramfs with ``dracut``::
+
+  sudo -u $user paru -S busybox dracut dracut-hook-uefi plymouth
+
+  cat << EOF >> /etc/dracut.conf.d/config.conf
+  kernel_cmdline="quiet splash loglevel=3 rd.udev.log_priority=3 vt.global_cursor_default=0"
+  omit_dracutmodules+=" brltty "
+  compress="zstd"
+  uefi_secureboot_cert="/etc/secure-boot/DB.crt"
+  uefi_secureboot_key="/etc/secure-boot/DB.key"
+  # uefi_splash_image="/usr/share/systemd/bootctl/splash-arch.bmp"
+  EOF
+
+  echo something | /usr/share/libalpm/scripts/dracut-install
+  pacman -Rs mkinitcpio
+
+``systemd-boot``::
+
+  bootctl --path=/boot install
+
+  for file in $(find /boot/EFI/systemd/ /boot/EFI/BOOT/ -iname '*.efi'); do
+    sbsign --cert /etc/secure-boot/DB.crt --key /etc/secure-boot/DB.key --output "$file" "$file"
+  done
+
+yubikey
+=======
+
+yubikey for ``sudo`` + ``polkit``::
+
+  pacman -S pam-u2f
+  line='auth sufficient pam_u2f.so appid=sudo cue [cue_prompt=touch hardware key 🔐👈]'
+  sed -i -s -e "1a\\${line}" /etc/pam.d/sudo /etc/pam.d/polkit-1
+
+enroll later (when logged in as regular user)::
+
+  mkdir -p ~/.config/Yubico
+  pamu2fcfg -v -u $(id --user --name) -i sudo > ~/.config/Yubico/u2f_keys
+
+packages
+========
+
+system::
+
+  paru -S - << EOF
+  base-devel
+  bash-completion
+  binutils
+  efibootmgr
+  fwupd
+  htop
+  iotop
+  kernel-modules-hook
+  man-db
+  man-pages
+  moreutils
+  nvme-cli
+  powertop
+  python
+  script
+  strace
+  sysstat
+  tmux
+  udisks2
+  usbutils
+  wget
+  EOF
+
+desktop environment::
+
+  paru -S - << EOF
+  emacs
+  firefox
+  gnome
+  gnome-extra
+  google-chrome
+  inkscape
+  keepassxc
+  libreoffice-fresh
+  noto-fonts
+  noto-fonts-emoji
+  polkit-gnome
+  syncthing
+  xterm
+  EOF
+
+utilities::
+
+  paru -S - << EOF
+  ripgrep
+  xdg-utils
+  EOF
+
+services
+========
+
+::
+
+  systemctl daemon-reload
+  systemctl enable bluetooth
+  systemctl enable linux-modules-cleanup
+  systemctl enable fstrim.timer
+  systemctl enable sshd
+  systemctl enable gdm
+
+reboot
+======
+
+::
+
+  systemctl reboot
+
+- maybe enroll secure boot keys in bios
+- enable secure boot
+- set bios admin password
+
+🤞
+
+references
+==========
+
+- https://wiki.archlinux.org/index.php/Installation_guide
+- https://fedoraproject.org/wiki/Changes/BtrfsTransparentCompression
