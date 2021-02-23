@@ -70,17 +70,6 @@ wipe disk using nvme sanitize::
   Sanitize Progress                      (SPROG) :  65535
   Sanitize Status                        (SSTAT) :  0x101
 
-create a new gpt layout::
-
-  sgdisk --zap-all $disk
-  sgdisk --clear \
-         --new=1:2048:+1GiB --typecode=1:ef00 --change-name=1:EFI \
-         --new=2:0:0 --typecode=2:8304 --change-name=2:encrypted-system \
-         $disk
-  gdisk -l $disk
-
-TODO sfdisk
-
 create a new gpt layout using discoverable partition types::
 
   wipefs $disk
@@ -89,6 +78,7 @@ create a new gpt layout using discoverable partition types::
   size=1GiB, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B, name="EFI"
   type=4F68BCE3-E8CD-4DB1-96E7-FBCAF984B709, name="encrypted-system"
   EOF
+  fdisk -l $disk
 
 prepare efi partition (for ``/boot``)::
 
