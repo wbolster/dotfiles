@@ -1,0 +1,28 @@
+#!/bin/sh
+
+set -e -u -x
+
+pipx install gnome-extensions-cli
+
+~/.local/pipx/venvs/gnome-extensions-cli/bin/python -m pip install pygobject
+
+install_extension () {
+    gnome-extensions-cli install "$1"
+}
+
+# install_extension alt-tab-lift-first-window@cork.github.com
+install_extension arch-update@RaphaelRochet
+install_extension autohide-battery@sitnik.ru
+install_extension bluetooth-quick-connect@bjarosze.gmail.com
+install_extension caffeine@patapon.info
+install_extension dash-to-dock@micxgx.gmail.com
+install_extension disableworkspaceanim@owilliams.mixxx.org
+install_extension drawOnYourScreen@abakkk.framagit.org
+# install_extension gtktitlebar@velitasali.github.io
+install_extension emoji-selector@maestroschan.fr
+install_extension mprisindicatorbutton@JasonLG1979.github.io
+install_extension nothing-to-say@extensions.gnome.wouter.bolsterl.ee
+install_extension paperwm@hedning:matrix.org
+install_extension remove-dropdown-arrows@mpdeimos.com
+install_extension sound-output-device-chooser@kgshank.net
+install_extension tint-all@amarovita.github.com
