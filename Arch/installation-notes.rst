@@ -283,9 +283,12 @@ secure boot::
   ln -s ../KEK.auth KEK/
   ln -s ../DB.auth db/
 
+  mkdir /boot/secure-boot/
+  cp -v DB.auth KEK.auth DB.auth /boot/secure-boot/
+
   sbkeysync --verbose --pk --keystore $dir
 
-alternatively, copy the ``*.auth`` files to ``/boot`` and enroll from bios menu.
+alternatively, enroll keys from bios menu.
 
 initramfs with ``dracut``::
 
