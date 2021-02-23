@@ -93,7 +93,7 @@ gsettings set org.gnome.desktop.wm.keybindings minimize "[]"
 
 gsettings set org.gnome.mutter attach-modal-dialogs false
 gsettings set org.gnome.mutter center-new-windows true
-gsettings get org.gnome.mutter workspaces-only-on-primary true
+gsettings set org.gnome.mutter workspaces-only-on-primary true
 
 # maximised/full screen
 gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Alt>F11', '<Shift><Super>f']"
