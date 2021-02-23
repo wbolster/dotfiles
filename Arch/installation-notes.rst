@@ -78,7 +78,6 @@ create a new gpt layout using discoverable partition types::
   size=1GiB, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B, name="EFI"
   type=4F68BCE3-E8CD-4DB1-96E7-FBCAF984B709, name="encrypted-system"
   EOF
-  fdisk -l $disk
 
 prepare efi partition (for ``/boot``)::
 
@@ -194,6 +193,7 @@ locales
 
   locale-gen
   localectl set-locale LANG=$(< /etc/locale.gen grep '^[^#]' | head -n 1 | cut -d' ' -f1)
+  localectl
 
 keyboard
 ========
@@ -212,6 +212,7 @@ hostname
 
   hostnamectl set-hostname ${hostname}
   hostname=$(hostnamectl status --static)
+  hostnamectl
 
 note: ``/etc/hosts`` `stays empty`__
 
