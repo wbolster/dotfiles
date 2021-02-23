@@ -363,6 +363,7 @@ system::
 desktop environment::
 
   paru -S - << EOF
+  bluez-utils
   emacs
   firefox
   gnome
