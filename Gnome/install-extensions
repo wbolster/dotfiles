@@ -23,7 +23,26 @@ install_extension drawOnYourScreen@abakkk.framagit.org
 install_extension emoji-selector@maestroschan.fr
 install_extension mprisindicatorbutton@JasonLG1979.github.io
 install_extension nothing-to-say@extensions.gnome.wouter.bolsterl.ee
-install_extension paperwm@hedning:matrix.org
 install_extension remove-dropdown-arrows@mpdeimos.com
 install_extension sound-output-device-chooser@kgshank.net
 install_extension tint-all@amarovita.github.com
+
+# paperwm is a bit special
+install_paperwm () {
+    mkdir -p ~/Projects/gnome
+    cd ~/Projects/gnome
+    git clone https://github.com/paperwm/PaperWM.git paperwm
+
+    cd ~/.local/share/gnome-shell/extensions
+    ln -s ../../../../Projects/gnome/paperwm 'paperwm@hedning:matrix.org'
+
+    # HACK: The colon in the name confuses the GSETTINGS_SCHEMA_DIR
+    # environment variable used by the ‘gsettings’ tool, so trick
+    # it into picking up the right directory anyway.
+    ln -s 'paperwm@hedning:matrix.org/schemas' 'paperwm@hedning'
+
+    gnome-extensions-cli enable 'paperwm@hedning:matrix.org'
+}
+if ! gnome-extensions-cli list | grep paperwm; then
+    install_paperwm
+fi
