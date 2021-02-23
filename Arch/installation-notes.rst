@@ -94,7 +94,7 @@ prepare luks::
 
 prepare ``btrfs`` with subvolumes::
 
-  subvolumes="home srv swap"
+  subvolumes=(home srv swap)  # note: zsh syntax
 
   mkfs.btrfs --force --label system /dev/mapper/system
   mount LABEL=system /mnt
