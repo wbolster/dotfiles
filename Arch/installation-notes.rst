@@ -136,7 +136,7 @@ bootstrap
 
 install system::
 
-  pacstrap /mnt base linux linux-headers linux-lts linux-lts-headers linux-firmware btrfs-progs etckeeper intel-ucode networkmanager vim
+  pacstrap /mnt base dracut linux linux-headers linux-lts linux-lts-headers linux-firmware btrfs-progs etckeeper intel-ucode networkmanager sudo vim
 
 minimal ``fstab``::
 
@@ -298,7 +298,6 @@ initramfs with ``dracut``::
   EOF
 
   echo something | /usr/share/libalpm/scripts/dracut-install
-  pacman -Rs mkinitcpio
 
 ``systemd-boot``::
 
