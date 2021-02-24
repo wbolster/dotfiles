@@ -277,9 +277,15 @@ gsettings set ca.desrt.dconf-editor.Settings relocatable-schemas-user-paths "{
 
 # arch linux updates
 if [ -f /etc/arch-release ]; then
+    dconf write /org/gnome/shell/extensions/arch-update/always-visible false
+    dconf write /org/gnome/shell/extensions/arch-update/auto-expand-list 8
+    dconf write /org/gnome/shell/extensions/arch-update/boot-wait 10
     dconf write /org/gnome/shell/extensions/arch-update/check-cmd "'/usr/bin/checkupdates+aur'"
+    dconf write /org/gnome/shell/extensions/arch-update/check-interval 180
+    dconf write /org/gnome/shell/extensions/arch-update/notify true
+    dconf write /org/gnome/shell/extensions/arch-update/strip-versions false
     dconf write /org/gnome/shell/extensions/arch-update/update-cmd \
-        "'gnome-terminal -e \\'sh -c \"pikaur -Syu; echo; echo; echo done – press enter to exit; read\" \\' '"
+        "'gnome-terminal -e \\'sh -c \"paru -Syu; echo; echo; echo done – press enter to exit; read\" \\' '"
 fi
 
 # caffeine
