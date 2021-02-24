@@ -96,7 +96,7 @@ gsettings set org.gnome.mutter center-new-windows true
 gsettings set org.gnome.mutter workspaces-only-on-primary true
 
 # maximised/full screen
-gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Alt>F11', '<Shift><Super>f']"
+gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Alt>F11', '<Control><Super>f', '<Shift><Super>f']"
 gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Alt>F10', '<Super>f']"
 
 # left/right with </> keys (without shift)
@@ -370,7 +370,7 @@ if gnome-extensions list | grep -q -F -x 'paperwm@hedning:matrix.org'; then
     gsettings_paperwm_bind move-up "[]"
     gsettings_paperwm_bind move-up-workspace "[]"
     gsettings_paperwm_bind new-window "[]"
-    gsettings_paperwm_bind paper-toggle-fullscreen "['<Shift><Super>f']"
+    gsettings_paperwm_bind paper-toggle-fullscreen "['<Shift><Super>f', '<Control><Super>f']"
     gsettings_paperwm_bind previous-workspace "[]"
     gsettings_paperwm_bind previous-workspace-backward "[]"
     gsettings_paperwm_bind slurp-in "['<Super>comma']"
