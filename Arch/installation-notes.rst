@@ -366,6 +366,7 @@ desktop environment::
   firefox
   gnome
   gnome-extra
+  gobject-introspection
   google-chrome
   inkscape
   keepassxc
