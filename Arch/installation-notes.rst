@@ -143,9 +143,9 @@ minimal ``fstab``::
   genfstab -L /mnt >> /mnt/etc/fstab.generated  # not used; too much unnecessary noise
   {
     echo "LABEL=system / btrfs compress=zstd:1,noatime 0 0"
-    echo "LABEL=system /.snapshots btrfs noatime,subvolume=@snapshots 0 0"
+    echo "LABEL=system /.snapshots btrfs noatime,subvol=@snapshots 0 0"
     for s in $subvolumes; do
-      echo "LABEL=system /$s btrfs noatime,subvolume=@$s 0 0"
+      echo "LABEL=system /$s btrfs noatime,subvol=@$s 0 0"
     done
   } >> /mnt/etc/fstab
   cat /mnt/etc/fstab
