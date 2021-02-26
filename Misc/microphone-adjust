@@ -1,0 +1,31 @@
+#!/bin/sh
+
+set -e -u
+
+disable_fan () {
+    i8kctl fan - 0 > /dev/null
+}
+
+adjust_microphone () {
+    card="$1"
+    level="$2"
+    amixer -c "${card}" set 'Internal Mic Boost' 0db > /dev/null;
+    amixer -c "${card}" set 'Capture' "${level}"db > /dev/null;
+
+    # sigh
+    # amixer -c2 cset iface=MIXER,name='Mic Capture Volume' "${level}" || true;
+    # pacmd set-source-volume 27 20000
+}
+
+card=${1:-0}
+level=${2:-0}
+
+main () {
+    echo "adjusting card ${card} to ${level}db"
+    while sleep 0.05; do
+        # disable_fan
+        adjust_microphone "${card}" "${level}" | true
+    done;
+}
+
+main "$@"

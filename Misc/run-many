@@ -1,0 +1,6 @@
+#!/bin/sh
+
+n_jobs="$1"
+shift
+
+exec parallel.moreutils -j "$n_jobs" sh -c "$*" -- $(seq "${n_jobs}")

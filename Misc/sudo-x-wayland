@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# enable root access to x-windows system
+# which makes running graphical x apps
+# as root work when using wayland.
+#
+# https://www.reddit.com/r/Fedora/comments/5eb633/solution_running_graphical_app_with_sudo_in/
+
+xhost +SI:localuser:root
+xhost
+sudo "$@"
+xhost -SI:localuser:root
+xhost
