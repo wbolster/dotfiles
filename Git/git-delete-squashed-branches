@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -e -u
+
+current_branch="$(git symbolic-ref --short HEAD)"
+into_branch=${1:-${current_branch}}
+
+git checkout -q "${into_branch}"
+
+git for-each-ref refs/heads/ "--format=%(refname:short)" | while read -r branch; do
+    merge_base=$(git merge-base "${into_branch}" "$branch") && [[ "$(git cherry "${into_branch}" "$(git commit-tree "$(git rev-parse "${branch}^{tree}")" -p "$merge_base" -m _)")" == "-"* ]] && git branch -D "$branch";
+done
