@@ -10,6 +10,10 @@ _deduplicate_path_components() {
     echo "$1" | awk -v RS=: -v ORS=: '!a[$1]++' | sed -e 's/:$//'
 }
 
+# Paths to configuration directories.
+_config_root_dir="$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")"
+_config_bin_dir="${_config_root_dir}/bin"
+
 # Set a sensible $PATH and $MANPATH:
 # - OSX and Homebrew: add Homebrew's sbin/, and use GNU coreutils
 # - Add a few "standard" dirs inside $HOME
@@ -24,7 +28,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
 else
     MANPATH="$(MANPATH='' manpath -g 2>/dev/null)"
 fi
-for dir in /opt/bin ~/.cargo/bin ~/.npm/bin ~/.pyenv/shims ~/.local/bin ~/bin; do
+for dir in /opt/bin "$_config_bin_dir" ~/.cargo/bin ~/.npm/bin ~/.pyenv/shims ~/.local/bin ~/bin; do
     if [[ -d "${dir}" ]]; then
         PATH="${dir}:${PATH}"
     fi
