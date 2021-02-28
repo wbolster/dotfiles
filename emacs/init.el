@@ -739,6 +739,7 @@ defined as lowercase."
    "C-t" #'w--evil-transpose-chars
    "C-v" #'yank  ;; during typing, ctrl-v is "paste", like everywhere else
    "C-SPC" #'fixup-whitespace
+   "C-'" #'w--typo-cycle-quotation-marks
    "C-," #'evil-shift-left-line  ;; shift line with < and > (same
    "C-<" #'evil-shift-left-line  ;; chars as in normal mode);
    "C-." #'evil-shift-right-line ;; used instead of standard vim
@@ -3313,6 +3314,7 @@ defined as lowercase."
 (use-package typo
   :defer t
   :delight " ”"
+  :commands w--typo-cycle-quotation-marks
   :config
   (setq-default typo-language "prefer-single")
   (add-to-list 'typo-quotation-marks '("prefer-single" "‘" "’" "“" "”"))
@@ -3743,11 +3745,6 @@ defined as lowercase."
    ((t (:inherit font-lock-comment-face
         :foreground unspecified
         :strike-through unspecified))))
-
-  :general
-  (:keymaps 'markdown-mode-map
-   :states 'insert
-   "'" #'w--typo-cycle-quotation-marks)
 
   :hook
   (markdown-mode-hook . w--markdown-mode-hook)
@@ -4202,6 +4199,7 @@ defined as lowercase."
 
 (use-package rst
   :defer t
+  :hook (rst-mode-hook . w--rst-mode-hook)
   :custom
   (rst-default-indent 0)
   (rst-indent-comment 2)
@@ -4216,12 +4214,6 @@ defined as lowercase."
                               (?# simple 0)
                               (?@ simple 0)))
   (rst-preferred-bullets '(?- ?*))
-  :general
-  (:keymaps 'rst-mode-map
-   :states 'insert
-   "'" #'w--typo-cycle-quotation-marks)
-
-  :hook (rst-mode-hook . w--rst-mode-hook)
 
   :config
   (defun w--rst-mode-hook ()
