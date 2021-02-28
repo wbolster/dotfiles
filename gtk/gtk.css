@@ -5,6 +5,12 @@
  *
  */
 
+
+/*
+ * Keyboard scrolling in Evince:
+ * - Colemak vim-style ‘hnei’ (right hand)
+ * - Colemak r/s for up/down (left hand)
+ */
 @binding-set evince-scroll-colemak
 {
   unbind "j";
@@ -22,6 +28,11 @@ evview
   -gtk-key-bindings: evince-scroll-colemak;
 }
 
+
+/*
+ * Add a bit of padding in gnome-terminal to move the text a bit away
+ * from the window border (or screen border for full screen terminals)
+ */
 vte-terminal {
     padding: 10px;
 }
