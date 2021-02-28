@@ -4,5 +4,5 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=xcape-w
-Exec=Configuration/Keyboard/xcape-w
+exec=dotfiles/keyboard/xcape-w
 NoDisplay=true

@@ -179,10 +179,10 @@ dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/cus
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command "'gnome-terminal'"
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name "'Open terminal'"
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding "'<Super>l'"
-dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command "'${HOME}/Configuration/Theme/toggle-dark-light'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command "'${HOME}/dotfiles/theme/toggle-dark-light'"
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name "'Toggle dark theme'"
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/binding "'<Shift><Super>v'"
-dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/command "'${HOME}/Configuration/Gnome/toggle-do-not-disturb'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/command "'${HOME}/dotfiles/gnome/toggle-do-not-disturb'"
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/name "'Toggle do not disturb'"
 
 #

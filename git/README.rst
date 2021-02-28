@@ -7,7 +7,7 @@ include the version controlled config from ``~/.gitconfig``. avoid symlinking, s
 ::
 
   [include]
-  path = Configuration/Git/config
+  path = dotfiles/git/config
 
 custom configs per directory tree
 =================================
