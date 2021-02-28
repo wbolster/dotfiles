@@ -25,7 +25,10 @@ if __name__ == '__main__':
     except IndexError:
         symlinks_file = os.path.join(config_dir, DEFAULT_SYMLINKS_FILE)
 
-    logging.basicConfig(format=LOGGING_FORMAT, level=logging.DEBUG)
+    level = getattr(
+        logging, os.environ.get("UPDATE_SYMLINKS_LOG_LEVEL", "info").upper()
+    )
+    logging.basicConfig(format=LOGGING_FORMAT, level=level)
 
     os.chdir(HOME_DIR)
 
@@ -40,8 +43,8 @@ if __name__ == '__main__':
             bailout("Line does not contain arrow: %r", line)
 
         symlink_from, symlink_to = line.split(LINK_SEPARATOR)
-        symlink_from = symlink_from.strip()
-        symlink_to = symlink_to.strip()
+        symlink_from = symlink_from.strip().rstrip("/")
+        symlink_to = symlink_to.strip().rstrip("/")
 
         if symlink_to.startswith('~') or symlink_to.startswith('/') or symlink_to.startswith('..'):
             bailout("Destination path is not relative to configuration directory: %r", symlink_to)
@@ -51,22 +54,40 @@ if __name__ == '__main__':
         symlink_from = symlink_from.rstrip('/')
 
         symlink_from_full = os.path.expanduser(symlink_from)
-        symlink_to_full = os.path.relpath(os.path.join(config_dir, symlink_to), HOME_DIR)
+        symlink_to_full = os.path.join(config_dir, symlink_to)
+        symlink_to_relative = os.path.relpath(os.path.join(config_dir, symlink_to), os.path.dirname(symlink_from_full))
+        logger.debug(
+            "from %s, full=%s",
+            symlink_from,
+            symlink_from_full,
+        )
+        logger.debug(
+            "to %s, full=%s, relative=%s",
+            symlink_to,
+            symlink_to_full,
+            symlink_to_relative,
+        )
 
         should_link = True
         if os.path.lexists(symlink_from_full):
             if not os.path.islink(symlink_from_full):
                 bailout("'%s' exists; move it out of the way first", symlink_from)
 
-            if os.path.exists(symlink_from_full) and os.path.samefile(os.path.realpath(symlink_from_full), symlink_to_full):
-                logger.info("%s already setup correctly", symlink_from_full)
+            if os.readlink(symlink_from_full) == symlink_to_relative:
+                logger.info("%s already setup correctly", symlink_from)
                 should_link = False
             else:
-                logger.warn("Overwriting existing symlink %s (pointed to %s)",
-                            symlink_from, os.path.realpath(symlink_from_full))
+                logger.warning(
+                    "Overwriting existing symlink %s (pointed to %s)",
+                    symlink_from,
+                    os.path.realpath(symlink_from_full),
+                )
 
         if should_link:
-            logger.info("Linking %s -> %s", symlink_from, symlink_to_full)
+            dirname = os.path.dirname(symlink_from_full)
+            if not os.path.isdir(dirname):
+                os.makedirs(dirname)
+            logger.info("Linking %s -> %s", symlink_from, symlink_to_relative)
             if os.path.lexists(symlink_from_full):
                 os.unlink(symlink_from_full)
-            os.symlink(symlink_to_full, symlink_from_full)
+            os.symlink(symlink_to_relative, symlink_from_full)
