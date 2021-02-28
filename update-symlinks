@@ -4,20 +4,21 @@ import logging
 import os
 import sys
 
-DEFAULT_SYMLINKS_FILE = 'symlinks.conf'
-LOGGING_FORMAT = '%(levelname)s: %(message)s'
-LINK_SEPARATOR = ' -> '
-HOME_DIR = os.path.realpath(os.path.expanduser('~'))
+DEFAULT_SYMLINKS_FILE = "symlinks.conf"
+LOGGING_FORMAT = "%(levelname)s: %(message)s"
+LINK_SEPARATOR = " -> "
+HOME_DIR = os.path.realpath(os.path.expanduser("~"))
 
 logger = logging.getLogger(__name__)
 
 
 def bailout(msg, *args):
-    logging.error(msg, *args)
-    logging.error("Exiting...")
+    logger.error(msg, *args)
+    logger.error("Exiting...")
     sys.exit(1)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     config_dir = os.path.realpath(os.path.join(os.path.dirname(__file__)))
 
     try:
@@ -36,7 +37,7 @@ if __name__ == '__main__':
 
         line = line.strip()
 
-        if line == '' or line.startswith('#'):
+        if line == "" or line.startswith("#"):
             continue
 
         if LINK_SEPARATOR not in line:
@@ -46,16 +47,26 @@ if __name__ == '__main__':
         symlink_from = symlink_from.strip().rstrip("/")
         symlink_to = symlink_to.strip().rstrip("/")
 
-        if symlink_to.startswith('~') or symlink_to.startswith('/') or symlink_to.startswith('..'):
-            bailout("Destination path is not relative to configuration directory: %r", symlink_to)
+        if (
+            symlink_to.startswith("~")
+            or symlink_to.startswith("/")
+            or symlink_to.startswith("..")
+        ):
+            bailout(
+                "Destination path is not relative to configuration directory: %r",
+                symlink_to,
+            )
 
-        if not symlink_from.startswith('~/'):
-            symlink_from = '~/%s' % symlink_from
-        symlink_from = symlink_from.rstrip('/')
+        if not symlink_from.startswith("~/"):
+            symlink_from = "~/%s" % symlink_from
+        symlink_from = symlink_from.rstrip("/")
 
         symlink_from_full = os.path.expanduser(symlink_from)
         symlink_to_full = os.path.join(config_dir, symlink_to)
-        symlink_to_relative = os.path.relpath(os.path.join(config_dir, symlink_to), os.path.dirname(symlink_from_full))
+        symlink_to_relative = os.path.relpath(
+            os.path.join(config_dir, symlink_to),
+            os.path.dirname(symlink_from_full),
+        )
         logger.debug(
             "from %s, full=%s",
             symlink_from,
