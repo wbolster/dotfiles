@@ -2759,7 +2759,7 @@ defined as lowercase."
     ("d" magit-diff-dwim)
     ("D" magit-diff)
     "_f_ile"
-    ("f" 'magit-file-dispatch)
+    ("f" magit-file-dispatch)
     "_g_ popup"
     ("g" magit-dispatch)
     "_l_og"
