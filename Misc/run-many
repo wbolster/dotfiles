@@ -1,6 +1,18 @@
 #!/bin/sh
 
+# note: this uses the ‘parallel’ as shipped with ‘moreutils’, which is
+# different from gnu parallel.
+
 n_jobs="$1"
 shift
 
-exec parallel.moreutils -j "$n_jobs" sh -c "$*" -- $(seq "${n_jobs}")
+parallel=parallel
+if type parallel-moreutils &>/dev/null; then
+    # Arch
+    parallel=parallel-moreutils
+elif type parallel.moreutils &>/dev/null; then
+    # Debian
+    parallel=parallel.moreutils
+fi
+
+exec "$parallel" -j "$n_jobs" sh -c "$*" -- $(seq "${n_jobs}")
