@@ -9,6 +9,9 @@
 ;;;### (autoloads nil "gsettings" "gsettings.el" (0 0 0 0))
 ;;; Generated autoloads from gsettings.el
 
+(autoload 'gsettings-apply-gnome-settings "gsettings" "\
+Apply some Gnome desktop configuration to Emacs." t nil)
+
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "gsettings" '("gsettings-")))
 
 ;;;***

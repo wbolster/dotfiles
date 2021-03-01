@@ -1,2 +1,0 @@
-;;; Generated package description from /home/wbolster/Configuration/Emacs/elpa/gsettings-20190513.1003/gsettings.el  -*- no-byte-compile: t -*-
-(define-package "gsettings" "20190513.1003" "GSettings (Gnome) helpers" '((emacs "24.3") (dash "2.16.0") (gvariant "1.0.0") (s "1.12.0")) :commit "3009335a077636347defd08d24fb092495d16d3e" :keywords '("languages") :authors '(("wouter bolsterlee" . "wouter@bolsterl.ee")) :maintainer '("wouter bolsterlee" . "wouter@bolsterl.ee") :url "https://github.com/wbolster/emacs-gsettings")

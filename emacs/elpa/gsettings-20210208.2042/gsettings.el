@@ -2,8 +2,8 @@
 
 ;; Author: wouter bolsterlee <wouter@bolsterl.ee>
 ;; Keywords: languages
-;; Package-Version: 20190513.1003
-;; Package-Commit: 3009335a077636347defd08d24fb092495d16d3e
+;; Package-Version: 20210208.2042
+;; Package-Commit: 1bd1909a22121a8200cca678302f1533856b9008
 ;; URL: https://github.com/wbolster/emacs-gsettings
 ;; Package-Requires: ((emacs "24.3") (dash "2.16.0") (gvariant "1.0.0") (s "1.12.0"))
 ;; Version: 1.0.0
@@ -78,6 +78,28 @@ an error, since this is likely caused by buggy code."
 Note that VALUE should be a valid GVariant string."
   (gsettings--run "set" schema key value))
 
+;;;###autoload
+(defun gsettings-apply-gnome-settings ()
+  "Apply some Gnome desktop configuration to Emacs."
+  (interactive)
+  (when (and (gsettings-available?) (gsettings-gnome-running?))
+    (let* ((cursor-blink (gsettings-get "org.gnome.desktop.interface" "cursor-blink"))
+           (monospace-font-name (gsettings-get "org.gnome.desktop.interface" "monospace-font-name"))
+           (monospace-font-family (gsettings--strip-font-size monospace-font-name))
+           (document-font-name (gsettings-get "org.gnome.desktop.interface" "document-font-name"))
+           (document-font-family (gsettings--strip-font-size document-font-name)))
+      (setq font-use-system-font t)     ;; this may not always work
+      (blink-cursor-mode (if cursor-blink 1 -1))
+      (set-face-attribute 'default nil :family monospace-font-family)
+      (set-face-attribute 'variable-pitch nil :family document-font-family))))
+
+(defun gsettings-gnome-running? ()
+  "Return whether Emacs is running inside a Gnome environment."
+  (-when-let* ((gui-running (display-graphic-p))
+               (xdg-current-desktop (getenv "XDG_CURRENT_DESKTOP"))
+               (s-contains-p "gnome" xdg-current-desktop t))
+    t))
+
 (defun gsettings--run (&rest args)
   "Run gsettings using the provided ARGS and return the result as a string."
   (let ((stderr-tempfile (make-temp-file "gsettings-stderr-"))
@@ -98,6 +120,12 @@ Note that VALUE should be a valid GVariant string."
 (defun gsettings--split-lines (s)
   "Split string S into a list of lines, removing blanks."
   (-remove #'s-blank-str? (s-lines s)))
+
+(defun gsettings--strip-font-size (s)
+  "Strip the font size from a font string S."
+  (->> s
+       (s-replace-regexp "\\(.*\\) [0-9.]+" "\\1")
+       (s-chop-suffixes '(" Medium" " Bold"))))
 
 (provide 'gsettings)
 ;;; gsettings.el ends here
