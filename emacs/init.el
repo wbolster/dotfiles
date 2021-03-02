@@ -127,8 +127,7 @@ and BODY can refer to it as ‘arg’."
 
 (use-package gsettings
   :config
-  (when (fboundp 'gsettings-apply-gnome-settings)
-    (gsettings-apply-gnome-settings)))
+  (gsettings-apply-gnome-settings))
 
 (defvar w--ui-font-family "Sans"
   "Name of the font-family used by the desktop environment's user interface.")
