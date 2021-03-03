@@ -2,30 +2,23 @@
 git config
 ==========
 
-include the version controlled config from ``~/.gitconfig``. avoid symlinking, so that per-machine config can be added outside the version control for the main config. see below for examples.
-
-::
-
-  [include]
-  path = dotfiles/git/config
-
 custom configs per directory tree
 =================================
 
 useful for config that should apply to all repos kept under the same parent directory, e.g. all work repos, or when using multiple github accounts. does not require per repo setup, works also for new clones.
 
-in ``~/.gitconfig``::
+in ``~/.config/git/config-local``::
 
-  [includeIf "gitdir:~/example/"]
-  path = .gitconfig_example
+  [includeIf "gitdir/i:~/Projects/work/"]
+  path = config-work
 
-in ``~/.gitconfig_example``::
+in ``~/.config/git/config-work``::
 
   [user]
-  email = someone@example
+  email = someone@example.org
 
   [core]
-  sshCommand = ssh -i ~/.ssh/id_ed25519_example -o 'IdentitiesOnly yes'
+  sshCommand = ssh -o 'IdentityFile ~/.ssh/id_ed25519_wbolster_work' -o 'IdentitiesOnly yes'
 
 
 gnome libsecret credential storage

@@ -114,7 +114,7 @@ autosetuprebase = always
 ui = auto
 
 [core]
-excludesfile = ~/.gitignore_global
+excludesfile = gitignore-global
 
 [diff]
 algorithm = patience
@@ -158,3 +158,6 @@ enabled = true
 
 [url "ssh://git@github.com/"]
 insteadOf = github:
+
+[include]
+path = config-local
