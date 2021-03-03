@@ -3090,6 +3090,8 @@ defined as lowercase."
   :config
   (global-flycheck-mode)
 
+  (flycheck-add-mode 'sh-shellcheck 'direnv-envrc-mode)
+
   (add-to-list
    'display-buffer-alist
    '("\\*Flycheck errors\\*" .
