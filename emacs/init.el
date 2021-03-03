@@ -3605,7 +3605,8 @@ defined as lowercase."
 (use-package gitconfig-mode
   :defer t
   :mode
-  ("\\.gitconfig.*\\'" . gitconfig-mode))
+  ("\\.gitconfig.*\\'" . gitconfig-mode)
+  ("\\.config/git/config.*\\'" . gitconfig-mode))
 
 (use-package gitignore-mode
   :defer t)
