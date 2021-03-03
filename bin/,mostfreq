@@ -1,0 +1,3 @@
+#!/bin/sh
+set -e -u
+sort -- "$@" | uniq --count | sort --numeric-sort --reverse

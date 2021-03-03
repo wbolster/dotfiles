@@ -894,9 +894,6 @@ if [[ "$PS1" ]]; then
     stty -ixon
 
     # Misc
-    mostfreq() {
-        sort -- "$@" | uniq --count | sort --numeric-sort --reverse
-    }
     alias sc='screen -UxRR'
     alias uuid4='uuid -v4'
     type sudoedit &>/dev/null || alias sudoedit="sudo -e"
