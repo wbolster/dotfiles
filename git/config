@@ -113,9 +113,6 @@ autosetuprebase = always
 [color]
 ui = auto
 
-[core]
-excludesfile = gitignore-global
-
 [diff]
 algorithm = patience
 tool = gvimdiff
