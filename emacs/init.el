@@ -2707,7 +2707,8 @@ defined as lowercase."
   (magit-wip-after-apply-mode)
   (magit-wip-before-change-mode)
 
-  (add-to-list 'magit-repository-directories '("~/Projects/" . 2))
+  (--each '("~" "~/Projects/" "~/Documents/")
+    (add-to-list 'magit-repository-directories (cons it 2) t))
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
 
   (transient-append-suffix 'magit-push "-n" '("/c" "Skip Gitlab CI" "--push-option=ci.skip"))
