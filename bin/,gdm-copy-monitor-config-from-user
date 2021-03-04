@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -eu
+
+source_file=~/.config/monitors.xml
+target_file=/var/lib/gdm/.config/monitors.xml
+target_dir="$(dirname "$target_file")"
+
+sudo -v
+sudo cp --verbose "$source_file" "$target_file"
+sudo chown --verbose "$(sudo stat --format %U:%G "$target_dir")" "$target_file"
+sudo ls -l "$target_file"
