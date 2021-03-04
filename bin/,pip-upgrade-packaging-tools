@@ -1,0 +1,3 @@
+#!/bin/sh
+set -eux
+pip install --upgrade pip setuptools wheel
