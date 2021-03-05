@@ -3757,7 +3757,6 @@ defined as lowercase."
     (setq evil-shift-width 2)
     (w--set-major-mode-hydra #'w--hydra-markdown/body)
     (flyspell-mode)
-    (typo-mode)
     (w--add-evil-surround-pairs
      ?b '("**" . "**")  ;; strong emphasiss
      ?c '("`" . "`")  ;; inline code
@@ -4227,7 +4226,6 @@ defined as lowercase."
     (flyspell-mode)
     (origami-mode)
     (sphinx-mode)
-    (typo-mode)
     (evil-add-to-alist
      'origami-parser-alist
      'rst-mode 'w--origami-parser-imenu-flat)
