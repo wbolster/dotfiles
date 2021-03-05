@@ -347,6 +347,7 @@ if [[ "$PS1" ]]; then
         status_line_previous+="${prompt_newline_warning:+\n${colour_red}${prompt_newline_warning}  }"
         status_line_previous+="${prompt_err:+${colour_red}${prompt_err}  }"
         status_line_previous+="${prompt_timer:+${colour_green}${prompt_timer}  }"
+        status_line_previous="${status_line_previous%%  }"
 
         # Status line with other information
         # fixme: use array and join_by?
