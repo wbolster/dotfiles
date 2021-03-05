@@ -36,3 +36,7 @@ evview
 vte-terminal {
     padding: 10px;
 }
+
+
+/* Local additions and overrides */
+@import url("local.css");
