@@ -297,8 +297,8 @@ if [[ "$PS1" ]]; then
             fi
         fi
 
-        # Virtualenv
-        local prompt_venv=""
+        # Python
+        local prompt_python=""
         if [[ -n "${VIRTUAL_ENV:-}" ]]; then
             local venv_name
             if [[ "${VIRTUAL_ENV}" == */.direnv/* ]]; then
@@ -306,7 +306,16 @@ if [[ "$PS1" ]]; then
             else
                 venv_name="$(basename "${VIRTUAL_ENV}")"
             fi
-            prompt_venv="${colour_normal}venv ${colour_cyan}${venv_name}"
+            prompt_python+="${colour_cyan}${venv_name}"
+        fi
+        if [[ -n "${PYENV_VERSION:-}" ]]; then
+            if [[ -n "${prompt_python}" ]]; then
+                prompt_python+="${colour_normal}/"
+            fi
+            prompt_python+="${colour_cyan}${PYENV_VERSION}"
+        fi
+        if [[ -n "${prompt_python}" ]]; then
+            prompt_python="${colour_normal}py ${prompt_python}"
         fi
 
         # Warning when output does not have a trailing newline
