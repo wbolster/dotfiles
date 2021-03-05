@@ -326,13 +326,13 @@ if [[ "$PS1" ]]; then
             n_jobs_suspended="$(jobs -p -s | wc -w)"
             prompt_jobs=""
             if [[ $((n_jobs_background + n_jobs_suspended)) -gt 0 ]]; then
-                prompt_jobs="${colour_normal}jobs ${colour_purple}"
+                prompt_jobs="${colour_normal}jobs"
             fi
             if [[ ${n_jobs_background} -gt 0 ]]; then
-                prompt_jobs+=" ${n_jobs_background}&"
+                prompt_jobs+=" ${colour_purple}${n_jobs_background}&"
             fi
             if [[ ${n_jobs_suspended} -gt 0 ]]; then
-                prompt_jobs+=" ${n_jobs_suspended}^Z"
+                prompt_jobs+=" ${colour_purple}${n_jobs_suspended}^Z"
             fi
         fi
 
