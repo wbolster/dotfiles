@@ -706,16 +706,18 @@ if [[ "$PS1" ]]; then
         alias ac='apt-cache show'
         alias acp='apt-cache policy'
         alias acs='apt-cache search'
-        i() {
+        _apt_install() {
             _run_verbose sudo apt install -V "$@"
         }
-        u() {
+        _apt_upgrade() {
             (
             set -e
             _run_verbose sudo apt update
             _run_verbose sudo apt upgrade -V
             )
         }
+        alias i=_apt_install
+        alias u=_apt_upgrade
         _apt_get_packages() {
             local cur
             cur=${COMP_WORDS[COMP_CWORD]}
@@ -728,11 +730,11 @@ if [[ "$PS1" ]]; then
     # Mac OSX
     if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
         # Homebrew
-        i() {
+        _brew_install() {
             _run_verbose brew install "$@"
         }
         complete -F _brew_install i
-        u() {
+        _brew_upgrade() {
             (
             set -e
             local updates
@@ -751,6 +753,8 @@ if [[ "$PS1" ]]; then
             echo
             )
         }
+        alias i=_brew_install
+        alias u=_brew_upgrade
     fi
 
     # iTerm profile tricks
