@@ -37,6 +37,9 @@ if __name__ == "__main__":
 
     os.chdir(HOME_DIR)
 
+    # Changing $HOME makes .expanduser() work when $HOME contains symlinks.
+    os.environ["HOME"] = HOME_DIR
+
     for line in open(symlinks_file):
 
         line = line.strip()
