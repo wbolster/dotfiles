@@ -203,7 +203,7 @@ if [[ "$PS1" ]]; then
             if [[ ${prev_exit_code} -gt 128 && ${prev_exit_code} -lt 192 ]]; then
                 exit_status=$((128-prev_exit_code))" "$(kill -l ${prev_exit_code} 2>/dev/null || echo -n '?')
             fi
-            prompt_err="exit ${exit_status}"
+            prompt_err="exit ${exit_status} 💥"
         fi
 
         # Time since previous command
@@ -214,7 +214,7 @@ if [[ "$PS1" ]]; then
             current_date=$(date --iso-8601=seconds)
             if [[ $seconds_elapsed -ge 10 ]]; then
                 seconds_elapsed=$(_fmt_seconds_elapsed ${seconds_elapsed})
-                prompt_timer+="${seconds_elapsed} elapsed; finished at ${current_date}"
+                prompt_timer+="⌚ ${seconds_elapsed} elapsed; finished at ${current_date}"
             fi
             _timer_start=""
         fi
@@ -250,7 +250,7 @@ if [[ "$PS1" ]]; then
         fi
         tt_umbrella="${prompt_umbrella}"
         if [ -n "${prompt_umbrella}" ]; then
-            prompt_umbrella="${colour_blue}${prompt_umbrella}"
+            prompt_umbrella="${colour_blue}🍱 ${prompt_umbrella}"
         fi
 
         # User name (only if non-standard)
@@ -266,7 +266,7 @@ if [[ "$PS1" ]]; then
                 prompt_user=""
                 ;;
             (*)
-                prompt_user="${colour_normal}as ${prompt_user_colour}${USER}"
+                prompt_user="${colour_normal}🎭 ${prompt_user_colour}${USER}"
                 ;;
         esac
 
@@ -274,7 +274,7 @@ if [[ "$PS1" ]]; then
         local prompt_hostname=""
         local tt_hostname=""
         if [[ -n "${SSH_CLIENT:-}" && "${TERM}" != screen* ]]; then
-            prompt_hostname="${colour_normal}on ${colour_blue}${HOSTNAME}"
+            prompt_hostname="${colour_normal}💻 ${colour_blue}${HOSTNAME}"
             tt_hostname="${HOSTNAME}"
         fi
 
@@ -283,7 +283,7 @@ if [[ "$PS1" ]]; then
         local tt_wd="\w"
         if [[ "${PWD}" != "${HOME}" ]]; then
             short_pwd=$(shorten_path "$PWD" 3)
-            prompt_wd="${colour_normal}in ${colour_green}${short_pwd}"
+            prompt_wd="${colour_normal}📁 ${colour_green}${short_pwd}"
             tt_wd="${short_pwd}"
         fi
 
@@ -293,7 +293,7 @@ if [[ "$PS1" ]]; then
             local _git_ps1_output
             _git_ps1_output="$(__git_ps1 '%s')"
             if [[ -n "${_git_ps1_output}" ]]; then
-                prompt_git="${colour_normal}git ${colour_yellow}${_git_ps1_output}"
+                prompt_git="${colour_normal}🤓 ${colour_yellow}${_git_ps1_output}"
             fi
         fi
 
@@ -315,7 +315,7 @@ if [[ "$PS1" ]]; then
             prompt_python+="${colour_cyan}${PYENV_VERSION}"
         fi
         if [[ -n "${prompt_python}" ]]; then
-            prompt_python="${colour_normal}py ${prompt_python}"
+            prompt_python="${colour_normal}🐍 ${prompt_python}"
         fi
 
         # Warning when output does not have a trailing newline
@@ -335,7 +335,7 @@ if [[ "$PS1" ]]; then
             n_jobs_suspended="$(jobs -p -s | wc -w)"
             prompt_jobs=""
             if [[ $((n_jobs_background + n_jobs_suspended)) -gt 0 ]]; then
-                prompt_jobs="${colour_normal}jobs"
+                prompt_jobs="${colour_normal}👣"
             fi
             if [[ ${n_jobs_background} -gt 0 ]]; then
                 prompt_jobs+=" ${colour_purple}${n_jobs_background}&"
@@ -374,8 +374,8 @@ if [[ "$PS1" ]]; then
         PS1="\n"
         PS1+="$(__vte_osc7)"
         PS1+="${term_title}"
-        PS1+="${status_line_previous:+${status_line_previous%% }\n}"
-        PS1+="${prompt_status_line_other:+${prompt_status_line_other%% }\n}"
+        PS1+="${status_line_previous:+${status_line_previous%% }\n\n}"
+        PS1+="${prompt_status_line_other:+${prompt_status_line_other%% }\n\n}"
         PS1+="${prompt_sign_colour}\\$""${colour_normal} "
 
         # Additional prompts
