@@ -296,7 +296,7 @@ secure boot::
   ln -s ../DB.auth db/
 
   mkdir /boot/secure-boot/
-  cp -v DB.auth KEK.auth DB.auth /boot/secure-boot/
+  cp -v PK.auth KEK.auth DB.auth /boot/secure-boot/
 
   sbkeysync --verbose --pk --keystore $dir
 
