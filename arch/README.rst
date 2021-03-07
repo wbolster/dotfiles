@@ -194,15 +194,8 @@ locales
 
   locale-gen
   localectl set-locale LANG=$(< /etc/locale.gen grep '^[^#]' | head -n 1 | cut -d' ' -f1)
+  localectl set-keymap colemak
   localectl
-
-keyboard
-========
-
-::
-
-  touch /etc/vconsole.conf
-  echo 'KEYMAP=colemak' >> /etc/vconsole.conf
 
 hostname
 ========
