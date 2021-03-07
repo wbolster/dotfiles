@@ -12,7 +12,8 @@ getting started
 - put disk in ahci mode instead of raid; dell xps
 - disable secure boot (temporarily)
 - delete/clear secure boot PK (and other keys)
-- boot arch from boot media; use ports on the left side on dell xps
+- boot arch from boot media
+- note: on dell xps, booting from usb sometimes only works when using a specific usb port!
 
 keyboard
 ========
