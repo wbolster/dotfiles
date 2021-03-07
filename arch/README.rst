@@ -71,8 +71,14 @@ wipe disk using nvme sanitize::
   Sanitize Progress                      (SPROG) :  65535
   Sanitize Status                        (SSTAT) :  0x101
 
+if not supported, try one of these::
+
+  nvme format $disk --force --ses=2  # cryptographic erase
+  nvme format $disk --force --ses=1  # user data erase
+
 create a new gpt layout using discoverable partition types::
 
+  partprobe
   wipefs $disk
   cat << EOF | sfdisk $disk
   label: gpt
