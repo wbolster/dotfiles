@@ -1,0 +1,16 @@
+--- us.orig	2021-03-07 18:57:17.093182212 +0000
++++ us	2021-03-07 18:57:45.661928834 +0000
+@@ -757,11 +757,11 @@
+     key <AD03> { [            f,            F,          atilde,           Atilde ] };
+     key <AD04> { [            p,            P,          oslash,         Ooblique ] };
+     key <AD05> { [            g,            G,     dead_ogonek,       asciitilde ] };
+-    key <AD06> { [            j,            J,         dstroke,          Dstroke ] };
++    key <AD06> { [    semicolon,        colon,      odiaeresis,       Odiaeresis ] };
+     key <AD07> { [            l,            L,         lstroke,          Lstroke ] };
+     key <AD08> { [            u,            U,          uacute,           Uacute ] };
+     key <AD09> { [            y,            Y,      udiaeresis,       Udiaeresis ] };
+-    key <AD10> { [    semicolon,        colon,      odiaeresis,       Odiaeresis ] };
++    key <AD10> { [            j,            J,         dstroke,          Dstroke ] };
+     key <AD11> { [  bracketleft,    braceleft,   guillemotleft,        0x1002039 ] };
+     key <AD12> { [ bracketright,   braceright,  guillemotright,        0x100203a ] };
+     key <BKSL> { [    backslash,          bar,      asciitilde,       asciitilde ] };

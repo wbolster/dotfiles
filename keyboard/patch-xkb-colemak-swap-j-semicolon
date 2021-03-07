@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -eux
+
+cd "$(dirname "$0")"
+sudo patch --verbose /usr/share/X11/xkb/symbols/us xkb-colemak-swap-j-semicolon.patch
