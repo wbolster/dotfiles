@@ -93,14 +93,15 @@ prepare luks::
 
 prepare ``btrfs`` with subvolumes::
 
-  subvolumes=(home srv swap)  # note: zsh syntax
+  # note: zsh array syntax
+  subvolumes=(home srv swap var/log)
 
   mkfs.btrfs --force --label system /dev/mapper/system
   mount LABEL=system /mnt
   btrfs subvolume create /mnt/@
   btrfs subvolume set-default /mnt/@
   btrfs subvolume create /mnt/@snapshots
-  for s in $subvolumes; do btrfs subvolume create /mnt/@$s; done
+  for s in $subvolumes; do btrfs subvolume create "/mnt/@${s/\//-}"; done
   umount /mnt
 
 prepare final system layout::
@@ -110,7 +111,7 @@ prepare final system layout::
   mount -o X-mount.mkdir LABEL=EFI /mnt/boot
   mount -o $o_btrfs,subvol=@snapshots LABEL=system /mnt/.snapshots
   for s in $subvolumes; do
-    mount -o "${o_btrfs},subvol=@${s}" LABEL=system /mnt/$s;
+    mount -o "${o_btrfs},subvol=@${s/\//-}" LABEL=system "/mnt/$s";
   done
   mount | grep /mnt
 
@@ -145,7 +146,7 @@ minimal ``fstab``::
     echo "LABEL=system / btrfs compress=zstd:1,noatime 0 0"
     echo "LABEL=system /.snapshots btrfs noatime,subvol=@snapshots 0 0"
     for s in $subvolumes; do
-      echo "LABEL=system /$s btrfs noatime,subvol=@$s 0 0"
+      echo "LABEL=system /$s btrfs noatime,subvol=@${s/\//-} 0 0"
     done
   } >> /mnt/etc/fstab
   cat /mnt/etc/fstab
