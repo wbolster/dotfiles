@@ -427,7 +427,7 @@ if [[ "$PS1" ]]; then
             builtin cd "$@"
         fi
     }
-    mcd() {
+    ,mkdir+cd() {
         mkdir --verbose --parents "$1" && cd "$1"
     }
 
