@@ -261,7 +261,7 @@ __ https://github.com/Morganamilo/paru
 
 ::
 
-  # check latest version
+  # check latest version, though this is only for one-off bootstrap use
   url='https://github.com/Morganamilo/paru/releases/download/v1.3.0/paru-v1.3.0-x86_64.tar.zst'
 
   cd /tmp
