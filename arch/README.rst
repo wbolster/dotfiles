@@ -370,7 +370,6 @@ system::
   tmux
   udisks2
   usbutils
-  wget
   EOF
 
 desktop environment::
@@ -413,7 +412,11 @@ services
 reboot
 ======
 
-::
+exit ``systemd-nspawn``::
+
+  exit  # then press ^]^]^] at login prompt
+
+back in the installer shell::
 
   systemctl reboot
 
@@ -421,7 +424,8 @@ reboot
 - enable secure boot
 - set bios admin password
 - 🤞
-- use ``nmtui`` to connect to wi-fi
+- use ``nmtui`` to connect to wi-fi (if needed from console)
+- note: gdm password input likely uses qwerty
 
 references
 ==========
