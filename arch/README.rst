@@ -217,7 +217,7 @@ hostname
 
 note: ``/etc/hosts`` `stays empty`__
 
-__ https://www.freedesktop.org/software/systemd/man/nss-myhostname.html#
+__ https://www.freedesktop.org/software/systemd/man/nss-myhostname.html
 
 etckeeper
 =========
@@ -255,7 +255,11 @@ packages
 
   sed -i -e 's/^#\(Color\)$/\1/' /etc/pacman.conf
 
-[paru](https://github.com/Morganamilo/paru) aur helper::
+`paru`__ aur helper:
+
+__ https://github.com/Morganamilo/paru
+
+::
 
   # check latest version
   url='https://github.com/Morganamilo/paru/releases/download/v1.3.0/paru-v1.3.0-x86_64.tar.zst'
