@@ -377,6 +377,7 @@ desktop environment::
   sudo -u $user paru -S - << EOF
   bluez-utils
   checkupdates+aur
+  chrome-gnome-shell
   emacs
   firefox
   gnome
