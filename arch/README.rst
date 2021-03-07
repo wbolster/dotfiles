@@ -90,7 +90,7 @@ prepare efi partition (for ``/boot``)::
 
   mkfs.fat -F32 -n EFI /dev/disk/by-partlabel/EFI
 
-prepare luks::
+prepare luks with multiple passphrases (e.g. qwerty and colemak)::
 
   blockdev=/dev/disk/by-partlabel/encrypted-system
   cryptsetup luksFormat --label=encrypted-system $blockdev
