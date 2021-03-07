@@ -1,0 +1,27 @@
+#!/bin/sh
+
+set -eu
+
+# borgmatic etc. can exclude dirs with a .nobackup file
+
+no_backup_file=.nobackup
+
+no_backup_dirs='
+.cache/
+.cargo/
+.config/Slack/Cache/
+.local/pipx/
+.pyenv/
+.pyenv/versions/
+.rustup/
+.var/app/com.spotify.Client/cache/
+'
+
+for relative_dir in $no_backup_dirs; do
+    dir="${HOME}/${relative_dir%%/}"
+    file="${dir}/${no_backup_file}"
+    if [ -d "$dir" ] && [ ! -e "$file" ]; then
+        touch "${file}"
+        printf "created %s\n" "${file}"
+   fi
+done
