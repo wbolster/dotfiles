@@ -144,7 +144,7 @@ bootstrap
 
 install system::
 
-  pacstrap /mnt base dracut linux linux-headers linux-lts linux-lts-headers linux-firmware btrfs-progs etckeeper intel-ucode networkmanager sudo vim
+  pacstrap /mnt base dracut linux linux-headers linux-lts linux-lts-headers linux-firmware btrfs-progs etckeeper intel-ucode networkmanager sudo vim wget
 
 minimal ``fstab``::
 
@@ -255,7 +255,18 @@ packages
 
   sed -i -e 's/^#\(Color\)$/\1/' /etc/pacman.conf
 
-aur helper::
+[paru](https://github.com/Morganamilo/paru) aur helper::
+
+  # check latest version
+  url='https://github.com/Morganamilo/paru/releases/download/v1.3.0/paru-v1.3.0-x86_64.tar.zst'
+
+  cd /tmp
+  wget "$url"
+  tar --zstd -xf paru-*.tar.zst paru
+  pacman -S base-devel
+  sudo -u $user ./paru -S paru-bin
+
+…or install manually (takes much longer)::
 
   pacman -S base-devel rustup
 
