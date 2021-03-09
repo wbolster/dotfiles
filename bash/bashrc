@@ -405,12 +405,21 @@ if [[ "$PS1" ]]; then
             break  # stop after first match
         fi
     done
-    for file in ~/.bash_completion ~/.bash_completion_*; do
-        if [[ -f "${file}" ]]; then
-            source "$file"
+    if type __load_completion 2>/dev/null | grep -q XDG_DATA_HOME; then
+        :  # bash-completion >2.8 automatically loads from ~.local/share/bash-completion/completions
+    else
+        local_completion_dir=${BASH_COMPLETION_USER_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/bash-completion}/completions
+        if [[ ! -d $local_completion_dir ]]; then
+            for file in "${local_completion_dir}"/*; do
+                if [[ -f "${file}" ]]; then
+                    source "$file"
+                fi
+            done
+            unset file
         fi
-    done
-    unset file
+        unset local_completion_dir
+    fi
+
 
     # Directory changing (and creation)
     export CDPATH=.:~:~/Projects
