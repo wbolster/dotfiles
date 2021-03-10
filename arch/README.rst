@@ -317,6 +317,7 @@ initramfs with ``dracut``::
   uefi_secureboot_cert="/etc/secure-boot/DB.crt"
   uefi_secureboot_key="/etc/secure-boot/DB.key"
   # uefi_splash_image="/usr/share/systemd/bootctl/splash-arch.bmp"
+  install_items+=" /bin/vim "
   EOF
 
   echo something | /usr/share/libalpm/scripts/dracut-install
