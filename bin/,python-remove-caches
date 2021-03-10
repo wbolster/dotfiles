@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -eu
+
+find_cache_dirs () {
+    find "$1" -type d \( \
+         -name '.mypy_cache' \
+         -o -name '__pycache__' \
+         -o -name '.pytest_cache' \
+         \)
+}
+
+find_cache_files () {
+    find "$1" -type f -name '*.py[co]'
+}
+
+main () {
+    dir="${1:-.}"
+    find_cache_dirs "$dir" | xargs -t -r rm -r
+    find_cache_files "$dir" | xargs -t -r rm
+}
+
+main "$@"
