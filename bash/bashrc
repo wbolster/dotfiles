@@ -442,9 +442,28 @@ if [[ "$PS1" ]]; then
             builtin cd "$@"
         fi
     }
-    ,mkdir+cd() {
+    _mkdir+cd () {
         mkdir --verbose --parents "$1" && cd "$1"
     }
+    _cd-git-top-level() {
+        cd "$(git rev-parse --show-toplevel)"
+    }
+    _cd-venv() {
+        : "${VIRTUAL_ENV:?}"
+        cd "${VIRTUAL_ENV}"
+    }
+    _cd-site-packages() {
+        : "${VIRTUAL_ENV:?}"
+        cd "${VIRTUAL_ENV}"/lib/python*/site-packages/
+    }
+    # Leading commas in function names make shellcheck really unhappy,
+    # since leading commas are invalid identifiers… which somehow work
+    # just fine in bash 🤷. work around it by using aliases.
+    alias ,cd-git-top-level=_cd-git-top-level
+    alias ,cd-site-packages=_cd-site-packages
+    alias ,cd-venv=_cd-venv
+    alias ,mkdir+cd=_mkdir+cd
+    alias ...=,cd-git-top-level
 
     # Callback when a command could not be found.
     command_not_found_handle() {
@@ -624,11 +643,6 @@ if [[ "$PS1" ]]; then
     # Development
     alias m=make
     complete -F _make m
-    if type git &>/dev/null; then
-        cdgitroot() {
-            cd "$(git rev-parse --show-toplevel)"
-        }
-    fi
     if type hub &>/dev/null; then
         alias git=hub
     fi
