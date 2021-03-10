@@ -309,7 +309,7 @@ if [[ "$PS1" ]]; then
             fi
             prompt_python+="${colour_cyan}${venv_name}"
         fi
-        if [[ -n "${PYENV_VERSION:-}" ]]; then
+        if [[ -n "${PYENV_VERSION:-}" && $(pyenv global | paste -sd:) != ${PYENV_VERSION} ]]; then
             if [[ -n "${prompt_python}" ]]; then
                 prompt_python+="${colour_normal}/"
             fi
