@@ -319,6 +319,12 @@ if [[ "$PS1" ]]; then
             prompt_python="${colour_normal}🐍 ${prompt_python}"
         fi
 
+        # gpg
+        local prompt_gpg=""
+        if [[ -n "${GNUPGHOME:-}" ]]; then
+            prompt_gpg+="${colour_blue}🔏 ${GNUPGHOME}"
+        fi
+
         # Warning when output does not have a trailing newline
         local prompt_newline_warning=""
         if [[ ${_prompt_newline_warning_enabled} -eq 1 ]]; then
@@ -368,6 +374,7 @@ if [[ "$PS1" ]]; then
         prompt_status_line_other+="${prompt_python:+ ${prompt_python}}"
         prompt_status_line_other+="${prompt_wd:+ ${prompt_wd}}"
         prompt_status_line_other+="${prompt_git:+ ${prompt_git}}"
+        prompt_status_line_other+="${prompt_gpg:+ ${prompt_gpg}}"
         prompt_status_line_other+="${prompt_jobs:+ ${prompt_jobs}}"
         prompt_status_line_other="${prompt_status_line_other## }"
 
