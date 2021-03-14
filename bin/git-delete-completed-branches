@@ -1,0 +1,187 @@
+#!/bin/sh
+
+set -eu
+
+main() {
+    target="${1-}"
+
+    # Ensure this is run inside a git repo.
+    git rev-parse --show-toplevel > /dev/null
+
+    if ! default_upstream=$(get_default_upstream); then
+        default_upstream=''
+    fi
+
+    echo
+    print_fish
+    echo
+
+    for branch in $(list_branches); do
+        printf "🔎 Found local branch $(color yellow)‘%s’$(color off) (%s)\n" "$branch" "$(git rev-parse --short "$branch")"
+
+        if [ -n "$target" ]; then
+            # FIXME: does not work with a branch name
+            upstream=$(git symbolic-ref --short "$target")
+            message="🎯 Comparing against explicit target branch"
+        elif upstream=$(get_branch_upstream "${branch}"); then
+            # Branch has a configured upstream.
+            message="🆙 Comparing against configured upstream"
+        elif [ -n "$default_upstream" ]; then
+            upstream="$default_upstream"
+            message="🆙 No upstream configured; comparing against default remote HEAD"
+        else
+            upstream=""
+            printf "😱 Cannot determine upstream for ‘%s’; skipping\n" "$branch"
+            continue
+        fi
+        printf "%s $(color yellow)‘%s’$(color off) (%s)\n" "$message" "$upstream" "$(git rev-parse --short "$upstream")"
+
+        if branch_fully_present_in_target "$branch" "$upstream"; then
+            printf '✅ All local changes are included in upstream branch\n'
+            if ask_confirmation "🚮 Delete branch ‘${branch}’?"; then
+                color red
+                git branch --delete --force --quiet "$branch"
+                color off
+            fi
+        else
+            printf "❌ Local changes not fully contained in upstream branch; $(color green)keeping branch$(color off)%s\n" ''
+            echo '💡 Commits not in upstream branch:'
+            echo
+            git log --format='tformat:    %h %s' "${upstream}..${branch}"
+            echo
+            echo "📃 Details:"
+            echo
+            printf '    git log %s %s\n' "$upstream" "$branch"
+            echo
+            printf '    git diff --merge-base %s %s\n' "$upstream" "$branch"
+            echo
+        fi
+
+        if branch_exists "$branch"; then
+            printf "🌳 $(color green)Kept local branch ‘%s’$(color off)\n" "$branch"
+        else
+            printf "💀 $(color red)Deleted branch ‘%s’$(color off)\n" "$branch"
+            echo "😶 Pausing a moment in remembrance…"
+            sleep 2
+        fi
+
+        echo
+        print_fish
+        echo
+    done
+
+    echo '🌱 Remaining branches:'
+    echo
+    print_branches_overview
+
+    echo ‍"🤓 Happy hacking!"
+}
+
+get_default_remote () {
+    remotes="$(git remote show)"
+    if [ "$(echo "$remotes" | wc -l)" = "1" ]; then
+        # If there is a single remote, use it.
+        remote=$(echo "$remotes" | head -n 1)
+    elif remote=$(git remote show | grep -F -x origin); then
+        : # If there is a remote named ‘origin’, use it.
+    else
+        return 1
+    fi
+    echo "${remote}"
+}
+
+get_default_upstream() {
+    git symbolic-ref "refs/remotes/$(get_default_remote)/HEAD"
+}
+
+get_branch_upstream() {
+    branch="$1" && shift
+    git rev-parse --symbolic-full-name "${branch}@{upstream}" 2>/dev/null
+}
+
+list_branches() {
+    git for-each-ref refs/heads/ '--format=%(refname:short)'
+}
+
+branch_exists() {
+    branch="$1" && shift
+    git show-ref --verify --quiet "refs/heads/${branch}"
+}
+
+branch_sha() {
+    branch="$1" && shift
+    git rev-parse --short "refs/heads/${branch}"
+}
+
+branch_fully_present_in_target() {
+    branch="$1" && shift
+    target_branch="$1" && shift
+    merge_base=$(git merge-base "$target_branch" "$branch")
+    branch_tree=$(git rev-parse "${branch}^{tree}")
+    target_branch_tree=$(git rev-parse "${target_branch}^{tree}")
+
+    # If branches point to the same tree, by definition no changes are missing.
+    if [ "$branch_tree" = "$target_branch_tree" ]; then
+        return
+    fi
+
+    # Check normal merges.
+    if git merge-base --is-ancestor "$target_branch" "$branch"; then
+        return
+    fi
+
+    # Check ‘squashed merges’. Make a temporary commit on top of the
+    # merge base with all the changes from the branch. Then use ‘git
+    # cherry’ to see if there are any changes missing from the target
+    # branch. If that is the case, the output starts with a plus sign.
+    # If all changes are already part of the target branch, the output
+    # starts with a minus sign.
+    commit=$(
+        git commit-tree \
+            "$branch_tree"\
+            -p "$merge_base"\
+            -m "Temporary commit to check ‘${branch}’ against ‘${target_branch}’" \
+            -m "Merge base: ${merge_base}" \
+            -m "Checking: $(git rev-parse "${branch}")" \
+            -m "Target: $(git rev-parse "${target_branch}")" \
+          )
+    git cherry "$target_branch" "$commit" | grep -q ^-
+}
+
+print_branches_overview() {
+    for branch in $(list_branches); do
+        printf "    $(color yellow)%s$(color off) " "$branch"
+        # printf "    "  # no newline
+        # git log --oneline --no-decorate --max-count 1 "$branch" | cat
+        git --no-pager show --no-patch "refs/heads/$branch" --format='tformat:(%ad)%n    %s '
+        # git --no-pager show --no-patch "refs/heads/$branch" --format=reference
+        echo
+    done
+}
+
+ask_confirmation() {
+    message="$1"
+    printf "%s (y/n) " "$message"  # no newline
+    read -r answer
+    if [ "$answer" = "y" ]; then
+        return 0;
+    else
+        return 1
+    fi
+}
+
+print_fish() {
+    echo 🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟 🦈
+}
+
+color() {
+    case "$1" in
+        red) tput setaf 1 ;;
+        green) tput setaf 2 ;;
+        yellow) tput setaf 3 ;;
+        off) tput sgr0 ;;
+        *) exit 1
+    esac
+}
+
+main "$@"
