@@ -4,4 +4,4 @@
  (magit-rebase "--autostash")
  (magit-show-refs "--sort=-committerdate")
  (magit-tag "--annotate")
- (python-pytest-dispatch "--color" "--verbose --verbose" "--maxfail=10"))
+ (python-pytest-dispatch "--color" "--verbose --verbose" "--maxfail=10" "--tb=short"))
