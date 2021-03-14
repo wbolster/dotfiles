@@ -1,0 +1,66 @@
+#!/usr/bin/env python
+
+import argparse
+import contextlib
+import shlex
+import os
+import subprocess
+import sys
+import tempfile
+
+PREFIX = "gpg-env-"
+
+
+def main(argv):
+    parsed_args = parse_args(argv)
+
+    subcommand_argv = parsed_args.subcommand_argv
+    subcommand_provided = bool(parsed_args.subcommand_argv)
+    if not subcommand_provided:
+        subcommand_argv = [os.environ.get("SHELL", "/bin/sh")]
+
+    feedback_fp = open(os.devnull, "w") if parsed_args.quiet else sys.stderr
+
+    cm = temporary_directory(prefix=PREFIX, delete=not parsed_args.keep)
+    with cm as directory_name:
+        os.chdir(directory_name)
+        feedback_fp.write(f"pwd: {directory_name}\n")
+
+        os.environ["GNUPGHOME"] = directory_name
+        feedback_fp.write(f"env: GNUPGHOME={directory_name}\n")
+
+        cmd_feedback = " ".join(shlex.quote(s) for s in subcommand_argv)
+        if not subcommand_provided:
+            cmd_feedback = f"not specified, spawning $SHELL ({cmd_feedback})"
+        feedback_fp.write(f"cmd: {cmd_feedback}\n\n")
+
+        exit_code = subprocess.run(subcommand_argv).returncode
+
+        if parsed_args.keep:
+            message = f"NOTE: not removing {directory_name}"
+        else:
+            message = f"removing {directory_name}"
+        feedback_fp.write(f"\n{message}\n")
+
+    return exit_code
+
+
+def parse_args(argv):
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-k", "--keep", default=False, action="store_true")
+    parser.add_argument("-q", "--quiet", default=False, action="store_true")
+    parser.add_argument("subcommand_argv", nargs=argparse.REMAINDER)
+    return parser.parse_args(argv)
+
+
+@contextlib.contextmanager
+def temporary_directory(prefix, delete):
+    if delete:
+        with tempfile.TemporaryDirectory(prefix=prefix) as name:
+            yield name
+    else:
+        yield tempfile.mkdtemp(prefix=prefix)
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
