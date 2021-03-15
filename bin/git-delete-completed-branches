@@ -59,7 +59,7 @@ main() {
                 echo
                 printf '    git log %s..%s\n' "$upstream" "$branch"
                 echo
-                printf '    git diff %s..%s\n' "$upstream" "$branch"
+                printf '    git diff %s...%s\n' "$upstream" "$branch"
                 echo
             fi
         fi
