@@ -9,15 +9,25 @@ custom ca, to be trusted by most software installed on a system, e.g. web browse
 
 debian/ubuntu::
 
-  file=custom.ca.crt
+  file=custom.ca.crt  # must have .crt extension
 
-  sudo install -d -m755 /usr/share/ca-certificates/extra
-  sudo install -m644 "${file}" "/usr/share/ca-certificates/extra/${file}"
-  sudo dpkg-reconfigure ca-certificates
+  dir=/usr/local/share/ca-certificates/extra
+  sudo install -d -m755 "$dir"
+  sudo install -m644 "$file" "${dir}/${file}"
+  sudo update-ca-certificates
+
+  sudo dpkg-reconfigure ca-certificates  # alternatively
 
 arch::
 
   file=custom.ca.crt
 
   sudo install -m644 "${file}" "/etc/ca-certificates/trust-source/anchors/${file}"
+  sudo update-ca-trust
+
+fedora/centos/rhel::
+
+  file=custom.ca.crt
+
+  sudo install -m644 "${file}" "/etc/pki/ca-trust/source/anchors/${file}"
   sudo update-ca-trust
