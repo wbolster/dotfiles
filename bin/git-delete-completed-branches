@@ -126,7 +126,7 @@ branch_fully_present_in_target() {
     fi
 
     # Check normal merges.
-    if git merge-base --is-ancestor "$target_branch" "$branch"; then
+    if git merge-base --is-ancestor "$branch" "$target_branch"; then
         return
     fi
 
