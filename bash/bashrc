@@ -884,7 +884,11 @@ if [[ "$PS1" ]]; then
     cat() {
         if [[ $# -ge 1 && "${1}" != -* && -t 1 ]]; then
             # Arguments but no flags are specified and stdout is a terminal; perform magic.
-            show "$@"
+            if type bat &>/dev/null; then
+                bat "$@"
+            else
+                show "$@"
+            fi
         else
             # Transparent fall-back.
             command cat "$@"
