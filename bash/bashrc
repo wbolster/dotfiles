@@ -428,7 +428,7 @@ if [[ "$PS1" ]]; then
     fi
 
     # Directory changing (and creation)
-    export CDPATH=.:~:~/Projects
+    export CDPATH=.:~/Projects
     shopt -s autocd
     ..() { cd .. ; }
     -() { cd - ; }
