@@ -13,7 +13,7 @@ main() {
     fi
 
     echo
-    print_fish
+    print_divider
     echo
 
     for branch in $(list_branches); do
@@ -61,12 +61,10 @@ main() {
             printf "🌳 $(color green)Kept local branch ‘%s’$(color off)\n" "$branch"
         else
             printf "💀 $(color red)Deleted branch ‘%s’$(color off)\n" "$branch"
-            echo "😶 Pausing a moment in remembrance…"
-            sleep 2
         fi
 
         echo
-        print_fish
+        print_divider
         echo
     done
 
@@ -151,10 +149,7 @@ branch_fully_present_in_target() {
 print_branches_overview() {
     for branch in $(list_branches); do
         printf "    $(color yellow)%s$(color off) " "$branch"
-        # printf "    "  # no newline
-        # git log --oneline --no-decorate --max-count 1 "$branch" | cat
         git --no-pager show --no-patch "refs/heads/$branch" --format='tformat:(%ad)%n    %s '
-        # git --no-pager show --no-patch "refs/heads/$branch" --format=reference
         echo
     done
 }
@@ -170,17 +165,27 @@ ask_confirmation() {
     fi
 }
 
-print_fish() {
+print_divider() {
     echo 🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟 🦈
 }
 
 color() {
     case "$1" in
-        red) tput setaf 1 ;;
-        green) tput setaf 2 ;;
-        yellow) tput setaf 3 ;;
-        off) tput sgr0 ;;
-        *) exit 1
+        red)
+            tput setaf 1
+            ;;
+        green)
+            tput setaf 2
+            ;;
+        yellow)
+            tput setaf 3
+            ;;
+        off)
+            tput sgr0
+            ;;
+        *)
+            exit 1
+            ;;
     esac
 }
 
