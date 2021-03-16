@@ -120,6 +120,7 @@ if [[ "$PS1" ]]; then
     if [[ -f "${git_prompt_sh}" ]]; then
         source "${git_prompt_sh}"
     fi
+    unset git_prompt_sh
     export GIT_PS1_SHOWDIRTYSTATE=1
     export GIT_PS1_SHOWUPSTREAM="git verbose"
 
@@ -216,7 +217,7 @@ if [[ "$PS1" ]]; then
                 seconds_elapsed=$(_fmt_seconds_elapsed ${seconds_elapsed})
                 prompt_timer+="⌚ ${seconds_elapsed} elapsed; finished at ${current_date}"
             fi
-            _timer_start=""
+            unset _timer_start
         fi
 
         # Save history so that newly opened shells immediately see it.
@@ -939,6 +940,7 @@ for file in ~/.bashrc-local ~/.bashrc-"${HOSTNAME}"; do
         source "${file}"
     fi
 done
+unset file
 
 # Force $? to be 0 (for the initial PS1)
 true
