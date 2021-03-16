@@ -29,7 +29,7 @@ else
     MANPATH="$(MANPATH='' manpath -g 2>/dev/null)"
 fi
 for dir in /opt/bin "$_dotfiles_bin_dir" ~/.cargo/bin ~/.npm/bin ~/.pyenv/shims ~/.local/bin ~/bin; do
-    if [[ -d "${dir}" ]]; then
+    if [[ -d "$dir" ]]; then
         PATH="${dir}:${PATH}"
     fi
 done
@@ -37,12 +37,12 @@ unset dir
 if [[ -d ~/.local/man ]]; then
     MANPATH="${HOME}/.local/man:${MANPATH}"
 fi
-PATH=$(_deduplicate_path_components "${PATH}")
-MANPATH=$(_deduplicate_path_components "${MANPATH}")
+PATH=$(_deduplicate_path_components "$PATH")
+MANPATH=$(_deduplicate_path_components "$MANPATH")
 export MANPATH
 
 # Make sure $HOSTNAME is set
-if [[ -z "${HOSTNAME}" ]]; then
+if [[ -z "$HOSTNAME" ]]; then
     HOSTNAME=$(hostname)
     export HOSTNAME
 fi
@@ -75,7 +75,7 @@ if [[ "$PS1" ]]; then
                 for (( i=0 ; i<${#line} ; i++ )); do
                     reversed="${line:i:1}${reversed}";
                 done
-                echo "${reversed}"
+                echo "$reversed"
             done
         }
     fi
@@ -88,9 +88,9 @@ if [[ "$PS1" ]]; then
         dir=$1
         n=$2
         dir=${1##$HOME/}
-        tail=$(echo "${dir}" | rev | cut -d/ -f"-${n}" | rev)
+        tail=$(echo "$dir" | rev | cut -d/ -f"-${n}" | rev)
         head=${dir%%$tail}
-        if [ -n "${head}" ]; then
+        if [ -n "$head" ]; then
             # shellcheck disable=SC2001
             head=$(echo "$head" | sed -e 's#\(\(\.\?[^/]\{1\}\)[^/]\+/\?\)#\2/#g')
             head="${head%%/}…/"
@@ -102,23 +102,23 @@ if [[ "$PS1" ]]; then
     # escape sequence in the the prompt. gnome-terminal uses this to
     # open new terminal tabs/windows in the same directory.
     vte_sh="/etc/profile.d/vte.sh"
-    if [[ -f "${vte_sh}" ]]; then
-        source "${vte_sh}"
+    if [[ -f "$vte_sh" ]]; then
+        source "$vte_sh"
     fi
     if type __vte_osc7 &>/dev/null; then
         # Redefine the function to use escape sequences that do
         # not leave visual artefacts.
         __vte_osc7 () {
-            printf "\[\e]7;file://%s%s\a\]" "${HOSTNAME}" "$(/usr/lib/vte-urlencode-cwd)"
+            printf "\[\e]7;file://%s%s\a\]" "$HOSTNAME" "$(/usr/lib/vte-urlencode-cwd)"
         }
     else
         __vte_osc7 () { :; }  # do-nothing stub
     fi
 
     # Git status in prompt using __git_ps1()
-    git_prompt_sh="/usr/share/git/completion/git-prompt.sh"
-    if [[ -f "${git_prompt_sh}" ]]; then
-        source "${git_prompt_sh}"
+    git_prompt_sh=/usr/share/git/completion/git-prompt.sh
+    if [[ -f "$git_prompt_sh" ]]; then
+        source "$git_prompt_sh"
     fi
     unset git_prompt_sh
     export GIT_PS1_SHOWDIRTYSTATE=1
@@ -165,7 +165,7 @@ if [[ "$PS1" ]]; then
         [[ $m -gt 0 ]] && output+="${m}m"
         s=$((n % 60))
         output+="${s}s"
-        echo "${output}"
+        echo "$output"
     }
 
     # Use a DEBUG trap to store timer information before a command is executed.
@@ -209,7 +209,7 @@ if [[ "$PS1" ]]; then
 
         # Time since previous command
         local prompt_timer=""
-        if [[ -n "${_timer_start}" ]]; then
+        if [[ -n "$_timer_start" ]]; then
             local seconds_elapsed=$((SECONDS - _timer_start))
             local current_date
             current_date=$(date --iso-8601=seconds)
@@ -238,7 +238,7 @@ if [[ "$PS1" ]]; then
         if [[ -r ".umbrella" ]]; then
             prompt_umbrella=$(command cat .umbrella)
         else
-            local dir="${PWD}"
+            local dir="$PWD"
             local prefix
             while [[ $dir != '/' ]]; do
                 if [[ -r "${dir}/../.umbrella" ]]; then
@@ -250,20 +250,20 @@ if [[ "$PS1" ]]; then
                 dir=$(dirname "$dir")
             done
         fi
-        tt_umbrella="${prompt_umbrella}"
-        if [ -n "${prompt_umbrella}" ]; then
+        tt_umbrella="$prompt_umbrella"
+        if [ -n "$prompt_umbrella" ]; then
             prompt_umbrella="${colour_blue}${prompt_umbrella}"
         fi
 
         # User name (only if non-standard)
         local prompt_user=""
-        local prompt_user_colour="${colour_blue}"
-        local prompt_sign_colour="${colour_green}"
+        local prompt_user_colour="$colour_blue"
+        local prompt_sign_colour="$colour_green"
         if [[ "$USER" == "root" ]]; then
-            prompt_user_colour="${colour_red}"
-            prompt_sign_colour="${colour_red}"
+            prompt_user_colour="$colour_red"
+            prompt_sign_colour="$colour_red"
         fi
-        case "${USER}" in
+        case "$USER" in
             (wbolster|uws)
                 prompt_user=""
                 ;;
@@ -275,18 +275,18 @@ if [[ "$PS1" ]]; then
         # Host name (only remote without screen/tmux)
         local prompt_hostname=""
         local tt_hostname=""
-        if [[ -n "${SSH_CLIENT:-}" && "${TERM}" != screen* ]]; then
+        if [[ -n "${SSH_CLIENT:-}" && "$TERM" != screen* ]]; then
             prompt_hostname="${colour_normal}💻 ${colour_blue}${HOSTNAME}"
-            tt_hostname="${HOSTNAME}"
+            tt_hostname="$HOSTNAME"
         fi
 
         # Working directory
         local prompt_wd=""
         local tt_wd="\w"
-        if [[ "${PWD}" != "${HOME}" ]]; then
+        if [[ "$PWD" != "$HOME" ]]; then
             short_pwd=$(shorten_path "$PWD" 3)
             prompt_wd="${colour_normal}📁 ${colour_green}${short_pwd}"
-            tt_wd="${short_pwd}"
+            tt_wd="$short_pwd"
         fi
 
         # Git
@@ -294,7 +294,7 @@ if [[ "$PS1" ]]; then
         if type __git_ps1 &>/dev/null; then
             local _git_ps1_output
             _git_ps1_output="$(__git_ps1 '%s')"
-            if [[ -n "${_git_ps1_output}" ]]; then
+            if [[ -n "$_git_ps1_output" ]]; then
                 prompt_git="${colour_normal}🤓 ${colour_yellow}${_git_ps1_output}"
             fi
         fi
@@ -303,20 +303,20 @@ if [[ "$PS1" ]]; then
         local prompt_python=""
         if [[ -n "${VIRTUAL_ENV:-}" ]]; then
             local venv_name
-            if [[ "${VIRTUAL_ENV}" == */.direnv/* ]]; then
+            if [[ "$VIRTUAL_ENV" == */.direnv/* ]]; then
                 venv_name="$(basename "$(dirname "$(dirname "${VIRTUAL_ENV}")")")"
             else
-                venv_name="$(basename "${VIRTUAL_ENV}")"
+                venv_name="$(basename "$VIRTUAL_ENV")"
             fi
             prompt_python+="${colour_cyan}${venv_name}"
         fi
-        if [[ -n "${PYENV_VERSION:-}" && $(pyenv global | paste -sd:) != "${PYENV_VERSION}" ]]; then
-            if [[ -n "${prompt_python}" ]]; then
+        if [[ -n "${PYENV_VERSION:-}" && $(pyenv global | paste -sd:) != "$PYENV_VERSION" ]]; then
+            if [[ -n "$prompt_python" ]]; then
                 prompt_python+="${colour_normal}/"
             fi
             prompt_python+="${colour_cyan}${PYENV_VERSION}"
         fi
-        if [[ -n "${prompt_python}" ]]; then
+        if [[ -n "$prompt_python" ]]; then
             prompt_python="${colour_normal}🐍 ${prompt_python}"
         fi
 
@@ -382,7 +382,7 @@ if [[ "$PS1" ]]; then
         # Primary prompt
         PS1="\n"
         PS1+="$(__vte_osc7)"
-        PS1+="${term_title}"
+        PS1+="$term_title"
         PS1+="${status_line_previous:+${status_line_previous%% }\n\n}"
         PS1+="${prompt_status_line_other:+${prompt_status_line_other%% }\n\n}"
         PS1+="${prompt_sign_colour}\\$""${colour_normal} "
@@ -419,7 +419,7 @@ if [[ "$PS1" ]]; then
         local_completion_dir=${BASH_COMPLETION_USER_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/bash-completion}/completions
         if [[ ! -d $local_completion_dir ]]; then
             for file in "${local_completion_dir}"/*; do
-                if [[ -f "${file}" ]]; then
+                if [[ -f "$file" ]]; then
                     source "$file"
                 fi
             done
@@ -451,7 +451,7 @@ if [[ "$PS1" ]]; then
     }
     _cd-venv() {
         : "${VIRTUAL_ENV:?}"
-        cd "${VIRTUAL_ENV}"
+        cd "$VIRTUAL_ENV"
     }
     _cd-site-packages() {
         : "${VIRTUAL_ENV:?}"
@@ -632,7 +632,7 @@ if [[ "$PS1" ]]; then
                     command direnv
                     ;;
                 freeze | thaw)
-                    _direnv_"${command}" "$@"
+                    "_direnv_${command}" "$@"
                     ;;
                 *)
                     command direnv "${command}" "$@"
@@ -784,13 +784,13 @@ if [[ "$PS1" ]]; then
             local updates
             _run_verbose brew update
             updates="$(brew outdated | grep -v -F -f <(find "$(brew --prefix)"/Library/PinnedKegs/ -mindepth 1 -maxdepth 1 -type "l" -printf '%f\n') | xargs --no-run-if-empty brew outdated --verbose || true)"
-            if [[ -n "${updates}" ]]; then
+            if [[ -n "$updates" ]]; then
                 echo
                 echo "These packages will be upgraded:"
-                echo "${updates}"
+                echo "$updates"
                 echo
                 read -r -p 'Continue upgrade? [Y/n] ' -n1 CONFIRM
-                if [[ "${CONFIRM}" =~ ^[Yy]?$ ]]; then
+                if [[ "$CONFIRM" =~ ^[Yy]?$ ]]; then
                     _run_verbose brew upgrade
                 fi
             fi
@@ -848,7 +848,7 @@ if [[ "$PS1" ]]; then
                         # Try to use pygments/pygmentize for syntax highlighting.
                         local lexer
                         lexer="$(pygmentize -N "$file")"
-                        if [[ "${can_peek}" == "yes" && "${lexer}" == "text" ]]; then
+                        if [[ "$can_peek" == "yes" && "$lexer" == "text" ]]; then
                             # Heuristics to improve pygmentize's detection (which
                             # uses file names only); detect a few file types using
                             # hashbang (#!) lines.
@@ -862,8 +862,8 @@ if [[ "$PS1" ]]; then
                                 (*sh*)      lexer="sh" ;;
                             esac
                         fi
-                        if [[ "${lexer}" != "text" ]]; then
-                            pygmentize -l "${lexer}" "${file}"
+                        if [[ "$lexer" != "text" ]]; then
+                            pygmentize -l "$lexer" "$file"
                             continue
                         fi
                     fi
@@ -871,7 +871,7 @@ if [[ "$PS1" ]]; then
                         # Colours, you can has it. LOLZ. But only if the content
                         # appears to be valid UTF-8, since lolcat doesn't like
                         # files containing binary gibberish.
-                        if [[ "${can_peek}" == "yes" ]] && head -c 8K "$file" | iconv -s -f utf8 -t utf8 > /dev/null; then
+                        if [[ "$can_peek" == "yes" ]] && head -c 8K "$file" | iconv -s -f utf8 -t utf8 > /dev/null; then
                             lolcat "$file"
                             continue
                         fi
@@ -938,9 +938,9 @@ fi
 # if the home directory is shared over NFS.
 #
 
-for file in ~/.bashrc-local ~/.bashrc-"${HOSTNAME}"; do
-    if [[ -f "${file}" ]]; then
-        source "${file}"
+for file in ~/.bashrc-local "~/.bashrc-${HOSTNAME}"; do
+    if [[ -f "$file" ]]; then
+        source "$file"
     fi
 done
 unset file
