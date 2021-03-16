@@ -49,7 +49,7 @@ gsettings set org.gnome.desktop.input-sources xkb-options "[
 ]"
 
 gsettings set org.gnome.desktop.wm.keybindings switch-input-source "['<Super>apostrophe']"
-gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "['<Shift><Super>apostrophe']"
+gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "['<Control><Super>apostrophe']"
 
 gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click true
 
@@ -99,7 +99,7 @@ gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Super>'
 gsettings set org.gnome.desktop.wm.preferences resize-with-right-button true
 gsettings set org.gnome.desktop.wm.preferences visual-bell false
 
-gsettings set org.gnome.desktop.wm.keybindings close "['<Alt>F4', '<Shift><Super>q', '<Control><Super>q', '<Alt><Super>q']"
+gsettings set org.gnome.desktop.wm.keybindings close "['<Alt>F4', '<Control><Super>q', '<Alt><Super>q']"
 gsettings set org.gnome.desktop.wm.keybindings minimize "[]"
 
 gsettings set org.gnome.mutter attach-modal-dialogs false
@@ -107,7 +107,7 @@ gsettings set org.gnome.mutter center-new-windows true
 gsettings set org.gnome.mutter workspaces-only-on-primary true
 
 # maximised/full screen
-gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Alt>F11', '<Control><Super>f', '<Shift><Super>f']"
+gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Alt>F11', '<Control><Super>f']"
 gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Alt>F10', '<Super>f']"
 
 # left/right with </> keys (without shift)
@@ -116,15 +116,15 @@ gsettings set org.gnome.mutter.keybindings toggle-tiled-right "['<Super>period']
 
 # quick window cycling
 gsettings set org.gnome.desktop.wm.keybindings cycle-windows "['<Super>Space']"
-gsettings set org.gnome.desktop.wm.keybindings cycle-windows-backward "['<Shift><Super>Space']"
+gsettings set org.gnome.desktop.wm.keybindings cycle-windows-backward "['<Control><Super>Space']"
 
 # hjkl-style window/workspace navigation; with colemak keys this is hnei, not hjkl
 gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Super>i']"
 gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Super>h']"
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down "['<Super>n']"
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up "['<Super>e']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-down "['<Shift><Super>n']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-up "['<Shift><Super>e']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-down "['<Control><Super>n']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-up "['<Control><Super>e']"
 
 # workspaces
 gsettings set org.gnome.mutter dynamic-workspaces false
@@ -147,15 +147,15 @@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-6 "['<Super>6
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-7 "['<Super>7']"
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-8 "['<Super>8']"
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-9 "['<Super>9']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-1 "['<Shift><Super>1']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-2 "['<Shift><Super>2']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-3 "['<Shift><Super>3']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-4 "['<Shift><Super>4']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 "['<Shift><Super>5']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-6 "['<Shift><Super>6']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-7 "['<Shift><Super>7']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-8 "['<Shift><Super>8']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-9 "['<Shift><Super>9']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-1 "['<Control><Super>1']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-2 "['<Control><Super>2']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-3 "['<Control><Super>3']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-4 "['<Control><Super>4']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 "['<Control><Super>5']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-6 "['<Control><Super>6']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-7 "['<Control><Super>7']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-8 "['<Control><Super>8']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-9 "['<Control><Super>9']"
 
 
 #
@@ -179,9 +179,9 @@ gsettings set org.gnome.shell.keybindings focus-active-notification "[]"
 
 gsettings set org.gnome.settings-daemon.plugins.media-keys increase-text-size "['<Super>equal']"
 gsettings set org.gnome.settings-daemon.plugins.media-keys decrease-text-size "['<Super>minus']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys magnifier-zoom-in "['<Shift><Super>plus']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys magnifier-zoom-out "['<Shift><Super>underscore']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys magnifier "['<Super><Shift>0']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys magnifier-zoom-in "['<Control><Super>plus']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys magnifier-zoom-out "['<Control><Super>underscore']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys magnifier "['<Control><Super>0']"
 
 gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>g']"
 gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>w']"
@@ -317,7 +317,7 @@ dconf write /org/gnome/shell/extensions/dash-to-dock/show-mounts false
 dconf write /org/gnome/shell/extensions/dash-to-dock/show-trash false
 
 # draw on your screen
-dconf write /org/gnome/shell/extensions/draw-on-your-screen/erase-drawings "['<Shift><Super>d']"
+dconf write /org/gnome/shell/extensions/draw-on-your-screen/erase-drawings "['<Control><Super>d']"
 dconf write /org/gnome/shell/extensions/draw-on-your-screen/toggle-drawing "['<Super>d']"
 
 # emoji selector
@@ -330,8 +330,8 @@ dconf write /org/gnome/shell/extensions/emoji-selector/nbcols 16
 dconf write /org/gnome/shell/extensions/gtktitlebar/hide-window-titlebars "'both'"
 
 # invert window
-dconf write /org/gnome/shell/extensions/invert-window/invert-window-shortcut "['<Shift><Super>l']"
-dconf write /org/gnome/shell/extensions/invert-window-preserving-hue/invert-window-preserving-hue-shortcut "['<Shift><Super>l']"
+dconf write /org/gnome/shell/extensions/invert-window/invert-window-shortcut "['<Control><Super>l']"
+dconf write /org/gnome/shell/extensions/invert-window-preserving-hue/invert-window-preserving-hue-shortcut "['<Control><Super>l']"
 
 # nothing to say
 dconf write /org/gnome/shell/extensions/nothing-to-say/keybinding-toggle-mute "['<Super>backslash', 'Pause']"
@@ -368,24 +368,24 @@ if gnome-extensions list | grep -q -F -x 'paperwm@hedning:matrix.org'; then
 
     gsettings_paperwm_bind barf-out "['<Super>period']"
     gsettings_paperwm_bind close-window "[]"
-    gsettings_paperwm_bind cycle-height "['<Shift><Super>r', '<Control><Super>r']"
+    gsettings_paperwm_bind cycle-height "['<Control><Super>r']"
     gsettings_paperwm_bind cycle-width "['<Super>r']"
     gsettings_paperwm_bind live-alt-tab "['<Super>Space']"
-    gsettings_paperwm_bind live-alt-tab-backward "['<Shift><Super>Space', '<Control><Super>Space']"
+    gsettings_paperwm_bind live-alt-tab-backward "['<Control><Super>Space']"
     gsettings_paperwm_bind move-down "[]"
     gsettings_paperwm_bind move-down-workspace "[]"
-    gsettings_paperwm_bind move-left "['<Shift><Super>h', '<Control><Super>h', '<Control><Super>Left']"
+    gsettings_paperwm_bind move-left "['<Control><Super>h', '<Control><Super>Left']"
     gsettings_paperwm_bind move-monitor-above "[]"
     gsettings_paperwm_bind move-monitor-below "[]"
     gsettings_paperwm_bind move-monitor-left "[]"
     gsettings_paperwm_bind move-monitor-right "[]"
     gsettings_paperwm_bind move-previous-workspace "[]"
     gsettings_paperwm_bind move-previous-workspace-backward "[]"
-    gsettings_paperwm_bind move-right "['<Shift><Super>i', '<Control><Super>i', '<Control><Super>right']"
+    gsettings_paperwm_bind move-right "['<Control><Super>i', '<Control><Super>right']"
     gsettings_paperwm_bind move-up "[]"
     gsettings_paperwm_bind move-up-workspace "[]"
     gsettings_paperwm_bind new-window "[]"
-    gsettings_paperwm_bind paper-toggle-fullscreen "['<Shift><Super>f', '<Control><Super>f']"
+    gsettings_paperwm_bind paper-toggle-fullscreen "['<Control><Super>f']"
     gsettings_paperwm_bind previous-workspace "[]"
     gsettings_paperwm_bind previous-workspace-backward "[]"
     gsettings_paperwm_bind slurp-in "['<Super>comma']"
@@ -409,6 +409,6 @@ if gnome-extensions list | grep -q -F -x 'paperwm@hedning:matrix.org'; then
     gsettings_paperwm_bind switch-up-workspace "[]"
     gsettings_paperwm_bind take-window "[]"
     gsettings_paperwm_bind toggle-maximize-width "['<Super>f']"
-    gsettings_paperwm_bind toggle-scratch "['<Shift><Super>Return', '<Control><Super>Return']"
+    gsettings_paperwm_bind toggle-scratch "['<Control><Super>Return']"
     gsettings_paperwm_bind toggle-scratch-layer "['<Super>Return']"
 fi
