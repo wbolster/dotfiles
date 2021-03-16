@@ -427,6 +427,11 @@ if [[ "$PS1" ]]; then
         fi
         unset local_completion_dir
     fi
+    complete_alias_sh=/usr/share/bash-complete-alias/complete_alias
+    if [[ -f $complete_alias_sh ]]; then
+        source "$complete_alias_sh"
+    fi
+    unset complete_alias_sh
 
     # Directory changing (and creation)
     export CDPATH=.:~/Projects
