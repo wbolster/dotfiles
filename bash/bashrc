@@ -658,6 +658,7 @@ if [[ "$PS1" ]]; then
 
     # Docker
     alias ,docker-run-throwaway='docker run --rm --interactive --tty'
+    complete -F _complete_alias ,docker-run-throwaway
 
     # Multiple python installations via pyenv
     if type pyenv &>/dev/null && [[ $(type -t pyenv) != "function" ]]; then
@@ -773,8 +774,9 @@ if [[ "$PS1" ]]; then
             COMPREPLY=($(apt-cache --no-generate pkgnames "${cur}" 2>/dev/null))
             return 0
         }
-        complete -F _apt_get_packages i ac acp
     fi
+    complete -F _complete_alias i
+    complete -F _complete_alias u
 
     # Mac OSX
     if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
@@ -782,7 +784,6 @@ if [[ "$PS1" ]]; then
         _brew_install() {
             _run_verbose brew install "$@"
         }
-        complete -F _brew_install i
         _brew_upgrade() {
             (
             set -e
