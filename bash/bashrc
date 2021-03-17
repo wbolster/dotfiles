@@ -4,6 +4,10 @@
 # Keep new files and directories private by default
 umask 077
 
+___has() {
+  type "$1" &>/dev/null
+}
+
 # Helper to keep only the first occurence of each component of a
 # colon-separated path string.
 _deduplicate_path_components() {
@@ -35,7 +39,7 @@ _dotfiles_bin_dir="${_dotfiles_root_dir}/bin"
 # - Add a few "standard" dirs inside $HOME
 if [[ "$OSTYPE" == darwin* ]]; then
     MANPATH="$(MANPATH='' manpath)"
-    if [[ -n $(type brew 2>/dev/null) ]]; then
+    if ___has brew; then
         brew_prefix=$(brew --prefix)
         PATH="${brew_prefix}/opt/findutils/libexec/gnubin:${brew_prefix}/opt/coreutils/libexec/gnubin:${brew_prefix}/sbin:${brew_prefix}/bin:${PATH}"
         MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman:${MANPATH}"
@@ -75,7 +79,7 @@ if [[ "$PS1" ]]; then
         echo "$*"
     }
 
-    if ! type rev &>/dev/null; then
+    if ! ___has rev; then
         # the rev(1) program is not available on all systems
         # https://stackoverflow.com/questions/11461625/reverse-the-order-of-characters-in-a-string
         rev() {
@@ -115,7 +119,7 @@ if [[ "$PS1" ]]; then
     if [[ -f "$vte_sh" ]]; then
         source "$vte_sh"
     fi
-    if type __vte_osc7 &>/dev/null; then
+    if ___has __vte_osc7; then
         # Redefine the function to use escape sequences that do
         # not leave visual artefacts.
         __vte_osc7 () {
@@ -234,7 +238,7 @@ if [[ "$PS1" ]]; then
         history -a
 
         # Hook for direnv.
-        if type _direnv_hook &>/dev/null; then
+        if ___has _direnv_hook; then
             _direnv_hook
         fi
 
@@ -292,7 +296,7 @@ if [[ "$PS1" ]]; then
 
         # Git
         local prompt_git=""
-        if type __git_ps1 &>/dev/null; then
+        if ___has __git_ps1; then
             local _git_ps1_output
             _git_ps1_output="$(__git_ps1 '%s')"
             if [[ -n "$_git_ps1_output" ]]; then
@@ -403,7 +407,7 @@ if [[ "$PS1" ]]; then
     shopt -s extglob
 
     # Disable annoying beeps
-    if type setterm &>/dev/null; then
+    if ___has setterm; then
         setterm -blength 0 2>/dev/null
     fi
 
@@ -570,7 +574,7 @@ if [[ "$PS1" ]]; then
     alias xargs='xargs '
 
     # Editor
-    if type vim &>/dev/null; then
+    if ___has vim; then
         export EDITOR=vim
         alias vi=vim
     else
@@ -599,7 +603,7 @@ if [[ "$PS1" ]]; then
     # Detect direnv (https://github.com/direnv/direnv). The regular loading
     # method does not cooperate well with our $PROMPT_COMMAND (it breaks $?
     # detection).
-    if type direnv &>/dev/null; then
+    if ___has direnv; then
         # Copied from "direnv hook bash" output:
         _direnv_hook_enabled=1
         _direnv_hook() {
@@ -646,7 +650,7 @@ if [[ "$PS1" ]]; then
     # Development
     alias m=make
     complete -F _make m
-    if type hub &>/dev/null; then
+    if ___has hub; then
         alias git=hub
     fi
     syntax-highlight() {
@@ -658,7 +662,7 @@ if [[ "$PS1" ]]; then
     complete -F _complete_alias ,docker-run-throwaway
 
     # Multiple python installations via pyenv
-    if type pyenv &>/dev/null && [[ $(type -t pyenv) != "function" ]]; then
+    if ___has pyenv && [[ $(type -t pyenv) != "function" ]]; then
         # After initialisation, pyenv provides a shell function that masks the
         # actual executable. Initialize if pyenv is available but not loaded,
         # but ignore the line setting PATH since that is already set up.
@@ -708,7 +712,7 @@ if [[ "$PS1" ]]; then
     }
 
     # Jhbuild
-    if type jhbuild &>/dev/null; then
+    if ___has jhbuild; then
         alias 'jhr'='jhbuild run'
         alias 'jhbo'='jhbuild buildone'
         alias 'jhboa'='jhbuild buildone -a'
@@ -847,7 +851,7 @@ if [[ "$PS1" ]]; then
                         # Don't try to highlight text files; pygmentize
                         # detection is slow and often wrong for those.
                         true
-                    elif type pygmentize &>/dev/null; then
+                    elif ___has pygmentize; then
                         # Try to use pygments/pygmentize for syntax highlighting.
                         local lexer
                         lexer="$(pygmentize -N "$file")"
@@ -882,7 +886,7 @@ if [[ "$PS1" ]]; then
     cat() {
         if [[ $# -ge 1 && "${1}" != -* && -t 1 ]]; then
             # Arguments but no flags are specified and stdout is a terminal; perform magic.
-            if type bat &>/dev/null; then
+            if ___has bat; then
                 bat "$@"
             else
                 show "$@"
@@ -917,10 +921,10 @@ if [[ "$PS1" ]]; then
     # Misc
     alias sc='screen -UxRR'
     alias uuid4='uuidgen -r'
-    type sudoedit &>/dev/null || alias sudoedit="sudo -e"
-    type hd &>/dev/null || alias hd="hexdump"
-    type rgrep &>/dev/null || alias rgrep="grep -r"
-    type zstd &>/dev/null && alias ,zstd-max="zstd -T0 --long -19"
+    ___has sudoedit || alias sudoedit="sudo -e"
+    ___has hd || alias hd="hexdump"
+    ___has rgrep || alias rgrep="grep -r"
+    ___has zstd && alias ,zstd-max="zstd -T0 --long -19"
 fi
 
 
