@@ -653,9 +653,6 @@ if [[ "$PS1" ]]; then
     if ___has hub; then
         alias git=hub
     fi
-    syntax-highlight() {
-        pygmentize -l "$@" | ,pager-if-tty
-    }
 
     # Docker
     alias ,docker-run-throwaway='docker run --rm --interactive --tty'
