@@ -870,15 +870,6 @@ if [[ "$PS1" ]]; then
                             continue
                         fi
                     fi
-                    if type lolcat &>/dev/null; then
-                        # Colours, you can has it. LOLZ. But only if the content
-                        # appears to be valid UTF-8, since lolcat doesn't like
-                        # files containing binary gibberish.
-                        if [[ "$can_peek" == "yes" ]] && head -c 8K "$file" | iconv -s -f utf8 -t utf8 > /dev/null; then
-                            lolcat "$file"
-                            continue
-                        fi
-                    fi
                 fi
                 # File not readable or no other viewers found; let "cat" handle
                 # it, since it's fast and will show error messages.
