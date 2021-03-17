@@ -744,6 +744,8 @@ if [[ "$PS1" ]]; then
             fi
         done
         unset arch_package_manager
+        complete -F _complete_alias i
+        complete -F _complete_alias u
     elif ___has apt-get; then
         # Debian and Ubuntu
         alias apt='sudo apt'
@@ -770,9 +772,8 @@ if [[ "$PS1" ]]; then
             COMPREPLY=($(apt-cache --no-generate pkgnames "${cur}" 2>/dev/null))
             return 0
         }
+        complete -F _apt_get_packages i ac acp
     fi
-    complete -F _complete_alias i
-    complete -F _complete_alias u
 
     # Mac OSX
     if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
