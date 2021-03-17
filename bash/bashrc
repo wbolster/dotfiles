@@ -770,11 +770,8 @@ if [[ "$PS1" ]]; then
             return 0
         }
         complete -F _apt_get_packages i ac acp
-    fi
-
-    # Mac OSX
-    if [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
-        # Homebrew
+    elif [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
+        # Mac OSX  with Homebrew
         _brew_install() {
             _run_verbose brew install "$@"
         }
