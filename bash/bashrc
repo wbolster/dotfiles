@@ -529,6 +529,7 @@ if [[ "$PS1" ]]; then
     alias grep='grep --color=auto'
     alias egrep='egrep --color=auto'
     alias fgrep='fgrep --color=auto'
+    export RIPGREP_CONFIG_PATH=~/.config/ripgrep/config
     rg() {
         if [ -t 1 ]; then
             command rg --pretty "$@" | ,pager-if-tty
