@@ -525,10 +525,17 @@ if [[ "$PS1" ]]; then
         alias ll='ls -lAF'
     fi
 
-    # Show colors in grep output
+    # grep, ripgrep, etc
     alias grep='grep --color=auto'
     alias egrep='egrep --color=auto'
     alias fgrep='fgrep --color=auto'
+    rg() {
+        if [ -t 1 ]; then
+            command rg --pretty "$@" | ,pager-if-tty
+        else
+            command rg "$@"
+        fi
+    }
 
     # Process listings and process control
     alias psg='ps auxww |grep -i'
