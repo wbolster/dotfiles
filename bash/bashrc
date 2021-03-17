@@ -577,18 +577,6 @@ if [[ "$PS1" ]]; then
 
     # Pager
     alias lessr='less -R'
-    maybe-pager() {
-        if [[ -t 1 ]]; then  # stdout is a terminal
-            if type less &>/dev/null; then
-                less -FRKMX
-            else
-                more
-            fi
-        else
-            command cat
-        fi
-    }
-    alias p='maybe-pager'
 
     # Man pages
     export MANOPT="--no-hyphenation --no-justification"
@@ -653,7 +641,7 @@ if [[ "$PS1" ]]; then
         alias git=hub
     fi
     syntax-highlight() {
-        pygmentize -l "$@" | maybe-pager
+        pygmentize -l "$@" | ,pager-if-tty
     }
 
     # Docker
@@ -887,7 +875,7 @@ if [[ "$PS1" ]]; then
                 # it, since it's fast and will show error messages.
                 command cat "$file"
             done
-        ) | maybe-pager
+        ) | ,pager-if-tty
     }
 
     # This cat has magical powers, like a space cat flying through pizzas with bacon.
