@@ -5,7 +5,7 @@ set -eu
 if [ -t 1 ]; then
     # stdout is a terminal
     if type less >/dev/null 2>&1; then
-        less -FRKMX
+        less -FKMRSX
     else
         more
     fi
