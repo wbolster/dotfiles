@@ -817,7 +817,7 @@ if [[ "$PS1" ]]; then
     fi
 
     # Show a file with syntax highlighting (when possible) through a pager (when necessary)
-    show() {
+    ___syntax_highlight() {
         (
             set -e
             if [[ "$#" == 0 || ("$#" == 1 && "$1" == "-") ]]; then
@@ -879,7 +879,7 @@ if [[ "$PS1" ]]; then
             if ___has bat; then
                 bat "$@"
             else
-                show "$@"
+                ___syntax_highlight "$@"
             fi
         else
             # Transparent fall-back.
