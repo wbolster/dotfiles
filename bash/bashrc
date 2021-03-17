@@ -733,23 +733,18 @@ if [[ "$PS1" ]]; then
     alias locale-nl='unset LANGUAGE; export LANG=nl_NL.UTF-8'
 
     # Linux package management
-    if type paru &>/dev/null; then
+    if [ -e /etc/arch-release ]; then
         # Arch Linux
-        alias i='paru -S'
-        alias u='paru -Syu'
-    elif type pikaur &>/dev/null; then
-        # Arch Linux
-        alias i='pikaur -S'
-        alias u='pikaur -Syu'
-    elif type yay &>/dev/null; then
-        # Arch Linux
-        alias i='yay -S'
-        alias u='yay -Syu'
-    elif type pacman &>/dev/null; then
-        # Arch Linux
-        alias i='pacman -S'
-        alias u='pacman -Syu'
-    elif type apt-get &>/dev/null; then
+        for arch_package_manager in paru pikaur yay pacman; do
+            if ___has $arch_package_manager; then
+                # shellcheck disable=SC2139
+                alias i="${arch_package_manager} -S"
+                # shellcheck disable=SC2139
+                alias u="${arch_package_manager} -Syu"
+            fi
+        done
+        unset arch_package_manager
+    elif ___has apt-get; then
         # Debian and Ubuntu
         alias apt='sudo apt'
         alias apt-get='sudo apt-get'
