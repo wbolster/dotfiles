@@ -10,6 +10,22 @@ _deduplicate_path_components() {
     echo "$1" | awk -v RS=: -v ORS=: '!a[$1]++' | sed -e 's/:$//'
 }
 
+# Find the closest parent directory that contains a descendant.
+# Starts from the current working directory unless overridden.
+_closest_parent_dir_containing() {
+    local descendant="${1:?}"
+    local dir="${2:-$(pwd)}"
+    while true; do
+        if [ -e "$dir/$descendant" ]; then
+            echo "$dir"
+            return 0
+        elif [ "$dir" = '/' ]; then
+            return 1;
+        fi
+        dir="$(dirname "$dir")"
+    done
+}
+
 # Paths to configuration directories.
 _dotfiles_root_dir="$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")"
 _dotfiles_bin_dir="${_dotfiles_root_dir}/bin"
@@ -235,23 +251,14 @@ if [[ "$PS1" ]]; then
         # directory under that umbrella dir.
         local prompt_umbrella=''
         local tt_umbrella=''
-        if [[ -r ".umbrella" ]]; then
-            prompt_umbrella=$(command cat .umbrella)
-        else
-            local dir="$PWD"
-            local prefix
-            while [[ $dir != '/' ]]; do
-                if [[ -r "${dir}/../.umbrella" ]]; then
-                    prefix=$(command cat "${dir}/../.umbrella")
-                    project=$(basename "${dir}")
-                    prompt_umbrella="${prefix} ${project,,}"
-                    break
-                fi
-                dir=$(dirname "$dir")
-            done
-        fi
-        tt_umbrella="$prompt_umbrella"
-        if [ -n "$prompt_umbrella" ]; then
+        local dir
+        if dir=$(_closest_parent_dir_containing .umbrella); then
+            prompt_umbrella=$(command cat "${dir}/.umbrella")
+            if [ "$dir" != "$PWD" ]; then
+                local relative="${PWD##${dir}/}"
+                prompt_umbrella+=" ${relative/\/*/}"
+            fi
+            tt_umbrella="$prompt_umbrella"
             prompt_umbrella="${colour_blue}${prompt_umbrella}"
         fi
 
