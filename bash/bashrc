@@ -115,9 +115,8 @@ if [[ "$PS1" ]]; then
     # libvte uses a helper script to echo the current directory in an
     # escape sequence in the the prompt. gnome-terminal uses this to
     # open new terminal tabs/windows in the same directory.
-    vte_sh="/etc/profile.d/vte.sh"
-    if [[ -f "$vte_sh" ]]; then
-        source "$vte_sh"
+    if [[ -f /etc/profile.d/vte.sh ]]; then
+        source /etc/profile.d/vte.sh
     fi
     if ___has __vte_osc7; then
         # Redefine the function to use escape sequences that do
@@ -130,9 +129,8 @@ if [[ "$PS1" ]]; then
     fi
 
     # Git status in prompt using __git_ps1()
-    git_prompt_sh=/usr/share/git/completion/git-prompt.sh
-    if [[ -f "$git_prompt_sh" ]]; then
-        source "$git_prompt_sh"
+    if [[ -f /usr/share/git/completion/git-prompt.sh ]]; then
+        source /usr/share/git/completion/git-prompt.sh
     fi
     unset git_prompt_sh
     export GIT_PS1_SHOWDIRTYSTATE=1
@@ -184,6 +182,7 @@ if [[ "$PS1" ]]; then
 
     # Use a DEBUG trap to store timer information before a command is executed.
     # The _timer_start variable is cleared in the prompt command function.
+    _timer_start=''
     trap '[[ -z "${_timer_start:-}" ]] && _timer_start=${SECONDS}' DEBUG
 
     set_prompt_command() {
@@ -414,6 +413,7 @@ if [[ "$PS1" ]]; then
     # Completion
     for file in /usr/share/bash-completion/bash_completion /etc/bash_completion /usr/local/share/bash-completion/bash_completion; do
         if [[ -f "$file" ]]; then
+            # shellcheck disable=SC1090
             source "$file"
             break  # stop after first match
         fi
@@ -425,6 +425,7 @@ if [[ "$PS1" ]]; then
         if [[ ! -d $local_completion_dir ]]; then
             for file in "${local_completion_dir}"/*; do
                 if [[ -f "$file" ]]; then
+                    # shellcheck disable=SC1090
                     source "$file"
                 fi
             done
@@ -432,9 +433,9 @@ if [[ "$PS1" ]]; then
         fi
         unset local_completion_dir
     fi
-    complete_alias_sh=/usr/share/bash-complete-alias/complete_alias
-    if [[ -f $complete_alias_sh ]]; then
-        source "$complete_alias_sh"
+    if [[ -f /usr/share/bash-complete-alias/complete_alias ]]; then
+        # shellcheck disable=SC1094
+        source /usr/share/bash-complete-alias/complete_alias
     fi
     unset complete_alias_sh
 
@@ -928,6 +929,7 @@ fi
 
 for file in ~/.bashrc-local "${HOME}/.bashrc-${HOSTNAME}"; do
     if [[ -f "$file" ]]; then
+        # shellcheck disable=SC1090
         source "$file"
     fi
 done
