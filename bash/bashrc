@@ -580,7 +580,7 @@ if [[ "$PS1" ]]; then
     maybe-pager() {
         if [[ -t 1 ]]; then  # stdout is a terminal
             if type less &>/dev/null; then
-                less -FRX
+                less -FRKMX
             else
                 more
             fi
