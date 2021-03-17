@@ -57,12 +57,6 @@ PATH=$(_deduplicate_path_components "$PATH")
 MANPATH=$(_deduplicate_path_components "$MANPATH")
 export MANPATH
 
-# Make sure $HOSTNAME is set
-if [[ -z "$HOSTNAME" ]]; then
-    HOSTNAME=$(hostname)
-    export HOSTNAME
-fi
-
 # Interactive shells
 if [[ "$PS1" ]]; then
     # Helper to emulate "set -x" output
