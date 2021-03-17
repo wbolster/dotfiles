@@ -926,7 +926,7 @@ fi
 # if the home directory is shared over NFS.
 #
 
-for file in ~/.bashrc-local "~/.bashrc-${HOSTNAME}"; do
+for file in ~/.bashrc-local "${HOME}/.bashrc-${HOSTNAME}"; do
     if [[ -f "$file" ]]; then
         source "$file"
     fi
