@@ -739,6 +739,7 @@ if [[ "$PS1" ]]; then
                 alias i="${arch_package_manager} -S"
                 # shellcheck disable=SC2139
                 alias u="${arch_package_manager} -Syu"
+                break
             fi
         done
         unset arch_package_manager
