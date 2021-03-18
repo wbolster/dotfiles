@@ -659,16 +659,14 @@ if [[ "$PS1" ]]; then
     alias ,docker-run-throwaway='docker run --rm --interactive --tty'
     complete -F _complete_alias ,docker-run-throwaway
 
-    # Multiple python installations via pyenv
+    # Python
+    export PYTHONDONTWRITEBYTECODE=1
     if ___has pyenv && [[ $(type -t pyenv) != "function" ]]; then
         # After initialisation, pyenv provides a shell function that masks the
         # actual executable. Initialize if pyenv is available but not loaded,
         # but ignore the line setting PATH since that is already set up.
         eval "$(pyenv init - | grep -v 'export PATH=')"
     fi
-
-    # python development
-    export PYTHONDONTWRITEBYTECODE=1
     alias ipy=ipython
     py-cprofile() {
         if [[ $# -lt 1 ]]; then
