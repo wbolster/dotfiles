@@ -19,7 +19,7 @@ install_extension caffeine@patapon.info
 install_extension dash-to-dock@micxgx.gmail.com
 install_extension disableworkspaceanim@owilliams.mixxx.org
 install_extension drawOnYourScreen@abakkk.framagit.org
-# install_extension gtktitlebar@velitasali.github.io
+install_extension gtktitlebar@velitasali.github.io
 install_extension emoji-selector@maestroschan.fr
 install_extension mprisindicatorbutton@JasonLG1979.github.io
 install_extension nothing-to-say@extensions.gnome.wouter.bolsterl.ee

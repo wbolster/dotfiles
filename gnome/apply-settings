@@ -411,4 +411,7 @@ if gnome-extensions list | grep -q -F -x 'paperwm@hedning:matrix.org'; then
     gsettings_paperwm_bind toggle-maximize-width "['<Super>f']"
     gsettings_paperwm_bind toggle-scratch "['<Control><Super>Return']"
     gsettings_paperwm_bind toggle-scratch-layer "['<Super>Return']"
+
+    # the ‘maximised?’ detection doesn't seem to work
+    dconf write /org/gnome/shell/extensions/gtktitlebar/hide-window-titlebars "'always'"
 fi
