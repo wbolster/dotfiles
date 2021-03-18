@@ -667,6 +667,12 @@ if [[ "$PS1" ]]; then
         # but ignore the line setting PATH since that is already set up.
         eval "$(pyenv init - | grep -v 'export PATH=')"
     fi
+    if ___has virtualenvwrapper_lazy.sh; then
+        VIRTUALENVWRAPPER_PYTHON="$(dirname "$(readlink -f "$(which virtualenvwrapper_lazy.sh)")")/python"
+        export VIRTUALENVWRAPPER_PYTHON
+        # shellcheck disable=SC1091
+        source virtualenvwrapper_lazy.sh
+    fi
     alias ipy=ipython
     py-cprofile() {
         if [[ $# -lt 1 ]]; then
