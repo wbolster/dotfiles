@@ -214,8 +214,8 @@ locales
   localectl set-keymap colemak
   localectl
 
-hostname
-========
+network
+=======
 
 ::
 
@@ -229,7 +229,9 @@ note: ``/etc/hosts`` `stays empty`__
 
 __ https://www.freedesktop.org/software/systemd/man/nss-myhostname.html
 
+use systemd default stub resolver::
 
+  ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
 user account
 ============
