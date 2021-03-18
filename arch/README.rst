@@ -178,6 +178,16 @@ once inside::
 
   mv /etc/securetty.backup /etc/securetty
 
+etckeeper
+=========
+
+::
+
+  git config --global user.name root
+  git config --global user.email "root@$(hostnamectl status --static)"
+  etckeeper init
+  etckeeper commit -m 'initial import'
+
 time and date
 =============
 
@@ -219,15 +229,7 @@ note: ``/etc/hosts`` `stays empty`__
 
 __ https://www.freedesktop.org/software/systemd/man/nss-myhostname.html
 
-etckeeper
-=========
 
-::
-
-  git config --global user.name root
-  git config --global user.email "root@$(hostnamectl status --static)"
-  etckeeper init
-  etckeeper commit -m 'initial import'
 
 user account
 ============
