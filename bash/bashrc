@@ -733,7 +733,7 @@ if [[ "$PS1" ]]; then
     # Linux package management
     if [ -e /etc/arch-release ]; then
         # Arch Linux
-        for arch_package_manager in paru pikaur yay pacman; do
+        for arch_package_manager in paru pikaur yay "sudo pacman"; do
             if ___has $arch_package_manager; then
                 # shellcheck disable=SC2139
                 alias i="${arch_package_manager} -S"
