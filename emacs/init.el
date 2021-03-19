@@ -840,6 +840,14 @@ defined as lowercase."
       (when (looking-back " ")
         (delete-char -1))))
 
+  (defun w--split-line-backslash ()
+    "Split line before the current word, using a continuation line ending."
+    (interactive)
+    (unless (looking-back " ")
+      (evil-backward-WORD-begin))
+    (insert "\\\n")
+    (indent-according-to-mode))
+
   ;; todo: make "0" work visually in visual line mode. maybe using
   ;; something like this:
   ;; (evil-redirect-digit-argument evil-motion-state-map "0" 'evil-beginning-of-line)
@@ -3519,6 +3527,7 @@ defined as lowercase."
   :general
   (:keymaps 'dockerfile-mode-map
    :states 'normal
+   "<return> "'w--split-line-backslash
    [remap evil-join] #'w--evil-join-smart-backslash-eol))
 
 
@@ -4432,6 +4441,7 @@ defined as lowercase."
   :general
   (:keymaps 'sh-mode-map
    :states 'normal
+   "<return> "'w--split-line-backslash
    [remap evil-join] #'w--evil-join-smart-backslash-eol)
   :config
   (defun w--sh-mode-hook ()
