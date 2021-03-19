@@ -830,6 +830,16 @@ defined as lowercase."
         (evil-first-non-blank-of-visual-line)
       (evil-first-non-blank)))
 
+  (evil-define-operator w--evil-join-smart-backslash-eol (beg end)
+    "Like 'evil-join', but handles continuation line endings in a smarter way."
+    :motion evil-line
+    (prog1 (evil-join beg end)
+      ;; delete ‘\’, and potentially one space before it
+      (when (looking-back "\\\\")
+        (delete-char -1))
+      (when (looking-back " ")
+        (delete-char -1))))
+
   ;; todo: make "0" work visually in visual line mode. maybe using
   ;; something like this:
   ;; (evil-redirect-digit-argument evil-motion-state-map "0" 'evil-beginning-of-line)
@@ -3501,7 +3511,11 @@ defined as lowercase."
   :custom-face
   (docker-face-status-error ((t (:inherit error))))
   (docker-face-status-success ((t (:inherit success))))
-  (docker-face-status-warning ((t (:inherit warning)))))
+  (docker-face-status-warning ((t (:inherit warning))))
+  :general
+  (:keymaps 'dockerfile-mode-map
+   :states 'normal
+   [remap evil-join] #'w--evil-join-smart-backslash-eol))
 
 (use-package dockerfile-mode
   :defer t
@@ -4415,6 +4429,10 @@ defined as lowercase."
   ("bashrc\\'" . sh-mode)
   ("\\.bashrc-.*\\'" . sh-mode)
   :hook (sh-mode-hook . w--sh-mode-hook)
+  :general
+  (:keymaps 'sh-mode-map
+   :states 'normal
+   [remap evil-join] #'w--evil-join-smart-backslash-eol)
   :config
   (defun w--sh-mode-hook ()
     (evil-swap-keys-swap-pipe-backslash)))
