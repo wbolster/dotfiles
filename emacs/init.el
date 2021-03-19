@@ -3511,15 +3511,15 @@ defined as lowercase."
   :custom-face
   (docker-face-status-error ((t (:inherit error))))
   (docker-face-status-success ((t (:inherit success))))
-  (docker-face-status-warning ((t (:inherit warning))))
+  (docker-face-status-warning ((t (:inherit warning)))))
+
+(use-package dockerfile-mode
+  :defer t
+  :mode "Dockerfile[-_\\.].*"
   :general
   (:keymaps 'dockerfile-mode-map
    :states 'normal
    [remap evil-join] #'w--evil-join-smart-backslash-eol))
-
-(use-package dockerfile-mode
-  :defer t
-  :mode "Dockerfile[-_\\.].*")
 
 
 ;;; Major mode: emacs lisp
