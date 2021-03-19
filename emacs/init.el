@@ -835,18 +835,22 @@ defined as lowercase."
     :motion evil-line
     (prog1 (evil-join beg end)
       ;; delete ‘\’, and potentially one space before it
-      (when (looking-back "\\\\")
+      (when (looking-back "\\\\" nil)
         (delete-char -1))
-      (when (looking-back " ")
+      (when (looking-back " " nil)
         (delete-char -1))))
 
   (defun w--split-line-backslash ()
     "Split line before the current word, using a continuation line ending."
     (interactive)
-    (unless (looking-back " ")
+    (unless (looking-at-p "")
+      (evil-forward-WORD-begin))
+    (unless (looking-back " " 1)
       (evil-backward-WORD-begin))
-    (insert "\\\n")
-    (indent-according-to-mode))
+    (fixup-whitespace)
+    (evil-forward-WORD-begin)
+    (insert "\\")
+    (newline-and-indent))
 
   ;; todo: make "0" work visually in visual line mode. maybe using
   ;; something like this:
