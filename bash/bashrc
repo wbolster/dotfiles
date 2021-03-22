@@ -5,11 +5,54 @@
 umask 077
 
 # Paths to configuration directories.
-_dotfiles_root_dir="$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")"
-_dotfiles_bin_dir="${_dotfiles_root_dir}/bin"
+_dotfiles_root="$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")"
 
+# Useful helpers, mostly lifted from ‘direnv stdlib’
 ___has() {
   type "$1" &>/dev/null
+}
+___PATH_add() {
+  ___path_add PATH "$@"
+}
+___path_add() {
+  local path i var_name="$1"
+  declare -a path_array
+  IFS=: read -ra path_array <<<"${!1-}"
+  shift
+  for ((i = $#; i > 0; i--)); do
+    path_array=("$(___expand_path "${!i}")" ${path_array[@]+"${path_array[@]}"})
+  done
+  path=$(
+    IFS=:
+    echo "${path_array[*]}"
+  )
+  export "$var_name=$path"
+}
+___expand_path() {
+  local REPLY; ___realpath.absolute "${2+"$2"}" "${1+"$1"}"; echo "$REPLY"
+}
+___realpath.dirname() { REPLY=.; ! [[ $1 =~ /+[^/]+/*$|^//$ ]] || REPLY="${1%${BASH_REMATCH[0]}}"; REPLY=${REPLY:-/}; }
+___realpath.basename(){ REPLY=/; ! [[ $1 =~ /*([^/]+)/*$ ]] || REPLY="${BASH_REMATCH[1]}"; }
+___realpath.absolute() {
+  REPLY=$PWD; local eg=extglob; ! shopt -q $eg || eg=; ${eg:+shopt -s $eg}
+  while (($#)); do case $1 in
+    //|//[^/]*) REPLY=//; set -- "${1:2}" "${@:2}" ;;
+    /*) REPLY=/; set -- "${1##+(/)}" "${@:2}" ;;
+    */*) set -- "${1%%/*}" "${1##${1%%/*}+(/)}" "${@:2}" ;;
+    ''|.) shift ;;
+    ..) ___realpath.dirname "$REPLY"; shift ;;
+    *) REPLY="${REPLY%/}/$1"; shift ;;
+  esac; done; ${eg:+shopt -u $eg}
+}
+___path_add_if_exists() {
+    local var_name="${1:?}"; shift
+    local dirs=()
+    for dir in "$@"; do
+        if [ -d "$dir" ]; then
+            dirs+=("$dir")
+        fi
+    done
+    ___path_add "$var_name" "${dirs[@]}"
 }
 
 # Helper to keep only the first occurence of each component of a
@@ -34,32 +77,39 @@ _closest_parent_dir_containing() {
     done
 }
 
-# Set a sensible $PATH and $MANPATH:
-# - OSX and Homebrew: add Homebrew's sbin/, and use GNU coreutils
-# - Add a few "standard" dirs inside $HOME
-if [[ "$OSTYPE" == darwin* ]]; then
-    MANPATH="$(MANPATH='' manpath)"
-    if ___has brew; then
-        brew_prefix=$(brew --prefix)
-        PATH="${brew_prefix}/opt/findutils/libexec/gnubin:${brew_prefix}/opt/coreutils/libexec/gnubin:${brew_prefix}/sbin:${brew_prefix}/bin:${PATH}"
-        MANPATH="${brew_prefix}/opt/coreutils/libexec/gnuman:${MANPATH}"
-        unset brew_prefix
-    fi
-else
-    MANPATH="$(MANPATH='' manpath -g 2>/dev/null)"
+# Paths:
+# - add some dirs in $HOME
+# - add dirs from Homebrew (on OSX)
+
+export MANPATH="${MANPATH:-$(man -w)}"
+
+if [[ "$OSTYPE" == darwin* ]] && __has brew; then
+    brew_prefix=$(brew --prefix)
+    ___path_add_if_exists \
+        PATH \
+        "${brew_prefix}/opt/coreutils/libexec/gnubin" \
+        "${brew_prefix}/opt/findutils/libexec/gnubin" \
+        "${brew_prefix}/sbin" \
+        "${brew_prefix}/bin"
+    ___path_add_if_exists \
+        MANPATH \
+        "${brew_prefix}/opt/coreutils/libexec/gnuman"
+    unset brew_prefix
 fi
-for dir in /opt/bin "$_dotfiles_bin_dir" ~/.cargo/bin ~/.npm/bin ~/.pyenv/shims ~/.local/bin ~/bin; do
-    if [[ -d "$dir" ]]; then
-        PATH="${dir}:${PATH}"
-    fi
-done
-unset dir
-if [[ -d ~/.local/man ]]; then
-    MANPATH="${HOME}/.local/man:${MANPATH}"
-fi
+
+___path_add_if_exists \
+    PATH \
+    /opt/bin \
+    "${_dotfiles_root}/bin" \
+    ~/.local/bin \
+    ~/bin \
+    ~/.cargo/bin \
+    ~/.npm/bin \
+    ~/.pyenv/shims
+___path_add_if_exists MANPATH ~/.local/man
+
 PATH=$(_deduplicate_path_components "$PATH")
 MANPATH=$(_deduplicate_path_components "$MANPATH")
-export MANPATH
 
 # Interactive shells
 if [[ "$PS1" ]]; then
