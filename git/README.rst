@@ -18,7 +18,7 @@ in ``~/.config/git/config-work``::
   email = someone@example.org
 
   [core]
-  sshCommand = ssh -o 'IdentityFile ~/.ssh/id_ed25519_wbolster_work' -o 'IdentitiesOnly yes'
+  sshCommand = ssh -o 'IdentityFile ~/.ssh/id_ed25519_work' -o 'IdentitiesOnly yes'
 
 
 gnome libsecret credential storage
