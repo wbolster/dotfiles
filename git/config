@@ -76,7 +76,7 @@ puhs = push
 publish = "!f() { git push --verbose --set-upstream origin $(git branch-name); }; f"
 unpublish = "!f() { git push --verbose origin --delete $(git branch-name) ; }; f"
 unpush1 = "!f() { git push --verbose --force-with-lease origin HEAD^:$(git branch-name); }; f"
-up = "!f() { git fetch --prune; git merge --ff-only @{u}; }; f"
+up = "!f() { git fetch --prune && git merge --ff-only @{u}; }; f"
 
 # Rebasing, rewriting history, and so on
 plagiarize = filter-branch --env-filter "'export GIT_AUTHOR_NAME=\"$(git config user.name)\"; export GIT_AUTHOR_EMAIL=\"$(git config user.email)\"; export GIT_COMMITTER_NAME=\"$(git config user.name)\"; export GIT_COMMITTER_EMAIL=\"$(git config user.email)\"'"
