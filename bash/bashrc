@@ -4,6 +4,10 @@
 # Keep new files and directories private by default
 umask 077
 
+# Paths to configuration directories.
+_dotfiles_root_dir="$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")"
+_dotfiles_bin_dir="${_dotfiles_root_dir}/bin"
+
 ___has() {
   type "$1" &>/dev/null
 }
@@ -29,10 +33,6 @@ _closest_parent_dir_containing() {
         dir="$(dirname "$dir")"
     done
 }
-
-# Paths to configuration directories.
-_dotfiles_root_dir="$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")"
-_dotfiles_bin_dir="${_dotfiles_root_dir}/bin"
 
 # Set a sensible $PATH and $MANPATH:
 # - OSX and Homebrew: add Homebrew's sbin/, and use GNU coreutils
