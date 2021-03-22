@@ -4448,8 +4448,7 @@ defined as lowercase."
    "<return> "'w--split-line-backslash
    [remap evil-join] #'w--evil-join-smart-backslash-eol)
   :config
-  (defun w--sh-mode-hook ()
-    (evil-swap-keys-swap-pipe-backslash)))
+  (defun w--sh-mode-hook ()))
 
 
 ;;; Major mode: sql
