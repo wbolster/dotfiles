@@ -943,6 +943,12 @@ if [[ "$PS1" ]]; then
         fi
     }
 
+    # systemd
+    alias ,sc='sudo systemctl'
+    alias ,scu='systemctl --user'
+    complete -F _complete_alias ,sc
+    complete -F _complete_alias ,scu
+
     # tmux
     tmux() {
         # Turn plain "tmux" into "tmux attach" to automatically attach a
