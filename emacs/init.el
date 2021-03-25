@@ -840,10 +840,10 @@ defined as lowercase."
       (when (looking-back " " nil)
         (delete-char -1))))
 
-  (defun w--split-line-backslash ()
+  (evil-define-command w--split-line-backslash ()
     "Split line before the current word, using a continuation line ending."
     (interactive)
-    (unless (looking-at-p "")
+    (when (looking-at-p " ")
       (evil-forward-WORD-begin))
     (unless (looking-back " " 1)
       (evil-backward-WORD-begin))
