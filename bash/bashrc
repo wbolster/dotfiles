@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 # Bash Configuration
 
-# Keep new files and directories private by default
-umask 077
-
 # Paths to configuration directories.
 _dotfiles_root="$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")"
 
