@@ -148,8 +148,8 @@ branch_fully_present_in_target() {
     # starts with a minus sign.
     commit=$(
         git commit-tree \
-            "$branch_tree"\
-            -p "$merge_base"\
+            "$branch_tree" \
+            -p "$merge_base" \
             -m "Temporary commit to check ‘${branch}’ against ‘${target_branch}’" \
             -m "Merge base: ${merge_base}" \
             -m "Checking: $(git rev-parse "${branch}")" \
