@@ -4442,6 +4442,8 @@ defined as lowercase."
   ("bashrc\\'" . sh-mode)
   ("\\.bashrc-.*\\'" . sh-mode)
   :hook (sh-mode-hook . w--sh-mode-hook)
+  :custom
+  (sh-indent-after-continuation 'always)
   :general
   (:keymaps 'sh-mode-map
    :states 'normal
