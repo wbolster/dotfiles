@@ -82,28 +82,25 @@ export MANPATH="${MANPATH:-$(man -w)}"
 
 if [[ "$OSTYPE" == darwin* ]] && __has brew; then
     brew_prefix=$(brew --prefix)
-    ___path_add_if_exists \
-        PATH \
+    ___path_add_if_exists PATH \
         "${brew_prefix}/opt/coreutils/libexec/gnubin" \
         "${brew_prefix}/opt/findutils/libexec/gnubin" \
         "${brew_prefix}/sbin" \
         "${brew_prefix}/bin"
-    ___path_add_if_exists \
-        MANPATH \
+    ___path_add_if_exists MANPATH \
         "${brew_prefix}/opt/coreutils/libexec/gnuman"
     unset brew_prefix
 fi
 
-___path_add_if_exists \
-    PATH \
-    /opt/bin \
+___path_add_if_exists PATH \
     "${_dotfiles_root}/bin" \
     ~/.local/bin \
     ~/bin \
     ~/.cargo/bin \
-    ~/.npm/bin \
-    ~/.pyenv/shims
-___path_add_if_exists MANPATH ~/.local/man
+    ~/.pyenv/shims \
+    /opt/bin
+___path_add_if_exists MANPATH \
+    ~/.local/man
 
 PATH=$(_deduplicate_path_components "$PATH")
 MANPATH=$(_deduplicate_path_components "$MANPATH")
