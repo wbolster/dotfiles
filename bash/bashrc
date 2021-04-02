@@ -79,6 +79,9 @@ _closest_parent_dir_containing() {
 # - add dirs from Homebrew (on OSX)
 
 export MANPATH="${MANPATH:-$(man -w)}"
+export NPM_CONFIG_USERCONFIG=${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc
+export npm_config_cache=${XDG_CACHE_HOME:-$HOME/.cache}/npm
+export npm_config_prefix=${HOME}/.local/npm
 
 if [[ "$OSTYPE" == darwin* ]] && __has brew; then
     brew_prefix=$(brew --prefix)
@@ -96,11 +99,13 @@ ___path_add_if_exists PATH \
     "${_dotfiles_root}/bin" \
     ~/.local/bin \
     ~/bin \
+    "${npm_config_prefix}/bin" \
     ~/.cargo/bin \
     ~/.pyenv/shims \
     /opt/bin
 ___path_add_if_exists MANPATH \
-    ~/.local/man
+    ~/.local/man \
+    "${npm_config_prefix}/share/man"
 
 PATH=$(_deduplicate_path_components "$PATH")
 MANPATH=$(_deduplicate_path_components "$MANPATH")
