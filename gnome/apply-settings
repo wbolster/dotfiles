@@ -345,7 +345,7 @@ gsettings_paperwm_bind () {
     gsettings_paperwm set org.gnome.Shell.Extensions.PaperWM.Keybindings "$@"
 }
 
-if gnome-extensions list | grep -q -F -x 'paperwm@hedning:matrix.org'; then
+if gnome-extensions list --enabled | grep -q -F -x 'paperwm@hedning:matrix.org'; then
     gsettings set org.gnome.shell.overrides edge-tiling false
     gsettings set org.gnome.mutter workspaces-only-on-primary false
 
