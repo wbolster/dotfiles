@@ -3788,9 +3788,7 @@ defined as lowercase."
     (w--add-evil-surround-pairs
      ?b '("**" . "**")  ;; strong emphasiss
      ?c '("`" . "`")  ;; inline code
-     ?e '("*" . "*"))  ;; emphasis
-    (make-local-variable 'typo-mode-map)
-    (define-key typo-mode-map "`" nil))
+     ?e '("*" . "*"))) ;; emphasis
 
 
   (evil-declare-repeat 'markdown-promote)
@@ -4257,10 +4255,6 @@ defined as lowercase."
     (evil-add-to-alist
      'origami-parser-alist
      'rst-mode 'w--origami-parser-imenu-flat)
-    (make-local-variable 'typo-mode-map)
-    (general-define-key
-     :keymaps 'typo-mode-map
-     "`" nil)
     (w--add-evil-surround-pairs
      ?b '("**" . "**")  ;; strong
      ?c '("``" . "``")  ;; inline code
