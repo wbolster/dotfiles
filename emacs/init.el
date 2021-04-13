@@ -2702,6 +2702,9 @@ defined as lowercase."
   (magit-wip-after-apply-mode)
   (magit-wip-before-change-mode)
 
+  :hook
+  (magit-process-mode . goto-address-mode)
+
   :custom
   (magit-blame-heading-format "%C %-10a %s")
   (magit-blame-time-format "%Y%m%d")
