@@ -321,9 +321,11 @@ if [ -f /etc/arch-release ]; then
         "'gnome-terminal -e \\'sh -c \"paru -Syu; echo; echo; echo done – press enter to exit; read\" \\' '"
 fi
 
-# caffeine
+# caffeine / espresso
 dconf write /org/gnome/shell/extensions/caffeine/enable-fullscreen false
 dconf write /org/gnome/shell/extensions/caffeine/show-notifications false
+dconf write /org/gnome/shell/extensions/espresso/show-notifications false
+dconf write /org/gnome/shell/extensions/espresso/enable-fullscreen false
 
 # dash to dock
 dconf write /org/gnome/shell/extensions/dash-to-dock/animate-show-apps false
