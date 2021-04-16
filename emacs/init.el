@@ -2703,7 +2703,7 @@ defined as lowercase."
   (magit-wip-before-change-mode)
 
   :hook
-  (magit-process-mode . goto-address-mode)
+  (magit-process-mode-hook . goto-address-mode)
 
   :custom
   (magit-blame-heading-format "%C %-10a %s")
