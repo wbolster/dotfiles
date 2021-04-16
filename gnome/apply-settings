@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-set -e -u -x
+set -e -u -x -o pipefail
 
 gnome_major_version=$(xmllint --xpath '//platform/text()' /usr/share/gnome/gnome-version.xml)
 
@@ -123,7 +123,7 @@ gsettings set org.gnome.desktop.wm.keybindings cycle-windows-backward "['<Contro
 # hjkl-style window/workspace navigation; with colemak keys this is hnei, not hjkl
 gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Super>i']"
 gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Super>h']"
-if $((gnome_major_version >= 40)); then
+if ((gnome_major_version >= 40)); then
     gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-down "[]"
     gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-left "['<Control><Super>e']"
     gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-right "['<Control><Super>n']"
