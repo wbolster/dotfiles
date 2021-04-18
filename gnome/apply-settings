@@ -294,6 +294,13 @@ gsettings set "${gnome_terminal_profile}" visible-name "'Default'"
 
 
 #
+# system monitor
+#
+
+gsettings set org.gnome.gnome-system-monitor cpu-stacked-area-chart true
+
+
+#
 # dconf-editor
 #
 
