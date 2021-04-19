@@ -695,6 +695,11 @@ if [[ "$PS1" ]]; then
                     ;;
             esac
         }
+        if [[ -n "${DIRENV_DIR:-}" ]]; then
+            # Reload, e.g. ensure $PATH items are in the right order
+            echo "direnv: environment potentially tainted; reloading" > /dev/stderr
+            direnv reload
+        fi
     fi
 
     # Development
