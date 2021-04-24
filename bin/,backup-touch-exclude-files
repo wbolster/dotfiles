@@ -10,8 +10,9 @@ no_backup_dirs='
 .cache/
 .cargo/
 .config/Slack/Cache/
-.local/pipx/
 .local/npm/
+.local/pipx/
+.local/share/containers/storage/
 .pyenv/
 .pyenv/versions/
 .rustup/
