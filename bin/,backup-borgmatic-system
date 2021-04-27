@@ -1,4 +1,7 @@
 #!/bin/sh
 
 set -eux
-sudo borgmatic create --stats --progress
+sudo borgmatic \
+    prune --stats \
+    create --stats --progress \
+    list
