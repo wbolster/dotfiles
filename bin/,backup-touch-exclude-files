@@ -17,6 +17,7 @@ no_backup_dirs='
 .pyenv/versions/
 .rustup/
 .var/app/com.spotify.Client/cache/
+.var/app/com.valvesoftware.Steam/.local/share/Steam/
 '
 
 for relative_dir in $no_backup_dirs; do
