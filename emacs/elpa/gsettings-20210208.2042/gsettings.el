@@ -125,7 +125,7 @@ Note that VALUE should be a valid GVariant string."
   "Strip the font size from a font string S."
   (->> s
        (s-replace-regexp "\\(.*\\) [0-9.]+" "\\1")
-       (s-chop-suffixes '(" Medium" " Bold"))))
+       (s-chop-suffixes '(" Medium" " Bold" " Light" " Semi-Light"))))
 
 (provide 'gsettings)
 ;;; gsettings.el ends here
