@@ -10628,6 +10628,18 @@ See URL `https://docs.python.org/3.4/library/py_compile.html'."
   :safe #'flycheck-string-or-nil-p
   :package-version '(flycheck . "32"))
 
+(defun flycheck-mypy--find-project-root (_checker)
+  "Find the project root directory from which to run mypy.
+
+Running from the project root is not always necessary, but improves
+module discovery, e.g. when using Python namespace packages."
+  (and buffer-file-name
+       (flycheck--locate-dominating-file-matching
+        (file-name-directory buffer-file-name)
+        (rx-to-string
+         `(: bos (or ,@flycheck-python-mypy-config) eos)
+         t))))
+
 (flycheck-define-checker python-mypy
   "Mypy syntax and type checker.  Requires mypy>=0.580.
 
@@ -10637,6 +10649,7 @@ See URL `http://mypy-lang.org/'."
             (config-file "--config-file" flycheck-python-mypy-config)
             (option "--cache-dir" flycheck-python-mypy-cache-dir)
             source-original)
+  :working-directory flycheck-mypy--find-project-root
   :error-patterns
   ((error line-start (file-name) ":" line (optional ":" column)
           ": error:" (message) line-end)
