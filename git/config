@@ -42,7 +42,8 @@ mylog = "!f() { git log --all --author=\"$(git config user.email)\" --date-order
 review-branch = "!f() { [ -z \"$@\" ] && set - origin/master..; git -c core.pager='less -+F +/^commit' log --reverse --patch \"$@\"; }; f"
 sl = log --oneline --graph --pretty=longline --date=short
 message-log = log --pretty=message
-pull-request-log=log --reverse --format=message "@{upstream}.."
+log-pull-request=log --reverse --format=markdown "@{upstream}.."
+log-merge-request=log-pull-request
 slf = sl --first-parent
 st = status --short --branch
 today = log --all --graph --since=0am
@@ -138,6 +139,7 @@ tool = gvimdiff
 [pretty]
 longline = "%C(yellow)%h%C(auto) %s %C(cyan)— %aN, %ad%C(auto)%d"
 message = "* %s%n%n%w(64,2,2)%b"
+markdown = "#### %s%n%n%b"
 
 [pull]
 ff = only
