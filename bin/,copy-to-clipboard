@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -eu
+
+has() {
+  type "$1" 2>/dev/null 1>&2
+}
+
+if has xsel; then
+    exec xsel --input --clipboard
+elif has xclip; then
+    exec xclip -i -selection clipboard
+else
+    echo "error: cannot find ‘xsel’ or ‘xclip’" > /dev/stderr
+    exit 1
+fi
