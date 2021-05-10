@@ -4439,6 +4439,7 @@ defined as lowercase."
   :mode
   ("bashrc\\'" . sh-mode)
   ("\\.bashrc-.*\\'" . sh-mode)
+  (".*\\.env\\'" . sh-mode)
   :hook (sh-mode-hook . w--sh-mode-hook)
   :custom
   (sh-indent-after-continuation 'always)
