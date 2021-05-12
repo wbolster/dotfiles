@@ -3,6 +3,25 @@
 set -eu
 
 main() {
+    # Dispatch based on how this script was invoked (via symlinks)
+    subcommand=$(basename "$0")
+    subcommand=${subcommand#git-}
+
+    case "$subcommand" in
+        branches-overview)
+            branches_overview "$@"
+            ;;
+        delete-completed-branches)
+            delete_completed_branches "$@"
+            ;;
+        *)
+            echo "unknown subcommand: ${subcommand}" > /dev/stderr
+            exit 1
+            ;;
+    esac
+}
+
+delete_completed_branches() {
     target="${1-}"
 
     # Ensure this is run inside a git repo.
@@ -77,7 +96,7 @@ main() {
 
     echo '🌳 Remaining branches:'
     echo
-    print_branches_overview
+    branches_overview
 
     echo ‍"🤓 Happy hacking!"
 }
@@ -163,7 +182,7 @@ branch_fully_present_in_target() {
     return 1
 }
 
-print_branches_overview() {
+branches_overview() {
     for branch in $(list_branches); do
         date=$(git log --max-count=1 --format=%ad "refs/heads/$branch")
         log_args="$branch"
