@@ -87,7 +87,7 @@ if [[ -z "$MANPATH" ]] && ___has man; then
     MANPATH+=$(man -w)
 fi
 
-if [[ "$OSTYPE" == darwin* ]] && __has brew; then
+if [[ "$OSTYPE" == darwin* ]] && ___has brew; then
     brew_prefix=$(brew --prefix)
     ___path_add_if_exists PATH \
         "${brew_prefix}/opt/coreutils/libexec/gnubin" \
