@@ -1,8 +1,18 @@
 #!/usr/bin/env bash
 # Bash Configuration
 
+function ___readlink_f {
+    if [[ "$OSTYPE" == darwin* ]]; then
+        # Ad-hoc bootstrap-only version before coreutils installed via
+        # Homebrew in the path, because OSX does not have readlink -f.
+        echo "$(dirname "$1")/$(readlink "$1")"
+    else
+        readlink -f "$1"
+    fi
+}
+
 # Paths to configuration directories.
-_dotfiles_root="$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")"
+_dotfiles_root="$(dirname "$(dirname "$(___readlink_f "${BASH_SOURCE[0]}")")")"
 
 # Useful helpers, mostly lifted from ‘direnv stdlib’
 ___has() {
