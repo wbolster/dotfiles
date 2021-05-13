@@ -474,7 +474,7 @@ if [[ "$PS1" ]]; then
     fi
 
     # Completion
-    for file in /usr/share/bash-completion/bash_completion /etc/bash_completion /usr/local/share/bash-completion/bash_completion; do
+    for file in /usr/local/etc/bash_completion /usr/local/share/bash-completion/bash_completion /etc/bash_completion /usr/share/bash-completion/bash_completion; do
         if [[ -f "$file" ]]; then
             # shellcheck disable=SC1090
             source "$file"
