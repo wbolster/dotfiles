@@ -3912,6 +3912,7 @@ defined as lowercase."
   (defun w--python-mode-hook ()
     (setq fill-column 79)
     (setq-local comment-fill-column 72)
+    (python-black-on-save-mode-enable-dwim)
     (reformatter-dwim-select 'python-black)
     (modify-syntax-entry ?_ "w")
     (w--set-major-mode-hydra #'w--hydra-python/body)
