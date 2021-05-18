@@ -803,6 +803,8 @@ defined as lowercase."
         (fixup-whitespace))))
 
   (evil-define-motion w--evil-next-line (count)
+    (when (null count)
+      (setq count 1))
     (if visual-line-mode
         (progn
           (setq evil-this-type 'exclusive)
@@ -811,6 +813,8 @@ defined as lowercase."
       (evil-next-line count)))
 
   (evil-define-motion w--evil-previous-line (count)
+    (when (null count)
+      (setq count 1))
     (if visual-line-mode
         (progn
           (setq evil-this-type 'exclusive)
