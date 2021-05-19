@@ -3804,13 +3804,13 @@ defined as lowercase."
   (w--make-hydra w--hydra-markdown nil
     "markdown"
     "_1__2__3__4__5_ _!__@_ _h_eader"
-    ("1" markdown-insert-header-setext-1)
-    ("2" markdown-insert-header-setext-2)
+    ("1" markdown-insert-header-atx-1)
+    ("2" markdown-insert-header-atx-2)
     ("3" markdown-insert-header-atx-3)
     ("4" markdown-insert-header-atx-4)
     ("5" markdown-insert-header-atx-5)
-    ("!" markdown-insert-header-atx-1)
-    ("@" markdown-insert-header-atx-2)
+    ("!" markdown-insert-header-setext-1)
+    ("@" markdown-insert-header-setext-2)
     "_c_ode"
     ("c" markdown-insert-gfm-code-block)
     "_h_yperlink"
