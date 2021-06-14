@@ -3950,6 +3950,12 @@ defined as lowercase."
   ;; (evil-define-key* 'motion python-mode-map
   ;;   (kbd "SPC /") 'w--swiper-python-definitions)
 
+  (reformatter-define python-isort
+    :program "isort"
+    :args '("--atomic" "--stdout" "-")
+    :lighter " isort"
+    :group 'python)
+
   (evil-define-operator w--evil-join-python (beg end)
     "Like 'evil-join', but handles comments and some continuation styles sensibly."
     :motion evil-line
