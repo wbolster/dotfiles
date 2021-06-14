@@ -3153,7 +3153,7 @@ defined as lowercase."
   (defun w--flycheck-compile-current ()
     "Run ‘flycheck-compile’ using the current checker."
     (interactive)
-    (flycheck-compile flycheck-checker))
+    (flycheck-compile (flycheck-get-checker-for-buffer)))
 
   (defun w--flycheck-last-error ()
     "Jump to the last flycheck error."
