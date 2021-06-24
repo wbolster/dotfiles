@@ -155,6 +155,7 @@ minimal ``fstab``::
     for s in $subvolumes; do
       echo "LABEL=system /$s btrfs noatime,subvol=@${s/\//-} 0 0"
     done
+    echo "/swap/swapfile none swap defaults 0 0"
   } >> /mnt/etc/fstab
   cat /mnt/etc/fstab
 
