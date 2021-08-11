@@ -119,7 +119,10 @@ ui = auto
 algorithm = patience
 tool = gvimdiff
 
-[diff "po"]
+[diff "gettext-mo"]
+textconv=msgunfmt --force-po --no-wrap --sort-output
+
+[diff "gettext-po"]
 textconv=msgcat --no-location --no-wrap --sort-output
 
 [init]

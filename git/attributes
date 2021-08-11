@@ -1,0 +1,3 @@
+*.mo diff=gettext-mo
+*.po diff=gettext-po
+*.pot diff=gettext-po
