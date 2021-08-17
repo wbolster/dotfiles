@@ -21,18 +21,12 @@ in ``~/.docker/config.json``::
   }
 
 
-systemd-resolved (dns)
-======================
+dns via systemd-resolved
+========================
 
-docker dns does not play nice with systemd-resolved, especially in ``resolv.conf`` stub mode, which can result in dns from vpn connections not working inside containers etc. there is a `workaround using dnsmasq to proxy`__, with this ``/etc/dnsmasq.conf``::
+docker does not play nice with ``systemd-resolved``, especially when running in ``resolv.conf`` stub mode. this manifests as local lookup and dns from vpn connections not working inside containers, etc.
 
-  interface=docker0
-  except-interface=lo
-  bind-interfaces
-
-__ https://imagineer.in/blog/docker-container-dns-issue-in-airgapped-network/
-
-to use it on the default docker bridge network, add this to ``/etc/docker/daemon.json``::
+configure docker ``/etc/docker/daemon.json`` to use a dns server on its default bridge network::
 
   {
     "dns": [
@@ -40,10 +34,25 @@ to use it on the default docker bridge network, add this to ``/etc/docker/daemon
     ]
   }
 
-profit::
+to make ``systemd-resolved`` also listen there, edit ``/etc/systemd/resolved.conf``::
+
+  DNSStubListenerExtra=172.17.0.1
+
+then::
+
+  sudo systemctl restart docker.service systemd-resolved.service
+
+alternatively, `dnsmasq can proxy from the bridge network`__. in ``/etc/dnsmasq.conf``::
+
+  interface=docker0
+  except-interface=lo
+  bind-interfaces
+
+then::
 
   systemctl enable --now dnsmasq
-  systemctl restart docker
+
+__ https://imagineer.in/blog/docker-container-dns-issue-in-airgapped-network/
 
 
 keyboard shortcut to detach
