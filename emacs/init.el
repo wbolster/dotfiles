@@ -1199,7 +1199,7 @@ defined as lowercase."
   :general
   (:keymaps 'evil-inner-text-objects-map
    "i" #'evil-indent-plus-i-indent
-   "i" #'evil-indent-plus-i-indent
+   "I" #'evil-indent-plus-i-indent-up
    "J" #'evil-indent-plus-i-indent-up-down
    "TAB" #'evil-indent-plus-i-indent)
   (:keymaps 'evil-outer-text-objects-map
