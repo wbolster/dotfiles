@@ -36,8 +36,8 @@ map q goBack
 map Q goForward
 map w scrollPageUp
 map W scrollUp
-map f createHint
-map F createActiveTabbedHint
+map f createActiveTabbedHint
+unmap F
 map p passKeys
 map P pinTab
 " unmap g
