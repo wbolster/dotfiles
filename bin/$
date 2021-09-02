@@ -1,0 +1,4 @@
+#!/bin/sh
+# For when you accidentally copy the dollar sign and your shell returns
+# "$: command not found". — https://github.com/fraction/dollar-sign
+exec "$@"
