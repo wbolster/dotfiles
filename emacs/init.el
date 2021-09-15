@@ -682,7 +682,9 @@ defined as lowercase."
   (setq
    evil-respect-visual-line-mode t
    evil-want-C-u-scroll t
-   evil-want-C-w-in-emacs-state t)
+   evil-want-C-w-in-emacs-state t
+   evil-want-keybinding nil
+   evil-want-integration t)
 
   :custom
   (evil-cross-lines t)
@@ -2712,7 +2714,9 @@ defined as lowercase."
   (magit-wip-before-change-mode)
 
   :hook
+  (magit-log-mode-hook . w--evil-colemak-basics-disable)
   (magit-process-mode-hook . goto-address-mode)
+  (magit-status-mode-hook . w--evil-colemak-basics-disable)
 
   :custom
   (magit-blame-heading-format "%C %-10a %s")
@@ -2735,6 +2739,44 @@ defined as lowercase."
 
   :init
   (add-hook 'find-file-hook (fn: require 'magit))
+
+  :general
+  ;; todo: make ,q use the various magit-*-bury-buffer functions, then
+  ;; unbind q to force ,q usage.
+  (:keymaps 'magit-mode-map
+   :states '(normal visual)
+   [escape] nil
+   "n" #'evil-next-visual-line
+   "e" #'evil-previous-visual-line
+   "C-n" #'magit-section-forward
+   "C-e" #'magit-section-backward
+   "C-p" #'magit-section-backward
+   "<tab>" #'magit-section-cycle
+   "C-<tab>" #'magit-section-toggle
+   "C-w" 'w--hydra-window/body
+   "/" 'swiper-isearch)
+  (:keymaps 'magit-blame-read-only-mode-map
+   :states '(motion normal)
+   "C-n" #'magit-blame-next-chunk
+   "C-e" #'magit-blame-previous-chunk
+   "C-p" #'magit-blame-previous-chunk
+   "<tab>" #'magit-blame-toggle-headings
+   "<return>" 'magit-show-commit)
+  (:keymaps 'magit-diff-mode-map
+   "SPC" nil
+   "DEL" nil)
+  (:keymaps 'magit-hunk-section-map
+   "<return>" #'magit-diff-visit-file-other-window
+   "C-<return>" #'magit-diff-visit-worktree-file-other-window)
+  (:keymaps '(magit-diff-mode-map
+              magit-log-mode-map
+              magit-process-mode-map
+              magit-refs-mode
+              magit-revision-mode-map
+              magit-status-mode-map)
+   :states 'normal
+   "q" nil
+   "'" nil)
 
   :config
   (magit-wip-after-save-mode)
@@ -2811,49 +2853,9 @@ defined as lowercase."
     "_!_ command"
     ("!" magit-git-command)))
 
-(use-package evil-magit
-  :demand t
-  :after magit
-  :hook
-  (magit-log-mode-hook . w--evil-colemak-basics-disable)
-  (magit-status-mode-hook . w--evil-colemak-basics-disable)
-  :general
-  ;; todo: make ,q use the various magit-*-bury-buffer functions, then
-  ;; unbind q to force ,q usage.
-  (:keymaps 'magit-mode-map
-   :states '(normal visual)
-   [escape] nil
-   "n" #'evil-next-visual-line
-   "e" #'evil-previous-visual-line
-   "C-n" #'magit-section-forward
-   "C-e" #'magit-section-backward
-   "C-p" #'magit-section-backward
-   "<tab>" #'magit-section-cycle
-   "C-<tab>" #'magit-section-toggle
-   "C-w" 'w--hydra-window/body
-   "/" 'swiper-isearch)
-  (:keymaps 'magit-blame-read-only-mode-map
-   :states '(motion normal)
-   "C-n" #'magit-blame-next-chunk
-   "C-e" #'magit-blame-previous-chunk
-   "C-p" #'magit-blame-previous-chunk
-   "<tab>" #'magit-blame-toggle-headings
-   "<return>" 'magit-show-commit)
-  (:keymaps 'magit-diff-mode-map
-   "SPC" nil
-   "DEL" nil)
-  (:keymaps 'magit-hunk-section-map
-   "<return>" #'magit-diff-visit-file-other-window
-   "C-<return>" #'magit-diff-visit-worktree-file-other-window)
-  (:keymaps '(magit-diff-mode-map
-              magit-log-mode-map
-              magit-process-mode-map
-              magit-refs-mode
-              magit-revision-mode-map
-              magit-status-mode-map)
-   :states 'normal
-   "q" nil
-   "'" nil))
+(use-package evil-collection
+  :config
+  (evil-collection-init 'magit))
 
 (use-package git-rebase
   :demand t
