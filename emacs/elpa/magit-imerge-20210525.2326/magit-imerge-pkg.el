@@ -1,0 +1,2 @@
+;;; Generated package description from magit-imerge.el  -*- no-byte-compile: t -*-
+(define-package "magit-imerge" "20210525.2326" "Magit extension for git-imerge" '((emacs "24.4") (magit "3.0.0")) :commit "cf3b4646aa0205e8d7f47e45165fe6403d6440f5" :authors '(("Kyle Meyer" . "kyle@kyleam.com")) :maintainer '("Kyle Meyer" . "kyle@kyleam.com") :keywords '("vc" "tools") :url "https://github.com/magit/magit-imerge")

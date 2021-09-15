@@ -1,2 +1,0 @@
-;;; Generated package description from /home/wbolster/Configuration/Emacs/elpa/syntactic-close-20200408.1148/syntactic-close.el  -*- no-byte-compile: t -*-
-(define-package "syntactic-close" "20200408.1148" "Insert closing delimiter" '((emacs "24") (cl-lib "0.5")) :commit "c21ffdf6a2f8c2a83d3efc729852cd2b09fe03a6" :keywords '("languages" "convenience") :authors '(("Emacs User Group Berlin" . "emacs-berlin@emacs-berlin.org")) :maintainer '("Emacs User Group Berlin" . "emacs-berlin@emacs-berlin.org") :url "https://github.com/emacs-berlin/syntactic-close")

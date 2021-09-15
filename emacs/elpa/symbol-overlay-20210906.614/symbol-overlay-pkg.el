@@ -1,0 +1,2 @@
+;;; Generated package description from symbol-overlay.el  -*- no-byte-compile: t -*-
+(define-package "symbol-overlay" "20210906.614" "Highlight symbols with keymap-enabled overlays" '((emacs "24.3") (seq "2.2")) :commit "8629a4ddbe95d42c39ce817d724877deb1984ba1" :authors '(("wolray" . "wolray@foxmail.com")) :maintainer '("wolray" . "wolray@foxmail.com") :keywords '("faces" "matching") :url "https://github.com/wolray/symbol-overlay/")

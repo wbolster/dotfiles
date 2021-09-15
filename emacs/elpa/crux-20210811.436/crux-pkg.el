@@ -1,0 +1,2 @@
+;;; Generated package description from crux.el  -*- no-byte-compile: t -*-
+(define-package "crux" "20210811.436" "A Collection of Ridiculously Useful eXtensions" '((seq "1.11")) :commit "6bfd212a7f7ae32e455802fde1f9e3f4fba932a0" :authors '(("Bozhidar Batsov" . "bozhidar@batsov.dev")) :maintainer '("Bozhidar Batsov" . "bozhidar@batsov.dev") :keywords '("convenience") :url "https://github.com/bbatsov/crux")

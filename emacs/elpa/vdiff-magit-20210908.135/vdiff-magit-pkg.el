@@ -1,0 +1,2 @@
+;;; Generated package description from vdiff-magit.el  -*- no-byte-compile: t -*-
+(define-package "vdiff-magit" "20210908.135" "magit integration for vdiff" '((emacs "24.4") (vdiff "0.3") (magit "2.10.0") (transient "0.1.0")) :commit "d3a39c3f8cb7ad9a6a769ce45f633b613b067490" :authors '(("Justin Burkett" . "justin@burkett.cc")) :maintainer '("Justin Burkett" . "justin@burkett.cc") :keywords '("diff") :url "https://github.com/justbur/emacs-vdiff-magit")

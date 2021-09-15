@@ -1,2 +1,2 @@
-;;; Generated package description from /home/wbolster/Configuration/Emacs/elpa/lv-20200507.1518/lv.el  -*- no-byte-compile: t -*-
-(define-package "lv" "20200507.1518" "Other echo area" 'nil :commit "112e689f75b59398d8eca79ac6562dca12b8a959" :authors '(("Oleh Krehel")) :maintainer '("Oleh Krehel"))
+;;; Generated package description from lv.el  -*- no-byte-compile: t -*-
+(define-package "lv" "20200507.1518" "Other echo area" 'nil :commit "2d553787aca1aceb3e6927e426200e9bb9f056f1" :authors '(("Oleh Krehel")) :maintainer '("Oleh Krehel"))

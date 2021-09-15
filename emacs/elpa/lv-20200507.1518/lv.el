@@ -1,6 +1,6 @@
 ;;; lv.el --- Other echo area
 ;; Package-Version: 20200507.1518
-;; Package-Commit: 112e689f75b59398d8eca79ac6562dca12b8a959
+;; Package-Commit: 2d553787aca1aceb3e6927e426200e9bb9f056f1
 
 ;; Copyright (C) 2015  Free Software Foundation, Inc.
 
