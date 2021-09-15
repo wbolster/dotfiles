@@ -623,6 +623,11 @@ defined as lowercase."
     (interactive "nHeight (e.g. 110) ")
     (default-text-scale-increment (- height (face-attribute 'default :height)))))
 
+(use-package unicode-fonts
+  :ensure t
+  :config
+  (unicode-fonts-setup))
+
 
 ;;;; mode line
 
