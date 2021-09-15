@@ -3582,6 +3582,7 @@ defined as lowercase."
     (highlight-parentheses-mode -1)
     (rainbow-delimiters-mode))
 
+  (require 'which-func)
   (add-to-list 'which-func-modes 'emacs-lisp-mode)
 
   (w--make-hydra w--hydra-emacs-lisp nil
