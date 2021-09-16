@@ -2707,6 +2707,7 @@ defined as lowercase."
   (global-auto-revert-mode))
 
 (use-package magit
+  :after evil-collection
   :defer t
   :delight
   (magit-wip-after-save-local-mode)
@@ -2779,6 +2780,7 @@ defined as lowercase."
    "'" nil)
 
   :config
+  (evil-collection-init 'magit)
   (magit-wip-after-save-mode)
   (magit-wip-after-apply-mode)
   (magit-wip-before-change-mode)
@@ -2855,7 +2857,8 @@ defined as lowercase."
 
 (use-package evil-collection
   :config
-  (evil-collection-init 'magit))
+  ;; (evil-collection-init 'magit)
+  )
 
 (use-package git-rebase
   :demand t
