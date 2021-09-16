@@ -2771,11 +2771,21 @@ defined as lowercase."
    "C-<return>" #'magit-diff-visit-worktree-file-other-window)
   (:keymaps '(magit-diff-mode-map
               magit-log-mode-map
+              magit-mode-map
               magit-process-mode-map
               magit-refs-mode
               magit-revision-mode-map
               magit-status-mode-map)
    :states 'normal
+   "q" nil
+   "'" nil)
+  (:keymaps '(magit-diff-mode-map
+              magit-log-mode-map
+              magit-mode-map
+              magit-process-mode-map
+              magit-refs-mode
+              magit-revision-mode-map
+              magit-status-mode-map)
    "q" nil
    "'" nil)
 
