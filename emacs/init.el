@@ -2872,6 +2872,8 @@ defined as lowercase."
     ("!" magit-git-command)))
 
 (use-package evil-collection
+  :custom
+  evil-collection-want-unimpaired-p nil
   :config
   ;; (evil-collection-init 'magit)
   )
