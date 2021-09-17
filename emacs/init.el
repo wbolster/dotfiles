@@ -2874,9 +2874,20 @@ defined as lowercase."
 (use-package evil-collection
   :custom
   evil-collection-want-unimpaired-p nil
+
   :config
-  ;; (evil-collection-init 'magit)
-  )
+  (defun w--colemak-hnei-rotation (_mode mode-keymaps &rest _rest)
+    (evil-collection-translate-key 'normal mode-keymaps
+      "n" "j"
+      "e" "k"
+      "i" "l"
+      "j" "e"
+      "k" "n"
+      "l" "i"))
+
+  ;; todo this messes up my own overrides somehow
+  ;; (add-hook 'evil-collection-setup-hook #'w--colemak-hnei-rotation)
+  (evil-collection-init))
 
 (use-package git-rebase
   :demand t
