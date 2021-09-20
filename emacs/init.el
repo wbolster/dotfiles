@@ -691,6 +691,7 @@ defined as lowercase."
   (evil-insert-state-message nil)
   (evil-shift-round nil)
   (evil-split-window-below t)
+  (evil-undo-system 'undo-tree)
   (evil-vsplit-window-right t)
 
   ;; small state tag before position info, which smart-mode-line put elsewhere
@@ -1374,7 +1375,9 @@ defined as lowercase."
   (keyfreq-autosave-mode))
 
 (use-package undo-tree
-  :delight)
+  :delight
+  :config
+  (global-undo-tree-mode))
 
 
 ;;;; scrolling
