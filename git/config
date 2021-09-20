@@ -46,6 +46,7 @@ log-merge-request-long=log-pull-request-long
 log-merge-request=log-pull-request
 log-pull-request-long=log --reverse --format=markdown "@{upstream}.."
 log-pull-request=log --reverse --format=message "@{upstream}.."
+log-since-last-tag="!f() { git log $(git describe --tags --abbrev=0 @^)..@; }; f"
 slf = sl --first-parent
 st = status --short --branch
 today = log --all --graph --since=0am
