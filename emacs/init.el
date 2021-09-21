@@ -2896,8 +2896,8 @@ defined as lowercase."
 
 (use-package git-rebase
   :demand t
-  :ensure nil  ;; included with magit
-  :after magit evil-magit
+  :ensure nil ;; included with magit
+  :after magit evil-collection
   :hook (git-rebase-mode-hook . w--evil-colemak-basics-disable)
   :general
   (:keymaps 'git-rebase-mode-map
@@ -2940,8 +2940,9 @@ defined as lowercase."
   (remove-hook 'magit-status-headers-hook #'magithub-maybe-insert-ci-status-header))
 
 (use-package closql)
+
 (use-package forge
-  :after magit evil-magit
+  :after magit
   :demand t
   :general
   (:keymaps 'magit-mode-map
