@@ -686,6 +686,8 @@ defined as lowercase."
    evil-want-keybinding nil
    evil-want-integration t)
 
+  :hook (evil-local-mode-hook . turn-on-undo-tree-mode)
+
   :custom
   (evil-cross-lines t)
   (evil-insert-state-message nil)
