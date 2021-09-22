@@ -2916,7 +2916,9 @@ defined as lowercase."
    "p" #'git-rebase-pick
    "C-e" #'git-rebase-move-line-up
    "C-p" #'git-rebase-move-line-up
-   "C-n" #'git-rebase-move-line-down))
+   "C-n" #'git-rebase-move-line-down
+   "ZQ" #'with-editor-cancel
+   "ZZ" #'with-editor-finish))
 
 (use-package magit-imerge
   :after magit)
