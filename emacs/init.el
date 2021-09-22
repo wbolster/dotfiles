@@ -3314,6 +3314,8 @@ defined as lowercase."
   "_h_ighlight"
   ("h" w--symbol-overlay-put-dwim)
   ("H" symbol-overlay-remove-all)
+  "_j_ump"
+  ("j" counsel-imenu)
   "_m_erge"
   ("m" w--hydra-merge/body)
   "_n_arrow"
