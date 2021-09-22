@@ -2767,6 +2767,8 @@ defined as lowercase."
   (general-def
     :keymaps 'magit-blame-read-only-mode-map
     :states '(motion normal)
+    "n" nil
+    "e" nil
     "C-n" #'magit-blame-next-chunk
     "C-e" #'magit-blame-previous-chunk
     "C-p" #'magit-blame-previous-chunk
