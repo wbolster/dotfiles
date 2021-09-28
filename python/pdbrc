@@ -5,12 +5,11 @@
 alias ps p str(%*)
 alias pps pp str(%*)
 
-# pretty-print often used expressions: locals and class instance
-# attributes.
-alias ppl pp locals()
-alias ppi pp (%*).__dict__
-alias pv p vars(%*)
-alias ppv pp vars(%*)
+# pretty-print often used expressions:
+alias pl pp locals()  # ‘print locals’
+alias pv pp vars(%*)  # ‘print vars’
+alias pd pp [s for s in dir(%*) if not s.startswith('__')]
+alias pda pp dir(%*)  # ‘print dir all’
 
 # pretty-print sqlalchemy queries
 alias pq print((%*).compile(compile_kwargs=dict(literal_binds=True)))
