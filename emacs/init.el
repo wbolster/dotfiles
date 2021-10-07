@@ -2733,6 +2733,7 @@ defined as lowercase."
   (magit-completing-read-function 'ivy-completing-read)
   (magit-list-refs-sortby '("-committerdate"))
   (magit-prefer-remote-upstream t)
+  (magit-diff-refine-hunk t)
   (magit-process-popup-time 10)
   (magit-display-buffer-function 'display-buffer)
 
