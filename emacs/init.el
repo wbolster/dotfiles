@@ -4013,32 +4013,33 @@ defined as lowercase."
     "Like 'evil-join', but handles comments and some continuation styles sensibly."
     :motion evil-line
     (evil-join beg end)
-    (let ((first-line-is-comment (save-excursion
-                                   (evil-first-non-blank)
-                                   (looking-at-p "#")))
-          (joined-line-is-comment (looking-at " *#")))
+    (let ((first-line-is-comment
+           (save-excursion
+             (evil-first-non-blank)
+             (looking-at-p "#")))
+          (joined-line-is-comment
+           (looking-at " *#")))
       (cond
+       ((and first-line-is-comment joined-line-is-comment)
+        ;; joining two comment lines: remove # character
+        (delete-region (point) (match-end 0))
+        (just-one-space))
        (joined-line-is-comment
-        (if first-line-is-comment
-            ;; remove # when joining two comment lines
-            (delete-region (point) (match-end 0))
-          ;; pep8 mandates two spaces before inline comments
-          (delete-region (match-beginning 0) (match-end 0))
-          (insert "  #")
-          (forward-char)))
-       ((looking-at-p " \\\.")
-        ;; remove space when the joined line starts with period, which
-        ;; is a sensible style for long chained api calls, such as
-        ;; sqlalchemy queries:
-        ;;   query = (
-        ;;       query
-        ;;       .where(...)
-        ;;       .limit(...)
-        ;;       .offset(...))
-        (delete-region (point) (1+ (point))))
-       ((and (looking-at-p "[)}\\]") (looking-back "," nil))
-        ;; remove trailing comma (e.g. after last function argument)
-        ;; when joining any closing paren from the next line.
+        ;; joining non-comment line with a comment line:
+        ;; ensure two spaces before the ‘#’ comment marker (pep8)
+        (delete-region (match-beginning 0) (match-end 0))
+        (insert "  #")
+        (forward-char)
+        (just-one-space))
+       ((looking-at-p (rx " ."))
+        ;; the joined line starts with period; remove the space before
+        ;; it. this is useful for ‘fluent’ (chained) method calls,
+        ;; e.g. sqlalchemy queries.
+        (delete-char 1))
+       ((and (looking-back "," nil)
+             (looking-at-p (rx (or ")" "}" "]"))))
+        ;; the first line ends with a comma and the joined line starts
+        ;; with a closing paren: remove the unnecessary comma.
         (delete-char -1)))))
 
   (defun w--python-insert-statement (position statement)
