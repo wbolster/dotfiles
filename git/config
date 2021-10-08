@@ -144,7 +144,7 @@ tool = gvimdiff
 
 [pretty]
 longline = "%C(yellow)%h%C(auto) %s %C(cyan)— %aN, %ad%C(auto)%d"
-message = "* %s%n%n%w(64,2,2)%b"
+message = "- %s%n%n%w(0,2,2)%b"
 markdown = "#### %s%n%n%b"
 summary = "tformat:%s"
 items = "tformat:- %s"
