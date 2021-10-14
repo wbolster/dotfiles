@@ -3369,6 +3369,7 @@ defined as lowercase."
     ("c" . c-mode)
     ("elisp" . emacs-lisp-mode)
     ("elisp interaction" . lisp-interaction-mode)
+    ("javascript (js)" . js-mode)
     ("jinja (j2)" . jinja2-mode)
     ("json" . json-mode)
     ("markdown (md)" . markdown-mode)
@@ -3378,6 +3379,7 @@ defined as lowercase."
     ("shell" . sh-mode)
     ("sql" . sql-mode)
     ("typescript (ts)" . typescript-mode)
+    ("vue" . vue-mode)
     ("yaml (yml)" . yaml-mode)
     ("xml" . nxml-mode))
   "Commonly used major modes.")
@@ -4569,6 +4571,19 @@ defined as lowercase."
 (use-package typescript-mode
   :custom
   (typescript-indent-level 2))
+
+
+;;; Major mode: vue
+
+(use-package vue-mode
+  :config
+
+  ;; somehow the default is not scss-mode for scss
+  (--map-first
+   (and (eq (plist-get it :name) 'scss)
+        (eq (plist-get it :type) 'style))
+   (plist-put it :mode 'scss-mode)
+   vue-modes))
 
 
 ;;; Major mode: xml
