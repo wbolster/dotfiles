@@ -3377,6 +3377,7 @@ defined as lowercase."
     ("restructuredtext (rst)" . rst-mode)
     ("shell" . sh-mode)
     ("sql" . sql-mode)
+    ("typescript (ts)" . typescript-mode)
     ("yaml (yml)" . yaml-mode)
     ("xml" . nxml-mode))
   "Commonly used major modes.")
@@ -4561,6 +4562,13 @@ defined as lowercase."
     (setq
      tab-width 2
      evil-shift-width tab-width)))
+
+
+;;; Major mode: typescript
+
+(use-package typescript-mode
+  :custom
+  (typescript-indent-level 2))
 
 
 ;;; Major mode: xml
