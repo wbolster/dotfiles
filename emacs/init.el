@@ -3392,6 +3392,10 @@ defined as lowercase."
          (fn (cdr (assoc choice w--major-modes))))
     (funcall fn)))
 
+(use-package mmm-mode
+  :custom-face
+  (mmm-default-submode-face ((t (:background nil)))))
+
 
 ;;; Major mode: text (generic)
 
