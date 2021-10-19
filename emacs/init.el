@@ -1179,7 +1179,6 @@ defined as lowercase."
 
   :custom
   (evil-goggles-duration 1)
-  (evil-goggles-async-duration evil-goggles-duration)
   (evil-goggles-blocking-duration .2)
   (evil-goggles-pulse t)
 
