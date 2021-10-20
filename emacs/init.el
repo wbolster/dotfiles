@@ -676,6 +676,7 @@ defined as lowercase."
 ;;;; evil and editing
 
 (use-package evil
+  :after undo-tree
   :demand t
 
   :init
