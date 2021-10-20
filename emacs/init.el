@@ -1958,13 +1958,13 @@ defined as lowercase."
               fill-column most-positive-fixnum)
         ;; (auto-fill-mode -1)
         ;; (visual-line-mode)
-        (visual-fill-column-mode)
+        ;; (visual-fill-column-mode)
         (virtual-auto-fill-mode))
     (setq fill-column w--wrap-lines-saved-fill-column
           visual-fill-column-width nil)
     ;; (visual-line-mode -1)
     ;; (auto-fill-mode)
-    (virtual-auto-fill-mode -1)
+    ;; (virtual-auto-fill-mode -1)
     (visual-fill-column-mode -1)))
 
 (defun w--sensible-wrap-mode-1 ()
@@ -3432,8 +3432,7 @@ defined as lowercase."
   :config
   (defun w--text-mode-hook ()
     (w--show-trailing-whitespace-mode)
-    (guess-language-mode)
-    (virtual-auto-fill-mode)))
+    (guess-language-mode)))
 
 
 ;;; Major mode: programming (generic)
