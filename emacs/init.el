@@ -45,15 +45,15 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-(defvar use-package-enable-imenu-support t)
 (eval-when-compile
   (require 'use-package))
 
 (use-package use-package
   :custom
-  (use-package-hook-name-suffix nil)
   (use-package-always-ensure t)
-  (use-package-compute-statistics t))
+  (use-package-compute-statistics t)
+  (use-package-enable-imenu-support t)
+  (use-package-hook-name-suffix nil))
 
 (use-package auto-compile
   :custom
