@@ -938,11 +938,12 @@ defined as lowercase."
    [remap evil-save-modified-and-close] #'edit-indirect-commit
    [remap evil-quit] #'edit-indirect-abort)
 
-  :config
+  :preface
   (defvar w--edit-indirect-original-indentation 0
     "Original indentation of the edited region.")
   (make-variable-buffer-local 'w--edit-indirect-original-indentation)
 
+  :config
   (defun w--edit-indirect-dedent ()
     (require 'rst)
     (let ((indentation (rst-find-leftmost-column (point-min) (point-max))))
