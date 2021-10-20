@@ -1076,32 +1076,32 @@ defined as lowercase."
     "Keymap with basic avy/easymotion jumps.")
   (general-define-key
    :keymaps 'w--teleport-map
-    "w" #'evilem-motion-forward-word-begin
-    "W" #'evilem-motion-forward-WORD-begin
-    "f" #'evilem-motion-forward-word-end
-    "F" #'evilem-motion-forward-WORD-end
-    "b" #'evilem-motion-backward-word-begin
-    "B" #'evilem-motion-backward-WORD-begin
-    "gf" #'evilem-motion-backward-word-end
-    "gF" #'evilem-motion-backward-WORD-end
-    "e" #'evilem-motion-previous-line
-    "E" #'evil-avy-goto-line-above
-    "n" #'evilem-motion-next-line
-    "N" #'evil-avy-goto-line-below
-    "l" #'evil-avy-goto-line
-    "h" #'w--easymotion-symbol-overlay
-    "SPC" #'evil-avy-goto-char-timer
-    "t" #'evilem-motion-find-char
-    "T" #'evilem-motion-find-char-to
-    "j" #'evilem-motion-find-char-backward
-    "J" #'evilem-motion-find-char-to-backward
-    "k" #'evilem-motion-search-next
-    "K" #'evilem-motion-search-previous
-    "/" #'evilem-motion-search-next
-    "?" #'evilem-motion-search-previous)
+   "w" #'evilem-motion-forward-word-begin
+   "W" #'evilem-motion-forward-WORD-begin
+   "f" #'evilem-motion-forward-word-end
+   "F" #'evilem-motion-forward-WORD-end
+   "b" #'evilem-motion-backward-word-begin
+   "B" #'evilem-motion-backward-WORD-begin
+   "gf" #'evilem-motion-backward-word-end
+   "gF" #'evilem-motion-backward-WORD-end
+   "e" #'evilem-motion-previous-line
+   "E" #'evil-avy-goto-line-above
+   "n" #'evilem-motion-next-line
+   "N" #'evil-avy-goto-line-below
+   "l" #'evil-avy-goto-line
+   "h" #'w--easymotion-symbol-overlay
+   "SPC" #'evil-avy-goto-char-timer
+   "t" #'evilem-motion-find-char
+   "T" #'evilem-motion-find-char-to
+   "j" #'evilem-motion-find-char-backward
+   "J" #'evilem-motion-find-char-to-backward
+   "k" #'evilem-motion-search-next
+   "K" #'evilem-motion-search-previous
+   "/" #'evilem-motion-search-next
+   "?" #'evilem-motion-search-previous)
   (general-define-key
    :states 'operator
-    "SPC" w--teleport-map)
+   "SPC" w--teleport-map)
 
   (evilem-make-motion
    w--easymotion-symbol-overlay
@@ -1832,38 +1832,38 @@ defined as lowercase."
 
 (general-define-key
  :states '(motion normal)
-  "[ SPC" (w--ilambda (save-excursion (evil-insert-newline-above)))
-  "] SPC" (w--ilambda (save-excursion (evil-insert-newline-below)))
-  "[b" 'evil-prev-buffer
-  "]b" 'evil-next-buffer
-  "[c" 'flycheck-previous-error
-  "]c" 'flycheck-next-error
-  "[C" 'flycheck-first-error
-  "]C" 'w--flycheck-last-error
-  "[d" 'w--diff-hl-previous-hunk
-  "]d" 'w--diff-hl-next-hunk
-  "[e" 'previous-error
-  "]e" 'next-error
-  "[E" 'first-error
-  "]E" 'w--last-error
-  "[h" 'w--symbol-overlay-jump-previous-any
-  "]h" 'w--symbol-overlay-jump-next-any
-  "[H" 'w--symbol-overlay-jump-first
-  "]H" 'w--symbol-overlay-jump-last
-  "[m" 'smerge-prev
-  "]m" 'smerge-next
-  "[o" 'symbol-overlay-jump-prev
-  "]o" 'symbol-overlay-jump-next
-  "]s" (w--ilambda
-        (evil-forward-word)
-        (call-interactively 'evil-next-flyspell-error))
-  "[s" 'evil-prev-flyspell-error
-  "[w" 'evil-window-prev
-  "]w" 'evil-window-next
-  "[z" 'origami-backward-fold-same-level
-  "]z" 'origami-forward-fold
-  "C-," 'evil-prev-buffer
-  "C-." 'evil-next-buffer)
+ "[ SPC" (w--ilambda (save-excursion (evil-insert-newline-above)))
+ "] SPC" (w--ilambda (save-excursion (evil-insert-newline-below)))
+ "[b" 'evil-prev-buffer
+ "]b" 'evil-next-buffer
+ "[c" 'flycheck-previous-error
+ "]c" 'flycheck-next-error
+ "[C" 'flycheck-first-error
+ "]C" 'w--flycheck-last-error
+ "[d" 'w--diff-hl-previous-hunk
+ "]d" 'w--diff-hl-next-hunk
+ "[e" 'previous-error
+ "]e" 'next-error
+ "[E" 'first-error
+ "]E" 'w--last-error
+ "[h" 'w--symbol-overlay-jump-previous-any
+ "]h" 'w--symbol-overlay-jump-next-any
+ "[H" 'w--symbol-overlay-jump-first
+ "]H" 'w--symbol-overlay-jump-last
+ "[m" 'smerge-prev
+ "]m" 'smerge-next
+ "[o" 'symbol-overlay-jump-prev
+ "]o" 'symbol-overlay-jump-next
+ "]s" (w--ilambda
+       (evil-forward-word)
+       (call-interactively 'evil-next-flyspell-error))
+ "[s" 'evil-prev-flyspell-error
+ "[w" 'evil-window-prev
+ "]w" 'evil-window-next
+ "[z" 'origami-backward-fold-same-level
+ "]z" 'origami-forward-fold
+ "C-," 'evil-prev-buffer
+ "C-." 'evil-next-buffer)
 
 ;; todo: this is not very useful currently
 (w--make-hydra w--hydra-navigation-forward nil
@@ -2444,13 +2444,13 @@ defined as lowercase."
 (cond
  ((eq system-type 'darwin)  ;; osx: command key
   (evil-define-key*
-   'motion global-map
-   (kbd "s-1") 'w--goto-window-1
-   (kbd "s-2") 'w--goto-window-2
-   (kbd "s-3") 'w--goto-window-3
-   (kbd "s-4") 'w--goto-window-4
-   (kbd "s-5") 'w--goto-window-5
-   (kbd "s-6") 'w--goto-window-6)
+    'motion global-map
+    (kbd "s-1") 'w--goto-window-1
+    (kbd "s-2") 'w--goto-window-2
+    (kbd "s-3") 'w--goto-window-3
+    (kbd "s-4") 'w--goto-window-4
+    (kbd "s-5") 'w--goto-window-5
+    (kbd "s-6") 'w--goto-window-6)
   (bind-keys
    ("s-1" . w--goto-window-1)
    ("s-2" . w--goto-window-2)
@@ -2461,23 +2461,23 @@ defined as lowercase."
    ))
  (t  ;; others: control key
   (evil-define-key*
-   'motion global-map
-   (kbd "C-SPC") 'evil-window-next
-   (kbd "C-S-SPC") 'evil-window-next
-   (kbd "C-`") 'evil-window-next
-   (kbd "C-~") 'evil-window-prev
-   (kbd "C-1") 'w--goto-window-1
-   (kbd "C-2") 'w--goto-window-2
-   (kbd "C-3") 'w--goto-window-3
-   (kbd "C-4") 'w--goto-window-4
-   (kbd "C-5") 'w--goto-window-5
-   (kbd "C-6") 'w--goto-window-6
-   (kbd "C-!") 'w--set-as-window-1
-   (kbd "C-@") 'w--set-as-window-2
-   (kbd "C-#") 'w--set-as-window-3
-   (kbd "C-$") 'w--set-as-window-4
-   (kbd "C-%") 'w--set-as-window-5
-   (kbd "C-^") 'w--set-as-window-6)
+    'motion global-map
+    (kbd "C-SPC") 'evil-window-next
+    (kbd "C-S-SPC") 'evil-window-next
+    (kbd "C-`") 'evil-window-next
+    (kbd "C-~") 'evil-window-prev
+    (kbd "C-1") 'w--goto-window-1
+    (kbd "C-2") 'w--goto-window-2
+    (kbd "C-3") 'w--goto-window-3
+    (kbd "C-4") 'w--goto-window-4
+    (kbd "C-5") 'w--goto-window-5
+    (kbd "C-6") 'w--goto-window-6
+    (kbd "C-!") 'w--set-as-window-1
+    (kbd "C-@") 'w--set-as-window-2
+    (kbd "C-#") 'w--set-as-window-3
+    (kbd "C-$") 'w--set-as-window-4
+    (kbd "C-%") 'w--set-as-window-5
+    (kbd "C-^") 'w--set-as-window-6)
   (bind-keys
    ("C-SPC" . evil-window-next)
    ("C-S-SPC" . evil-window-prev)
@@ -2578,7 +2578,7 @@ defined as lowercase."
 ;; replace evil-window-map completely
 (general-define-key
  :states '(emacs motion)
-  (kbd "C-w") 'w--hydra-window/body)
+ (kbd "C-w") 'w--hydra-window/body)
 
 
 ;;;; spelling
