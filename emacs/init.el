@@ -80,7 +80,7 @@
 
 (use-package dash
   :config
-  (dash-enable-font-lock))
+  (global-dash-fontify-mode))
 
 (use-package fn)
 
