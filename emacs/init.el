@@ -10,17 +10,16 @@
 
 (setq load-prefer-newer t)
 
-(progn
-  ;; Reduce garbage collection during startup.
-  (defvar w--original-gc-cons-threshold gc-cons-threshold
-    "Original ‘gc-cons-threshold’ value.")
+;; Reduce garbage collection during startup.
+(defvar w--original-gc-cons-threshold gc-cons-threshold
+  "Original ‘gc-cons-threshold’ value.")
 
-  (defun w--reset-gc-cons-threshold ()
-    "Reset the original ‘gc-cons-threshold’ value."
-    (setq gc-cons-threshold w--original-gc-cons-threshold))
+(defun w--reset-gc-cons-threshold ()
+  "Reset the original ‘gc-cons-threshold’ value."
+  (setq gc-cons-threshold w--original-gc-cons-threshold))
 
-  (setq gc-cons-threshold (* 100 1024 1024))
-  (add-hook 'emacs-startup-hook #'w--reset-gc-cons-threshold))
+(setq gc-cons-threshold (* 100 1024 1024))
+(add-hook 'emacs-startup-hook #'w--reset-gc-cons-threshold)
 
 
 ;;; Packages
