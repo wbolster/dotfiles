@@ -1202,7 +1202,20 @@ defined as lowercase."
       (lispyville-comment-or-uncomment :face evil-goggles-nerd-commenter-face :switch evil-goggles-enable-nerd-commenter :advice evil-goggles--generic-async-advice)
       (lispyville-prettify             :face evil-goggles-indent-face         :switch evil-goggles-enable-indent         :advice evil-goggles--generic-async-advice)))
   (--each w--evil-goggles-lispyville-extra
-    (add-to-list 'evil-goggles--commands it)))
+    (add-to-list 'evil-goggles--commands it))
+
+  (define-minor-mode w--shoulder-surf-mode
+    "Minor mode to make it easier for others to see what's happening on the screen."
+    :global t
+    :lighter " 👀"
+    (let ((on w--shoulder-surf-mode))
+      (global-hl-line-mode (if on 1 -1))
+      (setq
+       evil-goggles-duration (if on 5 1)
+       evil-goggles-blocking-duration (if on 1 .2))
+      (set-face-attribute
+       'evil-goggles-default-face nil
+       :inherit (if on 'magit-diff-base 'highlight)))))
 
 (use-package evil-indent-plus
   :general
