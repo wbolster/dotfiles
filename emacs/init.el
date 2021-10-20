@@ -577,6 +577,7 @@ defined as lowercase."
   (w--activate-theme (file-exists-p "~/.config/dark-theme")))
 
 (defun w--tweak-evil-cursor ()
+  "Tweak the appearance of the evil cursors"
   (setq
    evil-motion-state-cursor (list solarized-color-yellow 'box)
    evil-normal-state-cursor (list solarized-color-yellow 'box)
