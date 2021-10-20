@@ -2839,6 +2839,12 @@ defined as lowercase."
              (cadr))
         " %C")
 
+  ;; wider margin view; looks like split view
+  (setf (->> magit-blame-styles
+             (alist-get 'margin)
+             (alist-get 'margin-width))
+        70)
+
   (with-eval-after-load 'direnv
     (--each '(magit-blob-mode
               magit-diff-mode
