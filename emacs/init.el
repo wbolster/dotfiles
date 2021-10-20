@@ -673,8 +673,12 @@ defined as lowercase."
 
 ;;;; evil and editing
 
+(use-package undo-tree
+  :delight
+  :config
+  (global-undo-tree-mode))
+
 (use-package evil
-  :after undo-tree
   :demand t
 
   :init
@@ -1386,11 +1390,6 @@ defined as lowercase."
    keyfreq-file-lock (no-littering-expand-var-file-name "keyfreq.lock"))
   (keyfreq-mode)
   (keyfreq-autosave-mode))
-
-(use-package undo-tree
-  :delight
-  :config
-  (global-undo-tree-mode))
 
 
 ;;;; scrolling
