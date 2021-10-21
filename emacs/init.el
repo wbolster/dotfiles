@@ -3615,6 +3615,8 @@ defined as lowercase."
 
 (use-package docker
   :defer t
+  :custom
+  (docker-compose-command "docker compose")
   :custom-face
   (docker-face-status-error ((t (:inherit error))))
   (docker-face-status-success ((t (:inherit success))))
