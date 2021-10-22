@@ -58,8 +58,7 @@ __ https://imagineer.in/blog/docker-container-dns-issue-in-airgapped-network/
 keyboard shortcut to detach
 ===========================
 
-by default docker uses ``ctrl-p`` is used, which is annoying, since
-it’s also used to navigate readline history, e.g. in a shell.
+by default docker uses ``ctrl-p``, which is annoying, since it’s also used to navigate readline history, e.g. in a shell.
 
 in ``~/.docker/config.json``::
 
