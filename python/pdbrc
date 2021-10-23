@@ -1,5 +1,8 @@
 # python debugger (pdb) configuration
 
+# load from a regular python file since this file only allows single-line statements
+exec(__import__("pathlib").Path("~/.pdbrc.py").expanduser().read_text(), {})
+
 # print str() representation, instead of the default repr(),
 # intended as additions to the default 'p' and 'pp'.
 alias ps p str(%*)
@@ -21,26 +24,12 @@ alias ppqq ppsql ((%*).statement.compile(compile_kwargs=dict(literal_binds=True)
 # pretty-print lxml elements
 alias ppx print(__import__('lxml.etree').etree.tounicode((%*), pretty_print=True))
 
+# ipython
 alias ipython __import__('IPython').embed()
 
 # tracebacks that omit third-party code
 # fixme: this is not perfect
 alias pt print(''.join(y for y in __import__('traceback').format_stack() if '/site-packages/' not in y and '/usr/lib/' not in y))
-
-# preserve readline history between sessions
-import atexit
-import os
-import pathlib
-import readline
-readline.set_history_length(10000)
-history_path = pathlib.Path("~/.pdb_history").expanduser()
-if history_path.exists(): readline.read_history_file(history_path)
-atexit.register(readline.write_history_file, history_path)
-del atexit
-del history_path
-del os
-del pathlib
-del readline
 
 # Pressing ‘enter’ after spawning the interactive prompt repeats the
 # last expression, so clear it explicitly.
