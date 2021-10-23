@@ -1,0 +1,2 @@
+;;; Generated package description from evil-colemak-basics.el  -*- no-byte-compile: t -*-
+(define-package "evil-colemak-basics" "20211022.1248" "Basic Colemak key bindings for evil-mode" '((emacs "24.3") (evil "1.2.12") (evil-snipe "2.0.3")) :commit "f9fbb49c48b3347d97fd2e19d7499bfee0ac5ad9" :authors '(("Wouter Bolsterlee" . "wouter@bolsterl.ee")) :maintainer '("Wouter Bolsterlee" . "wouter@bolsterl.ee") :keywords '("convenience" "emulations" "colemak" "evil") :url "https://github.com/wbolster/evil-colemak-basics")
