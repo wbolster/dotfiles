@@ -25,19 +25,23 @@ alias ipython __import__('IPython').embed()
 
 # tracebacks that omit third-party code
 # fixme: this is not perfect
-import traceback
 alias pt print(''.join(y for y in __import__('traceback').format_stack() if '/site-packages/' not in y and '/usr/lib/' not in y))
 
-# preserve readline history between sessions (very hacky)
+# preserve readline history between sessions
 import atexit
 import os
+import pathlib
 import readline
 readline.set_history_length(10000)
-_history_path = os.path.expanduser("~/.pdb_history")
-if os.path.exists(_history_path): readline.read_history_file(_history_path)
-def _save_history(path): import readline; readline.write_history_file(path)
-atexit.register(_save_history, _history_path)
+history_path = pathlib.Path("~/.pdb_history").expanduser()
+if history_path.exists(): readline.read_history_file(history_path)
+atexit.register(readline.write_history_file, history_path)
+del atexit
+del history_path
+del os
+del pathlib
+del readline
 
-# pressing ‘enter’ after spawning the interactive prompt prints the value of
-# the last expression, so clear it explicitly.
+# Pressing ‘enter’ after spawning the interactive prompt repeats the
+# last expression, so clear it explicitly.
 None
