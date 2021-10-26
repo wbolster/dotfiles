@@ -4111,14 +4111,14 @@ defined as lowercase."
     (let ((thing (w--thing-at-point-dwim)))
       (w--python-insert-statement
        'before
-       (format "print(f\"%s: {%s}\")" thing thing))))
+       (format "print(\"%s\", %s)" thing thing))))
 
   (defun w--python-print-expression-repr ()
     (interactive)
     (let ((thing (w--thing-at-point-dwim)))
       (w--python-insert-statement
        'before
-       (format "print(f\"%s: {%s!r}\")" thing thing))))
+       (format "print(\"%s\", repr(%s))" thing thing))))
 
   (evil-define-operator w--python-refactor-make-variable (beg end _type)
     "Refactor the current region into a named variable."
@@ -4151,6 +4151,9 @@ defined as lowercase."
     "_l_ multi-line"
     ("l" multi-line)
     ("L" multi-line-single-line)
+    "_p_ print"
+    ("p" w--python-print-expression)
+    ("P" w--python-print-expression-repr)
     "_r_epl"
     ("r" (w--python-insert-ipython-repl 'after))
     ("R" (w--python-insert-ipython-repl 'before))
