@@ -4150,6 +4150,7 @@ defined as lowercase."
   (defun w--python-split-string ()
     "Split the string at point into two strings on multiple lines"
     (interactive)
+    ;; todo: some rudimentary f-string etc support (bfRr prefixes)
     (-if-let* ((pss (syntax-ppss))
                (quote-char (nth 3 pss))
                (quote-char-string (char-to-string quote-char))
