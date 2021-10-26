@@ -4147,6 +4147,23 @@ defined as lowercase."
        'before
        (format "import %s  # fixme: move to proper place" thing))))
 
+  (defun w--python-split-string ()
+    "Split the string at point into two strings on multiple lines"
+    (interactive)
+    (-if-let* ((pss (syntax-ppss))
+               (quote-char (nth 3 pss))
+               (quote-char-string (char-to-string quote-char))
+               (current-char (char-to-string (char-after))))
+        (progn
+          ;; split before point, but after a space if on one
+          (when (string-equal current-char " ")
+            (forward-char))
+          ;; split after space
+          (insert quote-char quote-char)
+          (backward-char)
+          (newline-and-indent))
+      (user-error "No string at point")))
+
   (w--make-hydra w--hydra-python nil
     "python"
     "_b_reakpoint"
@@ -4164,6 +4181,8 @@ defined as lowercase."
     "_r_epl"
     ("r" (w--python-insert-ipython-repl 'after))
     ("R" (w--python-insert-ipython-repl 'before))
+    "_s_ split"
+    ("s" w--python-split-string)
     "_t_ pytest"
     ("t" python-pytest-popup)
     ("T" python-pytest-repeat)
