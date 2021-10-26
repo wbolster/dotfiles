@@ -4057,27 +4057,34 @@ defined as lowercase."
           (joined-line-is-comment
            (looking-at " *#")))
       (cond
+       ;; joining two comment lines: remove # character
        ((and first-line-is-comment joined-line-is-comment)
-        ;; joining two comment lines: remove # character
         (delete-region (point) (match-end 0))
         (just-one-space))
+       ;; joining non-comment line with a comment line:
+       ;; ensure two spaces before the ‘#’ comment marker (pep8)
        (joined-line-is-comment
-        ;; joining non-comment line with a comment line:
-        ;; ensure two spaces before the ‘#’ comment marker (pep8)
         (delete-region (match-beginning 0) (match-end 0))
         (insert "  #")
         (forward-char)
         (just-one-space))
+       ;; the joined line starts with period; remove the space before
+       ;; it. this is useful for ‘fluent’ (chained) method calls,
+       ;; e.g. sqlalchemy queries.
        ((looking-at-p (rx " ."))
-        ;; the joined line starts with period; remove the space before
-        ;; it. this is useful for ‘fluent’ (chained) method calls,
-        ;; e.g. sqlalchemy queries.
         (delete-char 1))
+       ;; the first line ends with a comma and the joined line starts
+       ;; with a closing paren: remove the unnecessary comma.
        ((and (looking-back "," nil)
              (looking-at-p (rx (or ")" "}" "]"))))
-        ;; the first line ends with a comma and the joined line starts
-        ;; with a closing paren: remove the unnecessary comma.
-        (delete-char -1)))))
+        (delete-char -1))
+       ;; adjacent string literals: turn into one by removing space separated quotes
+       ((--any
+         (and (looking-back (rx (literal it)) nil)
+              (looking-at-p (rx (seq  " " (literal it)))))
+         '("\"" "'"))
+        (backward-char)
+        (delete-char 3)))))
 
   (defun w--python-insert-statement (position statement)
     "Insert a new STATEMENT before or after the statement at point."
