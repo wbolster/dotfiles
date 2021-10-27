@@ -2816,6 +2816,9 @@ defined as lowercase."
     "q" nil
     "'" nil)
 
+  ;; no special behaviour for magit windows
+  (remove-hook 'magit-post-display-buffer-hook 'magit-maybe-set-dedicated)
+
   (magit-wip-after-save-mode)
   (magit-wip-after-apply-mode)
   (magit-wip-before-change-mode)
