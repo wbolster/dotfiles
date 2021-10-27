@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -e -u -o pipefail
+
+envrc='.envrc'
+
+if [[ -n "${DIRENV_DIR-}" ]]; then
+    echo "error: already in a direnv project"
+    exit 1
+fi
+
+if [[ -f "$envrc" ]]; then
+    echo "error: ${envrc} already exists"
+    exit 1
+fi
+
+executable="${1-}"
+
+if [[ $executable =~ [0-9] ]]; then
+    # only version specified
+    executable="python${executable}"
+fi
+
+content="layout python"
+if [[ -n "$executable" ]]; then
+    content+=" ${executable}"
+fi
+echo "$content" > "$envrc"
+direnv allow
