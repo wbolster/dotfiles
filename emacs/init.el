@@ -4150,18 +4150,24 @@ defined as lowercase."
   (defun w--python-split-string ()
     "Split the string at point into two strings on multiple lines"
     (interactive)
-    ;; todo: some rudimentary f-string etc support (bfRr prefixes)
     (-if-let* ((pss (syntax-ppss))
                (quote-char (nth 3 pss))
-               (quote-char-string (char-to-string quote-char))
-               (current-char (char-to-string (char-after))))
+               (string-start-pos (nth 8 pss))
+               (current-char (char-to-string (char-after)))
+               (string-prefix ""))
         (progn
+          (save-excursion
+            ;; detect prefix for f-strings, byte strings, etc.
+            (goto-char string-start-pos)
+            (when (looking-back (rx (+ (any "BbFfRrUu"))) nil)
+              (setq string-prefix (thing-at-point 'symbol))))
           ;; split before point, but after a space if on one
           (when (string-equal current-char " ")
             (forward-char))
           ;; split after space
-          (insert quote-char quote-char)
-          (backward-char)
+          (insert quote-char)
+          (save-excursion
+            (insert string-prefix quote-char))
           (newline-and-indent))
       (user-error "No string at point")))
 
