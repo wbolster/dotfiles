@@ -3245,7 +3245,10 @@ defined as lowercase."
     (interactive)
     (if-let* ((buffer (get-buffer flycheck-error-list-buffer))
               (window (get-buffer-window buffer)))
-        (quit-windows-on buffer)
+        (progn
+          ;; for some reason this sometimes gets stuck when using
+          ;; the more specific (quit-windows-on buffer)
+          (delete-window window))
       (flycheck-list-errors)))
 
   (define-minor-mode w--flycheck-show-error-other-file-mode
