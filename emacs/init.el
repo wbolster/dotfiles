@@ -1928,14 +1928,6 @@ defined as lowercase."
     (when (derived-mode-p 'text-mode)
       (adaptive-wrap-prefix-mode (if visual-line-mode 1 -1)))))
 
-(use-package fill-column-indicator
-  ;; todo: try display-fill-column-indicator-mode once it's in a
-  ;; released emacs version
-  ;; http://git.savannah.gnu.org/cgit/emacs.git/commit/etc/NEWS?id=ab4619e7c37b3b9caa2aa24405585dc05292d961
-  :defer
-  :custom
-  (fci-rule-width 2))
-
 (use-package multi-line
   :defer t)
 
@@ -3285,7 +3277,7 @@ defined as lowercase."
   ("d" diff-hl-mode)
   "_f_ill"
   ("f" auto-fill-mode)
-  ("F" fci-mode)
+  ("F" display-fill-column-indicator-mode)
   "_h_ighlight"
   ("h" symbol-overlay-mode)
   "_l_ine"
