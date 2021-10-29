@@ -2784,7 +2784,7 @@ defined as lowercase."
     "C-n" #'magit-blame-next-chunk
     "C-e" #'magit-blame-previous-chunk
     "C-p" #'magit-blame-previous-chunk
-    "<tab>" #'magit-blame-toggle-headings
+    "<tab>" #'magit-blame-cycle-style
     "<return>" 'magit-show-commit)
   (general-def
     :keymaps 'magit-diff-mode-map
