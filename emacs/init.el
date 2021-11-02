@@ -3041,6 +3041,8 @@ defined as lowercase."
   :config
   (w--make-hydra w--hydra-merge nil
     "merge"
+    "_m_"
+    ("m" smerge-mode)
     "_n_/_e_/_p_ nav"
     ("n" smerge-next nil :exit nil)
     ("e" smerge-prev nil :exit nil)
