@@ -293,11 +293,13 @@ defined as lowercase."
   :general
   ;; Key mapping approach is based on what transient-bind-q-to-quit does.
   (:keymaps 'transient-base-map
-   "<escape>" 'transient-quit-one)
+   "<escape>" #'transient-quit-one
+   "C-p" #'transient-history-prev
+   "C-n" #'transient-history-next)
   (:keymaps 'transient-sticky-map
-   "<escape>" 'transient-quit-seq)
+   "<escape>" #'transient-quit-seq)
   (:keymaps 'transient-map
-   "<tab>" 'transient-show))
+   "<tab>" #'transient-show))
 
 (use-package which-key
   :delight
