@@ -3044,24 +3044,19 @@ defined as lowercase."
 (use-package smerge-mode
   :defer t
   :config
-  (w--make-hydra w--hydra-merge nil
-    "merge"
-    "_m_"
-    ("m" smerge-mode)
-    "_n_/_e_/_p_ nav"
-    ("n" smerge-next nil :exit nil)
-    ("e" smerge-prev nil :exit nil)
-    ("p" smerge-prev nil :exit nil)
-    "_b_ase"
-    ("b" smerge-keep-base)
-    "_c_urrent"
-    ("c" smerge-keep-current)
-    "_l_ower"
-    ("l" smerge-keep-lower)
-    "_u_pper"
-    ("u" smerge-keep-upper)
-    "_a_ll"
-    ("a" smerge-keep-all)))
+  (transient-define-prefix w--merge-dispatch ()
+    ["merge"
+     ("m" "smerge-mode" smerge-mode)]
+    ["conflict"
+     [("n" "next" smerge-next)]
+     [("e" "prev" smerge-prev)]
+     [("p" "prev" smerge-prev)]]
+    ["keep"
+     [("c" "current" smerge-keep-current)]
+     [("b" "base" smerge-keep-base)]
+     [("l" "lower" smerge-keep-lower)]
+     [("u" "upper" smerge-keep-upper)]
+     [("a" "all" smerge-keep-all)]]))
 
 (use-package vc
   :config
@@ -3352,7 +3347,7 @@ defined as lowercase."
   "_j_ump"
   ("j" counsel-imenu)
   "_m_erge"
-  ("m" w--hydra-merge/body)
+  ("m" w--merge-dispatch)
   "_n_arrow"
   ("n" w--narrow-dwim)
   ("N" w--fancy-narrow-dwim)
