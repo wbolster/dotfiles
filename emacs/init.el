@@ -288,13 +288,16 @@ defined as lowercase."
 (use-package transient
   :demand t
   :custom
-  (transient-show-popup 1)
+  (transient-show-popup 3)
+  (transient-display-buffer-action '(display-buffer-below-selected))
   :general
   ;; Key mapping approach is based on what transient-bind-q-to-quit does.
   (:keymaps 'transient-base-map
    "<escape>" 'transient-quit-one)
   (:keymaps 'transient-sticky-map
-   "<escape>" 'transient-quit-seq))
+   "<escape>" 'transient-quit-seq)
+  (:keymaps 'transient-map
+   "<tab>" 'transient-show))
 
 (use-package which-key
   :delight
