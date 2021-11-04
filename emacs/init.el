@@ -3973,7 +3973,9 @@ defined as lowercase."
   :defer t
   :interpreter ("python" . python-mode)
   :hook (python-mode-hook . w--python-mode-hook)
-  :mode ("\\.pyi\\'" . python-mode)
+  :mode
+  ("\\.bzl\\'" . python-mode)  ;; starlark
+  ("\\.pyi\\'" . python-mode)
 
   :general
   (:keymaps 'python-mode-map
