@@ -722,8 +722,7 @@ defined as lowercase."
    "z e" #'evil-scroll-line-up
    "z n" #'evil-scroll-line-down
    "<mouse-6>" (w--ilambda "P" (evil-scroll-column-left (or arg 4)))
-   "<mouse-7>" (w--ilambda "P" (evil-scroll-column-right (or arg 4)))
-   "z z" #'w--hydra-recenter/recenter-top-bottom)
+   "<mouse-7>" (w--ilambda "P" (evil-scroll-column-right (or arg 4))))
   (:states '(motion normal)
    [escape] #'w--evil-normal-state-cleanup)
   (:states '(motion normal visual)
@@ -890,18 +889,7 @@ defined as lowercase."
     "Intelligently pick evil-inner-symbol or evil-a-symbol."
     (if (memq this-command '(evil-delete lispyville-delete))
         (evil-a-symbol count beg end type)
-      (evil-inner-symbol count beg end type)))
-
-  (w--make-hydra w--hydra-recenter (:foreign-keys nil)
-    "recenter"
-    "_b_ottom"
-    ("b" evil-scroll-line-to-bottom)
-    "_c_enter"
-    ("c" evil-scroll-line-to-center)
-    "_t_op"
-    ("t" evil-scroll-line-to-top)
-    "_z_ cycle"
-    ("z" recenter-top-bottom nil :exit nil)))
+      (evil-inner-symbol count beg end type))))
 
 (use-package aggressive-indent
   :defer t
