@@ -3624,7 +3624,8 @@ defined as lowercase."
 
 (use-package dockerfile-mode
   :defer t
-  :mode "Dockerfile[-_\\.].*"
+  :mode
+  (rx "Dockerfile" (any "-_.") (* any) string-end)
   :general
   (:keymaps 'dockerfile-mode-map
    :states 'normal
@@ -3731,8 +3732,8 @@ defined as lowercase."
 (use-package gitconfig-mode
   :defer t
   :mode
-  ("\\.gitconfig.*\\'" . gitconfig-mode)
-  ("\\.config/git/config.*\\'" . gitconfig-mode))
+  ((rx ".gitconfig" (* any) string-end) . gitconfig-mode)
+  ((rx ".config/git/config" (* any) string-end) . gitconfig-mode))
 
 (use-package gitignore-mode
   :defer t)
@@ -3814,7 +3815,8 @@ defined as lowercase."
 
 (use-package jinja2-mode
   :defer t
-  :mode "\\.j2\\'")
+  :mode
+  (rx ".j2" string-end))
 
 
 ;;; Major mode: javascript
@@ -3974,8 +3976,8 @@ defined as lowercase."
   :interpreter ("python" . python-mode)
   :hook (python-mode-hook . w--python-mode-hook)
   :mode
-  ("\\.bzl\\'" . python-mode)  ;; starlark
-  ("\\.pyi\\'" . python-mode)
+  ((rx ".bzl" string-end) . python-mode)  ;; starlark
+  ((rx ".pyi" string-end) . python-mode)
 
   :general
   (:keymaps 'python-mode-map
@@ -4254,7 +4256,8 @@ defined as lowercase."
 (use-package pip-requirements
   :defer t
   :mode
-  ("requirements-.*\\.in\\'" . pip-requirements-mode)
+  ((rx "requirements-" (* any) ".in" string-end) . pip-requirements-mode)
+
   :config
   ;; avoid network traffic when opening a requirements.txt file
   (setq pip-packages '(this is a fake package listing)))
@@ -4581,9 +4584,9 @@ defined as lowercase."
 (use-package sh-script
   :defer t
   :mode
-  ("bashrc\\'" . sh-mode)
-  ("\\.bashrc-.*\\'" . sh-mode)
-  (".*\\.env\\'" . sh-mode)
+  ((rx "bashrc" string-end) . sh-mode)
+  ((rx ".bashrc-" (* any) string-end) . sh-mode)
+  ((rx (* any) ".env" string-end) . sh-mode)
   :hook (sh-mode-hook . w--sh-mode-hook)
   :custom
   (sh-indent-after-continuation 'always)
@@ -4601,7 +4604,7 @@ defined as lowercase."
 (use-package sql
   :defer t
   :mode
-  ("\\.?psqlrc" . sql-mode)
+  ((rx (? ".") "psqlrc" string-end) . sql-mode)
   :general
   (:keymaps 'sql-mode-map
    :states 'normal
