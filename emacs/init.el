@@ -3998,6 +3998,7 @@ defined as lowercase."
   (defun w--python-mode-hook ()
     (setq fill-column 79)
     (setq-local comment-fill-column 72)
+    (python-isort-on-save-mode-enable-dwim)
     (python-black-on-save-mode-enable-dwim)
     (reformatter-dwim-select 'python-black)
     (modify-syntax-entry ?_ "w")
@@ -4037,6 +4038,15 @@ defined as lowercase."
     :args '("--atomic" "--stdout" "-")
     :lighter " isort"
     :group 'python)
+
+  (defun python-isort-on-save-mode-enable-dwim ()
+    (interactive)
+    ;; note: this is brittle as it relies on python-black internals for
+    ;; its pyproject.toml detection logic
+    (when-let*
+        ((python-black--config-file-marker-regex (rx bol "[tool.isort]" eol))
+         (project-uses-isort (python-black--buffer-in-blackened-project-p)))
+      (python-isort-on-save-mode)))
 
   (evil-define-operator w--evil-join-python (beg end)
     "Like 'evil-join', but handles comments and some continuation styles sensibly."
