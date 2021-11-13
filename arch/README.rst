@@ -230,9 +230,9 @@ note: ``/etc/hosts`` `stays empty`__
 
 __ https://www.freedesktop.org/software/systemd/man/nss-myhostname.html
 
-use systemd default stub resolver::
+systemd-resolved::
 
-  ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+  ln -s /usr/lib/systemd/resolv.conf /etc/resolv.conf
 
 user account
 ============
