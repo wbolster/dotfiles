@@ -314,6 +314,7 @@ defined as lowercase."
   (create-lockfiles nil)
   (find-file-visit-truename t)
   (make-backup-files nil)
+  (use-file-dialog nil)
   :config
   (setq
    auto-save-file-name-transforms
