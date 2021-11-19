@@ -335,7 +335,7 @@ if [[ "$PS1" ]]; then
                 prompt_user=""
                 ;;
             (*)
-                prompt_user="${colour_normal}🎭 ${prompt_user_colour}${USER}"
+                prompt_user="${colour_normal}🎭  ${prompt_user_colour}${USER}"
                 ;;
         esac
 
@@ -343,7 +343,7 @@ if [[ "$PS1" ]]; then
         local prompt_hostname=""
         local tt_hostname=""
         if [[ -n "${SSH_CLIENT:-}" && "$TERM" != screen* ]]; then
-            prompt_hostname="${colour_normal}💻 ${colour_blue}${HOSTNAME}"
+            prompt_hostname="${colour_normal}💻  ${colour_blue}${HOSTNAME}"
             tt_hostname="$HOSTNAME"
         fi
 
@@ -352,7 +352,7 @@ if [[ "$PS1" ]]; then
         local tt_wd="\w"
         if [[ "$PWD" != "$HOME" ]]; then
             short_pwd=$(shorten_path "$PWD" 3)
-            prompt_wd="${colour_normal}📁 ${colour_green}${short_pwd}"
+            prompt_wd="${colour_normal}📁  ${colour_green}${short_pwd}"
             tt_wd="$short_pwd"
         fi
 
@@ -362,7 +362,7 @@ if [[ "$PS1" ]]; then
             local _git_ps1_output
             _git_ps1_output="$(__git_ps1 '%s')"
             if [[ -n "$_git_ps1_output" ]]; then
-                prompt_git="${colour_normal}🤓 ${colour_yellow}${_git_ps1_output}"
+                prompt_git="${colour_normal}🔀  ${colour_yellow}${_git_ps1_output}"
             fi
         fi
 
@@ -384,13 +384,13 @@ if [[ "$PS1" ]]; then
             prompt_python+="${colour_cyan}${PYENV_VERSION}"
         fi
         if [[ -n "$prompt_python" ]]; then
-            prompt_python="${colour_normal}🐍 ${prompt_python}"
+            prompt_python="${colour_normal}🐍  ${prompt_python}"
         fi
 
         # gpg
         local prompt_gpg=""
         if [[ -n "${GNUPGHOME:-}" ]]; then
-            prompt_gpg+="${colour_blue}🔏 ${GNUPGHOME}"
+            prompt_gpg+="${colour_blue}🔏  ${GNUPGHOME}"
         fi
 
         # Warning when output does not have a trailing newline
@@ -410,7 +410,7 @@ if [[ "$PS1" ]]; then
             n_jobs_suspended="$(jobs -p -s | wc -w)"
             prompt_jobs=""
             if [[ $((n_jobs_background + n_jobs_suspended)) -gt 0 ]]; then
-                prompt_jobs="${colour_normal}👣"
+                prompt_jobs="${colour_normal}🚂 "
             fi
             if [[ ${n_jobs_background} -gt 0 ]]; then
                 prompt_jobs+=" ${colour_purple}${n_jobs_background}&"
