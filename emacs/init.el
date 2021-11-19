@@ -4150,29 +4150,40 @@ defined as lowercase."
        'before
        (format "import %s  # fixme: move to proper place" thing))))
 
-  (defun w--python-split-string ()
+  (evil-define-command w--python-split-string ()
     "Split the string at point into two strings on multiple lines"
     (interactive)
     (-if-let* ((pss (syntax-ppss))
                (quote-char (nth 3 pss))
+               ;; (quote-char (if (eql quote-char t) "\"\"\"" quote-char))
                (string-start-pos (nth 8 pss))
                (current-char (char-to-string (char-after)))
-               (string-prefix ""))
-        (progn
+               (string-prefix "")
+               (string-delimiter ""))
+        (save-match-data
           (save-excursion
             ;; detect prefix for f-strings, byte strings, etc.
             (goto-char string-start-pos)
             (when (looking-back (rx (+ (any "BbFfRrUu"))) nil)
-              (setq string-prefix (thing-at-point 'symbol))))
+              (setq string-prefix (thing-at-point 'symbol)))
+            (setq string-delimiter
+                  (cond
+                   ((eql quote-char t)
+                    (looking-at (rx (or "\"\"\"" "'''" "\"" "'")))
+                    (match-string 0))
+                   (t
+                    (char-to-string quote-char)))))
           ;; split before point, but after a space if on one
           (when (string-equal current-char " ")
             (forward-char))
           ;; split after space
-          (insert quote-char)
+          (insert string-delimiter)
           (save-excursion
-            (insert string-prefix quote-char))
+            (insert string-prefix string-delimiter))
           (newline-and-indent))
       (user-error "No string at point")))
+
+  (evil-declare-repeat 'w--python-split-string)
 
   (w--make-hydra w--hydra-python nil
     "python"
