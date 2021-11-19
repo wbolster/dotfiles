@@ -120,6 +120,9 @@ gsettings set org.gnome.mutter.keybindings toggle-tiled-right "['<Super>period']
 gsettings set org.gnome.desktop.wm.keybindings cycle-windows "['<Super>Space']"
 gsettings set org.gnome.desktop.wm.keybindings cycle-windows-backward "['<Control><Super>Space']"
 
+gsettings set org.gnome.desktop.wm.keybindings switch-panels "['<Primary><Super>Tab']"
+gsettings set org.gnome.desktop.wm.keybindings switch-panels-backward "['<Primary><Shift><Super>Tab']"
+
 # hjkl-style window/workspace navigation; with colemak keys this is hnei, not hjkl
 gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Super>i']"
 gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Super>h']"
