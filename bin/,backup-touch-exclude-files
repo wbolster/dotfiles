@@ -19,6 +19,7 @@ no_backup_dirs='
 .rustup/
 .var/app/com.spotify.Client/cache/
 .var/app/com.valvesoftware.Steam/.local/share/Steam/
+.var/app/org.zealdocs.Zeal/data/Zeal/Zeal/docsets/
 .virtualenvs/
 '
 
