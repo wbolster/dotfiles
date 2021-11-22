@@ -4006,8 +4006,12 @@ defined as lowercase."
      :unless '(sp-point-before-word-p)))
 
   (defun w--python-mode-hook ()
-    (setq fill-column 79)
-    (setq-local comment-fill-column 72)
+    (setq
+     fill-column 79
+     evil-lookup-func #'counsel-dash-at-point)
+    (setq-local
+     comment-fill-column 72
+     counsel-dash-docsets '("Python_3" "SQLAlchemy" "Flask" "Jinja"))
     (python-isort-on-save-mode-enable-dwim)
     (python-black-on-save-mode-enable-dwim)
     (reformatter-dwim-select 'python-black)
