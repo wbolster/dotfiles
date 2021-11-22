@@ -3471,6 +3471,15 @@ defined as lowercase."
     (symbol-overlay-mode)
     (w--show-trailing-whitespace-mode)))
 
+(use-package dash-docs
+  :custom
+  (dash-docs-docsets-path "~/.var/app/org.zealdocs.Zeal/data/Zeal/Zeal/docsets")
+  (dash-docs-enable-debugging nil)
+  (dash-docs-min-length 2))
+
+(use-package counsel-dash
+  :after dash-docs)
+
 
 ;;; Major mode: c
 
