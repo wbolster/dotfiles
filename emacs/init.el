@@ -4116,19 +4116,12 @@ defined as lowercase."
      position
      (format "__import__(\"IPython\").embed()  # FIXME")))
 
-  (defun w--python-print-expression ()
+  (evil-define-command w--python-print-expression ()
     (interactive)
     (let ((thing (w--thing-at-point-dwim)))
       (w--python-insert-statement
        'before
-       (format "print(\"%s\", %s)" thing thing))))
-
-  (defun w--python-print-expression-repr ()
-    (interactive)
-    (let ((thing (w--thing-at-point-dwim)))
-      (w--python-insert-statement
-       'before
-       (format "print(\"%s\", repr(%s))" thing thing))))
+       (format "print(f\"{%s=}\")" thing))))
 
   (evil-define-operator w--python-refactor-make-variable (beg end _type)
     "Refactor the current region into a named variable."
@@ -4198,7 +4191,6 @@ defined as lowercase."
     ("L" multi-line-single-line)
     "_p_ print"
     ("p" w--python-print-expression)
-    ("P" w--python-print-expression-repr)
     "_r_epl"
     ("r" (w--python-insert-ipython-repl 'after))
     ("R" (w--python-insert-ipython-repl 'before))
