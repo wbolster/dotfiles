@@ -243,6 +243,13 @@ if [[ "$PS1" ]]; then
         echo "$output"
     }
 
+    _pwd_is_local_fs() {
+        if [[ "$PWD" == /run/user/*/gvfs/* ]]; then
+            return 1
+        fi
+        return 0
+    }
+
     # Use a DEBUG trap to store timer information before a command is executed.
     # The _timer_start variable is cleared in the prompt command function.
     _timer_start=''
@@ -312,7 +319,7 @@ if [[ "$PS1" ]]; then
         local prompt_umbrella=''
         local tt_umbrella=''
         local dir
-        if dir=$(_closest_parent_dir_containing .umbrella); then
+        if _pwd_is_local_fs && dir=$(_closest_parent_dir_containing .umbrella); then
             prompt_umbrella=$(command cat "${dir}/.umbrella")
             if [ "$dir" != "$PWD" ]; then
                 local relative="${PWD##${dir}/}"
@@ -358,7 +365,7 @@ if [[ "$PS1" ]]; then
 
         # Git
         local prompt_git=""
-        if ___has __git_ps1; then
+        if _pwd_is_local_fs && ___has __git_ps1; then
             local _git_ps1_output
             _git_ps1_output="$(__git_ps1 '%s')"
             if [[ -n "$_git_ps1_output" ]]; then
