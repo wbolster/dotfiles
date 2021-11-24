@@ -4133,7 +4133,7 @@ defined as lowercase."
     (interactive)
     (let ((thing (w--thing-at-point-dwim)))
       (w--python-insert-statement
-       'before
+       'after
        (format "print(f\"{%s=}\")" thing))))
 
   (evil-define-operator w--python-refactor-make-variable (beg end _type)
