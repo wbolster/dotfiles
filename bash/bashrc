@@ -298,7 +298,7 @@ if [[ "$PS1" ]]; then
             current_date=$(date --iso-8601=seconds)
             if [[ $seconds_elapsed -ge 10 ]]; then
                 seconds_elapsed=$(_fmt_seconds_elapsed ${seconds_elapsed})
-                prompt_timer+="⌚ ${seconds_elapsed} elapsed; finished at ${current_date}"
+                prompt_timer+="⌚  ${seconds_elapsed} elapsed; finished at ${current_date}"
             fi
             unset _timer_start
         fi
