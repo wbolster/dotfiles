@@ -3031,6 +3031,7 @@ defined as lowercase."
   (ediff-split-window-function 'split-window-horizontally))
 
 (use-package smerge-mode
+  :delight " 🔀"
   :defer t
   :config
   (transient-define-prefix w--merge-dispatch ()
