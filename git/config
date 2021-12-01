@@ -2,6 +2,9 @@
 name = wouter bolsterlee
 email = wouter@bolsterl.ee
 
+[github]
+user = wbolster
+
 [alias]
 
 # Generic
