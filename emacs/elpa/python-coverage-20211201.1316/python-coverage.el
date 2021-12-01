@@ -2,8 +2,8 @@
 
 ;; Author: wouter bolsterlee <wouter@bolsterl.ee>
 ;; Version: 1.0.0
-;; Package-Version: 20200822.117
-;; Package-Requires: ((emacs "25.1") (dash "2.16.0") (dash-functional "1.2.0") (s "1.12.0") (xml+ "1"))
+;; Package-Version: 20211201.1316
+;; Package-Requires: ((emacs "25.1") (dash "2.18.0") (s "1.12.0") (xml+ "1"))
 ;; Keywords: languages, processes, tools
 ;; URL: https://github.com/wbolster/emacs-python-coverage
 
@@ -19,7 +19,6 @@
 ;;; Code:
 
 (require 'dash)
-(require 'dash-functional)
 (require 'filenotify)
 (require 'python)
 (require 's)
@@ -52,19 +51,19 @@ non-obtrusive colored blocks adjacent to the left margin."
   :group 'python-coverage)
 
 (defface python-coverage-overlay-partial
-  '((t :inherit magit-diff-added))
+  '((t :inherit magit-diff-base))
   "Overlay face for partial (branch) coverage."
   :group 'python-coverage)
 
 (defface python-coverage-overlay-missing-outdated
   '((t :strike-through t
-       :inherit python-coverage-overlay-missing))
+       :inherit magit-diff-context-highlight))
   "Overlay face for potentially outdated missing coverage."
   :group 'python-coverage)
 
 (defface python-coverage-overlay-partial-outdated
   '((t :strike-through t
-       :inherit python-coverage-overlay-partial))
+       :inherit magit-diff-context-highlight))
   "Overlay face for potentially outdated partial (branch) coverage."
   :group 'python-coverage)
 
@@ -135,6 +134,7 @@ This is only needed if autodetection does not work."
       (goto-char (overlay-start overlay))
     (user-error "No more coverage overlays in this direction")))
 
+;;;###autoload
 (defun python-coverage-overlay-jump-first ()
   "Jump to the first overlay."
   (interactive)

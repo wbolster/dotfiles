@@ -4228,11 +4228,7 @@ defined as lowercase."
 (use-package python-coverage
   :quelpa (python-coverage :fetcher github :repo "wbolster/emacs-python-coverage")
   :demand t
-  :after python
-  :custom-face
-  (python-coverage-overlay-partial ((t (:inherit magit-diff-base))))
-  (python-coverage-overlay-missing-outdated ((t (:inherit magit-diff-context-highlight))))
-  (python-coverage-overlay-partial-outdated ((t (:inherit magit-diff-context-highlight)))))
+  :after python)
 
 (use-package evil-text-object-python
   :demand t

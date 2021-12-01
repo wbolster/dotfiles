@@ -39,6 +39,9 @@ Jump to the next overlay." t nil)
 (autoload 'python-coverage-overlay-jump-previous "python-coverage" "\
 Jump to the previous overlay." t nil)
 
+(autoload 'python-coverage-overlay-jump-first "python-coverage" "\
+Jump to the first overlay." t nil)
+
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "python-coverage" '("python-coverage-")))
 
 ;;;***
