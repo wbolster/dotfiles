@@ -2668,7 +2668,6 @@ defined as lowercase."
    "C-h" 'ivy-backward-delete-char
    "C-w" 'ivy-backward-kill-word
    "C-u" 'kill-whole-line
-   "C-SPC" 'ivy-avy
    "C-<return>" 'ivy-immediate-done
    "<escape>" 'minibuffer-keyboard-quit)
   :custom
