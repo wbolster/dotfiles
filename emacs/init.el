@@ -4050,7 +4050,7 @@ defined as lowercase."
   (reformatter-define python-isort
     :program "isort"
     :args '("--atomic" "--stdout" "-")
-    :lighter " isort"
+    :lighter " 📜"
     :group 'python)
 
   (defun python-isort-on-save-mode-enable-dwim ()
@@ -4227,7 +4227,9 @@ defined as lowercase."
 (use-package python-coverage
   :quelpa (python-coverage :fetcher github :repo "wbolster/emacs-python-coverage")
   :demand t
-  :after python)
+  :after python
+  :delight
+  (python-coverage-overlay-mode " 🚨"))
 
 (use-package evil-text-object-python
   :demand t
