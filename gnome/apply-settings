@@ -273,7 +273,7 @@ gsettings set "${gnome_terminal_profile}" default-size-columns 120
 gsettings set "${gnome_terminal_profile}" default-size-rows 36
 gsettings set "${gnome_terminal_profile}" foreground-color "'rgb(101,123,131)'"
 gsettings set "${gnome_terminal_profile}" palette "[
-    'rgb(131,148,150)',
+    'rgb(95,95,175)',
     'rgb(220,50,47)',
     'rgb(133,153,0)',
     'rgb(181,137,0)',
@@ -281,7 +281,7 @@ gsettings set "${gnome_terminal_profile}" palette "[
     'rgb(211,54,130)',
     'rgb(42,161,152)',
     'rgb(195,190,174)',
-    'rgb(131,148,150)',
+    'rgb(95,95,175)',
     'rgb(220,50,47)',
     'rgb(133,153,0)',
     'rgb(181,137,0)',
