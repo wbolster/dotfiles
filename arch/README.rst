@@ -313,7 +313,7 @@ alternatively, enroll keys from bios menu.
 
 initramfs with ``dracut``::
 
-  sudo -u $user paru -S busybox dracut dracut-hook-uefi plymouth
+  sudo -u $user paru -S busybox dracut dracut-uefi-hook plymouth
 
   cat << EOF >> /etc/dracut.conf.d/config.conf
   kernel_cmdline="quiet splash loglevel=3 rd.udev.log_priority=3 vt.global_cursor_default=0"
