@@ -762,7 +762,7 @@ defined as lowercase."
    "C-." #'evil-shift-right-line ;; used instead of standard vim
    "C->" #'evil-shift-right-line ;; bindings C-d and C-t.
    "C-=" (w--ilambda (save-excursion (call-interactively #'evil-indent-line))))
-  (:state '(insert replace)
+  (:states '(insert replace)
    (general-chord "qw") #'evil-normal-state
    (general-chord "wq") #'evil-normal-state
    "C-g" #'evil-normal-state)
