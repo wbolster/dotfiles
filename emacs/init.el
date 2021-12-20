@@ -4062,8 +4062,10 @@ defined as lowercase."
     ;; note: this is brittle as it relies on python-black internals for
     ;; its pyproject.toml detection logic
     (when-let*
-        ((python-black--config-file-marker-regex (rx bol "[tool.isort]" eol))
-         (project-uses-isort (python-black--buffer-in-blackened-project-p)))
+        ((file-name (buffer-file-name))
+         (python-black--config-file-marker-regex (rx bol "[tool.isort]" eol))
+         (project-uses-isort (python-black--in-blackened-project-p file-name))
+         (is-3rd-party (not (python-black--third-party-file-p file-name))))
       (python-isort-on-save-mode)))
 
   (evil-define-operator w--evil-join-python (beg end)
