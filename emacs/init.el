@@ -731,6 +731,10 @@ defined as lowercase."
    [remap evil-previous-line] #'w--evil-previous-line
    [remap evil-end-of-line] #'w--evil-end-of-line
    [remap evil-first-non-blank] #'w--evil-first-non-blank)
+  (:states 'normal
+   ;; useful for keychron k7 keyboards that require a Fn modifier for
+   ;; tilde; use shift-tab (key below it) it as a workaround.
+   "<backtab>" #'evil-invert-char)
   (:states '(operator visual)
    "o" #'w--evil-text-object-symbol-dwim)
   (:states 'operator
