@@ -13,9 +13,7 @@
  (autoload 'python-black-on-save-mode "python-black" nil t)
 
 (autoload 'python-black-on-save-mode-enable-dwim "python-black" "\
-Enable ‘python-black-on-save-mode’ if this project is using Black.
-
-The heuristic used looks for ‘[tool.black]’ in a ‘pyproject.toml’ file." t nil)
+Enable ‘python-black-on-save-mode’ if appropriate." t nil)
 
 (autoload 'python-black-statement "python-black" "\
 Reformats the current statement.
