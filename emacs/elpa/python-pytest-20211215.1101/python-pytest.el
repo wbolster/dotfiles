@@ -1,10 +1,10 @@
 ;;; python-pytest.el --- helpers to run pytest -*- lexical-binding: t; -*-
 
 ;; Author: wouter bolsterlee <wouter@bolsterl.ee>
-;; Version: 3.0.0
-;; Package-Version: 20211107.2245
-;; Package-Commit: abf4f040d3a9590e3e8eeae92e01e97e12727f25
-;; Package-Requires: ((emacs "24.4") (dash "2.18.0") (transient "20200719") (projectile "0.14.0") (s "1.12.0"))
+;; Version: 3.1.0
+;; Package-Version: 20211215.1101
+;; Package-Commit: b603c5c7f21d351364deeb78e503d3a54d08a152
+;; Package-Requires: ((emacs "24.4") (dash "2.18.0") (transient "0.3.7") (projectile "0.14.0") (s "1.12.0"))
 ;; Keywords: pytest, test, python, languages, processes, tools
 ;; URL: https://github.com/wbolster/emacs-python-pytest
 ;;
@@ -118,7 +118,7 @@ When non-nil only ‘test_foo()’ will match, and nothing else."
   "Current command; used in python-pytest-mode buffers.")
 
 ;;;###autoload (autoload 'python-pytest-dispatch "python-pytest" nil t)
-(define-transient-command python-pytest-dispatch ()
+(transient-define-prefix python-pytest-dispatch ()
   "Show popup for running pytest."
   :man-page "pytest"
   :incompatible '(("--exitfirst" "--maxfail="))
@@ -145,6 +145,9 @@ When non-nil only ‘test_foo()’ will match, and nothing else."
     ("--rx" "run xfail tests" "--runxfail")
     (python-pytest:--tb)
     ("--tr" "debug on each test" "--trace")]]
+  ["Options for pytest-xdist"
+   [(python-pytest:-n)]
+   [("-f" "loop on failure" "--looponfail")]]
   ["Run tests"
    [("t" "all" python-pytest)]
    [("r" "repeat" python-pytest-repeat)
@@ -477,6 +480,13 @@ When present ON-REPLACEMENT is substituted, else OFF-REPLACEMENT is appended."
   :key "--tb"
   :argument "--tb="
   :choices '("long" "short" "line" "native" "no"))
+
+(transient-define-argument python-pytest:-n ()
+  :description "number of processes"
+  :class 'transient-option
+  :key "-n"
+  :argument "--numprocesses="
+  :choices '("auto" "1" "2" "4" "8" "16"))
 
 
 ;; python helpers
