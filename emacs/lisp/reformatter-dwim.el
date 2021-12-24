@@ -56,7 +56,7 @@ DISPLAY-ERRORS, shows a buffer if the formatting fails."
     (funcall fun 'toggle)))
 
 ;;;###autoload
-(evil-define-operator reformatter-dwim-evil (beg end _type)
+(evil-define-operator reformatter-dwim-evil (beg end type)
   "Evil operator to reformat a region."
   :type line
   :repeat nil
