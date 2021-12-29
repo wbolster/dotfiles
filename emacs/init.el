@@ -3504,6 +3504,7 @@ defined as lowercase."
   :defer t
   :custom
   (compilation-always-kill t)
+  (compilation-scroll-output t)
   :general
   (:keymaps 'compilation-mode-map
    :states '(motion normal)
