@@ -605,7 +605,9 @@ defined as lowercase."
   (:states 'motion
    "C-0" 'w--default-text-scale-reset
    "C--" 'default-text-scale-decrease
-   "C-=" 'default-text-scale-increase)
+   "C-=" 'default-text-scale-increase
+   "C-<mouse-4>" #'default-text-scale-increase
+   "C-<mouse-5>" #'default-text-scale-decrease)
 
   :config
   (defvar w--default-text-scale-height
