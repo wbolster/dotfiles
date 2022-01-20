@@ -733,6 +733,7 @@ if [[ "$PS1" ]]; then
     # Docker
     alias ,docker-run-throwaway='docker run --rm --interactive --tty'
     complete -F _complete_alias ,docker-run-throwaway
+    alias ,docker-compose-up-fresh='docker compose up --detach --force-recreate'
 
     # Python
     export PYTHONDONTWRITEBYTECODE=1
