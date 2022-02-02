@@ -1,4 +1,6 @@
-((magit-log
+((magit-commit
+  (magit-commit-absorb . 1))
+ (magit-log
   (transient:magit-log:--until= . 2)
   (transient:magit-log:--since= . 2)
   (magit-log-merged . 1)

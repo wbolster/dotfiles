@@ -2818,7 +2818,10 @@ defined as lowercase."
     (add-to-list 'magit-repository-directories (cons it 2) t))
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
 
-  (transient-append-suffix 'magit-push "-n" '("/c" "Skip Gitlab CI" "--push-option=ci.skip"))
+  (transient-replace-suffix 'magit-commit 'magit-commit-autofixup
+    '(6 "x" "Absorb changes" magit-commit-absorb))
+  (transient-append-suffix 'magit-push
+    "-n" '("/c" "Skip Gitlab CI" "--push-option=ci.skip"))
 
   ;; hide author names from magit-blame annotations;
   ;; it's usually about why/what/when, not who.
