@@ -1,0 +1,2 @@
+[tool.sqlfluff.indentation]
+indented_joins = true
