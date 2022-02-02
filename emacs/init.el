@@ -4627,14 +4627,6 @@ defined as lowercase."
   :defer t
   :mode
   ((rx (? ".") "psqlrc" string-end) . sql-mode)
-  :general
-  (:keymaps 'sql-mode-map
-   :states 'normal
-   "gq" #'w--evil-sql-format
-   "Q" #'fill-paragraph)
-  (:keymaps 'sql-mode-map
-   :states 'visual
-   "Q" #'w--evil-sql-format)
   :hook (sql-mode-hook . w--sql-mode-hook)
   :config
   (defun w--sql-mode-hook ()
