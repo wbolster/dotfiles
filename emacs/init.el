@@ -4032,7 +4032,7 @@ defined as lowercase."
     (smartparens-mode) ;; todo
     ;; (lispyville-mode)
     (origami-mode)
-    (python-docstring-mode)
+    ;; (python-docstring-mode)
     (w--add-evil-surround-pairs
      ?` '("``" . "``")) ;; for reStructuredText literals in docstrings
     (evil-add-to-alist
