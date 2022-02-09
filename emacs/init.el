@@ -495,8 +495,8 @@ defined as lowercase."
 
 ;;;; theme
 
-(defvar w--dark-theme 'solarized-dark "The preferred dark theme.")
-(defvar w--light-theme 'solarized-light "The preferred light theme.")
+(defvar w--dark-theme 'solarized-selenized-dark "The preferred dark theme.")
+(defvar w--light-theme 'solarized-selenized-light "The preferred light theme.")
 
 (use-package solarized-theme
   :demand t
