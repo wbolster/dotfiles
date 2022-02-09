@@ -34,19 +34,56 @@ set_gnome_theme() {
 
 set_gnome_terminal_theme() {
     # Set the foreground and background color of the first
-    # gnome-terminal theme to Solarized dark or light.
-    local profile_id profile_path background_color foreground_color
-    profile_id=$(dconf list /org/gnome/terminal/legacy/profiles:/ | grep ^: | head -n 1)
-    profile_path="/org/gnome/terminal/legacy/profiles:/${profile_id}"
+    # gnome-terminal theme to solarized/selenized dark or light.
+    local profile_id
+    profile_id=$(dconf list /org/gnome/terminal/legacy/profiles:/ | grep ^: | head -n 1 | sed -e 's/^://' -e 's,/$,,')
+    local gnome_terminal_profile="org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile_id}/"
     if [ "$1" = "dark" ]; then
-        background_color='rgb(0,43,54)'
-        foreground_color='rgb(131,148,150)'
+        local background_color='#10103c3c4848'
+        local foreground_color='#adadbcbcbcbc'
+        local palette="[
+            '#181849495656',
+            '#fafa57575050',
+            '#7575b9b93838',
+            '#dbdbb3b32d2d',
+            '#46469595f7f7',
+            '#f2f27575bebe',
+            '#4141c7c7b9b9',
+            '#727289898f8f',
+            '#2d2d5b5b6969',
+            '#ffff66665c5c',
+            '#8484c7c74747',
+            '#ebebc1c13d3d',
+            '#5858a3a3ffff',
+            '#ffff8484cdcd',
+            '#5353d6d6c7c7',
+            '#cacad8d8d9d9'
+        ]"
     else
-        background_color='rgb(253,246,227)'
-        foreground_color='rgb(101,123,131)'
+        local background_color='#fbfbf3f3dbdb'
+        local foreground_color='#535367676d6d'
+        local palette="[
+            '#ecece3e3cccc',
+            '#d2d221212d2d',
+            '#484891910000',
+            '#adad89890000',
+            '#00007272d4d4',
+            '#caca48489898',
+            '#00009c9c8f8f',
+            '#909099999595',
+            '#d5d5cdcdb6b6',
+            '#cccc17172929',
+            '#42428b8b0000',
+            '#a7a783830000',
+            '#00006d6dcece',
+            '#c4c443439292',
+            '#000097978a8a',
+            '#3a3a4d4d5353'
+        ]"
     fi
-    dconf write "${profile_path}background-color" "'${background_color}'"
-    dconf write "${profile_path}foreground-color" "'${foreground_color}'"
+    gsettings set "${gnome_terminal_profile}" background-color "'${background_color}'"
+    gsettings set "${gnome_terminal_profile}" foreground-color "'${foreground_color}'"
+    gsettings set "${gnome_terminal_profile}" palette "$palette"
 }
 
 notify_emacs() {

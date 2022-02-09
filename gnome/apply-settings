@@ -267,29 +267,9 @@ gsettings set "${gnome_terminal_keybindings}" zoom-normal '<Primary>0'
 gsettings set "${gnome_terminal_keybindings}" zoom-out '<Primary>minus'
 
 gsettings set "${gnome_terminal_profile}" audible-bell false
-gsettings set "${gnome_terminal_profile}" background-color "'rgb(253,246,227)'"
 gsettings set "${gnome_terminal_profile}" bold-is-bright false
 gsettings set "${gnome_terminal_profile}" default-size-columns 120
 gsettings set "${gnome_terminal_profile}" default-size-rows 36
-gsettings set "${gnome_terminal_profile}" foreground-color "'rgb(101,123,131)'"
-gsettings set "${gnome_terminal_profile}" palette "[
-    'rgb(95,95,175)',
-    'rgb(220,50,47)',
-    'rgb(133,153,0)',
-    'rgb(181,137,0)',
-    'rgb(38,139,210)',
-    'rgb(211,54,130)',
-    'rgb(42,161,152)',
-    'rgb(195,190,174)',
-    'rgb(95,95,175)',
-    'rgb(220,50,47)',
-    'rgb(133,153,0)',
-    'rgb(181,137,0)',
-    'rgb(38,139,210)',
-    'rgb(211,54,130)',
-    'rgb(42,161,152)',
-    'rgb(195,190,174)'
-]"
 gsettings set "${gnome_terminal_profile}" scrollback-lines 30000
 gsettings set "${gnome_terminal_profile}" scrollbar-policy never
 gsettings set "${gnome_terminal_profile}" use-theme-colors false
