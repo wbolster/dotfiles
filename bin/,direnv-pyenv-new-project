@@ -14,16 +14,6 @@ if [[ -f "$envrc" ]]; then
     exit 1
 fi
 
-executable="${1-}"
-
-if [[ $executable =~ [0-9] ]]; then
-    # only version specified
-    executable="python${executable}"
-fi
-
-content="layout python"
-if [[ -n "$executable" ]]; then
-    content+=" ${executable}"
-fi
-echo "$content" > "$envrc"
+pyenv_python_version="${1?specify pyenv python version}"  # e.g. 3.11-dev
+echo "layout pyenv ${pyenv_python_version}" > "$envrc"
 direnv allow
