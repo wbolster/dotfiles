@@ -3798,6 +3798,11 @@ defined as lowercase."
 (defgroup prettier nil
   "Formatting using Prettier"
   :group 'languages)
+(reformatter-define prettier-format
+  :program "prettier"
+  :args `("--stdin-filepath" ,(file-name-nondirectory (buffer-file-name)))
+  :lighter " Prettier"
+  :group 'prettier)
 (reformatter-define prettier-format-html
   :program "prettier"
   :args '("--parser=html")
