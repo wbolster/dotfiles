@@ -2743,7 +2743,7 @@ defined as lowercase."
   (magit-mode-line-process ((t (:inherit magit-mode-line-process-error))))
 
   :commands
-  w--hydra-git/body
+  w--git-dispatch
 
   :init
   (add-hook 'find-file-hook (fn: require 'magit))
@@ -2863,35 +2863,20 @@ defined as lowercase."
           (setq kill-ring (cdr kill-ring)))
       (call-interactively #'git-link)))
 
-  (w--make-hydra w--hydra-git nil
-    "git"
-    "_a_nnotate"
-    ("a" magit-blame-addition)
-    ("A" magit-log-buffer-file)
-    "_c_ommit"
-    ("c" magit-commit-create)
-    ("C" magit-commit)
-    "_d_iff"
-    ("d" magit-diff-dwim)
-    ("D" magit-diff)
-    "_f_ile"
-    ("f" magit-file-dispatch)
-    "_g_ popup"
-    ("g" magit-dispatch)
-    "_l_og"
-    ("l" magit-log-current)
-    ("L" magit-log-all)
-    "_r_efs"
-    ("r" magit-show-refs)
-    "_s_tatus"
-    ("s" magit-status)
-    ("S" w--magit-status-other-repository)
-    "_t_ lock"
-    ("t" magit-toggle-buffer-lock)
-    "_w_eb"
-    ("w" w--git-web-browse)
-    "_!_ command"
-    ("!" magit-git-command)))
+  (transient-define-prefix w--git-dispatch ()
+    [[("a" "annotate" magit-blame-addition)
+      ("A" "buffer log" magit-log-buffer-file)
+      ("c" "commit" magit-commit-create)]
+     [("d" "diff" magit-diff-dwim)
+      ("f" "file-dispatch" magit-file-dispatch)
+      ("g" "dispatch" magit-dispatch)]
+     [("l" "log" magit-log-current)
+      ("s" "status" magit-status)
+      ("S" "status other" w--magit-status-other-repository)]
+     [("t" "lock" magit-toggle-buffer-lock)
+      ("w" "web" w--git-web-browse)
+      ("!" "command" magit-git-command)]])
+  )
 
 (use-package blamer
   :quelpa (blamer :fetcher github :repo "artawower/blamer.el")
@@ -3338,7 +3323,7 @@ defined as lowercase."
   "_f_ind"
   ("f" w--file-dispatch)
   "_g_it"
-  ("g" w--hydra-git/body)
+  ("g" w--git-dispatch)
   "_h_ighlight"
   ("h" w--symbol-overlay-put-dwim)
   ("H" symbol-overlay-remove-all)
