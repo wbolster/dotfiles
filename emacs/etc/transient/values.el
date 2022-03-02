@@ -1,7 +1,7 @@
 ((magit-fetch "--prune" "--tags")
  (magit-log "-n256" "--follow" "--topo-order" "--graph" "--color" "--decorate")
  (magit-merge "--no-ff")
- (magit-rebase "--autostash")
+ (magit-rebase "--autosquash" "--autostash")
  (magit-show-refs "--sort=-committerdate")
  (magit-tag "--annotate")
  (python-pytest-dispatch "--color" "--capture=no" "--new-first" "--failed-first" "--maxfail=10" "--tb=short"))
