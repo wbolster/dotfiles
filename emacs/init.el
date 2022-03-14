@@ -2727,17 +2727,17 @@ defined as lowercase."
 
   :custom
   (magit-blame-heading-format "%C %-10a %s")
-  (magit-blame-time-format "%Y%m%d")
   (magit-blame-mode-lighter " annotate")
+  (magit-blame-time-format "%Y%m%d")
   (magit-branch-prefer-remote-upstream '("master"))
   (magit-branch-read-upstream-first 'fallback)
   (magit-bury-buffer-function 'magit-mode-quit-window)
   (magit-completing-read-function 'ivy-completing-read)
+  (magit-diff-refine-hunk t)
+  (magit-display-buffer-function 'display-buffer)
   (magit-list-refs-sortby '("-committerdate"))
   (magit-prefer-remote-upstream t)
-  (magit-diff-refine-hunk t)
   (magit-process-popup-time 10)
-  (magit-display-buffer-function 'display-buffer)
 
   :custom-face
   (magit-mode-line-process ((t (:inherit magit-mode-line-process-error))))
