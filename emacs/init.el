@@ -2738,6 +2738,7 @@ defined as lowercase."
   (magit-list-refs-sortby '("-committerdate"))
   (magit-prefer-remote-upstream t)
   (magit-process-popup-time 10)
+  (magit-status-goto-file-position t)
 
   :custom-face
   (magit-mode-line-process ((t (:inherit magit-mode-line-process-error))))
