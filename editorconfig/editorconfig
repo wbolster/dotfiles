@@ -1,0 +1,7 @@
+root = true
+
+[*.sh]
+binary_next_line = true
+indent_size = 4
+indent_style = space
+space_redirects = true
