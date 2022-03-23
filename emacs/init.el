@@ -4614,6 +4614,8 @@ defined as lowercase."
   :config
   (defun w--sh-mode-hook ()))
 
+(use-package shfmt)
+
 
 ;;; Major mode: sql
 
