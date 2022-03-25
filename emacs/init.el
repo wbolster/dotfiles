@@ -4139,6 +4139,13 @@ defined as lowercase."
        'after
        (format "print(f\"{%s=}\")" thing))))
 
+  (evil-define-command w--python-reveal-type-expression ()
+    (interactive)
+    (let ((thing (w--thing-at-point-dwim)))
+      (w--python-insert-statement
+       'after
+       (format "reveal_type(%s)" thing))))
+
   (evil-define-operator w--python-refactor-make-variable (beg end _type)
     "Refactor the current region into a named variable."
     (interactive "<R>")
@@ -4205,6 +4212,8 @@ defined as lowercase."
     "_l_ multi-line"
     ("l" multi-line)
     ("L" multi-line-single-line)
+    "_m_ mypy"
+    ("m" w--python-reveal-type-expression)
     "_p_ print"
     ("p" w--python-print-expression)
     "_r_epl"
