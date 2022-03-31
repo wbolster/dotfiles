@@ -22,7 +22,7 @@ alias ppq ppsql ((%*).compile(compile_kwargs=dict(literal_binds=True)))
 alias ppqq ppsql ((%*).statement.compile(compile_kwargs=dict(literal_binds=True)))
 
 # pretty-print lxml elements
-alias ppx print(__import__('lxml.etree').etree.tounicode((%*), pretty_print=True))
+alias ppx __import__('lxml.etree').etree.dump((%*))
 
 # ipython
 alias ipython __import__('IPython').embed()
