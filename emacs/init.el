@@ -1418,7 +1418,7 @@ defined as lowercase."
     ;; what a minor mode does as well, so define one with she same name.
     (define-minor-mode indent-tabs-mode
       "Minor mode to make up for an Emacs oddity."
-      nil " ⇥" nil)))
+      :lighter " ⇥")))
 
 (use-package whitespace
   :defer t
@@ -1426,7 +1426,7 @@ defined as lowercase."
 
 (define-minor-mode w--show-trailing-whitespace-mode
   "Show or hide trailing whitespace."
-  nil nil nil
+  :lighter nil
   (setq show-trailing-whitespace w--show-trailing-whitespace-mode))
 
 (use-package whitespace-cleanup-mode
@@ -1941,7 +1941,7 @@ defined as lowercase."
 
 (define-minor-mode w--wrap-lines-mode
   "Smart combination of auto-fill, visual-line, and visual-fill-column."
-  nil " ⇶" nil
+  :lighter" ⇶"
   (if w--wrap-lines-mode
       (progn
         (setq w--wrap-lines-saved-fill-column fill-column
@@ -2508,7 +2508,7 @@ defined as lowercase."
 
 (define-minor-mode w--pinned-buffer-mode
   "Pin the current buffer to the selected window."
-  nil " ▣" nil
+  :lighter " ▣"
   (set-window-dedicated-p (selected-window) w--pinned-buffer-mode))
 
 (w--make-hydra w--hydra-window nil
@@ -3223,7 +3223,7 @@ defined as lowercase."
 
   (define-minor-mode w--flycheck-show-error-other-file-mode
     "Quickly toggle showing of errors from other files"
-    nil nil nil
+    :lighter nil
     (setq flycheck-relevant-error-other-file-show w--flycheck-show-error-other-file-mode)
     (when flycheck-mode
       (flycheck-buffer)))

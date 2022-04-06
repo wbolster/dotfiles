@@ -51,7 +51,7 @@ DISPLAY-ERRORS, shows a buffer if the formatting fails."
 ;;;###autoload
 (define-minor-mode reformatter-dwim-on-save-mode
   "Toggle automatic reformatting when saving."
-  nil nil nil
+  :lighter nil
   (let ((fun (reformatter-dwim--command 'on-save-mode)))
     (funcall fun 'toggle)))
 
