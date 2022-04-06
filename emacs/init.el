@@ -3472,6 +3472,9 @@ defined as lowercase."
   ;; (tree-sitter-hl-face:constructor ((t (:inherit default))))
   )
 
+(use-package tree-sitter-langs
+  :after tree-sitter)
+
 
 ;;; Major mode: c
 
