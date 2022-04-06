@@ -3630,6 +3630,7 @@ defined as lowercase."
 ;;; Major mode: emacs lisp
 
 (use-package elisp-mode
+  :after lispy lispyville
   :defer t
   :ensure nil
   :general
@@ -3689,7 +3690,6 @@ defined as lowercase."
 
 (use-package lispy
   :after elisp-mode
-  :defer t
   :delight
   :config
   (lispy-set-key-theme '(lispy)))
