@@ -1,4 +1,4 @@
-;;; sqlformat-autoloads.el --- automatically extracted autoloads
+;;; sqlformat-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -21,7 +21,7 @@ package to get \"sqlfluff\".
 
 \(fn BEG END)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "sqlformat" '("sqlformat-")))
+(register-definition-prefixes "sqlformat" '("sqlformat-"))
 
 ;;;***
 

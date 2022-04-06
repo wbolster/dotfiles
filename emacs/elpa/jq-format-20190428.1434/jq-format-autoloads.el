@@ -1,4 +1,4 @@
-;;; jq-format-autoloads.el --- automatically extracted autoloads
+;;; jq-format-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -15,7 +15,7 @@
  (autoload 'jq-format-jsonlines-region "jq-format" nil t)
  (autoload 'jq-format-jsonlines-on-save-mode "jq-format" nil t)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "jq-format" '("jq-format-")))
+(register-definition-prefixes "jq-format" '("jq-format-"))
 
 ;;;***
 

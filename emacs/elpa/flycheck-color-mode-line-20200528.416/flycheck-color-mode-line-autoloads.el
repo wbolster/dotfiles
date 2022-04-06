@@ -1,4 +1,4 @@
-;;; flycheck-color-mode-line-autoloads.el --- automatically extracted autoloads
+;;; flycheck-color-mode-line-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -26,7 +26,7 @@ Otherwise behave as if called interactively.
 
 (custom-add-frequent-value 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "flycheck-color-mode-line" '("flycheck-color-mode-line-")))
+(register-definition-prefixes "flycheck-color-mode-line" '("flycheck-color-mode-line-"))
 
 ;;;***
 

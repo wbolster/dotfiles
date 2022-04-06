@@ -1,4 +1,4 @@
-;;; dumb-jump-autoloads.el --- automatically extracted autoloads
+;;; dumb-jump-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -50,10 +50,19 @@ for a description of this minor mode.")
 (autoload 'dumb-jump-mode "dumb-jump" "\
 Minor mode for jumping to variable and function definitions
 
-If called interactively, enable Dumb-Jump mode if ARG is
-positive, and disable it if ARG is zero or negative.  If called
-from Lisp, also enable the mode if ARG is omitted or nil, and
-toggle it if ARG is `toggle'; disable the mode otherwise.
+This is a minor mode.  If called interactively, toggle the
+`Dumb-Jump mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='dumb-jump-mode)'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
 
 \(fn &optional ARG)" t nil)
 
@@ -64,7 +73,7 @@ activiated, whenever it finds a project. It is recommended to add
 it to the end, so that it only gets activated when no better
 option is found." nil nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "dumb-jump" '("dumb-jump-")))
+(register-definition-prefixes "dumb-jump" '("dumb-jump-"))
 
 ;;;***
 

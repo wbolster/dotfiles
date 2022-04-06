@@ -1,4 +1,4 @@
-;;; smart-mode-line-autoloads.el --- automatically extracted autoloads
+;;; smart-mode-line-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -22,7 +22,7 @@ the mode-line will be setup.
 
 (defalias 'smart-mode-line-enable #'sml/setup)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "smart-mode-line" '("sml/")))
+(register-definition-prefixes "smart-mode-line" '("sml/"))
 
 ;;;***
 
@@ -32,7 +32,7 @@ the mode-line will be setup.
 
 (when load-file-name (add-to-list 'custom-theme-load-path (file-name-as-directory (file-name-directory load-file-name))))
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "smart-mode-line-dark-theme" '("smart-mode-line-dark")))
+(register-definition-prefixes "smart-mode-line-dark-theme" '("smart-mode-line-dark"))
 
 ;;;***
 
@@ -42,7 +42,7 @@ the mode-line will be setup.
 
 (when load-file-name (add-to-list 'custom-theme-load-path (file-name-as-directory (file-name-directory load-file-name))))
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "smart-mode-line-light-theme" '("smart-mode-line-light")))
+(register-definition-prefixes "smart-mode-line-light-theme" '("smart-mode-line-light"))
 
 ;;;***
 
@@ -52,7 +52,7 @@ the mode-line will be setup.
 
 (when load-file-name (add-to-list 'custom-theme-load-path (file-name-as-directory (file-name-directory load-file-name))))
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "smart-mode-line-respectful-theme" '("smart-mode-line-respectful")))
+(register-definition-prefixes "smart-mode-line-respectful-theme" '("smart-mode-line-respectful"))
 
 ;;;***
 

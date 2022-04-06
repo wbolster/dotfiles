@@ -1,4 +1,4 @@
-;;; evil-swap-keys-autoloads.el --- automatically extracted autoloads
+;;; evil-swap-keys-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -13,10 +13,19 @@
 (autoload 'evil-swap-keys-mode "evil-swap-keys" "\
 Minor mode to intelligently swap keyboard keys during text input.
 
-If called interactively, enable Evil-Swap-Keys mode if ARG is
-positive, and disable it if ARG is zero or negative.  If called
-from Lisp, also enable the mode if ARG is omitted or nil, and
-toggle it if ARG is `toggle'; disable the mode otherwise.
+This is a minor mode.  If called interactively, toggle the
+`Evil-Swap-Keys mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `evil-swap-keys-mode'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
 
 \(fn &optional ARG)" t nil)
 
@@ -35,12 +44,17 @@ or call the function `global-evil-swap-keys-mode'.")
 (autoload 'global-evil-swap-keys-mode "evil-swap-keys" "\
 Toggle Evil-Swap-Keys mode in all buffers.
 With prefix ARG, enable Global Evil-Swap-Keys mode if ARG is positive;
-otherwise, disable it.  If called from Lisp, enable the mode if
-ARG is omitted or nil.
+otherwise, disable it.
 
-Evil-Swap-Keys mode is enabled in all buffers where
-`(lambda nil (evil-swap-keys-mode t))' would do it.
-See `evil-swap-keys-mode' for more information on Evil-Swap-Keys mode.
+If called from Lisp, toggle the mode if ARG is `toggle'.
+Enable the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+Evil-Swap-Keys mode is enabled in all buffers where `(lambda nil
+\(evil-swap-keys-mode t))' would do it.
+
+See `evil-swap-keys-mode' for more information on Evil-Swap-Keys
+mode.
 
 \(fn &optional ARG)" t nil)
 
@@ -78,7 +92,7 @@ Swap the pipe and backslash." t nil)
 (autoload 'evil-swap-keys-swap-question-mark-slash "evil-swap-keys" "\
 Swap the question mark and slash." t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-swap-keys" '("evil-swap-keys-")))
+(register-definition-prefixes "evil-swap-keys" '("evil-swap-keys-"))
 
 ;;;***
 

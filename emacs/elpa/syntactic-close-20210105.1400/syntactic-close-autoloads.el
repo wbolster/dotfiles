@@ -1,4 +1,4 @@
-;;; syntactic-close-autoloads.el --- automatically extracted autoloads
+;;; syntactic-close-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -26,7 +26,7 @@ Argument PPS, the result of ‘parse-partial-sexp’.
 
 \(fn &optional ARG BEG PPS IACT)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "syntactic-close" '("syntactic-close-")))
+(register-definition-prefixes "syntactic-close" '("syntactic-close-"))
 
 ;;;***
 

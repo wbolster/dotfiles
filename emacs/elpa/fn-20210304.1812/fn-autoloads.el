@@ -1,4 +1,4 @@
-;;; fn-autoloads.el --- automatically extracted autoloads
+;;; fn-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 

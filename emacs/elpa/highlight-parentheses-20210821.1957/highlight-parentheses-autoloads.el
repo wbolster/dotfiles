@@ -1,4 +1,4 @@
-;;; highlight-parentheses-autoloads.el --- automatically extracted autoloads
+;;; highlight-parentheses-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -13,10 +13,20 @@
 (autoload 'highlight-parentheses-mode "highlight-parentheses" "\
 Minor mode to highlight the surrounding parentheses.
 
-If called interactively, enable Highlight-Parentheses mode if ARG
-is positive, and disable it if ARG is zero or negative.  If
-called from Lisp, also enable the mode if ARG is omitted or nil,
-and toggle it if ARG is `toggle'; disable the mode otherwise.
+This is a minor mode.  If called interactively, toggle the
+`Highlight-Parentheses mode' mode.  If the prefix argument is
+positive, enable the mode, and if it is zero or negative, disable
+the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `highlight-parentheses-mode'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
 
 \(fn &optional ARG)" t nil)
 
@@ -34,17 +44,22 @@ or call the function `global-highlight-parentheses-mode'.")
 
 (autoload 'global-highlight-parentheses-mode "highlight-parentheses" "\
 Toggle Highlight-Parentheses mode in all buffers.
-With prefix ARG, enable Global Highlight-Parentheses mode if ARG is positive;
-otherwise, disable it.  If called from Lisp, enable the mode if
-ARG is omitted or nil.
+With prefix ARG, enable Global Highlight-Parentheses mode if ARG is
+positive; otherwise, disable it.
 
-Highlight-Parentheses mode is enabled in all buffers where
-`(lambda nil (highlight-parentheses-mode 1))' would do it.
-See `highlight-parentheses-mode' for more information on Highlight-Parentheses mode.
+If called from Lisp, toggle the mode if ARG is `toggle'.
+Enable the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+Highlight-Parentheses mode is enabled in all buffers where `(lambda
+nil (highlight-parentheses-mode 1))' would do it.
+
+See `highlight-parentheses-mode' for more information on
+Highlight-Parentheses mode.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "highlight-parentheses" '("highlight-parentheses-" "hl-paren-face")))
+(register-definition-prefixes "highlight-parentheses" '("highlight-parentheses-" "hl-paren-face"))
 
 ;;;***
 

@@ -1,4 +1,4 @@
-;;; rich-minority-autoloads.el --- automatically extracted autoloads
+;;; rich-minority-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -25,16 +25,25 @@ or call the function `rich-minority-mode'.")
 (autoload 'rich-minority-mode "rich-minority" "\
 Toggle Rich minority mode on or off.
 
-If called interactively, enable Rich minority mode if ARG is
-positive, and disable it if ARG is zero or negative.  If called
-from Lisp, also enable the mode if ARG is omitted or nil, and
-toggle it if ARG is `toggle'; disable the mode otherwise.
+This is a minor mode.  If called interactively, toggle the `Rich
+minority mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='rich-minority-mode)'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
 
 \\{rich-minority-mode-map}
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "rich-minority" '("rm-")))
+(register-definition-prefixes "rich-minority" '("rm-"))
 
 ;;;***
 

@@ -1,4 +1,4 @@
-;;; list-utils-autoloads.el --- automatically extracted autoloads
+;;; list-utils-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -482,7 +482,7 @@ This functionality overlaps with the undocumented `cl-do-remf'.
 
 \(fn PLIST PROP)" nil nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "list-utils" '("list-utils-htt-")))
+(register-definition-prefixes "list-utils" '("list-utils-htt-"))
 
 ;;;***
 

@@ -1,4 +1,4 @@
-;;; unicode-fonts-autoloads.el --- automatically extracted autoloads
+;;; unicode-fonts-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -58,7 +58,7 @@ and regenerated.
 
 \(fn &optional FONTSET-NAMES REGENERATE)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "unicode-fonts" '("persistent-softest-" "unicode-")))
+(register-definition-prefixes "unicode-fonts" '("persistent-softest-" "unicode-"))
 
 ;;;***
 

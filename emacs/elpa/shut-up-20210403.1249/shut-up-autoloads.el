@@ -1,4 +1,4 @@
-;;; shut-up-autoloads.el --- automatically extracted autoloads
+;;; shut-up-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -38,7 +38,7 @@ Change Emacs settings to reduce the output.
 WARNING: This function has GLOBAL SIDE-EFFECTS.  You should only
 call this function in `noninteractive' sessions." nil nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "shut-up" '("inhibit-message" "shut-up-")))
+(register-definition-prefixes "shut-up" '("inhibit-message" "shut-up-"))
 
 ;;;***
 

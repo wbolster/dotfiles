@@ -1,4 +1,4 @@
-;;; persistent-soft-autoloads.el --- automatically extracted autoloads
+;;; persistent-soft-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -59,7 +59,7 @@ on failure, without throwing an error.
 
 \(fn SYMBOL VALUE LOCATION &optional EXPIRATION)" nil nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "persistent-soft" '("persistent-soft-")))
+(register-definition-prefixes "persistent-soft" '("persistent-soft-"))
 
 ;;;***
 

@@ -1,4 +1,4 @@
-;;; fancy-narrow-autoloads.el --- automatically extracted autoloads
+;;; fancy-narrow-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -53,10 +53,19 @@ for a description of this minor mode.")
 (autoload 'fancy-narrow-mode "fancy-narrow" "\
 Global minor mode that binds the fancy-narrow functions.
 
-If called interactively, enable Fancy-Narrow mode if ARG is
-positive, and disable it if ARG is zero or negative.  If called
-from Lisp, also enable the mode if ARG is omitted or nil, and
-toggle it if ARG is `toggle'; disable the mode otherwise.
+This is a minor mode.  If called interactively, toggle the
+`Fancy-Narrow mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='fancy-narrow-mode)'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
 
 The keys used are the same used by the non-fancy functions.
 Binds that are replaced are:
@@ -89,7 +98,7 @@ Like `narrow-to-page', except using `fancy-narrow-to-region'.
 (autoload 'org-fancy-narrow-to-subtree "fancy-narrow" "\
 Like `org-narrow-to-subtree', except using `fancy-narrow-to-region'." t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "fancy-narrow" '("fancy-narrow-")))
+(register-definition-prefixes "fancy-narrow" '("fancy-narrow-"))
 
 ;;;***
 

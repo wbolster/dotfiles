@@ -1,4 +1,4 @@
-;;; string-inflection-autoloads.el --- automatically extracted autoloads
+;;; string-inflection-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -43,7 +43,7 @@ FOO_BAR format" t nil)
 (autoload 'string-inflection-kebab-case "string-inflection" "\
 foo-bar format" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "string-inflection" '("string-inflection-")))
+(register-definition-prefixes "string-inflection" '("string-inflection-"))
 
 ;;;***
 

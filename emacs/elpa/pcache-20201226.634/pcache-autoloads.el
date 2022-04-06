@@ -1,4 +1,4 @@
-;;; pcache-autoloads.el --- automatically extracted autoloads
+;;; pcache-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -9,7 +9,7 @@
 ;;;### (autoloads nil "pcache" "pcache.el" (0 0 0 0))
 ;;; Generated autoloads from pcache.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pcache" '("*pcache-repositor" "pcache-")))
+(register-definition-prefixes "pcache" '("*pcache-repositor" "pcache-"))
 
 ;;;***
 

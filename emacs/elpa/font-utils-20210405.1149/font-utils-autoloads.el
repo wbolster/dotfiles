@@ -1,4 +1,4 @@
-;;; font-utils-autoloads.el --- automatically extracted autoloads
+;;; font-utils-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -99,7 +99,7 @@ from the XLFD returned by `font-info'.
 
 \(fn FONT-NAMES &optional NO-NORMALIZE)" nil nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "font-utils" '("font-" "persistent-softest-")))
+(register-definition-prefixes "font-utils" '("font-" "persistent-softest-"))
 
 ;;;***
 

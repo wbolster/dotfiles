@@ -1,4 +1,4 @@
-;;; xterm-color-autoloads.el --- automatically extracted autoloads
+;;; xterm-color-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -69,7 +69,7 @@ ANSI sequences are not processed. One can use a different Emacs package,
 such as ansi-color.el to do so. This is really meant to be used for easy
 comparisons/benchmarks with libraries that offer similar functionality." t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "xterm-color" '("+xterm-color--table-256+" "xterm-color-")))
+(register-definition-prefixes "xterm-color" '("+xterm-color--table-256+" "xterm-color-"))
 
 ;;;***
 

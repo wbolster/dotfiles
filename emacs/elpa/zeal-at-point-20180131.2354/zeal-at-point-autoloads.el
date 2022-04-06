@@ -1,4 +1,4 @@
-;;; zeal-at-point-autoloads.el --- automatically extracted autoloads
+;;; zeal-at-point-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -22,7 +22,7 @@ Prompt and search in zeal.
 
 \(fn &optional EDIT-SEARCH)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "zeal-at-point" '("zeal-at-point-")))
+(register-definition-prefixes "zeal-at-point" '("zeal-at-point-"))
 
 ;;;***
 

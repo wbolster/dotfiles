@@ -1,4 +1,4 @@
-;;; vdiff-magit-autoloads.el --- automatically extracted autoloads
+;;; vdiff-magit-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -47,7 +47,7 @@ FILE must be relative to the top directory of the repository.
 
 \(fn FILE)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "vdiff-magit" '("vdiff-magit")))
+(register-definition-prefixes "vdiff-magit" '("vdiff-magit"))
 
 ;;;***
 

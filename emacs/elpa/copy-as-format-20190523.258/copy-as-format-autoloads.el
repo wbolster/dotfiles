@@ -1,4 +1,4 @@
-;;; copy-as-format-autoloads.el --- automatically extracted autoloads
+;;; copy-as-format-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -31,7 +31,7 @@ With a prefix argument prompt for the format." t nil)
  (autoload 'copy-as-format-rst       "copy-as-format" nil t)
  (autoload 'copy-as-format-slack     "copy-as-format" nil t)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "copy-as-format" '("copy-as-format-")))
+(register-definition-prefixes "copy-as-format" '("copy-as-format-"))
 
 ;;;***
 

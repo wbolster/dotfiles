@@ -1,4 +1,4 @@
-;;; pip-requirements-autoloads.el --- automatically extracted autoloads
+;;; pip-requirements-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -27,7 +27,7 @@ Major mode for editing pip requirements files.
 
 \(fn)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pip-requirements" '("pip-")))
+(register-definition-prefixes "pip-requirements" '("pip-"))
 
 ;;;***
 

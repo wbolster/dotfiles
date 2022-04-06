@@ -1,2 +1,0 @@
-;;; Generated package description from visual-fill-column.el  -*- no-byte-compile: t -*-
-(define-package "visual-fill-column" "20211014.2141" "fill-column for visual-line-mode" '((emacs "25.1")) :commit "2df643827a4fd82b732ea93042916c61078d4206" :authors '(("Joost Kremers" . "joostkremers@fastmail.fm")) :maintainer '("Joost Kremers" . "joostkremers@fastmail.fm") :url "https://github.com/joostkremers/visual-fill-column")

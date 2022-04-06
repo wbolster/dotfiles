@@ -1,4 +1,4 @@
-;;; flycheck-cython-autoloads.el --- automatically extracted autoloads
+;;; flycheck-cython-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -10,7 +10,7 @@
 ;;;;;;  0 0))
 ;;; Generated autoloads from flycheck-cython.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "flycheck-cython" '("flycheck-cython-map-source-file")))
+(register-definition-prefixes "flycheck-cython" '("flycheck-cython-map-source-file"))
 
 ;;;***
 

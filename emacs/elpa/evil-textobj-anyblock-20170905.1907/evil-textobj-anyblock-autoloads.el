@@ -1,4 +1,4 @@
-;;; evil-textobj-anyblock-autoloads.el --- automatically extracted autoloads
+;;; evil-textobj-anyblock-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -24,7 +24,7 @@
  (autoload 'evil-textobj-anyblock-backward-any-block-start "evil-textobj-anyblock" nil t)
  (autoload 'evil-textobj-anyblock-backward-any-block-end "evil-textobj-anyblock" nil t)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-textobj-anyblock" '("evil-textobj-anyblock-")))
+(register-definition-prefixes "evil-textobj-anyblock" '("evil-textobj-anyblock-"))
 
 ;;;***
 

@@ -1,4 +1,4 @@
-;;; python-coverage-autoloads.el --- automatically extracted autoloads
+;;; python-coverage-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -20,10 +20,20 @@ This is only needed if autodetection does not work.
 (autoload 'python-coverage-overlay-mode "python-coverage" "\
 Minor mode to show Python coverage results as overlays.
 
-If called interactively, enable Python-Coverage-Overlay mode if
-ARG is positive, and disable it if ARG is zero or negative.  If
-called from Lisp, also enable the mode if ARG is omitted or nil,
-and toggle it if ARG is `toggle'; disable the mode otherwise.
+This is a minor mode.  If called interactively, toggle the
+`Python-Coverage-Overlay mode' mode.  If the prefix argument is
+positive, enable the mode, and if it is zero or negative, disable
+the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `python-coverage-overlay-mode'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
 
 \(fn &optional ARG)" t nil)
 
@@ -42,7 +52,7 @@ Jump to the previous overlay." t nil)
 (autoload 'python-coverage-overlay-jump-first "python-coverage" "\
 Jump to the first overlay." t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "python-coverage" '("python-coverage-")))
+(register-definition-prefixes "python-coverage" '("python-coverage-"))
 
 ;;;***
 

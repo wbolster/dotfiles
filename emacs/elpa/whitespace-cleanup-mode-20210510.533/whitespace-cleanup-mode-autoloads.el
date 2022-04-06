@@ -1,4 +1,4 @@
-;;; whitespace-cleanup-mode-autoloads.el --- automatically extracted autoloads
+;;; whitespace-cleanup-mode-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -15,10 +15,20 @@
 (autoload 'whitespace-cleanup-mode "whitespace-cleanup-mode" "\
 Automatically call `whitespace-cleanup' on save.
 
-If called interactively, enable Whitespace-Cleanup mode if ARG is
-positive, and disable it if ARG is zero or negative.  If called
-from Lisp, also enable the mode if ARG is omitted or nil, and
-toggle it if ARG is `toggle'; disable the mode otherwise.
+This is a minor mode.  If called interactively, toggle the
+`Whitespace-Cleanup mode' mode.  If the prefix argument is
+positive, enable the mode, and if it is zero or negative, disable
+the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `whitespace-cleanup-mode'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
 
 \(fn &optional ARG)" t nil)
 
@@ -38,17 +48,22 @@ or call the function `global-whitespace-cleanup-mode'.")
 
 (autoload 'global-whitespace-cleanup-mode "whitespace-cleanup-mode" "\
 Toggle Whitespace-Cleanup mode in all buffers.
-With prefix ARG, enable Global Whitespace-Cleanup mode if ARG is positive;
-otherwise, disable it.  If called from Lisp, enable the mode if
-ARG is omitted or nil.
+With prefix ARG, enable Global Whitespace-Cleanup mode if ARG is
+positive; otherwise, disable it.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.
+Enable the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
 
 Whitespace-Cleanup mode is enabled in all buffers where
 `whitespace-cleanup-mode--maybe' would do it.
-See `whitespace-cleanup-mode' for more information on Whitespace-Cleanup mode.
+
+See `whitespace-cleanup-mode' for more information on
+Whitespace-Cleanup mode.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "whitespace-cleanup-mode" '("whitespace-cleanup-mode-")))
+(register-definition-prefixes "whitespace-cleanup-mode" '("whitespace-cleanup-mode-"))
 
 ;;;***
 

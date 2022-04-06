@@ -1,4 +1,4 @@
-;;; evil-numbers-autoloads.el --- automatically extracted autoloads
+;;; evil-numbers-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -13,7 +13,7 @@
  (autoload 'evil-numbers/inc-at-pt-incremental "evil-numbers" nil t)
  (autoload 'evil-numbers/dec-at-pt-incremental "evil-numbers" nil t)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-numbers" '("evil-numbers-")))
+(register-definition-prefixes "evil-numbers" '("evil-numbers-"))
 
 ;;;***
 

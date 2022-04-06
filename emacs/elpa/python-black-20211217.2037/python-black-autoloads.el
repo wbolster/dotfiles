@@ -1,4 +1,4 @@
-;;; python-black-autoloads.el --- automatically extracted autoloads
+;;; python-black-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -34,7 +34,7 @@ DISPLAY-ERRORS is non-nil, shows a buffer if the formatting fails.
 
 \(fn &optional DISPLAY-ERRORS)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "python-black" '("python-black-")))
+(register-definition-prefixes "python-black" '("python-black-"))
 
 ;;;***
 

@@ -1,4 +1,4 @@
-;;; drag-stuff-autoloads.el --- automatically extracted autoloads
+;;; drag-stuff-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -32,10 +32,19 @@ Drag stuff ARG lines to the left.
 (autoload 'drag-stuff-mode "drag-stuff" "\
 Drag stuff around.
 
-If called interactively, enable Drag-Stuff mode if ARG is
-positive, and disable it if ARG is zero or negative.  If called
-from Lisp, also enable the mode if ARG is omitted or nil, and
-toggle it if ARG is `toggle'; disable the mode otherwise.
+This is a minor mode.  If called interactively, toggle the
+`drag-Stuff mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `drag-stuff-mode'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
 
 \(fn &optional ARG)" t nil)
 
@@ -60,16 +69,20 @@ or call the function `drag-stuff-global-mode'.")
 (autoload 'drag-stuff-global-mode "drag-stuff" "\
 Toggle Drag-Stuff mode in all buffers.
 With prefix ARG, enable Drag-Stuff-Global mode if ARG is positive;
-otherwise, disable it.  If called from Lisp, enable the mode if
-ARG is omitted or nil.
+otherwise, disable it.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.
+Enable the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
 
 Drag-Stuff mode is enabled in all buffers where
 `turn-on-drag-stuff-mode' would do it.
+
 See `drag-stuff-mode' for more information on Drag-Stuff mode.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "drag-stuff" '("drag-stuff-")))
+(register-definition-prefixes "drag-stuff" '("drag-stuff-"))
 
 ;;;***
 

@@ -1,4 +1,4 @@
-;;; evil-string-inflection-autoloads.el --- automatically extracted autoloads
+;;; evil-string-inflection-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 

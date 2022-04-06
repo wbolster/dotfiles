@@ -1,4 +1,4 @@
-;;; typo-autoloads.el --- automatically extracted autoloads
+;;; typo-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -12,10 +12,19 @@
 (autoload 'typo-mode "typo" "\
 Minor mode for typographic editing.
 
-If called interactively, enable Typo mode if ARG is positive, and
-disable it if ARG is zero or negative.  If called from Lisp, also
-enable the mode if ARG is omitted or nil, and toggle it if ARG is
-`toggle'; disable the mode otherwise.
+This is a minor mode.  If called interactively, toggle the `Typo
+mode' mode.  If the prefix argument is positive, enable the mode,
+and if it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `typo-mode'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
 
 This mode changes some default keybindings to enter typographic
 glyphs. In particular, this changes how quotation marks, the
@@ -38,10 +47,19 @@ for a description of this minor mode.")
 (autoload 'typo-global-mode "typo" "\
 Minor mode for typographic editing.
 
-If called interactively, enable Typo-Global mode if ARG is
-positive, and disable it if ARG is zero or negative.  If called
-from Lisp, also enable the mode if ARG is omitted or nil, and
-toggle it if ARG is `toggle'; disable the mode otherwise.
+This is a minor mode.  If called interactively, toggle the
+`Typo-Global mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='typo-global-mode)'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
 
 This mode provides a prefix map under C-c 8 which complements the
 default C-x 8 prefix map.
@@ -50,7 +68,7 @@ default C-x 8 prefix map.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "typo" '("define-typo-cycle" "typo-")))
+(register-definition-prefixes "typo" '("define-typo-cycle" "typo-"))
 
 ;;;***
 

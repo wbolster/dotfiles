@@ -1,4 +1,4 @@
-;;; magit-popup-autoloads.el --- automatically extracted autoloads
+;;; magit-popup-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -9,7 +9,7 @@
 ;;;### (autoloads nil "magit-popup" "magit-popup.el" (0 0 0 0))
 ;;; Generated autoloads from magit-popup.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "magit-popup" '("magit-")))
+(register-definition-prefixes "magit-popup" '("magit-"))
 
 ;;;***
 

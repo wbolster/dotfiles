@@ -1,4 +1,4 @@
-;;; delight-autoloads.el --- automatically extracted autoloads
+;;; delight-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -36,7 +36,7 @@ to prevent the mode being treated as a minor mode.
 
 \(fn SPEC &optional VALUE FILE)" nil nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "delight" '("delight-")))
+(register-definition-prefixes "delight" '("delight-"))
 
 ;;;***
 

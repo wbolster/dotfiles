@@ -1,4 +1,4 @@
-;;; evil-exchange-autoloads.el --- automatically extracted autoloads
+;;; evil-exchange-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -21,7 +21,7 @@ Setting evil-exchange key bindings." nil nil)
 (autoload 'evil-exchange-cx-install "evil-exchange" "\
 Setting evil-exchange key bindings in a vim-compatible way" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-exchange" '("evil-exchange")))
+(register-definition-prefixes "evil-exchange" '("evil-exchange"))
 
 ;;;***
 

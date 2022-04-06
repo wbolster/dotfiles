@@ -1,4 +1,4 @@
-;;; evil-python-movement-autoloads.el --- automatically extracted autoloads
+;;; evil-python-movement-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -18,7 +18,7 @@
 (autoload 'evil-python-movement-lsb-rsb "evil-python-movement" nil t)
 (autoload 'evil-python-movement-rsb-lsb "evil-python-movement" nil t)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-python-movement" '("evil-python-movement-")))
+(register-definition-prefixes "evil-python-movement" '("evil-python-movement-"))
 
 ;;;***
 

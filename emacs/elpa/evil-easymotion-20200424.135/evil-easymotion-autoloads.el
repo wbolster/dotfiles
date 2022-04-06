@@ -1,4 +1,4 @@
-;;; evil-easymotion-autoloads.el --- automatically extracted autoloads
+;;; evil-easymotion-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -48,7 +48,7 @@ Define easymotions for all motions evil defines by default
 
 \(fn PREFIX)" nil nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "evil-easymotion" '("evilem-")))
+(register-definition-prefixes "evil-easymotion" '("evilem-"))
 
 ;;;***
 

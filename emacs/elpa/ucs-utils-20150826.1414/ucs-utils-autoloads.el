@@ -1,4 +1,4 @@
-;;; ucs-utils-autoloads.el --- automatically extracted autoloads
+;;; ucs-utils-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -229,7 +229,7 @@ The following aliases will be installed:
     `ucs-pretty-name'           for   `ucs-utils-pretty-name'
     `ucs-eval'                  for   `ucs-utils-eval'" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ucs-utils" '("character-name-history" "persistent-soft" "ucs-utils-")))
+(register-definition-prefixes "ucs-utils" '("character-name-history" "persistent-soft" "ucs-utils-"))
 
 ;;;***
 
