@@ -2830,17 +2830,6 @@ defined as lowercase."
              (alist-get 'headings)
              (alist-get 'heading-format))
         "%C %s\n")
-  (setf (->> magit-blame-styles
-             (alist-get 'margin)
-             (alist-get 'margin-format)
-             (cadr))
-        " %C")
-
-  ;; wider margin view; looks like split view
-  (setf (->> magit-blame-styles
-             (alist-get 'margin)
-             (alist-get 'margin-width))
-        70)
 
   (with-eval-after-load 'direnv
     (--each '(magit-blob-mode
