@@ -670,7 +670,6 @@ defined as lowercase."
 
 (use-package which-func
   :ensure nil
-  :defer t
   :custom
   (which-func-unknown "")
   (which-func-modes nil)
