@@ -3719,18 +3719,11 @@ defined as lowercase."
 
 ;;; Major mode: git
 
-(use-package gitattributes-mode
-  :defer t)
-
-(use-package gitconfig-mode
+(use-package git-modes
   :defer t
   :mode
   ((rx ".gitconfig" (* any) string-end) . gitconfig-mode)
   ((rx ".config/git/config" (* any) string-end) . gitconfig-mode))
-
-(use-package gitignore-mode
-  :defer t)
-
 
 ;;; Major mode: groovy
 
