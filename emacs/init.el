@@ -3465,6 +3465,13 @@ defined as lowercase."
 (use-package counsel-dash
   :after dash-docs)
 
+(use-package tree-sitter
+  :delight
+  :custom-face
+  ;; (tree-sitter-hl-face:function.call ((t (:inherit default))))
+  ;; (tree-sitter-hl-face:constructor ((t (:inherit default))))
+  )
+
 
 ;;; Major mode: c
 
@@ -4011,6 +4018,7 @@ defined as lowercase."
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-underscore-dash)
     (smartparens-mode) ;; todo
+    (tree-sitter-hl-mode)
     ;; (lispyville-mode)
     (origami-mode)
     ;; (python-docstring-mode)
