@@ -4,8 +4,10 @@
 /elpa/*.signed
 /custom.el
 /elpa/archives/
-/elpa/emacsql-sqlite*/
+/elpa/emacsql-sqlite-*/
 /elpa/gnupg/
+/elpa/tree-sitter-langs-*/
+/elpa/tsc-*/
 /init-local.el
 /quelpa/
 /var/
