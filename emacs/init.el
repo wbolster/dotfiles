@@ -2716,6 +2716,7 @@ defined as lowercase."
   (global-auto-revert-mode))
 
 (use-package magit
+  :after evil-collection
   :defer t
   :delight
   (magit-wip-after-save-local-mode)
