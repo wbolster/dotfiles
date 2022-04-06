@@ -37,7 +37,8 @@
  package-archives '(("melpa" . "https://melpa.org/packages/")
                     ("melpa-stable" . "https://stable.melpa.org/packages/")
                     ("gnu" . "https://elpa.gnu.org/packages/"))
- package-enable-at-startup nil)
+ package-enable-at-startup nil
+ package-user-dir (locate-user-emacs-file "elpa"))
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
