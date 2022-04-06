@@ -4108,12 +4108,10 @@ defined as lowercase."
         (insert-before-markers statement "\n" indent)
         (python-nav-backward-statement)))))
 
-  (defun w--python-insert-pdb-trace ()
+  (defun w--python-insert-breakpoint ()
     "Insert a pdb trace statement using PDB-MODULE before the current statement."
     (interactive)
-    (w--python-insert-statement
-     'before
-     "__import__(\"pdb\").set_trace()  # FIXME"))
+    (w--python-insert-statement 'before "breakpoint()  # FIXME"))
 
   (defun w--python-insert-ipython-repl (position)
     "Insert an IPython repl statement before or after the current statement."
@@ -4193,7 +4191,7 @@ defined as lowercase."
   (w--make-hydra w--hydra-python nil
     "python"
     "_b_reakpoint"
-    ("b" w--python-insert-pdb-trace)
+    ("b" w--python-insert-breakpoint)
     "_c_overage"
     ("c" python-coverage-overlay-mode)
     "_i_mport"
