@@ -2866,8 +2866,7 @@ defined as lowercase."
       ("S" "status other" w--magit-status-other-repository)]
      [("t" "lock" magit-toggle-buffer-lock)
       ("w" "web" w--git-web-browse)
-      ("!" "command" magit-git-command)]])
-  )
+      ("!" "command" magit-git-command)]]))
 
 (use-package blamer
   :quelpa (blamer :fetcher github :repo "artawower/blamer.el")
