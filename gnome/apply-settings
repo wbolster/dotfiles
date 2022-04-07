@@ -182,12 +182,14 @@ gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-9 "['<Control><
 # screenshots
 #
 
-gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot-clip "['Print']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot "['<Primary>Print']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot-clip "['<Shift>Print']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot "['<Primary><Shift>Print']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot-clip "['<Alt>Print']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot "['<Primary><Alt>Print']"
+if ((gnome_major_version < 42)); then
+    gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot-clip "['Print']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot "['<Primary>Print']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot-clip "['<Shift>Print']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot "['<Primary><Shift>Print']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot-clip "['<Alt>Print']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot "['<Primary><Alt>Print']"
+fi
 
 
 #
