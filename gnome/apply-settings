@@ -112,40 +112,32 @@ gsettings set org.gnome.mutter workspaces-only-on-primary true
 # maximised/full screen
 gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Alt>F11', '<Control><Super>f']"
 gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Alt>F10', '<Super>f']"
+gsettings set org.gnome.desktop.wm.keybindings maximize-horizontally "[]"
+gsettings set org.gnome.desktop.wm.keybindings maximize-vertically "['<Super>r']"
 
 # left/right with </> keys (without shift)
 gsettings set org.gnome.mutter.keybindings toggle-tiled-left "['<Super>comma']"
 gsettings set org.gnome.mutter.keybindings toggle-tiled-right "['<Super>period']"
 
 # quick window cycling
-gsettings set org.gnome.desktop.wm.keybindings cycle-windows "['<Super>Space']"
-gsettings set org.gnome.desktop.wm.keybindings cycle-windows-backward "['<Control><Super>Space']"
+gsettings set org.gnome.desktop.wm.keybindings cycle-windows "['<Super>n']"
+gsettings set org.gnome.desktop.wm.keybindings cycle-windows-backward "['<Super>e']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-center "['<Super>c']"
 
 gsettings set org.gnome.desktop.wm.keybindings switch-panels "['<Primary><Super>Tab']"
 gsettings set org.gnome.desktop.wm.keybindings switch-panels-backward "['<Primary><Shift><Super>Tab']"
 
 # hjkl-style window/workspace navigation; with colemak keys this is hnei, not hjkl
-gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Super>i']"
-gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Super>h']"
-if ((gnome_major_version >= 40)); then
-    gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-down "[]"
-    gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-left "['<Control><Super>e']"
-    gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-right "['<Control><Super>n']"
-    gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-up "[]"
-    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down "[]"
-    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left "['<Super>e']"
-    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right "['<Super>n']"
-    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up "[]"
-else
-    gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-down "['<Control><Super>n']"
-    gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-left "[]"
-    gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-right "[]"
-    gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-up "['<Control><Super>e']"
-    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down "['<Super>n']"
-    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left "[]"
-    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right "[]"
-    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up "['<Super>e']"
-fi
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-down "[]"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-left "['<Control><Super>h']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-right "['<Control><Super>i']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-up "[]"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down "[]"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left "['<Super>h']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right "['<Super>i']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up "[]"
+gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "[]"
+gsettings set org.gnome.desktop.wm.keybindings switch-windows "[]"
 
 # workspaces
 gsettings set org.gnome.mutter dynamic-workspaces false
@@ -371,6 +363,9 @@ if gnome-extensions list --enabled | grep -q -F -x 'paperwm@hedning:matrix.org';
 
     gsettings set org.gnome.desktop.wm.keybindings cycle-windows "[]"
     gsettings set org.gnome.desktop.wm.keybindings cycle-windows-backward "[]"
+    gsettings set org.gnome.desktop.wm.keybindings maximize-horizontally "[]"
+    gsettings set org.gnome.desktop.wm.keybindings maximize-vertically "[]"
+    gsettings set org.gnome.desktop.wm.keybindings move-to-center "[]"
     gsettings set org.gnome.desktop.wm.keybindings switch-windows "[]"
     gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "[]"
     gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "[]"
