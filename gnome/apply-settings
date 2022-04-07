@@ -12,6 +12,7 @@ gnome_major_version=$(xmllint --xpath '//platform/text()' /usr/share/gnome/gnome
 gsettings set org.gnome.desktop.interface clock-show-date true
 gsettings set org.gnome.desktop.interface clock-show-weekday true
 gsettings set org.gnome.desktop.interface cursor-blink false
+gsettings set org.gnome.desktop.interface enable-hot-corners false
 gsettings set org.gnome.desktop.interface gtk-key-theme "'Emacs'"
 gsettings set org.gnome.desktop.interface show-battery-percentage true
 
