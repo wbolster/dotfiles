@@ -20,16 +20,19 @@ gnome_shell_theme_dark=''
 
 
 set_gnome_theme() {
-    local gtk_theme gnome_shell_theme
+    local color_scheme gtk_theme gnome_shell_theme
     if [ "$1" = "dark" ]; then
+        color_scheme="prefer-dark"
         gtk_theme="$gtk_theme_dark"
         gnome_shell_theme="$gnome_shell_theme_dark"
     else
+        color_scheme="default"
         gtk_theme="$gtk_theme_light"
         gnome_shell_theme="$gnome_shell_theme_light"
     fi
-    gsettings set org.gnome.desktop.interface gtk-theme "${gtk_theme}"
-    gsettings set org.gnome.shell.extensions.user-theme name "${gnome_shell_theme}"
+    gsettings set org.gnome.desktop.interface color-scheme "$color_scheme"
+    gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme"
+    gsettings set org.gnome.shell.extensions.user-theme name "$gnome_shell_theme"
 }
 
 set_gnome_terminal_theme() {
