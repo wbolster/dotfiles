@@ -113,7 +113,7 @@ gsettings set org.gnome.mutter workspaces-only-on-primary true
 gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Alt>F11', '<Control><Super>f']"
 gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Alt>F10', '<Super>f']"
 gsettings set org.gnome.desktop.wm.keybindings maximize-horizontally "[]"
-gsettings set org.gnome.desktop.wm.keybindings maximize-vertically "['<Super>r']"
+gsettings set org.gnome.desktop.wm.keybindings maximize-vertically "['<Control><Super>r']"
 
 # left/right with </> keys (without shift)
 gsettings set org.gnome.mutter.keybindings toggle-tiled-left "['<Super>comma']"
@@ -422,3 +422,31 @@ if gnome-extensions list --enabled | grep -q -F -x 'paperwm@hedning:matrix.org';
     # the ‘maximised?’ detection doesn't seem to work
     dconf write /org/gnome/shell/extensions/gtktitlebar/hide-window-titlebars "'always'"
 fi
+
+# tactile
+dconf write /org/gnome/shell/extensions/tactile/show-tiles "['<Super>r']"
+dconf write /org/gnome/shell/extensions/tactile/tile-0-0 "['q']"
+dconf write /org/gnome/shell/extensions/tactile/tile-1-0 "['w']"
+dconf write /org/gnome/shell/extensions/tactile/tile-2-0 "['f']"
+dconf write /org/gnome/shell/extensions/tactile/tile-3-0 "['p']"
+dconf write /org/gnome/shell/extensions/tactile/tile-0-1 "['a']"
+dconf write /org/gnome/shell/extensions/tactile/tile-1-1 "['r']"
+dconf write /org/gnome/shell/extensions/tactile/tile-2-1 "['s']"
+dconf write /org/gnome/shell/extensions/tactile/tile-3-1 "['t']"
+dconf write /org/gnome/shell/extensions/tactile/tile-0-2 "['z']"
+dconf write /org/gnome/shell/extensions/tactile/tile-1-2 "['x']"
+dconf write /org/gnome/shell/extensions/tactile/tile-2-2 "['c']"
+dconf write /org/gnome/shell/extensions/tactile/tile-3-2 "['v']"
+dconf write /org/gnome/shell/extensions/tactile/col-0 2
+dconf write /org/gnome/shell/extensions/tactile/col-1 1
+dconf write /org/gnome/shell/extensions/tactile/col-2 1
+dconf write /org/gnome/shell/extensions/tactile/col-3 2
+dconf write /org/gnome/shell/extensions/tactile/row-0 0
+dconf write /org/gnome/shell/extensions/tactile/row-1 1
+dconf write /org/gnome/shell/extensions/tactile/row-2 0
+dconf write /org/gnome/shell/extensions/tactile/background-color "'rgba(53,132,228,0.2)'"
+dconf write /org/gnome/shell/extensions/tactile/border-color "'rgba(53,132,228,0.5)'"
+dconf write /org/gnome/shell/extensions/tactile/text-color "'rgb(53,132,228)'"
+dconf write /org/gnome/shell/extensions/tactile/border-size 1
+dconf write /org/gnome/shell/extensions/tactile/gap-size 0
+dconf write /org/gnome/shell/extensions/tactile/text-size 64
