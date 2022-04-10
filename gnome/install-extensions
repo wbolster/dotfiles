@@ -11,20 +11,20 @@ install_extension () {
     gnome-extensions-cli install "$1"
 }
 
-# install_extension alt-tab-lift-first-window@cork.github.com
 install_extension arch-update@RaphaelRochet
 install_extension autohide-battery@sitnik.ru
 install_extension bluetooth-quick-connect@bjarosze.gmail.com
-install_extension dash-to-dock@micxgx.gmail.com
-install_extension disableworkspaceanim@owilliams.mixxx.org
-install_extension drawOnYourScreen@abakkk.framagit.org
+# install_extension dash-to-dock@micxgx.gmail.com
+# install_extension disableworkspaceanim@owilliams.mixxx.org
+# install_extension drawOnYourScreen@abakkk.framagit.org
+install_extension draw-on-your-screen2@zhrexl.github.com
 install_extension espresso@coadmunkee.github.com
 install_extension gtktitlebar@velitasali.github.io
 install_extension emoji-selector@maestroschan.fr
 install_extension mprisindicatorbutton@JasonLG1979.github.io
 install_extension nothing-to-say@extensions.gnome.wouter.bolsterl.ee
-# install_extension remove-dropdown-arrows@mpdeimos.com
 install_extension sound-output-device-chooser@kgshank.net
+install_extension tactile@lundal.io
 install_extension tint-all@amarovita.github.com
 
 # paperwm is a bit special
@@ -43,6 +43,7 @@ install_paperwm () {
 
     gnome-extensions-cli enable 'paperwm@hedning:matrix.org'
 }
-if ! gnome-extensions-cli list | grep paperwm; then
-    install_paperwm
-fi
+# xxx: does not work on gnome 42
+# if ! gnome-extensions-cli list | grep paperwm; then
+#     install_paperwm
+# fi
