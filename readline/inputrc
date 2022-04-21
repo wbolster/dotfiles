@@ -4,8 +4,8 @@ set enable-bracketed-paste on
 set completion-ignore-case on
 
 # History
-"\C-p":    history-search-backward
-"\C-n":    history-search-forward
+Control-p:    history-search-backward
+Control-n:    history-search-forward
 # "\e[5~":   history-search-backward  # PageUp
 # "\e[6~":   history-search-forward   # PageDown
 
