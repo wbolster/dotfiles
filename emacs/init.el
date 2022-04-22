@@ -1306,7 +1306,7 @@ defined as lowercase."
   (make-variable-buffer-local 'evil-surround-pairs-alist)
 
   (defun w--add-evil-surround-pairs (&rest args)
-    (apply 'evil--add-to-alist 'evil-surround-pairs-alist args)))
+    (apply 'evil-add-to-alist 'evil-surround-pairs-alist args)))
 
 (use-package evil-swap-keys
   :config
