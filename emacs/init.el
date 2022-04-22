@@ -2826,6 +2826,8 @@ defined as lowercase."
     '(6 "x" "Absorb changes" magit-commit-absorb))
   (transient-append-suffix 'magit-push
     "-n" '("/c" "Skip Gitlab CI" "--push-option=ci.skip"))
+  (transient-append-suffix 'magit-push
+    "/c" '("/m" "Create Gitlab merge request" "--push-option=merge_request.create"))
 
   ;; hide author names from magit-blame annotations;
   ;; it's usually about why/what/when, not who.
