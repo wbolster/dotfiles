@@ -1283,7 +1283,7 @@ defined as lowercase."
   w--add-evil-surround-pairs
 
   :config
-  (evil--add-to-alist
+  (evil-add-to-alist
    'evil-surround-pairs-alist
    ;; overwrite defaults to not put spaces inside braces:
    ?\( '("(" . ")")
@@ -4023,7 +4023,7 @@ defined as lowercase."
     ;; (python-docstring-mode)
     (w--add-evil-surround-pairs
      ?` '("``" . "``")) ;; for reStructuredText literals in docstrings
-    (evil--add-to-alist
+    (evil-add-to-alist
      'origami-parser-alist
      'python-mode 'w--origami-parser-imenu-flat))
 
@@ -4367,7 +4367,7 @@ defined as lowercase."
             (reverse nodes))))))
 
   (require 'origami)
-  (evil--add-to-alist
+  (evil-add-to-alist
    'origami-parser-alist
    'python-pytest-mode 'w--python-pytest-origami-parser))
 
@@ -4422,7 +4422,7 @@ defined as lowercase."
     (flyspell-mode)
     (origami-mode)
     (sphinx-mode)
-    (evil--add-to-alist
+    (evil-add-to-alist
      'origami-parser-alist
      'rst-mode 'w--origami-parser-imenu-flat)
     (w--add-evil-surround-pairs
@@ -4594,7 +4594,7 @@ defined as lowercase."
     (evil-swap-keys-swap-double-single-quotes)
     (evil-swap-keys-swap-square-curly-brackets)
     (origami-mode)
-    (evil--add-to-alist
+    (evil-add-to-alist
      'origami-parser-alist
      'rust-mode 'w--origami-parser-imenu-flat)))
 
