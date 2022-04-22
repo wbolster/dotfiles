@@ -4,9 +4,9 @@ set -e -u
 
 emacs --batch \
     --eval '(package-initialize)' \
-    --eval '(byte-recompile-directory "elpa" 0 t)'
+    --eval '(byte-recompile-directory "packages" 0 t)'
 
-cd elpa/
+cd packages/
 for dir in $(find . -name '*-autoloads.el' -print0 | xargs -0 dirname | sort); do
     package=$(echo "$dir" | sed -e 's,^./,,' -e 's/-[^-]\+$//')
     emacs --batch \
