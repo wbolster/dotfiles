@@ -741,7 +741,7 @@ if [[ "$PS1" ]]; then
         # After initialisation, pyenv provides a shell function that masks the
         # actual executable. Initialize if pyenv is available but not loaded,
         # but ignore the line setting PATH since that is already set up.
-        eval "$(pyenv init - | grep -v '^export PATH=')"
+        eval "$(pyenv init - | grep -v -e '^export PATH=' -e '^PATH=')"
     fi
     if ___has virtualenvwrapper_lazy.sh; then
         VIRTUALENVWRAPPER_PYTHON="$(dirname "$(readlink -f "$(which virtualenvwrapper_lazy.sh)")")/python"
