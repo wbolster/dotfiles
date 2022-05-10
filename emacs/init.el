@@ -683,11 +683,6 @@ defined as lowercase."
 
 ;;;; evil and editing
 
-(use-package undo-tree
-  :delight
-  :config
-  (global-undo-tree-mode))
-
 (use-package evil
   :demand t
 
@@ -699,14 +694,12 @@ defined as lowercase."
    evil-want-keybinding nil
    evil-want-integration t)
 
-  :hook (evil-local-mode-hook . turn-on-undo-tree-mode)
-
   :custom
   (evil-cross-lines t)
   (evil-insert-state-message nil)
   (evil-shift-round nil)
   (evil-split-window-below t)
-  (evil-undo-system 'undo-tree)
+  (evil-undo-system 'undo-redo)
   (evil-vsplit-window-right t)
 
   ;; small state tag before position info, which smart-mode-line put elsewhere
