@@ -41,6 +41,7 @@ create a drop-in directory for custom ``systemd-resolved`` configuration::
 
 create ``/etc/systemd/resolved.conf.d/custom.conf`` and make it listen on an extra ip address::
 
+  [Resolve]
   DNSStubListenerExtra=172.17.0.1
 
 then::
