@@ -34,7 +34,12 @@ configure docker ``/etc/docker/daemon.json`` to use a dns server on its default 
     ]
   }
 
-to make ``systemd-resolved`` also listen there, edit ``/etc/systemd/resolved.conf``::
+
+create a drop-in directory for custom ``systemd-resolved`` configuration::
+
+  sudo mkdir /etc/systemd/resolved.conf.d
+
+create ``/etc/systemd/resolved.conf.d/custom.conf`` and make it listen on an extra ip address::
 
   DNSStubListenerExtra=172.17.0.1
 
