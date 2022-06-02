@@ -2,19 +2,19 @@
 docker
 ======
 
-credentials store
-=================
+notes on making docker work nicely in development environments like laptops.
 
-store credentials in keyring used by gnome etc.
+secret-service credentials store
+================================
+
+store credentials in the ‘secret service’, i.e. the keyring used by gnome etc.
 
 https://docs.docker.com/engine/reference/commandline/login/#credentials-store
 
-arch aur packages:
+- arch aur packages: ``docker-credential-secretservice-bin`` / ``docker-credential-secretservice``
+- ubuntu package: ``apt install golang-docker-credential-helpers``
 
-- ``docker-credential-secretservice-bin``
-- ``docker-credential-secretservice``
-
-in ``~/.docker/config.json``::
+configure in ``~/.docker/config.json``::
 
   {
     "credsStore": "secretservice"
@@ -25,6 +25,9 @@ dns via systemd-resolved
 ========================
 
 docker does not play nice with ``systemd-resolved``, especially when running in ``resolv.conf`` stub mode. this manifests as local lookup and dns from vpn connections not working inside containers, etc.
+
+method 1: extra systemd-resolved listener
+-----------------------------------------
 
 configure docker ``/etc/docker/daemon.json`` to use a dns server on its default bridge network::
 
@@ -48,6 +51,9 @@ then::
 
   sudo systemctl restart docker.service systemd-resolved.service
 
+method 2: dnsmasq (old)
+-----------------------
+
 alternatively, `dnsmasq can proxy from the bridge network`__. in ``/etc/dnsmasq.conf``::
 
   interface=docker0
@@ -57,6 +63,8 @@ alternatively, `dnsmasq can proxy from the bridge network`__. in ``/etc/dnsmasq.
 then::
 
   systemctl enable --now dnsmasq
+
+however this approach suffers from some 🐔/🥚 issues because the `docker0` interface is not always available, requiring manual restarts, etc.
 
 __ https://imagineer.in/blog/docker-container-dns-issue-in-airgapped-network/
 
