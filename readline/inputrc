@@ -15,6 +15,9 @@ Control-n:    history-search-forward
 "\e\e[C":  forward-word
 "\e\e[D":  backward-word
 
+# More ergonmic than C-M-e
+Control-o: shell-expand-line
+
 # Bash
 $if Bash
     set blink-matching-paren on
