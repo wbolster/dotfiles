@@ -2178,8 +2178,8 @@ defined as lowercase."
       ("T" "test ↗" projectile-find-implementation-or-test-other-window)]
      [("g" "gui browser" w--projectile-open-gui-file-browser)]]
     ["search/replace"
-     [("/" "search" w--counsel-ag-project)
-      ("?" "search live" w--counsel-ag-project-all-files)]
+     [("/" "search live" w--counsel-ag-project)
+      ("?" "search live all" w--counsel-ag-project-all-files)]
      [("o" "occur" projectile-multi-occur)]
      [("r" "replace" projectile-replace)
       ("R" "replace regexp" projectile-replace-regexp)]]
