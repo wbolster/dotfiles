@@ -3348,7 +3348,6 @@ defined as lowercase."
   "_/_ search"
   ("/" w--hydra-search/body)
   "_,_ major mode"
-  ("," w--major-mode-hydra)
   ("'" w--major-mode-hydra))
 
 (general-define-key
