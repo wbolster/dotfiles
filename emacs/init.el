@@ -3347,7 +3347,7 @@ defined as lowercase."
   ("SPC" whitespace-cleanup)
   "_/_ search"
   ("/" w--hydra-search/body)
-  "_,_ major mode"
+  "_'_ major mode"
   ("'" w--major-mode-hydra))
 
 (general-define-key
