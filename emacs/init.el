@@ -4001,8 +4001,14 @@ defined as lowercase."
     (setq-local
      comment-fill-column 72
      counsel-dash-docsets '("Python_3" "SQLAlchemy" "Flask" "Jinja"))
-    (python-isort-on-save-mode-enable-dwim)
-    (python-black-on-save-mode-enable-dwim)
+    (if-let* ((env-var-value (getenv "EMACS_PYTHON_ISORT_ENABLED"))
+              (_ (string-equal env-var-value "0")))
+        nil
+      (python-isort-on-save-mode-enable-dwim))
+    (if-let* ((env-var-value (getenv "EMACS_PYTHON_BLACK_ENABLED"))
+              (_ (string-equal env-var-value "0")))
+        nil
+      (python-black-on-save-mode-enable-dwim))
     (reformatter-dwim-select 'python-black)
     (modify-syntax-entry ?_ "w")
     (w--set-major-mode-hydra #'w--hydra-python/body)
