@@ -39,6 +39,8 @@
 \set eva 'EXPLAIN (ANALYZE, VERBOSE)'
 \set eavb 'EXPLAIN (ANALYZE, BUFFERS, VERBOSE)'
 \set evab 'EXPLAIN (ANALYZE, BUFFERS, VERBOSE)'
+\set seqscan_off 'SET enable_seqscan = off;'
+\set seqscan_on 'SET enable_seqscan = on;'
 
 -- activity
 \set activity_query_length 100
