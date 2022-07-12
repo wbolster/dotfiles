@@ -972,6 +972,8 @@ if [[ "$PS1" ]]; then
     # systemd
     alias ,sc='sudo systemctl'
     alias ,scu='systemctl --user'
+    alias ,jb='journalctl --boot --pager-end --lines=all'
+    alias ,jf='journalctl --pager-end --follow'
     complete -F _complete_alias ,sc
     complete -F _complete_alias ,scu
 
