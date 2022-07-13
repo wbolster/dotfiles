@@ -38,43 +38,43 @@ delete_completed_branches() {
     echo
 
     for branch in $(list_branches); do
-        printf "🔎 Found local branch $(color yellow)‘%s’$(color off) (%s)\n" "$branch" "$(git rev-parse --short "$branch")"
+        printf "🔎  Found local branch $(color yellow)‘%s’$(color off) (%s)\n" "$branch" "$(git rev-parse --short "$branch")"
 
         if [ "$branch" = "$current_branch" ]; then
             upstream=''
-            printf "📌 Refusing to operate on currently checked out branch; skipping\n"
+            printf "📌  Refusing to operate on currently checked out branch; skipping\n"
         elif [ -n "$target" ]; then
             # FIXME: does not work with a branch name
             upstream=$(git symbolic-ref --short "$target")
-            message="🎯 Comparing against explicit target branch"
+            message="🎯  Comparing against explicit target branch"
         elif upstream=$(get_branch_upstream "${branch}"); then
             # Branch has a configured upstream.
-            message="🆙 Comparing against configured upstream"
+            message="🆙  Comparing against configured upstream"
         elif [ -n "$default_upstream" ]; then
             upstream="$default_upstream"
-            message="🆙 No upstream configured; comparing against default remote HEAD"
+            message="🆙  No upstream configured; comparing against default remote HEAD"
         else
             upstream=''
-            printf "😱 Cannot determine upstream; skipping\n"
+            printf "😱  Cannot determine upstream; skipping\n"
         fi
 
         if [ -n "$upstream" ]; then
             printf "%s $(color yellow)‘%s’$(color off) (%s)\n" "$message" "$upstream" "$(git rev-parse --short "$upstream")"
 
             if details=$(branch_fully_present_in_target "$branch" "$upstream"); then
-                printf '✅ Local changes included upstream (%s)\n' "$details"
-                if ask_confirmation "🚮 Delete branch ‘${branch}’?"; then
+                printf '✅  Local changes included upstream (%s)\n' "$details"
+                if ask_confirmation "🚮  Delete branch ‘${branch}’?"; then
                     color red
                     git branch --delete --force --quiet "$branch"
                     color off
                 fi
             else
-                printf "❌ Local changes not fully contained in upstream branch; $(color green)keeping branch$(color off)%s\n" ''
-                echo '💡 Commits not in upstream branch:'
+                printf "❌  Local changes not fully contained in upstream branch; $(color green)keeping branch$(color off)%s\n" ''
+                echo '💡  Commits not in upstream branch:'
                 echo
                 git log --format='tformat:    %h %s' "${upstream}..${branch}"
                 echo
-                echo "📃 Details:"
+                echo "📃  Details:"
                 echo
                 printf '    git log %s..%s\n' "$upstream" "$branch"
                 echo
@@ -84,9 +84,9 @@ delete_completed_branches() {
         fi
 
         if branch_exists "$branch"; then
-            printf "🌱 $(color green)Kept local branch ‘%s’$(color off)\n" "$branch"
+            printf "🌱  $(color green)Kept local branch ‘%s’$(color off)\n" "$branch"
         else
-            printf "💀 $(color red)Deleted branch ‘%s’$(color off)\n" "$branch"
+            printf "💀  $(color red)Deleted branch ‘%s’$(color off)\n" "$branch"
         fi
 
         echo
@@ -94,11 +94,11 @@ delete_completed_branches() {
         echo
     done
 
-    echo '🌳 Remaining branches:'
+    echo '🌳  Remaining branches:'
     echo
     branches_overview
 
-    echo ‍"🤓 Happy hacking!"
+    echo ‍"🤓  Happy hacking!"
 }
 
 get_default_remote () {
