@@ -1,2 +1,0 @@
-;;; Generated package description from python-pytest.el  -*- no-byte-compile: t -*-
-(define-package "python-pytest" "20220404.1635" "helpers to run pytest" '((emacs "24.4") (dash "2.18.0") (transient "0.3.7") (projectile "0.14.0") (s "1.12.0")) :commit "08df2134393d47887a6e411d45b86e137cfcd28a" :authors '(("wouter bolsterlee" . "wouter@bolsterl.ee")) :maintainer '("wouter bolsterlee" . "wouter@bolsterl.ee") :keywords '("pytest" "test" "python" "languages" "processes" "tools") :url "https://github.com/wbolster/emacs-python-pytest")

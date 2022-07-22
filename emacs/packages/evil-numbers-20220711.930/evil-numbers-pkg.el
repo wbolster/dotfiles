@@ -1,0 +1,2 @@
+;;; Generated package description from evil-numbers.el  -*- no-byte-compile: t -*-
+(define-package "evil-numbers" "20220711.930" "Increment/decrement numbers like in VIM" '((emacs "24.1") (evil "1.2.0")) :commit "61dde4e3715fd1255df8f87a37d9c8022e909bf4" :authors '(("Michael Markert" . "markert.michael@googlemail.com")) :maintainer '("Julia Path" . "julia@jpath.de") :keywords '("convenience" "tools") :url "http://github.com/juliapath/evil-numbers")
