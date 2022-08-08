@@ -42,7 +42,7 @@ wdiff = diff --word-diff
 # Inspecting
 ls = ls-files
 mylog = "!f() { git log --all --author=\"$(git config user.email)\" --date-order --graph --format='%C(yellow)[%h] %ai (%ar)%C(auto)%d%n%n%C(reset)%s %n%+b' \"$@\"; }; f"
-review-branch = "!f() { [ -z \"$@\" ] && set - origin/master..; git -c core.pager='less -+F +/^commit' log --reverse --patch \"$@\"; }; f"
+review-branch = "!f() { [ -z \"$@\" ] && set - "@{upstream}.."; git -c core.pager='less -+F +/^commit' log --reverse --patch \"$@\"; }; f"
 sl = log --oneline --graph --pretty=longline --date=short
 message-log = log --pretty=message
 log-merge-request-long=log-pull-request-long
@@ -92,8 +92,8 @@ rba = rebase --abort
 rbas = rebase --autostash
 rbc = rebase --continue
 rbi = rebase --interactive
-rbiom = rebase --interactive origin/master
-rbom = rebase origin/master
+rbiom = rebase --interactive @{upstream}
+rbom = rebase @{upstream}
 
 # Grep
 igrep = grep --ignore-case
