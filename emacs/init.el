@@ -4628,7 +4628,10 @@ defined as lowercase."
   :hook (sql-mode-hook . w--sql-mode-hook)
   :config
   (defun w--sql-mode-hook ()
-    (setq evil-shift-width 2)
+    (setq
+     evil-lookup-func #'counsel-dash-at-point
+     evil-shift-width 2
+     counsel-dash-docsets '("PostgreSQL"))
     (reformatter-dwim-select 'sqlformat)))
 
 (use-package sqlformat
