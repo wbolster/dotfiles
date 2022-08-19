@@ -43,7 +43,8 @@ prepare for remote install (optional)::
 
 …and continue from another machine::
 
-  ssh -o PubkeyAuthentication=no root@...
+  ssh -o PubkeyAuthentication=no -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@...
+
 
 disk layout
 ===========
