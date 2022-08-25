@@ -1,11 +1,6 @@
 location:
 
   one_file_system: true
-  source_directories:
-    - /etc
-    - /home
-    - /srv
-    - /var/log
 
   repositories:
     - "user@host:/path/to/backups/some-machine-name"
@@ -18,7 +13,10 @@ location:
     - .nobackup
   keep_exclude_tags: true
   patterns:
-    - 'R /'
+    - 'R /etc'
+    - 'R /home'
+    - 'R /srv'
+    - 'R /var/log'
     - '- **/.cache/'
     - '- **/CacheStorage/'
     - '- **/.direnv/'
