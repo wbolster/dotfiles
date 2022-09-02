@@ -5,8 +5,8 @@
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Homepage: https://github.com/emacscollective/closql
 ;; Keywords: extensions
-;; Package-Version: 20220422.1601
-;; Package-Commit: 87d2edae8bc3d390bcfc5e909e9c13ff9fce994a
+;; Package-Version: 20220821.1814
+;; Package-Commit: 46b3020acf6655fd8abb4ef60e090629ee33e8c3
 
 ;; Package-Requires: (
 ;;     (emacs "25.1")
@@ -397,7 +397,7 @@
                       [:order-by [(asc $i4)]]))
            select
            (oref-default class closql-table)
-           (and pred (closql-where-class-in pred))
+           (and pred (closql-where-class-in pred db))
            (oref-default class closql-primary-key)))
 
 (defun closql--table-columns (db table &optional prefixed)
@@ -493,19 +493,44 @@
                            (intern (format "$i%i" (1- (cl-incf offset 2)))))))
                  value))))
 
-(defun closql-where-class-in (classes)
-  (vconcat
-   (mapcar #'closql--abbrev-class
-           (cl-mapcan (lambda (sym)
-                        (let ((str (symbol-name sym)))
-                          (cond ((string-suffix-p "--eieio-childp" str)
-                                 (closql--list-subclasses
-                                  (intern (substring str 0 -14)) nil))
-                                ((string-suffix-p "-p" str)
-                                 (list (intern (substring str 0 -2))))
-                                (t
-                                 (list sym)))))
-                      (if (listp classes) classes (list classes))))))
+(defun closql-where-class-in (args &optional db)
+  (when (symbolp args)
+    (setq args (list args)))
+  (cond
+   ((vectorp args)
+    (unless db
+      (error "closql-where-class-in: DB cannot be nil if ARGS is a vector"))
+    (let ((class (oref-default db object-class))
+          (abbrevs nil))
+      (mapc (lambda (arg)
+              (let ((str (symbol-name arg)))
+                (unless (string-match "\\`\\(!\\)?\\([^*]+\\)\\(\\*\\)?\\'" str)
+                  (error "closql-where-class-in: invalid type: %s" arg))
+                (let* ((exclude (match-beginning 1))
+                       (a (intern (match-string 2 str)))
+                       (a (cond ((match-beginning 3)
+                                 (closql--list-subabbrevs
+                                  (closql--expand-abbrev class a)))
+                                ((not (class-abstract-p
+                                       (closql--expand-abbrev class a)))
+                                 (list a)))))
+                  (setq abbrevs
+                        (if exclude
+                            (cl-set-difference abbrevs a)
+                          (nconc abbrevs a))))))
+            args)
+      (vconcat abbrevs)))
+   ((vconcat
+     (mapcar #'closql--abbrev-class
+             (cl-mapcan (lambda (sym)
+                          (let ((str (symbol-name sym)))
+                            (cond ((string-suffix-p "--eieio-childp" str)
+                                   (closql--list-subclasses
+                                    (intern (substring str 0 -14)) nil))
+                                  ((string-suffix-p "-p" str)
+                                   (list (intern (substring str 0 -2))))
+                                  ((list sym)))))
+                        args))))))
 
 (defun closql--list-subclasses (class &optional result)
   (unless (class-abstract-p class)
