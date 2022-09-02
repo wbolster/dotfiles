@@ -97,16 +97,19 @@ if [[ -z "$MANPATH" ]] && ___has man; then
     MANPATH+=$(man -w)
 fi
 
-if [[ "$OSTYPE" == darwin* ]] && ___has brew; then
-    brew_prefix=$(brew --prefix)
+if [[ "$OSTYPE" == darwin* ]]; then
+    if ___has /opt/homebrew/bin/brew; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif ___has brew; then
+        HOMEBREW_PREFIX=$(brew --prefix)
+    fi
     ___path_add_if_exists PATH \
-        "${brew_prefix}/opt/coreutils/libexec/gnubin" \
-        "${brew_prefix}/opt/findutils/libexec/gnubin" \
-        "${brew_prefix}/sbin" \
-        "${brew_prefix}/bin"
+        "${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin" \
+        "${HOMEBREW_PREFIX}/opt/findutils/libexec/gnubin" \
+        "${HOMEBREW_PREFIX}/sbin" \
+        "${HOMEBREW_PREFIX}/bin"
     ___path_add_if_exists MANPATH \
-        "${brew_prefix}/opt/coreutils/libexec/gnuman"
-    unset brew_prefix
+        "${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnuman"
 fi
 
 ___path_add_if_exists PATH \
