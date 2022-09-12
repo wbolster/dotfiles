@@ -495,7 +495,7 @@ if [[ "$PS1" ]]; then
         :  # bash-completion >2.8 automatically loads from ~.local/share/bash-completion/completions
     else
         local_completion_dir=${BASH_COMPLETION_USER_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/bash-completion}/completions
-        if [[ ! -d $local_completion_dir ]]; then
+        if [[ -d $local_completion_dir ]]; then
             for file in "${local_completion_dir}"/*; do
                 if [[ -f "$file" ]]; then
                     # shellcheck disable=SC1090
