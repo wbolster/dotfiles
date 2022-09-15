@@ -2712,9 +2712,7 @@ defined as lowercase."
   :after evil-collection
   :defer t
   :delight
-  (magit-wip-after-save-local-mode)
-  (magit-wip-after-apply-mode)
-  (magit-wip-before-change-mode)
+  (magit-wip-mode)
 
   :hook
   (magit-log-mode-hook . w--evil-colemak-basics-disable)
@@ -2807,9 +2805,7 @@ defined as lowercase."
   ;; no special behaviour for magit windows
   (remove-hook 'magit-post-display-buffer-hook 'magit-maybe-set-dedicated)
 
-  (magit-wip-after-save-mode)
-  (magit-wip-after-apply-mode)
-  (magit-wip-before-change-mode)
+  (magit-wip-mode)
 
   (--each '("~" "~/Projects/" "~/Documents/")
     (add-to-list 'magit-repository-directories (cons it 2) t))
