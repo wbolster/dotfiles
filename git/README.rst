@@ -29,7 +29,7 @@ useful for remotes that don't use ssh key auth, e.g. https remotes
 ::
 
   [credential]
-  helper = /usr/lib/git-core/git-credential-libsecret
+  helper = libsecret
 
 
 custom remote urls
