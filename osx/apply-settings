@@ -2,15 +2,13 @@
 
 set -e -u -x
 
-# Disable annoying visual distractions.
-defaults write com.apple.dock no-bouncing -bool TRUE
 
 #
 # Finder
 #
 
 # Allow quitting; also hides desktop icons
-defaults write com.apple.finder QuitMenuItem -bool true
+# defaults write com.apple.finder QuitMenuItem -bool true
 
 # Include full path in window title
 defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
@@ -36,5 +34,10 @@ chflags nohidden ~/Library
 # Dock
 #
 
+# Autohide
 defaults write com.apple.dock autohide-delay -float 0
 defaults write com.apple.dock autohide -bool true
+
+# Disable annoying visual distractions.
+defaults write com.apple.dock no-bouncing -bool TRUE
+
