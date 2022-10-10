@@ -859,32 +859,6 @@ if [[ "$PS1" ]]; then
             return 0
         }
         complete -F _apt_get_packages i ac acp
-    elif [[ "$OSTYPE" == darwin* && -n $(type brew 2>/dev/null) ]]; then
-        # Mac OSX  with Homebrew
-        _brew_install() {
-            _run_verbose brew install "$@"
-        }
-        _brew_upgrade() {
-            (
-            set -e
-            local updates
-            _run_verbose brew update
-            updates="$(brew outdated | grep -v -F -f <(find "$(brew --prefix)"/Library/PinnedKegs/ -mindepth 1 -maxdepth 1 -type "l" -printf '%f\n') | xargs --no-run-if-empty brew outdated --verbose || true)"
-            if [[ -n "$updates" ]]; then
-                echo
-                echo "These packages will be upgraded:"
-                echo "$updates"
-                echo
-                read -r -p 'Continue upgrade? [Y/n] ' -n1 CONFIRM
-                if [[ "$CONFIRM" =~ ^[Yy]?$ ]]; then
-                    _run_verbose brew upgrade
-                fi
-            fi
-            echo
-            )
-        }
-        alias i=_brew_install
-        alias u=_brew_upgrade
     fi
 
     # iTerm profile tricks
