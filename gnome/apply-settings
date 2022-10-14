@@ -425,29 +425,48 @@ if gnome-extensions list --enabled | grep -q -F -x 'paperwm@hedning:matrix.org';
 fi
 
 # tactile
-dconf write /org/gnome/shell/extensions/tactile/show-tiles "['<Super>r']"
-dconf write /org/gnome/shell/extensions/tactile/tile-0-0 "['q']"
-dconf write /org/gnome/shell/extensions/tactile/tile-1-0 "['w']"
-dconf write /org/gnome/shell/extensions/tactile/tile-2-0 "['f']"
-dconf write /org/gnome/shell/extensions/tactile/tile-3-0 "['p']"
-dconf write /org/gnome/shell/extensions/tactile/tile-0-1 "['a']"
-dconf write /org/gnome/shell/extensions/tactile/tile-1-1 "['r']"
-dconf write /org/gnome/shell/extensions/tactile/tile-2-1 "['s']"
-dconf write /org/gnome/shell/extensions/tactile/tile-3-1 "['t']"
-dconf write /org/gnome/shell/extensions/tactile/tile-0-2 "['z']"
-dconf write /org/gnome/shell/extensions/tactile/tile-1-2 "['x']"
-dconf write /org/gnome/shell/extensions/tactile/tile-2-2 "['c']"
-dconf write /org/gnome/shell/extensions/tactile/tile-3-2 "['v']"
-dconf write /org/gnome/shell/extensions/tactile/col-0 2
-dconf write /org/gnome/shell/extensions/tactile/col-1 1
-dconf write /org/gnome/shell/extensions/tactile/col-2 1
-dconf write /org/gnome/shell/extensions/tactile/col-3 2
-dconf write /org/gnome/shell/extensions/tactile/row-0 0
-dconf write /org/gnome/shell/extensions/tactile/row-1 1
-dconf write /org/gnome/shell/extensions/tactile/row-2 0
-dconf write /org/gnome/shell/extensions/tactile/background-color "'rgba(53,132,228,0.2)'"
-dconf write /org/gnome/shell/extensions/tactile/border-color "'rgba(53,132,228,0.5)'"
-dconf write /org/gnome/shell/extensions/tactile/text-color "'rgb(53,132,228)'"
-dconf write /org/gnome/shell/extensions/tactile/border-size 1
-dconf write /org/gnome/shell/extensions/tactile/gap-size 0
-dconf write /org/gnome/shell/extensions/tactile/text-size 64
+dconf load /org/gnome/shell/extensions/tactile/ <<EOF
+[/]
+background-color='rgba(53,132,228,0.2)'
+border-color='rgba(53,132,228,0.5)'
+text-color='rgb(53,132,228)'
+border-size=1
+gap-size=0
+text-size=64
+
+show-tiles=['<Super>r']
+show-settings=@as []
+
+tile-0-0=['q']
+tile-0-1=['a']
+tile-0-2=['z']
+tile-1-0=['w']
+tile-1-1=['r']
+tile-1-2=['x']
+tile-2-0=['f']
+tile-2-1=['s']
+tile-2-2=['c']
+tile-3-0=['p']
+tile-3-1=['t']
+tile-3-2=['v']
+
+grid-rows=3
+grid-cols=4
+
+row-0=0
+row-1=1
+row-2=0
+col-0=2
+col-1=1
+col-2=1
+col-3=2
+
+layout-2-row-0=0
+layout-2-row-1=1
+layout-2-row-2=0
+layout-2-col-0=1
+layout-2-col-1=1
+layout-2-col-2=1
+layout-2-col-3=1
+
+EOF
