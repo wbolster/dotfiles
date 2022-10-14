@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Bash Configuration
 
-function ___readlink_f {
+___readlink_f() {
     if [[ "$OSTYPE" == darwin* ]]; then
         # Ad-hoc bootstrap-only version before coreutils installed via
         # Homebrew in the path, because OSX does not have readlink -f.
