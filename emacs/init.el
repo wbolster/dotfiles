@@ -4610,6 +4610,10 @@ defined as lowercase."
    "<return> "'w--split-line-backslash
    [remap evil-join] #'w--evil-join-smart-backslash-eol)
   :config
+  (reformatter-define bash-pretty-print
+    :program "bash"
+    :args '("--pretty-print" "-")
+    :group 'sh-script)
   (defun w--sh-mode-hook ()))
 
 (use-package shfmt)
