@@ -1390,11 +1390,14 @@ defined as lowercase."
 
 ;;;; scrolling
 
-(setq
- indicate-buffer-boundaries 'left
- recenter-positions '(top middle bottom)
- scroll-conservatively 101
- scroll-margin 5)
+(use-package emacs
+  :custom
+  (indicate-buffer-boundaries 'left)
+  (recenter-positions '(top middle bottom))
+  (scroll-conservatively 101)
+  (scroll-margin 5)
+  :config
+  (pixel-scroll-mode))
 
 
 ;;;; whitespace
