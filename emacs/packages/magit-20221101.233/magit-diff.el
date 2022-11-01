@@ -1604,7 +1604,7 @@ the Magit-Status buffer for DIRECTORY."
       (dired-jump other-window (concat directory "/."))
     (let ((display-buffer-overriding-action
            (if other-window
-               '(nil (inhibit-same-window t))
+               '(nil (inhibit-same-window . t))
              '(display-buffer-same-window))))
       (magit-status-setup-buffer directory))))
 
@@ -2168,9 +2168,8 @@ section or a child thereof."
             (push (magit-decode-git-path
                    (let ((f (match-string 1)))
                      (cond
-                      ((string-match "\\`\\([^{]+\\){\\(.+\\) => \\(.+\\)}\\'" f)
-                       (concat (match-string 1 f)
-                               (match-string 3 f)))
+                      ((string-match "{.+ => \\(.+\\)}" f)
+                       (replace-match (match-string 1 f) nil t f))
                       ((string-match " => " f)
                        (substring f (match-end 0)))
                       (t f))))
@@ -2254,7 +2253,7 @@ section or a child thereof."
       (when orig (setq orig (magit-decode-git-path orig)))
       (when file (setq file (magit-decode-git-path file)))
       (magit-diff-insert-file-section
-       (or file base) orig status nil nil nil long-status)))
+       (or file base) orig status nil nil nil nil long-status)))
    ;; The files on this line may be ambiguous due to whitespace.
    ;; That's okay. We can get their names from subsequent headers.
    ((looking-at "^diff --\
@@ -2268,7 +2267,8 @@ section or a child thereof."
           (header (list (buffer-substring-no-properties
                          (line-beginning-position) (1+ (line-end-position)))))
           (modes nil)
-          (rename nil))
+          (rename nil)
+          (binary nil))
       (magit-delete-line)
       (while (not (or (eobp) (looking-at magit-diff-headline-re)))
         (cond
@@ -2296,37 +2296,44 @@ section or a child thereof."
          ((looking-at "\\+\\+\\+ \\(.+?\\)\t?\n")
           (unless (equal (match-string 1) "/dev/null")
             (setq file (match-string 1))))
-         ((looking-at "Binary files .+ and .+ differ\n"))
-         ((looking-at "Binary files differ\n"))
+         ((looking-at "Binary files .+ and .+ differ\n")
+          (setq binary t))
+         ((looking-at "Binary files differ\n")
+          (setq binary t))
          ;; TODO Use all combined diff extended headers.
          ((looking-at "mode .+\n"))
-         (t
-          (error "BUG: Unknown extended header: %S"
+         ((error "BUG: Unknown extended header: %S"
                  (buffer-substring (point) (line-end-position)))))
         ;; These headers are treated as some sort of special hunk.
         (unless (or (string-prefix-p "old mode" (match-string 0))
                     (string-prefix-p "rename"   (match-string 0)))
           (push (match-string 0) header))
         (magit-delete-match))
-      (setq header (mapconcat #'identity (nreverse header) ""))
       (when orig
         (setq orig (magit-decode-git-path orig)))
       (setq file (magit-decode-git-path file))
-      ;; KLUDGE `git-diff' ignores `--no-prefix' for new files and renames at
-      ;; least.  And `git-log' ignores `--no-prefix' when `-L' is used.
-      (when (or (and file orig
-                     (string-prefix-p "a/" orig)
-                     (string-prefix-p "b/" file))
-                (and (derived-mode-p 'magit-log-mode)
-                     (--first (string-prefix-p "-L" it)
-                              magit-buffer-log-args)))
-        (setq file (substring file 2))
+      (setq header (nreverse header))
+      ;; KLUDGE `git-log' ignores `--no-prefix' when `-L' is used.
+      (when (and (derived-mode-p 'magit-log-mode)
+                 (seq-some (lambda (arg) (string-prefix-p "-L" arg))
+                           magit-buffer-log-args))
         (when orig
-          (setq orig (substring orig 2))))
-      (magit-diff-insert-file-section file orig status modes rename header)))))
+          (setq orig (substring orig 2)))
+        (setq file (substring file 2))
+        (setq header (list (save-excursion
+                             (string-match "diff [^ ]+" (car header))
+                             (format "%s %s %s\n"
+                                     (match-string 0 (car header))
+                                     (or orig file)
+                                     (or file orig)))
+                           (format "--- %s\n" (or orig "/dev/null"))
+                           (format "+++ %s\n" (or file "/dev/null")))))
+      (setq header (mapconcat #'identity header ""))
+      (magit-diff-insert-file-section
+       file orig status modes rename header binary nil)))))
 
 (defun magit-diff-insert-file-section
-    (file orig status modes rename header &optional long-status)
+    (file orig status modes rename header binary long-status)
   (magit-insert-section section
     (file file (or (equal status "deleted")
                    (derived-mode-p 'magit-status-mode)))
@@ -2335,8 +2342,10 @@ section or a child thereof."
                                     file
                                   (format "%s -> %s" orig file)))
                         'font-lock-face 'magit-diff-file-heading))
-    (when long-status
-      (insert (format " (%s)" long-status)))
+    (cond ((and binary long-status)
+           (insert (format " (%s, binary)" long-status)))
+          ((or binary long-status)
+           (insert (format " (%s)" (if binary "binary" long-status)))))
     (magit-insert-heading)
     (unless (equal orig file)
       (oset section source orig))

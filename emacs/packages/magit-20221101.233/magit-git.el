@@ -1074,13 +1074,13 @@ tracked file."
                    "--exclude-standard" "--directory"))
 
 (defun magit-skip-worktree-files ()
-  (--keep (and (and (= (aref it 0) ?S)
-                    (substring it 2)))
+  (--keep (and (= (aref it 0) ?S)
+               (substring it 2))
           (magit-list-files "-t")))
 
 (defun magit-assume-unchanged-files ()
-  (--keep (and (and (memq (aref it 0) '(?h ?s ?m ?r ?c ?k))
-                    (substring it 2)))
+  (--keep (and (memq (aref it 0) '(?h ?s ?m ?r ?c ?k))
+               (substring it 2))
           (magit-list-files "-v")))
 
 (defun magit-revision-files (rev)
@@ -1972,15 +1972,24 @@ SORTBY is a key or list of keys to pass to the `--sort' flag of
                (substring it 41))
           (magit-git-lines "ls-remote" remote)))
 
+(defun magit-remote-head (remote)
+  (and-let* ((line (cl-find-if
+                    (lambda (line)
+                      (string-match
+                       "\\`ref: refs/heads/\\([^\s\t]+\\)[\s\t]HEAD\\'" line))
+                    (magit-git-lines "ls-remote" "--symref" remote "HEAD"))))
+    (match-string 1 line)))
+
 (defun magit-list-modified-modules ()
   (--keep (and (string-match "\\`\\+\\([^ ]+\\) \\(.+\\) (.+)\\'" it)
                (match-string 2 it))
           (magit-git-lines "submodule" "status")))
 
 (defun magit-list-module-paths ()
-  (--mapcat (and (string-match "^160000 [0-9a-z]\\{40,\\} 0\t\\(.+\\)$" it)
-                 (list (match-string 1 it)))
-            (magit-git-items "ls-files" "-z" "--stage")))
+  (magit-with-toplevel
+    (--mapcat (and (string-match "^160000 [0-9a-z]\\{40,\\} 0\t\\(.+\\)$" it)
+                   (list (match-string 1 it)))
+              (magit-git-items "ls-files" "-z" "--stage"))))
 
 (defun magit-list-module-names ()
   (mapcar #'magit-get-submodule-name (magit-list-module-paths)))
@@ -1988,7 +1997,20 @@ SORTBY is a key or list of keys to pass to the `--sort' flag of
 (defun magit-get-submodule-name (path)
   "Return the name of the submodule at PATH.
 PATH has to be relative to the super-repository."
-  (magit-git-string "submodule--helper" "name" path))
+  (if (magit-git-version>= "2.38.0")
+      ;; "git submodule--helper name" was removed,
+      ;; but might still come back in another form.
+      (substring
+       (car (split-string
+             (car (or (magit-git-items
+                       "config" "-z"
+                       "-f" (expand-file-name ".gitmodules" (magit-toplevel))
+                       "--get-regexp" "^submodule\\..*\\.path$"
+                       (concat "^" (regexp-quote (directory-file-name path)) "$"))
+                      (error "No such submodule `%s'" path)))
+             "\n"))
+       10 -5)
+    (magit-git-string "submodule--helper" "name" path)))
 
 (defun magit-list-worktrees ()
   (let ((remote (file-remote-p default-directory))
@@ -2005,7 +2027,9 @@ PATH has to be relative to the super-repository."
                ;; worktree, then "git worktree" returns the git
                ;; directory instead of the worktree, which isn't
                ;; what it is supposed to do and not what we want.
-               (setq path (magit-toplevel path))
+               ;; However, if the worktree has been removed, then
+               ;; we want to return it anway; instead of nil.
+               (setq path (or (magit-toplevel path) path))
                (setq worktree (list path nil nil nil))
                (push worktree worktrees)))
             ((string-equal line "bare")
@@ -2420,7 +2444,11 @@ and this option only controls what face is used.")
     (lambda ()
       (if-let ((commit (with-selected-window (minibuffer-selected-window)
                          (magit-commit-at-point))))
-          (cons commit (delete commit (funcall fn)))
+          (let ((rest (cons commit (delete commit (funcall fn))))
+                (def minibuffer-default))
+            (if (listp def)
+                (append def rest)
+              (cons def (delete def rest))))
         (funcall fn)))))
 
 (defun magit-read-branch (prompt &optional secondary-default)

@@ -69,7 +69,8 @@ directly."
 
 (defcustom magit-clone-name-alist
   '(("\\`\\(?:github:\\|gh:\\)?\\([^:]+\\)\\'" "github.com" "github.user")
-    ("\\`\\(?:gitlab:\\|gl:\\)\\([^:]+\\)\\'"  "gitlab.com" "gitlab.user"))
+    ("\\`\\(?:gitlab:\\|gl:\\)\\([^:]+\\)\\'"  "gitlab.com" "gitlab.user")
+    ("\\`\\(?:sourcehut:\\|sh:\\)\\([^:]+\\)\\'" "git.sr.ht" "sourcehut.user"))
   "Alist mapping repository names to repository urls.
 
 Each element has the form (REGEXP HOSTNAME USER).  When the user
@@ -86,19 +87,30 @@ default user specified in the matched entry is used.
 If USER contains a dot, then it is treated as a Git variable and
 the value of that is used as the username.  Otherwise it is used
 as the username itself."
-  :package-version '(magit . "3.0.0")
+  :package-version '(magit . "3.4.0")
   :group 'magit-commands
   :type '(repeat (list regexp
-                       (string :tag "hostname")
-                       (string :tag "user name or git variable"))))
+                       (string :tag "Hostname")
+                       (string :tag "User name or git variable"))))
 
-(defcustom magit-clone-url-format "git@%h:%n.git"
-  "Format used when turning repository names into urls.
-%h is the hostname and %n is the repository name, including
-the name of the owner.  Also see `magit-clone-name-alist'."
-  :package-version '(magit . "3.0.0")
+(defcustom magit-clone-url-format
+  '(("git.sr.ht" . "git@%h:%n")
+    (t . "git@%h:%n.git"))
+  "Format(s) used when turning repository names into urls.
+
+In a format string, %h is the hostname and %n is the repository
+name, including the name of the owner.
+
+The value can be a string (representing a single static format)
+or an alist with elements (HOSTNAME . FORMAT) mapping hostnames
+to formats.  When an alist is used, the t key represents the
+default.  Also see `magit-clone-name-alist'."
+  :package-version '(magit . "3.4.0")
   :group 'magit-commands
-  :type 'regexp)
+  :type '(choice (string :tag "Format")
+                 (alist :key-type (choice (string :tag "Host")
+                                          (const :tag "Default" t))
+                        :value-type (string :tag "Format"))))
 
 ;;; Commands
 
@@ -311,16 +323,24 @@ Then show the status buffer for the new repository."
                   'magit-clone-name-alist)))
 
 (defun magit-clone--format-url (host user repo)
-  (format-spec
-   magit-clone-url-format
-   `((?h . ,host)
-     (?n . ,(if (string-search "/" repo)
-                repo
-              (if (string-search "." user)
-                  (if-let ((user (magit-get user)))
-                      (concat user "/" repo)
-                    (user-error "Set %S or specify owner explicitly" user))
-                (concat user "/" repo)))))))
+  (if-let ((url-format
+            (cond ((listp magit-clone-url-format)
+                   (cdr (or (assoc host magit-clone-url-format)
+                            (assoc t magit-clone-url-format))))
+                  ((stringp magit-clone-url-format)
+                   magit-clone-url-format))))
+      (format-spec
+       url-format
+       `((?h . ,host)
+         (?n . ,(if (string-search "/" repo)
+                    repo
+                  (if (string-search "." user)
+                      (if-let ((user (magit-get user)))
+                          (concat user "/" repo)
+                        (user-error "Set %S or specify owner explicitly" user))
+                    (concat user "/" repo))))))
+    (user-error
+     "Bogus `magit-clone-url-format' (bad type or missing default)")))
 
 ;;; _
 (provide 'magit-clone)

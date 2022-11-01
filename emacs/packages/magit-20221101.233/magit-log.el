@@ -1,4 +1,4 @@
-;;; magit-log.el --- Inspect Git history  -*- lexical-binding:t -*-
+;;; magit-log.el --- Inspect Git history  -*- lexical-binding:t; coding:utf-8 -*-
 
 ;; Copyright (C) 2008-2022 The Magit Project Contributors
 
@@ -1220,7 +1220,8 @@ Do not add this to a hook variable."
           "\\(?1:[^\0\n]+\\)\0"                    ; hash
           "\\(?5:[^\0\n]*\\)\0"                    ; author
           "\\(?:\\(?:[^@\n]+@{\\(?6:[^}\n]+\\)}\0" ; date
-          "\\(?10:merge \\|autosave \\|restart \\|[^:\n]+: \\)?" ; refsub
+                                                 ;;; refsub
+          "\\(?10:merge \\|autosave \\|restart \\|rewritten \\|[^:\n]+: \\)?"
           "\\(?2:.*\\)?\\)\\|\0\\)$"))             ; msg
 
 (defconst magit-reflog-subject-re
