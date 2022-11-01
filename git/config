@@ -175,6 +175,7 @@ default = simple
 
 [rebase]
 stat = true
+updateRefs = true
 
 [rerere]
 enabled = true
