@@ -741,10 +741,15 @@ if [[ "$PS1" ]]; then
     # Python
     export PYTHONDONTWRITEBYTECODE=1
     if ___has pyenv && [[ $(type -t pyenv) != "function" ]]; then
-        # After initialisation, pyenv provides a shell function that masks the
-        # actual executable. Initialize if pyenv is available but not loaded,
-        # but ignore the line setting PATH since that is already set up.
-        eval "$(pyenv init - | grep -v -e '^export PATH=' -e '^PATH=')"
+        # Initialize if pyenv is available but not yet loaded. After
+        # initialisation, ‘pyenv’ is a shell function masking the
+        # actual executable. Override pyenv's insistence on putting
+        # itself at the front op the PATH; that is already set up in
+        # my preferred order.
+        path_before_pyenv_init="$PATH"
+        eval "$(pyenv init -)"
+        PATH="$path_before_pyenv_init"
+        unset path_before_pyenv_init
     fi
     if ___has virtualenvwrapper_lazy.sh; then
         VIRTUALENVWRAPPER_PYTHON="$(dirname "$(readlink -f "$(which virtualenvwrapper_lazy.sh)")")/python"
