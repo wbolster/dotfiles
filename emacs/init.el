@@ -1395,9 +1395,7 @@ defined as lowercase."
   (indicate-buffer-boundaries 'left)
   (recenter-positions '(top middle bottom))
   (scroll-conservatively 101)
-  (scroll-margin 5)
-  :config
-  (pixel-scroll-mode))
+  (scroll-margin 5))
 
 
 ;;;; whitespace
