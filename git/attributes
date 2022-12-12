@@ -1,3 +1,6 @@
 *.mo diff=gettext-mo
-*.po diff=gettext-po
-*.pot diff=gettext-po
+
+# Sometimes useful, sometimes annoying b/c it can break ‘git blame’
+# etc if the repo contains historical version with syntax errors.
+# *.po diff=gettext-po
+# *.pot diff=gettext-po
