@@ -17,6 +17,11 @@ control-n:    history-search-forward
 
 control-o: alias-expand-line
 
+# development and debugging
+"\C-xf": dump-functions
+"\C-xv": dump-variables
+"\C-xm": dump-macros
+
 # Bash
 $if Bash
     set blink-matching-paren on
