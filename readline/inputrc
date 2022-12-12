@@ -15,8 +15,7 @@ Control-n:    history-search-forward
 "\e\e[C":  forward-word
 "\e\e[D":  backward-word
 
-# More ergonmic than C-M-e
-Control-o: shell-expand-line
+control-o: alias-expand-line
 
 # Bash
 $if Bash
