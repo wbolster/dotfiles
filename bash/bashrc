@@ -736,6 +736,8 @@ if [[ "$PS1" ]]; then
     # Docker
     alias ,docker-run-throwaway='docker run --rm --interactive --tty'
     complete -F _complete_alias ,docker-run-throwaway
+    alias ,docker-run-throwaway-project='docker run --rm --interactive --tty --volume "$(pwd)":/project'
+    complete -F _complete_alias ,docker-run-throwaway-project
     alias ,docker-compose-up-fresh='docker compose up --detach --force-recreate --renew-anon-volumes'
 
     # Python
