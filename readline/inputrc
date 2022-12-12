@@ -30,11 +30,17 @@ $if Bash
     set completion-map-case on
     set mark-symlinked-directories on
     set match-hidden-files off
+    set menu-complete-display-prefix on
     set show-all-if-ambiguous on
     set skip-completed-text on
     set visible-stats on
-    space: magic-space
-    Control-w: backward-kill-word
-$endif
 
-# TODO: bind menu-complete
+    # Alternative to <return> or C-m: end-of-line,
+    # delete-horizontal-space, pipe through pager
+    control-j: "\C-e\e\\ |& ,pager-if-tty\C-m"
+
+    control-o: history-and-alias-expand-line
+    control-w: backward-kill-word
+    space: magic-space
+    tab: menu-complete
+$endif
