@@ -162,22 +162,24 @@ minimal ``fstab``::
 enter new system
 ================
 
+::
+
+  arch-chroot /mnt
+
+alternatively, open ``root`` shell (instead of ``arch-chroot`` which can't use some systemd stuff),
 `ensure password-less root logins work`__, also when doing this over a ssh connection::
 
   sed -i -e 's/^root:\*:/root::/' /mnt/etc/shadow
-
   cp -a /mnt/etc/securetty /mnt/etc/securetty.backup
   (for i in $(seq 0 9); do printf 'pts/%s\n' $i; done) >> /mnt/etc/securetty
-
-__ https://bugs.archlinux.org/task/45903
-
-open ``root`` shell (instead of ``arch-chroot`` which can't use some systemd stuff)::
 
   systemd-nspawn --boot --directory=/mnt
 
 once inside::
 
   mv /etc/securetty.backup /etc/securetty
+
+__ https://bugs.archlinux.org/task/45903
 
 etckeeper
 =========
