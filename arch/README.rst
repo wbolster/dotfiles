@@ -129,16 +129,15 @@ swap file
 ::
 
   swap_size=8G
-
   sw=/mnt/swap/swapfile
-  touch $sw
-  chmod 600 $sw
+
+  truncate -s 0 $sw
   chattr +C $sw  # disable cow
-  btrfs property set $sw compression none
+  chmod 600 $sw
   fallocate --length $swap_size $sw
   mkswap $sw
   swapon $sw
-  cat /proc/swaps
+  swapon --show
 
 bootstrap
 =========
