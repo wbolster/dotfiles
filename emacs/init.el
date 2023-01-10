@@ -2671,6 +2671,7 @@ defined as lowercase."
    "C-w" 'ivy-backward-kill-word
    "C-u" 'kill-whole-line
    "C-<return>" 'ivy-immediate-done
+   "C-<tab>" 'ivy-insert-current
    "<escape>" 'minibuffer-keyboard-quit)
   :custom
   (ivy-count-format "(%d/%d) ")
