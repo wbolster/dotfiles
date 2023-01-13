@@ -3613,11 +3613,16 @@ defined as lowercase."
   :defer t
   :mode
   (rx "Dockerfile" (any "-_.") (* any) string-end)
+  :hook
+  (dockerfile-mode-hook . w--dockerfile-mode-hook)
   :general
   (:keymaps 'dockerfile-mode-map
    :states 'normal
    "<return> "'w--split-line-backslash
-   [remap evil-join] #'w--evil-join-smart-backslash-eol))
+   [remap evil-join] #'w--evil-join-smart-backslash-eol)
+  :config
+  (defun w--dockerfile-mode-hook ()
+    (modify-syntax-entry ?$ ".")))
 
 
 ;;; Major mode: emacs lisp
