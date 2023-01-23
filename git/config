@@ -46,10 +46,10 @@ review-branch = "!f() { [ -z \"$@\" ] && set - "@{upstream}.."; git -c core.page
 sl = log --oneline --graph --pretty=longline --date=short
 message-log = log --pretty=message
 log-merge-request-long=log-pull-request-long
-log-merge-request=log-pull-request
-log-pull-request-long=log --reverse --format=markdown "@{upstream}.."
-log-pull-request=log --reverse --format=message "@{upstream}.."
-log-since-tag="!f() { git log $(git describe --tags --abbrev=0 @^)..@ \"$@\"; }; f"
+log-merge-request = log-pull-request
+log-pull-request-long = log --reverse --format=markdown "@{upstream}.."
+log-pull-request = log --reverse --format=message "@{upstream}.."
+log-since-tag = "!f() { git log $(git describe --tags --abbrev=0 @^)..@ \"$@\"; }; f"
 log-since-tag-only-list-merges = log-since-tag --merges --oneline --no-decorate
 log-since-tag-only-list-authors = "!f() { git log-since-tag --format=tformat:%aN%n%cN | sort -u; }; f"
 slf = sl --first-parent
