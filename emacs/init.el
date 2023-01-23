@@ -3141,7 +3141,7 @@ defined as lowercase."
   :after direnv
 
   :custom
-  (flycheck-checker-error-threshold 1000)
+  (flycheck-checker-error-threshold 2000)
   (flycheck-display-errors-delay 1.0)
   (flycheck-idle-change-delay 3)
   (flycheck-mode-line-prefix "✔")
