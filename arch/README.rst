@@ -108,7 +108,6 @@ prepare ``btrfs`` with subvolumes::
   mount LABEL=system /mnt
   btrfs subvolume create /mnt/@
   btrfs subvolume set-default /mnt/@
-  btrfs subvolume create /mnt/@snapshots
   for s in $subvolumes; do btrfs subvolume create "/mnt/@${s/\//-}"; done
   umount /mnt
 
@@ -117,7 +116,6 @@ prepare final system layout::
   o_btrfs=defaults,X-mount.mkdir,compress=zstd:1,noatime
   mount -o $o_btrfs LABEL=system /mnt
   mount -o X-mount.mkdir LABEL=EFI /mnt/boot
-  mount -o $o_btrfs,subvol=@snapshots LABEL=system /mnt/.snapshots
   for s in $subvolumes; do
     mount -o "${o_btrfs},subvol=@${s/\//-}" LABEL=system "/mnt/$s";
   done
@@ -151,7 +149,6 @@ minimal ``fstab``::
   genfstab -L /mnt >> /mnt/etc/fstab.generated  # not used; too much unnecessary noise
   {
     echo "LABEL=system / btrfs compress=zstd:1,noatime 0 0"
-    echo "LABEL=system /.snapshots btrfs noatime,subvol=@snapshots 0 0"
     for s in $subvolumes; do
       echo "LABEL=system /$s btrfs noatime,subvol=@${s/\//-} 0 0"
     done
