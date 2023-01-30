@@ -407,17 +407,7 @@ defined as lowercase."
     (call-interactively 'sudo-edit)))
 
 (use-package terminal-here
-  :defer t
-  :custom
-  (terminal-here-project-root-function 'projectile-project-root)
-  (terminal-here-terminal-command 'w--terminal-here-terminal-command)
-  (terminal-here-command-flag "-x")
-
-  :config
-  (defun w--terminal-here-terminal-command (dir)
-    (if (string-equal (getenv "XDG_CURRENT_DESKTOP") "GNOME")
-        '("gnome-terminal")
-      (terminal-here-default-terminal-command dir))))
+  :defer t)
 
 (defun w--buffer-worth-saving-p (name)
   "Does the buffer NAME indicate it may be worth saving?"
