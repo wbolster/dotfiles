@@ -4669,6 +4669,15 @@ defined as lowercase."
    vue-modes))
 
 
+;;; Major mode: woman (manual pages)
+
+(use-package woman
+  :init
+  (add-to-list
+   'warning-suppress-log-types
+   '((defvaralias losing-value woman-topic-history))))
+
+
 ;;; Major mode: xml
 
 (use-package nxml-mode
