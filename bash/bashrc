@@ -181,9 +181,6 @@ if [[ "$PS1" ]]; then
     # libvte uses a helper script to echo the current directory in an
     # escape sequence in the the prompt. gnome-terminal uses this to
     # open new terminal tabs/windows in the same directory.
-    if [[ -f /etc/profile.d/vte.sh ]]; then
-        source /etc/profile.d/vte.sh
-    fi
     if ___has __vte_osc7; then
         # Redefine the function to use escape sequences that do
         # not leave visual artefacts.
@@ -470,6 +467,7 @@ if [[ "$PS1" ]]; then
         # PS4=$(printf "%b" "${colour_purple}+ ${colour_normal}" \
                   # | sed -e 's/\\\[//g' -e 's/\\\]//g') # Output from "set -x"
     }
+    unset PROMPT_COMMAND  # ensure it's not defined already (potentially as an array)
     PROMPT_COMMAND=set_prompt_command
 
     # Globbing. This makes both "echo *" (only non-hidden files) and "echo .*"
