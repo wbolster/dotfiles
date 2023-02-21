@@ -340,7 +340,7 @@ yubikey
 yubikey for ``sudo`` + ``polkit``::
 
   pacman -S pam-u2f
-  line='auth sufficient pam_u2f.so appid=sudo cue [cue_prompt=touch hardware key 🔐👈]'
+  line='auth sufficient pam_u2f.so appid=sudo cue [cue_prompt=touch hardware key 🔐 👈]'
   sed -i -s -e "1a\\${line}" /etc/pam.d/sudo /etc/pam.d/polkit-1
 
 enroll later (when logged in as regular user)::
