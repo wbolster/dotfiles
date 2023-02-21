@@ -3053,7 +3053,7 @@ defined as lowercase."
   :general
   (:keymaps 'magit-mode-map
    "e" #'vdiff-magit-dwim
-   "E" #'vdiff-magit-popup)
+   "E" #'vdiff-magit)
   :config
   (transient-suffix-put 'magit-dispatch "e" :description "vdiff (dwim)")
   (transient-suffix-put 'magit-dispatch "e" :command 'vdiff-magit-dwim)
