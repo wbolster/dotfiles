@@ -47,8 +47,8 @@ sl = log --oneline --graph --pretty=longline --date=short
 message-log = log --pretty=message
 log-merge-request-long=log-pull-request-long
 log-merge-request = log-pull-request
-log-pull-request-long = log --reverse --format=markdown "@{upstream}.."
-log-pull-request = log --reverse --format=message "@{upstream}.."
+log-pull-request-long = log --reverse --format=markdown-long "@{upstream}.."
+log-pull-request = log --reverse --format=markdown "@{upstream}.."
 log-since-tag = "!f() { git log $(git describe --tags --abbrev=0 @^)..@ \"$@\"; }; f"
 log-since-tag-only-merges = log-since-tag --merges --oneline --no-decorate
 log-since-tag-only-merges-markdown = "!f() { git log-since-tag-only-merges | sed -E 's/^([a-f0-9]+) (merge: )?(.*) \\(([^)]+)\\)/- *\\3* (\\4, `g\\1`)/'; }; f"
@@ -163,7 +163,8 @@ tool = gvimdiff
 [pretty]
 longline = "%C(yellow)%h%C(auto) %s %C(cyan)— %aN, %ad%C(auto)%d"
 message = "- %w(0,0,2)%B"
-markdown = "#### %s%n%n%b"
+markdown = "- %w(0,0,2)**%s**%n%n%b"
+markdown-long = "#### %s%n%n%b"
 summary = "tformat:%s"
 items = "tformat:- %s"
 
