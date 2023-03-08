@@ -990,7 +990,7 @@ if [[ "$PS1" ]]; then
     ___has sudoedit || alias sudoedit="sudo -e"
     ___has hd || alias hd="hexdump"
     ___has rgrep || alias rgrep="grep -r"
-    ___has zstd && alias ,zstd-max="zstd -T0 --long -19"
+    ___has zstd && alias ,zstd-max="zstd --threads=0 --long -19"
 fi
 
 
