@@ -738,8 +738,8 @@ if [[ "$PS1" ]]; then
     complete -F _complete_alias ,docker-run-throwaway-project
     alias ,docker-compose-up-fresh='docker compose up --detach --force-recreate --renew-anon-volumes'
     ___docker-compose-logs() {
-        docker compose --ansi always logs --follow "$@" \
-            | less -MNRSXi --exit-follow-on-close --mouse --use-color +F
+        less -MNRSXfi --exit-follow-on-close --mouse --use-color +F \
+            <(docker compose --ansi always logs --follow "$@")
     }
     alias ,docker-compose-logs=___docker-compose-logs
 
