@@ -739,7 +739,7 @@ if [[ "$PS1" ]]; then
     alias ,docker-compose-up-fresh='docker compose up --detach --force-recreate --renew-anon-volumes'
     ___docker-compose-logs() {
         docker compose --ansi always logs --follow "$@" \
-            | less -MNRSXi --exit-follow-on-close --mouse --use-color
+            | less -MNRSXi --exit-follow-on-close --mouse --use-color +F
     }
     alias ,docker-compose-logs=___docker-compose-logs
 
