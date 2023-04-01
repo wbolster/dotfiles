@@ -93,8 +93,8 @@ export NPM_CONFIG_USERCONFIG=${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc
 export npm_config_cache=${XDG_CACHE_HOME:-$HOME/.cache}/npm
 export npm_config_prefix=${HOME}/.local/npm
 
-if [[ -z "$MANPATH" ]] && ___has man; then
-    MANPATH+=$(man -w)
+if [[ -z "$MANPATH" ]] && ___has manpath; then
+    MANPATH+=$(manpath)
 fi
 
 if [[ "$OSTYPE" == darwin* ]]; then
