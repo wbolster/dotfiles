@@ -4384,6 +4384,10 @@ defined as lowercase."
   (evil-set-initial-state 'profiler-report-mode 'motion))
 
 
+;;; Major mode: systemd
+
+(use-package systemd)
+
 ;;; Major mode: restructuredtext
 
 (use-package rst
