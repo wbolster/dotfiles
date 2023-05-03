@@ -2,6 +2,8 @@
   '((emacs "24.1"))
   :commit "09904af23adb839c6a9c1175349a1fb67f5b4370" :authors
   '(("Jacek \"TeMPOraL\" Zlydach" . "temporal.pl@gmail.com"))
+  :maintainers
+  '(("Jacek \"TeMPOraL\" Zlydach" . "temporal.pl@gmail.com"))
   :maintainer
   '("Jacek \"TeMPOraL\" Zlydach" . "temporal.pl@gmail.com")
   :keywords

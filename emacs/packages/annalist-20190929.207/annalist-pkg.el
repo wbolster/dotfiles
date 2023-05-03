@@ -1,7 +1,9 @@
 (define-package "annalist" "20190929.207" "Record and display information such as keybindings"
   '((emacs "24.4")
     (cl-lib "0.5"))
-  :commit "134fa3f0fb91a636a1c005c483516d4b64905a6d" :authors
+  :commit "08df07e4530953a2c0b1aa553adcab37b7b614b0" :authors
+  '(("Fox Kiester" . "noct@posteo.net"))
+  :maintainers
   '(("Fox Kiester" . "noct@posteo.net"))
   :maintainer
   '("Fox Kiester" . "noct@posteo.net")

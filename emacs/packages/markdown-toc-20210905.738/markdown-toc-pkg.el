@@ -2,7 +2,7 @@
   '((s "1.9.0")
     (dash "2.11.0")
     (markdown-mode "2.1"))
-  :commit "3d724e518a897343b5ede0b976d6fb46c46bcc01" :authors
+  :commit "4e8f97d7d94c53fd706da9e3d5006e1c9dff5ff8" :authors
   '((nil . "Antoine R. Dumont (@ardumont)"))
   :maintainer
   '(nil . "Antoine R. Dumont (@ardumont)")

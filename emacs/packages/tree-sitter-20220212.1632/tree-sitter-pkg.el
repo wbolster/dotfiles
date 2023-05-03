@@ -3,6 +3,8 @@
     (tsc "0.18.0"))
   :commit "909717c685ff5a2327fa2ca8fb8a25216129361c" :authors
   '(("Tuấn-Anh Nguyễn" . "ubolonton@gmail.com"))
+  :maintainers
+  '(("Tuấn-Anh Nguyễn" . "ubolonton@gmail.com"))
   :maintainer
   '("Tuấn-Anh Nguyễn" . "ubolonton@gmail.com")
   :keywords

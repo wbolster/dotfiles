@@ -1,0 +1,2 @@
+;;; Generated package description from blamer.el  -*- no-byte-compile: t -*-
+(define-package "blamer" "20230424.2112" "Show git blame info about current line" '((emacs "27.1") (posframe "1.1.7")) :commit "3d9d12f5a7f31018efdb17a77da8277a3f5da0a6" :authors '(("Artur Yaroshenko" . "artawower@protonmail.com")) :maintainers '(("Artur Yaroshenko" . "artawower@protonmail.com")) :maintainer '("Artur Yaroshenko" . "artawower@protonmail.com") :url "https://github.com/artawower/blamer.el")

@@ -6,6 +6,8 @@
     (shut-up "0.3.2"))
   :commit "625c608443f98bb34b4d5600d52c198509fb64d0" :authors
   '(("Ivan Malison" . "IvanMalison@gmail.com"))
+  :maintainers
+  '(("Ivan Malison" . "IvanMalison@gmail.com"))
   :maintainer
   '("Ivan Malison" . "IvanMalison@gmail.com")
   :keywords

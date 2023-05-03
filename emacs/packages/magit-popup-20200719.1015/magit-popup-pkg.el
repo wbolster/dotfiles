@@ -3,6 +3,8 @@
     (dash "2.13.0"))
   :commit "d8585fa39f88956963d877b921322530257ba9f5" :authors
   '(("Jonas Bernoulli" . "jonas@bernoul.li"))
+  :maintainers
+  '(("Jonas Bernoulli" . "jonas@bernoul.li"))
   :maintainer
   '("Jonas Bernoulli" . "jonas@bernoul.li")
   :keywords

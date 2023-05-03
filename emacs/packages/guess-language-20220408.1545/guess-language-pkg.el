@@ -3,6 +3,8 @@
     (emacs "24"))
   :commit "b1fc363ca2c30b8a8ddaf2e366bca7770c8cfbec" :authors
   '(("Titus von der Malsburg" . "malsburg@posteo.de"))
+  :maintainers
+  '(("Titus von der Malsburg" . "malsburg@posteo.de"))
   :maintainer
   '("Titus von der Malsburg" . "malsburg@posteo.de")
   :keywords

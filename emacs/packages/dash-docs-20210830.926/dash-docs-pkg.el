@@ -6,6 +6,8 @@
   '(("Raimon Grau" . "raimonster@gmail.com")
     ("Toni Reina " . "areina0@gmail.com")
     ("Bryan Gilbert" . "bryan@bryan.sh"))
+  :maintainers
+  '(("Raimon Grau" . "raimonster@gmail.com"))
   :maintainer
   '("Raimon Grau" . "raimonster@gmail.com")
   :keywords
