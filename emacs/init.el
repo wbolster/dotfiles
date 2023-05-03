@@ -2930,7 +2930,7 @@ defined as lowercase."
   ;; https://github.com/vermiculus/magithub/issues/308
   (remove-hook 'magit-status-headers-hook #'magithub-maybe-insert-ci-status-header))
 
-(use-package closql)
+(use-package sqlite3)
 
 (use-package forge
   :after magit
