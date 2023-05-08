@@ -3421,7 +3421,10 @@ defined as lowercase."
      "XXX" "xxx")))
 
 (use-package lsp-mode
-  :disabled)
+  :defer t)
+
+(use-package lsp-ui
+  :defer t)
 
 (use-package prog-mode
   :ensure nil
