@@ -2642,13 +2642,6 @@ defined as lowercase."
     (company-abort)
     (counsel-company)))
 
-(use-package company-lsp
-  :disabled
-  :demand t
-  :after company
-  :config
-  (add-to-list 'company-backends 'company-lsp))
-
 (use-package flx)
 
 (use-package ivy
