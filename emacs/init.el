@@ -3402,7 +3402,9 @@ defined as lowercase."
 
 (use-package lsp-mode
   :defer t
-  :delight " 🚀")
+  :delight " 🚀"
+  :config
+  (setq read-process-output-max (* 1024 1024))) ;; 1mb (recommended by docs)
 
 (use-package lsp-ui
   :defer t)
