@@ -6,23 +6,12 @@
 
 ;;; Code:
 
-;;; Startup
-
-(setq load-prefer-newer t)
-
-;; Reduce garbage collection during startup.
-(defvar w--original-gc-cons-threshold gc-cons-threshold
-  "Original ‘gc-cons-threshold’ value.")
-
-(defun w--reset-gc-cons-threshold ()
-  "Reset the original ‘gc-cons-threshold’ value."
-  (setq gc-cons-threshold w--original-gc-cons-threshold))
-
+;; Reduce garbage collection: faster startup, also recommended for lsp-mode.
 (setq gc-cons-threshold (* 100 1024 1024))
-(add-hook 'emacs-startup-hook #'w--reset-gc-cons-threshold)
-
 
 ;;; Packages
+
+(setq load-prefer-newer t)
 
 ;; Make everything relative to where this file actually lives.
 (setq user-emacs-directory
