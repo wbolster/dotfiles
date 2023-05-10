@@ -3372,6 +3372,7 @@ defined as lowercase."
     (funcall fn)))
 
 (use-package mmm-mode
+  :delight " 🍔"
   :custom-face
   (mmm-default-submode-face ((t (:background nil)))))
 
