@@ -2601,9 +2601,10 @@ defined as lowercase."
   :hook (w--theme-changed-hook . w--company-tweak-faces)
 
   :general
-  (:states 'insert
+  (:keymaps 'company-mode-map
+   :states 'insert
    "C-<return>" #'company-manual-begin
-   "<tab>" #'w--indent-or-complete)
+   [remap indent-for-tab-command] #'company-indent-or-complete-common)
   (:keymaps 'company-active-map
    "C-n" #'company-select-next
    "C-p" #'company-select-previous
@@ -2622,6 +2623,8 @@ defined as lowercase."
   (company-require-match nil)
   (company-selection-wrap-around t)
   (company-transformers '(company-sort-by-occurrence))
+  (tab-always-indent 'complete)
+  (tab-first-completion 'word)
 
   :config
   (add-to-list 'company-auto-complete-chars ?\( )
@@ -2630,12 +2633,6 @@ defined as lowercase."
 
   (defun w--company-tweak-faces ()
     (set-face-attribute 'company-tooltip-selection nil :inherit 'region))
-
-  (defun w--indent-or-complete ()
-    (interactive)
-    (if (or (looking-at "\\_>") (looking-back "/" nil))
-        (company-manual-begin)
-      (call-interactively #'indent-for-tab-command)))
 
   (defun w--company-switch-to-counsel-company ()
     (interactive)
