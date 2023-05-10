@@ -3401,7 +3401,8 @@ defined as lowercase."
      "XXX" "xxx")))
 
 (use-package lsp-mode
-  :defer t)
+  :defer t
+  :delight " 🚀")
 
 (use-package lsp-ui
   :defer t)
