@@ -3403,6 +3403,8 @@ defined as lowercase."
 (use-package lsp-mode
   :defer t
   :delight " 🚀"
+  :custom
+  (lsp-headerline-breadcrumb-segments '(symbols))
   :config
   (setq read-process-output-max (* 1024 1024))) ;; 1mb (recommended by docs)
 
