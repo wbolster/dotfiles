@@ -338,6 +338,8 @@ dconf write /org/gnome/shell/extensions/gtktitlebar/hide-window-titlebars "'both
 # invert window
 dconf write /org/gnome/shell/extensions/invert-window/invert-window-shortcut "['<Control><Super>l']"
 dconf write /org/gnome/shell/extensions/invert-window-preserving-hue/invert-window-preserving-hue-shortcut "['<Control><Super>l']"
+# https://extensions.gnome.org/extension/5829/true-color-invert/
+dconf write /org/gnome/shell/extensions/true-color-window-invert/invert-window-shortcut "['<Control><Super>l']"
 
 # nothing to say
 dconf write /org/gnome/shell/extensions/nothing-to-say/keybinding-toggle-mute "['<Super>backslash', 'Pause']"
