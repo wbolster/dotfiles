@@ -4651,7 +4651,10 @@ defined as lowercase."
 ;;; Major mode: vue
 
 (use-package vue-mode
+  :hook (vue-mode-hook . w--vue-mode-hook)
   :config
+  (defun w--vue-mode-hook ()
+    (lsp-mode))
 
   ;; somehow the default is not scss-mode for scss
   (--map-first
