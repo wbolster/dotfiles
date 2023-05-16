@@ -3548,6 +3548,18 @@ defined as lowercase."
   :defer t)
 
 
+;;; Major mode: css
+
+(use-package css-mode
+  :defer t
+  :hook
+  (css-mode-hook . w--css-mode-hook)
+  :config
+  (defun w--css-mode-hook ()
+    (lsp-mode)
+    (modify-syntax-entry ?. ".")
+    (modify-syntax-entry ?- "_")))
+
 ;;; Major mode: customize
 
 (use-package cus-edit
