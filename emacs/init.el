@@ -4656,8 +4656,12 @@ defined as lowercase."
 ;;; Major mode: typescript
 
 (use-package typescript-mode
+  :hook (typescript-mode-hook . w--typescript-mode-hook)
   :custom
-  (typescript-indent-level 2))
+  (typescript-indent-level 2)
+  :config
+  (defun w--typescript-mode-hook ()
+    (lsp-mode)))
 
 
 ;;; Major mode: vue
