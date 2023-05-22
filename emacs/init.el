@@ -4661,6 +4661,7 @@ defined as lowercase."
   (typescript-indent-level 2)
   :config
   (defun w--typescript-mode-hook ()
+    (reformatter-dwim-select 'prettier-format)
     (lsp-mode)))
 
 
