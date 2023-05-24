@@ -4,6 +4,7 @@
 /packages/archives/
 /packages/**/dir
 /packages/**/*.elc
+/packages/**/*.so
 /packages/emacsql-sqlite-*/
 /packages/gnupg/
 /packages/*.signed
