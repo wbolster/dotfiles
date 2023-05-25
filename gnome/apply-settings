@@ -484,3 +484,8 @@ layout-3-row-1=1
 layout-3-row-2=0
 
 EOF
+
+# window app switcher on active monitor
+dconf write /org/gnome/shell/extensions/window-app-switcher-on-active-monitor/ws-filter-monitor false
+dconf write /org/gnome/shell/extensions/window-app-switcher-on-active-monitor/as-filter-workspace false
+dconf write /org/gnome/shell/extensions/window-app-switcher-on-active-monitor/as-filter-monitor false

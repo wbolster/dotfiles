@@ -26,6 +26,7 @@ install_extension nothing-to-say@extensions.gnome.wouter.bolsterl.ee
 install_extension sound-output-device-chooser@kgshank.net
 install_extension tactile@lundal.io
 install_extension tint-all@amarovita.github.com
+install_extension window-app-switcher-on-active-monitor@NiKnights.com
 
 # paperwm is a bit special
 install_paperwm () {
