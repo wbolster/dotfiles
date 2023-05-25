@@ -171,6 +171,10 @@ gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-7 "['<Control><
 gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-8 "['<Control><Super>8']"
 gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-9 "['<Control><Super>9']"
 
+# monitors
+gsettings set org.gnome.desktop.wm.keybindings move-to-monitor-left "['<Control><Super>e']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-monitor-right "['<Control><Super>n']"
+
 
 #
 # screenshots
