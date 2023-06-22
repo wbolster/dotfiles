@@ -3789,7 +3789,7 @@ defined as lowercase."
   (mhtml-mode-hook . w--html-mode-hook)
   :config
   (defun w--html-mode-hook ()
-    (reformatter-dwim-select 'prettier-format-html)
+    (reformatter-dwim-select 'prettier-format)
     (setq evil-shift-width 2)))
 
 ;;; Major mode: jinja
@@ -3814,7 +3814,7 @@ defined as lowercase."
      tab-width 2
      evil-shift-width tab-width
      js-indent-level tab-width)
-    (reformatter-dwim-select 'prettier-format-js)))
+    (reformatter-dwim-select 'prettier-format)))
 
 (use-package rjsx-mode)
 
