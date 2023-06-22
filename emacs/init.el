@@ -3557,6 +3557,7 @@ defined as lowercase."
   :config
   (defun w--css-mode-hook ()
     (lsp-mode)
+    (reformatter-dwim-select 'prettier-format)
     (modify-syntax-entry ?. ".")
     (modify-syntax-entry ?- "_")))
 
