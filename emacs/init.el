@@ -4651,7 +4651,10 @@ defined as lowercase."
   (defun w--conf-toml-mode-hook ()
     (setq
      tab-width 2
-     evil-shift-width tab-width)))
+     evil-shift-width tab-width))
+  (reformatter-define toml-format-taplo
+    :program "taplo"
+    :args '("format" "-")))
 
 
 ;;; Major mode: typescript
