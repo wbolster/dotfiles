@@ -316,9 +316,11 @@ defined as lowercase."
 
 (use-package desktop
   :custom
-  (desktop-restore-eager 5)
   (desktop-auto-save-timeout 10)
+  (desktop-restore-eager 5)
   :config
+  (setq desktop-load-locked-desktop
+        (if (version<= emacs-version "29") 'ask 'check-pid))
   (desktop-save-mode)
   (add-to-list 'desktop-globals-to-save 'swiper-history)
   (add-to-list 'desktop-globals-to-clear 'swiper-history))
