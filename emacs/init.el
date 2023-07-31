@@ -1376,7 +1376,10 @@ defined as lowercase."
   (indicate-buffer-boundaries 'left)
   (recenter-positions '(top middle bottom))
   (scroll-conservatively 101)
-  (scroll-margin 5))
+  (scroll-margin 5)
+  :config
+  (when (fboundp 'pixel-scroll-precision-mode)  ;; emacs 29+
+    (pixel-scroll-precision-mode)))
 
 
 ;;;; whitespace
