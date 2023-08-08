@@ -124,6 +124,7 @@ ui = auto
 
 [diff]
 algorithm = patience
+noprefix = true
 tool = difftastic
 
 [diff "gettext-mo"]
