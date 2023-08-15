@@ -44,6 +44,10 @@
   (use-package-enable-imenu-support t)
   (use-package-hook-name-suffix nil))
 
+(use-package emacs
+  :custom
+  native-comp-async-report-warnings-errors 'silent)
+
 (use-package auto-compile
   :custom
   (auto-compile-update-autoloads t)
