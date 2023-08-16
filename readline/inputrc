@@ -35,9 +35,11 @@ $if Bash
     set skip-completed-text on
     set visible-stats on
 
-    # Alternative to <return> or C-m: end-of-line,
-    # delete-horizontal-space, pipe through pager
-    control-j: "\C-e\e\\ |& ,pager-if-tty\C-m"
+    # Alternative to <return> or C-m:
+    # - end-of-line
+    # - delete-horizontal-space
+    # - pipe through pager (if needed)
+    # control-j: "\C-e\e\\ |& ,pager-if-tty\C-m"
 
     control-o: history-and-alias-expand-line
     control-w: backward-kill-word
