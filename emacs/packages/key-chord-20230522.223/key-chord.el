@@ -4,8 +4,6 @@
 
 ;; Author: David Andersson <l.david.andersson(at)sverige.nu>
 ;; Package-Requires: ((emacs "24"))
-;; Package-Version: 20230522.223
-;; Package-Commit: e724def60fdf6473858f2962ae276cf4413473eb
 ;; Keywords: keyboard chord input
 
 ;; This program is free software; you can redistribute it and/or

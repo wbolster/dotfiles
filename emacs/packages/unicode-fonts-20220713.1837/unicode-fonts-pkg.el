@@ -1,2 +1,18 @@
-;;; Generated package description from unicode-fonts.el  -*- no-byte-compile: t -*-
-(define-package "unicode-fonts" "20220713.1837" "Configure Unicode fonts" '((font-utils "0.7.8") (ucs-utils "0.8.2") (list-utils "0.4.2") (persistent-soft "0.8.10") (pcache "0.3.1")) :commit "44d0a22420c39709d1e1fa659a3f135facf3c986" :authors '(("Roland Walker" . "walker@pobox.com")) :maintainers '(("Roland Walker" . "walker@pobox.com")) :maintainer '("Roland Walker" . "walker@pobox.com") :keywords '("i18n" "faces" "frames" "wp" "interface") :url "http://github.com/rolandwalker/unicode-fonts")
+(define-package "unicode-fonts" "20220713.1837" "Configure Unicode fonts"
+  '((font-utils "0.7.8")
+    (ucs-utils "0.8.2")
+    (list-utils "0.4.2")
+    (persistent-soft "0.8.10")
+    (pcache "0.3.1"))
+  :commit "44d0a22420c39709d1e1fa659a3f135facf3c986" :authors
+  '(("Roland Walker" . "walker@pobox.com"))
+  :maintainers
+  '(("Roland Walker" . "walker@pobox.com"))
+  :maintainer
+  '("Roland Walker" . "walker@pobox.com")
+  :keywords
+  '("i18n" "faces" "frames" "wp" "interface")
+  :url "http://github.com/rolandwalker/unicode-fonts")
+;; Local Variables:
+;; no-byte-compile: t
+;; End:

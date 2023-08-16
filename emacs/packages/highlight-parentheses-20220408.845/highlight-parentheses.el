@@ -7,8 +7,6 @@
 ;; Author: Nikolaj Schumacher <bugs * nschum de>
 ;; Maintainer: Tassilo Horn <tsdh@gnu.org>
 ;; Version: 2.1.1
-;; Package-Version: 20220408.845
-;; Package-Commit: 438a1cb2563e2a2496be4678cc0df8d5b22caf5d
 ;; Keywords: faces, matching
 ;; URL: https://sr.ht/~tsdh/highlight-parentheses.el/
 ;; Package-Requires: ((emacs "24.3"))

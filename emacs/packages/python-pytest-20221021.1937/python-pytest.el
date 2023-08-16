@@ -2,8 +2,6 @@
 
 ;; Author: wouter bolsterlee <wouter@bolsterl.ee>
 ;; Version: 3.3.0
-;; Package-Version: 20221021.1937
-;; Package-Commit: 33c921adaa6c9c8f7cceba2342114c6b406e0d7c
 ;; Package-Requires: ((emacs "24.4") (dash "2.18.0") (transient "0.3.7") (projectile "0.14.0") (s "1.12.0"))
 ;; Keywords: pytest, test, python, languages, processes, tools
 ;; URL: https://github.com/wbolster/emacs-python-pytest

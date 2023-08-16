@@ -4,8 +4,6 @@
 ;;
 ;; Author: Sylvain Benner <sylvain.benner@gmail.com>
 ;; Keywords: convenience language tools
-;; Package-Version: 20230106.1829
-;; Package-Commit: df9be4c5bf26c4dc5ddaeed8179c4d66bdaa91f5
 ;; Homepage: https://github.com/flycheck/flycheck-color-mode-line
 ;; Version: 0.3
 ;; Package-Requires: ((flycheck "0.15") (emacs "24.3"))

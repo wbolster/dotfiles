@@ -2,8 +2,6 @@
 
 ;; Author: wouter bolsterlee <wouter@bolsterl.ee>
 ;; Keywords: languages
-;; Package-Version: 20210407.2045
-;; Package-Commit: 9f9fb1fe946bbba46307c26355f355225ea7262a
 ;; URL: https://github.com/wbolster/emacs-gsettings
 ;; Package-Requires: ((emacs "24.3") (dash "2.16.0") (gvariant "1.0.0") (s "1.12.0"))
 ;; Version: 1.0.0

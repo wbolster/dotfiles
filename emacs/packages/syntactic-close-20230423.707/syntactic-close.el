@@ -4,8 +4,6 @@
 ;; Maintainer: Emacs User Group Berlin <emacs-berlin@emacs-berlin.org>
 
 ;; Version: 0.1
-;; Package-Version: 20230423.707
-;; Package-Commit: c184ff7a3cbcd28439aba7c3531ffebf0cd30b3a
 
 ;; URL: https://github.com/emacs-berlin/syntactic-close
 

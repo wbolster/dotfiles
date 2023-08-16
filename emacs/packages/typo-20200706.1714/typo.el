@@ -3,8 +3,6 @@
 ;; Copyright (C) 2012 Jorgen Schaefer
 
 ;; Version: 1.1
-;; Package-Version: 20200706.1714
-;; Package-Commit: 173ebe4fc7ac38f344b16e6eaf41f79e38f20d57
 ;; Author: Jorgen Schaefer <forcer@forcix.cx>
 ;; URL: https://github.com/jorgenschaefer/typoel
 ;; Created: 6 Feb 2012

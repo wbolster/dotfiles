@@ -4,8 +4,6 @@
 
 ;; Author: Troy Pracy
 ;; Keywords: functional
-;; Package-Version: 20210304.1812
-;; Package-Commit: 98e3fe1b4785e162d9aca978a2db106baa79260f
 ;; Version: 0.1.2
 ;; Package-Requires: ((emacs "24") (cl-lib "0.5") (dash "2.18.0"))
 

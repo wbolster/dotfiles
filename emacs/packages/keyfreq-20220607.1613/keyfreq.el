@@ -11,8 +11,6 @@
 ;; Created: 2006
 ;;
 ;; Package-Requires: ((cl-lib "0.5"))
-;; Package-Version: 20220607.1613
-;; Package-Commit: dd88193cd7a91a92113121191573758ea2a3ceb1
 ;;
 ;;
 ;; Keyfreq is free software; you can redistribute it and/or modify it

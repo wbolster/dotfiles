@@ -2,8 +2,6 @@
 
 ;; Author: Wouter Bolsterlee <wouter@bolsterl.ee>
 ;; Version: 2.2.1
-;; Package-Version: 20221230.1443
-;; Package-Commit: ea519b962f051cabced8aadaf6ed0134b861225c
 ;; Package-Requires: ((emacs "24.3") (evil "1.2.12") (evil-snipe "2.0.3"))
 ;; Keywords: convenience emulations colemak evil
 ;; URL: https://github.com/wbolster/evil-colemak-basics

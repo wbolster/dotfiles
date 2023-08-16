@@ -4,8 +4,6 @@
 
 ;; Author: Artur Yaroshenko <artawower@protonmail.com>
 ;; URL: https://github.com/artawower/blamer.el
-;; Package-Version: 20230519.2152
-;; Package-Commit: ab00e6a3ea482c342d918add9c20bfd3fa740aaa
 ;; Package-Requires: ((emacs "27.1") (posframe "1.1.7"))
 ;; Version: 0.7.2
 

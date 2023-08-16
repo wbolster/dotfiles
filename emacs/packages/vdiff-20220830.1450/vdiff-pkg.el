@@ -1,2 +1,0 @@
-;;; Generated package description from vdiff.el  -*- no-byte-compile: t -*-
-(define-package "vdiff" "20220830.1450" "A diff tool similar to  vimdiff" '((emacs "24.4") (hydra "0.13.0")) :commit "d5df45f84395f507aba555a54407b60e284b23cd" :authors '(("Justin Burkett" . "justin@burkett.cc")) :maintainers '(("Justin Burkett" . "justin@burkett.cc")) :maintainer '("Justin Burkett" . "justin@burkett.cc") :keywords '("diff") :url "https://github.com/justbur/emacs-vdiff")

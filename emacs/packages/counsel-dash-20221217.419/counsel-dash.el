@@ -4,8 +4,6 @@
 
 ;; Author: Nathan Kot <nk@nathankot.com>
 ;; Version: 0.1.3
-;; Package-Version: 20221217.419
-;; Package-Commit: 04117bffc8badd85c9f4fdb17648fd56e83fe832
 ;; Package-Requires: ((emacs "24.4") (dash-docs "1.4.0") (counsel "0.8.0") (cl-lib "0.5"))
 ;; Keywords: dash, ivy, counsel
 ;; URL: https://github.com/nathankot/counsel-dash

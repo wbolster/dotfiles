@@ -5,8 +5,6 @@
 
 ;; Author: PythonNut <pythonnut@pythonnut.com>
 ;; Keywords: convenience, evil
-;; Package-Version: 20200424.135
-;; Package-Commit: f96c2ed38ddc07908db7c3c11bcd6285a3e8c2e9
 ;; Version: 20160228
 ;; URL: https://github.com/pythonnut/evil-easymotion
 ;; Package-Requires: ((emacs "24") (avy "0.3.0") (cl-lib "0.5"))

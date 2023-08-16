@@ -5,8 +5,6 @@
 ;; Author: Roland Walker <walker@pobox.com>
 ;; Homepage: http://github.com/rolandwalker/persistent-soft
 ;; URL: http://raw.githubusercontent.com/rolandwalker/persistent-soft/master/persistent-soft.el
-;; Package-Version: 20150223.1853
-;; Package-Commit: a1e0ddf2a12a6f18cab565dee250f070384cbe02
 ;; Version: 0.8.10
 ;; Last-Updated: 23 Feb 2015
 ;; EmacsWiki: PersistentSoft

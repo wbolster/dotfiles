@@ -4,8 +4,6 @@
 
 ;; Author: Artur Malabarba <emacs@endlessparentheses.com>
 ;; URL: https://github.com/Malabarba/beacon
-;; Package-Version: 20220730.100
-;; Package-Commit: 85261a928ae0ec3b41e639f05291ffd6bf7c231c
 ;; Keywords: convenience
 ;; Version: 1.3.4
 ;; Package-Requires: ((emacs "25.1"))

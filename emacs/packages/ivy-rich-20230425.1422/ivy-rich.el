@@ -5,8 +5,6 @@
 ;; Author: Yevgnen Koh <wherejoystarts@gmail.com>
 ;; Homepage: https://github.com/Yevgnen/ivy-rich
 ;; Package-Requires: ((emacs "25.1") (ivy "0.13.0"))
-;; Package-Version: 20230425.1422
-;; Package-Commit: aff9b6bd53e0fdcf350ab83c90e64e651b47dba4
 ;; Version: 0.1.7
 ;; Keywords: convenience, ivy
 

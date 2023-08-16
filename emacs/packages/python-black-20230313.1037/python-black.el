@@ -2,8 +2,6 @@
 
 ;; Author: wouter bolsterlee <wouter@bolsterl.ee>
 ;; Keywords: languages
-;; Package-Version: 20230313.1037
-;; Package-Commit: 0714b0007c0b620f88ed9cc91035caea43f3d75f
 ;; URL: https://github.com/wbolster/emacs-python-black
 ;; Package-Requires: ((emacs "25") (dash "2.16.0") (reformatter "0.3"))
 ;; Version: 1.2.0
