@@ -2788,7 +2788,7 @@ defined as lowercase."
   ;; no special behaviour for magit windows
   (remove-hook 'magit-post-display-buffer-hook 'magit-maybe-set-dedicated)
 
-  (magit-wip-mode)
+  ;; (magit-wip-mode)
 
   (--each '("~" "~/Projects/" "~/Documents/")
     (add-to-list 'magit-repository-directories (cons it 2) t))
