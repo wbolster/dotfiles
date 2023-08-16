@@ -1,5 +1,6 @@
 /.cask/
 /custom.el
+/eln-cache/*.so
 /init-local.el
 /packages/archives/
 /packages/**/dir
@@ -11,4 +12,5 @@
 /packages/tree-sitter-langs-*/
 /packages/tsc-*/
 /quelpa/
+/tree-sitter/*.so
 /var/
