@@ -1261,8 +1261,8 @@ defined as lowercase."
   w--add-evil-surround-pairs
 
   :config
-  (evil-add-to-alist
-   'evil-surround-pairs-alist
+  (evil--add-to-alist
+   evil-surround-pairs-alist
    ;; overwrite defaults to not put spaces inside braces:
    ?\( '("(" . ")")
    ?\[ '("[" . "]")
@@ -1284,7 +1284,10 @@ defined as lowercase."
   (make-variable-buffer-local 'evil-surround-pairs-alist)
 
   (defun w--add-evil-surround-pairs (&rest args)
-    (apply 'evil-add-to-alist 'evil-surround-pairs-alist args)))
+    (--each args
+      (-let (((trigger left right) it))
+        (push `(,trigger . (,left . ,right)) evil-surround-pairs-alist)))
+    ))
 
 (use-package evil-swap-keys
   :config
@@ -3875,9 +3878,9 @@ defined as lowercase."
     (w--set-major-mode-hydra #'w--hydra-markdown/body)
     (flyspell-mode)
     (w--add-evil-surround-pairs
-     ?b '("**" . "**")  ;; strong emphasiss
-     ?c '("`" . "`")  ;; inline code
-     ?e '("*" . "*"))) ;; emphasis
+     '(?b "**" "**") ;; strong emphasiss
+     '(?c "`" "`")   ;; inline code
+     '(?e "*" "*"))  ;; emphasis
 
 
   (evil-declare-repeat 'markdown-promote)
@@ -4023,9 +4026,9 @@ defined as lowercase."
     (origami-mode)
     ;; (python-docstring-mode)
     (w--add-evil-surround-pairs
-     ?` '("``" . "``")) ;; for reStructuredText literals in docstrings
-    (evil-add-to-alist
-     'origami-parser-alist
+     '(?` "``" "``")) ;; for reStructuredText literals in docstrings
+    (evil--add-to-alist
+     origami-parser-alist
      'python-mode 'w--origami-parser-imenu-flat))
 
   ;; todo: integrate this with the global easymotion hydra
@@ -4368,8 +4371,8 @@ defined as lowercase."
             (reverse nodes))))))
 
   (require 'origami)
-  (evil-add-to-alist
-   'origami-parser-alist
+  (evil--add-to-alist
+   origami-parser-alist
    'python-pytest-mode 'w--python-pytest-origami-parser))
 
 
@@ -4427,17 +4430,17 @@ defined as lowercase."
     (flyspell-mode)
     (origami-mode)
     (sphinx-mode)
-    (evil-add-to-alist
-     'origami-parser-alist
+    (evil--add-to-alist
+     origami-parser-alist
      'rst-mode 'w--origami-parser-imenu-flat)
     (w--add-evil-surround-pairs
-     ?b '("**" . "**")  ;; strong
-     ?c '("``" . "``")  ;; inline code
-     ?C '(".. code-block::\n\n" . "")  ;; code-block
-     ?d '(":doc:`" . " <...>`")  ;; doc link
-     ?e '("*" . "*")  ;; emphasis
-     ?l '("`" . " <...>`_")  ;; hyperlink
-     ?t '(":term:`" . "`"))  ;; glossary term
+     '(?b "**" "**")  ;; strong
+     '(?c "``" "``")  ;; inline code
+     '(?C ".. code-block::\n\n" "")  ;; code-block
+     '(?d ":doc:`" " <...>`")  ;; doc link
+     '(?e "*" "*")  ;; emphasis
+     '(?l "`" " <...>`_")  ;; hyperlink
+     '(?t ":term:`" "`"))  ;; glossary term
     (make-local-variable 'evil-inner-text-objects-map)
     (general-define-key
      :keymaps 'evil-inner-text-objects-map
@@ -4599,8 +4602,8 @@ defined as lowercase."
     (evil-swap-keys-swap-double-single-quotes)
     (evil-swap-keys-swap-square-curly-brackets)
     (origami-mode)
-    (evil-add-to-alist
-     'origami-parser-alist
+    (evil--add-to-alist
+     origami-parser-alist
      'rust-mode 'w--origami-parser-imenu-flat)))
 
 
