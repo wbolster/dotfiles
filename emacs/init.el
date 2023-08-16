@@ -3781,6 +3781,7 @@ defined as lowercase."
   :args `("--stdin-filepath" ,(file-name-nondirectory (buffer-file-name)))
   :lighter " Prettier"
   :group 'prettier)
+(delight 'prettier-format-on-save-mode " 💄" t)
 (reformatter-define prettier-format-html
   :program "prettier"
   :args '("--parser=html")
