@@ -717,6 +717,8 @@ defined as lowercase."
    ;; useful for keychron k7 keyboards that require a Fn modifier for
    ;; tilde; use shift-tab (key below it) it as a workaround.
    "<backtab>" #'evil-invert-char)
+  (:states 'visual
+   "x" #'evil-exchange)
   (:states '(operator visual)
    "o" #'w--evil-text-object-symbol-dwim)
   (:states 'operator
