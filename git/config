@@ -124,6 +124,7 @@ ui = auto
 
 [diff]
 algorithm = patience
+colorMoved = default
 noprefix = true
 tool = difftastic
 
