@@ -3415,6 +3415,7 @@ defined as lowercase."
 (use-package lsp-mode
   :defer t
   :delight " 🚀"
+  :commands (lsp lsp-deferred)
   :custom
   (lsp-headerline-breadcrumb-segments '(symbols))
   :config
@@ -3568,7 +3569,7 @@ defined as lowercase."
   (css-mode-hook . w--css-mode-hook)
   :config
   (defun w--css-mode-hook ()
-    (lsp-mode)
+    (lsp-deferred)
     (reformatter-dwim-select 'prettier-format)
     (modify-syntax-entry ?. ".")
     (modify-syntax-entry ?- "_")))
@@ -4679,7 +4680,7 @@ defined as lowercase."
   :config
   (defun w--typescript-mode-hook ()
     (reformatter-dwim-select 'prettier-format)
-    (lsp-mode)))
+    (lsp-deferred)))
 
 
 ;;; Major mode: vue
@@ -4688,7 +4689,7 @@ defined as lowercase."
   :hook (vue-mode-hook . w--vue-mode-hook)
   :config
   (defun w--vue-mode-hook ()
-    (lsp-mode))
+    (lsp-deferred))
 
   ;; somehow the default is not scss-mode for scss
   (--map-first
