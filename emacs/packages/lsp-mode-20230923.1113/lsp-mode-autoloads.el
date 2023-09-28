@@ -423,6 +423,11 @@ Click lsp lens using `avy' package." t)
 (register-definition-prefixes "lsp-marksman" '("lsp-marksman-"))
 
 
+;;; Generated autoloads from lsp-mdx.el
+
+(register-definition-prefixes "lsp-mdx" '("lsp-mdx-server-command"))
+
+
 ;;; Generated autoloads from lsp-mint.el
 
 (register-definition-prefixes "lsp-mint" '("lsp-clients-mint-executable"))
@@ -553,6 +558,11 @@ it is disabled.
 (register-definition-prefixes "lsp-modeline" '("lsp-"))
 
 
+;;; Generated autoloads from lsp-move.el
+
+(register-definition-prefixes "lsp-move" '("lsp-clients-"))
+
+
 ;;; Generated autoloads from lsp-nginx.el
 
 (register-definition-prefixes "lsp-nginx" '("lsp-nginx-server-command"))
@@ -646,6 +656,11 @@ it is disabled.
 ;;; Generated autoloads from lsp-rf.el
 
 (register-definition-prefixes "lsp-rf" '("expand-start-command" "lsp-rf-language-server-" "parse-rf-language-server-"))
+
+
+;;; Generated autoloads from lsp-rubocop.el
+
+(register-definition-prefixes "lsp-rubocop" '("lsp-rubocop-"))
 
 
 ;;; Generated autoloads from lsp-ruby-lsp.el

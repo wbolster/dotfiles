@@ -180,11 +180,11 @@ As defined by the Language Server Protocol 3.16."
      lsp-erlang lsp-eslint lsp-fortran lsp-fsharp lsp-gdscript lsp-go lsp-gleam
      lsp-glsl lsp-graphql lsp-hack lsp-grammarly lsp-groovy lsp-haskell lsp-haxe
      lsp-idris lsp-java lsp-javascript lsp-json lsp-kotlin lsp-latex lsp-ltex
-     lsp-lua lsp-markdown lsp-marksman lsp-mint lsp-nginx lsp-nim lsp-nix lsp-magik
+     lsp-lua lsp-markdown lsp-marksman lsp-mdx lsp-mint lsp-move lsp-nginx lsp-nim lsp-nix lsp-magik
      lsp-metals lsp-mssql lsp-ocaml lsp-openscad lsp-pascal lsp-perl lsp-perlnavigator
      lsp-pls lsp-php lsp-pwsh lsp-pyls lsp-pylsp lsp-pyright lsp-python-ms lsp-purescript
-     lsp-r lsp-racket lsp-remark lsp-ruff-lsp lsp-rf lsp-rust lsp-semgrep lsp-shader lsp-solargraph
-     lsp-sorbet lsp-sourcekit lsp-sonarlint lsp-tailwindcss lsp-tex lsp-terraform
+     lsp-r lsp-racket lsp-remark lsp-ruff-lsp lsp-rf lsp-rubocop lsp-rust lsp-semgrep lsp-shader
+     lsp-solargraph lsp-sorbet lsp-sourcekit lsp-sonarlint lsp-tailwindcss lsp-tex lsp-terraform
      lsp-toml lsp-ttcn3 lsp-typeprof lsp-v lsp-vala lsp-verilog lsp-vetur lsp-volar
      lsp-vhdl lsp-vimscript lsp-xml lsp-yaml lsp-ruby-lsp lsp-ruby-syntax-tree
      lsp-sqls lsp-svelte lsp-steep lsp-tilt lsp-zig)
@@ -771,6 +771,7 @@ Changes take effect only when a new session is started."
     ("\\.jsonc$" . "jsonc")
     ("\\.jsx$" . "javascriptreact")
     ("\\.lua$" . "lua")
+    ("\\.mdx\\'" . "mdx")
     ("\\.php$" . "php")
     ("\\.rs\\'" . "rust")
     ("\\.sql$" . "sql")
@@ -809,6 +810,7 @@ Changes take effect only when a new session is started."
     (python-ts-mode . "python")
     (cython-mode . "python")
     (lsp--render-markdown . "markdown")
+    (move-mode . "move")
     (rust-mode . "rust")
     (rust-ts-mode . "rust")
     (rustic-mode . "rust")
@@ -3006,7 +3008,7 @@ and end-of-string meta-characters."
   ;; `lsp-register-client-capabilities'. It's value is an alist of (PACKAGE-NAME
   ;; . CAPS), where PACKAGE-NAME is a symbol of the third-party package name,
   ;; and CAPS is either a plist of the client capabilities, or a function that
-  ;; takes no argument and returns a plist of the client capabilities or nil.")
+  ;; takes no argument and returns a plist of the client capabilities or nil.
   (extra-client-capabilities nil)
 
   ;; Workspace status
@@ -3545,9 +3547,9 @@ and expand the capabilities section"
   "Shut down the language server process for ‘lsp--cur-workspace’."
   (with-demoted-errors "LSP error: %S"
     (let ((lsp-response-timeout 0.5))
-      (condition-case _err
-          (lsp-request "shutdown" lsp--empty-ht)
-        (error (lsp--error "Timeout while sending shutdown request"))))
+      (condition-case err
+          (lsp-request "shutdown" nil)
+        (error (lsp--error "%s" err))))
     (lsp-notify "exit" nil))
   (setf (lsp--workspace-shutdown-action lsp--cur-workspace) (or (and restart 'restart) 'shutdown))
   (lsp--uninitialize-workspace))

@@ -3424,6 +3424,9 @@ defined as lowercase."
 (use-package lsp-ui
   :defer t)
 
+(use-package lsp-ivy
+  :defer t)
+
 (use-package prog-mode
   :ensure nil
   :defer t
