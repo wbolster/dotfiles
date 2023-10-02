@@ -5,6 +5,9 @@ email = wouter@bolsterl.ee
 [github]
 user = wbolster
 
+[absorb]
+maxStack = 100
+
 [alias]
 
 # Generic
