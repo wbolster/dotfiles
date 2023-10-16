@@ -113,12 +113,13 @@ if [[ "$OSTYPE" == darwin* ]]; then
 fi
 
 ___path_add_if_exists PATH \
-    "${_dotfiles_root}/bin" \
     ~/.local/bin \
     ~/bin \
+    "${_dotfiles_root}/bin" \
     "${npm_config_prefix}/bin" \
     ~/.cargo/bin \
     ~/.pyenv/shims \
+    ~/.local/share/rtx/shims \
     /opt/bin
 ___path_add_if_exists MANPATH \
     ~/.local/man \
