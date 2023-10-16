@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -eux
+
+# yes, this weird hack causes ‘docker run’ for some containers with
+# systemd to work afterwards 🤯
+docker build --no-cache - < <(printf 'FROM alpine\nRUN apk update\n')
