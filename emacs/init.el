@@ -3885,7 +3885,7 @@ defined as lowercase."
     (w--add-evil-surround-pairs
      '(?b "**" "**") ;; strong emphasiss
      '(?c "`" "`")   ;; inline code
-     '(?e "*" "*"))  ;; emphasis
+     '(?e "*" "*")))  ;; emphasis
 
 
   (evil-declare-repeat 'markdown-promote)
