@@ -3784,7 +3784,8 @@ defined as lowercase."
   :group 'languages)
 (reformatter-define prettier-format
   :program "prettier"
-  :args `("--stdin-filepath" ,(file-name-nondirectory (buffer-file-name)))
+  :args `("--stdin-filepath"
+          ,(file-name-nondirectory (buffer-file-name (buffer-base-buffer))))
   :lighter " Prettier"
   :group 'prettier)
 (delight 'prettier-format-on-save-mode " 💄" t)
