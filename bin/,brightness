@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -eu
+
+action="${1?specify up or down}"
+increment=5
+if [[ "$action" = "up" ]]; then
+    operator="+"
+else  # assume down
+    operator="-"
+fi
+
+set -x
+ddcutil setvcp 10 $operator $increment
