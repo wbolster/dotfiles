@@ -1,52 +1,56 @@
-location:
+---
+source_directories:
+  - /etc
+  - /home
+  - /srv
+  - /var/log
 
-  one_file_system: true
+one_file_system: true
 
-  repositories:
-    - "user@host:/path/to/backups/some-machine-name"
+repositories:
+  - path: user@host:/path/to/backups/some-machine-name
+    label: some-host
 
-  # If borg is not in the default $PATH:
-  # remote_path: bin/borg
+# If borg is not in the default $PATH:
+# remote_path: bin/borg
 
-  exclude_caches: true
-  exclude_if_present:
-    - .nobackup
-  keep_exclude_tags: true
-  patterns:
-    - 'R /etc'
-    - 'R /home'
-    - 'R /srv'
-    - 'R /var/log'
-    - '- **/.cache/'
-    - '- **/CacheStorage/'
-    - '- **/.direnv/'
-    - '- **/.tox/'
-    - '- **/.venv/'
+exclude_caches: true
+exclude_if_present:
+  - .nobackup
+keep_exclude_tags: true
 
-storage:
-    archive_name_format: '{hostname}-{now}'
-    compression: zstd
+patterns:
+  - 'R /etc'
+  - 'R /home'
+  - 'R /srv'
+  - 'R /var/log'
+  - '- **/.cache/'
+  - '- **/CacheStorage/'
+  - '- **/.direnv/'
+  - '- **/.tox/'
+  - '- **/.venv/'
 
-    # This should have ‘root root rw-------’ permissions.
-    encryption_passcommand: cat /etc/borgmatic.d/repo.key
+archive_name_format: '{hostname}-{now}'
+compression: zstd
 
-    # This is sometimes useful to enable temporarily after moving the
-    # backup destination.
-    # relocated_repo_access_is_ok: true
+# This should have ‘root root rw-------’ permissions.
+encryption_passcommand: cat /etc/borgmatic.d/repo.key
 
-    # The ‘sudo’ part is for using a SSH key owned by the regular user
-    # (not root), and use the existing (Gnome) keyring daemon to avoid
-    # prompting for credentials (to unlock keys). The ‘sh’ hack is to
-    # avoid hard-coding any user names; without that and all required
-    # quoting it boils down to:
-    #
-    #   ssh_command: "sudo -u ... env SSH_AUTH_SOCK=/run/user/1000/keyring/ssh ssh"
-    #
-    ssh_command: "sh -c 'sudo -u $SUDO_USER env SSH_AUTH_SOCK=/run/user/$SUDO_UID/keyring/ssh ssh \"$0\" \"$@\"'"
+# This is sometimes useful to enable temporarily after moving the
+# backup destination.
+# relocated_repo_access_is_ok: true
 
-retention:
-    prefix: "{hostname}-"
-    keep_daily: 7
-    keep_weekly: 4
-    keep_monthly: 12
-    keep_yearly: 1
+# The ‘sudo’ part is for using a SSH key owned by the regular user
+# (not root), and use the existing (Gnome) keyring daemon to avoid
+# prompting for credentials (to unlock keys). The ‘sh’ hack is to
+# avoid hard-coding any user names; without that and all required
+# quoting it boils down to:
+#
+#   ssh_command: "sudo -u ... env SSH_AUTH_SOCK=/run/user/1000/keyring/ssh ssh"
+#
+ssh_command: "sh -c 'sudo -u $SUDO_USER env SSH_AUTH_SOCK=/run/user/$SUDO_UID/keyring/ssh ssh \"$0\" \"$@\"'"
+
+keep_daily: 7
+keep_weekly: 4
+keep_monthly: 12
+keep_yearly: 1
