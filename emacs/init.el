@@ -3731,6 +3731,12 @@ defined as lowercase."
   ((rx ".gitconfig" (* any) string-end) . gitconfig-mode)
   ((rx ".config/git/config" (* any) string-end) . gitconfig-mode))
 
+
+;;; major mode: graphql
+
+(use-package graphql-mode)
+
+
 ;;; Major mode: groovy
 
 (use-package groovy-mode
