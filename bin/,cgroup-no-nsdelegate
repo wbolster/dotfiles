@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -eux
+
+# this causes ‘docker run’ for some containers with systemd inside to
+# work afterwards 🙄
+
+new_mount_opts=$(grep cgroup2 /proc/mounts | cut -d' ' -f4 | sed -e 's/,nsdelegate//')
+sudo mount -o "remount,$new_mount_opts" none /sys/fs/cgroup
