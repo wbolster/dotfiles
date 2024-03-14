@@ -1,6 +1,6 @@
 /.cask/
 /custom.el
-/eln-cache/*.so
+/eln-cache/
 /init-local.el
 /packages/archives/
 /packages/**/dir
