@@ -1,7 +1,7 @@
-(define-package "direnv" "20230721.714" "direnv integration"
+(define-package "direnv" "20240314.715" "direnv integration"
   '((emacs "25.1")
     (dash "2.12.0"))
-  :commit "14f74269af34f8c30ab4a521eff290b74460daed" :authors
+  :commit "c0bf3b81c7a97e2a0d06d05495e86848254fcc1f" :authors
   '(("wouter bolsterlee" . "wouter@bolsterl.ee"))
   :maintainers
   '(("wouter bolsterlee" . "wouter@bolsterl.ee"))
