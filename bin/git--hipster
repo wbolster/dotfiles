@@ -72,7 +72,7 @@ delete_completed_branches() {
                 printf "❌  Local changes not fully contained in upstream branch; $(color green)keeping branch$(color off)%s\n" ''
                 echo '💡  Commits not in upstream branch:'
                 echo
-                git log --format='tformat:    %h %s' "${upstream}..${branch}"
+                git --no-pager log --format='tformat:    %h %s' "${upstream}..${branch}"
                 echo
                 echo "📃  Details:"
                 echo
