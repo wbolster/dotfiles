@@ -143,6 +143,15 @@ gsettings set org.gnome.desktop.wm.keybindings switch-windows "[]"
 # workspaces
 gsettings set org.gnome.mutter dynamic-workspaces false
 gsettings set org.gnome.desktop.wm.preferences num-workspaces 6
+gsettings set org.gnome.shell.keybindings open-new-window-application-1 "[]"
+gsettings set org.gnome.shell.keybindings open-new-window-application-2 "[]"
+gsettings set org.gnome.shell.keybindings open-new-window-application-3 "[]"
+gsettings set org.gnome.shell.keybindings open-new-window-application-4 "[]"
+gsettings set org.gnome.shell.keybindings open-new-window-application-5 "[]"
+gsettings set org.gnome.shell.keybindings open-new-window-application-6 "[]"
+gsettings set org.gnome.shell.keybindings open-new-window-application-7 "[]"
+gsettings set org.gnome.shell.keybindings open-new-window-application-8 "[]"
+gsettings set org.gnome.shell.keybindings open-new-window-application-9 "[]"
 gsettings set org.gnome.shell.keybindings switch-to-application-1 "[]"
 gsettings set org.gnome.shell.keybindings switch-to-application-2 "[]"
 gsettings set org.gnome.shell.keybindings switch-to-application-3 "[]"
