@@ -119,6 +119,7 @@ ___path_add_if_exists PATH \
     "${npm_config_prefix}/bin" \
     ~/.cargo/bin \
     ~/.pyenv/shims \
+    ~/.local/share/mise/shims \
     ~/.local/share/rtx/shims \
     /opt/bin
 ___path_add_if_exists MANPATH \
