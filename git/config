@@ -53,8 +53,8 @@ log-merge-request = log-pull-request
 log-pull-request-long = log --reverse --format=markdown-long "@{upstream}.."
 log-pull-request = log --reverse --format=markdown "@{upstream}.."
 log-since-tag = "!f() { git log $(git describe --tags --abbrev=0 @^)..@ \"$@\"; }; f"
-log-since-tag-only-merges = log-since-tag --merges --oneline --no-decorate
-log-since-tag-only-merges-markdown = "!f() { git log-since-tag-only-merges | sed -E 's/^([a-f0-9]+) (merge: )?(.*) \\(([^)]+)\\)/- *\\3* (\\4, `g\\1`)/'; }; f"
+log-since-tag-only-merges = "!f() { git log-since-tag --merges --oneline --no-decorate \"$@\"; }; f"
+log-since-tag-only-merges-markdown = "!f() { git log-since-tag-only-merges \"$@\" | sed -E 's/^([a-f0-9]+) (merge: )?(.*) \\(([^)]+)\\)/- *\\3* (\\4, `g\\1`)/'; }; f"
 log-since-tag-only-authors = "!f() { git log-since-tag --format=tformat:%aN%n%cN | sort -u; }; f"
 slf = sl --first-parent
 st = status --short --branch
