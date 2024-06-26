@@ -64,8 +64,6 @@
 ;;; Helpers
 
 (use-package benchmark-init
-  ;;  broken on emacs28+; see https://github.com/dholm/benchmark-init-el/pull/16
-  :disabled
   :demand
   :hook (after-init-hook . benchmark-init/deactivate)
   :config
