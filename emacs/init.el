@@ -3371,6 +3371,7 @@ defined as lowercase."
     (funcall fn)))
 
 (use-package mmm-mode
+  :defer t
   :delight " 🍔"
   :custom-face
   (mmm-default-submode-face ((t (:background nil)))))
@@ -3442,6 +3443,7 @@ defined as lowercase."
     (w--show-trailing-whitespace-mode)))
 
 (use-package dash-docs
+  :defer t
   :custom
   (dash-docs-docsets-path "~/.var/app/org.zealdocs.Zeal/data/Zeal/Zeal/docsets")
   (dash-docs-enable-debugging nil)
@@ -3732,7 +3734,7 @@ defined as lowercase."
 
 ;;; major mode: graphql
 
-(use-package graphql-mode)
+(use-package graphql-mode :defer t)
 
 
 ;;; Major mode: groovy
@@ -3838,7 +3840,7 @@ defined as lowercase."
      js-indent-level tab-width)
     (reformatter-dwim-select 'prettier-format)))
 
-(use-package rjsx-mode)
+(use-package rjsx-mode :defer t)
 
 
 ;;; Major mode: json
@@ -3966,6 +3968,7 @@ defined as lowercase."
 ;;; Major mode: pkgbuild
 
 (use-package pkgbuild-mode
+  :defer t
   :custom
   (pkgbuild-update-sums-on-save nil)
   :custom-face
@@ -4409,7 +4412,7 @@ defined as lowercase."
 
 ;;; Major mode: systemd
 
-(use-package systemd)
+(use-package systemd :defer t)
 
 ;;; Major mode: restructuredtext
 
@@ -4640,7 +4643,7 @@ defined as lowercase."
     :group 'sh-script)
   (defun w--sh-mode-hook ()))
 
-(use-package shfmt)
+(use-package shfmt :defer t)
 
 
 ;;; Major mode: sql
@@ -4710,6 +4713,7 @@ defined as lowercase."
 ;;; Major mode: woman (manual pages)
 
 (use-package woman
+  :defer t
   :init
   (add-to-list
    'warning-suppress-log-types
