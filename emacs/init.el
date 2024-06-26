@@ -1325,17 +1325,13 @@ defined as lowercase."
     "_r_eset"
     ("r" (er/expand-region 0) :exit t)))
 
-(use-package fancy-narrow
-  :defer t
+(use-package emacs
   :commands
   w--narrow-dwim
-  w--fancy-narrow-dwim
   :config
   (defun w--narrow-dwim ()
     "Narrow (or widen) to defun or region."
     (interactive)
-    (when (fancy-narrow-active-p)
-      (fancy-widen))
     (cond
      ((region-active-p)
       (narrow-to-region (region-beginning) (region-end))
@@ -1346,21 +1342,6 @@ defined as lowercase."
       (message "Showing everything"))
      (t
       (narrow-to-defun)
-      (message "Showing defun only"))))
-  (defun w--fancy-narrow-dwim ()
-    "Fancy narrow (or widen) to defun or region."
-    (interactive)
-    (cond
-     ((region-active-p)
-      (fancy-widen)
-      (fancy-narrow-to-region (region-beginning) (region-end))
-      (deactivate-mark)
-      (message "Showing region only"))
-     ((fancy-narrow-active-p)
-      (fancy-widen)
-      (message "Showing everything"))
-     (t
-      (fancy-narrow-to-defun)
       (message "Showing defun only")))))
 
 (use-package key-chord
@@ -3297,7 +3278,6 @@ defined as lowercase."
   ("m" w--merge-dispatch)
   "_n_arrow"
   ("n" w--narrow-dwim)
-  ("N" w--fancy-narrow-dwim)
   "_o_ccur"
   ("o" w--occur-dwim)
   "_p_roject"
