@@ -4158,6 +4158,13 @@ defined as lowercase."
        'after
        (format "reveal_type(%s)" thing))))
 
+  (defun w--python-kwargize ()
+    (interactive)
+    (when-let ((thing (thing-at-point 'symbol)))
+      (goto-char (beginning-of-thing 'symbol))
+      (save-excursion
+        (insert (format "%s=" thing)))))
+
   (evil-define-operator w--python-refactor-make-variable (beg end _type)
     "Refactor the current region into a named variable."
     (interactive "<R>")
@@ -4221,6 +4228,8 @@ defined as lowercase."
     ("c" python-coverage-overlay-mode)
     "_i_mport"
     ("i" w--python-insert-import-statement)
+    "_k_ kwarg"
+    ("k" w--python-kwargize)
     "_l_ multi-line"
     ("l" multi-line)
     ("L" multi-line-single-line)
