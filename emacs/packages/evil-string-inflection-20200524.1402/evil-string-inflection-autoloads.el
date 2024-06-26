@@ -13,7 +13,6 @@
 
 (autoload 'evil-string-inflection "evil-string-inflection.el" "\
 Define a new evil operator that cicles underscore -> UPCASE -> CamelCase." t)
-
 
 ;;; End of scraped data
 

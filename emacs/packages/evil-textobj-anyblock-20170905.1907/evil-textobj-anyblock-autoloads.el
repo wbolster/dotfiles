@@ -26,7 +26,6 @@
  (autoload 'evil-textobj-anyblock-backward-any-block-start "evil-textobj-anyblock" nil t)
  (autoload 'evil-textobj-anyblock-backward-any-block-end "evil-textobj-anyblock" nil t)
 (register-definition-prefixes "evil-textobj-anyblock" '("evil-textobj-anyblock-"))
-
 
 ;;; End of scraped data
 

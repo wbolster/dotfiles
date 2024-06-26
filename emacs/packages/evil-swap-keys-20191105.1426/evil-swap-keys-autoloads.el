@@ -79,7 +79,6 @@ Swap the pipe and backslash." t)
 (autoload 'evil-swap-keys-swap-question-mark-slash "evil-swap-keys" "\
 Swap the question mark and slash." t)
 (register-definition-prefixes "evil-swap-keys" '("evil-swap-keys-"))
-
 
 ;;; End of scraped data
 

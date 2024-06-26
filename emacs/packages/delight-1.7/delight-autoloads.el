@@ -25,7 +25,7 @@ replacement buffer-local `mode-name' value to use when a buffer changes to
 that mode.
 
 In both cases VALUE is commonly a string, but may in fact contain any valid
-mode line construct.  For details see the `mode-line-format' variable, and
+mode-line construct.  For details see the `mode-line-format' variable, and
 Info node `(elisp) Mode Line Format'.
 
 The FILE argument is passed through to `eval-after-load'.  If FILE is nil then
@@ -37,7 +37,7 @@ For major modes you should specify the keyword :major as the value of FILE,
 to prevent the mode being treated as a minor mode.
 
 (fn SPEC &optional VALUE FILE)")
-(register-definition-prefixes "delight" '("delight-"))
+(register-definition-prefixes "delight" '("delight"))
 
 ;;; End of scraped data
 
