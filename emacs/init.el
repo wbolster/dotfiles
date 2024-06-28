@@ -617,6 +617,8 @@ defined as lowercase."
 
 (use-package unicode-fonts
   :ensure t
+  :custom
+  (unicode-fonts-skip-fonts '("Segoe UI Symbol"))
   :config
   (unicode-fonts-setup))
 
