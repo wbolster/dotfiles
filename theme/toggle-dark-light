@@ -21,7 +21,7 @@ gnome_shell_theme_dark=''
 
 set_gnome_theme() {
     local color_scheme gtk_theme gnome_shell_theme
-    if [ "$1" = "dark" ]; then
+    if [[ "$1" = "dark" ]]; then
         color_scheme="prefer-dark"
         gtk_theme="$gtk_theme_dark"
         gnome_shell_theme="$gnome_shell_theme_dark"
@@ -41,7 +41,7 @@ set_gnome_terminal_theme() {
     local profile_id
     profile_id=$(dconf list /org/gnome/terminal/legacy/profiles:/ | grep ^: | head -n 1 | sed -e 's/^://' -e 's,/$,,')
     local gnome_terminal_profile="org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile_id}/"
-    if [ "$1" = "dark" ]; then
+    if [[ "$1" = "dark" ]]; then
         local background_color='#10103c3c4848'
         local foreground_color='#adadbcbcbcbc'
         local palette="[
@@ -98,7 +98,7 @@ notify_emacs() {
 
 main() {
     local theme
-    if [ -e ${file} ]; then
+    if [[ -e ${file} ]]; then
         rm ${file}
         theme=light
     else
