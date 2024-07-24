@@ -2285,6 +2285,10 @@ defined as lowercase."
   (blink-cursor-delay .5)
   (blink-cursor-interval .5)
   (default-frame-alist '((width . 160) (height . 48)))
+  (display-buffer-base-action
+   '((display-buffer-reuse-window
+      display-buffer-pop-up-window
+      display-buffer-use-some-window)))
   (fit-window-to-buffer-horizontally t)
   (frame-resize-pixelwise t)
   (frame-title-format "%b")
