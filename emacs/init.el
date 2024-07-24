@@ -1648,6 +1648,10 @@ defined as lowercase."
 ;; todo: switch to deadgrep
 ;; perhaps use ,/ for hydra?
 (use-package deadgrep
+  :custom
+  (deadgrep-display-buffer-function 'display-buffer)
+  :commands
+  w--hydra-search/body
   :general
   (:keymaps 'deadgrep-mode-map
    :states '(motion normal)
@@ -1660,6 +1664,7 @@ defined as lowercase."
    "<tab>" #'deadgrep-toggle-file-results
    )
   :config
+  (evil-collection-init 'deadgrep)
   (w--make-hydra w--hydra-search nil
     "search"
     "_/_ search"
