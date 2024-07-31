@@ -2977,7 +2977,8 @@ defined as lowercase."
 (use-package ediff
   :defer t
   :custom
-  (ediff-split-window-function 'split-window-horizontally))
+  (ediff-split-window-function 'split-window-horizontally)
+  (ediff-window-setup-function 'ediff-setup-windows-plain))
 
 (use-package smerge-mode
   :delight " 🔀"
