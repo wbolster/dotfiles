@@ -215,7 +215,7 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys magnifier "['<Control
 gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>g']"
 gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>w']"
 
-gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/']"
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding "'<Super>t'"
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command "'gnome-terminal'"
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name "'Open terminal'"
@@ -225,7 +225,9 @@ dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/cus
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/binding "'<Control><Super>v'"
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/command "'${HOME}/dotfiles/gnome/toggle-do-not-disturb'"
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/name "'Toggle do not disturb'"
-
+dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/binding "'<Super>semicolon'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/command "'flatpak run it.mijorus.smile'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/name "'Pick emoji'"
 
 #
 # nautilus + file chooser
