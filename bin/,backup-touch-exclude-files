@@ -14,6 +14,7 @@ no_backup_dirs='
 .local/pipx/
 .local/share/containers/cache/
 .local/share/containers/storage/
+.local/share/flatpak/
 .local/share/rtx/
 .pyenv/
 .pyenv/versions/
