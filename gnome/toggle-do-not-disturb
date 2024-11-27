@@ -9,7 +9,7 @@ get_current_setting () {
     gsettings get "$schema" "$key"
 }
 
-if [ "$(get_current_setting)" == "false" ]; then
+if [[ "$(get_current_setting)" == "false" ]]; then
     gsettings set "$schema" "$key" true
 else
     gsettings set "$schema" "$key" false
