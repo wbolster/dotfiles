@@ -107,8 +107,12 @@ and BODY can refer to it as ‘arg’."
 
 (use-package direnv
   :after exec-path-from-shell
+  :demand t
+  :hook (direnv-envrc-mode-hook . w--direnv-envrc-mode-hook)
   :config
-  (direnv-mode))
+  (direnv-mode)
+  (defun w--direnv-envrc-mode-hook ()
+    (add-hook 'after-save-hook #'direnv-allow)))
 
 (use-package exec-path-from-shell
   :custom
