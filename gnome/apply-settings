@@ -225,7 +225,7 @@ dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/cus
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/binding "'<Control><Super>v'"
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/command "'${HOME}/dotfiles/gnome/toggle-do-not-disturb'"
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/name "'Toggle do not disturb'"
-dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/binding "'<Super>semicolon'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/binding "'<Control><Super>semicolon'"
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/command "'flatpak run it.mijorus.smile'"
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/name "'Pick emoji'"
 dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/binding "'<Control><Super>t'"
