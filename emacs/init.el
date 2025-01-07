@@ -404,7 +404,9 @@ defined as lowercase."
     (call-interactively 'sudo-edit)))
 
 (use-package terminal-here
-  :defer t)
+  :defer t
+  :custom
+  terminal-here-linux-terminal-command 'gnome-terminal)
 
 (defun w--buffer-worth-saving-p (name)
   "Does the buffer NAME indicate it may be worth saving?"
