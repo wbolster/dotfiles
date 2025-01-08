@@ -999,6 +999,11 @@ if [[ "$PS1" ]]; then
     ___has hd || alias hd="hexdump"
     ___has rgrep || alias rgrep="grep -r"
     ___has zstd && alias ,zstd-max="zstd --threads=0 --long -19"
+
+    # 31337 hacking the matrix
+    if ___has unimatrix && ps -p "$PPID" | command grep -q cool-retro-term; then
+        unimatrix --flashers --ignore-keyboard --single-wave --speed 98
+    fi
 fi
 
 
