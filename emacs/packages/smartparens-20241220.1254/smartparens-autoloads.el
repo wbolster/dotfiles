@@ -87,6 +87,8 @@ evaluate `smartparens-strict-mode'.
 The mode's hook is called both when the mode is enabled and when
 it is disabled.
 
+\\{smartparens-strict-mode-map}
+
 (fn &optional ARG)" t)
 (put 'smartparens-global-strict-mode 'globalized-minor-mode t)
 (defvar smartparens-global-strict-mode nil "\
@@ -227,7 +229,7 @@ Turn off `show-smartparens-mode'." t)
 
 ;;; Generated autoloads from smartparens-config.el
 
-(register-definition-prefixes "smartparens-config" '("sp-lisp-invalid-hyperlink-p"))
+(register-definition-prefixes "smartparens-config" '("sp-lisp-in"))
 
 
 ;;; Generated autoloads from smartparens-crystal.el
