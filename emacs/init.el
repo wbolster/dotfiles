@@ -2828,9 +2828,13 @@ defined as lowercase."
           (setq kill-ring (cdr kill-ring)))
       (call-interactively #'git-link)))
 
+  (defun w--magit-log-buffer-file-follow ()
+    (interactive)
+    (magit-log-buffer-file t))
+
   (transient-define-prefix w--git-dispatch ()
     [[("a" "annotate" magit-blame-addition)
-      ("A" "buffer log" magit-log-buffer-file)
+      ("A" "buffer log" w--magit-log-buffer-file-follow)
       ("c" "commit" magit-commit-create)]
      [("d" "diff" magit-diff-dwim)
       ("f" "file-dispatch" magit-file-dispatch)
