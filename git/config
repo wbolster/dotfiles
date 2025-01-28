@@ -122,6 +122,9 @@ pr = pull-request
 [branch]
 autosetuprebase = always
 
+[checkout]
+workers = 0
+
 [color]
 ui = auto
 
