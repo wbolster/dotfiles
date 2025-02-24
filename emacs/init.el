@@ -460,7 +460,7 @@ defined as lowercase."
   ["hiding/closing"
    [("h" "hide" bury-buffer)
     ("H" "unhide" unbury-buffer)]
-   [("k" "kill" kill-this-buffer)
+   [("k" "kill" kill-current-buffer)
     ("K" "kill+window" kill-buffer-and-window)]]
   ["misc"
    [("m" "switch major mode" w--switch-major-mode)
