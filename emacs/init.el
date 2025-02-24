@@ -4781,7 +4781,7 @@ defined as lowercase."
     (evil-swap-keys-swap-double-single-quotes)
     (origami-mode)
     (evil--add-to-alist
-     'origami-parser-alist
+     origami-parser-alist
      'yaml-mode 'w--origami-parser-imenu-flat)))
 
 
