@@ -3296,6 +3296,8 @@ defined as lowercase."
   ("H" symbol-overlay-remove-all)
   "_j_ump"
   ("j" counsel-imenu)
+  "_l_sp"
+  ("l" w--lsp-dispatch)
   "_m_erge"
   ("m" w--merge-dispatch)
   "_n_arrow"
@@ -3418,9 +3420,23 @@ defined as lowercase."
   :delight " 🚀"
   :commands (lsp lsp-deferred)
   :custom
+  (lsp-auto-execute-action nil)
   (lsp-headerline-breadcrumb-segments '(symbols))
+  (lsp-keymap-prefix "C-c l")
   :config
-  (setq read-process-output-max (* 1024 1024))) ;; 1mb (recommended by docs)
+  (setq read-process-output-max (* 1024 1024)) ;; 1mb (recommended by docs)
+
+  (transient-define-prefix w--lsp-dispatch ()
+    ["lsp"
+     [("/" "doc" lsp-ui-doc-show)
+      ("?" "doc" lsp-ui-doc-show)
+      ("a" "code action" lsp-execute-code-action)
+      ("d" "describe" lsp-describe-thing-at-point)
+      ("g" "goto" lsp-find-definition)
+      ("i" "impl" lsp-find-implementation)
+      ("r" "rename" lsp-rename)
+      ("t" "typedef" lsp-find-type-definition)
+      ("x" "restart" lsp-workspace-restart)]]))
 
 (use-package lsp-ui
   :defer t)
