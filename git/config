@@ -182,6 +182,7 @@ rebase = preserve
 
 [push]
 default = simple
+followTags = true
 
 [rebase]
 stat = true
