@@ -194,6 +194,9 @@ updateRefs = true
 [rerere]
 enabled = true
 
+[tag]
+sort = version:refname
+
 [url "ssh://git@github.com/"]
 insteadOf = github:
 
