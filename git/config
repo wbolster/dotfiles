@@ -184,6 +184,7 @@ ff = only
 rebase = preserve
 
 [push]
+autoSetupRemote = true
 default = simple
 followTags = true
 
