@@ -128,6 +128,9 @@ workers = 0
 [color]
 ui = auto
 
+[column]
+ui = auto
+
 [diff]
 algorithm = histogram
 colorMoved = default
