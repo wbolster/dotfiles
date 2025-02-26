@@ -134,7 +134,6 @@ ui = auto
 [diff]
 algorithm = histogram
 colorMoved = default
-noprefix = true
 tool = difftastic
 
 [diff "gettext-mo"]
