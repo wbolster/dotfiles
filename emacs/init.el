@@ -3494,6 +3494,20 @@ defined as lowercase."
     (evil-swap-keys-swap-underscore-dash)))
 
 
+;;; Major mode: caddy
+
+(use-package caddyfile-mode
+  :hook (caddyfile-mode-hook . w--caddyfile-mode-hook)
+  :config
+  (defun w--caddyfile-mode-hook ()
+    (setq tab-width 2))
+  (reformatter-define caddyfile-format
+    :program "caddy"
+    :args '("fmt" "-")
+    :lighter " caddyfmt"
+    :group 'caddyfile-format))
+
+
 ;;; Major mode: compilation and comint
 
 (use-package compile
