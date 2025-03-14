@@ -2296,11 +2296,11 @@ defined as lowercase."
   (blink-cursor-delay .5)
   (blink-cursor-interval .5)
   (default-frame-alist
-    '((width . 160)
+    '((drag-internal-border . 2)
       (height . 48)
+      (internal-border-width . 4)
       (undecorated . t)
-      (drag-internal-border . 2)
-      (internal-border-width . 2)))
+      (width . 160)))
   (display-buffer-base-action
    '((display-buffer-reuse-window
       display-buffer-pop-up-window
