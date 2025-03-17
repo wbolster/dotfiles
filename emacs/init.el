@@ -4744,27 +4744,18 @@ defined as lowercase."
 (use-package typescript-ts-mode
   ;; built-in
   :hook (typescript-ts-mode-hook . w--typescript-ts-mode-hook)
+  :mode
+  (rx ".mts" string-end)
   :ensure nil
-  :general
-  (:keymaps 'typescript-ts-mode-map
-   :states 'insert
-   "<return>" #'c-context-line-break)
-  :config
-  (defun w--typescript-ts-mode-hook ()
-    (reformatter-dwim-select 'prettier-format)
-    (lsp-deferred)))
-
-(use-package typescript-mode
-  ;; third party
-  :hook (typescript-mode-hook . w--typescript-mode-hook)
   :custom
   (typescript-indent-level 2)
   :general
-  (:keymaps 'typescript-mode-map
+  (:keymaps 'typescript-ts-mode-map
    :states 'insert
-   "<return>" #'c-context-line-break)
+   ;; "<return>" #'c-context-line-break
+   )
   :config
-  (defun w--typescript-mode-hook ()
+  (defun w--typescript-ts-mode-hook ()
     (reformatter-dwim-select 'prettier-format)
     (lsp-deferred)))
 
