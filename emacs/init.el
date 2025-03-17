@@ -3876,6 +3876,9 @@ defined as lowercase."
 
 (use-package js2-mode
   :defer t
+  :mode
+  (rx ".cjs" string-end)
+  (rx ".mjs" string-end)
   :hook
   (js-mode-hook . w--js-mode-hook)
   (js-mode-hook . js2-minor-mode)
