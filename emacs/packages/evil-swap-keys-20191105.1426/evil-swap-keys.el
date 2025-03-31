@@ -1,7 +1,8 @@
 ;;; evil-swap-keys.el --- Intelligently swap keys on text input with evil -*- lexical-binding: t; -*-
 
 ;; Author: Wouter Bolsterlee <wouter@bolsterl.ee>
-;; Version: 1.0.0
+;; Package-Version: 20191105.1426
+;; Package-Revision: b5ef105499f9
 ;; Package-Requires: ((emacs "24.4"))
 ;; Keywords: convenience data languages tools
 ;; URL: https://github.com/wbolster/evil-swap-keys

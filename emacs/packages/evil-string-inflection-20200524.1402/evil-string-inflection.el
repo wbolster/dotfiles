@@ -4,7 +4,8 @@
 
 ;; Author: Filipe Silva <filipe.silva@gmail.com>
 ;; URL: https://github.com/ninrod/evil-string-inflection
-;; Version: 0.0.1
+;; Package-Version: 20200524.1402
+;; Package-Revision: d22a90ab807a
 ;; Package-Requires: ((emacs "24") (evil "1.2.13") (string-inflection "1.0.6"))
 
 ;; This program is free software; you can redistribute it and/or modify

@@ -4,7 +4,8 @@
 ;; URL: https://github.com/noctuid/evil-textobj-anyblock
 ;; Keywords: evil
 ;; Package-Requires: ((cl-lib "0.5") (evil "1.1.0"))
-;; Version: 0.1
+;; Package-Version: 20170905.1907
+;; Package-Revision: ff00980f0634
 
 ;;; Commentary:
 ;; This package is a port of vim-textobj-anyblock. It gives text objects for the

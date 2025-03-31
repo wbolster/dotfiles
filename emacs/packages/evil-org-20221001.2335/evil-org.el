@@ -7,7 +7,8 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 1.0.3
+;; Package-Version: 20221001.2335
+;; Package-Revision: b1f309726b13
 ;; Package-Requires: ((emacs "24.4") (evil "1.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 

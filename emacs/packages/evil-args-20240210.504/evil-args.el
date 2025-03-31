@@ -4,7 +4,8 @@
 
 ;; Author: Connor Smith <wconnorsmith@gmail.com>
 ;; URL: http://github.com/wcsmith/evil-args
-;; Version: 1.1
+;; Package-Version: 20240210.504
+;; Package-Revision: a8151556f63c
 ;; Keywords: evil, vim-emulation
 ;; Package-Requires: ((evil "1.0.8"))
 

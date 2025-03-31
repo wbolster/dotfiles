@@ -6,7 +6,8 @@
 ;; URL: https://bitbucket.org/FelipeLema/evil-python-movement.el/
 ;; Package-Requires: ((emacs "25.1") (cl-lib "0.5") (dash "2.13.0") (evil "1.0") (s "1.12.0"))
 
-;; Version: 1.0
+;; Package-Version: 20180724.1420
+;; Package-Revision: 9936b3b7f8d9
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

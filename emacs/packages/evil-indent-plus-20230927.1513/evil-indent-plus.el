@@ -4,7 +4,8 @@
 ;; Modifications Copyright (C) 2014-2015 Eivind Fonn
 ;;
 ;; Author: Eivind Fonn <evfonn@gmail.com>
-;; Version: 1.0.1
+;; Package-Version: 20230927.1513
+;; Package-Revision: f392696e4813
 ;; Keywords: convenience evil
 ;; URL: http://github.com/TheBB/evil-indent-plus
 ;; Package-Requires: ((evil "0") (cl-lib "0.5"))

@@ -4,7 +4,8 @@
 
 ;; Author: Dewdrops <v_v_4474@126.com>
 ;; URL: http://github.com/Dewdrops/evil-exchange
-;; Version: 0.41
+;; Package-Version: 20200118.252
+;; Package-Revision: 3030e21ee16a
 ;; Keywords: evil, plugin
 ;; Package-Requires: ((evil "1.2.8") (cl-lib "0.3"))
 

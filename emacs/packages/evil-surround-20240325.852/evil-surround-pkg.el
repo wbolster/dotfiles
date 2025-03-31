@@ -1,14 +1,11 @@
-(define-package "evil-surround" "20240325.852" "emulate surround.vim from Vim"
+;; -*- no-byte-compile: t; lexical-binding: nil -*-
+(define-package "evil-surround" "20240325.852"
+  "Emulate surround.vim from Vim."
   '((evil "1.2.12"))
-  :commit "14dc693ed971053feb9596d4bc1b1de0b0006584" :authors
-  '(("Tim Harper <timcharper at gmail dot com>")
-    ("Vegard Øye <vegard_oye at hotmail dot com>"))
-  :maintainers
-  '(("Tom Dalziel" . "tom.dalziel@gmail.com"))
-  :maintainer
-  '("Tom Dalziel" . "tom.dalziel@gmail.com")
-  :keywords
-  '("emulation" "vi" "evil"))
-;; Local Variables:
-;; no-byte-compile: t
-;; End:
+  :url "https://github.com/emacs-evil/evil-surround"
+  :commit "14dc693ed971053feb9596d4bc1b1de0b0006584"
+  :revdesc "14dc693ed971"
+  :keywords '("emulation" "vi" "evil")
+  :authors '(("Tim Harper" . "timcharperatgmaildotcom")
+             ("Vegard ye" . "vegard_oyeathotmaildotcom"))
+  :maintainers '(("Tom Dalziel" . "tom.dalziel@gmail.com")))

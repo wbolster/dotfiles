@@ -10,7 +10,8 @@
 ;; Maintainer: Tom Dalziel <tom.dalziel@gmail.com>
 ;;
 ;; Created: July 23 2011
-;; Version: 1.0.4
+;; Package-Version: 20240325.852
+;; Package-Revision: 14dc693ed971
 ;; Package-Requires: ((evil "1.2.12"))
 ;; Mailing list: <implementations-list at lists.ourproject.org>
 ;;      Subscribe: http://tinyurl.com/implementations-list
