@@ -1,4 +1,5 @@
-((magit-fetch "--prune" "--tags")
+((magit-commit-absorb "--force")
+ (magit-fetch "--prune" "--tags")
  (magit-log "-n256" "--follow" "--topo-order" "--graph" "--color" "--decorate")
  (magit-merge "--no-ff")
  (magit-rebase "--autosquash" "--autostash")
