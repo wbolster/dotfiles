@@ -3423,6 +3423,8 @@ defined as lowercase."
 (use-package lsp-mode
   :defer t
   :delight " 🚀"
+  :hook ('lsp-after-open-hook #'w--lsp-mode-after-open-hook)
+
   :commands (lsp lsp-deferred)
   :custom
   (lsp-auto-execute-action nil)
@@ -3430,6 +3432,9 @@ defined as lowercase."
   (lsp-keymap-prefix "C-c l")
   :config
   (setq read-process-output-max (* 1024 1024)) ;; 1mb (recommended by docs)
+
+  (defun w--lsp-mode-after-open-hook ()
+    (lsp-origami-try-enable))
 
   (transient-define-prefix w--lsp-dispatch ()
     ["lsp"
@@ -3447,6 +3452,10 @@ defined as lowercase."
   :defer t)
 
 (use-package lsp-ivy
+  :defer t)
+
+(use-package
+  lsp-origami
   :defer t)
 
 (use-package prog-mode
