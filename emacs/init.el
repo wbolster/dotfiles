@@ -3362,7 +3362,7 @@ defined as lowercase."
     ("restructuredtext (rst)" . rst-mode)
     ("shell" . sh-mode)
     ("sql" . sql-mode)
-    ("typescript (ts)" . typescript-mode)
+    ("typescript (ts)" . typescript-ts-mode)
     ("vue" . vue-mode)
     ("yaml (yml)" . yaml-mode)
     ("xml" . nxml-mode))
