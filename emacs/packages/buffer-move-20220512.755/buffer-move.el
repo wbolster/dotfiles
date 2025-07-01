@@ -8,7 +8,8 @@
 ;;          Mathis Hofer <mathis@fsfe.org>
 ;;          Geyslan G. Bem <geyslan@gmail.com>
 ;; URL: https://github.com/lukhas/buffer-move/
-;; Version: 0.6.3
+;; Package-Version: 20220512.755
+;; Package-Revision: e7800b3ab1bd
 ;; Package-Requires: ((emacs "24.1"))
 ;; Keywords: convenience
 

@@ -5,7 +5,8 @@
 ;; Author: Roland Walker <walker@pobox.com>
 ;; Homepage: http://github.com/rolandwalker/ucs-utils
 ;; URL: http://raw.githubusercontent.com/rolandwalker/ucs-utils/master/ucs-utils.el
-;; Version: 0.9.0
+;; Package-Version: 20230119.2237
+;; Package-Revision: 91b9e0207fff
 ;; Last-Updated: 26 Aug 2015
 ;; EmacsWiki: UcsUtils
 ;; Package-Requires: ((emacs "24.3") (persistent-soft "0.8.10") (pcache "0.5.1") (list-utils "0.4.6"))

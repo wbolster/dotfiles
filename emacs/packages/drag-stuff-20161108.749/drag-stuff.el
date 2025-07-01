@@ -4,7 +4,8 @@
 
 ;; Author: Johan Andersson <johan.rejeep@gmail.com>
 ;; Maintainer: Johan Andersson <johan.rejeep@gmail.com>
-;; Version: 0.3.0
+;; Package-Version: 20161108.749
+;; Package-Revision: d49fe376d24f
 ;; Keywords: speed, convenience
 ;; URL: http://github.com/rejeep/drag-stuff
 

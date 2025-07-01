@@ -1,7 +1,8 @@
 ;;; xml+.el --- Utilities for xml and html trees
 
 ;; Author: Ben Dean <bendean837@gmail.com>
-;; Version: 0.0.0
+;; Package-Version: 20170727.2351
+;; Package-Revision: 232fa863c08f
 ;; Package-Requires: ((emacs "24.4") (dash "2.12.0"))
 ;; Keywords: xml, html
 ;; URL: https://github.com/bddean/xml-plus

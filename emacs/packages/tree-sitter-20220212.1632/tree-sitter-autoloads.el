@@ -14,19 +14,19 @@
 (autoload 'tree-sitter-mode "tree-sitter" "\
 Minor mode that keeps an up-to-date syntax tree using incremental parsing.
 
-This is a minor mode.  If called interactively, toggle the
-`tree-sitter mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `tree-sitter
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `tree-sitter-mode'.
+evaluate the variable `tree-sitter-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t)
 (autoload 'turn-on-tree-sitter-mode "tree-sitter" "\
@@ -84,19 +84,18 @@ Toggle syntax tree debugging for the current buffer.
 This mode displays the syntax tree in another buffer, and keeps it up-to-date.
 
 This is a minor mode.  If called interactively, toggle the
-`Tree-Sitter-Debug mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Tree-Sitter-Debug mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `tree-sitter-debug-mode'.
+evaluate the variable `tree-sitter-debug-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t)
 (autoload 'tree-sitter-debug-query "tree-sitter-debug" "\
@@ -162,18 +161,18 @@ To enable this automatically whenever `tree-sitter-mode' is enabled:
  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
 
 This is a minor mode.  If called interactively, toggle the
-`Tree-Sitter-Hl mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Tree-Sitter-Hl mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `tree-sitter-hl-mode'.
+evaluate the variable `tree-sitter-hl-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t)
 (register-definition-prefixes "tree-sitter-hl" '("tree-sitter-hl-"))

@@ -10,6 +10,8 @@
 ;; Maintainer: David Capello, Xah lee
 ;; Created: 2006
 ;;
+;; Package-Version: 20231107.106
+;; Package-Revision: c6955162307f
 ;; Package-Requires: ((cl-lib "0.5"))
 ;;
 ;;

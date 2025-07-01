@@ -21,6 +21,9 @@
 ;; OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 ;; WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+;; Package-Version: 20231203.2036
+;; Package-Revision: 48e6489ec2db
+
 ;;; Commentary:
 
 ;; python-docstring-mode.el is a minor mode for intelligently reformatting

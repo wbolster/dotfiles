@@ -7,7 +7,8 @@
 ;; URL: https://github.com/luisgerhorst/virtual-auto-fill
 ;; Keywords: convenience, mail, outlines, files, wp
 ;; Created: Sun 26. Jan 2020
-;; Version: 0.1
+;; Package-Version: 20200906.2038
+;; Package-Revision: a3991ce02d9a
 ;; Package-Requires: ((emacs "25.2") (adaptive-wrap "0.7") (visual-fill-column "1.9"))
 
 ;; This file is NOT part of GNU Emacs.

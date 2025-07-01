@@ -3,7 +3,8 @@
 ;; Copyright (C) 2011-2022 Florian Mounier aka paradoxxxzero
 
 ;; Author: Florian Mounier aka paradoxxxzero
-;; Version: 0.3
+;; Package-Version: 20220117.807
+;; Package-Revision: 03e5430a7efe
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

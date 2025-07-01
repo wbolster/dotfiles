@@ -6,7 +6,8 @@
 ;; Keywords: languages
 ;; URL: https://github.com/purcell/sqlformat
 ;; Package-Requires: ((emacs "24.3") (reformatter "0.3"))
-;; Version: 0
+;; Package-Version: 20240325.1006
+;; Package-Revision: f1c8f864f11f
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

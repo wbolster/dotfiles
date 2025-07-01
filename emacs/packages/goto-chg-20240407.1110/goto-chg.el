@@ -21,7 +21,8 @@
 ;; Author: David Andersson <l.david.andersson(at)sverige.nu>
 ;; Maintainer: Vasilij Schneidermann <mail@vasilij.de>
 ;; Created: 16 May 2002
-;; Version: 1.7.5
+;; Package-Version: 20240407.1110
+;; Package-Revision: 72f556524b88
 ;; Package-Requires: ((emacs "24.1"))
 ;; Keywords: convenience, matching
 ;; URL: https://github.com/emacs-evil/goto-chg

@@ -4,7 +4,8 @@
 
 ;; Author: Troy Pracy
 ;; Keywords: functional
-;; Version: 0.1.2
+;; Package-Version: 20210304.1812
+;; Package-Revision: 98e3fe1b4785
 ;; Package-Requires: ((emacs "24") (cl-lib "0.5") (dash "2.18.0"))
 
 ;; This program is free software; you can redistribute it and/or modify

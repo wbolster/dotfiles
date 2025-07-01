@@ -4,7 +4,8 @@
 ;; Keywords: languages
 ;; URL: https://github.com/wbolster/emacs-gsettings
 ;; Package-Requires: ((emacs "24.3") (dash "2.16.0") (gvariant "1.0.0") (s "1.12.0"))
-;; Version: 1.0.0
+;; Package-Version: 20210407.2045
+;; Package-Revision: 9f9fb1fe946b
 
 ;; Copyright 2019 wouter bolsterlee. Licensed under the BSD-3-clause license.
 

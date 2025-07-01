@@ -4,7 +4,8 @@
 
 ;; Author: Adam Niederer <adam.niederer@gmail.com>
 ;; URL: http://github.com/AdamNiederer/vue-html-mode
-;; Version: 0.2.0
+;; Package-Version: 20180428.2035
+;; Package-Revision: 361a9fa117f0
 ;; Keywords: languages vue template
 ;; Package-Requires: ()
 

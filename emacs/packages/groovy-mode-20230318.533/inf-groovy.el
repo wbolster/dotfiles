@@ -10,7 +10,6 @@
 ;;; 2006-08-01       v1
 ;;; 2010-04-07       v2 fixes for new groovy-mode
 ;; Maintainer: Russel Winder <russel@winder.org.uk>
-;; Version: 201705161954
 ;; Keywords: languages
 ;; Package-Requires: ((groovy-mode "0"))
 

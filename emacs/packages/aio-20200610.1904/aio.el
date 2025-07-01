@@ -4,7 +4,8 @@
 
 ;; Author: Christopher Wellons <wellons@nullprogram.com>
 ;; URL: https://github.com/skeeto/emacs-aio
-;; Version: 1.0
+;; Package-Version: 20200610.1904
+;; Package-Revision: da93523e2355
 ;; Package-Requires: ((emacs "26.1"))
 
 ;;; Commentary:

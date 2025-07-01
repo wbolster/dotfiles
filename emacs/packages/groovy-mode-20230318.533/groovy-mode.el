@@ -9,7 +9,8 @@
 ;; Created: 2006-08-01
 ;; Keywords: languages
 ;; URL: https://github.com/Groovy-Emacs-Modes/groovy-emacs-modes
-;; Version: 2.2
+;; Package-Version: 20230318.533
+;; Package-Revision: 7b8520b2e2d3
 ;; Package-Requires: ((s "1.12.0") (emacs "24.3") (dash "2.13.0"))
 
 ;; This program is free software: you can redistribute it and/or modify

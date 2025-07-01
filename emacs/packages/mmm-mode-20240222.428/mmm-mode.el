@@ -8,7 +8,8 @@
 ;; Maintainer: Dmitry Gutov <dmitry@gutov.dev>
 ;; URL: https://github.com/dgutov/mmm-mode
 ;; Keywords: convenience, faces, languages, tools
-;; Version: 0.5.11
+;; Package-Version: 20240222.428
+;; Package-Revision: b1f5c7dbdc40
 ;; Package-Requires: ((emacs "25.1") (cl-lib "0.2"))
 
 ;;{{{ GPL

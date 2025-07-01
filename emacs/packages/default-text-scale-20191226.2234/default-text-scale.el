@@ -5,7 +5,8 @@
 ;; Author: Steve Purcell <steve@sanityinc.com>
 ;; URL: https://github.com/purcell/default-text-scale
 ;; Keywords: frames, faces
-;; Package-Version: 0
+;; Package-Version: 20191226.2234
+;; Package-Revision: bfc0987c37e9
 ;; Package-Requires: ((emacs "24"))
 
 ;; This program is free software; you can redistribute it and/or modify

@@ -5,7 +5,8 @@
 ;; Author: Roland Walker <walker@pobox.com>
 ;; Homepage: http://github.com/rolandwalker/persistent-soft
 ;; URL: http://raw.githubusercontent.com/rolandwalker/persistent-soft/master/persistent-soft.el
-;; Version: 0.8.10
+;; Package-Version: 20150223.1853
+;; Package-Revision: a1e0ddf2a12a
 ;; Last-Updated: 23 Feb 2015
 ;; EmacsWiki: PersistentSoft
 ;; Keywords: data, extensions

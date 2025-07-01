@@ -5,7 +5,8 @@
 ;; Author: Roland Walker <walker@pobox.com>
 ;; Homepage: http://github.com/rolandwalker/font-utils
 ;; URL: http://raw.githubusercontent.com/rolandwalker/font-utils/master/font-utils.el
-;; Version: 0.7.8
+;; Package-Version: 20210405.1149
+;; Package-Revision: abc572eb0dc3
 ;; Last-Updated: 23 January 2021
 ;; EmacsWiki: FontUtils
 ;; Package-Requires: ((persistent-soft "0.8.8") (pcache "0.2.3"))

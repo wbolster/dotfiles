@@ -5,7 +5,8 @@
 ;; Author: Roland Walker <walker@pobox.com>
 ;; Homepage: http://github.com/rolandwalker/unicode-fonts
 ;; URL: http://raw.githubusercontent.com/rolandwalker/unicode-fonts/master/unicode-fonts.el
-;; Version: 0.4.10
+;; Package-Version: 20230926.1502
+;; Package-Revision: 6245b97d8dda
 ;; Last-Updated:  1 Oct 2018
 ;; EmacsWiki: UnicodeFonts
 ;; Keywords: i18n, faces, frames, wp, interface

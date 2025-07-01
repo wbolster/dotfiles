@@ -4,7 +4,6 @@
 
 ;; Author: Damien Merenne <dam@cosinux.org>
 ;; Created:  Sep 2018
-;; Version: 0.1
 ;; Package-Requires: ((emacs "24.3") (use-package "2.4"))
 ;; Keywords: convenience extensions tools
 ;; URL: https://github.com/dash-docs-el/dash-docs

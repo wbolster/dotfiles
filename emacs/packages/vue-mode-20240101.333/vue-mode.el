@@ -6,7 +6,8 @@
 ;; Keywords: languages
 ;; URL: https://github.com/AdamNiederer/vue-mode
 
-;; Version: 0.4.0
+;; Package-Version: 20240101.333
+;; Package-Revision: 3a8056bc6ea6
 ;; Package-Requires: ((mmm-mode "0.5.5") (vue-html-mode "0.2") (ssass-mode "0.2") (edit-indirect "0.1.4"))
 
 ;; This program is free software; you can redistribute it and/or modify

@@ -3,7 +3,8 @@
 ;; Copyright (C) 2013-2020 Steve Purcell
 
 ;; Author: Steve Purcell <steve@sanityinc.com>
-;; Package-Version: 0
+;; Package-Version: 20210510.533
+;; Package-Revision: b108b73ddf8f
 ;; Package-Requires: ((emacs "24.1"))
 ;; URL: https://github.com/purcell/whitespace-cleanup-mode
 ;; Keywords: convenience

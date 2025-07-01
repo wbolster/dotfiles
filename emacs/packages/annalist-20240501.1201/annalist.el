@@ -4,7 +4,8 @@
 ;; URL: https://github.com/noctuid/annalist.el
 ;; Keywords: convenience, tools, keybindings, org
 ;; Package-Requires: ((emacs "24.4") (cl-lib "0.5"))
-;; Version: 1.0
+;; Package-Version: 20240501.1201
+;; Package-Revision: e1ef5dad75fa
 
 ;; This file is not part of GNU Emacs.
 

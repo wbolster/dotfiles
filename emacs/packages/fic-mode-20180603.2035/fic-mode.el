@@ -5,6 +5,8 @@
 ;; Copyright (C) 2010, Ivan Korotkov <twee(at)tweedle-dee(dot)org>
 ;; Copyright (C) 2012, Le Wang
 ;;
+;; Package-Version: 20180603.2035
+;; Package-Revision: a05fc36ed54b
 ;; Homepage: https://github.com/lewang/fic-mode
 ;;
 ;; This file is NOT part of Emacs.

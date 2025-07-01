@@ -5,7 +5,6 @@
 ;; Author: Roland Walker <walker@pobox.com>
 ;; Homepage: http://github.com/rolandwalker/ucs-utils
 ;; URL: http://raw.githubusercontent.com/rolandwalker/ucs-utils/master/ucs-utils-6.0-delta.el
-;; Version: 1.0.2
 ;; Last-Updated: 12 Aug 2015
 ;; EmacsWiki: UcsUtils
 ;; Keywords: i18n, extensions

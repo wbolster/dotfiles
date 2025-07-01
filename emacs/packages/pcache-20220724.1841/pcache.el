@@ -4,7 +4,8 @@
 
 ;; Author: Yann Hodique <yann.hodique@gmail.com>
 ;; Keywords: extensions
-;; Version: 0.5.1
+;; Package-Version: 20220724.1841
+;; Package-Revision: cae29ddbc3d1
 ;; Package-Requires: ((emacs "25.1"))
 
 ;; This file is free software; you can redistribute it and/or modify

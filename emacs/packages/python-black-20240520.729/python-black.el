@@ -4,7 +4,8 @@
 ;; Keywords: languages
 ;; URL: https://github.com/wbolster/emacs-python-black
 ;; Package-Requires: ((emacs "25") (dash "2.16.0") (reformatter "0.3"))
-;; Version: 1.2.0
+;; Package-Version: 20240520.729
+;; Package-Revision: 4da1519345b3
 
 ;; Copyright 2019 wouter bolsterlee. Licensed under the 3-Clause BSD License.
 

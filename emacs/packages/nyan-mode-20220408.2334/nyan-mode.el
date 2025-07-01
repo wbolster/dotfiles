@@ -4,7 +4,8 @@
 
 ;; Author: Jacek "TeMPOraL" Zlydach <temporal.pl@gmail.com>
 ;; URL: https://github.com/TeMPOraL/nyan-mode/
-;; Version: 1.1.4
+;; Package-Version: 20220408.2334
+;; Package-Revision: 09904af23adb
 ;; Keywords: convenience, games, mouse, multimedia
 ;; Nyanwords: nyan, cat, lulz, scrolling, pop tart cat, build something amazing
 ;; Package-Requires: ((emacs "24.1"))

@@ -2,7 +2,8 @@
 
 ;; Copyright (C) 2016-2024 Skye Shaw
 ;; Author: Skye Shaw <skye.shaw@gmail.com>
-;; Package-Version: 0.0.9
+;; Package-Version: 20231112.1710
+;; Package-Revision: b9f6f725ca97
 ;; Keywords: github, slack, jira, telegram, gitlab, bitbucket, org-mode, pod, rst, asciidoc, whatsapp, tools, convenience
 ;; URL: https://github.com/sshaw/copy-as-format
 ;; Package-Requires: ((cl-lib "0.5"))
