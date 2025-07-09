@@ -3175,7 +3175,8 @@ defined as lowercase."
       ("M" "compile other" flycheck-compile)]
      [("c" "toggle error window" w--flycheck-toggle-error-window)
       ("C" "toggle checking" flycheck-mode)
-      ("o" "toggle other file errors" w--flycheck-show-error-other-file-mode)]]
+      ("o" "toggle other file errors" w--flycheck-show-error-other-file-mode)
+      ("t" "toggle flyover" flyover-toggle)]]
     ["setup"
      [("s" "select checker" flycheck-select-checker)]
      [("v" "verify setup" flycheck-verify-setup)]]
@@ -3223,6 +3224,12 @@ defined as lowercase."
   :demand t
   :after flycheck
   :hook (flycheck-mode-hook . flycheck-color-mode-line-mode))
+
+(use-package flyover
+  :after flycheck
+  :delight " 🛩️"
+  :hook (flycheck-mode-hook . flyover-mode))
+
 
 ;;;; toggles
 
