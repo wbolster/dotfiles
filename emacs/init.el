@@ -2854,18 +2854,6 @@ defined as lowercase."
       ("w" "web" w--git-web-browse)
       ("!" "command" magit-git-command)]]))
 
-(use-package blamer
-  :quelpa (blamer :fetcher github :repo "artawower/blamer.el")
-  :custom
-  (blamer-idle-time .0)
-  (blamer-min-offset 40)
-  (blamer-author-formatter "")
-  (blamer-datetime-formatter "")
-  (blamer-commit-formatter " — %s")
-  (blamer-uncommitted-changes-message "(uncommited)")
-  (blamer-prettify-time-p nil)
-  (blamer-max-commit-message-length 60))
-
 (use-package evil-collection
   :custom
   evil-collection-want-unimpaired-p nil
