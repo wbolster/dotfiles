@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+session_name='🕶️ '
+tmux new-session -d -s "$session_name" -x "$(tput cols)" -y "$(tput lines)"
+tmux split-window -h -l 20 unimatrix --asynchronous --speed 70
+tmux select-pane -t top-left
+tmux -2 attach-session -d -t "$session_name"

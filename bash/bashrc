@@ -1003,6 +1003,7 @@ if [[ "$PS1" ]]; then
     # 31337 hacking the matrix
     if ___has unimatrix && ps -p "$PPID" | command grep -q cool-retro-term; then
         unimatrix --flashers --ignore-keyboard --single-wave --speed 98
+        ,tmux-hax0r
     fi
 fi
 
