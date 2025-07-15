@@ -3122,7 +3122,7 @@ defined as lowercase."
   (flycheck-checker-error-threshold 2000)
   (flycheck-display-errors-delay 1.0)
   (flycheck-idle-change-delay 3)
-  (flycheck-mode-line-prefix "✔")
+  (flycheck-mode-line-prefix "🧐")
   (flycheck-emacs-lisp-load-path 'inherit)
   (flycheck-python-flake8-executable "flake8")
   (flycheck-relevant-error-other-file-minimum-level nil)
