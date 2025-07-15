@@ -2933,6 +2933,7 @@ defined as lowercase."
 
 (use-package git-commit
   :defer t
+  :ensure nil
   :custom
   (git-commit-fill-column 72)
   :hook (git-commit-mode-hook . w--git-commit-mode-hook)
