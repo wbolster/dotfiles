@@ -572,7 +572,37 @@ defined as lowercase."
 (defun w--set-theme-from-environment ()
   "Set the theme based on presence/absence of a configuration file."
   (interactive)
-  (w--activate-theme (file-exists-p "~/.config/dark-theme")))
+  (let ((dark
+         (if (gsettings-gnome-running?)
+             (string-equal (gsettings-get "org.gnome.desktop.interface" "color-scheme") "prefer-dark")
+           (file-exists-p "~/.config/dark-theme"))))
+    (w--activate-theme dark)))
+
+;; todo https://www.reddit.com/r/emacs/comments/o49v2w/automatically_switch_emacs_theme_when_changing/
+
+;; signal time=1653900413.9760315 sender=:1.80 -> destination=nil serial=80 path=/org/freedesktop/portal/desktop interface=org.freedesktop.impl.portal.Settings member=SettingChanged
+;; (:string "org.gnome.desktop.interface")
+;; (:string "color-scheme")
+;; (:variant :string "prefer-dark")
+
+;; (require 'dbus)
+;; (dbus-call-method-asynchronously
+;;  :session "org.freedesktop.portal.Desktop"
+;;  "/org/freedesktop/portal/desktop" "org.freedesktop.portal.Settings"
+;;  "Read"
+;;  (-partial #'message "%S")
+;;  "org.freedesktop.appearance"
+;;  "color-scheme")
+;; (defun w--settings-changed-cb (path var value)
+;;   "DBus handler to detect when the color-scheme has changed."
+;;   (when (and (string-equal path "org.freedesktop.appearance")
+;;              (string-equal var "color-scheme"))
+;;     (message "%S" value)))
+;; (dbus-register-signal
+;;  :session "org.freedesktop.portal.Desktop"
+;;  "/org/freedesktop/portal/desktop" "org.freedesktop.portal.Settings"
+;;  "SettingChanged"
+;;  #'w--settings-changed-cb)
 
 (defun w--tweak-evil-cursor ()
   "Tweak the appearance of the evil cursors"
