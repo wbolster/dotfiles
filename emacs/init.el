@@ -3523,7 +3523,9 @@ defined as lowercase."
 (use-package tree-sitter-langs
   :after tree-sitter)
 
-(use-package yasnippet)
+(use-package yasnippet
+  :config
+  (yas-global-mode))
 
 
 ;;; Major mode: c
