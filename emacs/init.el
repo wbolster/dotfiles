@@ -3959,6 +3959,11 @@ defined as lowercase."
   (jq-format-jsonlines-on-save-mode " ❤"))
 
 
+;;; major mode: just
+
+(use-package just-mode)
+
+
 ;;; Major mode: markdown
 
 (use-package markdown-mode
