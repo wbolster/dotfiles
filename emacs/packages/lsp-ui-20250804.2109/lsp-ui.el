@@ -7,8 +7,8 @@
 ;; Keywords: languages, tools
 ;; URL: https://github.com/emacs-lsp/lsp-ui
 ;; Package-Requires: ((emacs "28.1") (dash "2.18.0") (lsp-mode "6.0") (markdown-mode "2.3"))
-;; Package-Version: 20250228.2155
-;; Package-Revision: 09d40806429f
+;; Package-Version: 20250804.2109
+;; Package-Revision: dcce464bc5d1
 
 ;;; License
 ;;

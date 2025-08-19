@@ -5,8 +5,8 @@
 ;; Author: Vibhav Pant, Fangrui Song, Ivan Yonchovski
 ;; Keywords: languages
 ;; Package-Requires: ((emacs "28.1") (dash "2.18.0") (f "0.20.0") (ht "2.3") (spinner "1.7.3") (markdown-mode "2.3") (lv "0") (eldoc "1.11"))
-;; Package-Version: 20250729.330
-;; Package-Revision: 49acafcbd840
+;; Package-Version: 20250909.259
+;; Package-Revision: 9d2bab73a1c8
 
 ;; URL: https://github.com/emacs-lsp/lsp-mode
 ;; This program is free software; you can redistribute it and/or modify
@@ -193,7 +193,7 @@ As defined by the Language Server Protocol 3.16."
      lsp-solargraph lsp-solidity lsp-sonarlint lsp-sorbet lsp-sourcekit
      lsp-sql lsp-sqls lsp-steep lsp-svelte lsp-tailwindcss lsp-terraform
      lsp-tex lsp-tilt lsp-toml lsp-toml-tombi lsp-trunk lsp-ts-query lsp-ttcn3 lsp-typeprof
-     lsp-typespec lsp-v lsp-vala lsp-verilog lsp-vetur lsp-vhdl lsp-vimscript
+     lsp-typespec lsp-typos lsp-v lsp-vala lsp-verilog lsp-vetur lsp-vhdl lsp-vimscript
      lsp-volar lsp-wgsl lsp-xml lsp-yaml lsp-yang lsp-zig)
   "List of the clients to be automatically required."
   :group 'lsp-mode
@@ -365,6 +365,8 @@ the server has requested that."
     "[/\\\\]\\.nox\\'"
     "[/\\\\]dist\\'"
     "[/\\\\]dist-newstyle\\'"
+    "[/\\\\]\\.hifiles\\'"
+    "[/\\\\]\\.hiefiles\\'"
     "[/\\\\]\\.stack-work\\'"
     "[/\\\\]\\.bloop\\'"
     "[/\\\\]\\.bsp\\'"
@@ -1004,6 +1006,7 @@ Changes take effect only when a new session is started."
     (meson-mode . "meson")
     (yang-mode . "yang")
     (matlab-mode . "matlab")
+    (matlab-ts-mode . "matlab")
     (message-mode . "plaintext")
     (mu4e-compose-mode . "plaintext")
     (odin-mode . "odin")
@@ -2224,14 +2227,18 @@ PARAMS - the data sent from WORKSPACE."
         (completing-read (concat message " ") (seq-into choices 'list) nil t)
       (lsp-log message))))
 
-(lsp-defun lsp--window-show-document ((&ShowDocumentParams :uri :selection?))
-  "Show document URI in a buffer and go to SELECTION if any."
+(lsp-defun lsp--window-show-document ((&ShowDocumentParams :uri :selection? :external?))
+  "Show document URI in a buffer or in a external browser if EXTERNAL is t, and go to SELECTION if any."
   (let ((path (lsp--uri-to-path uri)))
-    (when (f-exists? path)
-      (with-current-buffer (find-file path)
-        (when selection?
-          (goto-char (lsp--position-to-point (lsp:range-start selection?))))
-        t))))
+    (if external?
+        (progn
+          (browse-url uri)
+          t)
+      (when (f-exists? path)
+        (with-current-buffer (find-file path)
+          (when selection?
+            (goto-char (lsp--position-to-point (lsp:range-start selection?))))
+          t)))))
 
 (defcustom lsp-progress-prefix "⌛ "
   "Progress prefix."
@@ -4867,6 +4874,13 @@ Added to `before-change-functions'."
         (lsp:text-document-sync-options-change? sync)
       sync)))
 
+(defvaralias 'lsp--revert-buffer-in-progress
+  (if (boundp 'revert-buffer-in-progress)
+      'revert-buffer-in-progress
+    'revert-buffer-in-progress-p)
+  "Alias for `revert-buffer-in-progress' if available, or `revert-buffer-in-progress-p'
+prior to emacs 31.")
+
 (defun lsp-on-change (start end length &optional content-change-event-fn)
   "Executed when a file is changed.
 Added to `after-change-functions'."
@@ -4894,7 +4908,7 @@ Added to `after-change-functions'."
       ;; buffer-file-name. We need the buffer-file-name to send notifications;
       ;; so we skip handling revert-buffer-caused changes and instead handle
       ;; reverts separately in lsp-on-revert
-      (when (not revert-buffer-in-progress-p)
+      (when (not lsp--revert-buffer-in-progress)
         (cl-incf lsp--cur-version)
         (mapc
          (lambda (workspace)
@@ -5037,6 +5051,8 @@ movements may have changed the position")
   :group 'lsp-mode
   :type 'boolean)
 
+(defun lsp--on-type-formatting-do-apply (data)
+  (lsp--apply-text-edits data 'format))
 
 (defun lsp--on-type-formatting (first-trigger-characters more-trigger-characters)
   "Self insert handling.
@@ -5044,19 +5060,29 @@ Applies on type formatting."
   (let ((ch last-command-event))
     (when (or (eq (string-to-char first-trigger-characters) ch)
               (cl-find ch more-trigger-characters :key #'string-to-char))
-      (lsp-request-async "textDocument/onTypeFormatting"
-                         (lsp-make-document-on-type-formatting-params
-                          :text-document (lsp--text-document-identifier)
-                          :options (lsp-make-formatting-options
-                                    :tab-size (symbol-value (lsp--get-indent-width major-mode))
-                                    :insert-spaces (lsp-json-bool (not indent-tabs-mode))
-                                    :trim-trailing-whitespace? (lsp-json-bool lsp-trim-trailing-whitespace)
-                                    :insert-final-newline? (lsp-json-bool lsp-insert-final-newline)
-                                    :trim-final-newlines? (lsp-json-bool lsp-trim-final-newlines))
-                          :ch (char-to-string ch)
-                          :position (lsp--cur-position))
-                         (lambda (data) (lsp--apply-text-edits data 'format))
-                         :mode 'tick))))
+
+      ;; defer to after hooks -- avoids the request being cancelled by smart
+      ;; parens, electric indent or other hooks
+      (run-at-time
+       0 nil
+       (lambda (pos-marker)
+         (lsp-request-async "textDocument/onTypeFormatting"
+                            (lsp-make-document-on-type-formatting-params
+                             :text-document (lsp--text-document-identifier)
+                             :options (lsp-make-formatting-options
+                                       :tab-size (symbol-value (lsp--get-indent-width major-mode))
+                                       :insert-spaces (lsp-json-bool (not indent-tabs-mode))
+                                       :trim-trailing-whitespace? (lsp-json-bool lsp-trim-trailing-whitespace)
+                                       :insert-final-newline? (lsp-json-bool lsp-insert-final-newline)
+                                       :trim-final-newlines? (lsp-json-bool lsp-trim-final-newlines))
+                             :ch (char-to-string ch)
+                             :position (lsp--point-to-position (marker-position pos-marker)))
+                            #'lsp--on-type-formatting-do-apply
+                            :mode 'tick)
+         (set-marker pos-marker nil))
+
+       ;; argument to lambda:
+       (point-marker)))))
 
 
 ;; links
@@ -5173,7 +5199,7 @@ one of the LANGUAGES."
   "Executed when a file is reverted.
 Added to `after-revert-hook'."
   (let ((n (buffer-size))
-        (revert-buffer-in-progress-p nil))
+        (lsp--revert-buffer-in-progress nil))
     (lsp-on-change 0 n n)))
 
 (defun lsp--text-document-did-close (&optional keep-workspace-alive)
@@ -6100,12 +6126,24 @@ It will show up only if current point has signature help."
 
 (defun lsp--text-document-code-action-params (&optional kind)
   "Code action params."
-  (list :textDocument (lsp--text-document-identifier)
-        :range (if (use-region-p)
-                   (lsp--region-to-range (region-beginning) (region-end))
-                 (lsp--region-to-range (point) (point)))
-        :context `( :diagnostics ,(lsp-cur-possition-diagnostics)
-                    ,@(when kind (list :only (vector kind))))))
+  (let* ((diagnostics (lsp-cur-possition-diagnostics))
+         (range (cond ((use-region-p)
+                       (lsp--region-to-range (region-beginning) (region-end)))
+                      (diagnostics
+                       (let* ((start (point)) (end (point)))
+                         (mapc (-lambda
+                                 ((&Diagnostic
+                                   :range (&Range :start (&Position :line l1 :character c1)
+                                                  :end (&Position :line l2 :character c2))))
+                                 (setq start (min (lsp--line-character-to-point l1 c1) start))
+                                 (setq end (max (lsp--line-character-to-point l2 c2) end)))
+                               diagnostics)
+                         (lsp--region-to-range start end)))
+                      (t (lsp--region-to-range (point) (point))))))
+    (list :textDocument (lsp--text-document-identifier)
+          :range range
+          :context `( :diagnostics ,diagnostics
+                      ,@(when kind (list :only (vector kind)))))))
 
 (defun lsp-code-actions-at-point (&optional kind)
   "Retrieve the code actions for the active region or the current line.
@@ -6295,7 +6333,10 @@ one or more symbols, and STRUCTURE should be compatible with
 
 (defun lsp-format-region (s e)
   "Ask the server to format the region, or if none is selected, the current line."
-  (interactive "r")
+  (interactive
+   (if (use-region-p)
+       (list (region-beginning) (region-end))
+     (list (point) (point))))
   (let ((edits (lsp-request
                 "textDocument/rangeFormatting"
                 (lsp--make-document-range-formatting-params s e))))

@@ -511,7 +511,7 @@ Argument HEIGHT is an actual image height in pixel."
                                          (t (error "Function image-size undefined.  Use default icon")))
                                    (lsp-ui-sideline--scale-lightbulb)))))))
 
-(defun lsp-ui-sideline--code-actions-image nil
+(defun lsp-ui-sideline--code-actions-image (action)
   (when lsp-ui-sideline-actions-icon
     (with-demoted-errors "[lsp-ui-sideline]: Error with actions icon: %s"
       (concat
@@ -534,7 +534,7 @@ Argument HEIGHT is an actual image height in pixel."
                           (replace-regexp-in-string " " " ")
                           (concat (unless lsp-ui-sideline-actions-icon
                                     lsp-ui-sideline-code-actions-prefix))))
-              (image (lsp-ui-sideline--code-actions-image))
+              (image (lsp-ui-sideline--code-actions-image action))
               (margin (lsp-ui-sideline--margin-width))
               (keymap (let ((map (make-sparse-keymap)))
                         (define-key map [down-mouse-1] (lambda () (interactive)
@@ -618,13 +618,26 @@ from the language server."
                      (lsp--registered-capability "textDocument/codeAction")))
         (lsp-request-async
          "textDocument/codeAction"
-         (-let (((start . end) (if (eq lsp-ui-sideline-update-mode 'line)
-                                   (cons 0 (- eol bol))
-                                 (--> (- (point) bol) (cons it it)))))
+         (-let* ((diagnostics (lsp-ui-sideline--line-diags (1- line-widen)))
+                 ((start . end) (cond ((eq lsp-ui-sideline-update-mode 'line)
+                                       (cons 0 (- eol bol)))
+                                      (diagnostics
+                                       (let* ((start (- (point) bol))
+                                              (end start))
+                                         (mapc
+                                          (-lambda
+                                            ((&Diagnostic
+                                              :range (&Range :start (&Position :character c1)
+                                                             :end (&Position :character c2))))
+                                            (setq start (min c1 start))
+                                            (setq end (max c2 end)))
+                                          diagnostics)
+                                         (cons start end)))
+                                      (t (--> (- (point) bol) (cons it it))))))
            (list :textDocument doc-id
                  :range (list :start (list :line (1- line-widen) :character start)
                               :end (list :line (1- line-widen) :character end))
-                 :context (list :diagnostics (lsp-ui-sideline--line-diags (1- line-widen)))))
+                 :context (list :diagnostics diagnostics)))
          (lambda (actions)
            (when (eq (current-buffer) buffer)
              (lsp-ui-sideline--code-actions actions bol eol)))
