@@ -3509,6 +3509,7 @@ defined as lowercase."
 
 (use-package tree-sitter
   :delight
+  :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
   :custom-face
   ;; (tree-sitter-hl-face:function.call ((t (:inherit default))))
   ;; (tree-sitter-hl-face:constructor ((t (:inherit default))))
