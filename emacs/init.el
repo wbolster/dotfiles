@@ -3386,7 +3386,6 @@ defined as lowercase."
     ("shell" . sh-mode)
     ("sql" . sql-mode)
     ("typescript (ts)" . typescript-ts-mode)
-    ("vue" . vue-mode)
     ("yaml (yml)" . yaml-mode)
     ("xml" . nxml-mode))
   "Commonly used major modes.")
@@ -4806,20 +4805,26 @@ defined as lowercase."
     (lsp-deferred)))
 
 
-;;; Major mode: vue
+;;; Major mode: web
 
-(use-package vue-mode
-  :hook (vue-mode-hook . w--vue-mode-hook)
+(use-package web-mode
+  :defer t
+  :mode (rx ".vue" string-end)
+  :hook (web-mode-hook . w--web-mode-hook)
+  :custom
+  (web-mode-code-indent-offset 2)
+  (web-mode-css-indent-offset 2)
+  (web-mode-enable-comment-interpolation t)
+  (web-mode-enable-current-element-highlight t)
+  (web-mode-indent-style 2)
+  (web-mode-markup-indent-offset 2)
+  (web-mode-part-padding 0)
+  (web-mode-script-padding 0)
+  (web-mode-style-padding 0)
   :config
-  (defun w--vue-mode-hook ()
-    (lsp-deferred))
-
-  ;; somehow the default is not scss-mode for scss
-  (--map-first
-   (and (eq (plist-get it :name) 'scss)
-        (eq (plist-get it :type) 'style))
-   (plist-put it :mode 'scss-mode)
-   vue-modes))
+  (defun w--web-mode-hook ()
+    (reformatter-dwim-select 'prettier-format)
+    (lsp-deferred)))
 
 
 ;;; Major mode: woman (manual pages)
