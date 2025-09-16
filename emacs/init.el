@@ -4789,9 +4789,7 @@ defined as lowercase."
   ;; built-in
   :hook (typescript-ts-mode-hook . w--typescript-ts-mode-hook)
   :mode
-  (rx ".cts" string-end)
-  (rx ".mts" string-end)
-  :ensure nil
+  (rx (or ".ts" ".cts" ".mts") string-end)
   :custom
   (typescript-indent-level 2)
   :general
