@@ -28,6 +28,7 @@ patterns:
   - '- **/cache/'
   - '- **/CacheStorage/'
   - '- **/.direnv/'
+  - '- **/.local/share/Trash/'
   - '- **/.tox/'
   - '- **/.venv/'
 
