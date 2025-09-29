@@ -2826,8 +2826,13 @@ defined as lowercase."
 
   ;; (magit-wip-mode)
 
-  (--each '("~" "~/Projects/" "~/Documents/")
-    (add-to-list 'magit-repository-directories (cons it 2) t))
+  (--each '(("~" . 2)
+            ("~/Projects/" . 2)
+            ("~/Documents/" . 3)
+            ("~/Sync/" . 3))
+    (-let [(dir . depth) it]
+      (add-to-list 'magit-repository-directories (cons dir depth) t)))
+
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
 
   (transient-replace-suffix 'magit-commit 'magit-commit-autofixup
