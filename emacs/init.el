@@ -2328,12 +2328,12 @@ defined as lowercase."
   (blink-cursor-delay .5)
   (blink-cursor-interval .5)
   (default-frame-alist
-   '((child-frame-border-width . 0)
-     (drag-internal-border . 2)
-     (height . 48)
-     (internal-border-width . 4)
-     (undecorated . t)
-     (width . 160)))
+    '((child-frame-border-width . 0)
+      (drag-internal-border . 2)
+      (height . 48)
+      (internal-border-width . 1)
+      (undecorated . t)
+      (width . 160)))
   (display-buffer-base-action
    '((display-buffer-reuse-window
       display-buffer-pop-up-window
@@ -2347,6 +2347,9 @@ defined as lowercase."
   (split-window-preferred-function 'visual-fill-column-split-window-sensibly)
   (switch-to-buffer-in-dedicated-window 'pop)
   (window-resize-pixelwise t)
+
+  :custom-face
+  (internal-border ((t (:inherit highlight))))
 
   :config
   (menu-bar-mode -1)
