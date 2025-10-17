@@ -4823,12 +4823,18 @@ defined as lowercase."
   (web-mode-code-indent-offset 2)
   (web-mode-css-indent-offset 2)
   (web-mode-enable-comment-interpolation t)
+  (web-mode-enable-current-column-highlight t)
   (web-mode-enable-current-element-highlight t)
   (web-mode-indent-style 2)
   (web-mode-markup-indent-offset 2)
   (web-mode-part-padding 0)
   (web-mode-script-padding 0)
   (web-mode-style-padding 0)
+  :custom-face
+  (web-mode-current-column-highlight-face
+   ((t (:inherit hl-line
+        :background unspecified
+        :weight unspecified))))
   :config
   (defun w--web-mode-hook ()
     (reformatter-dwim-select 'prettier-format)
