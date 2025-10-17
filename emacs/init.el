@@ -3458,6 +3458,8 @@ defined as lowercase."
   :commands (lsp lsp-deferred)
   :custom
   (lsp-auto-execute-action nil)
+  (lsp-enable-indentation nil)
+  (lsp-enable-on-type-formatting nil)
   (lsp-headerline-breadcrumb-segments '(symbols))
   (lsp-keymap-prefix "C-c l")
   :config
