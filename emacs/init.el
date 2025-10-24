@@ -3166,6 +3166,9 @@ defined as lowercase."
   (flycheck-python-flake8-executable "flake8")
   (flycheck-relevant-error-other-file-minimum-level nil)
 
+  :custom-face
+  (flycheck-error ((t (:underline nil :inherit error))))
+
   :general
   (:keymaps 'flycheck-error-list-mode-map
    :states 'motion
