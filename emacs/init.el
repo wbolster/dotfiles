@@ -4840,6 +4840,7 @@ defined as lowercase."
         :background unspecified
         :weight unspecified))))
   :config
+  (setf (alist-get "vue" web-mode-engines-auto-pairs nil nil 'equal) nil)
   (defun w--web-mode-hook ()
     (reformatter-dwim-select 'prettier-format)
     (lsp-deferred)))
