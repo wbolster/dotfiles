@@ -4829,6 +4829,7 @@ defined as lowercase."
   (web-mode-enable-current-column-highlight t)
   (web-mode-enable-current-element-highlight t)
   (web-mode-indent-style 2)
+  (web-mode-markup-comment-indent-offset 2)
   (web-mode-markup-indent-offset 2)
   (web-mode-part-padding 0)
   (web-mode-script-padding 0)
