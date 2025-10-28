@@ -29,6 +29,7 @@ patterns:
   - '- **/CacheStorage/'
   - '- **/.direnv/'
   - '- **/.local/share/Trash/'
+  - '- **/Slack/Cache/'
   - '- **/.tox/'
   - '- **/.venv/'
 
