@@ -1,0 +1,21 @@
+" colemak; like evil-colemak-basics for emacs
+" "https://github.com/esm7/obsidian-vimrc-support
+
+noremap h h
+noremap n gj
+noremap e gk
+noremap i l
+noremap k n
+noremap K N
+noremap u i
+noremap U I
+noremap l u
+noremap L U
+noremap N J
+noremap E K
+noremap f e
+noremap F E
+noremap t f
+noremap T F
+noremap j t
+noremap J T
