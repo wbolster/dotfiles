@@ -26,6 +26,7 @@ patterns:
   - 'R /var/log'
   - '- **/.cache/'
   - '- **/cache/'
+  - '- **/Cache/'
   - '- **/CacheStorage/'
   - '- **/.direnv/'
   - '- **/.local/share/Trash/'
