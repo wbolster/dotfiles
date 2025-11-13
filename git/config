@@ -82,6 +82,7 @@ missing = "!f() { (echo \"Only in $1:\"; git --no-pager sl ..$1; echo; echo 'Onl
 # Updating from and pushing to remotes
 fetchall = fetch --all --prune
 fpush = push --force-with-lease
+poes = push
 pshu = push
 psuh = push
 puhs = push
