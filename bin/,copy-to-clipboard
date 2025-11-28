@@ -6,7 +6,9 @@ has() {
   type "$1" 2>/dev/null 1>&2
 }
 
-if has xsel; then
+if has wl-copy; then
+    exec wl-copy
+elif has xsel; then
     exec xsel --input --clipboard
 elif has xclip; then
     exec xclip -i -selection clipboard
