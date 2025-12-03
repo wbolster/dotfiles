@@ -821,6 +821,8 @@ defined as lowercase."
       (lazy-highlight-cleanup t)
       (remove-overlays nil nil 'category 'evil-snipe)
       (symbol-overlay-remove-all)
+      (when (functionp 'flycheck-clear)
+        (flycheck-clear))
       (when (functionp 'lsp-ui-doc-hide)
         (lsp-ui-doc-hide))
       (when (functionp 'evil-mc-undo-all-cursors)
