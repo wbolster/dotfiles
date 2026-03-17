@@ -1,0 +1,14 @@
+# See also /usr/share/X11/locale/en_US.UTF-8/Compose
+include "%L"
+
+# emoji
+<Multi_key> <h> <u> <p> : "👆" U1F446 # WHITE UP POINTING BACKHAND INDEX
+<Multi_key> <p> <l> <s> : "🙏" U1F64F # PERSON WITH FOLDED HANDS
+<Multi_key> <s> <h> <r> : "🤷" U1F937 # SHRUG
+<Multi_key> <s> <o> <b> : "😭" U1F62D # LOUDLY CRYING FACE
+<Multi_key> <u> <p>     : "🙃" U1F643 # UPSIDE-DOWN FACE
+<Multi_key> <u> <w> <u> : "🥺" U1F97A # FACE WITH PLEADING EYES
+
+# bidi
+<Multi_key> <F> <S> <I>	: "⁨" U2068 # FIRST STRONG ISOLATE
+<Multi_key> <P> <D> <I> : "⁩" U2069 # POP DIRECTIONAL ISOLATE
