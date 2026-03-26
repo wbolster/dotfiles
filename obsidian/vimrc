@@ -19,3 +19,4 @@ noremap t f
 noremap T F
 noremap j t
 noremap J T
+vnoremap e gk
