@@ -3,7 +3,7 @@
   "Evil textobjects based on indentation."
   '((evil   "0")
     (cl-lib "0.5"))
-  :url "http://github.com/TheBB/evil-indent-plus"
+  :url "https://github.com/TheBB/evil-indent-plus"
   :commit "f392696e4813f1d3a92c7eeed333248914ba6dae"
   :revdesc "f392696e4813"
   :keywords '("convenience" "evil")

@@ -1,0 +1,2 @@
+;; Generated package description from colorful-mode.el  -*- mode: lisp-data; no-byte-compile: t -*-
+(define-package "colorful-mode" "1.2.5" "Preview any color in your buffer in real time" '((emacs "28.1") (compat "30.1.0.0")) :commit "484d1b8e7c3e98ef7ccf99eddfcea2e30f5c63a2" :authors '(("Elias G. Perez" . "eg642616@gmail.com")) :maintainer '(("Jen-Chieh" . "jcs090218@gmail.com") ("Elias G. Perez" . "eg642616@gmail.com")) :keywords '("faces" "tools" "matching" "convenience") :url "https://github.com/DevelopmentCool2449/colorful-mode")

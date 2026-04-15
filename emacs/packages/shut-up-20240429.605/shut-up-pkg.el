@@ -3,7 +3,7 @@
   "Shut up would you!."
   '((cl-lib "0.3")
     (emacs  "24"))
-  :url "http://github.com/rejeep/shut-up.el"
+  :url "https://github.com/rejeep/shut-up.el"
   :commit "ed62a7fefdf04c81346061016f1bc69ca045aaf6"
   :revdesc "ed62a7fefdf0"
   :authors '(("Johan Andersson" . "johan.rejeep@gmail.com"))
