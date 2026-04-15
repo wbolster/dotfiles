@@ -3522,6 +3522,7 @@ defined as lowercase."
   :after dash-docs)
 
 (use-package tree-sitter
+  :disabled
   :delight
   :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
   :custom-face
@@ -3530,6 +3531,7 @@ defined as lowercase."
   )
 
 (use-package tree-sitter-langs
+  :disabled
   :after tree-sitter)
 
 (use-package yasnippet
@@ -4141,7 +4143,6 @@ defined as lowercase."
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-underscore-dash)
     (smartparens-mode) ;; todo
-    (tree-sitter-hl-mode)
     ;; (lispyville-mode)
     (origami-mode)
     ;; (python-docstring-mode)
