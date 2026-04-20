@@ -1,0 +1,6 @@
+# Ghostty config
+# $ ghostty +show-config --default --docs
+
+cursor-style-blink = false
+font-family = "Inconsolata Condensed"
+theme = light:Selenized Light,dark:Selenized Dark
