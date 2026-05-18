@@ -169,6 +169,10 @@ if [[ "$PS1" ]]; then
         # value has been truncated.
         dir=$1
         n=$2
+        if [[ $dir == "$HOME" ]]; then
+            echo '~'
+            return
+        fi
         dir=${1##"$HOME"/}
         tail=$(echo "$dir" | rev | cut -d/ -f"-${n}" | rev)
         head=${dir%%"$tail"}
