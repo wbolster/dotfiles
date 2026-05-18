@@ -1,0 +1,580 @@
+#!/usr/bin/env python3
+
+import argparse
+import fnmatch
+import os
+import pathlib
+import secrets
+import subprocess
+import sys
+import tempfile
+import typing
+from collections.abc import Iterable, Iterator
+
+Bind = tuple[pathlib.Path, pathlib.Path]
+Symlink = tuple[pathlib.Path, pathlib.Path]
+
+BWRAP_BASE_ARGS = ("--die-with-parent", "--unshare-all", "--share-net")
+ENV_VARS = (
+    "EDITOR",
+    "GIT_CONFIG_COUNT=1",
+    "GIT_CONFIG_KEY_0=commit.gpgsign",
+    "GIT_CONFIG_VALUE_0=false",
+    "HOME",
+    "LANG",
+    "LC_*",
+    "MANPATH",
+    "NPM_CONFIG_IGNORE_SCRIPTS=true",
+    "PATH",
+    "REQUESTS_CA_BUNDLE",
+    "SHELL",
+    "TERM",
+    "USER",
+    "VISUAL",
+)
+PATH_ENV_VARS = ("PATH", "MANPATH")
+RO_BIND_MOUNTS_GENERIC = (
+    "/bin",
+    "/sbin",
+    "/lib",
+    "/lib64",
+    "/usr",
+    "/var/lib/flatpak",
+    "~/.config/git",
+    "~/.local/npm",
+    "~/.local/pipx",
+    "~/.local/share/direnv/allow",
+    "~/.local/share/man",
+    "~/.local/share/mise",
+    "~/.pyenv",
+    "~/.rustup",
+    "~/dotfiles",
+)
+RO_BIND_MOUNTS_PROGRAMS = {}
+RO_BIND_MOUNTS_ETC = (
+    "/etc/ca-certificates",
+    "/etc/ca-certificates.conf",
+    "/etc/gai.conf",
+    "/etc/host.conf",
+    "/etc/hosts",
+    "/etc/ld.so.cache",
+    "/etc/ld.so.conf",
+    "/etc/ld.so.conf.d",
+    "/etc/nsswitch.conf",
+    "/etc/pki",
+    "/etc/protocols",
+    "/etc/services",
+    "/etc/ssl",
+)
+REMOUNT_RO_BIND_MOUNTS = (
+    "/",
+    "/dev",
+)
+RW_BIND_MOUNTS_GENERIC = ()
+RW_BIND_MOUNTS_PROGRAMS = {
+    "claude": ("~/.claude", "~/.claude.json"),
+    "codex": ("~/.codex",),
+}
+SHELL_RO_BIND_MOUNTS_GENERIC = (
+    "~/.config/bat",
+    "~/.config/ripgrep",
+    "~/.inputrc",
+    "~/.less",
+    "~/.profile",
+)
+SHELL_RO_BIND_MOUNTS = {
+    "bash": ("~/.bash_profile", "~/.bashrc"),
+    "fish": ("~/.config/fish",),
+    "zsh": ("~/.zlogin", "~/.zlogout", "~/.zprofile", "~/.zshenv", "~/.zshrc"),
+}
+SHELL_ENV_VARS = (
+    "GIT_PS1_*",
+    "IGNOREEOF",
+    "PYTHONDONTWRITEBYTECODE",
+    "RIPGREP_CONFIG_PATH",
+)
+SPECIAL_BINDS = (
+    ("--dev", "/dev"),
+    ("--dir", "/etc"),
+    ("--proc", "/proc"),
+    ("--tmpfs", "/run"),
+    ("--tmpfs", "/tmp"),
+    ("--tmpfs", str(pathlib.Path.home())),
+)
+
+
+def main() -> None:
+    args = parse_args()
+    cwd = pathlib.Path.cwd()
+    env_vars = obtain_env_vars([*ENV_VARS, *args.env])
+    ro_binds, symlinks = normalize_binds_or_symlinks(RO_BIND_MOUNTS_GENERIC)
+    ro_binds += normalize_binds(RO_BIND_MOUNTS_ETC)
+    ro_binds += normalize_binds(
+        ("/etc/resolv.conf", "/etc/localtime"),
+        resolve_symlinks=True,
+    )
+    ro_binds += args.ro
+    rw_binds: list[Bind] = [*normalize_binds(RW_BIND_MOUNTS_GENERIC), *args.rw]
+    symlinks.append((pathlib.Path("/.isolate-env"), cwd))
+
+    match args.subcommand:
+        case "run":
+            command = args.command
+            program = pathlib.Path(command[0]).name
+            ro_binds += normalize_binds(RO_BIND_MOUNTS_PROGRAMS.get(program, ()))
+            rw_binds += normalize_binds(RW_BIND_MOUNTS_PROGRAMS.get(program, ()))
+        case "shell":
+            shell = pathlib.Path(os.environ.get("SHELL", "/bin/sh"))
+            command = [shell]
+            env_vars |= obtain_env_vars(SHELL_ENV_VARS)
+            ro_binds += normalize_binds(SHELL_RO_BIND_MOUNTS_GENERIC)
+            ro_binds += normalize_binds(SHELL_RO_BIND_MOUNTS.get(shell.name, ()))
+            if history_bind := shell_history_bind(shell, cwd):
+                rw_binds.append(history_bind)
+                source, _ = history_bind
+                source.parent.mkdir(parents=True, exist_ok=True)
+                source.touch(mode=0o600)
+
+    env_vars["ISOLATE_ENV"] = str(cwd)
+
+    match args.cwd:
+        case "ro":
+            ro_binds.append((cwd, cwd))
+        case "rw":
+            rw_binds.append((cwd, cwd))
+        case "no":
+            pass
+
+    if args.docker:
+        try:
+            docker_host, docker_socket = detect_docker_socket()
+        except RuntimeError as exc:
+            sys.exit(f"error: {exc}")
+        if docker_socket:
+            rw_binds.append((docker_socket, pathlib.Path("/var/run/docker.sock")))
+        else:
+            env_vars["DOCKER_HOST"] = docker_host
+
+    if args.ro_path_env:
+        paths = {
+            pathlib.Path(s)
+            for name in PATH_ENV_VARS
+            for s in env_vars.get(name, "").split(":")
+        }
+        accessible_targets = {target for _, target in ro_binds + rw_binds} | {
+            target for target, _ in symlinks
+        }
+        ro_binds += {
+            (path, path)
+            for path in paths
+            if path.exists()
+            and not any(path.is_relative_to(target) for target in accessible_targets)
+        }
+
+    if args.wayland:
+        try:
+            xdg_runtime_dir = os.environ["XDG_RUNTIME_DIR"]
+            wayland_display = os.environ["WAYLAND_DISPLAY"]
+        except KeyError as exc:
+            sys.exit(f"error: {exc.args[0]} not set")
+        wayland_socket = pathlib.Path(wayland_display)
+        if not wayland_socket.is_absolute():
+            wayland_socket = pathlib.Path(xdg_runtime_dir) / wayland_socket
+        env_vars["XDG_RUNTIME_DIR"] = xdg_runtime_dir
+        env_vars["WAYLAND_DISPLAY"] = wayland_display
+        rw_binds.append((wayland_socket, wayland_socket))
+
+    if args.x11:
+        try:
+            display = os.environ["DISPLAY"]
+        except KeyError as exc:
+            sys.exit(f"error: {exc.args[0]} not set")
+        try:
+            xauthority = pathlib.Path(os.environ["XAUTHORITY"])
+        except KeyError:
+            xauthority = pathlib.Path.home() / ".Xauthority"
+        env_vars["DISPLAY"] = display
+        env_vars["XAUTHORITY"] = str(xauthority)
+        ro_binds.append((xauthority, xauthority))
+        rw_binds.append(
+            (pathlib.Path("/tmp/.X11-unix"), pathlib.Path("/tmp/.X11-unix"))
+        )
+
+    base_args = [*BWRAP_BASE_ARGS]
+    if legacy_tiocsti_enabled():
+        base_args.append("--new-session")
+
+    ro_binds = sorted(set(ro_binds))
+    rw_binds = sorted(set(rw_binds))
+    symlinks = sorted(set(symlinks))
+
+    additional_users = ["root", "nobody"]
+    injected_files = {
+        pathlib.Path("/etc/passwd"): prepare_injectable_file(
+            subprocess.run(
+                ["getent", "passwd", str(os.getuid()), *additional_users],
+                capture_output=True,
+                check=True,
+            ).stdout
+        ),
+        pathlib.Path("/etc/group"): prepare_injectable_file(
+            subprocess.run(
+                ["getent", "group", str(os.getgid()), *additional_users],
+                capture_output=True,
+                check=True,
+            ).stdout
+        ),
+    }
+
+    use_systemd_run = systemd_user_manager_available()
+    systemd_scope = (
+        f"isolate-env-{escaped_path(cwd)}-{secrets.token_hex(4)}"
+        if use_systemd_run
+        else None
+    )
+
+    if args.verbose:
+        debug = build_debug_output(
+            base_args=base_args,
+            env_vars=env_vars,
+            escape_flags={
+                "docker": args.docker,
+                "wayland": args.wayland,
+                "x11": args.x11,
+            },
+            injected_files=injected_files,
+            ro_binds=ro_binds,
+            rw_binds=rw_binds,
+            special_binds=SPECIAL_BINDS,
+            symlinks=symlinks,
+            systemd_scope=systemd_scope,
+        )
+        print(debug, file=sys.stderr)
+
+    exec_args: list[str | os.PathLike] = []
+    if use_systemd_run:
+        exec_args += [
+            "systemd-run",
+            "--collect",
+            "--same-dir",
+            "--scope",
+            f"--unit={systemd_scope}",
+            "--property=TasksMax=512",
+            "--user",
+            "--verbose" if args.verbose else "--quiet",
+        ]
+    exec_args += ["bwrap", *base_args]
+    for special_bind in SPECIAL_BINDS:
+        exec_args += special_bind
+    for source, target in symlinks:
+        exec_args += ["--symlink", target.relative_to(source.parent), source]
+    for source, target in ro_binds:
+        exec_args += ["--ro-bind", source, target]
+    for source, target in rw_binds:
+        exec_args += ["--bind", source, target]
+    for target, fp in injected_files.items():
+        exec_args += ["--perms", "0644", "--file", str(fp.fileno()), target]
+    for path in REMOUNT_RO_BIND_MOUNTS:
+        exec_args += ["--remount-ro", path]
+    exec_args.append("--clearenv")
+    for name, value in env_vars.items():
+        exec_args += ["--setenv", name, value]
+    exec_args += command
+    os.execvpe(exec_args[0], exec_args, os.environ)
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Run a command inside a bubblewrap-based isolated environment.",
+    )
+    parser.add_argument(
+        "--cwd",
+        choices=["rw", "ro", "no"],
+        const="rw",
+        default="rw",
+        help="mount cwd as rw (default), ro, or not at all",
+        nargs="?",
+    )
+    parser.add_argument(
+        "--docker",
+        action="store_true",
+        help="propagate Docker socket (note: security risk)",
+    )
+    parser.add_argument(
+        "--env",
+        action="append",
+        default=[],
+        metavar="NAME=value",
+        help="propagate env var, e.g. NAME, NAME=value, NAME_* (glob)",
+    )
+    bind_metavar = "from[:to]"
+    parser.add_argument(
+        "--ro",
+        action="append",
+        default=[],
+        metavar=bind_metavar,
+        help="add read-only bind mount",
+        type=parse_bind,
+    )
+    parser.add_argument(
+        "--ro-path-env",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help=f"bind mount dirs from env vars (default on, using {' + '.join(PATH_ENV_VARS)})",
+    )
+    parser.add_argument(
+        "--rw",
+        action="append",
+        default=[],
+        metavar=bind_metavar,
+        help="add read-write bind mount",
+        type=parse_bind,
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="print debug output",
+    )
+    parser.add_argument(
+        "--wayland",
+        action="store_true",
+        help="propagate Wayland display socket (note: security risk)",
+    )
+    parser.add_argument(
+        "--x11",
+        action="store_true",
+        help="propagate X11 display socket (note: security risk)",
+    )
+    subparsers = parser.add_subparsers(
+        dest="subcommand",
+        help="available subcommands",
+        required=True,
+        title="subcommands",
+    )
+    run_parser = subparsers.add_parser(
+        "run",
+        description="Run a command inside the isolated environment.",
+        help="run a command",
+    )
+    run_parser.add_argument(
+        "command", metavar=("command", "arg", "..."), nargs=argparse.REMAINDER
+    )
+    subparsers.add_parser(
+        "shell",
+        description="Start an interactive shell inside the isolated environment.",
+        help="run an interactive shell",
+    )
+    return parser.parse_args()
+
+
+def normalize_binds(
+    paths: Iterable[str],
+    *,
+    resolve_symlinks: bool = False,
+) -> Iterator[Bind]:
+    for s in paths:
+        path = pathlib.Path(s).expanduser()
+        if not path.exists():
+            continue
+        source = path.resolve() if resolve_symlinks else path
+        yield source, path
+
+
+def normalize_binds_or_symlinks(
+    inputs: Iterable[str],
+) -> tuple[list[Bind], list[Symlink]]:
+    paths = [path for s in inputs if (path := pathlib.Path(s).expanduser()).exists()]
+    bind_roots = {path for path in paths if not path.is_symlink()}
+    binds = []
+    symlinks = []
+    for path in paths:
+        if path.is_symlink():
+            target = path.resolve()
+            if any(target.is_relative_to(root) for root in bind_roots):
+                symlinks.append((path, target))
+                continue
+
+        binds.append((path, path))
+    return binds, symlinks
+
+
+def parse_bind(spec: str) -> Bind:
+    source, sep, target = spec.partition(":")
+    if not source:
+        raise argparse.ArgumentTypeError("source path is empty")
+    source_path = pathlib.Path(source).expanduser()
+    if not sep:
+        return source_path, source_path
+    if not target:
+        raise argparse.ArgumentTypeError("target path is empty")
+    return source_path, pathlib.Path(target).expanduser()
+
+
+def prepare_injectable_file(data: bytes) -> typing.BinaryIO:
+    fp = tempfile.TemporaryFile()
+    fp.write(data)
+    fp.seek(0)
+    os.set_inheritable(fp.fileno(), True)
+    return fp
+
+
+def detect_docker_socket() -> tuple[str, pathlib.Path | None]:
+    try:
+        docker_host = os.environ["DOCKER_HOST"]
+    except KeyError:
+        docker_host = subprocess.run(
+            [
+                "docker",
+                "context",
+                "inspect",
+                "--format",
+                "{{.Endpoints.docker.Host}}",
+            ],
+            capture_output=True,
+            check=True,
+            text=True,
+        ).stdout.strip()
+        if not docker_host:
+            raise RuntimeError("Docker context has no endpoint")
+    docker_socket = (
+        pathlib.Path(docker_host.removeprefix("unix://"))
+        if docker_host.startswith("unix://")
+        else None
+    )
+    return docker_host, docker_socket
+
+
+def shell_history_bind(
+    shell: pathlib.Path,
+    cwd: pathlib.Path,
+) -> Bind | None:
+    match shell.name:
+        case "bash":
+            name = ".bash_history"
+        case "zsh":
+            name = ".zsh_history"
+        case "fish":
+            name = ".local/share/fish/fish_history"
+        case _:
+            return None
+    home = pathlib.Path.home()
+    source = home / f"{name}.d" / escaped_path(cwd)
+    target = home / name
+    return source, target
+
+
+def escaped_path(path: pathlib.Path) -> str:
+    return subprocess.run(
+        ["systemd-escape", "--path", path],
+        capture_output=True,
+        check=True,
+        text=True,
+    ).stdout.strip()
+
+
+def systemd_user_manager_available() -> bool:
+    try:
+        runtime_dir = pathlib.Path(os.environ["XDG_RUNTIME_DIR"])
+    except KeyError:
+        return False
+    return (runtime_dir / "systemd/private").is_socket()
+
+
+def legacy_tiocsti_enabled() -> bool:
+    path = pathlib.Path("/proc/sys/dev/tty/legacy_tiocsti")
+    if not path.exists():
+        # Older kernels lack this sysctl and allow TIOCSTI by default.
+        return True
+    return path.read_text().strip() != "0"
+
+
+def obtain_env_vars(specs: Iterable[str]) -> dict[str, str]:
+    env_vars = {}
+    for spec in specs:
+        name, sep, value = spec.partition("=")
+        if sep:
+            env_vars[name] = value
+            continue
+        for name, value in os.environ.items():
+            if fnmatch.fnmatch(name, spec):
+                env_vars[name] = value
+    return env_vars
+
+
+def build_debug_output(
+    *,
+    base_args: list[str],
+    env_vars: dict[str, str],
+    escape_flags: dict[str, bool],
+    injected_files: Iterable[pathlib.Path],
+    ro_binds: list[Bind],
+    rw_binds: list[Bind],
+    special_binds: Iterable[Iterable[str]],
+    symlinks: list[Symlink],
+    systemd_scope: str | None,
+) -> str:
+    lines = []
+
+    if systemd_scope:
+        lines.append(f"systemd scope: {systemd_scope}")
+
+    lines.append("escape flags:")
+    for name, enabled in escape_flags.items():
+        lines.append(f"  {name}: {'enabled' if enabled else 'disabled'}")
+
+    lines.append("bwrap arguments:")
+    for arg in base_args:
+        lines.append(f"  {arg}")
+
+    lines.append("read-write bind mounts:")
+    for source, target in rw_binds:
+        lines.append(f"  {prettify_path_pair(source, target)}")
+
+    lines.append("read-only bind mounts:")
+    for source, target in ro_binds:
+        lines.append(f"  {prettify_path_pair(source, target)}")
+
+    lines.append("symlinks:")
+    for source, target in symlinks:
+        lines.append(
+            f"  {prettify_path_pair(source, target.relative_to(source.parent))}"
+        )
+
+    lines.append("special mounts:")
+    for group in special_binds:
+        lines.append(f"  {' '.join(group)}")
+
+    lines.append("injected files:")
+    for path in sorted(injected_files):
+        lines.append(f"  {prettify_path(path)}")
+
+    lines.append("environment variables:")
+    for name, value in sorted(env_vars.items()):
+        if name.endswith(("DIRS", "PATH")):
+            lines.append(f"  {name}=")
+            for entry in value.split(":"):
+                path = pathlib.Path(entry)
+                lines.append(f"    {prettify_path(path)}")
+        else:
+            lines.append(f"  {name}={value}")
+    return "\n".join(lines)
+
+
+def prettify_path(path: pathlib.Path) -> str:
+    path = pathlib.Path(path).expanduser()
+    home = pathlib.Path.home()
+    if path == home:
+        return "~"
+    if home in path.parents:
+        return str(pathlib.Path("~") / path.relative_to(home))
+    return str(path)
+
+
+def prettify_path_pair(source: pathlib.Path, target: pathlib.Path) -> str:
+    if source == target:
+        return prettify_path(source)
+    return f"{prettify_path(source)} → {prettify_path(target)}"
+
+
+if __name__ == "__main__":
+    main()
