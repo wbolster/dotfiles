@@ -367,21 +367,26 @@ if [[ "$PS1" ]]; then
 
         # Git
         local prompt_git=""
+        local is_git_dir=""
         if _pwd_is_local_fs && ___has __git_ps1; then
             local _git_ps1_output
             _git_ps1_output="$(__git_ps1 '%s')"
             if [[ -n "$_git_ps1_output" ]]; then
+                is_git_dir=1
                 prompt_git="${colour_normal}🔀  ${colour_yellow}${_git_ps1_output}"
             fi
         fi
 
         # Isolation (e.g. via bwrap)
+        local isolation_warning=''
         local prompt_isolation=''
-        if [[ -n "${ISOLATE_ENV:-}" ]]; then
+        if [[ -n "${ISOLATE_ENV:-}" && -e /.isolate-env ]]; then
             local isolate_name
-            # isolate_name="${ISOLATE_ENV/#"${HOME}"\//}"
             isolate_name=$(shorten_path "$ISOLATE_ENV" 1)
             prompt_isolation+="${colour_red}🔒  ${isolate_name}"
+        elif [[ -n $is_git_dir ]]; then
+            isolation_warning="${colour_red}🆘️  environment not isolated"
+            prompt_sign_colour="$colour_red"
         fi
 
         # Python
@@ -471,6 +476,7 @@ if [[ "$PS1" ]]; then
         PS1+="$term_title"
         PS1+="${status_line_previous:+${status_line_previous%% }\n\n}"
         PS1+="${prompt_status_line_other:+${prompt_status_line_other%% }\n\n}"
+        PS1+="${isolation_warning:+${isolation_warning%% }\n\n}"
         PS1+="${prompt_sign_colour}\\$""${colour_normal} "
 
         # Additional prompts
