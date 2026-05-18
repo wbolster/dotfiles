@@ -3,10 +3,10 @@
 " Window layout
 set lines=60 columns=120
 set guioptions-=m go-=r go-=L go-=T
-set guicursor=a:blinkon0 
+set guicursor=a:blinkon0
 
 " Colors
-set background=dark
+set background=light
 colorscheme solarized
 
 " Smooth scrolling (but not over SSH)
@@ -17,9 +17,8 @@ endif
 " Fonts
 if !exists("g:font_initialized")
   let g:font_initialized = 1
-  if has("gui_gtk2")
+  if has("gui_gtk3")
     if (g:gnome_active)
-      "let &guifont = substitute(system("gconftool --get /desktop/gnome/interface/monospace_font_name"), "\n", "", "")
       let &guifont = substitute(substitute(system("dconf read /org/gnome/desktop/interface/monospace-font-name"), "\n", "", ""), "'", "", "g")
     else
       set guifont=Monospace\ 10
