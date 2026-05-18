@@ -55,7 +55,7 @@ ___path_add_if_exists() {
     local var_name="${1:?}"; shift
     local dirs=()
     for dir in "$@"; do
-        if [ -d "$dir" ]; then
+        if [[ -d "$dir" ]]; then
             dirs+=("$dir")
         fi
     done
@@ -74,10 +74,10 @@ _closest_parent_dir_containing() {
     local descendant="${1:?}"
     local dir="${2:-$(pwd)}"
     while true; do
-        if [ -e "$dir/$descendant" ]; then
+        if [[ -e "$dir/$descendant" ]]; then
             echo "$dir"
             return 0
-        elif [ "$dir" = '/' ]; then
+        elif [[ "$dir" = '/' ]]; then
             return 1;
         fi
         dir="$(dirname "$dir")"
@@ -169,10 +169,10 @@ if [[ "$PS1" ]]; then
         # value has been truncated.
         dir=$1
         n=$2
-        dir=${1##$HOME/}
+        dir=${1##"$HOME"/}
         tail=$(echo "$dir" | rev | cut -d/ -f"-${n}" | rev)
-        head=${dir%%$tail}
-        if [ -n "$head" ]; then
+        head=${dir%%"$tail"}
+        if [[ -n "$head" ]]; then
             # shellcheck disable=SC2001
             head=$(echo "$head" | sed -e 's#\(\(\.\?[^/]\{1\}\)[^/]\+/\?\)#\2/#g')
             head="${head%%/}…/"
@@ -323,8 +323,8 @@ if [[ "$PS1" ]]; then
         local dir
         if _pwd_is_local_fs && dir=$(_closest_parent_dir_containing .umbrella); then
             prompt_umbrella=$(command cat "${dir}/.umbrella")
-            if [ "$dir" != "$PWD" ]; then
-                local relative="${PWD##${dir}/}"
+            if [[ "$dir" != "$PWD" ]]; then
+                local relative="${PWD##"$dir"/}"
                 prompt_umbrella+=" ${relative/\/*/}"
             fi
             tt_umbrella="$prompt_umbrella"
@@ -573,11 +573,11 @@ if [[ "$PS1" ]]; then
         # Magic typo corrector. Handles typos like "gitp ush" and "gitpu sh".
         local autocorrect_cmds="bzr git svn"
         for prefix in $autocorrect_cmds; do
-            if [[ "${cmd#$prefix}" == "$cmd" ]]; then
+            if [[ "${cmd#"$prefix"}" == "$cmd" ]]; then
                 # prefix is not a prefix of the typed command
                 continue
             fi
-            _run_verbose "${prefix}" "${cmd#${prefix}}$2" "${@:3}"
+            _run_verbose "${prefix}" "${cmd#"${prefix}"}$2" "${@:3}"
             return
         done
 
@@ -626,7 +626,7 @@ if [[ "$PS1" ]]; then
     alias fgrep='fgrep --color=auto'
     export RIPGREP_CONFIG_PATH=~/.config/ripgrep/config
     rg() {
-        if [ -t 1 ]; then
+        if [[ -t 1 ]]; then
             command rg --pretty "$@" | ,pager-if-tty
         else
             command rg "$@"
@@ -697,7 +697,7 @@ if [[ "$PS1" ]]; then
         # Copied from "direnv hook bash" output:
         _direnv_hook_enabled=1
         _direnv_hook() {
-            if [ $_direnv_hook_enabled == "1" ]; then
+            if [[ $_direnv_hook_enabled == "1" ]]; then
                 eval "$(direnv export bash)"
             fi
         };
@@ -720,7 +720,7 @@ if [[ "$PS1" ]]; then
         {
             local command;
             command="$1";
-            if [ "$#" -gt 0 ]; then
+            if [[ "$#" -gt 0 ]]; then
                 shift;
             fi;
             case "$command" in
@@ -775,7 +775,7 @@ if [[ "$PS1" ]]; then
         unset path_before_pyenv_init
     fi
     if ___has virtualenvwrapper_lazy.sh; then
-        VIRTUALENVWRAPPER_PYTHON="$(dirname "$(readlink -f "$(which virtualenvwrapper_lazy.sh)")")/python"
+        VIRTUALENVWRAPPER_PYTHON="$(dirname "$(readlink -f "$(command -v virtualenvwrapper_lazy.sh)")")/python"
         export VIRTUALENVWRAPPER_PYTHON
         # shellcheck disable=SC1091
         source virtualenvwrapper_lazy.sh
@@ -847,7 +847,7 @@ if [[ "$PS1" ]]; then
     alias locale-nl='unset LANGUAGE; export LANG=nl_NL.UTF-8'
 
     # Linux package management
-    if [ -e /etc/arch-release ]; then
+    if [[ -e /etc/arch-release ]]; then
         # Arch Linux
         for arch_package_manager in paru pikaur yay "sudo pacman"; do
             if ___has "$arch_package_manager"; then
@@ -895,7 +895,7 @@ if [[ "$PS1" ]]; then
         _ITERM_PROFILE_FILE=~/.config/iterm-profile
         _iterm_profile() {
             printf "\e]50;SetProfile=%s\a" "$1"
-            echo "$1" >| ${_ITERM_PROFILE_FILE}
+            echo "$1" >| "${_ITERM_PROFILE_FILE}"
         }
         dark() {
             _iterm_profile "Default"
