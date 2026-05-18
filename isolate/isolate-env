@@ -83,9 +83,20 @@ SHELL_RO_BIND_MOUNTS_GENERIC = (
     "~/.profile",
 )
 SHELL_RO_BIND_MOUNTS = {
-    "bash": ("~/.bash_profile", "~/.bashrc"),
+    "bash": (
+        "~/.bash_login",
+        "~/.bash_logout",
+        "~/.bash_profile",
+        "~/.bashrc",
+    ),
     "fish": ("~/.config/fish",),
-    "zsh": ("~/.zlogin", "~/.zlogout", "~/.zprofile", "~/.zshenv", "~/.zshrc"),
+    "zsh": (
+        "~/.zlogin",
+        "~/.zlogout",
+        "~/.zprofile",
+        "~/.zshenv",
+        "~/.zshrc",
+    ),
 }
 SHELL_ENV_VARS = (
     "GIT_PS1_*",
