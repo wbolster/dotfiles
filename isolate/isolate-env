@@ -413,12 +413,14 @@ def parse_bind(spec: str) -> Bind:
     source, sep, target = spec.partition(":")
     if not source:
         raise argparse.ArgumentTypeError("source path is empty")
-    source_path = pathlib.Path(source).expanduser()
+    source_path = pathlib.Path(source).expanduser().absolute()
     if not sep:
-        return source_path, source_path
-    if not target:
+        target_path = source_path
+    elif target:
+        target_path = pathlib.Path(target).expanduser().absolute()
+    else:
         raise argparse.ArgumentTypeError("target path is empty")
-    return source_path, pathlib.Path(target).expanduser()
+    return source_path, target_path
 
 
 def prepare_injectable_file(data: bytes) -> typing.BinaryIO:
