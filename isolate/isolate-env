@@ -3,6 +3,7 @@
 
 import argparse
 import fnmatch
+import operator
 import os
 import pathlib
 import secrets
@@ -285,10 +286,14 @@ def main() -> None:
         exec_args += special_bind
     for source, target in symlinks:
         exec_args += ["--symlink", target.relative_to(source.parent), source]
-    for source, target in ro_binds:
-        exec_args += ["--ro-bind", source, target]
-    for source, target in rw_binds:
-        exec_args += ["--bind", source, target]
+    for bind_entry in sorted(
+        [
+            *(("--ro-bind", source, target) for source, target in ro_binds),
+            *(("--bind", source, target) for source, target in rw_binds),
+        ],
+        key=operator.itemgetter(1),
+    ):
+        exec_args += bind_entry
     for target, fp in injected_files.items():
         exec_args += ["--perms", "0644", "--file", str(fp.fileno()), target]
     for path in REMOUNT_RO_BIND_MOUNTS:
