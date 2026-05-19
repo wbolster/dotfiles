@@ -202,7 +202,12 @@ if [[ "$PS1" ]]; then
         source /usr/share/git/completion/git-prompt.sh
     fi
     unset git_prompt_sh
-    export GIT_PS1_SHOWDIRTYSTATE=1
+    export GIT_PS1_HIDE_IF_PWD_IGNORED=yes
+    export GIT_PS1_SHOWCOLORHINTS=yes
+    export GIT_PS1_SHOWCONFLICTSTATE=yes
+    export GIT_PS1_SHOWDIRTYSTATE=yes
+    export GIT_PS1_SHOWSTASHSTATE=yes
+    export GIT_PS1_SHOWUNTRACKEDFILES=yes
     export GIT_PS1_SHOWUPSTREAM="git verbose"
 
     # Trailing newline warning using cursor column detection
