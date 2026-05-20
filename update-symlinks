@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding=utf-8
 
 # NOTE: This file runs on Python 2.x and 3.x with only the stdlib.
 # That is on purpose. In practice, that means only basic imports, no pathlib,
@@ -6,12 +7,13 @@
 
 import logging
 import os
+import re
 import sys
 
 DEFAULT_SYMLINKS_FILE = "symlinks.conf"
-LOGGING_FORMAT = "%(levelname)s: %(message)s"
-LINK_SEPARATOR = " -> "
 HOME_DIR = os.path.realpath(os.path.expanduser("~"))
+LOGGING_FORMAT = "%(levelname)s: %(message)s"
+RE_LINK_SEPARATOR = re.compile(r"\s+(?:->|→)\s+")
 
 logger = logging.getLogger(__name__)
 
@@ -47,10 +49,10 @@ if __name__ == "__main__":
         if line == "" or line.startswith("#"):
             continue
 
-        if LINK_SEPARATOR not in line:
+        try:
+            symlink_from, symlink_to = RE_LINK_SEPARATOR.split(line, maxsplit=1)
+        except ValueError:
             bailout("Line does not contain arrow: %r", line)
-
-        symlink_from, symlink_to = line.split(LINK_SEPARATOR)
         symlink_from = symlink_from.strip().rstrip("/")
         symlink_to = symlink_to.strip().rstrip("/")
 
@@ -105,7 +107,7 @@ if __name__ == "__main__":
             dirname = os.path.dirname(symlink_from_full)
             if not os.path.isdir(dirname):
                 os.makedirs(dirname)
-            logger.info("Linking %s -> %s", symlink_from, symlink_to_relative)
+            logger.info("Linking %s → %s", symlink_from, symlink_to_relative)
             if os.path.lexists(symlink_from_full):
                 os.unlink(symlink_from_full)
             os.symlink(symlink_to_relative, symlink_from_full)
