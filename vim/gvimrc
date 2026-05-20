@@ -9,11 +9,6 @@ set guicursor=a:blinkon0
 set background=light
 colorscheme default
 
-" Smooth scrolling (but not over SSH)
-if (strlen($SSH_CLIENT) == 0)
-  SmoothScrolling
-endif
-
 " Fonts
 if !exists("g:font_initialized")
   let g:font_initialized = 1
