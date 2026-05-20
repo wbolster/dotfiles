@@ -125,9 +125,6 @@ command! SpellDutch   setlocal spell spelllang=nl
 command! SpellEnglish setlocal spell spelllang=en
 command! NoSpell      setlocal nospell
 
-" Active Gnome session?
-let g:gnome_active = $XDG_SESSION_DESKTOP == "gnome"
-
 " No sync I/O and avoid local cruft; we have VCS'es to keep files safe
 set nofsync swapsync=
 set directory-=.

@@ -10,8 +10,7 @@ set background=light
 colorscheme default
 
 " Fonts
-if (g:gnome_active)
-monospace-font-name"), "\n", "", ""), "'", "", "g")
+if $XDG_SESSION_DESKTOP == "gnome"
   let &guifont = substitute(system("gsettings get org.gnome.desktop.interface monospace-font-name"), "\[\n'\]", "", "g")
 else
   set guifont=Monospace\ 10

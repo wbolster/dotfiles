@@ -10,11 +10,6 @@ if (!filereadable("Makefile"))
 	setlocal makeprg=latexmk\ %
 endif
 
-" Preview pdf files
-if (g:gnome_active)
-  noremap <silent> <Leader>p :silent! !xdg-open <C-R>=expand('%:p:r:gs/ /\\ /')<C-R>.pdf<C-R><C-R>
-endif
-
 " Simplify long line handling
 noremap <buffer> j gj
 noremap <buffer> k gk

@@ -25,11 +25,6 @@ setlocal foldlevel=1
 setlocal foldmethod=indent
 setlocal nofoldenable
 
-" Open the manual for the current keyword
-if (g:gnome_active)
-	nnoremap <buffer> K :!gnome-open http://www.php.net/<C-R><C-W><Cr><Cr>
-endif
-
 " Check the current file for syntax errors
 nnoremap <buffer> <F9> :w !php -l<CR>
 
