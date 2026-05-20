@@ -10,15 +10,11 @@ set background=light
 colorscheme default
 
 " Fonts
-if !exists("g:font_initialized")
-  let g:font_initialized = 1
-  if has("gui_gtk3")
-    if (g:gnome_active)
-      let &guifont = substitute(substitute(system("dconf read /org/gnome/desktop/interface/monospace-font-name"), "\n", "", ""), "'", "", "g")
-    else
-      set guifont=Monospace\ 10
-    endif
-  endif
+if (g:gnome_active)
+monospace-font-name"), "\n", "", ""), "'", "", "g")
+  let &guifont = substitute(system("gsettings get org.gnome.desktop.interface monospace-font-name"), "\[\n'\]", "", "g")
+else
+  set guifont=Monospace\ 10
 endif
 
 " Save using Ctrl-S
