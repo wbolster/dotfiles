@@ -200,7 +200,7 @@ def main() -> None:
             wayland_socket = pathlib.Path(xdg_runtime_dir) / wayland_socket
         env_vars["XDG_RUNTIME_DIR"] = xdg_runtime_dir
         env_vars["WAYLAND_DISPLAY"] = wayland_display
-        rw_binds.append((wayland_socket, wayland_socket))
+        ro_binds.append((wayland_socket, wayland_socket))
 
     if args.x11:
         try:
@@ -213,10 +213,11 @@ def main() -> None:
             xauthority = pathlib.Path.home() / ".Xauthority"
         env_vars["DISPLAY"] = display
         env_vars["XAUTHORITY"] = str(xauthority)
-        ro_binds.append((xauthority, xauthority))
-        rw_binds.append(
-            (pathlib.Path("/tmp/.X11-unix"), pathlib.Path("/tmp/.X11-unix"))
-        )
+        x11_socket = pathlib.Path("/tmp/.X11-unix")
+        ro_binds += [
+            (xauthority, xauthority),
+            (x11_socket, x11_socket),
+        ]
 
     base_args = [*BWRAP_BASE_ARGS]
     if legacy_tiocsti_enabled():
