@@ -1,9 +1,10 @@
 " Vim configuration (gvim)
 
 " Window layout
-set lines=60 columns=120
-set guioptions-=m go-=r go-=L go-=T
+set columns=120
 set guicursor=a:blinkon0
+set guioptions-=r go-=L go-=T
+set lines=60
 
 " Colors
 set background=light
