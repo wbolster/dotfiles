@@ -56,6 +56,7 @@ RO_BIND_MOUNTS_GENERIC = (
     "~/.local/share/mise",
     "~/.pyenv",
     "~/.rustup",
+    "~/.vim",
     "~/dotfiles",
 )
 RO_BIND_MOUNTS_PROGRAMS = {}
