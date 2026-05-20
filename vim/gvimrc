@@ -7,7 +7,7 @@ set guicursor=a:blinkon0
 
 " Colors
 set background=light
-colorscheme solarized
+colorscheme default
 
 " Smooth scrolling (but not over SSH)
 if (strlen($SSH_CLIENT) == 0)
