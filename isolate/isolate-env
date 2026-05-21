@@ -21,7 +21,16 @@ except ImportError:
 Bind = tuple[pathlib.Path, pathlib.Path]
 Symlink = tuple[pathlib.Path, pathlib.Path]
 
-BWRAP_BASE_ARGS = ("--die-with-parent", "--unshare-all", "--share-net")
+BWRAP_BASE_ARGS = (
+    "--die-with-parent",
+    "--unshare-all",
+    "--share-net",
+    *("--dev", "/dev"),
+    *("--dir", "/etc"),
+    *("--proc", "/proc"),
+    *("--tmpfs", "/tmp"),
+    *("--tmpfs", str(pathlib.Path.home())),
+)
 ENV_VARS = (
     "EDITOR",
     "GIT_CONFIG_COUNT=1",
@@ -111,14 +120,6 @@ SHELL_ENV_VARS = (
     "GIT_PS1_*",
     "IGNOREEOF",
     "RIPGREP_CONFIG_PATH",
-)
-SPECIAL_BINDS = (
-    ("--dev", "/dev"),
-    ("--dir", "/etc"),
-    ("--proc", "/proc"),
-    ("--tmpfs", "/run"),
-    ("--tmpfs", "/tmp"),
-    ("--tmpfs", str(pathlib.Path.home())),
 )
 
 
@@ -279,7 +280,6 @@ def main() -> None:
             injected_files=injected_files,
             ro_binds=ro_binds,
             rw_binds=rw_binds,
-            special_binds=SPECIAL_BINDS,
             symlinks=symlinks,
             systemd_scope=systemd_scope,
         )
@@ -298,8 +298,6 @@ def main() -> None:
             "--verbose" if args.verbose else "--quiet",
         ]
     exec_args += ["bwrap", *base_args]
-    for special_bind in SPECIAL_BINDS:
-        exec_args += special_bind
     for source, target in symlinks:
         exec_args += ["--symlink", target.relative_to(source.parent), source]
     for bind_entry in sorted(
@@ -577,7 +575,6 @@ def build_debug_output(
     injected_files: Iterable[pathlib.Path],
     ro_binds: list[Bind],
     rw_binds: list[Bind],
-    special_binds: Iterable[Iterable[str]],
     symlinks: list[Symlink],
     systemd_scope: str | None,
 ) -> str:
@@ -607,10 +604,6 @@ def build_debug_output(
         lines.append(
             f"  {prettify_path_pair(source, target.relative_to(source.parent))}"
         )
-
-    lines.append("special mounts:")
-    for group in special_binds:
-        lines.append(f"  {' '.join(group)}")
 
     lines.append("injected files:")
     for path in sorted(injected_files):
