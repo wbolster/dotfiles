@@ -21,6 +21,7 @@ except ImportError:
 Bind = tuple[pathlib.Path, pathlib.Path]
 Symlink = tuple[pathlib.Path, pathlib.Path]
 
+XDG_RUNTIME_DIR = pathlib.Path("/run/user") / str(os.getuid())
 BWRAP_BASE_ARGS = (
     "--die-with-parent",
     "--unshare-all",
@@ -28,6 +29,7 @@ BWRAP_BASE_ARGS = (
     *("--dev", "/dev"),
     *("--dir", "/etc"),
     *("--proc", "/proc"),
+    *("--perms", "0700", "--tmpfs", str(XDG_RUNTIME_DIR)),
     *("--tmpfs", "/tmp"),
     *("--tmpfs", str(pathlib.Path.home())),
 )
@@ -155,7 +157,10 @@ def main() -> None:
                 source.parent.mkdir(parents=True, exist_ok=True)
                 source.touch(mode=0o600)
 
-    env_vars["ISOLATE_ENV"] = str(cwd)
+    env_vars |= {
+        "ISOLATE_ENV": str(cwd),
+        "XDG_RUNTIME_DIR": str(XDG_RUNTIME_DIR),
+    }
 
     match args.cwd:
         case "ro":
@@ -202,14 +207,14 @@ def main() -> None:
         }
 
     if args.wayland:
-        xdg_runtime_dir = os.environ["XDG_RUNTIME_DIR"]
-        wayland_display = os.environ["WAYLAND_DISPLAY"]
-        wayland_socket = pathlib.Path(wayland_display)
+        wayland_socket = pathlib.Path(os.environ["WAYLAND_DISPLAY"])
         if not wayland_socket.is_absolute():
-            wayland_socket = pathlib.Path(xdg_runtime_dir) / wayland_socket
-        env_vars["XDG_RUNTIME_DIR"] = xdg_runtime_dir
+            wayland_socket = (
+                pathlib.Path(os.environ["XDG_RUNTIME_DIR"]) / wayland_socket
+            )
+        wayland_display = "wayland-0"
         env_vars["WAYLAND_DISPLAY"] = wayland_display
-        ro_binds.append((wayland_socket, wayland_socket))
+        ro_binds.append((wayland_socket, XDG_RUNTIME_DIR / wayland_display))
 
     if args.x11:
         display = os.environ["DISPLAY"]
