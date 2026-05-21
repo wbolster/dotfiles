@@ -166,7 +166,7 @@ def main() -> None:
 
     if args.docker:
         try:
-            docker_host, docker_socket = detect_docker_socket()
+            docker_host, docker_socket = detect_docker()
         except RuntimeError as exc:
             sys.exit(f"error: {exc}")
         if docker_socket:
@@ -448,7 +448,7 @@ def prepare_injectable_file(data: bytes) -> typing.BinaryIO:
     return fp
 
 
-def detect_docker_socket() -> tuple[str, pathlib.Path | None]:
+def detect_docker() -> tuple[str, pathlib.Path | None]:
     try:
         docker_host = os.environ["DOCKER_HOST"]
     except KeyError:
