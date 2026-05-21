@@ -311,6 +311,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Run a command inside a bubblewrap-based isolated environment.",
     )
+    security_note = "(note: security risk)"
     parser.add_argument(
         "--cwd",
         choices=["rw", "ro", "no"],
@@ -322,7 +323,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--docker",
         action="store_true",
-        help="propagate Docker socket (note: security risk)",
+        help=f"propagate Docker socket {security_note}",
     )
     parser.add_argument(
         "--env",
@@ -365,12 +366,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--wayland",
         action="store_true",
-        help="propagate Wayland display socket (note: security risk)",
+        help=f"propagate Wayland display socket {security_note}",
     )
     parser.add_argument(
         "--x11",
         action="store_true",
-        help="propagate X11 display socket (note: security risk)",
+        help=f"propagate X11 display socket {security_note}",
     )
     subparsers = parser.add_subparsers(
         dest="subcommand",
