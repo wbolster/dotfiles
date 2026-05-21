@@ -315,10 +315,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--cwd",
         choices=["rw", "ro", "no"],
-        const="rw",
         default="rw",
         help="mount cwd as rw (default), ro, or not at all",
-        nargs="?",
     )
     parser.add_argument(
         "--docker",
