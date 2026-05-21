@@ -237,7 +237,7 @@ def main() -> None:
     if legacy_tiocsti_enabled():
         base_args.append("--new-session")
 
-    ro_binds = sorted(set(ro_binds))
+    ro_binds = sorted(set(ro_binds) - set(rw_binds))
     rw_binds = sorted(set(rw_binds))
     symlinks = sorted(set(symlinks))
 
