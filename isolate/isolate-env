@@ -177,6 +177,25 @@ def main() -> None:
         else:
             env_vars["DOCKER_HOST"] = docker_host
 
+    if args.emacs:
+        emacs_socket_target = XDG_RUNTIME_DIR / "emacs/server"
+        try:
+            emacs_socket = pathlib.Path(os.environ["EMACS_SERVER_FILE"])
+        except KeyError:
+            emacs_socket = emacs_socket_target
+        if not emacs_socket.is_socket():
+            raise RuntimeError("invalid Emacs socket")
+        # fixme: spawning editors only works for files accessible outside the
+        # isolated environment. tools like bash ^X^E write to a tmp file (not
+        # visible from the outside), and spawn an editor on a file that does
+        # not exist and hence may appear empty. as a work-around, this could
+        # set up a shared mount, inject a wrapper script that copies files (and
+        # back on success) , etc. ideally this should not use emacsclient at
+        # all b/c it offers remote control of emacs and the system it runs on,
+        # hence opens a larger security hole than is needed for file editing.
+        env_vars["VISUAL"] = "emacsclient"
+        ro_binds.append((emacs_socket, emacs_socket_target))
+
     match args.gpg:
         case None:
             pass
@@ -269,6 +288,7 @@ def main() -> None:
             env_vars=env_vars,
             escape_flags={
                 "docker": args.docker,
+                "emacs": args.emacs,
                 "gpg": args.gpg is not None,
                 "wayland": args.wayland,
                 "x11": args.x11,
@@ -330,6 +350,11 @@ def parse_args() -> argparse.Namespace:
         "--docker",
         action="store_true",
         help=f"propagate Docker socket {security_note}",
+    )
+    parser.add_argument(
+        "--emacs",
+        action="store_true",
+        help=f"propagate Emacs server socket {security_note}",
     )
     parser.add_argument(
         "--gpg",
