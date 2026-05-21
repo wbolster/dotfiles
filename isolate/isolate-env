@@ -174,6 +174,19 @@ def main() -> None:
         else:
             env_vars["DOCKER_HOST"] = docker_host
 
+    match args.gpg:
+        case None:
+            pass
+        case "ro" | "rw":
+            gnupg_home, gnupg_socket_dir = detect_gnupg()
+            if "GNUPGHOME" in os.environ:
+                env_vars["GNUPGHOME"] = str(gnupg_home)
+            ro_binds.append((gnupg_socket_dir, gnupg_socket_dir))
+            if args.gpg == "ro":
+                ro_binds.append((gnupg_home, gnupg_home))
+            elif args.gpg == "rw":
+                rw_binds.append((gnupg_home, gnupg_home))
+
     if args.ro_path_env:
         paths = {
             pathlib.Path(s)
@@ -259,6 +272,7 @@ def main() -> None:
             env_vars=env_vars,
             escape_flags={
                 "docker": args.docker,
+                "gpg": args.gpg is not None,
                 "wayland": args.wayland,
                 "x11": args.x11,
             },
@@ -322,6 +336,12 @@ def parse_args() -> argparse.Namespace:
         "--docker",
         action="store_true",
         help=f"propagate Docker socket {security_note}",
+    )
+    parser.add_argument(
+        "--gpg",
+        choices=["rw", "ro", "no"],
+        default="no",
+        help=f"propagate GnuPG as ro (default) or rw, or not at all {security_note}",
     )
     parser.add_argument(
         "--env",
@@ -472,6 +492,24 @@ def detect_docker() -> tuple[str, pathlib.Path | None]:
         else None
     )
     return docker_host, docker_socket
+
+
+def detect_gnupg() -> tuple[pathlib.Path, pathlib.Path]:
+    try:
+        gnupg_home = pathlib.Path(os.environ["GNUPGHOME"]).absolute()
+    except KeyError:
+        gnupg_home = pathlib.Path.home() / ".gnupg"
+    socket_dir = pathlib.Path(
+        subprocess.run(
+            ["gpgconf", "--list-dirs", "socketdir"],
+            capture_output=True,
+            check=True,
+            text=True,
+        ).stdout.strip()
+    )
+    if not gnupg_home.is_dir() or not socket_dir or not socket_dir.is_dir():
+        raise RuntimeError("invalid gpg home dir or socket dir")
+    return gnupg_home, socket_dir
 
 
 def shell_history_bind(
