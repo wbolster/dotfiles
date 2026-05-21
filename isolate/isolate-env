@@ -166,10 +166,7 @@ def main() -> None:
             pass
 
     if args.docker:
-        try:
-            docker_host, docker_socket = detect_docker()
-        except RuntimeError as exc:
-            sys.exit(f"error: {exc}")
+        docker_host, docker_socket = detect_docker()
         if docker_socket:
             rw_binds.append((docker_socket, pathlib.Path("/var/run/docker.sock")))
         else:
@@ -205,11 +202,8 @@ def main() -> None:
         }
 
     if args.wayland:
-        try:
-            xdg_runtime_dir = os.environ["XDG_RUNTIME_DIR"]
-            wayland_display = os.environ["WAYLAND_DISPLAY"]
-        except KeyError as exc:
-            sys.exit(f"error: {exc.args[0]} not set")
+        xdg_runtime_dir = os.environ["XDG_RUNTIME_DIR"]
+        wayland_display = os.environ["WAYLAND_DISPLAY"]
         wayland_socket = pathlib.Path(wayland_display)
         if not wayland_socket.is_absolute():
             wayland_socket = pathlib.Path(xdg_runtime_dir) / wayland_socket
@@ -218,10 +212,7 @@ def main() -> None:
         ro_binds.append((wayland_socket, wayland_socket))
 
     if args.x11:
-        try:
-            display = os.environ["DISPLAY"]
-        except KeyError as exc:
-            sys.exit(f"error: {exc.args[0]} not set")
+        display = os.environ["DISPLAY"]
         try:
             xauthority = pathlib.Path(os.environ["XAUTHORITY"])
         except KeyError:
