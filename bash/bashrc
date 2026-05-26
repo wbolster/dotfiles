@@ -757,6 +757,7 @@ if [[ "$PS1" ]]; then
     if ___has hub; then
         alias git=hub
     fi
+    alias ,is=',isolate-env shell'
 
     # Docker
     alias ,docker-run-throwaway='docker run --rm --interactive --tty'
