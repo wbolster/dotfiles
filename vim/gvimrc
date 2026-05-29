@@ -6,10 +6,6 @@ set guicursor=a:blinkon0
 set guioptions-=r go-=L go-=T
 set lines=60
 
-" Colors
-set background=light
-colorscheme default
-
 " Fonts
 if $XDG_SESSION_DESKTOP == "gnome"
   let &guifont = substitute(system("gsettings get org.gnome.desktop.interface monospace-font-name"), "\[\n'\]", "", "g")

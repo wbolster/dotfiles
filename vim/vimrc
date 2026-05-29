@@ -152,9 +152,11 @@ let g:syntastic_html_checkers=['tidy']
 let g:syntastic_python_checkers=['flake8']
 
 " Colors
-
-if filereadable(expand("~/.config/dark-theme"))
-  set background=dark
-else
-  set background=light
-endif
+function! ColorSchemeFromFlagFile() abort
+  let l:exists = filereadable(expand('~/.config/dark-theme'))
+  let &background = l:exists ? 'dark' : 'light'
+endfunction
+call ColorSchemeFromFlagFile()
+command ColorSchemeFromFlagFile call ColorSchemeFromFlagFile()
+let g:solarized_termtrans = 1
+colorscheme solarized8
