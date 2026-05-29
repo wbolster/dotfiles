@@ -9,28 +9,6 @@ set backspace=2 whichwrap=b,s,h,l,<,>,[,]
 set nofoldenable foldmethod=marker
 silent! set listchars=eol:$,trail:_,extends:»,precedes:«,tab:»·,nbsp:~
 
-" Colemak, inspired by Emacs evil-colemak-basics https://github.com/ohjames/colemak
-noremap h h
-noremap n j
-noremap e k
-noremap i l
-
-noremap k n
-noremap K N
-noremap u i
-noremap U I
-noremap l u
-noremap L U
-noremap N J
-noremap E K
-
-noremap f e
-noremap F E
-noremap t f
-noremap T F
-noremap j t
-noremap J T
-
 " Movement
 noremap <C-j> gj
 noremap <C-k> gk
