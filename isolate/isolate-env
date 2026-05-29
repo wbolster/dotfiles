@@ -647,7 +647,7 @@ def prettify_path(path: pathlib.Path) -> str:
     path = pathlib.Path(path).expanduser()
     home = pathlib.Path.home()
     if path == home:
-        return "~"
+        return "~ (home dir)"
     if home in path.parents:
         return str(pathlib.Path("~") / path.relative_to(home))
     return str(path)
