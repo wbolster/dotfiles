@@ -324,7 +324,7 @@ def main() -> None:
             *(("--ro-bind", source, target) for source, target in ro_binds),
             *(("--bind", source, target) for source, target in rw_binds),
         ],
-        key=operator.itemgetter(1),
+        key=operator.itemgetter(2),
     ):
         exec_args += bind_entry
     for target, fp in injected_files.items():
