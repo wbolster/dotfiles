@@ -1,6 +1,6 @@
-" Vim configuration for JSON
-
 setlocal cindent
-setlocal tabstop=2 shiftwidth=2 expandtab
-setlocal foldmethod=indent
 setlocal equalprg=jq\ --sort-keys\ .\ -
+setlocal expandtab
+setlocal foldmethod=indent
+setlocal shiftwidth=2
+setlocal tabstop=2

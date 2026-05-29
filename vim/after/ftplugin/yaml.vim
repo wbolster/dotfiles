@@ -1,4 +1,4 @@
-" Vim configuration for YAML
-
-setlocal tabstop=2 shiftwidth=2 expandtab
+setlocal expandtab
 setlocal foldmethod=indent
+setlocal shiftwidth=2
+setlocal tabstop=2

@@ -1,26 +1,22 @@
 " Vim configuration
 
-set nocompatible
-
 " Display
-set display=lastline,uhex laststatus=2 ruler showcmd
+set display+=uhex
+set listchars=eol:$,trail:_,extends:»,precedes:«,tab:»·,nbsp:~
+set showcmd
 set showmatch
-set backspace=2 whichwrap=b,s,h,l,<,>,[,]
-set nofoldenable foldmethod=marker
-silent! set listchars=eol:$,trail:_,extends:»,precedes:«,tab:»·,nbsp:~
+set whichwrap=b,s,h,l,<,>,[,]
 
 " Movement
-noremap <C-j> gj
-noremap <C-k> gk
 noremap <Down> gj
 noremap <Up> gk
 
 " Scrolling
 set scrolloff=5 sidescrolloff=5
-map <Space> <C-D>
-map <S-Space> <C-U>
-map <Backspace> <C-U>
-map <S-Backspace> <C-D>
+nnoremap <Space> <C-D>
+nnoremap <S-Space> <C-U>
+nnoremap <Backspace> <C-U>
+nnoremap <S-Backspace> <C-D>
 
 " Encoding
 set encoding=utf-8
@@ -32,11 +28,11 @@ set autoindent smartindent
 " Wrapping
 set linebreak nojoinspaces
 let &showbreak="↪ "
-silent! set colorcolumn=+1
+set colorcolumn=+1
 
 " Search/replace
 set ignorecase smartcase
-set hlsearch incsearch
+set hlsearch
 nohlsearch
 set gdefault
 nnoremap <CR> :let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'<CR>:set hlsearch<CR>:echo<CR>
@@ -52,48 +48,8 @@ command! StripTrailingWhitespace silent! normal mx<Enter>:%s/\s\+$//<Enter>:nohl
 " Easy paragraph formatting
 noremap Q gqap
 
-" Quickly move to end of line in insert mode
-inoremap <C-L> <C-O>A
-
-" Break undo sequence before killing the line
-" then intended and it cannot be undone.
-inoremap <C-U> <C-G>u<C-U>
-
 " Pressing p should replace selected text in visual mode
 vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
-
-" Move lines around using Alt-[hjkl]
-noremap <A-h> :<<Return>
-noremap <A-j> :move +<Return>
-noremap <A-k> :move -2<Return>
-noremap <A-l> :><Return>
-vnoremap <A-h> :<<Return>gv
-vnoremap <A-j> :move '> +<Return>gv
-vnoremap <A-k> :move -2<Return>gv
-vnoremap <A-l> :><Return>gv
-if has("gui_macvim")
-  " Alt-[hjkl] results in non-ascii characters depending on the keyboard layout.
-
-  " International keyboard layout
-  noremap ˙ :<<Return>
-  noremap ∆ :move +<Return>
-  noremap ˚ :move -2<Return>
-  noremap ¬ :><Return>
-  vnoremap ˙ :<<Return>gv
-  vnoremap ∆ :move '> +<Return>gv
-  vnoremap ˚ :move -2<Return>gv
-  vnoremap ¬ :><Return>gv
-
-  " EurKEY keyboard layout
-  noremap ù :<<Return>
-  noremap ú :move +<Return>
-  noremap ĳ :move -2<Return>
-  noremap ø :><Return>
-  vnoremap ù :<<Return>gv
-  vnoremap ú :move '> +<Return>gv
-  vnoremap ĳ :move -2<Return>gv
-  vnoremap ø :><Return>gv
-endif
 
 " Make "repeat last action" also work in visual mode
 vnoremap . :normal .<Return>
@@ -103,15 +59,9 @@ command! SpellDutch   setlocal spell spelllang=nl
 command! SpellEnglish setlocal spell spelllang=en
 command! NoSpell      setlocal nospell
 
-" No sync I/O and avoid local cruft; we have VCS'es to keep files safe
-set nofsync swapsync=
-set directory-=.
-
 " Multiple files
-noremap <C-l> :bnext<Return>
-noremap <C-h> :bprevious<Return>
 set hidden
-if has("autochdir")
+if exists("+autochdir")
   set autochdir
 endif
 set suffixes+=.aux,.bbl,.blg,.dvi,.idx,.log,.out,.pdf,.toc,.pyc,.pyo
@@ -120,36 +70,10 @@ if strlen($VIRTUAL_ENV) != 0
   execute "set path+=".expand("$VIRTUAL_ENV/lib/python*/site-packages/")
 endif
 
-" Misc
-set tags=tags;/
-
-" Concealing
-function! ToggleConceal()
-  if &conceallevel != '0'
-    set conceallevel=0
-  else
-    set conceallevel=2
-  endif
-endfunction
-
 " Miscellaneous shortcuts
 let mapleader = ","
-map <silent> <Leader>/ :nohlsearch<Return>
-map <silent> <Leader>c :call ToggleConceal()<Return>
-map <silent> <Leader>m :make<Return>
-map <silent> <Leader>w :StripTrailingWhitespace<Return>
-vmap <silent> <Leader>ss :sort i<Return>
-vmap <silent> <Leader>si :sort i<Return>
-vmap <silent> <Leader>sn :sort n<Return>
-vmap <silent> <Leader>su :sort u<Return>
-
-" File type configuration and syntax highlighting (set after loading pathogen)
-filetype plugin indent on
-syntax on
-
-" Syntastic
-let g:syntastic_html_checkers=['tidy']
-let g:syntastic_python_checkers=['flake8']
+nnoremap <silent> <Leader>/ :nohlsearch<Return>
+nnoremap <silent> <Leader>w :StripTrailingWhitespace<Return>
 
 " Colors
 function! ColorSchemeFromFlagFile() abort

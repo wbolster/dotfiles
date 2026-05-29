@@ -1,7 +1,7 @@
-" Vim configuration for mail
-
+setlocal expandtab
+setlocal shiftwidth=2
+setlocal tabstop=2
 setlocal textwidth=72
-setlocal tabstop=2 shiftwidth=2 expandtab
 
 " Delete empty quotes lines
-map <buffer> ,> mx:g/^\(>\s*\)\+\s*$/d<CR>`x
+nnoremap <buffer> ,> mx:g/^\(>\s*\)\+\s*$/d<CR>`x

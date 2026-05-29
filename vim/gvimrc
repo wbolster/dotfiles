@@ -1,19 +1,16 @@
 " Vim configuration (gvim)
 
-" Window layout
 set columns=120
 set guicursor=a:blinkon0
 set guioptions-=r go-=L go-=T
 set lines=60
 
-" Fonts
 if $XDG_SESSION_DESKTOP == "gnome"
   let &guifont = substitute(system("gsettings get org.gnome.desktop.interface monospace-font-name"), "\[\n'\]", "", "g")
 else
   set guifont=Monospace\ 10
 endif
 
-" Save using Ctrl-S
 noremap <C-s> :update<Return>
 inoremap <C-s> <C-O>:update<Return>
 
