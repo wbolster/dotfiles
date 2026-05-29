@@ -7,6 +7,7 @@ import operator
 import os
 import pathlib
 import secrets
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -23,15 +24,15 @@ Symlink = tuple[pathlib.Path, pathlib.Path]
 
 XDG_RUNTIME_DIR = pathlib.Path("/run/user") / str(os.getuid())
 BWRAP_BASE_ARGS = (
-    "--die-with-parent",
-    "--unshare-all",
-    "--share-net",
-    *("--dev", "/dev"),
-    *("--dir", "/etc"),
-    *("--proc", "/proc"),
-    *("--perms", "0700", "--tmpfs", str(XDG_RUNTIME_DIR)),
-    *("--tmpfs", "/tmp"),
-    *("--tmpfs", str(pathlib.Path.home())),
+    ("--die-with-parent",),
+    ("--unshare-all",),
+    ("--share-net",),
+    ("--dev", "/dev"),
+    ("--dir", "/etc"),
+    ("--proc", "/proc"),
+    ("--perms", "0700", "--tmpfs", str(XDG_RUNTIME_DIR)),
+    ("--tmpfs", "/tmp"),
+    ("--tmpfs", str(pathlib.Path.home())),
 )
 ENV_VARS = (
     "EDITOR",
@@ -249,9 +250,9 @@ def main() -> None:
             (x11_socket, x11_socket),
         ]
 
-    base_args = [*BWRAP_BASE_ARGS]
+    bwrap_base_args = [*BWRAP_BASE_ARGS]
     if legacy_tiocsti_enabled():
-        base_args.append("--new-session")
+        bwrap_base_args.append(("--new-session",))
 
     ro_binds = sorted(set(ro_binds) - set(rw_binds))
     rw_binds = sorted(set(rw_binds))
@@ -284,7 +285,7 @@ def main() -> None:
 
     if args.verbose:
         debug = build_debug_output(
-            base_args=base_args,
+            bwrap_base_args=bwrap_base_args,
             env_vars=env_vars,
             escape_flags={
                 "docker": args.docker,
@@ -313,7 +314,9 @@ def main() -> None:
             "--user",
             "--verbose" if args.verbose else "--quiet",
         ]
-    exec_args += ["bwrap", *base_args]
+    exec_args.append("bwrap")
+    for bwrap_args_group in bwrap_base_args:
+        exec_args += bwrap_args_group
     for source, target in symlinks:
         exec_args += ["--symlink", target.relative_to(source.parent), source]
     for bind_entry in sorted(
@@ -591,7 +594,7 @@ def obtain_env_vars(specs: Iterable[str]) -> dict[str, str]:
 
 def build_debug_output(
     *,
-    base_args: list[str],
+    bwrap_base_args: Iterable[tuple[str, ...]],
     env_vars: dict[str, str],
     escape_flags: dict[str, bool],
     injected_files: Iterable[pathlib.Path],
@@ -610,8 +613,9 @@ def build_debug_output(
         lines.append(f"  {name}: {'enabled' if enabled else 'disabled'}")
 
     lines.append("bwrap arguments:")
-    for arg in base_args:
-        lines.append(f"  {arg}")
+    for args in bwrap_base_args:
+        quoted = " ".join(shlex.quote(arg) for arg in args)
+        lines.append(f"  {quoted}")
 
     lines.append("read-write bind mounts:")
     for source, target in rw_binds:
