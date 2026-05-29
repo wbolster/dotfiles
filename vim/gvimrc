@@ -17,8 +17,18 @@ endif
 noremap <C-s> :update<Return>
 inoremap <C-s> <C-O>:update<Return>
 
-" Keyboard shortcuts to change the text size (fontzoom plugin)
-silent! nmap <unique> <silent> <C-kPlus> <Plug>(fontzoom-larger)
-silent! nmap <unique> <silent> <C-kMinus> <Plug>(fontzoom-smaller)
-silent! nmap <unique> <silent> <C-ScrollWheelUp> <Plug>(fontzoom-larger)
-silent! nmap <unique> <silent> <C-ScrollWheelDown> <Plug>(fontzoom-smaller)
+function! FontZoom(adjustment) abort
+  if &guifont =~# ':h\d\+'
+    let &guifont = substitute(&guifont, ':h\zs\d\+', '\=max([1, str2nr(submatch(0)) + a:adjustment])', '')
+  elseif &guifont =~# '\d\+$'
+    let &guifont = substitute(&guifont, '\d\+$', '\=max([1, str2nr(submatch(0)) + a:adjustment])', '')
+  endif
+endfunction
+
+command! -nargs=1 FontZoom call FontZoom(<args>)
+nnoremap <silent> <C-=> :FontZoom 1<Return>
+nnoremap <silent> <C-_> :FontZoom -1<Return>
+nnoremap <silent> <C-kPlus> :FontZoom 1<Return>
+nnoremap <silent> <C-kMinus> :FontZoom -1<Return>
+nnoremap <silent> <C-ScrollWheelUp> :FontZoom 1<Return>
+nnoremap <silent> <C-ScrollWheelDown> :FontZoom -1<Return>
