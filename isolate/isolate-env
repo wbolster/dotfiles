@@ -478,15 +478,19 @@ def normalize_binds_or_symlinks(
     return binds, symlinks
 
 
+def parse_path(s: str) -> pathlib.Path:
+    return pathlib.Path(s).expanduser().absolute()
+
+
 def parse_bind(spec: str) -> Bind:
     source, sep, target = spec.partition(":")
     if not source:
         raise argparse.ArgumentTypeError("source path is empty")
-    source_path = pathlib.Path(source).expanduser().absolute()
+    source_path = parse_path(source)
     if not sep:
         target_path = source_path
     elif target:
-        target_path = pathlib.Path(target).expanduser().absolute()
+        target_path = parse_path(target)
     else:
         raise argparse.ArgumentTypeError("target path is empty")
     return source_path, target_path
