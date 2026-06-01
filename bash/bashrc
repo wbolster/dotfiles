@@ -210,36 +210,6 @@ if [[ "$PS1" ]]; then
     export GIT_PS1_SHOWUNTRACKEDFILES=yes
     export GIT_PS1_SHOWUPSTREAM="git verbose"
 
-    # Trailing newline warning using cursor column detection
-    #
-    # The "tput u7" (user string #7) for xterm results in the required "\e[6n"
-    # escape sequence, but this user string is not available for all terminal
-    # types. (The "screen" term does not have it, for example.)
-    _prompt_newline_warning_enabled=0;
-    _prompt_enable_newline_warning() {
-        if [[ -n "$(echo -en "\e[6n")" ]]; then
-            _prompt_newline_warning_enabled=1;
-            _cursor_column() {
-                exec < /dev/tty
-                local stty_save
-                stty_save=$(stty -g)
-                stty raw -echo min 0
-                echo -en "\e[6n" > /dev/tty
-                stty "$stty_save"
-                local curcol
-                read -r -s -d _ curcol
-                curcol="${curcol##*;}"
-                echo -n "$curcol"
-            }
-        else
-            _prompt_newline_warning_enabled=0;
-            echo -e "\e[1;31mWarning: terminal does not support cursor column detection; newline detection disabled"
-        fi
-    }
-    _prompt_disable_newline_warning() {
-        _prompt_newline_warning_enabled=0;
-    }
-
     # Time range formatting
     _fmt_seconds_elapsed() {
         local n=$1
@@ -433,14 +403,6 @@ if [[ "$PS1" ]]; then
             prompt_gpg+="${color_blue}🔏  ${GNUPGHOME}"
         fi
 
-        # Warning when output does not have a trailing newline
-        local prompt_newline_warning=""
-        if [[ ${_prompt_newline_warning_enabled} -eq 1 ]]; then
-            if [[ "$(_cursor_column)" -ne 1 ]]; then
-                prompt_newline_warning="no newline"
-            fi
-        fi
-
         # Background jobs
         local prompt_jobs=""
         local n_jobs n_jobs_background n_jobs_suspended
@@ -468,7 +430,6 @@ if [[ "$PS1" ]]; then
 
         # Status line about previous command
         local status_line_previous=""
-        status_line_previous+="${prompt_newline_warning:+\n${color_red}${prompt_newline_warning}  }"
         status_line_previous+="${prompt_err:+${color_red}${prompt_err}  }"
         status_line_previous+="${prompt_timer:+${color_green}${prompt_timer}  }"
         status_line_previous="${status_line_previous%%  }"
