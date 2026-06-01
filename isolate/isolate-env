@@ -319,7 +319,15 @@ def main() -> None:
     for bwrap_args_group in bwrap_base_args:
         exec_args += bwrap_args_group
     for source, target in symlinks:
-        exec_args += ["--symlink", target.relative_to(source.parent), source]
+        exec_args += [
+            "--symlink",
+            (
+                target.relative_to(source.parent)
+                if target.is_relative_to(source.parent)
+                else target
+            ),
+            source,
+        ]
     for bind_entry in sorted(
         [
             *(("--ro-bind", source, target) for source, target in ro_binds),
@@ -628,9 +636,12 @@ def build_debug_output(
 
     lines.append("symlinks:")
     for source, target in symlinks:
-        lines.append(
-            f"  {prettify_path_pair(source, target.relative_to(source.parent))}"
+        target = (
+            target.relative_to(source.parent)
+            if target.is_relative_to(source.parent)
+            else target
         )
+        lines.append(f"  {prettify_path_pair(source, target)}")
 
     lines.append("injected files:")
     for path in sorted(injected_files):
