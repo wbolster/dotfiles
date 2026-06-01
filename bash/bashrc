@@ -242,13 +242,13 @@ if [[ "$PS1" ]]; then
 
         # Colour definitions
         local color_normal="\[\e[0m\]"
-        # local color_black="\[\e[0;30m\]"
+        local color_black="\[\e[0;30m\]"
         # local color_bg_black="\[\e[40m\]"
         # local color_black_bold="\[\e[1;30m\]"
         local color_red="\[\e[0;31m\]"
         local color_bg_red="\[\e[41m\]"
         # local color_red_bold="\[\e[1;31m\]"
-        # local color_green="\[\e[0;32m\]"
+        local color_green="\[\e[0;32m\]"
         # local color_bg_green="\[\e[42m\]"
         # local color_green_bold="\[\e[1;32m\]"
         local color_yellow="\[\e[0;33m\]"
@@ -258,14 +258,15 @@ if [[ "$PS1" ]]; then
         local color_bg_blue="\[\e[44m\]"
         # local color_blue_bold="\[\e[1;34m\]"
         local color_purple="\[\e[0;35m\]"
-        # local color_bg_purple="\[\e[45m\]"
+        local color_bg_purple="\[\e[45m\]"
         # local color_purple_bold="\[\e[1;35m\]"
         local color_cyan="\[\e[0;36m\]"
-        # local color_bg_cyan="\[\e[46m\]"
+        local color_bg_cyan="\[\e[46m\]"
         # local color_cyan_bold="\[\e[1;36m\]"
-        # local color_white="\[\e[0;37m\]"
+        local color_white="\[\e[0;37m\]"
         # local color_bg_white="\[\e[47m\]"
         # local color_white_bold="\[\e[1;37m\]"
+        local color_secondary="$color_cyan"
 
         # Error
         local prompt_err=""
@@ -276,7 +277,7 @@ if [[ "$PS1" ]]; then
             if [[ ${prev_exit_code} -gt 128 && ${prev_exit_code} -lt 192 ]]; then
                 exit_status=$((128-prev_exit_code))" "$(kill -l ${prev_exit_code} 2>/dev/null || echo -n '?')
             fi
-            prompt_err="💥  exit ${exit_status}"
+            prompt_err="exit ${exit_status}"
         fi
 
         # Time since previous command
@@ -285,10 +286,10 @@ if [[ "$PS1" ]]; then
         if [[ -n $_timer_start ]]; then
             local seconds_elapsed=$((SECONDS - _timer_start))
             if [[ $seconds_elapsed -ge 10 ]]; then
-                prompt_timer_elapsed="⌛️  $(_fmt_seconds_elapsed ${seconds_elapsed}) elapsed"
+                prompt_timer_elapsed="${color_secondary}took ${color_normal}$(_fmt_seconds_elapsed ${seconds_elapsed})"
             fi
             if [[ $seconds_elapsed -ge 600 ]]; then
-                prompt_timer_finished="🏁  $(date --iso-8601=seconds)"
+                prompt_timer_finished="${color_secondary}finished ${color_normal}$(date --iso-8601=seconds)"
             fi
             unset _timer_start
         fi
@@ -311,18 +312,18 @@ if [[ "$PS1" ]]; then
         local dir
         if _pwd_is_local_fs && dir=$(_closest_parent_dir_containing .umbrella); then
             prompt_umbrella=$(command cat "${dir}/.umbrella")
+            tt_umbrella="$prompt_umbrella"
+            prompt_umbrella="${color_secondary}${prompt_umbrella} ${color_normal}"
             if [[ "$dir" != "$PWD" ]]; then
                 local relative="${PWD##"$dir"/}"
-                prompt_umbrella+=" ${relative/\/*/}"
+                prompt_umbrella+="${relative/\/*/}"
             fi
-            tt_umbrella="$prompt_umbrella"
-            prompt_umbrella="${color_blue}${prompt_umbrella}"
         fi
 
         # User name (only if non-standard)
         local prompt_user=""
-        local prompt_user_color="$color_blue"
-        local prompt_sign_color="$color_blue"
+        local prompt_user_color="$color_red"
+        local prompt_sign_color="$color_normal"
         if [[ "$USER" == "root" ]]; then
             prompt_user_color="$color_red"
             prompt_sign_color="$color_red"
@@ -332,7 +333,7 @@ if [[ "$PS1" ]]; then
                 prompt_user=""
                 ;;
             (*)
-                prompt_user="${color_normal}🎭  ${prompt_user_color}${USER}"
+                prompt_user="${color_secondary}as ${prompt_user_color}${USER}"
                 ;;
         esac
 
@@ -340,7 +341,7 @@ if [[ "$PS1" ]]; then
         local prompt_hostname=""
         local tt_hostname=""
         if [[ -n "${SSH_CLIENT:-}" && "$TERM" != screen* ]]; then
-            prompt_hostname="${color_normal}💻  ${color_blue}${HOSTNAME}"
+            prompt_hostname="${color_secondary}on ${color_red}${HOSTNAME}"
             tt_hostname="$HOSTNAME"
         fi
 
@@ -349,7 +350,7 @@ if [[ "$PS1" ]]; then
         local tt_wd="\w"
         if [[ "$PWD" != "$HOME" ]]; then
             short_pwd=$(shorten_path "$PWD" 3)
-            prompt_wd="${color_normal}📁  ${short_pwd}"
+            prompt_wd="${color_secondary}in ${color_normal}${short_pwd}"
             tt_wd="$short_pwd"
         fi
 
@@ -361,7 +362,7 @@ if [[ "$PS1" ]]; then
             _git_ps1_output="$(__git_ps1 '%s')"
             if [[ -n "$_git_ps1_output" ]]; then
                 is_git_dir=1
-                prompt_git="${color_normal}🔀  ${color_yellow}${_git_ps1_output}"
+                prompt_git="${color_secondary}git ${color_normal}${_git_ps1_output}"
             fi
         fi
 
@@ -371,9 +372,9 @@ if [[ "$PS1" ]]; then
         if [[ -n "${ISOLATE_ENV:-}" && -e /.isolate-env ]]; then
             local isolate_name
             isolate_name=$(shorten_path "$ISOLATE_ENV" 1)
-            prompt_isolation+="${color_red}🔒  ${isolate_name}"
+            prompt_isolation+="${color_secondary}iso ${color_red}${isolate_name}"
         elif [[ -n $is_git_dir ]]; then
-            isolation_warning="${color_red}🆘️  environment not isolated"
+            isolation_warning="${color_red}environment not isolated"
             prompt_sign_color="$color_red"
         fi
 
@@ -386,22 +387,22 @@ if [[ "$PS1" ]]; then
             else
                 venv_name="$(basename "$VIRTUAL_ENV")"
             fi
-            prompt_python+="${color_cyan}${venv_name}"
+            prompt_python+="${venv_name}"
         fi
         if [[ -n "${PYENV_VERSION:-}" && $(pyenv global | paste -sd:) != "$PYENV_VERSION" ]]; then
             if [[ -n "$prompt_python" ]]; then
                 prompt_python+="${color_normal}/"
             fi
-            prompt_python+="${color_cyan}${PYENV_VERSION}"
+            prompt_python+="${PYENV_VERSION}"
         fi
         if [[ -n "$prompt_python" ]]; then
-            prompt_python="${color_normal}🐍  ${prompt_python}"
+            prompt_python="${color_secondary}py ${color_normal}${prompt_python}"
         fi
 
         # gpg
         local prompt_gpg=""
         if [[ -n "${GNUPGHOME:-}" ]]; then
-            prompt_gpg+="${color_blue}🔏  ${GNUPGHOME}"
+            prompt_gpg+="${color_secondary}gpg ${color_blue} ${GNUPGHOME}"
         fi
 
         # Background jobs
@@ -413,13 +414,13 @@ if [[ "$PS1" ]]; then
             n_jobs_suspended="$(jobs -p -s | wc -w)"
             prompt_jobs=""
             if [[ $((n_jobs_background + n_jobs_suspended)) -gt 0 ]]; then
-                prompt_jobs="${color_normal}🚂 "
+                prompt_jobs="${color_secondary}bg"
             fi
             if [[ ${n_jobs_background} -gt 0 ]]; then
-                prompt_jobs+=" ${color_purple}${n_jobs_background}&"
+                prompt_jobs+=" ${color_normal}${n_jobs_background}&"
             fi
             if [[ ${n_jobs_suspended} -gt 0 ]]; then
-                prompt_jobs+=" ${color_purple}${n_jobs_suspended}^Z"
+                prompt_jobs+=" ${color_normal}${n_jobs_suspended}^Z"
             fi
         fi
 
@@ -435,7 +436,7 @@ if [[ "$PS1" ]]; then
         elif [[ -n $isolation_warning ]]; then
             color_leading="$color_bg_yellow"
         else
-            color_leading="$color_bg_blue"
+            color_leading="$color_bg_cyan"
         fi
         local block_leading="${color_leading}  "
 
@@ -453,10 +454,10 @@ if [[ "$PS1" ]]; then
         status_line_current+="${prompt_user:+ ${prompt_user}}"
         status_line_current+="${prompt_hostname:+ ${prompt_hostname}}"
         status_line_current+="${prompt_wd:+ ${prompt_wd}}"
+        status_line_current+="${prompt_git:+ ${prompt_git}}"
         status_line_current+="${prompt_isolation:+ ${prompt_isolation}}"
         status_line_current+="${prompt_umbrella:+ ${prompt_umbrella}}"
         status_line_current+="${prompt_python:+ ${prompt_python}}"
-        status_line_current+="${prompt_git:+ ${prompt_git}}"
         status_line_current+="${prompt_gpg:+ ${prompt_gpg}}"
         status_line_current+="${prompt_jobs:+ ${prompt_jobs}}"
         status_line_current="${status_line_current## }"
