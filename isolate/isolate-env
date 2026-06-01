@@ -211,6 +211,25 @@ def main() -> None:
             elif args.gpg == "rw":
                 rw_binds.append((gnupg_home, gnupg_home))
 
+    masked_paths = [path for path in args.mask if path.exists(follow_symlinks=False)]
+    if masked_paths:
+        prefix = "isolate-env-masked-mount-"
+        empty_dir = pathlib.Path(
+            tempfile.TemporaryDirectory(delete=False, prefix=prefix).name
+        )
+        empty_file = pathlib.Path(
+            tempfile.NamedTemporaryFile(delete=False, prefix=prefix).name
+        )
+        empty_dir.chmod(0o000)
+        empty_file.chmod(0o000)
+        for path in masked_paths:
+            if path.is_dir():
+                ro_binds.append((empty_dir, path))
+            elif path.is_file():
+                ro_binds.append((empty_file, path))
+            else:
+                raise NotImplementedError(f"cannot mask {path}")
+
     if args.ro_path_env:
         paths = {
             pathlib.Path(s)
@@ -296,6 +315,7 @@ def main() -> None:
                 "x11": args.x11,
             },
             injected_files=injected_files,
+            masked_paths=masked_paths,
             ro_binds=ro_binds,
             rw_binds=rw_binds,
             symlinks=symlinks,
@@ -380,6 +400,14 @@ def parse_args() -> argparse.Namespace:
         default=[],
         metavar="NAME=value",
         help="propagate env var, e.g. NAME, NAME=value, NAME_* (glob)",
+    )
+    parser.add_argument(
+        "--mask",
+        action="append",
+        default=[],
+        help="add a path to mask",
+        metavar="path",
+        type=parse_path,
     )
     bind_metavar = "from[:to]"
     parser.add_argument(
@@ -611,6 +639,7 @@ def build_debug_output(
     env_vars: dict[str, str],
     escape_flags: dict[str, bool],
     injected_files: Iterable[pathlib.Path],
+    masked_paths: list[pathlib.Path],
     ro_binds: list[Bind],
     rw_binds: list[Bind],
     symlinks: list[Symlink],
@@ -637,6 +666,10 @@ def build_debug_output(
     lines.append("read-only bind mounts:")
     for source, target in ro_binds:
         lines.append(f"  {prettify_path_pair(source, target)}")
+
+    lines.append("masked paths:")
+    for path in masked_paths:
+        lines.append(f"  {prettify_path(path)}")
 
     lines.append("symlinks:")
     for source, target in symlinks:
