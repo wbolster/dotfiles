@@ -246,16 +246,16 @@ if [[ "$PS1" ]]; then
         # local color_bg_black="\[\e[40m\]"
         # local color_black_bold="\[\e[1;30m\]"
         local color_red="\[\e[0;31m\]"
-        # local color_bg_red="\[\e[41m\]"
+        local color_bg_red="\[\e[41m\]"
         # local color_red_bold="\[\e[1;31m\]"
-        local color_green="\[\e[0;32m\]"
+        # local color_green="\[\e[0;32m\]"
         # local color_bg_green="\[\e[42m\]"
         # local color_green_bold="\[\e[1;32m\]"
         local color_yellow="\[\e[0;33m\]"
         local color_bg_yellow="\[\e[43m\]"
         # local color_yellow_bold="\[\e[1;33m\]"
         local color_blue="\[\e[0;34m\]"
-        # local color_bg_blue="\[\e[44m\]"
+        local color_bg_blue="\[\e[44m\]"
         # local color_blue_bold="\[\e[1;34m\]"
         local color_purple="\[\e[0;35m\]"
         # local color_bg_purple="\[\e[45m\]"
@@ -276,18 +276,19 @@ if [[ "$PS1" ]]; then
             if [[ ${prev_exit_code} -gt 128 && ${prev_exit_code} -lt 192 ]]; then
                 exit_status=$((128-prev_exit_code))" "$(kill -l ${prev_exit_code} 2>/dev/null || echo -n '?')
             fi
-            prompt_err="exit ${exit_status} 💥"
+            prompt_err="💥  exit ${exit_status}"
         fi
 
         # Time since previous command
-        local prompt_timer=""
-        if [[ -n "$_timer_start" ]]; then
+        local prompt_timer_elapsed=""
+        local prompt_timer_finished=""
+        if [[ -n $_timer_start ]]; then
             local seconds_elapsed=$((SECONDS - _timer_start))
-            local current_date
-            current_date=$(date --iso-8601=seconds)
             if [[ $seconds_elapsed -ge 10 ]]; then
-                seconds_elapsed=$(_fmt_seconds_elapsed ${seconds_elapsed})
-                prompt_timer+="⌚  ${seconds_elapsed} elapsed; finished at ${current_date}"
+                prompt_timer_elapsed="⌛️  $(_fmt_seconds_elapsed ${seconds_elapsed}) elapsed"
+            fi
+            if [[ $seconds_elapsed -ge 600 ]]; then
+                prompt_timer_finished="🏁  $(date --iso-8601=seconds)"
             fi
             unset _timer_start
         fi
@@ -321,7 +322,7 @@ if [[ "$PS1" ]]; then
         # User name (only if non-standard)
         local prompt_user=""
         local prompt_user_color="$color_blue"
-        local prompt_sign_color="$color_green"
+        local prompt_sign_color="$color_blue"
         if [[ "$USER" == "root" ]]; then
             prompt_user_color="$color_red"
             prompt_sign_color="$color_red"
@@ -348,7 +349,7 @@ if [[ "$PS1" ]]; then
         local tt_wd="\w"
         if [[ "$PWD" != "$HOME" ]]; then
             short_pwd=$(shorten_path "$PWD" 3)
-            prompt_wd="${color_normal}📁  ${color_green}${short_pwd}"
+            prompt_wd="${color_normal}📁  ${short_pwd}"
             tt_wd="$short_pwd"
         fi
 
@@ -428,33 +429,50 @@ if [[ "$PS1" ]]; then
             (xterm*|rxvt*)  term_title="\[\e]0;${tt_umbrella:+${tt_umbrella} }${tt_hostname:+${tt_hostname}:}${tt_wd}\a\]" ;;
         esac
 
+        local color_leading=""
+        if [[ -n $prompt_err ]]; then
+            color_leading="$color_bg_red"
+        elif [[ -n $isolation_warning ]]; then
+            color_leading="$color_bg_yellow"
+        else
+            color_leading="$color_bg_blue"
+        fi
+        local block_leading="${color_leading}  "
+
         # Status line about previous command
         local status_line_previous=""
         status_line_previous+="${prompt_err:+${color_red}${prompt_err}  }"
-        status_line_previous+="${prompt_timer:+${color_green}${prompt_timer}  }"
+        status_line_previous+="${prompt_timer_elapsed:+${color_yellow}${prompt_timer_elapsed}  }"
+        status_line_previous+="${prompt_timer_finished:+${color_yellow}${prompt_timer_finished}  }"
         status_line_previous="${status_line_previous%%  }"
+        status_line_previous="${status_line_previous:+${block_leading}${color_normal} ${status_line_previous}}"
 
         # Status line with other information
         # fixme: use array and join_by?
-        local prompt_status_line_other=""
-        prompt_status_line_other+="${prompt_user:+ ${prompt_user}}"
-        prompt_status_line_other+="${prompt_hostname:+ ${prompt_hostname}}"
-        prompt_status_line_other+="${prompt_wd:+ ${prompt_wd}}"
-        prompt_status_line_other+="${prompt_isolation:+ ${prompt_isolation}}"
-        prompt_status_line_other+="${prompt_umbrella:+ ${prompt_umbrella}}"
-        prompt_status_line_other+="${prompt_python:+ ${prompt_python}}"
-        prompt_status_line_other+="${prompt_git:+ ${prompt_git}}"
-        prompt_status_line_other+="${prompt_gpg:+ ${prompt_gpg}}"
-        prompt_status_line_other+="${prompt_jobs:+ ${prompt_jobs}}"
-        prompt_status_line_other="${prompt_status_line_other## }"
+        local status_line_current=""
+        status_line_current+="${prompt_user:+ ${prompt_user}}"
+        status_line_current+="${prompt_hostname:+ ${prompt_hostname}}"
+        status_line_current+="${prompt_wd:+ ${prompt_wd}}"
+        status_line_current+="${prompt_isolation:+ ${prompt_isolation}}"
+        status_line_current+="${prompt_umbrella:+ ${prompt_umbrella}}"
+        status_line_current+="${prompt_python:+ ${prompt_python}}"
+        status_line_current+="${prompt_git:+ ${prompt_git}}"
+        status_line_current+="${prompt_gpg:+ ${prompt_gpg}}"
+        status_line_current+="${prompt_jobs:+ ${prompt_jobs}}"
+        status_line_current="${status_line_current## }"
+        status_line_current="${status_line_current:+${block_leading}${color_normal} ${status_line_current}}"
 
         # Primary prompt
-        PS1="\n"
+        PS1=""
         PS1+="$(__vte_osc7)"
         PS1+="$term_title"
-        PS1+="${status_line_previous:+${status_line_previous%% }\n\n}"
-        PS1+="${prompt_status_line_other:+${prompt_status_line_other%% }\n\n}"
-        PS1+="${isolation_warning:+${isolation_warning%% }\n\n}"
+        PS1+="\n"
+        if [[ -n $status_line_previous || -n $status_line_current || -n $isolation_warning ]]; then
+            PS1+="${status_line_previous:+${status_line_previous%% }\n}"
+            PS1+="${status_line_current:+${status_line_current%% }\n}"
+            PS1+="${isolation_warning:+${block_leading}${color_normal} ${isolation_warning%% }\n}"
+            PS1+="\n"
+        fi
         PS1+="${prompt_sign_color}\\$"
         if [[ -n "$isolation_warning" ]]; then
             PS1+="\[$(tput sc)\]          ${color_bg_red}                            \[$(tput rc)\]"
