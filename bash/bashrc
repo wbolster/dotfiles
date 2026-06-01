@@ -471,13 +471,10 @@ if [[ "$PS1" ]]; then
         if [[ -n $status_line_previous || -n $status_line_current || -n $isolation_warning ]]; then
             PS1+="${status_line_previous:+${status_line_previous%% }\n}"
             PS1+="${status_line_current:+${status_line_current%% }\n}"
-            PS1+="${isolation_warning:+${block_leading}${color_normal} ${isolation_warning%% }\n}"
+            PS1+="${isolation_warning:+${block_leading}${color_normal} ${isolation_warning%% }  ${color_bg_yellow}                            ${color_normal}\n}"
             PS1+="\n"
         fi
         PS1+="${prompt_sign_color}\\$"
-        if [[ -n "$isolation_warning" ]]; then
-            PS1+="\[$(tput sc)\]          ${color_bg_red}                            \[$(tput rc)\]"
-        fi
         PS1+="${color_normal} "
 
         # Additional prompts
