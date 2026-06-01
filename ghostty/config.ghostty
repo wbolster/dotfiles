@@ -7,8 +7,8 @@ cursor-opacity = .8
 cursor-style-blink = false
 font-family = "Inconsolata Condensed"
 gtk-titlebar-style = tabs
-keybind = ctrl+,=previous_tab
-keybind = ctrl+.=next_tab
+keybind = ctrl+,=move_tab:-1
+keybind = ctrl+.=move_tab:1
 keybind = ctrl+1=goto_tab:1
 keybind = ctrl+2=goto_tab:2
 keybind = ctrl+3=goto_tab:3
