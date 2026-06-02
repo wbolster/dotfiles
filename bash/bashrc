@@ -302,21 +302,33 @@ if [[ "$PS1" ]]; then
             _direnv_hook
         fi
 
-        # Show "umbrella name". This is useful for directories that act as
-        # containers for projects, e.g. ~/Projects. By storing a short
-        # word (or emoji!) in a file called ".umbrella" the prompt
-        # will show that word and the name of the topmost child
-        # directory under that umbrella dir.
-        local prompt_umbrella=''
-        local tt_umbrella=''
+        local project_dir=""
+        local project_name=""
+        local project_super_dir=""
+        local project_super_name=""
+
+        if [[ -e /.isolate-env \
+                && -n $SHELL_PROMPT_PROJECT_DIR \
+                && "${PWD##"${SHELL_PROMPT_PROJECT_DIR}"}" != "$PWD" \
+        ]]; then
+            project_dir="${SHELL_PROMPT_PROJECT_DIR:-}"
+            project_name="${SHELL_PROMPT_PROJECT_NAME:-}"
+            project_super_dir="${SHELL_PROMPT_PROJECT_SUPER_DIR:-}"
+            project_super_name="${SHELL_PROMPT_PROJECT_SUPER_NAME:-}"
+        fi
+
+        # Show ‘super project’ name; useful for directories that act
+        # as containers for projects, e.g. ~/Projects. By storing a
+        # short word (or emoji!) in a file called ".project-super-name" the
+        # prompt shows that marker plus the topmost child dir beneath.
         local dir
-        if _pwd_is_local_fs && dir=$(_closest_parent_dir_containing .umbrella); then
-            prompt_umbrella=$(command cat "${dir}/.umbrella")
-            tt_umbrella="$prompt_umbrella"
-            prompt_umbrella="${color_secondary}${prompt_umbrella} ${color_normal}"
+        if _pwd_is_local_fs && dir=$(_closest_parent_dir_containing .project-super-name); then
+            project_super_dir="$dir"
+            project_super_name=$(command cat "${dir}/.project-super-name")
             if [[ "$dir" != "$PWD" ]]; then
-                local relative="${PWD##"$dir"/}"
-                prompt_umbrella+="${relative/\/*/}"
+                relative_dir="${PWD##"$dir"/}"
+                project_name="${relative_dir/\/*/}"
+                project_dir="${dir}/${project_name}"
             fi
         fi
 
@@ -345,15 +357,6 @@ if [[ "$PS1" ]]; then
             tt_hostname="$HOSTNAME"
         fi
 
-        # Working directory
-        local prompt_wd=""
-        local tt_wd="\w"
-        if [[ "$PWD" != "$HOME" ]]; then
-            short_pwd=$(shorten_path "$PWD" 3)
-            prompt_wd="${color_secondary}in ${color_normal}${short_pwd}"
-            tt_wd="$short_pwd"
-        fi
-
         # Git
         local prompt_git=""
         local is_git_dir=""
@@ -362,7 +365,44 @@ if [[ "$PS1" ]]; then
             _git_ps1_output="$(__git_ps1 '%s')"
             if [[ -n "$_git_ps1_output" ]]; then
                 is_git_dir=1
+                project_dir="$(git rev-parse --show-toplevel)"
+                project_name="$(basename "$project_dir")"
                 prompt_git="${color_secondary}git ${color_normal}${_git_ps1_output}"
+            fi
+        fi
+
+        # Working directory (with project info)
+        local prompt_wd=""
+        local tt_wd="\w"
+        if [[ "$PWD" != "$HOME" ]]; then
+            prompt_wd+="${color_secondary}in "
+            if [[ -n $project_name ]]; then
+                if [[ -n $project_super_name ]]; then
+                    prompt_wd+="${color_blue}${project_super_name}/"
+                    tt_wd="${project_super_name}/"
+                else
+                    local wd_short
+                    wd_short="$(shorten_path "$(dirname "$project_dir")" 3)/"
+                    prompt_wd+="${color_green}${wd_short}"
+                    tt_wd="$wd_short"
+                fi
+                prompt_wd+="${color_blue}${project_name}"
+                tt_wd+="${project_name}"
+                if [[ "$PWD" != "$project_dir" ]]; then
+                    project_relative_dir="${PWD##"${project_dir}/"}"
+                    prompt_wd+="${color_normal}:$(shorten_path "$project_relative_dir" 5)"
+                    tt_wd+=":$project_relative_dir"
+                fi
+            else
+                short_pwd=$(shorten_path "$PWD" 3)
+                prompt_wd="${color_secondary}in ${color_normal}${short_pwd}"
+                tt_wd="$short_pwd"
+            fi
+            if [[ ! -e /.isolate-env ]]; then
+                export SHELL_PROMPT_PROJECT_DIR="$project_dir"
+                export SHELL_PROMPT_PROJECT_NAME="$project_name"
+                export SHELL_PROMPT_PROJECT_SUPER_DIR="$project_super_dir"
+                export SHELL_PROMPT_PROJECT_SUPER_NAME="$project_super_name"
             fi
         fi
 
@@ -372,7 +412,7 @@ if [[ "$PS1" ]]; then
         if [[ -n "${ISOLATE_ENV:-}" && -e /.isolate-env ]]; then
             local isolate_name
             isolate_name=$(basename "$ISOLATE_ENV")
-            prompt_isolation+="${color_normal}[${color_blue}${isolate_name}${color_normal}]"
+            prompt_isolation+="${color_green}[${color_normal}${isolate_name}${color_green}]"
         elif [[ -n $is_git_dir ]]; then
             isolation_warning="${color_red}environment not isolated"
             prompt_sign_color="$color_red"
@@ -427,7 +467,9 @@ if [[ "$PS1" ]]; then
         # Terminal title (execution/echoing embedded in $PS1)
         local term_title=""
         case $TERM in
-            (xterm*|rxvt*)  term_title="\[\e]0;${tt_umbrella:+${tt_umbrella} }${tt_hostname:+${tt_hostname}:}${tt_wd}\a\]" ;;
+            (xterm*|rxvt*)
+                term_title="\[\e]0;${tt_hostname:+${tt_hostname}:}${tt_wd}\a\]"
+                ;;
         esac
 
         local color_leading=""
@@ -454,9 +496,8 @@ if [[ "$PS1" ]]; then
         status_line_current+="${prompt_user:+ ${prompt_user}}"
         status_line_current+="${prompt_hostname:+ ${prompt_hostname}}"
         status_line_current+="${prompt_wd:+ ${prompt_wd}}"
-        status_line_current+="${prompt_git:+ ${prompt_git}}"
         status_line_current+="${prompt_isolation:+ ${prompt_isolation}}"
-        status_line_current+="${prompt_umbrella:+ ${prompt_umbrella}}"
+        status_line_current+="${prompt_git:+ ${prompt_git}}"
         status_line_current+="${prompt_python:+ ${prompt_python}}"
         status_line_current+="${prompt_gpg:+ ${prompt_gpg}}"
         status_line_current+="${prompt_jobs:+ ${prompt_jobs}}"
