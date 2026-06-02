@@ -124,6 +124,7 @@ SHELL_ENV_VARS = (
     "GIT_PS1_*",
     "IGNOREEOF",
     "RIPGREP_CONFIG_PATH",
+    "SHELL_PROMPT_PROJECT_*",
 )
 
 
