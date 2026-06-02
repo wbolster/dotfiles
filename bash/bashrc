@@ -414,7 +414,7 @@ if [[ "$PS1" ]]; then
             isolate_name=$(basename "$ISOLATE_ENV")
             prompt_isolation+="${color_green}[${color_normal}${isolate_name}${color_green}]"
         elif [[ -n $is_git_dir ]]; then
-            isolation_warning="${color_red}environment not isolated"
+            isolation_warning="${color_red}not isolated"
             prompt_sign_color="$color_red"
         fi
 
@@ -512,7 +512,7 @@ if [[ "$PS1" ]]; then
         if [[ -n $status_line_previous || -n $status_line_current || -n $isolation_warning ]]; then
             PS1+="${status_line_previous:+${status_line_previous%% }\n}"
             PS1+="${status_line_current:+${status_line_current%% }\n}"
-            PS1+="${isolation_warning:+${block_leading}${color_normal} ${isolation_warning%% }  ${color_bg_yellow}                            ${color_normal}\n}"
+            PS1+="${isolation_warning:+${block_leading}${color_normal} ${isolation_warning%% } ${color_bg_yellow}                            ${color_normal}\n}"
             PS1+="\n"
         fi
         PS1+="${prompt_sign_color}\\$"
