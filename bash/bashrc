@@ -546,6 +546,7 @@ if [[ "$PS1" ]]; then
     }
     _cd-git-top-level() {
         cd "$(git rev-parse --show-toplevel)"
+        pwd
     }
     _cd-venv() {
         : "${VIRTUAL_ENV:?}"
