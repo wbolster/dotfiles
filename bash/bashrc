@@ -371,8 +371,8 @@ if [[ "$PS1" ]]; then
         local prompt_isolation=''
         if [[ -n "${ISOLATE_ENV:-}" && -e /.isolate-env ]]; then
             local isolate_name
-            isolate_name=$(shorten_path "$ISOLATE_ENV" 1)
-            prompt_isolation+="${color_secondary}iso ${color_red}${isolate_name}"
+            isolate_name=$(basename "$ISOLATE_ENV")
+            prompt_isolation+="${color_normal}[${color_blue}${isolate_name}${color_normal}]"
         elif [[ -n $is_git_dir ]]; then
             isolation_warning="${color_red}environment not isolated"
             prompt_sign_color="$color_red"
