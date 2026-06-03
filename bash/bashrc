@@ -798,6 +798,10 @@ if [[ "$PS1" ]]; then
 
     # Python
     export PYTHONDONTWRITEBYTECODE=1
+    # Tell many Python projects to not use a bundled cert store.
+    if [[ -e /etc/ssl/certs/ca-certificates.crt ]]; then
+        export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+    fi
     if ___has pyenv && [[ $(type -t pyenv) != "function" ]]; then
         # Initialize if pyenv is available but not yet loaded. After
         # initialisation, ‘pyenv’ is a shell function masking the
