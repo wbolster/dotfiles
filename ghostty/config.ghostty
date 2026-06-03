@@ -32,6 +32,7 @@ keybind = ctrl+shift+space=scroll_page_fractional:-1
 keybind = ctrl+space=scroll_page_fractional:1
 keybind = shift+enter=text:\x0d
 linux-cgroup = always
+mouse-hide-while-typing = true
 quit-after-last-window-closed-delay = 5m
 selection-clear-on-copy = true
 shell-integration-features = no-cursor
