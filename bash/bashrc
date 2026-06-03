@@ -334,20 +334,15 @@ if [[ "$PS1" ]]; then
 
         # User name (only if non-standard)
         local prompt_user=""
-        local prompt_user_color="$color_red"
         local prompt_sign_color="$color_normal"
-        if [[ "$USER" == "root" ]]; then
-            prompt_user_color="$color_red"
-            prompt_sign_color="$color_red"
+        if [[ $USER != wbolster ]]; then
+            local prompt_user_color="$color_normal"
+            if [[ "$USER" == "root" ]]; then
+                prompt_user_color="$color_red"
+                prompt_sign_color="$color_red"
+            fi
+            prompt_user="${color_secondary}as ${prompt_user_color}${USER}"
         fi
-        case "$USER" in
-            (wbolster|uws)
-                prompt_user=""
-                ;;
-            (*)
-                prompt_user="${color_secondary}as ${prompt_user_color}${USER}"
-                ;;
-        esac
 
         # Host name (only remote without screen/tmux)
         local prompt_hostname=""
