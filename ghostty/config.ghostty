@@ -4,6 +4,7 @@
 # $ ghostty +list-keybinds --default | sort | less
 
 app-notifications = no-clipboard-copy
+copy-on-select = clipboard
 cursor-opacity = .8
 cursor-style-blink = false
 font-family = "Inconsolata Condensed"
