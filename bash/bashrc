@@ -713,10 +713,6 @@ if [[ "$PS1" ]]; then
     alias ni=vi
     alias :q='exit'
     alias :e='$EDITOR'
-    em () {
-        emacs "$@" > /dev/null 2>&1 &
-        disown emacs
-    }
 
     # Pager
     alias lessr='less -R'
@@ -783,11 +779,6 @@ if [[ "$PS1" ]]; then
     fi
 
     # Development
-    alias m=make
-    complete -F _make m
-    if ___has hub; then
-        alias git=hub
-    fi
     alias ,is=',isolate-env shell'
 
     # Docker
@@ -871,15 +862,6 @@ if [[ "$PS1" ]]; then
         python -c 'import json, sys, yaml; print(yaml.safe_dump(json.load(open(sys.argv[1]) if sys.argv[1:] else sys.stdin), default_flow_style=False))' "$@"
     }
 
-    # Jhbuild
-    if ___has jhbuild; then
-        alias 'jhr'='jhbuild run'
-        alias 'jhbo'='jhbuild buildone'
-        alias 'jhboa'='jhbuild buildone -a'
-        alias 'jhboac'='jhbuild buildone -a -c'
-        alias 'jhs'='jhbuild shell'
-    fi
-
     # GUI applications
     if [[ "$OSTYPE" == darwin* ]]; then
         alias g='open'
@@ -911,10 +893,6 @@ if [[ "$PS1" ]]; then
         # Debian and Ubuntu
         alias apt='sudo apt'
         alias apt-get='sudo apt-get'
-        alias aptitude='sudo aptitude'
-        alias ac='apt-cache show'
-        alias acp='apt-cache policy'
-        alias acs='apt-cache search'
         _apt_install() {
             _run_verbose sudo apt install -V "$@"
         }
@@ -933,7 +911,7 @@ if [[ "$PS1" ]]; then
             COMPREPLY=($(apt-cache --no-generate pkgnames "${cur}" 2>/dev/null))
             return 0
         }
-        complete -F _apt_get_packages i ac acp
+        complete -F _apt_get_packages i
     fi
 
     # iTerm profile tricks
@@ -998,7 +976,6 @@ if [[ "$PS1" ]]; then
     alias sc='screen -UxRR'
     alias uuid4='uuidgen -r'
     ___has sudoedit || alias sudoedit="sudo -e"
-    ___has hd || alias hd="hexdump"
     ___has rgrep || alias rgrep="grep -r"
     ___has zstd && alias ,zstd-max="zstd --threads=0 --long -19"
 
