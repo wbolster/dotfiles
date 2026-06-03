@@ -1,0 +1,124 @@
+---
+colourful: true
+filekinds:
+  normal:
+    foreground: default
+  directory:
+    foreground: blue
+  symlink:
+    foreground: cyan
+  pipe:
+    foreground: yellow
+  block_device:
+    foreground: yellow
+  char_device:
+    foreground: yellow
+  socket:
+    foreground: yellow
+  special:
+    foreground: yellow
+  executable:
+    foreground: green
+  mount_point:
+    foreground: blue
+    is_underline: true
+perms:
+  user_read:
+    foreground: default
+  user_write:
+    foreground: default
+  user_execute_file:
+    foreground: green
+    is_underline: false
+  user_execute_other:
+    foreground: blue
+  group_read:
+    foreground: yellow
+  group_write:
+    foreground: red
+  group_execute:
+    foreground: yellow
+  other_read:
+    foreground: yellow
+  other_write:
+    foreground: red
+  other_execute:
+    foreground: yellow
+  special_user_file:
+    foreground: red
+  special_other:
+    foreground: red
+  attribute:
+    foreground: red
+size:
+  major:
+    foreground: default
+  minor:
+    foreground: default
+  number_byte:
+    foreground: default
+  number_kilo:
+    foreground: default
+  number_mega:
+    foreground: yellow
+  number_giga:
+    foreground: red
+  number_huge:
+    foreground: red
+  unit_byte:
+    foreground: default
+  unit_kilo:
+    foreground: default
+  unit_mega:
+    foreground: yellow
+  unit_giga:
+    foreground: red
+  unit_huge:
+    foreground: red
+users:
+  user_you:
+    foreground: default
+  user_root:
+    foreground: default
+  user_other:
+    foreground: magenta
+  group_yours:
+    foreground: default
+  group_other:
+    foreground: magenta
+  group_root:
+    foreground: default
+file_type:
+  image:
+    foreground: default
+  video:
+    foreground: default
+  music:
+    foreground: default
+  lossless:
+    foreground: default
+  crypto:
+    foreground: default
+  document:
+    foreground: default
+  compressed:
+    foreground: default
+  temp:
+    foreground: default
+  compiled:
+    foreground: default
+  build:
+    foreground: default
+  source:
+    foreground: default
+date:
+  foreground: default
+header:
+  foreground: default
+  is_underline: true
+symlink_path:
+  foreground: cyan
+control_char:
+  foreground: red
+broken_symlink:
+  foreground: red
