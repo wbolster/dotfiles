@@ -7,6 +7,7 @@ app-notifications = no-clipboard-copy
 copy-on-select = clipboard
 cursor-opacity = .8
 cursor-style-blink = false
+faint-opacity = .67
 font-family = "Inconsolata Condensed"
 gtk-titlebar-style = tabs
 keybind = ctrl+,=move_tab:-1
