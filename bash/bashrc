@@ -24,7 +24,7 @@ source "$_dotfiles_root/bash/lib.sh"
 # - add some dirs in $HOME
 # - add dirs from Homebrew (on OSX)
 
-export MANPATH="${MANPATH:-}"
+export MANPATH=${MANPATH:-}
 export NPM_CONFIG_USERCONFIG=${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc
 export npm_config_cache=${XDG_CACHE_HOME:-$HOME/.cache}/npm
 export npm_config_prefix=${HOME}/.local/npm
@@ -78,7 +78,7 @@ if [[ $PS1 ]]; then
     }
 
     join_by () {
-        local delimiter="$1"
+        local delimiter=$1
         shift
         local part
         local prefix=""
@@ -122,7 +122,7 @@ if [[ $PS1 ]]; then
         if [[ -n $head ]]; then
             # shellcheck disable=SC2001
             head=$(printf '%s\n' "$head" | sed -e 's#\(\(\.\?[^/]\{1\}\)[^/]\+/\?\)#\2/#g')
-            head="${head%%/}…/"
+            head=${head%%/}…/
         fi
         printf '%s\n' "${head}${tail}"
     }
@@ -204,8 +204,8 @@ if [[ $PS1 ]]; then
             [fg=white]="\[\e[37m\]"
             [bg=white]="\[\e[47m\]"
         )
-        style[primary]="${style[reset]}"
-        style[secondary]="${style[fg=cyan]}"
+        style[primary]=${style[reset]}
+        style[secondary]=${style[fg=cyan]}
 
         # Error
         local prompt_err=""
@@ -251,10 +251,10 @@ if [[ $PS1 ]]; then
             && -n $SHELL_PROMPT_PROJECT_DIR \
             && ${PWD##"${SHELL_PROMPT_PROJECT_DIR}"} != "$PWD" \
         ]]; then
-            project_dir="${SHELL_PROMPT_PROJECT_DIR:-}"
-            project_name="${SHELL_PROMPT_PROJECT_NAME:-}"
-            project_super_dir="${SHELL_PROMPT_PROJECT_SUPER_DIR:-}"
-            project_super_name="${SHELL_PROMPT_PROJECT_SUPER_NAME:-}"
+            project_dir=${SHELL_PROMPT_PROJECT_DIR:-}
+            project_name=${SHELL_PROMPT_PROJECT_NAME:-}
+            project_super_dir=${SHELL_PROMPT_PROJECT_SUPER_DIR:-}
+            project_super_name=${SHELL_PROMPT_PROJECT_SUPER_NAME:-}
         fi
 
         # Show ‘super project’ name; useful for directories that act
@@ -263,23 +263,23 @@ if [[ $PS1 ]]; then
         # prompt shows that marker plus the topmost child dir beneath.
         local dir
         if _pwd_is_local_fs && dir=$(_closest_parent_dir_containing .project-super-name); then
-            project_super_dir="$dir"
+            project_super_dir=$dir
             project_super_name=$(command cat "${dir}/.project-super-name")
             if [[ $dir != "$PWD" ]]; then
                 local relative_dir="${PWD##"$dir"/}"
-                project_name="${relative_dir/\/*/}"
-                project_dir="${dir}/${project_name}"
+                project_name=${relative_dir/\/*/}
+                project_dir=${dir}/${project_name}
             fi
         fi
 
         # User name (only if non-standard)
         local prompt_user=""
-        local prompt_sign_style="${style[primary]}"
+        local prompt_sign_style=${style[primary]}
         if [[ $USER != wbolster ]]; then
-            local prompt_user_style="${style[primary]}"
+            local prompt_user_style=${style[primary]}
             if [[ $USER == "root" ]]; then
-                prompt_user_style="${style[fg=red]}"
-                prompt_sign_style="${style[fg=red]}"
+                prompt_user_style=${style[fg=red]}
+                prompt_sign_style=${style[fg=red]}
             fi
             prompt_user="${style[secondary]}as ${prompt_user_style}${USER}"
         fi
@@ -289,7 +289,7 @@ if [[ $PS1 ]]; then
         local tt_hostname=""
         if [[ -n ${SSH_CLIENT:-} && $TERM != +(screen-*|tmux-*) ]]; then
             prompt_hostname="${style[secondary]}on ${style[fg=red]}${HOSTNAME}"
-            tt_hostname="$HOSTNAME"
+            tt_hostname=$HOSTNAME
         fi
 
         # Git
@@ -319,10 +319,10 @@ if [[ $PS1 ]]; then
                     local wd_short
                     wd_short="$(shorten_path "$(dirname "$project_dir")" 3)/"
                     prompt_wd+="${style[fg=green]}${wd_short}"
-                    tt_wd="$wd_short"
+                    tt_wd=$wd_short
                 fi
                 prompt_wd+="${style[fg=blue]}${project_name}"
-                tt_wd+="${project_name}"
+                tt_wd+=${project_name}
                 if [[ $PWD != "$project_dir" ]]; then
                     local project_relative_dir
                     project_relative_dir="${PWD##"${project_dir}/"}"
@@ -333,13 +333,13 @@ if [[ $PS1 ]]; then
                 local short_pwd
                 short_pwd=$(shorten_path "$PWD" 3)
                 prompt_wd="${style[secondary]}in ${style[primary]}${short_pwd}"
-                tt_wd="$short_pwd"
+                tt_wd=$short_pwd
             fi
             if [[ ! -e /.isolate-env ]]; then
-                export SHELL_PROMPT_PROJECT_DIR="$project_dir"
-                export SHELL_PROMPT_PROJECT_NAME="$project_name"
-                export SHELL_PROMPT_PROJECT_SUPER_DIR="$project_super_dir"
-                export SHELL_PROMPT_PROJECT_SUPER_NAME="$project_super_name"
+                export SHELL_PROMPT_PROJECT_DIR=$project_dir
+                export SHELL_PROMPT_PROJECT_NAME=$project_name
+                export SHELL_PROMPT_PROJECT_SUPER_DIR=$project_super_dir
+                export SHELL_PROMPT_PROJECT_SUPER_NAME=$project_super_name
             fi
         fi
 
@@ -352,7 +352,7 @@ if [[ $PS1 ]]; then
             prompt_isolation+="${style[fg=green]}[${style[primary]}${isolate_name}${style[fg=green]}]"
         elif [[ -n $is_git_dir ]]; then
             isolation_warning="${style[fg=red]}not isolated"
-            prompt_sign_style="${style[fg=red]}"
+            prompt_sign_style=${style[fg=red]}
         fi
 
         # Python
@@ -365,14 +365,14 @@ if [[ $PS1 ]]; then
                 venv_name="$(basename "$VIRTUAL_ENV")"
             fi
             if [[ $venv_name != "$project_name" ]]; then
-                prompt_python+="$venv_name"
+                prompt_python+=$venv_name
             fi
             unset venv_name
         fi
         if [[ -n ${PYENV_VERSION:-} && $(pyenv global | paste -sd:) != "$PYENV_VERSION" ]]; then
             local active_versions
-            active_versions="${PYENV_VERSION//-dev/}"  # e.g. ‘3.15-dev’ → ‘3.15’
-            active_versions="${active_versions//:/, }"  # e.g. ‘3.15:3.14’ → ‘3.15, 3.14’
+            active_versions=${PYENV_VERSION//-dev/}  # e.g. ‘3.15-dev’ → ‘3.15’
+            active_versions=${active_versions//:/, }  # e.g. ‘3.15:3.14’ → ‘3.15, 3.14’
             prompt_python+="${prompt_python:+@}$active_versions"
             unset active_versions
         fi
@@ -411,11 +411,11 @@ if [[ $PS1 ]]; then
 
         local style_leading=""
         if [[ -n $prompt_err ]]; then
-            style_leading="${style[bg=red]}"
+            style_leading=${style[bg=red]}
         elif [[ -n $isolation_warning ]]; then
-            style_leading="${style[bg=yellow]}"
+            style_leading=${style[bg=yellow]}
         else
-            style_leading="${style[bg=cyan]}"
+            style_leading=${style[bg=cyan]}
         fi
         local block_leading="${style_leading}  "
 
@@ -549,7 +549,7 @@ if [[ $PS1 ]]; then
 
     # Callback when a command could not be found.
     command_not_found_handle() {
-        local cmd="$1"
+        local cmd=$1
 
         # Magic typo corrector. Handles typos like "gitp ush" and "gitpu sh".
         local autocorrect_cmds="bzr git svn"
@@ -578,7 +578,7 @@ if [[ $PS1 ]]; then
     # Require confirmation for possibly destructive operations,
     # and make mv/cp use the current directory as a target by default.
     _mv_cp_helper() {
-        local cmd="$1"
+        local cmd=$1
         shift
         if [[ $# == 1 ]]; then
             _run_verbose command "$cmd" -i "$@" .
@@ -701,7 +701,7 @@ if [[ $PS1 ]]; then
         direnv ()
         {
             local command;
-            command="$1";
+            command=$1;
             if [[ $# -gt 0 ]]; then
                 shift;
             fi;
@@ -751,9 +751,9 @@ if [[ $PS1 ]]; then
         # actual executable. Override pyenv's insistence on putting
         # itself at the front op the PATH; that is already set up in
         # my preferred order.
-        path_before_pyenv_init="$PATH"
+        path_before_pyenv_init=$PATH
         eval "$(pyenv init -)"
-        PATH="$path_before_pyenv_init"
+        PATH=$path_before_pyenv_init
         unset path_before_pyenv_init
     fi
     if ___has virtualenvwrapper_lazy.sh; then
@@ -774,7 +774,7 @@ if [[ $PS1 ]]; then
             printf "Error: no Python program specified. Usage:\n\n    %s some-program --some-args\n" "${FUNCNAME[0]}" > /dev/stderr
             return
         fi
-        local prog="$1"
+        local prog=$1
         shift
         if [[ ! -f $prog ]]; then
             prog="$(command -v "$prog")"
@@ -916,7 +916,7 @@ if [[ $PS1 ]]; then
 
     # Readable $PATH (or similar variables)
     echopath() {
-        local value="${1:-${PATH}}"
+        local value=${1:-${PATH}}
         printf '%s\n' "${value//:/$'\n'}"
     }
 
