@@ -131,6 +131,7 @@ SHELL_ENV_VARS = (
 def main() -> None:
     args = parse_args()
     cwd = pathlib.Path.cwd()
+    home = pathlib.Path.home()
     env_vars = obtain_env_vars([*ENV_VARS, *args.env])
     ro_binds, symlinks = normalize_binds_or_symlinks(RO_BIND_MOUNTS_GENERIC)
     ro_binds += normalize_binds(RO_BIND_MOUNTS_ETC)
@@ -262,7 +263,7 @@ def main() -> None:
         try:
             xauthority = pathlib.Path(os.environ["XAUTHORITY"])
         except KeyError:
-            xauthority = pathlib.Path.home() / ".Xauthority"
+            xauthority = home / ".Xauthority"
         env_vars["DISPLAY"] = display
         env_vars["XAUTHORITY"] = str(xauthority)
         x11_socket = pathlib.Path("/tmp/.X11-unix")
