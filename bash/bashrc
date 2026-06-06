@@ -624,6 +624,7 @@ if [[ $PS1 ]]; then
 
     # History
     shopt -s histappend
+    shopt -s histverify
     export HISTCONTROL=ignorespace:ignoredups
     export HISTSIZE=100000
     export HISTFILESIZE=1000000
