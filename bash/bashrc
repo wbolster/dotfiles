@@ -555,7 +555,7 @@ if [[ $PS1 ]]; then
         local cmd=$1
 
         # Magic typo corrector. Handles typos like "gitp ush" and "gitpu sh".
-        local autocorrect_cmds="bzr git svn"
+        local autocorrect_cmds="git"
         for prefix in $autocorrect_cmds; do
             if [[ ${cmd#"$prefix"} == "$cmd" ]]; then
                 # prefix is not a prefix of the typed command
