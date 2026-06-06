@@ -11,7 +11,7 @@ ___readlink_f() {
     then
         readlink -f "$1"
     else
-        echo "$(dirname "$1")/$(readlink "$1")"
+        printf '%s\n' "$(dirname "$1")/$(readlink "$1")"
     fi
 }
 
@@ -72,7 +72,7 @@ if [[ $PS1 ]]; then
         (
             # Strip visible escape sequences from $PS4; bash prompting works differently from echo.
             printf "%b" "${PS4}" | sed -e 's/\\\[//g' -e 's/\\\]//g'
-            echo "$@"
+            printf '%s\n' "$*"
         ) >&2
         "$@"
     }
@@ -80,7 +80,7 @@ if [[ $PS1 ]]; then
     join_by () {
         local IFS="$1"
         shift
-        echo "$*"
+        printf '%s\n' "$*"
     }
 
     if ! ___has rev; then
@@ -93,7 +93,7 @@ if [[ $PS1 ]]; then
                 for (( i=0 ; i<${#line} ; i++ )); do
                     reversed="${line:i:1}${reversed}";
                 done
-                echo "$reversed"
+                printf '%s\n' "$reversed"
             done
         }
     fi
@@ -107,18 +107,18 @@ if [[ $PS1 ]]; then
         dir=$1
         n=$2
         if [[ $dir == "$HOME" ]]; then
-            echo '~'
+            printf '%s\n' '~'
             return
         fi
         dir=${1##"$HOME"/}
-        tail=$(echo "$dir" | rev | cut -d/ -f"-${n}" | rev)
+        tail=$(printf '%s\n' "$dir" | rev | cut -d/ -f"-${n}" | rev)
         head=${dir%%"$tail"}
         if [[ -n $head ]]; then
             # shellcheck disable=SC2001
-            head=$(echo "$head" | sed -e 's#\(\(\.\?[^/]\{1\}\)[^/]\+/\?\)#\2/#g')
+            head=$(printf '%s\n' "$head" | sed -e 's#\(\(\.\?[^/]\{1\}\)[^/]\+/\?\)#\2/#g')
             head="${head%%/}…/"
         fi
-        echo "${head}${tail}"
+        printf '%s\n' "${head}${tail}"
     }
 
     # libvte uses a helper script to echo the current directory in an
@@ -207,7 +207,7 @@ if [[ $PS1 ]]; then
             # Lookup signal numbers between 0 and 64; these are returned as
             # exit codes between 128 and 192
             if [[ ${prev_exit_code} -gt 128 && ${prev_exit_code} -lt 192 ]]; then
-                exit_status=$((128-prev_exit_code))" "$(kill -l ${prev_exit_code} 2>/dev/null || echo -n '?')
+                exit_status=$((128-prev_exit_code))" "$(kill -l ${prev_exit_code} 2>/dev/null || printf '%s' '?')
             fi
             prompt_err="exit ${exit_status}"
         fi
@@ -857,7 +857,7 @@ if [[ $PS1 ]]; then
         _ITERM_PROFILE_FILE=~/.config/iterm-profile
         _iterm_profile() {
             printf "\e]50;SetProfile=%s\a" "$1"
-            echo "$1" >| "${_ITERM_PROFILE_FILE}"
+            printf '%s\n' "$1" >| "${_ITERM_PROFILE_FILE}"
         }
         dark() {
             _iterm_profile "Default"
@@ -904,7 +904,7 @@ if [[ $PS1 ]]; then
     # Readable $PATH (or similar variables)
     echopath() {
         local value="${1:-${PATH}}"
-        echo -e "${value//:/\\n}"
+        printf '%s\n' "${value//:/$'\n'}"
     }
 
     # Disable Ctrl-S/Ctrl-Q. The past is not the future.
