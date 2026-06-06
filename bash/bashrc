@@ -159,10 +159,10 @@ if [[ $PS1 ]]; then
         local n=$1
         local output=""
         local h=$((n / 3600))
-        [[ $h -gt 0 ]] && output+="${h}h"
+        ((h > 0)) && output+="${h}h"
         n=$((n % 3600))
         local m=$((n / 60))
-        [[ $m -gt 0 ]] && output+="${m}m"
+        ((m > 0)) && output+="${m}m"
         local s=$((n % 60))
         output+="${s}s"
         echo "$output"
@@ -209,11 +209,11 @@ if [[ $PS1 ]]; then
 
         # Error
         local prompt_err=""
-        if [[ ${prev_exit_code} -ne 0 ]]; then
+        if ((prev_exit_code != 0)); then
             local exit_status=${prev_exit_code}
             # Lookup signal numbers between 0 and 64; these are returned as
             # exit codes between 128 and 192
-            if [[ ${prev_exit_code} -gt 128 && ${prev_exit_code} -lt 192 ]]; then
+            if ((prev_exit_code > 128 && prev_exit_code < 192)); then
                 exit_status=$((128-prev_exit_code))" "$(kill -l ${prev_exit_code} 2>/dev/null || printf '%s' '?')
             fi
             prompt_err="exit ${exit_status}"
@@ -224,10 +224,10 @@ if [[ $PS1 ]]; then
         local prompt_timer_finished=""
         if [[ -n $_timer_start ]]; then
             local seconds_elapsed=$((SECONDS - _timer_start))
-            if [[ $seconds_elapsed -ge 10 ]]; then
+            if ((seconds_elapsed >= 10)); then
                 prompt_timer_elapsed="${style[secondary]}took ${style[primary]}$(_fmt_seconds_elapsed ${seconds_elapsed})"
             fi
-            if [[ $seconds_elapsed -ge 600 ]]; then
+            if ((seconds_elapsed >= 600)); then
                 prompt_timer_finished="${style[secondary]}finished ${style[primary]}$(date --iso-8601=seconds)"
             fi
         fi
@@ -517,9 +517,9 @@ if [[ $PS1 ]]; then
     ..() { cd .. ; }
     -() { cd - ; }
     cd() {
-        if [[ $# == 1 && -e $1 && ! -d $1 ]]; then
+        if (($# == 1)) && [[ -e $1 && ! -d $1 ]]; then
             _run_verbose builtin cd "$(dirname "$1")"
-        elif [[ $# == 2 && $1 != -* ]]; then
+        elif (($# == 2)) && [[ $1 != -* ]]; then
             # Two args, no options: do simple path replacement, e.g. "cd site1 site2".
             _run_verbose builtin cd "${PWD/$1/$2}"
         else
@@ -583,7 +583,7 @@ if [[ $PS1 ]]; then
     _mv_cp_helper() {
         local cmd=$1
         shift
-        if [[ $# == 1 ]]; then
+        if (($# == 1)); then
             _run_verbose command "$cmd" -i "$@" .
         else
             command "$cmd" -i "$@"
@@ -687,7 +687,7 @@ if [[ $PS1 ]]; then
             fi
         };
         _direnv_freeze() {
-            if [[ $# -eq 1 ]]; then
+            if (($# == 1)); then
                 echo "direnv: setting up shell environment for directory $1"
                 pushd "$1" > /dev/null || return 1
                 eval "$(direnv export bash)"
@@ -705,7 +705,7 @@ if [[ $PS1 ]]; then
         {
             local command;
             command=$1;
-            if [[ $# -gt 0 ]]; then
+            if (($# > 0)); then
                 shift;
             fi;
             case "$command" in
@@ -773,7 +773,7 @@ if [[ $PS1 ]]; then
     alias ipy=ipython
     alias pyhton=python
     py-cprofile() {
-        if [[ $# -lt 1 ]]; then
+        if (($# < 1)); then
             printf "Error: no Python program specified. Usage:\n\n    %s some-program --some-args\n" "${FUNCNAME[0]}" > /dev/stderr
             return
         fi
@@ -888,7 +888,7 @@ if [[ $PS1 ]]; then
 
     # This cat has magical powers, like a space cat flying through pizzas with bacon.
     cat() {
-        if ___has bat && [[ $# -ge 1 && $1 != -* && -t 1 ]]; then
+        if ___has bat && (($# >= 1)) && [[ $1 != -* && -t 1 ]]; then
             # Arguments but no flags are specified and stdout is a terminal; perform magic.
             bat "$@"
         else
@@ -909,7 +909,7 @@ if [[ $PS1 ]]; then
     tmux() {
         # Turn plain "tmux" into "tmux attach" to automatically attach a
         # session (in conjunction with "new-session" in tmux.conf).
-        if [[ $# == 0 ]]; then
+        if (($# == 0)); then
             _run_verbose command tmux attach-session
         else
             command tmux "$@"
