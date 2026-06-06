@@ -2,7 +2,7 @@
 # Bash Configuration
 
 ___readlink_f() {
-    if [[ "$OSTYPE" == darwin* ]]; then
+    if [[ $OSTYPE == darwin* ]]; then
         # Ad-hoc bootstrap-only version before coreutils installed via
         # Homebrew in the path, because OSX does not have readlink -f.
         echo "$(dirname "$1")/$(readlink "$1")"
@@ -55,7 +55,7 @@ ___path_add_if_exists() {
     local var_name="${1:?}"; shift
     local dirs=()
     for dir in "$@"; do
-        if [[ -d "$dir" ]]; then
+        if [[ -d $dir ]]; then
             dirs+=("$dir")
         fi
     done
@@ -74,10 +74,10 @@ _closest_parent_dir_containing() {
     local descendant="${1:?}"
     local dir="${2:-$(pwd)}"
     while true; do
-        if [[ -e "$dir/$descendant" ]]; then
+        if [[ -e $dir/$descendant ]]; then
             echo "$dir"
             return 0
-        elif [[ "$dir" = '/' ]]; then
+        elif [[ $dir = '/' ]]; then
             return 1;
         fi
         dir="$(dirname "$dir")"
@@ -93,11 +93,11 @@ export NPM_CONFIG_USERCONFIG=${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc
 export npm_config_cache=${XDG_CACHE_HOME:-$HOME/.cache}/npm
 export npm_config_prefix=${HOME}/.local/npm
 
-if [[ -z "$MANPATH" ]] && ___has manpath; then
+if [[ -z $MANPATH ]] && ___has manpath; then
     MANPATH+=$(manpath)
 fi
 
-if [[ "$OSTYPE" == darwin* ]]; then
+if [[ $OSTYPE == darwin* ]]; then
     if ___has /opt/homebrew/bin/brew; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
     elif ___has brew; then
@@ -130,7 +130,7 @@ PATH=$(_deduplicate_path_components "$PATH")
 MANPATH=$(_deduplicate_path_components "$MANPATH")
 
 # Interactive shells
-if [[ "$PS1" ]]; then
+if [[ $PS1 ]]; then
     # Helper to emulate "set -x" output
     _run_verbose() {
         (
@@ -176,7 +176,7 @@ if [[ "$PS1" ]]; then
         dir=${1##"$HOME"/}
         tail=$(echo "$dir" | rev | cut -d/ -f"-${n}" | rev)
         head=${dir%%"$tail"}
-        if [[ -n "$head" ]]; then
+        if [[ -n $head ]]; then
             # shellcheck disable=SC2001
             head=$(echo "$head" | sed -e 's#\(\(\.\?[^/]\{1\}\)[^/]\+/\?\)#\2/#g')
             head="${head%%/}…/"
@@ -225,7 +225,7 @@ if [[ "$PS1" ]]; then
     }
 
     _pwd_is_local_fs() {
-        if [[ "$PWD" == /run/user/*/gvfs/* ]]; then
+        if [[ $PWD == /run/user/*/gvfs/* ]]; then
             return 1
         fi
         return 0
@@ -307,9 +307,10 @@ if [[ "$PS1" ]]; then
         local project_super_dir=""
         local project_super_name=""
 
-        if [[ -e /.isolate-env \
-                && -n $SHELL_PROMPT_PROJECT_DIR \
-                && "${PWD##"${SHELL_PROMPT_PROJECT_DIR}"}" != "$PWD" \
+        if [[ \
+            -e /.isolate-env \
+            && -n $SHELL_PROMPT_PROJECT_DIR \
+            && ${PWD##"${SHELL_PROMPT_PROJECT_DIR}"} != "$PWD" \
         ]]; then
             project_dir="${SHELL_PROMPT_PROJECT_DIR:-}"
             project_name="${SHELL_PROMPT_PROJECT_NAME:-}"
@@ -325,7 +326,7 @@ if [[ "$PS1" ]]; then
         if _pwd_is_local_fs && dir=$(_closest_parent_dir_containing .project-super-name); then
             project_super_dir="$dir"
             project_super_name=$(command cat "${dir}/.project-super-name")
-            if [[ "$dir" != "$PWD" ]]; then
+            if [[ $dir != "$PWD" ]]; then
                 relative_dir="${PWD##"$dir"/}"
                 project_name="${relative_dir/\/*/}"
                 project_dir="${dir}/${project_name}"
@@ -337,7 +338,7 @@ if [[ "$PS1" ]]; then
         local prompt_sign_color="$color_normal"
         if [[ $USER != wbolster ]]; then
             local prompt_user_color="$color_normal"
-            if [[ "$USER" == "root" ]]; then
+            if [[ $USER == "root" ]]; then
                 prompt_user_color="$color_red"
                 prompt_sign_color="$color_red"
             fi
@@ -369,7 +370,7 @@ if [[ "$PS1" ]]; then
         # Working directory (with project info)
         local prompt_wd=""
         local tt_wd="\w"
-        if [[ "$PWD" != "$HOME" ]]; then
+        if [[ $PWD != "$HOME" ]]; then
             prompt_wd+="${color_secondary}in "
             if [[ -n $project_name ]]; then
                 if [[ -n $project_super_name ]]; then
@@ -383,7 +384,7 @@ if [[ "$PS1" ]]; then
                 fi
                 prompt_wd+="${color_blue}${project_name}"
                 tt_wd+="${project_name}"
-                if [[ "$PWD" != "$project_dir" ]]; then
+                if [[ $PWD != "$project_dir" ]]; then
                     project_relative_dir="${PWD##"${project_dir}/"}"
                     prompt_wd+="${color_normal}:$(shorten_path "$project_relative_dir" 5)"
                     tt_wd+=":$project_relative_dir"
@@ -404,7 +405,7 @@ if [[ "$PS1" ]]; then
         # Isolation (e.g. via bwrap)
         local isolation_warning=''
         local prompt_isolation=''
-        if [[ -n "${ISOLATE_ENV:-}" && -e /.isolate-env ]]; then
+        if [[ -n ${ISOLATE_ENV:-} && -e /.isolate-env ]]; then
             local isolate_name
             isolate_name=$(basename "$ISOLATE_ENV")
             prompt_isolation+="${color_green}[${color_normal}${isolate_name}${color_green}]"
@@ -440,7 +441,7 @@ if [[ "$PS1" ]]; then
 
         # gpg
         local prompt_gpg=""
-        if [[ -n "${GNUPGHOME:-}" ]]; then
+        if [[ -n ${GNUPGHOME:-} ]]; then
             prompt_gpg+="${color_secondary}gpg ${color_blue} ${GNUPGHOME}"
         fi
 
@@ -535,7 +536,7 @@ if [[ "$PS1" ]]; then
 
     # Completion
     for file in /usr/local/etc/bash_completion /usr/local/share/bash-completion/bash_completion /etc/bash_completion /usr/share/bash-completion/bash_completion; do
-        if [[ -f "$file" ]]; then
+        if [[ -f $file ]]; then
             # shellcheck disable=SC1090
             source "$file"
             break  # stop after first match
@@ -547,7 +548,7 @@ if [[ "$PS1" ]]; then
         local_completion_dir=${BASH_COMPLETION_USER_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/bash-completion}/completions
         if [[ -d $local_completion_dir ]]; then
             for file in "${local_completion_dir}"/*; do
-                if [[ -f "$file" ]]; then
+                if [[ -f $file ]]; then
                     # shellcheck disable=SC1090
                     source "$file"
                 fi
@@ -568,10 +569,10 @@ if [[ "$PS1" ]]; then
     ..() { cd .. ; }
     -() { cd - ; }
     cd() {
-        if [[ $# == 2 && "$1" != -* ]]; then
+        if [[ $# == 2 && $1 != -* ]]; then
             # Two args, no options: do simple path replacement, e.g. "cd site1 site2".
             _run_verbose builtin cd "${PWD/$1/$2}"
-        elif [[ -e "$1" && ! -d "$1" ]]; then
+        elif [[ -e $1 && ! -d $1 ]]; then
             _run_verbose builtin cd "$(dirname "$1")"
         else
             builtin cd "$@"
@@ -608,7 +609,7 @@ if [[ "$PS1" ]]; then
         # Magic typo corrector. Handles typos like "gitp ush" and "gitpu sh".
         local autocorrect_cmds="bzr git svn"
         for prefix in $autocorrect_cmds; do
-            if [[ "${cmd#"$prefix"}" == "$cmd" ]]; then
+            if [[ ${cmd#"$prefix"} == "$cmd" ]]; then
                 # prefix is not a prefix of the typed command
                 continue
             fi
@@ -755,7 +756,7 @@ if [[ "$PS1" ]]; then
         {
             local command;
             command="$1";
-            if [[ "$#" -gt 0 ]]; then
+            if [[ $# -gt 0 ]]; then
                 shift;
             fi;
             case "$command" in
@@ -770,7 +771,7 @@ if [[ "$PS1" ]]; then
                     ;;
             esac
         }
-        if [[ -n "${DIRENV_DIR:-}" ]]; then
+        if [[ -n ${DIRENV_DIR:-} ]]; then
             # Reload, e.g. ensure $PATH items are in the right order
             echo "direnv: environment potentially tainted; reloading" > /dev/stderr
             direnv reload
@@ -829,7 +830,7 @@ if [[ "$PS1" ]]; then
         fi
         local prog="$1"
         shift
-        if [[ ! -f "$prog" ]]; then
+        if [[ ! -f $prog ]]; then
             prog="$(command -v "$prog")"
         fi
         local profile_file
@@ -919,7 +920,7 @@ if [[ "$PS1" ]]; then
     fi
 
     # iTerm profile tricks
-    if [[ -n "${ITERM_PROFILE-}" && -z "${INSIDE_EMACS-}" ]]; then
+    if [[ -n ${ITERM_PROFILE-} && -z ${INSIDE_EMACS-} ]]; then
         _ITERM_PROFILE_FILE=~/.config/iterm-profile
         _iterm_profile() {
             printf "\e]50;SetProfile=%s\a" "$1"
@@ -938,7 +939,7 @@ if [[ "$PS1" ]]; then
 
     # This cat has magical powers, like a space cat flying through pizzas with bacon.
     cat() {
-        if ___has bat && [[ $# -ge 1 && "${1}" != -* && -t 1 ]]; then
+        if ___has bat && [[ $# -ge 1 && $1 != -* && -t 1 ]]; then
             # Arguments but no flags are specified and stdout is a terminal; perform magic.
             bat "$@"
         else
@@ -1000,7 +1001,7 @@ fi
 #
 
 for file in ~/.bashrc-local "${HOME}/.bashrc-${HOSTNAME}"; do
-    if [[ -f "$file" ]]; then
+    if [[ -f $file ]]; then
         # shellcheck disable=SC1090
         source "$file"
     fi
