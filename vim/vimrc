@@ -48,9 +48,6 @@ command! StripTrailingWhitespace silent! normal mx<Enter>:%s/\s\+$//<Enter>:nohl
 " Easy paragraph formatting
 noremap Q gqap
 
-" Pressing p should replace selected text in visual mode
-vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
-
 " Make "repeat last action" also work in visual mode
 vnoremap . :normal .<Return>
 
