@@ -865,10 +865,10 @@ if [[ "$PS1" ]]; then
         python -c 'import json, sys, yaml; print(yaml.safe_dump(json.load(open(sys.argv[1]) if sys.argv[1:] else sys.stdin), default_flow_style=False))' "$@"
     }
 
-    # GUI applications
-    if [[ "$OSTYPE" == darwin* ]]; then
+    # open in default (gui) application
+    if [[ $OSTYPE == darwin* ]]; then
         alias g='open'
-    elif [[ -n "$DISPLAY" ]]; then
+    elif [[ -n $XDG_SESSION_DESKTOP ]]; then
         alias g='xdg-open'
     fi
 
