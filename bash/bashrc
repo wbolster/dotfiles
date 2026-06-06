@@ -136,6 +136,7 @@ if [[ $PS1 ]]; then
 
     # Git status in prompt using __git_ps1()
     if [[ -f /usr/share/git/completion/git-prompt.sh ]]; then
+        # shellcheck disable=SC1091
         source /usr/share/git/completion/git-prompt.sh
     fi
     unset git_prompt_sh
@@ -490,7 +491,7 @@ if [[ $PS1 ]]; then
         unset local_completion_dir
     fi
     if [[ -f /usr/share/bash-complete-alias/complete_alias ]]; then
-        # shellcheck disable=SC1094
+        # shellcheck disable=SC1091 disable=SC1094
         source /usr/share/bash-complete-alias/complete_alias
     fi
     unset complete_alias_sh
