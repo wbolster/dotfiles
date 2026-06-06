@@ -62,7 +62,6 @@ quit-after-last-window-closed-delay = 5m
 selection-clear-on-copy = true
 shell-integration-features = no-cursor
 theme = light:Selenized Light,dark:Selenized Dark
-window-inherit-working-directory = false
 window-padding-balance = true
 window-padding-color = extend
 window-padding-x = 8
