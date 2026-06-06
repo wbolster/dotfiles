@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 # Bash Configuration
 
+# Canonicalising symlinks requires ‘readlink -f’, which may not be
+# available, e.g. on OSX (though GNU coreutils can be installed via
+# Homebrew). Use a ‘good enough’ fallback in that case.
 ___readlink_f() {
-    if [[ $OSTYPE == darwin* ]]; then
-        # Ad-hoc bootstrap-only version before coreutils installed via
-        # Homebrew in the path, because OSX does not have readlink -f.
-        echo "$(dirname "$1")/$(readlink "$1")"
-    else
+    if \
+        command readlink --version 2>/dev/null | grep -q -F 'GNU coreutils' || \
+        command readlink --help 2>&1 | grep -q -F BusyBox
+    then
         readlink -f "$1"
+    else
+        echo "$(dirname "$1")/$(readlink "$1")"
     fi
 }
 
