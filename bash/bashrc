@@ -713,6 +713,7 @@ if [[ "$PS1" ]]; then
     alias :e='$EDITOR'
 
     # Pager
+    export LESS="--no-init --use-color"
     alias lessr='less -R'
 
     # Man pages
