@@ -132,6 +132,9 @@ ui = auto
 [column]
 ui = auto
 
+[core]
+pager = less -FRX
+
 [diff]
 algorithm = histogram
 colorMoved = default
