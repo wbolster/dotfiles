@@ -444,24 +444,22 @@ if [[ "$PS1" ]]; then
             prompt_gpg+="${color_secondary}gpg ${color_blue} ${GNUPGHOME}"
         fi
 
-        # Background jobs
+        # background jobs
         local prompt_jobs=""
         local n_jobs n_jobs_background n_jobs_suspended
         n_jobs="$(jobs -p | wc -w)"
-        if [[ ${n_jobs} -gt 0 ]]; then
+        if ((n_jobs > 0)); then
+            prompt_jobs="${color_secondary}bg${color_red}"
             n_jobs_background="$(jobs -p -r | wc -w)"
             n_jobs_suspended="$(jobs -p -s | wc -w)"
-            prompt_jobs=""
-            if [[ $((n_jobs_background + n_jobs_suspended)) -gt 0 ]]; then
-                prompt_jobs="${color_secondary}bg"
+            if ((n_jobs_background)); then
+                prompt_jobs+=" ${n_jobs_background}&"
             fi
-            if [[ ${n_jobs_background} -gt 0 ]]; then
-                prompt_jobs+=" ${color_normal}${n_jobs_background}&"
-            fi
-            if [[ ${n_jobs_suspended} -gt 0 ]]; then
-                prompt_jobs+=" ${color_normal}${n_jobs_suspended}^Z"
+            if ((n_jobs_suspended)); then
+                prompt_jobs+=" ${n_jobs_suspended}^Z"
             fi
         fi
+        unset n_jobs n_jobs_background n_jobs_suspended
 
         # Terminal title (execution/echoing embedded in $PS1)
         local term_title=""
