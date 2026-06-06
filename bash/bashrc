@@ -721,7 +721,7 @@ if [[ "$PS1" ]]; then
     man () {
         # Format for the terminal width up to the specified maximum.
         local width
-        width=$(printf "%s\n$COLUMNS\n80\n" "$(tput cols)" | grep '^[0-9]\+$' | sort -n | head -1)
+        width=$(printf "%s\n$COLUMNS\n80\n" "$(tput cols)" | command grep '^[0-9]\+$' | sort -n | head -1)
         MANWIDTH=$width command man "$@"
     }
 
@@ -911,6 +911,7 @@ if [[ "$PS1" ]]; then
         _apt_get_packages() {
             local cur
             cur=${COMP_WORDS[COMP_CWORD]}
+            # shellcheck disable=SC2207
             COMPREPLY=($(apt-cache --no-generate pkgnames "${cur}" 2>/dev/null))
             return 0
         }
@@ -931,7 +932,7 @@ if [[ "$PS1" ]]; then
             _iterm_profile "Light"
         }
         if [[ -e ${_ITERM_PROFILE_FILE} ]]; then
-            _iterm_profile "$(cat "${_ITERM_PROFILE_FILE}")"
+            _iterm_profile "$(command cat "${_ITERM_PROFILE_FILE}")"
         fi
     fi
 
