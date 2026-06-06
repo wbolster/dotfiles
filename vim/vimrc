@@ -72,7 +72,6 @@ endif
 
 " Miscellaneous shortcuts
 let mapleader = ","
-nnoremap <silent> <Leader>/ :nohlsearch<Return>
 nnoremap <silent> <Leader>w :StripTrailingWhitespace<Return>
 
 " Colors
