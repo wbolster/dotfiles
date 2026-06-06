@@ -373,7 +373,7 @@ if [[ $PS1 ]]; then
         # gpg
         local prompt_gpg=""
         if [[ -n ${GNUPGHOME:-} ]]; then
-            prompt_gpg+="${style[secondary]}gpg ${style[fg=blue]} ${GNUPGHOME}"
+            prompt_gpg+="${style[secondary]}gpg ${style[primary]}${GNUPGHOME}"
         fi
 
         # background jobs
