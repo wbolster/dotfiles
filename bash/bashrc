@@ -103,6 +103,7 @@ if [[ $PS1 ]]; then
         # truncate the components in front of it (with special
         # handling of .hidden components). add an ellipsis when the
         # value has been truncated.
+        local dir head tail
         dir=$1
         n=$2
         if [[ $dir == "$HOME" ]]; then
@@ -500,11 +501,11 @@ if [[ $PS1 ]]; then
     ..() { cd .. ; }
     -() { cd - ; }
     cd() {
-        if [[ $# == 2 && $1 != -* ]]; then
+        if [[ $# == 1 && -e $1 && ! -d $1 ]]; then
+            _run_verbose builtin cd "$(dirname "$1")"
+        elif [[ $# == 2 && $1 != -* ]]; then
             # Two args, no options: do simple path replacement, e.g. "cd site1 site2".
             _run_verbose builtin cd "${PWD/$1/$2}"
-        elif [[ -e $1 && ! -d $1 ]]; then
-            _run_verbose builtin cd "$(dirname "$1")"
         else
             builtin cd "$@"
         fi
