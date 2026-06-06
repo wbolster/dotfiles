@@ -415,22 +415,26 @@ if [[ "$PS1" ]]; then
 
         # Python
         local prompt_python=""
-        if [[ -n "${VIRTUAL_ENV:-}" ]]; then
-            local venv_name
-            if [[ "$VIRTUAL_ENV" == */.direnv/* ]]; then
+        if [[ -n ${VIRTUAL_ENV:-} ]]; then
+            local venv_name=""
+            if [[ $VIRTUAL_ENV == */.direnv/* ]]; then
                 venv_name="$(basename "$(dirname "$(dirname "${VIRTUAL_ENV}")")")"
             else
                 venv_name="$(basename "$VIRTUAL_ENV")"
             fi
-            prompt_python+="${venv_name}"
-        fi
-        if [[ -n "${PYENV_VERSION:-}" && $(pyenv global | paste -sd:) != "$PYENV_VERSION" ]]; then
-            if [[ -n "$prompt_python" ]]; then
-                prompt_python+="${color_normal}/"
+            if [[ $venv_name != "$project_name" ]]; then
+                prompt_python+="$venv_name"
             fi
-            prompt_python+="${PYENV_VERSION}"
+            unset venv_name
         fi
-        if [[ -n "$prompt_python" ]]; then
+        if [[ -n ${PYENV_VERSION:-} && $(pyenv global | paste -sd:) != "$PYENV_VERSION" ]]; then
+            local active_versions
+            active_versions="${PYENV_VERSION//-dev/}"  # e.g. ‘3.15-dev’ → ‘3.15’
+            active_versions="${active_versions//:/, }"  # e.g. ‘3.15:3.14’ → ‘3.15, 3.14’
+            prompt_python+="${prompt_python:+@}$active_versions"
+            unset active_versions
+        fi
+        if [[ -n $prompt_python ]]; then
             prompt_python="${color_secondary}py ${color_normal}${prompt_python}"
         fi
 
