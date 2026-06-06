@@ -461,13 +461,11 @@ if [[ "$PS1" ]]; then
         fi
         unset n_jobs n_jobs_background n_jobs_suspended
 
-        # Terminal title (execution/echoing embedded in $PS1)
+        # terminal title (execution/echoing embedded in $PS1)
         local term_title=""
-        case $TERM in
-            (xterm*|rxvt*)
-                term_title="\[\e]0;${tt_hostname:+${tt_hostname}:}${tt_wd}\a\]"
-                ;;
-        esac
+        if [[ $TERM == +(rxvt*|screen*|tmux*|xterm*) ]]; then
+            term_title="\[\e]0;${tt_hostname:+${tt_hostname}:}${tt_wd}\a\]"
+        fi
 
         local color_leading=""
         if [[ -n $prompt_err ]]; then
