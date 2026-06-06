@@ -78,9 +78,15 @@ if [[ $PS1 ]]; then
     }
 
     join_by () {
-        local IFS="$1"
+        local delimiter="$1"
         shift
-        printf '%s\n' "$*"
+        local part
+        local prefix=""
+        for part in "$@"; do
+            printf '%s%s' "$prefix" "$part"
+            prefix=$delimiter
+        done
+        printf '\n'
     }
 
     if ! ___has rev; then
@@ -413,38 +419,42 @@ if [[ $PS1 ]]; then
         fi
         local block_leading="${style_leading}  "
 
+        local -a lines
+        local -a parts
+        local delimiter=" · "
+
         # Status line about previous command
-        local status_line_previous=""
-        status_line_previous+="${prompt_err:+${style[fg=red]}${prompt_err}  }"
-        status_line_previous+="${prompt_timer_elapsed:+${style[fg=yellow]}${prompt_timer_elapsed}  }"
-        status_line_previous+="${prompt_timer_finished:+${style[fg=yellow]}${prompt_timer_finished}  }"
-        status_line_previous="${status_line_previous%%  }"
-        status_line_previous="${status_line_previous:+${block_leading}${style[primary]} ${status_line_previous}}"
+        parts=()
+        [[ -n $prompt_err ]]            && parts+=("${style[fg=red]}${prompt_err}")
+        [[ -n $prompt_timer_elapsed ]]  && parts+=("${style[fg=yellow]}${prompt_timer_elapsed}")
+        [[ -n $prompt_timer_finished ]] && parts+=("${style[fg=yellow]}${prompt_timer_finished}")
+        if ((${#parts[@]})); then
+            lines+=("${block_leading}${style[reset]} $(join_by "$delimiter" "${parts[@]}")")
+        fi
 
         # Status line with other information
-        # fixme: use array and join_by?
-        local status_line_current=""
-        status_line_current+="${prompt_user:+ ${prompt_user}}"
-        status_line_current+="${prompt_hostname:+ ${prompt_hostname}}"
-        status_line_current+="${prompt_wd:+ ${prompt_wd}}"
-        status_line_current+="${prompt_isolation:+ ${prompt_isolation}}"
-        status_line_current+="${prompt_git:+ ${prompt_git}}"
-        status_line_current+="${prompt_python:+ ${prompt_python}}"
-        status_line_current+="${prompt_gpg:+ ${prompt_gpg}}"
-        status_line_current+="${prompt_jobs:+ ${prompt_jobs}}"
-        status_line_current="${status_line_current## }"
-        status_line_current="${status_line_current:+${block_leading}${style[primary]} ${status_line_current}}"
+        parts=()
+        [[ -n $prompt_user ]]      && parts+=("$prompt_user")
+        [[ -n $prompt_hostname ]]  && parts+=("$prompt_hostname")
+        [[ -n $prompt_wd ]]        && parts+=("$prompt_wd")
+        [[ -n $prompt_isolation ]] && parts+=("$prompt_isolation")
+        [[ -n $prompt_git ]]       && parts+=("$prompt_git")
+        [[ -n $prompt_python ]]    && parts+=("$prompt_python")
+        [[ -n $prompt_gpg ]]       && parts+=("$prompt_gpg")
+        [[ -n $prompt_jobs ]]      && parts+=("$prompt_jobs")
+        if ((${#parts[@]})); then
+            lines+=("${block_leading}${style[reset]} $(join_by "$delimiter" "${parts[@]}")")
+        fi
+
+        # Obnoxious isolation warning on separate line
+        if [[ -n $isolation_warning ]]; then
+            lines+=("${block_leading}${style[reset]} ${isolation_warning} ${style[bg=yellow]}                            ${style[reset]}")
+        fi
 
         # Primary prompt
-        PS1=""
-        PS1+="$(__vte_osc7)"
-        PS1+="$term_title"
-        PS1+="\n"
-        if [[ -n $status_line_previous || -n $status_line_current || -n $isolation_warning ]]; then
-            PS1+="${status_line_previous:+${status_line_previous%% }\n}"
-            PS1+="${status_line_current:+${status_line_current%% }\n}"
-            PS1+="${isolation_warning:+${block_leading}${style[primary]} ${isolation_warning%% } ${style[bg=yellow]}                            ${style[reset]}\n}"
-            PS1+="\n"
+        PS1="$(__vte_osc7)${term_title}\n"
+        if ((${#lines[@]})); then
+            PS1+="$(join_by $'\n' "${lines[@]}")\n\n"
         fi
         PS1+="${prompt_sign_style}\\$"
         PS1+="${style[reset]} "
