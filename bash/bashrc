@@ -15,7 +15,13 @@ ___readlink_f() {
     fi
 }
 
-_dotfiles_root="$(dirname "$(dirname "$(___readlink_f "${BASH_SOURCE[0]}")")")"
+if [[ -h ${BASH_SOURCE[0]} ]]; then
+    # symlink should point into dotfiles dir
+    _dotfiles_root="$(dirname "$(dirname "$(___readlink_f "${BASH_SOURCE[0]}")")")"
+else
+    # e.g. bind mount in isolated env; assume standard location
+    _dotfiles_root=~/dotfiles
+fi
 
 # shellcheck disable=SC1091
 source "$_dotfiles_root/bash/lib.sh"
