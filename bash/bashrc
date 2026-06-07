@@ -762,15 +762,10 @@ if [[ $PS1 ]]; then
         export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
     fi
     if ___has pyenv && [[ $(type -t pyenv) != "function" ]]; then
-        # Initialize if pyenv is available but not yet loaded. After
-        # initialisation, ‘pyenv’ is a shell function masking the
-        # actual executable. Override pyenv's insistence on putting
-        # itself at the front op the PATH; that is already set up in
-        # my preferred order.
-        path_before_pyenv_init=$PATH
-        eval "$(pyenv init -)"
-        PATH=$path_before_pyenv_init
-        unset path_before_pyenv_init
+        # pyenv available but not yet loaded. After init, ‘pyenv’ is a
+        # shell function masking the actual executable. Disable all
+        # $PATH mangling b/c that is already set up.
+        eval "$(pyenv init --no-push-path --no-rehash - | sed 's/^export PATH=/: /')"
     fi
     if ___has virtualenvwrapper_lazy.sh; then
         VIRTUALENVWRAPPER_PYTHON="$(dirname "$(readlink -f "$(command -v virtualenvwrapper_lazy.sh)")")/python"
