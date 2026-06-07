@@ -360,7 +360,13 @@ if [[ $PS1 ]]; then
             prompt_sign_style=${style[fg=red]}
         fi
 
-        # Python
+        # nodejs
+        local prompt_node=""
+        if [[ -n ${MISE_NODE_VERSION:-} ]]; then
+            prompt_node+="${style[secondary]}node ${style[primary]}${MISE_NODE_VERSION}"
+        fi
+
+        # python
         local prompt_python=""
         if [[ -n ${VIRTUAL_ENV:-} ]]; then
             local venv_name=""
@@ -444,6 +450,7 @@ if [[ $PS1 ]]; then
         [[ -n $prompt_wd ]]        && parts+=("$prompt_wd")
         [[ -n $prompt_isolation ]] && parts+=("$prompt_isolation")
         [[ -n $prompt_git ]]       && parts+=("$prompt_git")
+        [[ -n $prompt_node ]]      && parts+=("$prompt_node")
         [[ -n $prompt_python ]]    && parts+=("$prompt_python")
         [[ -n $prompt_gpg ]]       && parts+=("$prompt_gpg")
         [[ -n $prompt_jobs ]]      && parts+=("$prompt_jobs")
