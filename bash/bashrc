@@ -609,7 +609,7 @@ if [[ $PS1 ]]; then
 
     # File listings
     if ___has eza; then
-        alias ls='command eza --classify=auto --hyperlink'
+        alias ls='command eza --classify=auto --group-directories-first --hyperlink'
         alias l='ls --group --long --smart-group --time-style="+   %Y-%m-%d %H:%M   "'
         alias ll='l --almost-all --extended --git'
     elif command ls --version 2>/dev/null | grep -q -F 'GNU coreutils'; then
