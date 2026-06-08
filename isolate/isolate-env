@@ -82,6 +82,7 @@ RO_BIND_MOUNTS_ETC = (
     "/etc/ld.so.cache",
     "/etc/ld.so.conf",
     "/etc/ld.so.conf.d",
+    "/etc/man_db.conf",
     "/etc/nsswitch.conf",
     "/etc/pki",
     "/etc/protocols",
