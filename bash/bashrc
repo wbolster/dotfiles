@@ -460,7 +460,7 @@ if [[ $PS1 ]]; then
 
         # Obnoxious isolation warning on separate line
         if [[ -n $isolation_warning ]]; then
-            lines+=("${block_leading}${style[reset]} ${isolation_warning} ${style[bg=yellow]}                            ${style[reset]}")
+            lines+=("${block_leading}${style[reset]} ${isolation_warning} ${style[reset]} 🚨  🚨  🚨${style[reset]}")
         fi
 
         # Primary prompt
