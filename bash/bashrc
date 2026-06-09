@@ -83,7 +83,7 @@ if [[ $PS1 ]]; then
         "$@"
     }
 
-    join_by () {
+    _join_by () {
         local delimiter=$1
         shift
         local part
@@ -110,7 +110,7 @@ if [[ $PS1 ]]; then
         }
     fi
 
-    shorten_path() {
+    _shorten_path() {
         # shorten a directory name. keep last n components intact and
         # truncate the components in front of it (with special
         # handling of .hidden components). add an ellipsis when the
@@ -186,7 +186,7 @@ if [[ $PS1 ]]; then
     _timer_start=''
     trap '[[ -z "${_timer_start:-}" ]] && _timer_start=${SECONDS}' DEBUG
 
-    set_prompt_command() {
+    _set_prompt_command() {
         # Save exit code from previous command
         local prev_exit_code=$?
 
@@ -322,7 +322,7 @@ if [[ $PS1 ]]; then
                     tt_wd="${project_super_name}/"
                 else
                     local wd_short
-                    wd_short="$(shorten_path "$(dirname "$project_dir")" 3)/"
+                    wd_short="$(_shorten_path "$(dirname "$project_dir")" 3)/"
                     prompt_wd+="${style[fg=green]}${wd_short}"
                     tt_wd=$wd_short
                 fi
@@ -331,12 +331,12 @@ if [[ $PS1 ]]; then
                 if [[ $PWD != "$project_dir" ]]; then
                     local project_relative_dir
                     project_relative_dir="${PWD##"${project_dir}/"}"
-                    prompt_wd+="${style[primary]}:$(shorten_path "$project_relative_dir" 5)"
+                    prompt_wd+="${style[primary]}:$(_shorten_path "$project_relative_dir" 5)"
                     tt_wd+=":$project_relative_dir"
                 fi
             else
                 local short_pwd
-                short_pwd=$(shorten_path "$PWD" 3)
+                short_pwd=$(_shorten_path "$PWD" 3)
                 prompt_wd="${style[secondary]}in ${style[primary]}${short_pwd}"
                 tt_wd=$short_pwd
             fi
@@ -440,7 +440,7 @@ if [[ $PS1 ]]; then
         [[ -n $prompt_timer_elapsed ]]  && parts+=("${style[fg=yellow]}${prompt_timer_elapsed}")
         [[ -n $prompt_timer_finished ]] && parts+=("${style[fg=yellow]}${prompt_timer_finished}")
         if ((${#parts[@]})); then
-            lines+=("${block_leading}${style[reset]} $(join_by "$delimiter" "${parts[@]}")")
+            lines+=("${block_leading}${style[reset]} $(_join_by "$delimiter" "${parts[@]}")")
         fi
 
         # Status line with other information
@@ -455,7 +455,7 @@ if [[ $PS1 ]]; then
         [[ -n $prompt_gpg ]]       && parts+=("$prompt_gpg")
         [[ -n $prompt_jobs ]]      && parts+=("$prompt_jobs")
         if ((${#parts[@]})); then
-            lines+=("${block_leading}${style[reset]} $(join_by "$delimiter" "${parts[@]}")")
+            lines+=("${block_leading}${style[reset]} $(_join_by "$delimiter" "${parts[@]}")")
         fi
 
         # Obnoxious isolation warning on separate line
@@ -466,7 +466,7 @@ if [[ $PS1 ]]; then
         # Primary prompt
         PS1="$(__vte_osc7)${term_title}\n"
         if ((${#lines[@]})); then
-            PS1+="$(join_by $'\n' "${lines[@]}")\n\n"
+            PS1+="$(_join_by $'\n' "${lines[@]}")\n\n"
         fi
         PS1+="${prompt_sign_style}\\$"
         PS1+="${style[reset]} "
@@ -482,7 +482,7 @@ if [[ $PS1 ]]; then
         unset _timer_start
     }
     unset PROMPT_COMMAND  # ensure it's not defined already (potentially as an array)
-    PROMPT_COMMAND=set_prompt_command
+    PROMPT_COMMAND=_set_prompt_command
 
     # Globbing. This makes both "echo *" (only non-hidden files) and "echo .*"
     # (only hidden files, ignoring . and ..) work as intended.
