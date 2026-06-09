@@ -623,8 +623,6 @@ if [[ $PS1 ]]; then
 
     # grep, ripgrep, etc
     alias grep='grep --color=auto'
-    alias egrep='egrep --color=auto'
-    alias fgrep='fgrep --color=auto'
     export RIPGREP_CONFIG_PATH=~/.config/ripgrep/config
     rg() {
         if [[ -t 1 ]]; then
@@ -935,10 +933,8 @@ if [[ $PS1 ]]; then
     stty -ixon
 
     # Misc
-    alias sc='screen -UxRR'
     alias uuid4='uuidgen -r'
     ___has sudoedit || alias sudoedit="sudo -e"
-    ___has rgrep || alias rgrep="grep -r"
     ___has zstd && alias ,zstd-max="zstd --threads=0 --long -19"
 
     # 31337 hacking the matrix
