@@ -636,7 +636,7 @@ if [[ $PS1 ]]; then
 
     # Process listings and process control
     alias psg='ps auxww |grep -i'
-    complete -F _killall psg
+    complete -F _comp_cmd_killall psg
     alias k1='kill %1'
     alias k2='kill %2'
     alias k3='kill %3'
