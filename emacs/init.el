@@ -81,21 +81,6 @@
   :custom
   (tls-checktrust 'ask))
 
-(eval-and-compile
-  (defmacro w--ilambda (&rest body)
-    "Concisely create a lambda with an ‘(interactive)’ spec.
-
-BODY is normal function body. However, if the first expression is
-a string literal, it will be used as an argument for (interactive),
-and BODY can refer to it as ‘arg’."
-    (let ((interactive-spec))
-      (when (stringp (car body))
-        (setq interactive-spec (list (car body))
-              body (cdr body)))
-      `(lambda (&optional arg)
-         (interactive ,@interactive-spec)
-         ,@body))))
-
 
 ;;; Environment
 
@@ -739,8 +724,8 @@ defined as lowercase."
    ";" #'evil-ex
    "z e" #'evil-scroll-line-up
    "z n" #'evil-scroll-line-down
-   "<mouse-6>" (w--ilambda "P" (evil-scroll-column-left (or arg 4)))
-   "<mouse-7>" (w--ilambda "P" (evil-scroll-column-right (or arg 4))))
+   "<mouse-6>" (lambda () (interactive "P") (evil-scroll-column-left (or arg 4)))
+   "<mouse-7>" (lambda () (interactive "P") (evil-scroll-column-right (or arg 4))))
   (:states '(motion normal)
    [escape] #'w--evil-normal-state-cleanup)
   (:states '(motion normal visual)
@@ -784,7 +769,7 @@ defined as lowercase."
    "C-<" #'evil-shift-left-line  ;; chars as in normal mode);
    "C-." #'evil-shift-right-line ;; used instead of standard vim
    "C->" #'evil-shift-right-line ;; bindings C-d and C-t.
-   "C-=" (w--ilambda (save-excursion (call-interactively #'evil-indent-line))))
+   "C-=" (lambda () (interactive) (save-excursion (call-interactively #'evil-indent-line))))
   (:states '(insert replace)
    (general-chord "qw") #'evil-normal-state
    (general-chord "wq") #'evil-normal-state
@@ -1848,8 +1833,8 @@ defined as lowercase."
 
 (general-define-key
  :states '(motion normal)
- "[ SPC" (w--ilambda (save-excursion (evil-insert-newline-above)))
- "] SPC" (w--ilambda (save-excursion (evil-insert-newline-below)))
+ "[ SPC" (lambda () (interactive) (save-excursion (evil-insert-newline-above)))
+ "] SPC" (lambda () (interactive) (save-excursion (evil-insert-newline-below)))
  "[b" 'evil-prev-buffer
  "]b" 'evil-next-buffer
  "[c" 'flycheck-previous-error
@@ -1870,9 +1855,9 @@ defined as lowercase."
  "]m" 'smerge-next
  "[o" 'symbol-overlay-jump-prev
  "]o" 'symbol-overlay-jump-next
- "]s" (w--ilambda
-       (evil-forward-word)
-       (call-interactively 'evil-next-flyspell-error))
+ "]s" (lambda () (interactive)
+        (evil-forward-word)
+        (call-interactively 'evil-next-flyspell-error))
  "[s" 'evil-prev-flyspell-error
  "[w" 'evil-window-prev
  "]w" 'evil-window-next
