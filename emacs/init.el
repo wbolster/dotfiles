@@ -4371,7 +4371,6 @@ defined as lowercase."
   (python-black-on-save-mode " ❤"))
 
 (use-package python-coverage
-  :quelpa (python-coverage :fetcher github :repo "wbolster/emacs-python-coverage")
   :demand t
   :after python
   :delight
