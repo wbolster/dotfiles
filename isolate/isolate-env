@@ -28,6 +28,7 @@ BWRAP_BASE_ARGS = (
     ("--unshare-all",),
     ("--share-net",),
     ("--dev", "/dev"),
+    ("--tmpfs", "/dev/shm"),
     ("--dir", "/etc"),
     ("--proc", "/proc"),
     ("--perms", "0700", "--tmpfs", str(XDG_RUNTIME_DIR)),
