@@ -107,6 +107,7 @@ SHELL_RO_BIND_MOUNTS_GENERIC = (
 )
 SHELL_RO_BIND_MOUNTS = {
     "bash": (
+        "/etc/bash_completion.d",
         "~/.bash_login",
         "~/.bash_logout",
         "~/.bash_profile",
