@@ -54,12 +54,6 @@
   :config
   (auto-compile-on-load-mode))
 
-(use-package quelpa
-  :custom
-  (quelpa-update-melpa-p nil))
-
-(use-package quelpa-use-package)
-
 
 ;;; Helpers
 
