@@ -12,9 +12,9 @@ include "%L"
 ## emoji
 ## =====
 
-<Multi_key> <b> <o> <t> : "🤖" U1F916  # ROBOT FACE
+<Multi_key> <b> <o> <t> : "🤖" U1F916 # ROBOT FACE
 <Multi_key> <s> <o> <b> : "😭" U1F62D # LOUDLY CRYING FACE
-<Multi_key> <u> <p>     : "🙃" U1F643 # UPSIDE-DOWN FACE
+<Multi_key> <u> <p> : "🙃" U1F643 # UPSIDE-DOWN FACE
 <Multi_key> <u> <w> <u> : "🥺" U1F97A # FACE WITH PLEADING EYES
 
 # variation selectors for text/emoji rendering
