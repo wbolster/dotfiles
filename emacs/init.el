@@ -1629,7 +1629,6 @@ defined as lowercase."
 (use-package symbol-overlay
   :demand t
   :delight
-  :after beacon
   :hook (w/theme-changed-hook . w/symbol-overlay-tweak-faces)
   :custom
   (symbol-overlay-idle-time 1.0)
@@ -1703,12 +1702,10 @@ defined as lowercase."
   (defun w/symbol-overlay-jump-next-any ()
     (interactive)
     (w/symbol-overlay-jump-any 'forward))
-  (add-to-list 'beacon-dont-blink-commands 'w/symbol-overlay-jump-next-any)
 
   (defun w/symbol-overlay-jump-previous-any ()
     (interactive)
     (w/symbol-overlay-jump-any 'backward))
-  (add-to-list 'beacon-dont-blink-commands 'w/symbol-overlay-jump-previous-any)
 
   (defun w/symbol-overlay-jump-first ()
     (interactive)
@@ -2139,19 +2136,6 @@ defined as lowercase."
   :commands
   avy-with) ;; used by evil-easymotion helpers
 
-(use-package beacon
-  :delight
-  :custom
-  (beacon-blink-when-point-moves-vertically 5)
-  (beacon-size 20)
-  :hook (w/theme-changed-hook . w/beacon-tweak-faces)
-  :config
-  (add-to-list 'beacon-dont-blink-predicates 'region-active-p)
-  ;; (beacon-mode)
-  (defun w/beacon-tweak-faces ()
-    (setq beacon-color
-          (face-attribute 'lazy-highlight :background nil t))))
-
 (use-package dired
   :ensure nil
   :defer t
@@ -2231,8 +2215,7 @@ defined as lowercase."
                    (<= original-window-start (point) original-window-end))
         (recenter-top-bottom 0))
       (unless (and (eq (current-buffer) original-buffer)
-                   (eq (point) original-point))
-        (beacon-blink))))
+                   (eq (point) original-point)))))
 
   (advice-add 'dumb-jump-go :around #'w/jump-around-advice))
 
