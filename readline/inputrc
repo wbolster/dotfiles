@@ -1,5 +1,7 @@
 # inputrc for readline
 
+$include /etc/inputrc
+
 set completion-ignore-case on
 set enable-bracketed-paste on
 set revert-all-at-newline on
