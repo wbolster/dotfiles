@@ -3006,6 +3006,45 @@ defined as lowercase."
     "_d_ hydra"
     ("d" vdiff-hydra/body)))
 
+(use-package lsp-mode
+  :defer t
+  :delight " 🚀"
+  :hook ('lsp-after-open-hook #'w--lsp-mode-after-open-hook)
+
+  :commands (lsp lsp-deferred)
+  :custom
+  (lsp-auto-execute-action nil)
+  (lsp-enable-indentation nil)
+  (lsp-enable-on-type-formatting nil)
+  (lsp-headerline-breadcrumb-segments '(symbols))
+  (lsp-keymap-prefix "C-c l")
+  :config
+  (setq read-process-output-max (* 1024 1024)) ;; 1mb (recommended by docs)
+
+  (defun w--lsp-mode-after-open-hook ()
+    (lsp-origami-try-enable))
+
+  (transient-define-prefix w--lsp-dispatch ()
+    ["lsp"
+     [("/" "doc" lsp-ui-doc-show)
+      ("?" "doc" lsp-ui-doc-show)
+      ("a" "code action" lsp-execute-code-action)
+      ("d" "describe" lsp-describe-thing-at-point)
+      ("g" "goto" lsp-find-definition)
+      ("i" "impl" lsp-find-implementation)
+      ("r" "rename" lsp-rename)
+      ("t" "typedef" lsp-find-type-definition)
+      ("x" "restart" lsp-workspace-restart)]]))
+
+(use-package lsp-ui
+  :defer t)
+
+(use-package lsp-ivy
+  :defer t)
+
+(use-package
+  lsp-origami
+  :defer t)
 
 ;;;; flycheck
 
@@ -3302,46 +3341,6 @@ defined as lowercase."
      "TODO" "todo"
      "BUG" "bug"
      "XXX" "xxx")))
-
-(use-package lsp-mode
-  :defer t
-  :delight " 🚀"
-  :hook ('lsp-after-open-hook #'w--lsp-mode-after-open-hook)
-
-  :commands (lsp lsp-deferred)
-  :custom
-  (lsp-auto-execute-action nil)
-  (lsp-enable-indentation nil)
-  (lsp-enable-on-type-formatting nil)
-  (lsp-headerline-breadcrumb-segments '(symbols))
-  (lsp-keymap-prefix "C-c l")
-  :config
-  (setq read-process-output-max (* 1024 1024)) ;; 1mb (recommended by docs)
-
-  (defun w--lsp-mode-after-open-hook ()
-    (lsp-origami-try-enable))
-
-  (transient-define-prefix w--lsp-dispatch ()
-    ["lsp"
-     [("/" "doc" lsp-ui-doc-show)
-      ("?" "doc" lsp-ui-doc-show)
-      ("a" "code action" lsp-execute-code-action)
-      ("d" "describe" lsp-describe-thing-at-point)
-      ("g" "goto" lsp-find-definition)
-      ("i" "impl" lsp-find-implementation)
-      ("r" "rename" lsp-rename)
-      ("t" "typedef" lsp-find-type-definition)
-      ("x" "restart" lsp-workspace-restart)]]))
-
-(use-package lsp-ui
-  :defer t)
-
-(use-package lsp-ivy
-  :defer t)
-
-(use-package
-  lsp-origami
-  :defer t)
 
 (use-package prog-mode
   :ensure nil
