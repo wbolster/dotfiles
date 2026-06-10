@@ -3043,39 +3043,6 @@ defined as lowercase."
     ("d" vdiff-hydra/body)))
 
 
-;;;; writeroom
-
-(use-package writeroom-mode
-  :defer t
-  :custom
-  (writeroom-global-effects nil)
-  (writeroom-maximize-window nil)
-  (writeroom-mode-line t)
-  :commands
-  w--writeroom-narrower
-  w--writeroom-wider
-  w--writeroom-reset
-  :config
-  (defun w--writeroom-narrower ()
-    "Make the writeroom column narrower."
-    (interactive)
-    (unless writeroom-mode
-      (writeroom-mode))
-    (writeroom-decrease-width))
-  (defun w--writeroom-wider ()
-    "Make the writeroom column wider."
-    (interactive)
-    (unless writeroom-mode
-      (writeroom-mode))
-    (writeroom-increase-width))
-  (defun w--writeroom-reset ()
-    "Reset the writeroom column width."
-    (interactive)
-    (unless writeroom-mode
-      (writeroom-mode))
-    (writeroom-adjust-width nil)))
-
-
 ;;;; flycheck
 
 (use-package flycheck
@@ -3202,11 +3169,6 @@ defined as lowercase."
   "_n_umber"
   ("n" display-line-numbers-mode)
   ("N" w--display-line-numbers-cycle)
-  "_r_ writeroom"
-  ("r" writeroom-mode)
-  ("R" (progn
-         (delete-other-windows)
-         (writeroom-mode)))
   "_s_pell"
   ("s" flyspell-mode)
   "_w_rapping"
