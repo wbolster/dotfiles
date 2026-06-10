@@ -156,17 +156,6 @@
   :config
   (agitprop-resist))
 
-(use-package edit-server
-  :disabled
-  ;; this is used by the ‘edit with emacs’ chrome extension:
-  ;; https://chrome.google.com/webstore/detail/edit-with-emacs/ljobjlafonikaiipfkggjbhkghgicgoh
-  :if window-system
-  :config
-  (edit-server-start)
-  (add-to-list
-   'edit-server-url-major-mode-alist
-   '("github\\.com" . markdown-mode)))
-
 (use-package savehist
   :custom
   (savehist-autosave-interval 60)
@@ -1475,36 +1464,6 @@ defined as lowercase."
         (display-line-numbers-mode))
       (message "Line numbering style: %s" new-value)
       (setq display-line-numbers new-value))))
-
-(use-package nlinum
-  :disabled
-  :defer t)
-
-(use-package nlinum-relative
-  :disabled
-  :defer t
-  :custom-face
-  (nlinum-relative-current-face
-   ((t (:inherit nlinum
-        :foreground unspecified
-        :background unspecified
-        :weight unspecified))))
-  :commands
-  w--line-numbers-cycle
-  :config
-  (defun w--line-numbers-cycle ()
-    "Cycle between no, absolute, and relative line numbers."
-    (interactive)
-    (cond
-     ((and nlinum-mode nlinum-relative-mode)
-      (nlinum-mode -1)
-      (nlinum-relative-off))
-     (nlinum-mode
-      (nlinum-relative-mode +1)
-      (nlinum-relative-reflush))
-     (t
-      (nlinum-mode +1)
-      (nlinum-relative-mode -1)))))
 
 
 ;;;; search
@@ -2922,26 +2881,6 @@ defined as lowercase."
 
 (use-package magit-imerge
   :after magit)
-
-(use-package magithub
-  :disabled
-  :demand t
-  :after magit
-  :custom
-  (magithub-api-timeout 10)
-  (magithub-pull-request-arguments '("-o"))
-  :general
-  (:keymaps 'magithub-map
-   ;; colemak tweaks
-   "e" nil
-   "c" #'magithub-edit-thing
-   ;; do not override rebase key binding
-   "r" nil
-   "R" #'magithub-reply-thing)
-  :config
-  (magithub-feature-autoinject t)
-  ;; https://github.com/vermiculus/magithub/issues/308
-  (remove-hook 'magit-status-headers-hook #'magithub-maybe-insert-ci-status-header))
 
 (use-package forge
   :after magit
