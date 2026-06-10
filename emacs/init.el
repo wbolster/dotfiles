@@ -150,6 +150,7 @@
   (inhibit-startup-screen t)
   (initial-major-mode 'text-mode)
   (initial-scratch-message nil)
+  (use-short-answers t)
 
   :config
   ;; The 'inhibit-startup-echo-area-message' variable
@@ -161,7 +162,6 @@
     (message ""))
   (defalias 'display-startup-echo-area-message 'w/message-empty)
 
-  (fset 'yes-or-no-p 'y-or-n-p)
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
   (defun w/load-custom-file ()
