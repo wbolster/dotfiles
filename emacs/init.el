@@ -269,6 +269,10 @@ defined as lowercase."
 
 (use-package which-key
   :delight
+  :custom
+  (which-key-add-column-padding 4)
+  (which-key-dont-use-unicode nil)
+  (which-key-idle-secondary-delay 0.0)
   :config
   (which-key-mode))
 
