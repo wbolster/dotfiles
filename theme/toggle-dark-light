@@ -68,13 +68,6 @@ set_gnome_terminal_theme() {
     gsettings set "${gnome_terminal_profile}" palette "$palette"
 }
 
-notify_emacs() {
-    # Notify running Emacs instance.
-    if pgrep -u "$(id -u)" emacs > /dev/null; then
-        emacsclient -e '(w--set-theme-from-environment)' > /dev/null || true
-    fi
-}
-
 main() {
     local theme
     if [[ -e ${file} ]]; then
@@ -86,7 +79,6 @@ main() {
     fi
     set_gnome_theme $theme
     set_gnome_terminal_theme $theme
-    notify_emacs
 }
 
 main

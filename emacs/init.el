@@ -460,14 +460,13 @@ defined as lowercase."
 
 ;;;; theme
 
-(defvar w--dark-theme 'solarized-selenized-dark "The preferred dark theme.")
-(defvar w--light-theme 'solarized-selenized-light "The preferred light theme.")
+(use-package emacs
+  :custom
+  (custom-safe-themes t))
 
 (use-package solarized-theme
   :demand t
-  ;; TODO
-  ;; :if (display-graphic-p)
-  :hook (emacs-startup-hook . w--set-theme-from-environment)
+  :if (display-graphic-p)
   :custom
   (solarized-emphasize-indicators nil)
   (solarized-scale-org-headlines nil)
@@ -480,9 +479,8 @@ defined as lowercase."
   (solarized-height-plus-4 1.0)
 
   :config
-  (load-theme w--dark-theme t t)
-  (load-theme w--light-theme t t)
-  (enable-theme w--light-theme)
+  (load-theme 'solarized-selenized-light t t)
+  (load-theme 'solarized-selenized-dark t t)
   (defvar solarized-color-yellow    "#b58900")
   (defvar solarized-color-orange    "#cb4b16")
   (defvar solarized-color-red       "#dc322f")
@@ -508,25 +506,22 @@ defined as lowercase."
   (defvar solarized-color-green-d   "#546E00")
   (defvar solarized-color-green-l   "#B4C342"))
 
-(defun w--toggle-dark-light-theme ()
-  "Toggle between a dark and light theme."
-  (interactive)
-  (w--activate-theme (eq (-first-item custom-enabled-themes) w--light-theme)))
-
 (defvar w--theme-changed-hook nil
   "Hook to run after the theme has changed. Useful for patching font faces.")
 
-(defun w--activate-theme (dark)
-  "Load configured theme. When DARK is nil, load a light theme."
-  (setq frame-background-mode (if dark 'dark 'light))
-  (mapc 'frame-set-background-mode (frame-list))
-  ;; (set-frame-parameter nil 'background-mode (if dark 'dark 'light))
-  (--each custom-enabled-themes
-    (disable-theme it))
-  (let ((theme (if dark w--dark-theme w--light-theme)))
-    (enable-theme theme))
-  (run-hooks 'w--theme-changed-hook)
-  (run-with-idle-timer .5 nil #'redraw-display))
+(use-package auto-dark
+  :demand t
+  :if (display-graphic-p)
+  :custom
+  (auto-dark-themes '((solarized-selenized-dark) (solarized-selenized-light)))
+  :commands
+  auto-dark-toggle-appearance
+  :hook
+  (auto-dark-dark-mode-hook . (lambda () (run-hooks 'w--theme-changed-hook)))
+  (auto-dark-light-mode-hook . (lambda () (run-hooks 'w--theme-changed-hook)))
+  (emacs-startup-hook . (lambda () (run-hooks 'w--theme-changed-hook)))
+  :config
+  (auto-dark-mode))
 
 (defvar w--faces-bold '(magit-popup-argument)
   "Faces that may retain their bold appearance.")
@@ -541,41 +536,6 @@ defined as lowercase."
       (set-face-attribute face nil :weight 'normal))))
 
 (add-hook 'w--theme-changed-hook #'w--tweak-faces)
-
-(defun w--set-theme-from-environment ()
-  "Set the theme based on presence/absence of a configuration file."
-  (interactive)
-  (let ((dark
-         (if (gsettings-gnome-running?)
-             (string-equal (gsettings-get "org.gnome.desktop.interface" "color-scheme") "prefer-dark")
-           (file-exists-p "~/.config/dark-theme"))))
-    (w--activate-theme dark)))
-
-;; todo https://www.reddit.com/r/emacs/comments/o49v2w/automatically_switch_emacs_theme_when_changing/
-
-;; signal time=1653900413.9760315 sender=:1.80 -> destination=nil serial=80 path=/org/freedesktop/portal/desktop interface=org.freedesktop.impl.portal.Settings member=SettingChanged
-;; (:string "org.gnome.desktop.interface")
-;; (:string "color-scheme")
-;; (:variant :string "prefer-dark")
-
-;; (require 'dbus)
-;; (dbus-call-method-asynchronously
-;;  :session "org.freedesktop.portal.Desktop"
-;;  "/org/freedesktop/portal/desktop" "org.freedesktop.portal.Settings"
-;;  "Read"
-;;  (-partial #'message "%S")
-;;  "org.freedesktop.appearance"
-;;  "color-scheme")
-;; (defun w--settings-changed-cb (path var value)
-;;   "DBus handler to detect when the color-scheme has changed."
-;;   (when (and (string-equal path "org.freedesktop.appearance")
-;;              (string-equal var "color-scheme"))
-;;     (message "%S" value)))
-;; (dbus-register-signal
-;;  :session "org.freedesktop.portal.Desktop"
-;;  "/org/freedesktop/portal/desktop" "org.freedesktop.portal.Settings"
-;;  "SettingChanged"
-;;  #'w--settings-changed-cb)
 
 (defun w--tweak-evil-cursor ()
   "Tweak the appearance of the evil cursors"
@@ -3152,8 +3112,7 @@ defined as lowercase."
 (w--make-hydra w--hydra-toggle nil
   "toggle"
   "_b_ackgound"
-  ("b" w--toggle-dark-light-theme)
-  ("B" w--set-theme-from-environment)
+  ("b" auto-dark-toggle-appearance)
   "_c_ flycheck"
   ("c" flycheck-mode)
   "_d_iff"
