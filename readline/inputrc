@@ -2,6 +2,7 @@
 
 set completion-ignore-case on
 set enable-bracketed-paste on
+set revert-all-at-newline on
 
 # History
 control-p:    history-search-backward
