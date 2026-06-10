@@ -307,6 +307,8 @@ defined as lowercase."
   :custom
   (recentf-auto-cleanup 300)
   (recentf-max-saved-items 500)
+  :commands
+  w--counsel-recentf-other-window
   :config
   (defvar
     w--recentf-ignore-dirs
@@ -352,6 +354,9 @@ defined as lowercase."
    "/" #'ranger-search)
 
   :hook (ranger-mode-hook . w--evil-colemak-basics-disable)
+
+  :commands
+  deer-jump-other-window
 
   :config
   (with-eval-after-load 'direnv
@@ -424,42 +429,41 @@ defined as lowercase."
              (file-exists (file-exists-p directory-name)))
     (call-process "xdg-open" nil 0 nil directory-name)))
 
-(transient-define-prefix w--buffer-dispatch ()
-  ["buffer"
-   [("b" "switch" ivy-switch-buffer)
-    ("B" "switch ↗" ivy-switch-buffer-other-window)]
-   [("n" "new" evil-buffer-new)
-    ("N" "new ↗" w--evil-buffer-new-other-window) ]
-   [("c" "clone" clone-indirect-buffer)
-    ("C" "clone ↗" clone-indirect-buffer-other-window)]
-   [("e" "rename" crux-rename-file-and-buffer)
-    ("E" "rename buf only" rename-buffer)]]
-  ["hiding/closing"
-   [("h" "hide" bury-buffer)
-    ("H" "unhide" unbury-buffer)]
-   [("k" "kill" kill-current-buffer)
-    ("K" "kill+window" kill-buffer-and-window)]]
-  ["misc"
-   [("m" "switch major mode" w--switch-major-mode)
-    ("r" "revert" revert-buffer)]])
+(defvar w--buffer-map
+  (define-keymap
+    "b" #'ivy-switch-buffer
+    "B" #'ivy-switch-buffer-other-window
+    "n" #'evil-buffer-new
+    "N" #'w--evil-buffer-new-other-window
+    "c" #'clone-indirect-buffer
+    "C" #'clone-indirect-buffer-other-window
+    "e" #'crux-rename-file-and-buffer
+    "E" #'rename-buffer
+    "h" #'bury-buffer
+    "H" #'unbury-buffer
+    "k" #'kill-current-buffer
+    "K" #'kill-buffer-and-window
+    "m" #'w--switch-major-mode
+    "r" #'revert-buffer)
+  "Keymap for buffer commands.")
 
-(transient-define-prefix w--file-dispatch ()
-  ["file"
-   [("f" "file" counsel-find-file)
-    ("F" "file ↗" find-file-other-window)]
-   [("n" "new" evil-buffer-new)
-    ("N" "new ↗" w--evil-buffer-new-other-window)]
-   [("r" "recent" counsel-recentf)
-    ("R"  "recent ↗" w--counsel-recentf-other-window)]
-   [("s" "sudoedit" sudo-edit)
-    ("S" "sudoedit other" w--sudo-find-file)]]
-  ["misc"
-   [("d" "directory" deer)
-    ("D" "directory ↗" deer-jump-other-window)]
-   [("!" "terminal" terminal-here)
-    ("1" "terminal" terminal-here)]
-   [("g" "gui browser" w--open-gui-file-browser)
-    ("i" "insert" insert-file)]])
+(defvar w--file-map
+  (define-keymap
+    "f" #'counsel-find-file
+    "F" #'find-file-other-window
+    "n" #'evil-buffer-new
+    "N" #'w--evil-buffer-new-other-window
+    "r" #'counsel-recentf
+    "R" #'w--counsel-recentf-other-window
+    "s" #'sudo-edit
+    "S" #'w--sudo-find-file
+    "d" #'deer
+    "D" #'deer-jump-other-window
+    "!" #'terminal-here
+    "1" #'terminal-here
+    "g" #'w--open-gui-file-browser
+    "i" #'insert-file)
+  "Keymap for file commands.")
 
 
 ;;;; theme
@@ -1464,6 +1468,17 @@ defined as lowercase."
       thing)))
 
 (use-package emacs  ;; replace
+  :commands w--query-replace-thing-at-point-dwim
+  :init
+  (defvar w--replace-map
+    (define-keymap
+      "r" #'w--query-replace-thing-at-point-dwim
+      "s" #'w--query-replace-thing-at-point-dwim
+      "p" #'projectile-replace
+      "P" #'projectile-replace-regexp
+      "q" #'query-replace
+      "Q" #'query-replace-regexp)
+    "Keymap for replacement commands.")
   :config
   (defun w--query-replace-thing-at-point-dwim ()
     "Return ‘query-replace’ for the active region or the symbol at point."
@@ -1477,15 +1492,7 @@ defined as lowercase."
              query-replace-to-history-variable)))
       (when use-boundaries
         (setq thing (format "\\_<%s\\_>" thing)))
-      (query-replace-regexp thing replacement)))
-  (transient-define-prefix w--replace-dispatch nil
-    ["replace"
-     [("r" "dwim" w--query-replace-thing-at-point-dwim)
-      ("s" "dwim" w--query-replace-thing-at-point-dwim)]
-     [("p" "project" projectile-replace)
-      ("P" "project (regexp)" projectile-replace-regexp)]
-     [("q" "replace" query-replace)
-      ("Q" "replace regexp"query-replace-regexp)]]))
+      (query-replace-regexp thing replacement))))
 
 (use-package emacs  ;; occur
   :hook (occur-mode-hook . w--occur-mode-hook)
@@ -1497,6 +1504,8 @@ defined as lowercase."
    "C-n" #'occur-next
    "C-p" #'occur-prev
    "g r" #'revert-buffer)
+  :commands
+  w--occur-dwim
   :config
   (evil-set-initial-state 'occur-mode 'motion)
   (defun w--occur-mode-hook ()
@@ -1624,6 +1633,9 @@ defined as lowercase."
   :hook (w--theme-changed-hook . w--symbol-overlay-tweak-faces)
   :custom
   (symbol-overlay-idle-time 1.0)
+
+  :commands
+  w--symbol-overlay-put-dwim
 
   :general
   (:states 'motion
@@ -1920,6 +1932,7 @@ defined as lowercase."
 
   :commands
   w--origami-parser-imenu-flat
+  w--origami-mode-toggle
 
   :config
   (face-spec-reset-face 'origami-fold-header-face)
@@ -2036,9 +2049,38 @@ defined as lowercase."
   (projectile-switch-project-action 'projectile-vc)
 
   :commands
-  w--project-dispatch
+  w--projectile-find-file-all
+  w--projectile-open-gui-file-browser
+  w--projectile-project-bury-buffers
 
   :init
+  (defvar w--project-map
+    (define-keymap
+      "p" #'projectile-switch-project
+      "P" #'projectile-switch-open-project
+      "b" #'projectile-switch-to-buffer
+      "B" #'projectile-switch-to-buffer-other-window
+      "k" #'projectile-kill-buffers
+      "q" #'w--projectile-project-bury-buffers
+      "s" #'projectile-save-project-buffers
+      "f" #'projectile-find-file
+      "F" #'projectile-find-file-other-window
+      "a" #'w--projectile-find-file-all
+      "d" #'projectile-find-dir
+      "D" #'projectile-find-dir-other-window
+      "-" #'projectile-dired
+      "t" #'projectile-toggle-between-implementation-and-test
+      "T" #'projectile-find-implementation-or-test-other-window
+      "g" #'w--projectile-open-gui-file-browser
+      "/" #'w--counsel-ag-project
+      "?" #'w--counsel-ag-project-all-files
+      "o" #'projectile-multi-occur
+      "r" #'projectile-replace
+      "R" #'projectile-replace-regexp
+      "c" #'projectile-compile-project
+      "!" #'terminal-here-project-launch
+      "1" #'terminal-here-project-launch)
+    "Keymap for project commands.")
   (add-hook 'find-file-hook (fn: require 'projectile))
 
   :config
@@ -2083,37 +2125,7 @@ defined as lowercase."
     (interactive)
     (when-let ((directory-name (projectile-project-root)))
       (call-process "xdg-open" nil 0 nil directory-name)))
-
-  (transient-define-prefix w--project-dispatch ()
-    ["project"
-     [("p" "switch" projectile-switch-project)
-      ("P" "switch open" projectile-switch-open-project)]]
-    ["buffers"
-     [("b" "switch" projectile-switch-to-buffer)
-      ("B" "switch ↗" projectile-switch-to-buffer-other-window)]
-     [("k" "kill all" projectile-kill-buffers)
-      ("q" "bury all" w--projectile-project-bury-buffers)]
-     [("s" "save all" projectile-save-project-buffers)]]
-    ["files/directories"
-     [("f" "file" projectile-find-file)
-      ("F" "file ↗" projectile-find-file-other-window)
-      ("a" "all files" w--projectile-find-file-all)]
-     [("d" "dir" projectile-find-dir)
-      ("D" "dir ↗" projectile-find-dir-other-window)
-      ("-" "top dir" projectile-dired)]
-     [("t" "test" projectile-toggle-between-implementation-and-test)
-      ("T" "test ↗" projectile-find-implementation-or-test-other-window)]
-     [("g" "gui browser" w--projectile-open-gui-file-browser)]]
-    ["search/replace"
-     [("/" "search live" w--counsel-ag-project)
-      ("?" "search live all" w--counsel-ag-project-all-files)]
-     [("o" "occur" projectile-multi-occur)]
-     [("r" "replace" projectile-replace)
-      ("R" "replace regexp" projectile-replace-regexp)]]
-    ["external tools"
-     [("c" "compile" projectile-compile-project)]
-     [("!" "terminal" terminal-here-project-launch)
-      ("1" "terminal" terminal-here-project-launch)]]))
+  )
 
 ;;;; jumping around
 
@@ -2669,9 +2681,27 @@ defined as lowercase."
   (magit-mode-line-process ((t (:inherit magit-mode-line-process-error))))
 
   :commands
-  w--git-dispatch
+  magit-toggle-buffer-lock
+  w--git-web-browse
+  w--magit-log-buffer-file-follow
+  w--magit-status-other-repository
 
   :init
+  (defvar w--git-map
+    (define-keymap
+      "a" #'magit-blame-addition
+      "A" #'w--magit-log-buffer-file-follow
+      "c" #'magit-commit-create
+      "d" #'magit-diff-dwim
+      "f" #'magit-file-dispatch
+      "g" #'magit-dispatch
+      "l" #'magit-log-current
+      "s" #'magit-status
+      "S" #'w--magit-status-other-repository
+      "t" #'magit-toggle-buffer-lock
+      "w" #'w--git-web-browse
+      "!" #'magit-git-command)
+    "Keymap for Git commands.")
   (add-hook 'find-file-hook (fn: require 'magit))
 
   :config
@@ -2785,21 +2815,7 @@ defined as lowercase."
 
   (defun w--magit-log-buffer-file-follow ()
     (interactive)
-    (magit-log-buffer-file t))
-
-  (transient-define-prefix w--git-dispatch ()
-    [[("a" "annotate" magit-blame-addition)
-      ("A" "buffer log" w--magit-log-buffer-file-follow)
-      ("c" "commit" magit-commit-create)]
-     [("d" "diff" magit-diff-dwim)
-      ("f" "file-dispatch" magit-file-dispatch)
-      ("g" "dispatch" magit-dispatch)]
-     [("l" "log" magit-log-current)
-      ("s" "status" magit-status)
-      ("S" "status other" w--magit-status-other-repository)]
-     [("t" "lock" magit-toggle-buffer-lock)
-      ("w" "web" w--git-web-browse)
-      ("!" "command" magit-git-command)]]))
+    (magit-log-buffer-file t)))
 
 (use-package evil-collection
   :custom
@@ -2917,20 +2933,27 @@ defined as lowercase."
 (use-package smerge-mode
   :delight " 🔀"
   :defer t
-  :config
-  (transient-define-prefix w--merge-dispatch ()
-    ["merge"
-     ("m" "smerge-mode" smerge-mode)]
-    ["conflict"
-     [("n" "next" smerge-next)]
-     [("e" "prev" smerge-prev)]
-     [("p" "prev" smerge-prev)]]
-    ["keep"
-     [("c" "current" smerge-keep-current)]
-     [("b" "base" smerge-keep-base)]
-     [("l" "lower" smerge-keep-lower)]
-     [("u" "upper" smerge-keep-upper)]
-     [("a" "all" smerge-keep-all)]]))
+  :commands
+  smerge-keep-all
+  smerge-keep-base
+  smerge-keep-current
+  smerge-keep-lower
+  smerge-keep-upper
+  smerge-next
+  smerge-prev
+  :init
+  (defvar w--merge-map
+    (define-keymap
+      "m" #'smerge-mode
+      "n" #'smerge-next
+      "e" #'smerge-prev
+      "p" #'smerge-prev
+      "c" #'smerge-keep-current
+      "b" #'smerge-keep-base
+      "l" #'smerge-keep-lower
+      "u" #'smerge-keep-upper
+      "a" #'smerge-keep-all)
+    "Keymap for merge conflict commands."))
 
 (use-package vc
   :config
@@ -2954,6 +2977,49 @@ defined as lowercase."
   (vdiff-refine-changed ((t (:inherit magit-diff-base-highlight))))
   (vdiff-open-fold-face ((t (:inherit magit-diff-context))))
   (vdiff-closed-fold-face ((t (:inherit magit-diff-context-highlight))))
+
+  :commands
+  vdiff-close-all-folds
+  vdiff-close-fold
+  vdiff-hydra/body
+  vdiff-next-fold
+  vdiff-next-hunk
+  vdiff-open-all-folds
+  vdiff-open-fold
+  vdiff-previous-fold
+  vdiff-previous-hunk
+  vdiff-receive-changes
+  vdiff-receive-changes-and-step
+  vdiff-refine-all-hunks
+  vdiff-refine-this-hunk
+  vdiff-refresh
+  vdiff-remove-refinements-in-hunk
+  vdiff-send-changes
+  vdiff-send-changes-and-step
+
+  :init
+  (defvar w--vdiff-map
+    (define-keymap
+      "n" #'vdiff-next-hunk
+      "e" #'vdiff-previous-hunk
+      "p" #'vdiff-previous-hunk
+      "N" #'vdiff-next-fold
+      "E" #'vdiff-previous-fold
+      "P" #'vdiff-previous-fold
+      "c" #'vdiff-close-fold
+      "C" #'vdiff-close-all-folds
+      "f" #'vdiff-refine-this-hunk
+      "F" #'vdiff-refine-all-hunks
+      "x" #'vdiff-remove-refinements-in-hunk
+      "o" #'vdiff-open-fold
+      "O" #'vdiff-open-all-folds
+      "r" #'vdiff-receive-changes
+      "R" #'vdiff-receive-changes-and-step
+      "s" #'vdiff-send-changes
+      "S" #'vdiff-send-changes-and-step
+      "u" #'vdiff-refresh
+      "d" #'vdiff-hydra/body)
+    "Keymap for vdiff commands.")
   :config
   (defun w--vdiff-3way-layout-function-vertical (buffer-a buffer-b buffer-c)
     (delete-other-windows)
@@ -2975,43 +3041,36 @@ defined as lowercase."
   (transient-suffix-put 'magit-dispatch "e" :command 'vdiff-magit-dwim)
   (transient-suffix-put 'magit-dispatch "E" :description "vdiff")
   (transient-suffix-put 'magit-dispatch "E" :command 'vdiff-magit)
-
-  (w--make-hydra w--hydra-vdiff nil
-    "vdiff"
-    "_n_/_e_/_p_ nav"
-    ("n" vdiff-next-hunk :exit nil)
-    ("e" vdiff-previous-hunk :exit nil)
-    ("p" vdiff-previous-hunk :exit nil)
-    ("N" vdiff-next-fold :exit nil)
-    ("E" vdiff-previous-fold :exit nil)
-    ("P" vdiff-previous-fold :exit nil)
-    "_c_lose"
-    ("c" vdiff-close-fold)
-    ("C" vdiff-close-all-folds)
-    "_f_/_x_ refine"
-    ("f" vdiff-refine-this-hunk)
-    ("F" vdiff-refine-all-hunks)
-    ("x" vdiff-remove-refinements-in-hunk)
-    "_o_pen"
-    ("o" vdiff-open-fold)
-    ("O" vdiff-open-all-folds)
-    "_r_eceive"
-    ("r" vdiff-receive-changes)
-    ("R" vdiff-receive-changes-and-step :exit nil)
-    "_s_end"
-    ("s" vdiff-send-changes)
-    ("S" vdiff-send-changes-and-step :exit nil)
-    "_u_pdate"
-    ("u" vdiff-refresh)
-    "_d_ hydra"
-    ("d" vdiff-hydra/body)))
+  )
 
 (use-package lsp-mode
   :defer t
   :delight " 🚀"
   :hook ('lsp-after-open-hook #'w--lsp-mode-after-open-hook)
 
-  :commands (lsp lsp-deferred)
+  :commands
+  lsp-describe-thing-at-point
+  lsp-execute-code-action
+  lsp-find-definition
+  lsp-find-implementation
+  lsp-find-type-definition
+  lsp-rename
+  lsp-ui-doc-show
+  lsp-workspace-restart
+
+  :init
+  (defvar w--lsp-map
+    (define-keymap
+      "/" #'lsp-ui-doc-show
+      "?" #'lsp-ui-doc-show
+      "a" #'lsp-execute-code-action
+      "d" #'lsp-describe-thing-at-point
+      "g" #'lsp-find-definition
+      "i" #'lsp-find-implementation
+      "r" #'lsp-rename
+      "t" #'lsp-find-type-definition
+      "x" #'lsp-workspace-restart)
+    "Keymap for LSP commands.")
   :custom
   (lsp-auto-execute-action nil)
   (lsp-enable-indentation nil)
@@ -3022,19 +3081,7 @@ defined as lowercase."
   (setq read-process-output-max (* 1024 1024)) ;; 1mb (recommended by docs)
 
   (defun w--lsp-mode-after-open-hook ()
-    (lsp-origami-try-enable))
-
-  (transient-define-prefix w--lsp-dispatch ()
-    ["lsp"
-     [("/" "doc" lsp-ui-doc-show)
-      ("?" "doc" lsp-ui-doc-show)
-      ("a" "code action" lsp-execute-code-action)
-      ("d" "describe" lsp-describe-thing-at-point)
-      ("g" "goto" lsp-find-definition)
-      ("i" "impl" lsp-find-implementation)
-      ("r" "rename" lsp-rename)
-      ("t" "typedef" lsp-find-type-definition)
-      ("x" "restart" lsp-workspace-restart)]]))
+    (lsp-origami-try-enable)))
 
 (use-package lsp-ui
   :defer t)
@@ -3045,6 +3092,7 @@ defined as lowercase."
 (use-package
   lsp-origami
   :defer t)
+
 
 ;;;; flycheck
 
@@ -3077,6 +3125,33 @@ defined as lowercase."
   (flycheck-before-syntax-check-hook . direnv--maybe-update-environment)
   (flycheck-error-list-after-refresh-hook . w--flycheck-hide-error-list-header)
 
+  :commands
+  flycheck-buffer
+  flycheck-compile
+  flycheck-next-error
+  flycheck-previous-error
+  flycheck-select-checker
+  flycheck-verify-setup
+  w--flycheck-compile-current
+  w--flycheck-show-error-other-file-mode
+  w--flycheck-toggle-error-window
+
+  :init
+  (defvar w--flycheck-map
+    (define-keymap
+      "b" #'flycheck-buffer
+      "m" #'w--flycheck-compile-current
+      "M" #'flycheck-compile
+      "c" #'w--flycheck-toggle-error-window
+      "C" #'flycheck-mode
+      "o" #'w--flycheck-show-error-other-file-mode
+      "s" #'flycheck-select-checker
+      "v" #'flycheck-verify-setup
+      "n" #'flycheck-next-error
+      "e" #'flycheck-previous-error
+      "p" #'flycheck-previous-error)
+    "Keymap for Flycheck commands.")
+
   :config
   (global-flycheck-mode)
 
@@ -3092,22 +3167,6 @@ defined as lowercase."
       (window-height . w--fit-bottom-error-window-to-buffer)
       (window-parameters . ((no-other-window . t)
                             (no-delete-other-windows . t))))))
-
-  (transient-define-prefix w--flycheck-dispatch ()
-    ["flycheck"
-     [("b" "buffer" flycheck-buffer)
-      ("m" "compile" w--flycheck-compile-current)
-      ("M" "compile other" flycheck-compile)]
-     [("c" "toggle error window" w--flycheck-toggle-error-window)
-      ("C" "toggle checking" flycheck-mode)
-      ("o" "toggle other file errors" w--flycheck-show-error-other-file-mode)]]
-    ["setup"
-     [("s" "select checker" flycheck-select-checker)]
-     [("v" "verify setup" flycheck-verify-setup)]]
-    ["navigation"
-     [("n" "next" flycheck-next-error :transient t)]
-     [("e" "previous" flycheck-previous-error :transient t)]
-     [("p" "previous" flycheck-previous-error :transient t)]])
 
   (defun w--flycheck-compile-current ()
     "Run ‘flycheck-compile’ using the current checker."
@@ -3152,117 +3211,79 @@ defined as lowercase."
 
 ;;;; toggles
 
-(w--make-hydra w--hydra-toggle nil
-  "toggle"
-  "_b_ackgound"
-  ("b" auto-dark-toggle-appearance)
-  "_c_ flycheck"
-  ("c" flycheck-mode)
-  "_d_iff"
-  ("d" diff-hl-mode)
-  "_f_ill"
-  ("f" auto-fill-mode)
-  ("F" display-fill-column-indicator-mode)
-  "_h_ighlight"
-  ("h" symbol-overlay-mode)
-  "_l_ine"
-  ("l" hl-line-mode)
-  ("L" global-hl-line-mode)
-  "_n_umber"
-  ("n" display-line-numbers-mode)
-  ("N" w--display-line-numbers-cycle)
-  "_s_pell"
-  ("s" flyspell-mode)
-  "_w_rapping"
-  ("w" w--sensible-wrap-mode-1)
-  ("W" w--sensible-wrap-mode-2)
-  "_z_ folding"
-  ("z" (w--origami-mode-toggle))
-  "_SPC_ whitespace"
-  ("SPC" whitespace-mode)
-  ("S-SPC" w--show-trailing-whitespace-mode)
-  "_1_ num/sym"
-  ("1" global-evil-swap-keys-mode)
-  ("!" global-evil-swap-keys-mode)
-  "_._ indent-guide"
-  ("." indent-guide-mode)
-  "_(_ smartparens"
-  ("9" smartparens-mode)
-  ("(" smartparens-mode)
-  ("0" smartparens-mode)
-  (")" smartparens-mode)
-  "_=_ balanced-windows"
-  ("=" balanced-windows-mode))
-
+(defvar w--toggle-map
+  (define-keymap
+    "b" #'auto-dark-toggle-appearance
+    "c" #'flycheck-mode
+    "d" #'diff-hl-mode
+    "f" #'auto-fill-mode
+    "F" #'display-fill-column-indicator-mode
+    "h" #'symbol-overlay-mode
+    "l" #'hl-line-mode
+    "L" #'global-hl-line-mode
+    "n" #'display-line-numbers-mode
+    "N" #'w--display-line-numbers-cycle
+    "s" #'flyspell-mode
+    "w" #'w--sensible-wrap-mode-1
+    "W" #'w--sensible-wrap-mode-2
+    "z" #'w--origami-mode-toggle
+    "SPC" #'whitespace-mode
+    "S-SPC" #'w--show-trailing-whitespace-mode
+    "1" #'global-evil-swap-keys-mode
+    "!" #'global-evil-swap-keys-mode
+    "." #'indent-guide-mode
+    "9" #'smartparens-mode
+    "(" #'smartparens-mode
+    "0" #'smartparens-mode
+    ")" #'smartparens-mode
+    "=" #'balanced-windows-mode)
+  "Keymap for toggle commands.")
 
 ;;;; leader key
 
-(w--make-hydra w--hydra-leader nil
-  "_1__2__3__4_ window"
-  ("1" w--goto-window-1)
-  ("2" w--goto-window-2)
-  ("3" w--goto-window-3)
-  ("4" w--goto-window-4)
-  ("!" w--set-as-window-1)
-  ("@" w--set-as-window-2)
-  ("#" w--set-as-window-3)
-  ("$" w--set-as-window-4)
-  "_a_g"
-  ("a" w--hydra-ag/body)
-  "_b_uffer"
-  ("b" w--buffer-dispatch)
-  "_c_heck"
-  ("c" w--flycheck-dispatch)
-  "_d_iff"
-  ("d" w--hydra-vdiff/body)
-  "_f_ind"
-  ("f" w--file-dispatch)
-  "_g_it"
-  ("g" w--git-dispatch)
-  "_h_ighlight"
-  ("h" w--symbol-overlay-put-dwim)
-  ("H" symbol-overlay-remove-all)
-  "_j_ump"
-  ("j" counsel-imenu)
-  "_l_sp"
-  ("l" w--lsp-dispatch)
-  "_m_erge"
-  ("m" w--merge-dispatch)
-  "_n_arrow"
-  ("n" w--narrow-dwim)
-  "_o_ccur"
-  ("o" w--occur-dwim)
-  "_p_roject"
-  ("p" w--project-dispatch)
-  "_q_ bury buffer"
-  ("q" bury-buffer)
-  ("Q" unbury-buffer)
-  "_r_eplace"
-  ("r" w--replace-dispatch)
-  "_s_ave"
-  ("s" save-buffer)
-  ("S" save-some-buffers)
-  "_t_oggle"
-  ("t" w--hydra-toggle/body)
-  "_u_niversal arg"
-  ("u" universal-argument)
-  "_w_indow"
-  ("w" w--hydra-window/body)
-  "M-_x_"
-  ("x" counsel-M-x)
-  "_y_ copy format"
-  ("y" w--evil-copy-as-format)
-  "_SPC_ whitespace"
-  ("SPC" whitespace-cleanup)
-  "_/_ search"
-  ("/" w--hydra-search/body)
-  "_'_ major mode"
-  ("'" w--major-mode-hydra))
+(defvar w--leader-map
+  (define-keymap
+    "1" #'w--goto-window-1
+    "2" #'w--goto-window-2
+    "3" #'w--goto-window-3
+    "4" #'w--goto-window-4
+    "!" #'w--set-as-window-1
+    "@" #'w--set-as-window-2
+    "#" #'w--set-as-window-3
+    "$" #'w--set-as-window-4
+    "a" #'w--hydra-ag/body
+    "b" w--buffer-map
+    "c" w--flycheck-map
+    "d" w--vdiff-map
+    "f" w--file-map
+    "g" w--git-map
+    "h" #'w--symbol-overlay-put-dwim
+    "H" #'symbol-overlay-remove-all
+    "j" #'counsel-imenu
+    "l" w--lsp-map
+    "m" w--merge-map
+    "n" #'w--narrow-dwim
+    "o" #'w--occur-dwim
+    "p" w--project-map
+    "q" #'bury-buffer
+    "Q" #'unbury-buffer
+    "r" w--replace-map
+    "s" #'save-buffer
+    "S" #'save-some-buffers
+    "t" w--toggle-map
+    "u" #'universal-argument
+    "w" #'w--hydra-window/body
+    "x" #'counsel-M-x
+    "y" #'w--evil-copy-as-format
+    "SPC" #'whitespace-cleanup
+    "/" #'w--hydra-search/body
+    "'" #'w--major-mode-hydra)
+  "Leader keymap.")
 
 (general-define-key
  :states 'motion
- "," #'w--hydra-leader/body
- "'" #'w--hydra-leader/body)
+ "," w--leader-map
+ "'" w--leader-map)
 
 
 ;;; Major modes
