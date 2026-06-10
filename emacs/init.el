@@ -3326,7 +3326,7 @@ defined as lowercase."
   :defer t
   :delight " 🍔"
   :custom-face
-  (mmm-default-submode-face ((t (:background nil)))))
+  (mmm-default-submode-face ((t (:background unspecified)))))
 
 
 ;;; Major mode: text (generic)
