@@ -71,8 +71,6 @@
 
 (use-package no-littering)
 
-(use-package s)
-
 
 ;;; Environment
 
@@ -105,7 +103,7 @@
   (let* ((font-name
           (gsettings-get "org.gnome.desktop.interface" "font-name"))
          (font-name-without-size
-          (s-replace-regexp "\\(.*\\) [0-9.]+" "\\1" font-name)))
+          (replace-regexp-in-string "\\(.*\\) [0-9.]+" "\\1" font-name)))
     (setq w/ui-font-family font-name-without-size)))
 
 (use-package emacs
@@ -215,7 +213,7 @@
     (setq args (--map-when (not (string-match-p "_" it))
                            (format "  %s:" it)
                            args))
-    (s-concat "\n" (s-trim (s-join "  " args))))
+    (concat "\n" (string-trim (string-join args "  "))))
 
   (defun w/hydra-set-defaults (body)
     "Add defaults to a hydra BODY list."
@@ -235,11 +233,11 @@ This creates uppercase versions for all lowercase HEADS that are only
 defined as lowercase."
     (let* ((case-fold-search nil)
            (uppercase-keys
-            (--filter (s-matches-p "^[A-Z]$" it) (-map #'car heads))))
+            (--filter (string-match-p "^[A-Z]$" it) (-map #'car heads))))
       (--map
        (-replace-at 0 (upcase (car it)) it)
        (--filter
-        (and (s-matches? "^[a-z]$" (car it))
+        (and (string-match-p "^[a-z]$" (car it))
              (not (-contains-p uppercase-keys (upcase (car it)))))
         heads))))
 
@@ -2195,7 +2193,7 @@ defined as lowercase."
       ;; dumb-jump does not have proper extensibility via
       ;; defcustom variable for this. :(
       (when (derived-mode-p 'rst-mode)
-        (setq s (s-chop-suffix "_" s)))
+        (setq s (string-remove-suffix "_" s)))
       (dumb-jump-go nil nil s)))
 
   (defun w/dumb-jump-go-other-window ()
@@ -4325,7 +4323,7 @@ defined as lowercase."
     (w/set-major-mode-hydra #'w/hydra-python-pytest/body)
     (modify-syntax-entry ?/ ".")
     (when-let ((project-root (projectile-project-root)))
-      (add-to-list 'prettify-symbols-alist `(,(s-chop-suffix "/" project-root) . ?…)))
+      (add-to-list 'prettify-symbols-alist `(,(string-remove-suffix "/" project-root) . ?…)))
     (when-let ((venv-path (getenv "VIRTUAL_ENV")))
       (add-to-list 'prettify-symbols-alist `(,venv-path . ?…)))
     (prettify-symbols-mode))
@@ -4484,8 +4482,8 @@ defined as lowercase."
       (search-backward "::")
       (goto-char (match-end 0))
       (setq language
-            (s-trim (buffer-substring-no-properties
-                     (point) (line-end-position))))
+            (string-trim (buffer-substring-no-properties
+                          (point) (line-end-position))))
       (when (string-empty-p language)
         (setq language nil))
       (forward-line)
@@ -4520,7 +4518,7 @@ defined as lowercase."
            (block-major-mode
             (or
              (cdr (assoc language w/rst-code-block-language-major-modes-mapping))
-             (when language (intern (s-concat language "-mode")))))
+             (when language (intern (concat language "-mode")))))
            (edit-indirect-guess-mode-function
             (lambda (parent-buffer beg end)
               (if (and block-major-mode (symbolp block-major-mode))
