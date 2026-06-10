@@ -807,7 +807,7 @@ defined as lowercase."
       (evil-change-to-initial-state)))
 
   (defun w--evil-transpose-chars ()
-    "Invoke 'transpose-chars' on the right chars in insert state."
+    "Invoke ‘transpose-chars’ on the right chars in insert state."
     (interactive)
     (backward-char)
     (transpose-chars nil)
@@ -854,7 +854,7 @@ defined as lowercase."
       (evil-first-non-blank)))
 
   (evil-define-operator w--evil-join-smart-backslash-eol (beg end)
-    "Like 'evil-join', but handles continuation line endings in a smarter way."
+    "Like ‘evil-join’, but handles continuation line endings in a smarter way."
     :motion evil-line
     (prog1 (evil-join beg end)
       ;; delete ‘\’, and potentially one space before it
@@ -1502,7 +1502,7 @@ defined as lowercase."
 (use-package emacs  ;; replace
   :config
   (defun w--query-replace-thing-at-point-dwim ()
-    "Return 'query-replace' for the active region or the symbol at point."
+    "Return ‘query-replace’ for the active region or the symbol at point."
     (interactive)
     (let* ((use-boundaries (not (region-active-p)))
            (thing (regexp-quote (w--thing-at-point-dwim t t)))
@@ -1786,7 +1786,7 @@ defined as lowercase."
 ;; todo: this should become a fancy hydra
 
 (defun w--last-error ()
-  "Jump to the last error; similar to 'first-error'."
+  "Jump to the last error; similar to ‘first-error’."
   (interactive)
   (condition-case err (while t (next-error)) (user-error nil)))
 
@@ -4073,7 +4073,7 @@ defined as lowercase."
       (python-isort-on-save-mode)))
 
   (evil-define-operator w--evil-join-python (beg end)
-    "Like 'evil-join', but handles comments and some continuation styles sensibly."
+    "Like ‘evil-join’, but handles comments and some continuation styles sensibly."
     :motion evil-line
     (evil-join beg end)
     (let ((first-line-is-comment
