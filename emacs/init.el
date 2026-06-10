@@ -44,18 +44,6 @@
   (use-package-enable-imenu-support t)
   (use-package-hook-name-suffix nil))
 
-(use-package emacs
-  :custom
-  native-comp-async-report-warnings-errors 'silent
-  :bind (:map help-map
-         ;; Unbind useless shortcuts to GPL, etc.
-         ("g" . nil)   ;; describe-gnu-project
-         ("C-c" . nil) ;; describe-copying
-         ("C-m" . nil) ;; view-order-manuals
-         ("C-o" . nil) ;; describe-distributions
-         ("C-w" . nil)))  ;; describe-no-warranty
-
-
 (use-package auto-compile
   :custom
   (auto-compile-update-autoloads t)
@@ -84,10 +72,6 @@
 (use-package no-littering)
 
 (use-package s)
-
-(use-package emacs
-  :custom
-  (tls-checktrust 'ask))
 
 
 ;;; Environment
@@ -143,13 +127,26 @@
 ;;; Basics
 
 (use-package emacs
+  ;; :demand t
+  :bind (:map help-map
+         ;; Unbind useless shortcuts to GPL, etc.
+         ("g" . nil)   ;; describe-gnu-project
+         ("C-c" . nil) ;; describe-copying
+         ("C-m" . nil) ;; view-order-manuals
+         ("C-o" . nil) ;; describe-distributions
+         ("C-w" . nil))  ;; describe-no-warranty
+
   :hook (emacs-startup-hook . w/load-custom-file)
+
   :custom
+  (custom-safe-themes t)
   (disabled-command-function nil)
   (echo-keystrokes 0.5)
   (inhibit-startup-screen t)
   (initial-major-mode 'text-mode)
   (initial-scratch-message nil)
+  (native-comp-async-report-warnings-errors 'silent)
+  (tls-checktrust 'ask)
   (use-short-answers t)
 
   :config
@@ -479,10 +476,6 @@ defined as lowercase."
 
 
 ;;;; theme
-
-(use-package emacs
-  :custom
-  (custom-safe-themes t))
 
 (use-package solarized-theme
   :demand t
