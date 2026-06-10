@@ -3291,35 +3291,51 @@ defined as lowercase."
 (setq-default major-mode 'text-mode)
 
 (defvar w/major-modes
-  '(("normal" . normal-mode)
-    ("fundamental" . fundamental-mode)
-    ("text (txt)" . text-mode)
-    ("c" . c-mode)
-    ("elisp" . emacs-lisp-mode)
-    ("elisp interaction" . lisp-interaction-mode)
-    ("javascript (js)" . js-mode)
-    ("jinja (j2)" . jinja2-mode)
-    ("json" . json-mode)
-    ("markdown (md)" . markdown-mode)
-    ("org" . org-mode)
-    ("python" . python-mode)
-    ("restructuredtext (rst)" . rst-mode)
-    ("shell" . sh-mode)
-    ("sql" . sql-mode)
-    ("typescript (ts)" . typescript-ts-mode)
-    ("yaml (yml)" . yaml-mode)
-    ("xml" . nxml-mode))
+  '(c-mode
+    emacs-lisp-mode
+    fundamental-mode
+    jinja2-mode
+    js-mode
+    json-mode
+    lisp-interaction-mode
+    markdown-mode
+    nxml-mode
+    python-mode
+    rst-mode
+    sh-mode
+    sql-mode
+    text-mode
+    typescript-ts-mode
+    web-mode
+    yaml-mode)
   "Commonly used major modes.")
 
 (defun w/switch-major-mode ()
   "Switch major mode."
   (interactive)
-  (let* ((choice
-          (ivy-read
-           "Switch major mode: "
-           w/major-modes
-           :require-match t))
-         (fn (cdr (assoc choice w/major-modes))))
+  (when-let*
+      ((major-modes (cons 'normal-mode w/major-modes))
+       (choices
+        (--map
+         (let*
+             ((name (string-remove-suffix "-mode" (symbol-name it)))
+              (label
+               (and-let*
+                   ((docstring (documentation it t))
+                    (noise
+                     (rx bos
+                         (| "Major mode" "Simple mode")
+                         (? (| " for editing" " for" " to edit"))))
+                    (description
+                     (->> (car (split-string docstring "\n" t))
+                          (replace-regexp-in-string noise "")
+                          (string-remove-suffix ".")
+                          (string-trim)))
+                    (label (format "%s: %s" name description))))))
+           (cons (or label name) it))
+         major-modes))
+       (choice (ivy-read "Switch major mode: " (mapcar #'car choices) :require-match t))
+       (fn (cdr (assoc choice choices))))
     (funcall fn)))
 
 (use-package mmm-mode
