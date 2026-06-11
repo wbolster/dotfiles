@@ -21,6 +21,16 @@ ___path_add() {
   )
   export "$var_name=$path"
 }
+___path_add_if_exists() {
+    local var_name="${1:?}"; shift
+    local dirs=()
+    for dir in "$@"; do
+        if [[ -d $dir ]]; then
+            dirs+=("$dir")
+        fi
+    done
+    ___path_add "$var_name" "${dirs[@]}"
+}
 ___expand_path() {
   local REPLY; ___realpath.absolute "${2+"$2"}" "${1+"$1"}"; echo "$REPLY"
 }
@@ -36,16 +46,6 @@ ___realpath.absolute() {
     ..) ___realpath.dirname "$REPLY"; shift ;;
     *) REPLY="${REPLY%/}/$1"; shift ;;
   esac; done; ${eg:+shopt -u $eg}
-}
-___path_add_if_exists() {
-    local var_name="${1:?}"; shift
-    local dirs=()
-    for dir in "$@"; do
-        if [[ -d $dir ]]; then
-            dirs+=("$dir")
-        fi
-    done
-    ___path_add "$var_name" "${dirs[@]}"
 }
 
 # Helper to keep only the first occurence of each component of a
