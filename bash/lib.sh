@@ -31,6 +31,32 @@ ___path_add_if_exists() {
     done
     ___path_add "$var_name" "${dirs[@]}"
 }
+___path_rm() {
+  local path i discard var_name="$1"
+  declare -a path_array
+  IFS=: read -ra path_array <<<"${!1}"
+  shift
+  patterns=("$@")
+  results=()
+  for path in ${path_array[@]+"${path_array[@]}"}; do
+    discard=false
+    # shellcheck disable=SC2068
+    for pattern in ${patterns[@]+"${patterns[@]}"}; do
+      if [[ "$path" == +($pattern) ]]; then
+        discard=true
+        break
+      fi
+    done
+    if ! $discard; then
+      results+=("$path")
+    fi
+  done
+  result=$(
+    IFS=:
+    echo "${results[*]}"
+  )
+  export "$var_name=$result"
+}
 ___expand_path() {
   local REPLY; ___realpath.absolute "${2+"$2"}" "${1+"$1"}"; echo "$REPLY"
 }
