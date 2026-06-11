@@ -67,6 +67,7 @@ ___path_add_if_exists PATH \
 ___path_add_if_exists MANPATH \
     ~/.local/man \
     "${npm_config_prefix}/share/man"
+___path_rm MANPATH /usr/lib/jvm/default/man
 
 PATH=$(_deduplicate_path_components "$PATH")
 MANPATH=$(_deduplicate_path_components "$MANPATH")
