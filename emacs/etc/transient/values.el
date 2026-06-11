@@ -5,4 +5,4 @@
  (magit-rebase "--autosquash" "--autostash")
  (magit-show-refs "--sort=-committerdate")
  (magit-tag "--annotate" "--edit")
- (python-pytest-dispatch "--color" "--capture=no" "--verbose --verbose" "--new-first" "--failed-first" "--maxfail=10" "--tb=short"))
+ (python-pytest-dispatch "--color" "--new-first" "--failed-first" "--maxfail=10" "--tb=short"))
