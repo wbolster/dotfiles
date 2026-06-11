@@ -19,23 +19,16 @@
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
-(eval-and-compile
-  (require 'package))
-
+(require 'package)
 (setq
- package-archives '(("melpa" . "https://melpa.org/packages/")
-                    ("melpa-stable" . "https://stable.melpa.org/packages/")
-                    ("gnu" . "https://elpa.gnu.org/packages/"))
  package-enable-at-startup nil
  package-user-dir (locate-user-emacs-file "packages"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-
-(eval-when-compile
-  (require 'use-package))
 
 (use-package use-package
   :custom
