@@ -144,7 +144,6 @@
   (initial-major-mode 'text-mode)
   (initial-scratch-message nil)
   (native-comp-async-report-warnings-errors 'silent)
-  (tls-checktrust 'ask)
   (use-short-answers t)
 
   :config
