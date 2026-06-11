@@ -1,82 +1,53 @@
 " Vim configuration
 
-" Display
-set display+=uhex
-set listchars=eol:$,trail:_,extends:»,precedes:«,tab:»·,nbsp:~
-set showcmd
-set showmatch
-set whichwrap=b,s,h,l,<,>,[,]
-
-" Movement
-noremap <Down> gj
-noremap <Up> gk
-
-" Scrolling
-set scrolloff=5 sidescrolloff=5
-nnoremap <Space> <C-D>
-nnoremap <S-Space> <C-U>
-nnoremap <Backspace> <C-U>
-nnoremap <S-Backspace> <C-D>
-
-" Encoding
-set encoding=utf-8
-
-" Indentation
-set expandtab shiftwidth=4 tabstop=4
-set autoindent smartindent
-
-" Wrapping
-set linebreak nojoinspaces
-let &showbreak="↪ "
-set colorcolumn=+1
-
-" Search/replace
-set ignorecase smartcase
-set hlsearch
-nohlsearch
-set gdefault
-nnoremap <CR> :let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'<CR>:set hlsearch<CR>:echo<CR>
-nnoremap g<CR> :let @/ = expand('<cword>')<CR>:set hlsearch<CR>:echo<CR>
-
-" Whitespace (after an abbreviation)
-function! EatWhitespace()
-	let c = nr2char(getchar())
-	return (c =~ '\s') ? '' : c
-endfunction
-command! StripTrailingWhitespace silent! normal mx<Enter>:%s/\s\+$//<Enter>:nohlsearch<Enter>`x
-
-" Easy paragraph formatting
-noremap Q gqap
-
-" Make "repeat last action" also work in visual mode
-vnoremap . :normal .<Return>
-
-" Spell checking
-command! SpellDutch   setlocal spell spelllang=nl
-command! SpellEnglish setlocal spell spelllang=en
-command! NoSpell      setlocal nospell
-
-" Multiple files
-set hidden
 if exists("+autochdir")
   set autochdir
 endif
-set suffixes+=.aux,.bbl,.blg,.dvi,.idx,.log,.out,.pdf,.toc,.pyc,.pyo
-if strlen($VIRTUAL_ENV) != 0
-  " Make :find work for packages installed in the active virtualenv
-  execute "set path+=".expand("$VIRTUAL_ENV/lib/python*/site-packages/")
-endif
-
-" Miscellaneous shortcuts
+set autoindent
+set colorcolumn=+1
+set display+=uhex
+set encoding=utf-8
+set expandtab
+set gdefault
+set hidden
+set hlsearch
+set ignorecase
+set linebreak
+set listchars=eol:$,trail:_,extends:»,precedes:«,tab:»·,nbsp:~
 let mapleader = ","
-nnoremap <silent> <Leader>w :StripTrailingWhitespace<Return>
+set nojoinspaces
+set scrolloff=5
+set shiftwidth=4
+let &showbreak="↪ "
+set showcmd
+set showmatch
+set sidescrolloff=5
+set smartcase
+set smartindent
+set tabstop=4
+set whichwrap=b,s,h,l,<,>,[,]
+
+nohlsearch
+
+command! NoSpell      setlocal nospell
+command! SpellDutch   setlocal spell spelllang=nl
+command! SpellEnglish setlocal spell spelllang=en
+command! -range=% StripTrailingWhitespace <line1>,<line2>s/\s\+$//e
+
+nnoremap <Backspace> <C-U>
+nnoremap <S-Backspace> <C-D>
+nnoremap <S-Space> <C-U>
+nnoremap <Space> <C-D>
+nnoremap <silent> <Leader><Space> :StripTrailingWhitespace<Return>
+nnoremap Q gqap
+noremap <Down> gj
+noremap <Up> gk
 
 " Colors
 function! ColorSchemeFromFlagFile() abort
   let l:exists = filereadable(expand('~/.config/dark-theme'))
   let &background = l:exists ? 'dark' : 'light'
 endfunction
-call ColorSchemeFromFlagFile()
 command ColorSchemeFromFlagFile call ColorSchemeFromFlagFile()
 let g:solarized_italics = 0
 let g:solarized_termtrans = 1

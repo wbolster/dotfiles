@@ -2,18 +2,20 @@
 
 set columns=120
 set guicursor=a:blinkon0
-set guioptions-=r go-=L go-=T
-set lines=60
-
 if $XDG_SESSION_DESKTOP == "gnome"
   let &guifont = substitute(system("gsettings get org.gnome.desktop.interface monospace-font-name"), "\[\n'\]", "", "g")
 else
   set guifont=Monospace\ 10
 endif
+set guioptions-=r go-=L go-=T
+set lines=60
 
-noremap <C-s> :update<Return>
+call ColorSchemeFromFlagFile()
+
 inoremap <C-s> <C-O>:update<Return>
+noremap <C-s> :update<Return>
 
+" Font size
 function! FontZoom(adjustment) abort
   if &guifont =~# ':h\d\+'
     let &guifont = substitute(&guifont, ':h\zs\d\+', '\=max([1, str2nr(submatch(0)) + a:adjustment])', '')
@@ -21,7 +23,6 @@ function! FontZoom(adjustment) abort
     let &guifont = substitute(&guifont, '\d\+$', '\=max([1, str2nr(submatch(0)) + a:adjustment])', '')
   endif
 endfunction
-
 command! -nargs=1 FontZoom call FontZoom(<args>)
 nnoremap <silent> <C-=> :FontZoom 1<Return>
 nnoremap <silent> <C-_> :FontZoom -1<Return>
