@@ -3,7 +3,7 @@
 # $ ghostty +show-config --default --docs | less
 # $ ghostty +list-keybinds --default | sort | less
 
-app-notifications = no-clipboard-copy
+app-notifications = no-clipboard-copy, no-config-reload
 copy-on-select = clipboard
 cursor-opacity = .8
 cursor-style-blink = false
@@ -27,6 +27,7 @@ keybind = ctrl+enter=new_tab
 keybind = ctrl+i=text:\x09
 keybind = ctrl+m=text:\x0d
 keybind = ctrl+quote=toggle_command_palette
+keybind = ctrl+shift+,=unbind
 keybind = ctrl+shift+enter=new_window
 keybind = ctrl+space=activate_key_table:scroll
 keybind = scroll/b=scroll_page_up
