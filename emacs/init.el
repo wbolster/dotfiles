@@ -3338,12 +3338,6 @@ defined as lowercase."
        (fn (cdr (assoc choice choices))))
     (funcall fn)))
 
-(use-package mmm-mode
-  :defer t
-  :delight " 🍔"
-  :custom-face
-  (mmm-default-submode-face ((t (:background unspecified)))))
-
 
 ;;; Major mode: text (generic)
 
