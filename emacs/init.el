@@ -3643,8 +3643,6 @@ defined as lowercase."
   (jq-format-json-on-save-mode " ❤")
   (jq-format-jsonlines-on-save-mode " ❤"))
 
-(use-package just-mode)
-
 (use-package markdown-mode
   :defer t
   :custom
