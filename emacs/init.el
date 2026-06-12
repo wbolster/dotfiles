@@ -9,8 +9,6 @@
 ;; Reduce garbage collection: faster startup, also recommended for lsp-mode.
 (setq gc-cons-threshold (* 100 1024 1024))
 
-;;; Packages
-
 (setq load-prefer-newer t)
 
 ;; Make everything relative to where this file actually lives.
@@ -66,9 +64,6 @@
 
 (use-package no-littering
   :demand t)
-
-
-;;; Environment
 
 (use-package direnv
   :demand t
@@ -158,8 +153,6 @@
             shell-command-history)
     (add-to-list 'savehist-additional-variables it))
   (savehist-mode))
-
-;;; Key bindings and menus
 
 (use-package hydra
   :after ivy
@@ -265,9 +258,6 @@ defined as lowercase."
   (which-key-idle-secondary-delay 0.0)
   :config
   (which-key-mode))
-
-
-;;; Buffers, files, directories
 
 (use-package emacs
   :custom
@@ -452,9 +442,6 @@ defined as lowercase."
     "i" #'insert-file)
   "Keymap for file commands.")
 
-
-;;;; theme
-
 (use-package solarized-theme
   :demand t
   :if (display-graphic-p)
@@ -540,9 +527,6 @@ defined as lowercase."
 
 (add-hook 'w/theme-changed-hook #'w/tweak-evil-cursor)
 
-
-;;;; fonts
-
 (use-package default-text-scale
   :demand t
   :if (display-graphic-p)
@@ -583,8 +567,6 @@ defined as lowercase."
   (unicode-fonts-setup))
 
 
-;;;; mode line
-
 (use-package delight)
 
 (use-package nyan-mode
@@ -624,9 +606,6 @@ defined as lowercase."
   (dolist (s '("[" "]"))
     (setq which-func-format (remove s which-func-format)))
   (which-function-mode))
-
-
-;;;; evil and editing
 
 (use-package evil
   :demand t
@@ -1323,9 +1302,7 @@ defined as lowercase."
   (keyfreq-autosave-mode))
 
 
-;;;; scrolling
-
-(use-package emacs
+(use-package emacs ; scrolling
   :custom
   (indicate-buffer-boundaries 'left)
   (recenter-positions '(top middle bottom))
@@ -1335,10 +1312,7 @@ defined as lowercase."
   (when (fboundp 'pixel-scroll-precision-mode)  ;; emacs 29+
     (pixel-scroll-precision-mode)))
 
-
-;;;; whitespace
-
-(use-package emacs
+(use-package emacs ; whitespace
   :custom
   (require-final-newline 'visit-save)
   (sentence-end-double-space nil)
@@ -1382,9 +1356,6 @@ defined as lowercase."
    ((t (:inherit font-lock-comment-face
         :foreground unspecified)))))
 
-
-;;;; minibuffer
-
 (use-package minibuffer
   :ensure nil
   :general
@@ -1397,9 +1368,6 @@ defined as lowercase."
               minibuffer-local-must-match-map
               minibuffer-local-ns-map)
    "<escape>" #'minibuffer-keyboard-quit))
-
-
-;;;; line navigation
 
 (use-package display-line-numbers
   :defer t
@@ -1415,9 +1383,6 @@ defined as lowercase."
         (display-line-numbers-mode))
       (message "Line numbering style: %s" new-value)
       (setq display-line-numbers new-value))))
-
-
-;;;; search
 
 (use-package emacs  ;; isearch
   :custom
@@ -1805,8 +1770,6 @@ defined as lowercase."
   ("z" origami-backward-fold-same-level)
   ("Z" origami-backward-fold-same-level :exit nil))
 
-;;;; parens
-
 (use-package smartparens
   :delight " ⸩"
   :config
@@ -1826,9 +1789,6 @@ defined as lowercase."
   (:states 'insert
    ;; this is a zero, i.e. C-) without shift
    "C-0" #'syntactic-close))
-
-
-;;;; text wrapping and filling
 
 (use-package emacs
   :delight
@@ -1899,9 +1859,6 @@ defined as lowercase."
   (setq fill-column most-positive-fixnum)
   (auto-fill-mode -1))
 
-
-;;;; outline / folding
-
 (use-package origami
   :custom
   (origami-show-fold-header t)
@@ -1967,9 +1924,6 @@ defined as lowercase."
   :delight
   (outline-minor-mode " ‣"))
 
-
-;;;; formatting
-
 (use-package reformatter)
 
 (use-package reformatter-dwim
@@ -2013,8 +1967,6 @@ defined as lowercase."
         (copy-as-format))
       (pop-mark))))
 
-
-;;;; projects
 
 (use-package projectile
   :defer t
@@ -2106,8 +2058,6 @@ defined as lowercase."
     (when-let ((directory-name (projectile-project-root)))
       (call-process "xdg-open" nil 0 nil directory-name)))
   )
-
-;;;; jumping around
 
 (use-package avy
   :custom
@@ -2487,9 +2437,6 @@ defined as lowercase."
  :states '(emacs motion)
  (kbd "C-w") 'w/hydra-window/body)
 
-
-;;;; spelling
-
 (use-package ispell
   :defer t
   :custom
@@ -2505,9 +2452,6 @@ defined as lowercase."
   :defer t
   :custom
   (guess-language-languages '(en nl)))
-
-
-;;;; completion
 
 (defvar w/ivy-height-percentage 30
   "Percentage of the screen height that ivy should use.")
@@ -2606,8 +2550,6 @@ defined as lowercase."
   (ivy-rich-mode 1))
 
 (use-package smex)
-
-;;;; git / version control
 
 (use-package autorevert
   :delight auto-revert-mode
@@ -3059,9 +3001,6 @@ defined as lowercase."
   lsp-origami
   :defer t)
 
-
-;;;; flycheck
-
 (use-package flycheck
   :demand t
   :after direnv
@@ -3174,9 +3113,6 @@ defined as lowercase."
   :after flycheck
   :hook (flycheck-mode-hook . flycheck-color-mode-line-mode))
 
-
-;;;; toggles
-
 (defvar w/toggle-map
   (define-keymap
     "b" #'auto-dark-toggle-appearance
@@ -3204,8 +3140,6 @@ defined as lowercase."
     ")" #'smartparens-mode
     "=" #'balanced-windows-mode)
   "Keymap for toggle commands.")
-
-;;;; leader key
 
 (defvar w/leader-map
   (define-keymap
@@ -3250,9 +3184,6 @@ defined as lowercase."
  :states 'motion
  "," w/leader-map
  "'" w/leader-map)
-
-
-;;; Major modes
 
 (setq-default major-mode 'text-mode)
 
@@ -3304,9 +3235,6 @@ defined as lowercase."
        (fn (cdr (assoc choice choices))))
     (funcall fn)))
 
-
-;;; Major mode: text (generic)
-
 (use-package typo
   :defer t
   :delight " ”"
@@ -3326,9 +3254,6 @@ defined as lowercase."
   (defun w/text-mode-hook ()
     (w/show-trailing-whitespace-mode)
     (guess-language-mode)))
-
-
-;;; Major mode: programming (generic)
 
 (use-package fic-mode
   :defer t
@@ -3383,8 +3308,6 @@ defined as lowercase."
   (yas-global-mode))
 
 
-;;; Major mode: c
-
 (use-package cc-mode
   :defer t
   :hook (c-mode-hook . w/c-mode-hook)
@@ -3394,9 +3317,6 @@ defined as lowercase."
     (evil-swap-keys-swap-double-single-quotes)
     (evil-swap-keys-swap-square-curly-brackets)
     (evil-swap-keys-swap-underscore-dash)))
-
-
-;;; Major mode: caddy
 
 (use-package caddyfile-mode
   :hook (caddyfile-mode-hook . w/caddyfile-mode-hook)
@@ -3408,9 +3328,6 @@ defined as lowercase."
     :args '("fmt" "-")
     :lighter " caddyfmt"
     :group 'caddyfile-format))
-
-
-;;; Major mode: compilation and comint
 
 (use-package compile
   :defer t
@@ -3497,9 +3414,6 @@ defined as lowercase."
 (use-package xterm-color
   :defer t)
 
-
-;;; Major mode: css
-
 (use-package css-mode
   :defer t
   :hook
@@ -3521,9 +3435,6 @@ defined as lowercase."
   (colorful-use-prefix t)
   (colorful-prefix-string "⬤"))
 
-
-;;; Major mode: customize
-
 (use-package cus-edit
   :ensure nil
   :general
@@ -3539,18 +3450,12 @@ defined as lowercase."
   :config
   (evil-set-initial-state 'Custom-mode 'normal))
 
-
-;;; Major mode: cython
-
 (use-package cython-mode
   :defer t)
 
 (use-package flycheck-cython
   :demand t
   :after (cython-mode flycheck))
-
-
-;;; Major mode: docker
 
 (use-package docker
   :defer t
@@ -3575,9 +3480,6 @@ defined as lowercase."
   :config
   (defun w/dockerfile-mode-hook ()
     (modify-syntax-entry ?$ ".")))
-
-
-;;; Major mode: emacs lisp
 
 (use-package elisp-mode
   :after lispy lispyville
@@ -3667,28 +3569,16 @@ defined as lowercase."
   :config
   (flycheck-package-setup))
 
-
-;;; Major mode: git
-
 (use-package git-modes
   :defer t
   :mode
   ((rx ".gitconfig" (* any) string-end) . gitconfig-mode)
   ((rx ".config/git/config" (* any) string-end) . gitconfig-mode))
 
-
-;;; major mode: graphql
-
 (use-package graphql-mode :defer t)
-
-
-;;; Major mode: groovy
 
 (use-package groovy-mode
   :defer t)
-
-
-;;; Major mode: help
 
 (use-package help-mode
   :defer t
@@ -3700,9 +3590,6 @@ defined as lowercase."
   :config
   (defun w/help-mode-hook ()
     (setq evil-lookup-func 'w/helpful-evil-lookup-func)))
-
-
-;;; Major mode: helpful
 
 (use-package helpful
   :general
@@ -3726,9 +3613,6 @@ defined as lowercase."
      evil-shift-width 2))
   (defun w/helpful-evil-lookup-func ()
     (call-interactively #'helpful-symbol)))
-
-
-;;; Major mode: html
 
 (defgroup prettier nil
   "Formatting using Prettier"
@@ -3761,15 +3645,10 @@ defined as lowercase."
     (reformatter-dwim-select 'prettier-format)
     (setq evil-shift-width 2)))
 
-;;; Major mode: jinja
-
 (use-package jinja2-mode
   :defer t
   :mode
   (rx ".j2" string-end))
-
-
-;;; Major mode: javascript
 
 (use-package js2-mode
   :defer t
@@ -3789,9 +3668,6 @@ defined as lowercase."
     (reformatter-dwim-select 'prettier-format)))
 
 (use-package rjsx-mode :defer t)
-
-
-;;; Major mode: json
 
 (use-package json-mode
   :defer t
@@ -3813,13 +3689,7 @@ defined as lowercase."
   (jq-format-json-on-save-mode " ❤")
   (jq-format-jsonlines-on-save-mode " ❤"))
 
-
-;;; major mode: just
-
 (use-package just-mode)
-
-
-;;; Major mode: markdown
 
 (use-package markdown-mode
   :defer t
@@ -3890,9 +3760,6 @@ defined as lowercase."
   :custom
   (markdown-toc-header-toc-title ""))
 
-
-;;; Major mode: org
-
 (use-package org
   :defer t
   :hook (org-mode-hook . w/org-mode-hook)
@@ -3917,18 +3784,12 @@ defined as lowercase."
      (right . "i")))
   (evil-org-set-key-theme))
 
-
-;;; Major mode: pkgbuild
-
 (use-package pkgbuild-mode
   :defer t
   :custom
   (pkgbuild-update-sums-on-save nil)
   :custom-face
   (pkgbuild-error-face ((t (:inherit error)))))
-
-
-;;; Major mode: python
 
 (use-package python
   :defer t
@@ -4348,9 +4209,6 @@ defined as lowercase."
    origami-parser-alist
    'python-pytest-mode 'w/python-pytest-origami-parser))
 
-
-;;; Major mode: profiling-report
-
 (use-package profiler
   :general
   (:keymaps 'profiler-report-mode-map
@@ -4369,12 +4227,7 @@ defined as lowercase."
     (setq evil-lookup-func 'w/helpful-evil-lookup-func))
   (evil-set-initial-state 'profiler-report-mode 'motion))
 
-
-;;; Major mode: systemd
-
 (use-package systemd :defer t)
-
-;;; Major mode: restructuredtext
 
 (use-package rst
   :defer t
@@ -4563,9 +4416,6 @@ defined as lowercase."
   :config
   (setq sphinx-mode-map (make-sparse-keymap)))
 
-
-;;; Major mode: rust
-
 (use-package rust-mode
   :defer t
   :hook (rust-mode-hook . w/rust-mode-hook)
@@ -4578,9 +4428,6 @@ defined as lowercase."
     (evil--add-to-alist
      origami-parser-alist
      'rust-mode 'w/origami-parser-imenu-flat)))
-
-
-;;; Major mode: shell
 
 (use-package sh-script
   :defer t
@@ -4605,9 +4452,6 @@ defined as lowercase."
 
 (use-package shfmt :defer t)
 
-
-;;; Major mode: sql
-
 (use-package sql
   :defer t
   :mode
@@ -4627,9 +4471,6 @@ defined as lowercase."
   :custom
   (sqlformat-command 'pgformatter))
 
-
-;;; Major mode: toml
-
 (use-package conf-mode
   :hook (conf-toml-mode-hook . w/conf-toml-mode-hook)
   :config
@@ -4640,9 +4481,6 @@ defined as lowercase."
   (reformatter-define toml-format-taplo
     :program "taplo"
     :args '("format" "-")))
-
-
-;;; Major mode: typescript
 
 (use-package typescript-ts-mode
   ;; built-in
@@ -4660,9 +4498,6 @@ defined as lowercase."
   (defun w/typescript-ts-mode-hook ()
     (reformatter-dwim-select 'prettier-format)
     (lsp-deferred)))
-
-
-;;; Major mode: web
 
 (use-package web-mode
   :defer t
@@ -4691,18 +4526,12 @@ defined as lowercase."
     (reformatter-dwim-select 'prettier-format)
     (lsp-deferred)))
 
-
-;;; Major mode: woman (manual pages)
-
 (use-package woman
   :defer t
   :init
   (add-to-list
    'warning-suppress-log-types
    '((defvaralias losing-value woman-topic-history))))
-
-
-;;; Major mode: xml
 
 (use-package nxml-mode
   :ensure nil
@@ -4722,8 +4551,6 @@ defined as lowercase."
   :after nxml-mode)
 
 
-;;; Major mode: yaml
-
 (use-package yaml-mode
   :defer t
   :hook (yaml-mode-hook . w/yaml-mode-hook)
@@ -4737,11 +4564,7 @@ defined as lowercase."
      origami-parser-alist
      'yaml-mode 'w/origami-parser-imenu-flat)))
 
-
-;;; Local configuration
-
 (load (concat user-emacs-directory "init-local") t)
-
 
 (provide 'init)
 ;;; init.el ends here
