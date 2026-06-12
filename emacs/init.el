@@ -109,7 +109,7 @@
   (auto-dark-mode))
 
 (use-package crux
-  :demand t)
+  :defer t)
 
 (use-package dash
   :demand t
