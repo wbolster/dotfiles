@@ -332,6 +332,19 @@
           (lambda (directory)
             `("ghostty" ,(format "--working-directory=%s" directory) "+new-window")))))
 
+(use-package transient
+  :defer t
+  :custom
+  (transient-show-menu 1)
+  :bind
+  ;; quit bindings inspired by ‘transient-bind-q-to-quit’
+  (:map transient-base-map
+   ("<escape>" . transient-quit-one)
+   ("C-n" . transient-history-next)
+   ("C-p" . transient-history-prev)
+   :map transient-sticky-map
+   ("<escape>" . transient-quit-seq)))
+
 (use-package which-key
   :demand t
   :delight
@@ -419,22 +432,6 @@ defined as lowercase."
          ,@heads
          ("C-g" nil :exit t)
          ("<escape>" nil :exit t)))))
-
-(use-package transient
-  :demand t
-  :custom
-  (transient-show-popup 3)
-  (transient-display-buffer-action '(display-buffer-below-selected))
-  :general
-  ;; Key mapping approach is based on what transient-bind-q-to-quit does.
-  (:keymaps 'transient-base-map
-   "<escape>" #'transient-quit-one
-   "C-p" #'transient-history-prev
-   "C-n" #'transient-history-next)
-  (:keymaps 'transient-sticky-map
-   "<escape>" #'transient-quit-seq)
-  (:keymaps 'transient-map
-   "<tab>" #'transient-show))
 
 (use-package ranger
   :after (dired evil)
