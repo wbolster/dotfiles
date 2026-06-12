@@ -166,6 +166,9 @@
   (unless (server-running-p)
     (server-start)))
 
+(use-package sudo-edit
+  :defer t)
+
 (use-package terminal-here
   :defer t
   :custom
@@ -358,15 +361,6 @@ defined as lowercase."
           (ranger-find-file name)
         (user-error "Not a directory")))))
 
-(use-package sudo-edit
-  :defer t
-  :commands w/sudo-find-file
-  :config
-  (defun w/sudo-find-file ()
-    (interactive)
-    (setq current-prefix-arg t)
-    (call-interactively 'sudo-edit)))
-
 (defun w/buffer-worth-saving-p (name)
   "Does the buffer NAME indicate it may be worth saving?"
   (cond
@@ -433,7 +427,7 @@ defined as lowercase."
     "r" #'counsel-recentf
     "R" #'w/counsel-recentf-other-window
     "s" #'sudo-edit
-    "S" #'w/sudo-find-file
+    "S" #'sudo-edit-find-file
     "d" #'deer
     "D" #'deer-jump-other-window
     "!" #'terminal-here
