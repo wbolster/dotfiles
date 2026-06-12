@@ -118,21 +118,15 @@
   (unless (server-running-p)
     (server-start)))
 
-
-;;; Basics
-
 (use-package emacs
-  ;; :demand t
-  :bind (:map help-map
-         ;; Unbind useless shortcuts to GPL, etc.
-         ("g" . nil)   ;; describe-gnu-project
-         ("C-c" . nil) ;; describe-copying
-         ("C-m" . nil) ;; view-order-manuals
-         ("C-o" . nil) ;; describe-distributions
-         ("C-w" . nil))  ;; describe-no-warranty
-
-  :hook (emacs-startup-hook . w/load-custom-file)
-
+  :bind
+  (:map help-map ;; Unbind useless shortcuts to GPL, etc.
+   ("g" . nil) ;; describe-gnu-project
+   ("C-c" . nil) ;; describe-copying
+   ("C-m" . nil) ;; view-order-manuals
+   ("C-o" . nil) ;; describe-distributions
+   ("C-w" . nil)) ;; describe-no-warranty
+  :hook (emacs-startup-hook . (lambda () (load custom-file 'noerror)))
   :custom
   (custom-safe-themes t)
   (disabled-command-function nil)
@@ -142,22 +136,8 @@
   (initial-scratch-message nil)
   (native-comp-async-report-warnings-errors 'silent)
   (use-short-answers t)
-
   :config
-  ;; The 'inhibit-startup-echo-area-message' variable
-  ;; requires hard-coding a user name for it to work,
-  ;; Annoying. Instead, turn the function that actually
-  ;; shows the propaganda message into a no-op. Bye bye.
-  (defun w/message-empty ()
-    "Show an empty message."
-    (message ""))
-  (defalias 'display-startup-echo-area-message 'w/message-empty)
-
-  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-
-  (defun w/load-custom-file ()
-    "Load the file with automatically saved customization settings."
-    (load custom-file 'noerror)))
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory)))
 
 (use-package savehist
   :custom
