@@ -1,16 +1,11 @@
-=======
-systemd
-=======
+# systemd
 
-systemd-tmpfiles
-================
+## systemd-tmpfiles
 
 see systemd-tmpfiles(8) and tmpfiles.d(5)
 
-::
+    systemctl --user enable systemd-tmpfiles-clean.timer
 
-  systemctl --user enable systemd-tmpfiles-clean.timer
+to test:
 
-to test::
-
-  SYSTEMD_LOG_LEVEL=debug systemd-tmpfiles --user --clean
+    SYSTEMD_LOG_LEVEL=debug systemd-tmpfiles --user --clean

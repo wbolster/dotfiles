@@ -1,41 +1,33 @@
-==========
-git config
-==========
+# git config
 
-custom configs per directory tree
-=================================
+## custom configs per directory tree
 
-useful for config that should apply to all repos kept under the same parent directory, e.g. all work repos, or when using multiple github accounts. does not require per repo setup, works also for new clones.
+useful for config that should apply to all repos kept under the same
+parent directory, e.g. all work repos, or when using multiple github
+accounts. does not require per repo setup, works also for new clones.
 
-in ``~/.config/git/config``, or in ``~/.config/git/config-local`` to keep it it out of version control (that file is included in my setup)::
+in `~/.config/git/config`, or in `~/.config/git/config-local` to keep it
+it out of version control (that file is included in my setup):
 
-  [includeIf "gitdir/i:~/Projects/work/"]
-  path = config-work
+    [includeIf "gitdir/i:~/Projects/work/"]
+    path = config-work
 
-in ``~/.config/git/config-work``::
+in `~/.config/git/config-work`:
 
-  [user]
-  email = someone@example.org
+    [user]
+    email = someone@example.org
 
-  [core]
-  sshCommand = ssh -o 'IdentityFile ~/.ssh/id_ed25519_work' -o 'IdentitiesOnly yes'
+    [core]
+    sshCommand = ssh -o 'IdentityFile ~/.ssh/id_ed25519_work' -o 'IdentitiesOnly yes'
 
+## gnome libsecret credential storage
 
-gnome libsecret credential storage
-==================================
+useful for remotes that don\'t use ssh key auth, e.g. https remotes
 
-useful for remotes that don't use ssh key auth, e.g. https remotes
+    [credential]
+    helper = libsecret
 
-::
+## custom remote urls
 
-  [credential]
-  helper = libsecret
-
-
-custom remote urls
-==================
-
-::
-
-  [url "ssh://git@gitea-host:port/user/…"]
-  insteadOf = gitea:
+    [url "ssh://git@gitea-host:port/user/…"]
+    insteadOf = gitea:
