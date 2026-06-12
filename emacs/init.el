@@ -94,6 +94,17 @@
   :config
   (global-dash-fontify-mode))
 
+(use-package desktop
+  :demand t
+  :custom
+  (desktop-auto-save-timeout 10)
+  (desktop-load-locked-desktop 'check-pid)
+  (desktop-restore-eager 5)
+  :config
+  (desktop-save-mode)
+  (add-to-list 'desktop-globals-to-save 'swiper-history)
+  (add-to-list 'desktop-globals-to-clear 'swiper-history))
+
 (use-package direnv
   :demand t
   :after exec-path-from-shell
@@ -268,17 +279,6 @@ defined as lowercase."
    `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
   (setq backup-directory-alist
         `((".*" ,(no-littering-expand-var-file-name "backup/") t))))
-
-(use-package desktop
-  :demand t
-  :custom
-  (desktop-auto-save-timeout 10)
-  (desktop-load-locked-desktop 'check-pid)
-  (desktop-restore-eager 5)
-  :config
-  (desktop-save-mode)
-  (add-to-list 'desktop-globals-to-save 'swiper-history)
-  (add-to-list 'desktop-globals-to-clear 'swiper-history))
 
 (use-package recentf
   :custom
