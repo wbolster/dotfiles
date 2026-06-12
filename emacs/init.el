@@ -6,6 +6,8 @@
 
 ;;; Code:
 
+;; Bootstrap initialization
+
 ;; Reduce garbage collection: faster startup, also recommended for lsp-mode.
 (setq gc-cons-threshold (* 100 1024 1024))
 
@@ -16,6 +18,8 @@
       (concat "~/" (file-name-directory (file-symlink-p user-init-file))))
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+
+;; Bootstrap packages
 
 (require 'package)
 (setq
@@ -35,91 +39,16 @@
   (use-package-enable-imenu-support t)
   (use-package-hook-name-suffix nil))
 
-(use-package auto-compile
-  :demand t
-  :custom
-  (auto-compile-update-autoloads t)
-  :config
-  (auto-compile-on-load-mode))
-
 (use-package benchmark-init
   :demand t
   :hook (after-init-hook . benchmark-init/deactivate)
   :config
   (benchmark-init/activate))
 
-(use-package crux
-  :demand t)
-
-(use-package dash
-  :demand t
-  :config
-  (global-dash-fontify-mode))
-
-(use-package fn
-  :demand t)
-
-(use-package general
-  :demand t)
-
-(use-package no-littering
-  :demand t)
-
-(use-package direnv
-  :demand t
-  :after exec-path-from-shell
-  :if (executable-find "direnv")
-  :hook (direnv-envrc-mode-hook . w/direnv-envrc-mode-hook)
-  :config
-  (direnv-mode)
-  (defun w/direnv-envrc-mode-hook ()
-    (add-hook 'after-save-hook #'direnv-allow)))
-
-(use-package exec-path-from-shell
-  :demand t
-  :custom
-  (exec-path-from-shell-check-startup-files nil)
-  :config
-  (exec-path-from-shell-initialize))
-
-(use-package gsettings
-  :demand t
-  :functions
-  gsettings-get
-  gsettings-gnome-running?
-  :config
-  (when (gsettings-gnome-running?)
-    (gsettings-apply-gnome-settings)))
+;; Regular config
 
 (defvar w/ui-font-family "Sans"
   "Name of the font-family used by the desktop environment's user interface.")
-
-(use-package emacs
-  :if (gsettings-gnome-running?)
-  :after gsettings
-  :config
-  (let* ((font-name
-          (gsettings-get "org.gnome.desktop.interface" "font-name"))
-         (font-name-without-size
-          (replace-regexp-in-string "\\(.*\\) [0-9.]+" "\\1" font-name)))
-    (setq w/ui-font-family font-name-without-size)))
-
-(use-package emacs
-  :if (and (display-graphic-p) (eq system-type 'darwin)) ;; macOS
-  :general
-  ("s-q" nil)
-  :custom
-  (ns-right-alternate-modifier 'none)
-  (ns-use-native-fullscreen nil))
-
-(use-package server
-  :demand t
-  :functions
-  server-running-p
-  :if (display-graphic-p)
-  :config
-  (unless (server-running-p)
-    (server-start)))
 
 (use-package emacs
   :bind
@@ -142,7 +71,69 @@
   :config
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory)))
 
+(use-package emacs
+  :if (and (display-graphic-p) (eq system-type 'darwin)) ;; macOS
+  :bind
+  ("s-q" . nil)
+  :custom
+  (ns-right-alternate-modifier 'none)
+  (ns-use-native-fullscreen nil))
+
+(use-package auto-compile
+  :demand t
+  :custom
+  (auto-compile-update-autoloads t)
+  :config
+  (auto-compile-on-load-mode))
+
+(use-package crux
+  :demand t)
+
+(use-package dash
+  :demand t
+  :config
+  (global-dash-fontify-mode))
+
+(use-package direnv
+  :demand t
+  :after exec-path-from-shell
+  :if (executable-find "direnv")
+  :hook (direnv-envrc-mode-hook . w/direnv-envrc-mode-hook)
+  :config
+  (direnv-mode)
+  (defun w/direnv-envrc-mode-hook ()
+    (add-hook 'after-save-hook #'direnv-allow)))
+
+(use-package exec-path-from-shell
+  :demand t
+  :custom
+  (exec-path-from-shell-check-startup-files nil)
+  :config
+  (exec-path-from-shell-initialize))
+
+(use-package fn
+  :demand t)
+
+(use-package general
+  :demand t)
+
+(use-package gsettings
+  :demand t
+  :functions
+  gsettings-get
+  gsettings-gnome-running?
+  :config
+  (when (gsettings-gnome-running?)
+    (gsettings-apply-gnome-settings)
+    (let* ((font-name (gsettings-get "org.gnome.desktop.interface" "font-name"))
+           (font-name-without-size (replace-regexp-in-string "\\(.*\\) [0-9.]+" "\\1" font-name)))
+      (setq w/ui-font-family font-name-without-size))))
+
+(use-package no-littering
+  :demand t)
+
 (use-package savehist
+  :demand t
   :custom
   (savehist-autosave-interval 60)
   :config
@@ -154,6 +145,17 @@
             shell-command-history)
     (add-to-list 'savehist-additional-variables it))
   (savehist-mode))
+
+(use-package server
+  :demand t
+  :functions
+  server-running-p
+  :if (display-graphic-p)
+  :config
+  (unless (server-running-p)
+    (server-start)))
+
+;;; todo: tidy up the messy stuff below ======================
 
 (use-package hydra
   :after ivy
