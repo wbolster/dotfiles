@@ -68,6 +68,7 @@
 (use-package direnv
   :demand t
   :after exec-path-from-shell
+  :if (executable-find "direnv")
   :hook (direnv-envrc-mode-hook . w/direnv-envrc-mode-hook)
   :config
   (direnv-mode)
