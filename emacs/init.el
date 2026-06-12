@@ -117,7 +117,10 @@
   (ns-use-native-fullscreen nil))
 
 (use-package server
-  :if window-system
+  :demand t
+  :functions
+  server-running-p
+  :if (display-graphic-p)
   :config
   (unless (server-running-p)
     (server-start)))
