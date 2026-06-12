@@ -87,15 +87,20 @@
   (exec-path-from-shell-initialize))
 
 (use-package gsettings
+  :demand t
+  :functions
+  gsettings-get
+  gsettings-gnome-running?
   :config
-  (gsettings-apply-gnome-settings))
+  (when (gsettings-gnome-running?)
+    (gsettings-apply-gnome-settings)))
 
 (defvar w/ui-font-family "Sans"
   "Name of the font-family used by the desktop environment's user interface.")
 
 (use-package emacs
-  ;; gnome specific
-  :if (and window-system (string-equal (getenv "XDG_CURRENT_DESKTOP") "GNOME"))
+  :if (gsettings-gnome-running?)
+  :after gsettings
   :config
   (let* ((font-name
           (gsettings-get "org.gnome.desktop.interface" "font-name"))
