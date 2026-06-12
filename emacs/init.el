@@ -155,6 +155,16 @@
   (unless (server-running-p)
     (server-start)))
 
+(use-package which-key
+  :demand t
+  :delight
+  :custom
+  (which-key-add-column-padding 4)
+  (which-key-dont-use-unicode nil)
+  (which-key-idle-secondary-delay 0.0)
+  :config
+  (which-key-mode))
+
 ;;; todo: tidy up the messy stuff below ======================
 
 (use-package hydra
@@ -248,15 +258,6 @@ defined as lowercase."
    "<escape>" #'transient-quit-seq)
   (:keymaps 'transient-map
    "<tab>" #'transient-show))
-
-(use-package which-key
-  :delight
-  :custom
-  (which-key-add-column-padding 4)
-  (which-key-dont-use-unicode nil)
-  (which-key-idle-secondary-delay 0.0)
-  :config
-  (which-key-mode))
 
 (use-package emacs
   :custom
