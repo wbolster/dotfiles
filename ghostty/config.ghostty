@@ -33,6 +33,7 @@ keybind = ctrl+space=activate_key_table:scroll
 keybind = scroll/b=scroll_page_up
 keybind = scroll/backspace=scroll_page_up
 keybind = scroll/catch_all=ignore
+keybind = scroll/ctrl+c=deactivate_key_table
 keybind = scroll/d=scroll_page_fractional:0.5
 keybind = scroll/down=scroll_page_lines:1
 keybind = scroll/e=scroll_page_lines:-5
