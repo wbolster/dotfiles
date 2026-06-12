@@ -86,6 +86,21 @@
   :config
   (auto-compile-on-load-mode))
 
+(use-package auto-dark
+  :demand t
+  :if (display-graphic-p)
+  :after solarized-theme
+  :custom
+  (auto-dark-themes '((solarized-selenized-dark) (solarized-selenized-light)))
+  :commands
+  auto-dark-toggle-appearance
+  :hook
+  (auto-dark-dark-mode-hook . (lambda () (run-hooks 'w/theme-changed-hook)))
+  (auto-dark-light-mode-hook . (lambda () (run-hooks 'w/theme-changed-hook)))
+  (emacs-startup-hook . (lambda () (run-hooks 'w/theme-changed-hook)))
+  :config
+  (auto-dark-mode))
+
 (use-package crux
   :demand t)
 
@@ -480,20 +495,6 @@ defined as lowercase."
 
 (defvar w/theme-changed-hook nil
   "Hook to run after the theme has changed. Useful for patching font faces.")
-
-(use-package auto-dark
-  :demand t
-  :if (display-graphic-p)
-  :custom
-  (auto-dark-themes '((solarized-selenized-dark) (solarized-selenized-light)))
-  :commands
-  auto-dark-toggle-appearance
-  :hook
-  (auto-dark-dark-mode-hook . (lambda () (run-hooks 'w/theme-changed-hook)))
-  (auto-dark-light-mode-hook . (lambda () (run-hooks 'w/theme-changed-hook)))
-  (emacs-startup-hook . (lambda () (run-hooks 'w/theme-changed-hook)))
-  :config
-  (auto-dark-mode))
 
 (defvar w/faces-bold '(magit-popup-argument)
   "Faces that may retain their bold appearance.")
