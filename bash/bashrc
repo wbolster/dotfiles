@@ -490,6 +490,8 @@ if [[ $PS1 ]]; then
     GLOBIGNORE=".:.."
     shopt -u dotglob  # ... since setting GLOBIGNORE enables dotglob as a side effect :-(
     shopt -s extglob
+    shopt -s failglob
+    shopt -s globstar
 
     # Disable annoying beeps
     if ___has setterm; then
