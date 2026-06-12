@@ -234,6 +234,11 @@
   :config
   (which-key-mode))
 
+(use-package xdg
+  :demand t
+  :functions
+  xdg-state-home)
+
 ;;; todo: tidy up the messy stuff below ======================
 
 (use-package hydra
