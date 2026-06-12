@@ -166,6 +166,16 @@
   (unless (server-running-p)
     (server-start)))
 
+(use-package terminal-here
+  :defer t
+  :custom
+  terminal-here-linux-terminal-command 'gnome-terminal
+  :config
+  (when (executable-find "ghostty")
+    (setq terminal-here-linux-terminal-command
+          (lambda (directory)
+            `("ghostty" ,(format "--working-directory=%s" directory) "+new-window")))))
+
 (use-package which-key
   :demand t
   :delight
@@ -356,16 +366,6 @@ defined as lowercase."
     (interactive)
     (setq current-prefix-arg t)
     (call-interactively 'sudo-edit)))
-
-(use-package terminal-here
-  :defer t
-  :custom
-  terminal-here-linux-terminal-command 'gnome-terminal
-  :config
-  (when (executable-find "ghostty")
-    (setq terminal-here-linux-terminal-command
-          (lambda (dir)
-            (list "ghostty" (format "--working-directory=%s" dir) "+new-window")))))
 
 (defun w/buffer-worth-saving-p (name)
   "Does the buffer NAME indicate it may be worth saving?"
