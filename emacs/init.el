@@ -341,6 +341,16 @@
    ("C-n" . transient-history-next)
    ("C-p" . transient-history-prev)))
 
+(use-package which-func
+  :custom
+  (which-func-unknown "")
+  (which-func-modes nil)
+  :custom-face
+  (which-func ((t (:foreground unspecified))))
+  :config
+  (setq which-func-format (--remove (member it '("[" "]")) which-func-format))
+  (which-function-mode))
+
 (use-package which-key
   :demand t
   :delight
@@ -643,18 +653,6 @@ defined as lowercase."
     (set-face-attribute 'header-line nil :background 'unspecified :inherit 'mode-line)
     (set-face-attribute 'sml/modified nil :foreground solarized-color-red)
     (set-face-attribute 'sml/filename nil :foreground solarized-color-blue)))
-
-(use-package which-func
-  :ensure nil
-  :custom
-  (which-func-unknown "")
-  (which-func-modes nil)
-  :custom-face
-  (which-func ((t (:foreground unspecified))))
-  :config
-  (dolist (s '("[" "]"))
-    (setq which-func-format (remove s which-func-format)))
-  (which-function-mode))
 
 (use-package evil
   :demand t
