@@ -63,13 +63,18 @@
   (custom-safe-themes t)
   (disabled-command-function nil)
   (echo-keystrokes 0.5)
+  (find-file-visit-truename t)
   (inhibit-startup-screen t)
   (initial-major-mode 'text-mode)
   (initial-scratch-message nil)
   (native-comp-async-report-warnings-errors 'silent)
   (use-short-answers t)
   :config
-  (setq custom-file (expand-file-name "custom.el" user-emacs-directory)))
+  (require 'xdg)
+  (add-to-list 'auto-save-file-name-transforms `(".*" ,(expand-file-name "auto-save" (xdg-state-home)) t) t)
+  (setq
+   backup-directory-alist `((".*"  .,(expand-file-name "emacs/backup" (xdg-state-home))))
+   custom-file (expand-file-name "custom.el" user-emacs-directory)))
 
 (use-package emacs
   :if (and (display-graphic-p) (eq system-type 'darwin)) ;; macOS
@@ -332,16 +337,6 @@ defined as lowercase."
    "<escape>" #'transient-quit-seq)
   (:keymaps 'transient-map
    "<tab>" #'transient-show))
-
-(use-package emacs
-  :custom
-  (find-file-visit-truename t)
-  :config
-  (setq
-   auto-save-file-name-transforms
-   `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-  (setq backup-directory-alist
-        `((".*" ,(no-littering-expand-var-file-name "backup/") t))))
 
 (use-package recentf
   :custom
