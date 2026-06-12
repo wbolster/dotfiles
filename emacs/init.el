@@ -337,13 +337,9 @@
   :custom
   (transient-show-menu 1)
   :bind
-  ;; quit bindings inspired by ‘transient-bind-q-to-quit’
-  (:map transient-base-map
-   ("<escape>" . transient-quit-one)
+  (:map transient-map
    ("C-n" . transient-history-next)
-   ("C-p" . transient-history-prev)
-   :map transient-sticky-map
-   ("<escape>" . transient-quit-seq)))
+   ("C-p" . transient-history-prev)))
 
 (use-package which-key
   :demand t
