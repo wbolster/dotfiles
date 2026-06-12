@@ -276,12 +276,12 @@ defined as lowercase."
         `((".*" ,(no-littering-expand-var-file-name "backup/") t))))
 
 (use-package desktop
+  :demand t
   :custom
   (desktop-auto-save-timeout 10)
+  (desktop-load-locked-desktop 'check-pid)
   (desktop-restore-eager 5)
   :config
-  (setq desktop-load-locked-desktop
-        (if (version<= emacs-version "29") 'ask 'check-pid))
   (desktop-save-mode)
   (add-to-list 'desktop-globals-to-save 'swiper-history)
   (add-to-list 'desktop-globals-to-clear 'swiper-history))
