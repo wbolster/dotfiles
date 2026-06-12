@@ -38,38 +38,41 @@
   (use-package-hook-name-suffix nil))
 
 (use-package auto-compile
+  :demand t
   :custom
   (auto-compile-update-autoloads t)
   :config
   (auto-compile-on-load-mode))
 
-
-;;; Helpers
-
 (use-package benchmark-init
-  :demand
+  :demand t
   :hook (after-init-hook . benchmark-init/deactivate)
   :config
   (benchmark-init/activate))
 
-(use-package crux)
+(use-package crux
+  :demand t)
 
 (use-package dash
+  :demand t
   :config
   (global-dash-fontify-mode))
 
-(use-package fn)
+(use-package fn
+  :demand t)
 
-(use-package general)
+(use-package general
+  :demand t)
 
-(use-package no-littering)
+(use-package no-littering
+  :demand t)
 
 
 ;;; Environment
 
 (use-package direnv
-  :after exec-path-from-shell
   :demand t
+  :after exec-path-from-shell
   :hook (direnv-envrc-mode-hook . w/direnv-envrc-mode-hook)
   :config
   (direnv-mode)
@@ -77,6 +80,7 @@
     (add-hook 'after-save-hook #'direnv-allow)))
 
 (use-package exec-path-from-shell
+  :demand t
   :custom
   (exec-path-from-shell-check-startup-files nil)
   :config
