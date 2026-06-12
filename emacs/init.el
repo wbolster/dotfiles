@@ -233,10 +233,6 @@ defined as lowercase."
          ("C-g" nil :exit t)
          ("<escape>" nil :exit t)))))
 
-(use-package magit-popup
-  :custom
-  (magit-popup-show-help-echo nil))
-
 (use-package transient
   :demand t
   :custom
