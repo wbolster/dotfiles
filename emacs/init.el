@@ -2466,8 +2466,6 @@ defined as lowercase."
     (company-abort)
     (counsel-company)))
 
-(use-package flx)
-
 (use-package ivy
   :demand t
   :delight
