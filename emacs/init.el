@@ -109,8 +109,7 @@
     (setq w/ui-font-family font-name-without-size)))
 
 (use-package emacs
-  ;; os-x specific
-  :if (and window-system (eq system-type 'darwin))
+  :if (and (display-graphic-p) (eq system-type 'darwin)) ;; macOS
   :general
   ("s-q" nil)
   :custom
