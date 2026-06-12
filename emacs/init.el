@@ -52,15 +52,17 @@
 
 (use-package emacs
   :bind
-  (:map help-map ;; Unbind useless shortcuts to GPL, etc.
-   ("g" . nil) ;; describe-gnu-project
-   ("C-c" . nil) ;; describe-copying
-   ("C-m" . nil) ;; view-order-manuals
-   ("C-o" . nil) ;; describe-distributions
+  (:map help-map  ;; Unbind useless shortcuts to GPL, etc.
+   ("g" . nil)    ;; describe-gnu-project
+   ("C-c" . nil)  ;; describe-copying
+   ("C-m" . nil)  ;; view-order-manuals
+   ("C-o" . nil)  ;; describe-distributions
    ("C-w" . nil)) ;; describe-no-warranty
   :hook (emacs-startup-hook . (lambda () (load custom-file 'noerror)))
   :custom
+  (auto-save-interval 100)
   (custom-safe-themes t)
+  (delete-by-moving-to-trash t)
   (disabled-command-function nil)
   (echo-keystrokes 0.5)
   (find-file-visit-truename t)
