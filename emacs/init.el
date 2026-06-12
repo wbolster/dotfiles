@@ -45,6 +45,23 @@
   :config
   (benchmark-init/activate))
 
+;; Early packages
+
+(use-package exec-path-from-shell
+  :demand t
+  :custom
+  (exec-path-from-shell-check-startup-files nil)
+  :config
+  (exec-path-from-shell-initialize))
+
+(use-package xdg
+  :demand t
+  :functions
+  xdg-state-home)
+
+(use-package no-littering
+  :demand t)
+
 ;; Regular config
 
 (defvar w/ui-font-family "Sans"
@@ -211,13 +228,6 @@
   (defun w/direnv-envrc-mode-hook ()
     (add-hook 'after-save-hook #'direnv-allow)))
 
-(use-package exec-path-from-shell
-  :demand t
-  :custom
-  (exec-path-from-shell-check-startup-files nil)
-  :config
-  (exec-path-from-shell-initialize))
-
 (use-package general
   :demand t)
 
@@ -232,9 +242,6 @@
     (let* ((font-name (gsettings-get "org.gnome.desktop.interface" "font-name"))
            (font-name-without-size (replace-regexp-in-string "\\(.*\\) [0-9.]+" "\\1" font-name)))
       (setq w/ui-font-family font-name-without-size))))
-
-(use-package no-littering
-  :demand t)
 
 (use-package savehist
   :demand t
@@ -311,11 +318,6 @@
   (which-key-idle-secondary-delay 0.0)
   :config
   (which-key-mode))
-
-(use-package xdg
-  :demand t
-  :functions
-  xdg-state-home)
 
 ;;; todo: tidy up the messy stuff below ======================
 
