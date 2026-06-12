@@ -181,6 +181,36 @@
   (unless (server-running-p)
     (server-start)))
 
+(use-package solarized-theme
+  :demand t
+  :if (display-graphic-p)
+  :custom
+  (solarized-emphasize-indicators nil)
+  (solarized-scale-org-headlines nil)
+  (solarized-use-less-bold t)
+  (solarized-use-variable-pitch nil)
+  (solarized-height-minus-1 1.0)
+  (solarized-height-plus-1 1.0)
+  (solarized-height-plus-2 1.0)
+  (solarized-height-plus-3 1.0)
+  (solarized-height-plus-4 1.0)
+  :preface
+  ;; todo: avoid these if possible. ones are used for useful things
+  ;; and look up the values in ‘solarized-dark-color-palette-alist’
+  ;; and ‘solarized-light-color-palette-alist’
+  (defvar solarized-color-blue      "#268bd2")
+  (defvar solarized-color-blue-l    "#69b7f0")
+  (defvar solarized-color-cyan-l    "#69cabf")
+  (defvar solarized-color-green-l   "#b4c342")
+  (defvar solarized-color-magenta   "#d33682")
+  (defvar solarized-color-magenta-l "#f771ac")
+  (defvar solarized-color-orange-l  "#f2804f")
+  (defvar solarized-color-red       "#dc322f")
+  (defvar solarized-color-red-l     "#ff6e64")
+  (defvar solarized-color-violet-l  "#9ea0e5")
+  (defvar solarized-color-yellow    "#b58900")
+  (defvar solarized-color-yellow-l  "#deb542"))
+
 (use-package sudo-edit
   :defer t)
 
@@ -450,48 +480,6 @@ defined as lowercase."
     "g" #'w/open-gui-file-browser
     "i" #'insert-file)
   "Keymap for file commands.")
-
-(use-package solarized-theme
-  :demand t
-  :if (display-graphic-p)
-  :custom
-  (solarized-emphasize-indicators nil)
-  (solarized-scale-org-headlines nil)
-  (solarized-use-less-bold t)
-  (solarized-use-variable-pitch nil)
-  (solarized-height-minus-1 1.0)
-  (solarized-height-plus-1 1.0)
-  (solarized-height-plus-2 1.0)
-  (solarized-height-plus-3 1.0)
-  (solarized-height-plus-4 1.0)
-
-  :config
-  (load-theme 'solarized-selenized-light t t)
-  (load-theme 'solarized-selenized-dark t t)
-  (defvar solarized-color-yellow    "#b58900")
-  (defvar solarized-color-orange    "#cb4b16")
-  (defvar solarized-color-red       "#dc322f")
-  (defvar solarized-color-magenta   "#d33682")
-  (defvar solarized-color-violet    "#6c71c4")
-  (defvar solarized-color-blue      "#268bd2")
-  (defvar solarized-color-cyan      "#2aa198")
-  (defvar solarized-color-green     "#859900")
-  (defvar solarized-color-yellow-d  "#7B6000")
-  (defvar solarized-color-yellow-l  "#DEB542")
-  (defvar solarized-color-orange-d  "#8B2C02")
-  (defvar solarized-color-orange-l  "#F2804F")
-  (defvar solarized-color-red-d     "#990A1B")
-  (defvar solarized-color-red-l     "#FF6E64")
-  (defvar solarized-color-magenta-d "#93115C")
-  (defvar solarized-color-magenta-l "#F771AC")
-  (defvar solarized-color-violet-d  "#3F4D91")
-  (defvar solarized-color-violet-l  "#9EA0E5")
-  (defvar solarized-color-blue-d    "#00629D")
-  (defvar solarized-color-blue-l    "#69B7F0")
-  (defvar solarized-color-cyan-d    "#00736F")
-  (defvar solarized-color-cyan-l    "#69CABF")
-  (defvar solarized-color-green-d   "#546E00")
-  (defvar solarized-color-green-l   "#B4C342"))
 
 (defvar w/theme-changed-hook nil
   "Hook to run after the theme has changed. Useful for patching font faces.")
