@@ -51,32 +51,106 @@
   "Name of the font-family used by the desktop environment's user interface.")
 
 (use-package emacs
+  :demand t
   :bind
-  (:map help-map  ;; Unbind useless shortcuts to GPL, etc.
-   ("g" . nil)    ;; describe-gnu-project
-   ("C-c" . nil)  ;; describe-copying
-   ("C-m" . nil)  ;; view-order-manuals
-   ("C-o" . nil)  ;; describe-distributions
-   ("C-w" . nil)) ;; describe-no-warranty
+  (:map help-map ;; Unbind useless shortcuts to GPL, etc.
+   ("g" . nil)   ;; describe-gnu-project
+   ("C-c" . nil) ;; describe-copying
+   ("C-m" . nil) ;; view-order-manuals
+   ("C-o" . nil) ;; describe-distributions
+   ("C-w" . nil) ;; describe-no-warranty
+   :map isearch-mode-map
+   ("C-'" . avy-isearch)
+   ("C-/" . 'swiper-isearch-toggle))
+
   :hook (emacs-startup-hook . (lambda () (load custom-file 'noerror)))
+
   :custom
   (auto-save-interval 100)
+  (blink-cursor-blinks 1)
+  (blink-cursor-delay .5)
+  (blink-cursor-interval .5)
   (custom-safe-themes t)
+  (default-frame-alist
+    '((child-frame-border-width . 0)
+      (drag-internal-border . 2)
+      (height . 48)
+      (internal-border-width . 1)
+      (undecorated . t)
+      (width . 160)))
   (delete-by-moving-to-trash t)
   (disabled-command-function nil)
+  (display-buffer-base-action
+   '((display-buffer-reuse-window
+      display-buffer-pop-up-window
+      display-buffer-use-some-window)))
   (echo-keystrokes 0.5)
   (find-file-visit-truename t)
+  (fit-window-to-buffer-horizontally t)
+  (frame-resize-pixelwise t)
+  (frame-title-format "%b")
+  (help-window-select t)
+  (indicate-buffer-boundaries 'left)
   (inhibit-startup-screen t)
   (initial-major-mode 'text-mode)
   (initial-scratch-message nil)
+  (isearch-allow-prefix nil)
+  (isearch-forward t)  ;; initial direction; useful after swiper
+  (lazy-highlight-cleanup nil)
+  (lazy-highlight-initial-delay 0.5)
+  (lazy-highlight-max-at-a-time nil)
   (native-comp-async-report-warnings-errors 'silent)
+  (recenter-positions '(top middle bottom))
+  (require-final-newline 'visit-save)
+  (scroll-conservatively 101)
+  (scroll-margin 5)
+  (search-default-mode t)
+  (sentence-end-double-space nil)
+  (split-height-threshold nil)
+  (split-width-threshold 120)
+  (split-window-preferred-function 'visual-fill-column-split-window-sensibly)
+  (switch-to-buffer-in-dedicated-window 'pop)
+  (tab-width 4)
   (use-short-answers t)
+  (window-resize-pixelwise t)
+
+  :custom-face
+  (internal-border ((t (:inherit highlight))))
+
+  :delight
+  (abbrev-mode " ⋯")
+  (auto-fill-function " ↲")
+  (indent-tabs-mode " ⇥")
+  (visual-line-mode (:eval (unless w/wrap-lines-mode " ⇉")))
+
   :config
   (require 'xdg)
+
   (add-to-list 'auto-save-file-name-transforms `(".*" ,(expand-file-name "auto-save" (xdg-state-home)) t) t)
   (setq
    backup-directory-alist `((".*"  .,(expand-file-name "emacs/backup" (xdg-state-home))))
-   custom-file (expand-file-name "custom.el" user-emacs-directory)))
+   custom-file (expand-file-name "custom.el" user-emacs-directory))
+
+  (blink-cursor-mode)
+  (menu-bar-mode -1)
+  (pixel-scroll-precision-mode)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+
+  (defun w/narrow-dwim ()
+    "Narrow (or widen) to defun or region."
+    (interactive)
+    (cond
+     ((region-active-p)
+      (narrow-to-region (region-beginning) (region-end))
+      (deactivate-mark)
+      (message "Showing region only"))
+     ((buffer-narrowed-p)
+      (widen)
+      (message "Showing everything"))
+     (t
+      (narrow-to-defun)
+      (message "Showing defun only")))))
 
 (use-package emacs
   :if (and (display-graphic-p) (eq system-type 'darwin)) ;; macOS
@@ -1252,25 +1326,6 @@ defined as lowercase."
     "_r_eset"
     ("r" (er/expand-region 0) :exit t)))
 
-(use-package emacs
-  :commands
-  w/narrow-dwim
-  :config
-  (defun w/narrow-dwim ()
-    "Narrow (or widen) to defun or region."
-    (interactive)
-    (cond
-     ((region-active-p)
-      (narrow-to-region (region-beginning) (region-end))
-      (deactivate-mark)
-      (message "Showing region only"))
-     ((buffer-narrowed-p)
-      (widen)
-      (message "Showing everything"))
-     (t
-      (narrow-to-defun)
-      (message "Showing defun only")))))
-
 (use-package key-chord
   :config
   (key-chord-mode +1))
@@ -1282,33 +1337,6 @@ defined as lowercase."
    keyfreq-file-lock (no-littering-expand-var-file-name "keyfreq.lock"))
   (keyfreq-mode)
   (keyfreq-autosave-mode))
-
-
-(use-package emacs ; scrolling
-  :custom
-  (indicate-buffer-boundaries 'left)
-  (recenter-positions '(top middle bottom))
-  (scroll-conservatively 101)
-  (scroll-margin 5)
-  :config
-  (when (fboundp 'pixel-scroll-precision-mode)  ;; emacs 29+
-    (pixel-scroll-precision-mode)))
-
-(use-package emacs ; whitespace
-  :custom
-  (require-final-newline 'visit-save)
-  (sentence-end-double-space nil)
-  :config
-  (setq-default
-   indent-tabs-mode nil
-   tab-width 4)
-  (unless (functionp 'indent-tabs-mode)
-    ;; For some reason, indent-tabs-mode is not a real minor mode, but
-    ;; the variable of the same name can be set/unset at will. That's
-    ;; what a minor mode does as well, so define one with she same name.
-    (define-minor-mode indent-tabs-mode
-      "Minor mode to make up for an Emacs oddity."
-      :lighter " ⇥")))
 
 (use-package whitespace
   :defer t
@@ -1365,19 +1393,6 @@ defined as lowercase."
         (display-line-numbers-mode))
       (message "Line numbering style: %s" new-value)
       (setq display-line-numbers new-value))))
-
-(use-package emacs  ;; isearch
-  :custom
-  (isearch-allow-prefix nil)
-  (isearch-forward t)  ;; initial direction; useful after swiper
-  (lazy-highlight-cleanup nil)
-  (lazy-highlight-initial-delay 0.5)
-  (lazy-highlight-max-at-a-time nil)
-  (search-default-mode t)
-  :general
-  (:keymaps 'isearch-mode-map
-   "C-'" 'avy-isearch
-   "C-/" 'swiper-isearch-toggle))
 
 (use-package thingatpt
   :config
@@ -1772,11 +1787,6 @@ defined as lowercase."
    ;; this is a zero, i.e. C-) without shift
    "C-0" #'syntactic-close))
 
-(use-package emacs
-  :delight
-  (auto-fill-function " ↲")
-  (visual-line-mode (:eval (unless w/wrap-lines-mode " ⇉"))))
-
 (use-package adaptive-wrap
   :hook (visual-line-mode-hook . w/maybe-activate-adaptive-wrap-prefix-mode)
   :config
@@ -2142,40 +2152,7 @@ defined as lowercase."
 ;; divided into columns.
 
 (use-package emacs
-  :custom
-  (blink-cursor-blinks 1)
-  (blink-cursor-delay .5)
-  (blink-cursor-interval .5)
-  (default-frame-alist
-    '((child-frame-border-width . 0)
-      (drag-internal-border . 2)
-      (height . 48)
-      (internal-border-width . 1)
-      (undecorated . t)
-      (width . 160)))
-  (display-buffer-base-action
-   '((display-buffer-reuse-window
-      display-buffer-pop-up-window
-      display-buffer-use-some-window)))
-  (fit-window-to-buffer-horizontally t)
-  (frame-resize-pixelwise t)
-  (frame-title-format "%b")
-  (help-window-select t)
-  (split-height-threshold nil)
-  (split-width-threshold 120)
-  (split-window-preferred-function 'visual-fill-column-split-window-sensibly)
-  (switch-to-buffer-in-dedicated-window 'pop)
-  (window-resize-pixelwise t)
-
-  :custom-face
-  (internal-border ((t (:inherit highlight))))
-
   :config
-  (menu-bar-mode -1)
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (blink-cursor-mode)
-
   (defun w/fit-bottom-error-window-to-buffer (window)
     "Size request for a small error window at the bottom."
     (fit-window-to-buffer window 10 5)))
@@ -2437,9 +2414,6 @@ defined as lowercase."
 
 (defvar w/ivy-height-percentage 30
   "Percentage of the screen height that ivy should use.")
-
-(use-package emacs
-  :delight (abbrev-mode " ⋯"))
 
 (use-package counsel
   :after ivy
