@@ -144,9 +144,6 @@
   :config
   (exec-path-from-shell-initialize))
 
-(use-package fn
-  :demand t)
-
 (use-package general
   :demand t)
 
@@ -1998,7 +1995,7 @@ defined as lowercase."
       "!" #'terminal-here-project-launch
       "1" #'terminal-here-project-launch)
     "Keymap for project commands.")
-  (add-hook 'find-file-hook (fn: require 'projectile))
+  (add-hook 'find-file-hook (lambda () (require 'projectile)))
 
   :config
   (projectile-mode)
@@ -2595,7 +2592,7 @@ defined as lowercase."
       "w" #'w/git-web-browse
       "!" #'magit-git-command)
     "Keymap for Git commands.")
-  (add-hook 'find-file-hook (fn: require 'magit))
+  (add-hook 'find-file-hook (lambda () (require 'magit)))
 
   :config
   ;; note: a :general stanza won't work because of execution order:
