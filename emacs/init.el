@@ -242,6 +242,30 @@
            (font-name-without-size (replace-regexp-in-string "\\(.*\\) [0-9.]+" "\\1" font-name)))
       (setq w/ui-font-family font-name-without-size))))
 
+(use-package recentf
+  :demand t
+  :custom
+  (recentf-auto-cleanup 300)
+  (recentf-max-saved-items 500)
+  :commands
+  w/counsel-recentf-other-window
+  :functions
+  recentf-expand-file-name
+  :config
+  (--each (list
+           (recentf-expand-file-name no-littering-etc-directory)
+           (recentf-expand-file-name no-littering-var-directory))
+    (add-to-list 'recentf-exclude it t))
+
+  (defun w/counsel-recentf-other-window ()
+    "Like ‘counsel-recentf’, but opens the file in another window."
+    (interactive)
+    (require 'counsel)
+    (require 'ivy)
+    (defvar ivy-inhibit-action)
+    (let ((ivy-inhibit-action t))
+      (find-file-other-window (counsel-recentf)))))
+
 (use-package savehist
   :demand t
   :custom
@@ -411,31 +435,6 @@ defined as lowercase."
    "<escape>" #'transient-quit-seq)
   (:keymaps 'transient-map
    "<tab>" #'transient-show))
-
-(use-package recentf
-  :custom
-  (recentf-auto-cleanup 300)
-  (recentf-max-saved-items 500)
-  :commands
-  w/counsel-recentf-other-window
-  :config
-  (defvar
-    w/recentf-ignore-dirs
-    (list
-     no-littering-etc-directory
-     no-littering-var-directory)
-    "Directories to ignore in recentf listings.")
-
-  (--each w/recentf-ignore-dirs
-    (add-to-list 'recentf-exclude (concat (regexp-quote it) ".*")))
-
-  (defun w/counsel-recentf-other-window ()
-    "Like `counsel-recentf', but opens the file in another window."
-    (interactive)
-    (require 'ivy)
-    (defvar ivy-inhibit-action)
-    (let ((ivy-inhibit-action t))
-      (find-file-other-window (counsel-recentf)))))
 
 (use-package ranger
   :after (dired evil)
