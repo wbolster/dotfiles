@@ -60,7 +60,11 @@
   xdg-state-home)
 
 (use-package no-littering
-  :demand t)
+  :demand t
+  :init
+  (require 'xdg)
+  (setq no-littering-var-directory (expand-file-name "emacs/" (xdg-state-home)))
+  (no-littering-theme-backups))
 
 ;; Regular config
 
@@ -141,12 +145,7 @@
   (visual-line-mode (:eval (unless w/wrap-lines-mode " ⇉")))
 
   :config
-  (require 'xdg)
-
-  (add-to-list 'auto-save-file-name-transforms `(".*" ,(expand-file-name "auto-save" (xdg-state-home)) t) t)
-  (setq
-   backup-directory-alist `((".*"  .,(expand-file-name "emacs/backup" (xdg-state-home))))
-   custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
   (blink-cursor-mode)
   (menu-bar-mode -1)
