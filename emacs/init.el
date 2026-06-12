@@ -120,6 +120,7 @@
   (lazy-highlight-cleanup nil)
   (lazy-highlight-initial-delay 0.5)
   (lazy-highlight-max-at-a-time nil)
+  (major-mode 'text-mode) ;; default for new buffers
   (native-comp-async-report-warnings-errors 'silent)
   (recenter-positions '(top middle bottom))
   (require-final-newline 'visit-save)
@@ -3129,8 +3130,6 @@ defined as lowercase."
  :states 'motion
  "," w/leader-map
  "'" w/leader-map)
-
-(setq-default major-mode 'text-mode)
 
 (defvar w/major-modes
   '(c-mode
