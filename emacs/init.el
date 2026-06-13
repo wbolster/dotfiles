@@ -301,6 +301,13 @@
    "gc" #'evil-commentary
    "gy" #'evil-commentary-yank))
 
+(use-package evil-numbers
+  :defer t
+  :general
+  (:states 'normal
+   "+" #'evil-numbers/inc-at-pt
+   "-" #'evil-numbers/dec-at-pt))
+
 (use-package gsettings
   :demand t
   :functions
@@ -1305,12 +1312,6 @@ defined as lowercase."
    :states 'visual
    "A" #'evil-mc-make-cursor-in-visual-selection-end
    "U" #'evil-mc-make-cursor-in-visual-selection-beg))
-
-(use-package evil-numbers
-  :general
-  (:states 'normal
-   "+" #'evil-numbers/inc-at-pt
-   "-" #'evil-numbers/dec-at-pt))
 
 (use-package evil-snipe
   ;; evil-colemak-basics takes care of the basic key bindings.
