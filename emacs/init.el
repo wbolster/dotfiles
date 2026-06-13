@@ -1736,22 +1736,6 @@ defined as lowercase."
       (user-error
        (symbol-overlay-jump-next)))))
 
-(use-package zeal-at-point
-  :defer
-  :general
-  (:states 'motion
-   "g/" 'w/zeal-at-point-dwim)
-  :commands
-  w/zeal-at-point-dwim
-  :config
-  (defun w/zeal-at-point-dwim ()
-    "Open ‘zeal’, defaulting to the thing at point."
-    (interactive)
-    (->> (or (w/thing-at-point-dwim) "")
-         (zeal-at-point-maybe-add-docset)
-         (read-string "Zeal search: ")
-         (zeal-at-point-run-search))))
-
 ;;;; previous/next navigation
 
 ;; previous/next thing (inspired by vim unimpaired)
@@ -3252,16 +3236,6 @@ defined as lowercase."
     (symbol-overlay-mode)
     (w/show-trailing-whitespace-mode)))
 
-(use-package dash-docs
-  :defer t
-  :custom
-  (dash-docs-docsets-path "~/.var/app/org.zealdocs.Zeal/data/Zeal/Zeal/docsets")
-  (dash-docs-enable-debugging nil)
-  (dash-docs-min-length 2))
-
-(use-package counsel-dash
-  :after dash-docs)
-
 (use-package yasnippet
   :config
   (yas-global-mode))
@@ -3764,12 +3738,9 @@ defined as lowercase."
      :unless '(sp-point-before-word-p)))
 
   (defun w/python-mode-hook ()
-    (setq
-     fill-column 79
-     evil-lookup-func #'counsel-dash-at-point)
+    (setq fill-column 79)
     (setq-local
-     comment-fill-column 72
-     counsel-dash-docsets '("Python_3" "SQLAlchemy" "Flask" "Jinja"))
+     comment-fill-column 72)
     (if-let* ((env-var-value (getenv "EMACS_PYTHON_ISORT_ENABLED"))
               (_ (string-equal env-var-value "0")))
         nil
@@ -4395,10 +4366,7 @@ defined as lowercase."
   :hook (sql-mode-hook . w/sql-mode-hook)
   :config
   (defun w/sql-mode-hook ()
-    (setq
-     evil-lookup-func #'counsel-dash-at-point
-     evil-shift-width 2
-     counsel-dash-docsets '("PostgreSQL"))
+    (setq evil-shift-width 2)
     (reformatter-dwim-select 'sqlformat)))
 
 (use-package sqlformat
