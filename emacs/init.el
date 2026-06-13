@@ -3236,19 +3236,6 @@ defined as lowercase."
 (use-package counsel-dash
   :after dash-docs)
 
-(use-package tree-sitter
-  :disabled
-  :delight
-  :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
-  :custom-face
-  ;; (tree-sitter-hl-face:function.call ((t (:inherit default))))
-  ;; (tree-sitter-hl-face:constructor ((t (:inherit default))))
-  )
-
-(use-package tree-sitter-langs
-  :disabled
-  :after tree-sitter)
-
 (use-package yasnippet
   :config
   (yas-global-mode))
