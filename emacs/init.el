@@ -290,6 +290,20 @@
     (let ((ivy-inhibit-action t))
       (find-file-other-window (counsel-recentf)))))
 
+(use-package reformatter
+  :defer t)
+
+(use-package reformatter-dwim
+  :defer t
+  :load-path "lisp/"
+  :functions
+  reformatter-dwim-select
+  :general
+  (:states '(normal visual)
+   "g =" 'reformatter-dwim-evil)
+  (:states 'normal
+   "g +" 'reformatter-dwim-on-save-mode))
+
 (use-package savehist
   :demand t
   :custom
@@ -1942,17 +1956,6 @@ defined as lowercase."
   :defer t
   :delight
   (outline-minor-mode " ‣"))
-
-(use-package reformatter)
-
-(use-package reformatter-dwim
-  :demand t
-  :load-path "lisp/"
-  :general
-  (:states '(normal visual)
-   "g =" 'reformatter-dwim-evil)
-  (:states 'normal
-   "g +" 'reformatter-dwim-on-save-mode))
 
 ;; todo https://github.com/sshaw/copy-as-format/issues/2
 (use-package copy-as-format
