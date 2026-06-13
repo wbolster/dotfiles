@@ -562,6 +562,221 @@
   :config
   (winner-mode))
 
+(defvar-keymap w/buffer-map
+  :doc "Keymap for buffer commands."
+  "b" #'ivy-switch-buffer
+  "B" #'ivy-switch-buffer-other-window
+  "n" #'evil-buffer-new
+  "N" #'w/evil-buffer-new-other-window
+  "c" #'clone-indirect-buffer
+  "C" #'clone-indirect-buffer-other-window
+  "e" #'crux-rename-file-and-buffer
+  "E" #'rename-buffer
+  "h" #'bury-buffer
+  "H" #'unbury-buffer
+  "k" #'kill-current-buffer
+  "K" #'kill-buffer-and-window
+  "m" #'w/switch-major-mode
+  "r" #'revert-buffer)
+
+(defvar-keymap w/diff-map
+  :doc "Keymap for vdiff commands."
+  "n" #'vdiff-next-hunk
+  "e" #'vdiff-previous-hunk
+  "p" #'vdiff-previous-hunk
+  "N" #'vdiff-next-fold
+  "E" #'vdiff-previous-fold
+  "P" #'vdiff-previous-fold
+  "c" #'vdiff-close-fold
+  "C" #'vdiff-close-all-folds
+  "f" #'vdiff-refine-this-hunk
+  "F" #'vdiff-refine-all-hunks
+  "x" #'vdiff-remove-refinements-in-hunk
+  "o" #'vdiff-open-fold
+  "O" #'vdiff-open-all-folds
+  "r" #'vdiff-receive-changes
+  "R" #'vdiff-receive-changes-and-step
+  "s" #'vdiff-send-changes
+  "S" #'vdiff-send-changes-and-step
+  "u" #'vdiff-refresh
+  "d" #'vdiff-hydra/body)
+
+(defvar-keymap w/file-map
+  :doc "Keymap for file commands."
+  "f" #'counsel-find-file
+  "F" #'find-file-other-window
+  "n" #'evil-buffer-new
+  "N" #'w/evil-buffer-new-other-window
+  "r" #'counsel-recentf
+  "R" #'w/counsel-recentf-other-window
+  "s" #'sudo-edit
+  "S" #'sudo-edit-find-file
+  "d" #'deer
+  "D" #'deer-jump-other-window
+  "!" #'terminal-here
+  "1" #'terminal-here
+  "g" #'w/open-gui-file-browser
+  "i" #'insert-file)
+
+(defvar-keymap w/flycheck-map
+  :doc  "Keymap for Flycheck commands."
+  "b" #'flycheck-buffer
+  "m" #'w/flycheck-compile-current
+  "M" #'flycheck-compile
+  "c" #'w/flycheck-toggle-error-window
+  "C" #'flycheck-mode
+  "o" #'w/flycheck-show-error-other-file-mode
+  "s" #'flycheck-select-checker
+  "v" #'flycheck-verify-setup
+  "n" #'flycheck-next-error
+  "e" #'flycheck-previous-error
+  "p" #'flycheck-previous-error)
+
+(defvar-keymap w/git-map
+  :doc "Keymap for Git commands."
+  "a" #'magit-blame-addition
+  "A" #'w/magit-log-buffer-file-follow
+  "c" #'magit-commit-create
+  "d" #'magit-diff-dwim
+  "f" #'magit-file-dispatch
+  "g" #'magit-dispatch
+  "l" #'magit-log-current
+  "s" #'magit-status
+  "S" #'w/magit-status-other-repository
+  "t" #'magit-toggle-buffer-lock
+  "w" #'w/git-web-browse
+  "!" #'magit-git-command)
+
+(defvar-keymap w/lsp-map
+  :doc "Keymap for LSP commands."
+  "/" #'lsp-ui-doc-show
+  "?" #'lsp-ui-doc-show
+  "a" #'lsp-execute-code-action
+  "d" #'lsp-describe-thing-at-point
+  "g" #'lsp-find-definition
+  "i" #'lsp-find-implementation
+  "r" #'lsp-rename
+  "t" #'lsp-find-type-definition
+  "x" #'lsp-workspace-restart)
+
+(defvar-keymap w/merge-map
+  :doc "Keymap for merge conflict commands."
+  "m" #'smerge-mode
+  "n" #'smerge-next
+  "e" #'smerge-prev
+  "p" #'smerge-prev
+  "c" #'smerge-keep-current
+  "b" #'smerge-keep-base
+  "l" #'smerge-keep-lower
+  "u" #'smerge-keep-upper
+  "a" #'smerge-keep-all)
+
+(defvar-keymap w/project-map
+  :doc "Keymap for project commands."
+  "p" #'projectile-switch-project
+  "P" #'projectile-switch-open-project
+  "b" #'projectile-switch-to-buffer
+  "B" #'projectile-switch-to-buffer-other-window
+  "k" #'projectile-kill-buffers
+  "q" #'w/projectile-project-bury-buffers
+  "s" #'projectile-save-project-buffers
+  "f" #'projectile-find-file
+  "F" #'projectile-find-file-other-window
+  "a" #'w/projectile-find-file-all
+  "d" #'projectile-find-dir
+  "D" #'projectile-find-dir-other-window
+  "-" #'projectile-dired
+  "t" #'projectile-toggle-between-implementation-and-test
+  "T" #'projectile-find-implementation-or-test-other-window
+  "g" #'w/projectile-open-gui-file-browser
+  "/" #'w/counsel-ag-project
+  "?" #'w/counsel-ag-project-all-files
+  "o" #'projectile-multi-occur
+  "r" #'projectile-replace
+  "R" #'projectile-replace-regexp
+  "c" #'projectile-compile-project
+  "!" #'terminal-here-project-launch
+  "1" #'terminal-here-project-launch)
+
+(defvar-keymap w/replace-map
+  :doc "Keymap for replacement commands."
+  "r" #'w/query-replace-thing-at-point-dwim
+  "s" #'w/query-replace-thing-at-point-dwim
+  "p" #'projectile-replace
+  "P" #'projectile-replace-regexp
+  "q" #'query-replace
+  "Q" #'query-replace-regexp)
+
+(defvar-keymap w/toggle-map
+  :doc "Keymap for toggle commands."
+  "b" #'auto-dark-toggle-appearance
+  "c" #'flycheck-mode
+  "d" #'diff-hl-mode
+  "f" #'auto-fill-mode
+  "F" #'display-fill-column-indicator-mode
+  "h" #'symbol-overlay-mode
+  "l" #'hl-line-mode
+  "L" #'global-hl-line-mode
+  "n" #'display-line-numbers-mode
+  "N" #'w/display-line-numbers-cycle
+  "s" #'flyspell-mode
+  "w" #'w/sensible-wrap-mode-1
+  "W" #'w/sensible-wrap-mode-2
+  "z" #'w/origami-mode-toggle
+  "SPC" #'whitespace-mode
+  "S-SPC" #'w/show-trailing-whitespace-mode
+  "1" #'global-evil-swap-keys-mode
+  "!" #'global-evil-swap-keys-mode
+  "." #'indent-guide-mode
+  "9" #'smartparens-mode
+  "(" #'smartparens-mode
+  "0" #'smartparens-mode
+  ")" #'smartparens-mode
+  "=" #'balanced-windows-mode)
+
+(defvar-keymap w/leader-map
+  :doc "Leader keymap."
+  "1" #'w/goto-window-1
+  "2" #'w/goto-window-2
+  "3" #'w/goto-window-3
+  "4" #'w/goto-window-4
+  "!" #'w/set-as-window-1
+  "@" #'w/set-as-window-2
+  "#" #'w/set-as-window-3
+  "$" #'w/set-as-window-4
+  "a" #'w/hydra-ag/body
+  "b" w/buffer-map
+  "c" w/flycheck-map
+  "d" w/diff-map
+  "f" w/file-map
+  "g" w/git-map
+  "h" #'w/symbol-overlay-put-dwim
+  "H" #'symbol-overlay-remove-all
+  "j" #'counsel-imenu
+  "l" w/lsp-map
+  "m" w/merge-map
+  "n" #'w/narrow-dwim
+  "o" #'w/occur-dwim
+  "p" w/project-map
+  "q" #'bury-buffer
+  "Q" #'unbury-buffer
+  "r" w/replace-map
+  "s" #'save-buffer
+  "S" #'save-some-buffers
+  "t" w/toggle-map
+  "u" #'universal-argument
+  "w" #'w/hydra-window/body
+  "x" #'counsel-M-x
+  "y" #'w/evil-copy-as-format
+  "SPC" #'whitespace-cleanup
+  "/" #'w/hydra-search/body
+  "'" #'w/major-mode-hydra)
+
+(general-define-key
+ :states 'motion
+ "," w/leader-map
+ "'" w/leader-map)
+
 ;;; todo: tidy up the messy stuff below ======================
 
 (use-package hydra
@@ -678,42 +893,6 @@ defined as lowercase."
              (directory-name (file-name-directory file-name))
              (file-exists (file-exists-p directory-name)))
     (call-process "xdg-open" nil 0 nil directory-name)))
-
-(defvar w/buffer-map
-  (define-keymap
-    "b" #'ivy-switch-buffer
-    "B" #'ivy-switch-buffer-other-window
-    "n" #'evil-buffer-new
-    "N" #'w/evil-buffer-new-other-window
-    "c" #'clone-indirect-buffer
-    "C" #'clone-indirect-buffer-other-window
-    "e" #'crux-rename-file-and-buffer
-    "E" #'rename-buffer
-    "h" #'bury-buffer
-    "H" #'unbury-buffer
-    "k" #'kill-current-buffer
-    "K" #'kill-buffer-and-window
-    "m" #'w/switch-major-mode
-    "r" #'revert-buffer)
-  "Keymap for buffer commands.")
-
-(defvar w/file-map
-  (define-keymap
-    "f" #'counsel-find-file
-    "F" #'find-file-other-window
-    "n" #'evil-buffer-new
-    "N" #'w/evil-buffer-new-other-window
-    "r" #'counsel-recentf
-    "R" #'w/counsel-recentf-other-window
-    "s" #'sudo-edit
-    "S" #'sudo-edit-find-file
-    "d" #'deer
-    "D" #'deer-jump-other-window
-    "!" #'terminal-here
-    "1" #'terminal-here
-    "g" #'w/open-gui-file-browser
-    "i" #'insert-file)
-  "Keymap for file commands.")
 
 (defvar w/theme-changed-hook nil
   "Hook to run after the theme has changed. Useful for patching font faces.")
@@ -1521,16 +1700,6 @@ defined as lowercase."
 
 (use-package emacs  ;; replace
   :commands w/query-replace-thing-at-point-dwim
-  :init
-  (defvar w/replace-map
-    (define-keymap
-      "r" #'w/query-replace-thing-at-point-dwim
-      "s" #'w/query-replace-thing-at-point-dwim
-      "p" #'projectile-replace
-      "P" #'projectile-replace-regexp
-      "q" #'query-replace
-      "Q" #'query-replace-regexp)
-    "Keymap for replacement commands.")
   :config
   (defun w/query-replace-thing-at-point-dwim ()
     "Return ‘query-replace’ for the active region or the symbol at point."
@@ -2060,33 +2229,6 @@ defined as lowercase."
   w/projectile-project-bury-buffers
 
   :init
-  (defvar w/project-map
-    (define-keymap
-      "p" #'projectile-switch-project
-      "P" #'projectile-switch-open-project
-      "b" #'projectile-switch-to-buffer
-      "B" #'projectile-switch-to-buffer-other-window
-      "k" #'projectile-kill-buffers
-      "q" #'w/projectile-project-bury-buffers
-      "s" #'projectile-save-project-buffers
-      "f" #'projectile-find-file
-      "F" #'projectile-find-file-other-window
-      "a" #'w/projectile-find-file-all
-      "d" #'projectile-find-dir
-      "D" #'projectile-find-dir-other-window
-      "-" #'projectile-dired
-      "t" #'projectile-toggle-between-implementation-and-test
-      "T" #'projectile-find-implementation-or-test-other-window
-      "g" #'w/projectile-open-gui-file-browser
-      "/" #'w/counsel-ag-project
-      "?" #'w/counsel-ag-project-all-files
-      "o" #'projectile-multi-occur
-      "r" #'projectile-replace
-      "R" #'projectile-replace-regexp
-      "c" #'projectile-compile-project
-      "!" #'terminal-here-project-launch
-      "1" #'terminal-here-project-launch)
-    "Keymap for project commands.")
   (add-hook 'find-file-hook (lambda () (require 'projectile)))
 
   :config
@@ -2609,21 +2751,6 @@ defined as lowercase."
   w/magit-status-other-repository
 
   :init
-  (defvar w/git-map
-    (define-keymap
-      "a" #'magit-blame-addition
-      "A" #'w/magit-log-buffer-file-follow
-      "c" #'magit-commit-create
-      "d" #'magit-diff-dwim
-      "f" #'magit-file-dispatch
-      "g" #'magit-dispatch
-      "l" #'magit-log-current
-      "s" #'magit-status
-      "S" #'w/magit-status-other-repository
-      "t" #'magit-toggle-buffer-lock
-      "w" #'w/git-web-browse
-      "!" #'magit-git-command)
-    "Keymap for Git commands.")
   (add-hook 'find-file-hook (lambda () (require 'magit)))
 
   :config
@@ -2864,20 +2991,7 @@ defined as lowercase."
   smerge-keep-lower
   smerge-keep-upper
   smerge-next
-  smerge-prev
-  :init
-  (defvar w/merge-map
-    (define-keymap
-      "m" #'smerge-mode
-      "n" #'smerge-next
-      "e" #'smerge-prev
-      "p" #'smerge-prev
-      "c" #'smerge-keep-current
-      "b" #'smerge-keep-base
-      "l" #'smerge-keep-lower
-      "u" #'smerge-keep-upper
-      "a" #'smerge-keep-all)
-    "Keymap for merge conflict commands."))
+  smerge-prev)
 
 (use-package vc
   :config
@@ -2921,29 +3035,6 @@ defined as lowercase."
   vdiff-send-changes
   vdiff-send-changes-and-step
 
-  :init
-  (defvar w/vdiff-map
-    (define-keymap
-      "n" #'vdiff-next-hunk
-      "e" #'vdiff-previous-hunk
-      "p" #'vdiff-previous-hunk
-      "N" #'vdiff-next-fold
-      "E" #'vdiff-previous-fold
-      "P" #'vdiff-previous-fold
-      "c" #'vdiff-close-fold
-      "C" #'vdiff-close-all-folds
-      "f" #'vdiff-refine-this-hunk
-      "F" #'vdiff-refine-all-hunks
-      "x" #'vdiff-remove-refinements-in-hunk
-      "o" #'vdiff-open-fold
-      "O" #'vdiff-open-all-folds
-      "r" #'vdiff-receive-changes
-      "R" #'vdiff-receive-changes-and-step
-      "s" #'vdiff-send-changes
-      "S" #'vdiff-send-changes-and-step
-      "u" #'vdiff-refresh
-      "d" #'vdiff-hydra/body)
-    "Keymap for vdiff commands.")
   :config
   (defun w/vdiff-3way-layout-function-vertical (buffer-a buffer-b buffer-c)
     (delete-other-windows)
@@ -2982,19 +3073,6 @@ defined as lowercase."
   lsp-ui-doc-show
   lsp-workspace-restart
 
-  :init
-  (defvar w/lsp-map
-    (define-keymap
-      "/" #'lsp-ui-doc-show
-      "?" #'lsp-ui-doc-show
-      "a" #'lsp-execute-code-action
-      "d" #'lsp-describe-thing-at-point
-      "g" #'lsp-find-definition
-      "i" #'lsp-find-implementation
-      "r" #'lsp-rename
-      "t" #'lsp-find-type-definition
-      "x" #'lsp-workspace-restart)
-    "Keymap for LSP commands.")
   :custom
   (lsp-auto-execute-action nil)
   (lsp-enable-indentation nil)
@@ -3057,22 +3135,6 @@ defined as lowercase."
   w/flycheck-show-error-other-file-mode
   w/flycheck-toggle-error-window
 
-  :init
-  (defvar w/flycheck-map
-    (define-keymap
-      "b" #'flycheck-buffer
-      "m" #'w/flycheck-compile-current
-      "M" #'flycheck-compile
-      "c" #'w/flycheck-toggle-error-window
-      "C" #'flycheck-mode
-      "o" #'w/flycheck-show-error-other-file-mode
-      "s" #'flycheck-select-checker
-      "v" #'flycheck-verify-setup
-      "n" #'flycheck-next-error
-      "e" #'flycheck-previous-error
-      "p" #'flycheck-previous-error)
-    "Keymap for Flycheck commands.")
-
   :config
   (global-flycheck-mode)
 
@@ -3128,78 +3190,6 @@ defined as lowercase."
   :demand t
   :after flycheck
   :hook (flycheck-mode-hook . flycheck-color-mode-line-mode))
-
-(defvar w/toggle-map
-  (define-keymap
-    "b" #'auto-dark-toggle-appearance
-    "c" #'flycheck-mode
-    "d" #'diff-hl-mode
-    "f" #'auto-fill-mode
-    "F" #'display-fill-column-indicator-mode
-    "h" #'symbol-overlay-mode
-    "l" #'hl-line-mode
-    "L" #'global-hl-line-mode
-    "n" #'display-line-numbers-mode
-    "N" #'w/display-line-numbers-cycle
-    "s" #'flyspell-mode
-    "w" #'w/sensible-wrap-mode-1
-    "W" #'w/sensible-wrap-mode-2
-    "z" #'w/origami-mode-toggle
-    "SPC" #'whitespace-mode
-    "S-SPC" #'w/show-trailing-whitespace-mode
-    "1" #'global-evil-swap-keys-mode
-    "!" #'global-evil-swap-keys-mode
-    "." #'indent-guide-mode
-    "9" #'smartparens-mode
-    "(" #'smartparens-mode
-    "0" #'smartparens-mode
-    ")" #'smartparens-mode
-    "=" #'balanced-windows-mode)
-  "Keymap for toggle commands.")
-
-(defvar w/leader-map
-  (define-keymap
-    "1" #'w/goto-window-1
-    "2" #'w/goto-window-2
-    "3" #'w/goto-window-3
-    "4" #'w/goto-window-4
-    "!" #'w/set-as-window-1
-    "@" #'w/set-as-window-2
-    "#" #'w/set-as-window-3
-    "$" #'w/set-as-window-4
-    "a" #'w/hydra-ag/body
-    "b" w/buffer-map
-    "c" w/flycheck-map
-    "d" w/vdiff-map
-    "f" w/file-map
-    "g" w/git-map
-    "h" #'w/symbol-overlay-put-dwim
-    "H" #'symbol-overlay-remove-all
-    "j" #'counsel-imenu
-    "l" w/lsp-map
-    "m" w/merge-map
-    "n" #'w/narrow-dwim
-    "o" #'w/occur-dwim
-    "p" w/project-map
-    "q" #'bury-buffer
-    "Q" #'unbury-buffer
-    "r" w/replace-map
-    "s" #'save-buffer
-    "S" #'save-some-buffers
-    "t" w/toggle-map
-    "u" #'universal-argument
-    "w" #'w/hydra-window/body
-    "x" #'counsel-M-x
-    "y" #'w/evil-copy-as-format
-    "SPC" #'whitespace-cleanup
-    "/" #'w/hydra-search/body
-    "'" #'w/major-mode-hydra)
-  "Leader keymap.")
-
-(general-define-key
- :states 'motion
- "," w/leader-map
- "'" w/leader-map)
 
 (defvar w/major-modes
   '(c-mode
