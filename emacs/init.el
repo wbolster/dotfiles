@@ -555,6 +555,13 @@
   :config
   (which-key-mode))
 
+(use-package whitespace-cleanup-mode
+  :demand t
+  :delight
+  '(:eval (unless whitespace-cleanup-mode-initially-clean " ⎵"))
+  :config
+  (global-whitespace-cleanup-mode))
+
 (use-package winner
   :demand t
   :custom
@@ -1624,20 +1631,10 @@ defined as lowercase."
   (keyfreq-mode)
   (keyfreq-autosave-mode))
 
-(use-package whitespace
-  :defer t
-  :config)
-
 (define-minor-mode w/show-trailing-whitespace-mode
   "Show or hide trailing whitespace."
   :lighter nil
   (setq show-trailing-whitespace w/show-trailing-whitespace-mode))
-
-(use-package whitespace-cleanup-mode
-  :delight
-  '(:eval (unless whitespace-cleanup-mode-initially-clean " ⎵"))
-  :config
-  (global-whitespace-cleanup-mode))
 
 (use-package indent-guide
   :defer t
