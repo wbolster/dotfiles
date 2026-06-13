@@ -233,6 +233,19 @@
   :config
   (global-dash-fontify-mode))
 
+(use-package dired
+  :defer t
+  :ensure nil
+  :general
+  (:keymaps 'dired-mode-map
+   :states '(motion normal)
+   "-" #'dired-jump))
+
+(use-package dired-x
+  :demand t
+  :after dired
+  :ensure nil)
+
 (use-package desktop
   :demand t
   :custom
@@ -2090,18 +2103,6 @@ defined as lowercase."
   (avy-keys (string-to-list "arstneiofu"))
   :commands
   avy-with) ;; used by evil-easymotion helpers
-
-(use-package dired
-  :ensure nil
-  :defer t
-  :general
-  (:keymaps 'dired-mode-map
-   :states '(motion normal)
-   "-" #'dired-jump))
-
-(use-package dired-x
-  :after dired
-  :ensure nil)
 
 (defun w/declare-jump (command)
   "Declare COMMAND to be nonrepeatable."
