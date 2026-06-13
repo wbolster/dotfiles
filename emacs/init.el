@@ -279,6 +279,44 @@
            (font-name-without-size (replace-regexp-in-string "\\(.*\\) [0-9.]+" "\\1" font-name)))
       (setq w/ui-font-family font-name-without-size))))
 
+(use-package ranger
+  :demand t
+  :after (dired evil)
+  :bind
+  (:map ranger-mode-map
+   ("h" . ranger-up-directory)
+   ("n" . ranger-next-file)
+   ("e" . ranger-prev-file)
+   ("i" . w/ranger-find-directory)
+   ("k" . ranger-search-next)
+   ("K" . ranger-search-previous)
+   ("'" . nil)
+   ("/" . ranger-search))
+  :commands
+  deer-jump-other-window
+  :custom
+  (ranger-cleanup-eagerly t)
+  (ranger-deer-show-details nil)
+  (ranger-excluded-extensions nil)
+  (ranger-max-tabs 1)
+  (ranger-override-dired 'deer)
+  (ranger-show-hidden t)
+  :hook (ranger-mode-hook . w/evil-colemak-basics-disable)
+
+  :config
+  (with-eval-after-load 'direnv
+    (add-to-list 'direnv-non-file-modes 'ranger-mode))
+
+  ;; fixme: is using auxiliary keymap correct?
+  (evil-set-auxiliary-keymap ranger-mode-map 'motion ranger-mode-map)
+
+  (defun w/ranger-find-directory ()
+    "Like ‘ranger-find-file’, but only for directories."
+    (interactive)
+    (when-let* ((name (dired-get-filename nil t))
+                ((file-directory-p name)))
+      (ranger-find-file name))))
+
 (use-package recentf
   :demand t
   :custom
@@ -501,49 +539,6 @@ defined as lowercase."
          ,@heads
          ("C-g" nil :exit t)
          ("<escape>" nil :exit t)))))
-
-(use-package ranger
-  :after (dired evil)
-  :demand t
-
-  :custom
-  (ranger-cleanup-eagerly t)
-  (ranger-deer-show-details nil)
-  (ranger-excluded-extensions nil)
-  (ranger-override-dired 'deer)
-  (ranger-max-tabs 1)
-  (ranger-show-hidden t)
-
-  :general
-  (:keymaps 'ranger-mode-map
-   "h" #'ranger-up-directory
-   "n" #'ranger-next-file
-   "e" #'ranger-prev-file
-   ;; "i" #'ranger-find-file
-   "i" #'w/ranger-find-directory
-   "k" #'ranger-search-next
-   "K" #'ranger-search-previous
-   "q" nil
-   "'" nil
-   "/" #'ranger-search)
-
-  :hook (ranger-mode-hook . w/evil-colemak-basics-disable)
-
-  :commands
-  deer-jump-other-window
-
-  :config
-  (with-eval-after-load 'direnv
-    (add-to-list 'direnv-non-file-modes 'ranger-mode))
-
-  ;; fixme: is using auxiliary keymap correct?
-  (evil-set-auxiliary-keymap ranger-mode-map 'motion ranger-mode-map)
-  (defun w/ranger-find-directory ()
-    (interactive)
-    (let ((name (dired-get-filename nil t)))
-      (if (file-directory-p name)
-          (ranger-find-file name)
-        (user-error "Not a directory")))))
 
 (defun w/buffer-worth-saving-p (name)
   "Does the buffer NAME indicate it may be worth saving?"
