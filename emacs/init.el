@@ -486,6 +486,13 @@
   :config
   (which-key-mode))
 
+(use-package winner
+  :demand t
+  :custom
+  (winner-dont-bind-my-keys t)
+  :config
+  (winner-mode))
+
 ;;; todo: tidy up the messy stuff below ======================
 
 (use-package hydra
@@ -2192,12 +2199,6 @@ defined as lowercase."
   (defun w/fit-bottom-error-window-to-buffer (window)
     "Size request for a small error window at the bottom."
     (fit-window-to-buffer window 10 5)))
-
-(use-package winner
-  :custom
-  (winner-dont-bind-my-keys t)
-  :config
-  (winner-mode))
 
 (defun w/evil-window-next-or-vsplit ()
   "Focus next window, or vsplit if it is the only window in this frame."
