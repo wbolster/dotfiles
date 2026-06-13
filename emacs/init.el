@@ -272,6 +272,14 @@
   (defun w/direnv-envrc-mode-hook ()
     (add-hook 'after-save-hook #'direnv-allow)))
 
+(use-package evil-args
+  :defer t
+  :bind
+  (:map evil-inner-text-objects-map
+   ("a" . evil-inner-arg)
+   :map evil-outer-text-objects-map
+   ("a" . evil-outer-arg)))
+
 (use-package gsettings
   :demand t
   :functions
@@ -1019,13 +1027,6 @@ defined as lowercase."
   (evil-define-operator w/evil-edit-indirect (beg end _type)
     (interactive "<R>")
     (edit-indirect-region beg end t)))
-
-(use-package evil-args
-  :general
-  (:keymaps 'evil-inner-text-objects-map
-   "a" #'evil-inner-arg)
-  (:keymaps 'evil-outer-text-objects-map
-   "a" #'evil-outer-arg))
 
 (use-package evil-colemak-basics
   :after evil evil-snipe
