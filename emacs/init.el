@@ -280,6 +280,13 @@
    :map evil-outer-text-objects-map
    ("a" . evil-outer-arg)))
 
+(use-package evil-commentary
+  :defer t
+  :general
+  (:states 'normal
+   "gc" #'evil-commentary
+   "gy" #'evil-commentary-yank))
+
 (use-package gsettings
   :demand t
   :functions
@@ -1040,12 +1047,6 @@ defined as lowercase."
   (global-evil-colemak-basics-mode)
   (defun w/evil-colemak-basics-disable ()
     (evil-colemak-basics-mode -1)))
-
-(use-package evil-commentary
-  :general
-  (:states 'normal
-   "gc" #'evil-commentary
-   "gy" #'evil-commentary-yank))
 
 (use-package evil-easymotion
   :general
