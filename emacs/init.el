@@ -344,6 +344,18 @@
    ("C-n" . transient-history-next)
    ("C-p" . transient-history-prev)))
 
+(use-package typo
+  :defer t
+  :delight " ”"
+  :commands w/typo-cycle-quotation-marks
+  :custom
+  (typo-language "prefer-single")
+  :config
+  (add-to-list 'typo-quotation-marks '("prefer-single" "‘" "’" "“" "”"))
+  (define-typo-cycle w/typo-cycle-quotation-marks
+    "Cycle through various quotation marks."
+    ("'" "‘" "’" "“" "”" "\"")))
+
 (use-package which-func
   :custom
   (which-func-unknown "")
@@ -3180,17 +3192,6 @@ defined as lowercase."
        (choice (ivy-read "Switch major mode: " (mapcar #'car choices) :require-match t))
        (fn (cdr (assoc choice choices))))
     (funcall fn)))
-
-(use-package typo
-  :defer t
-  :delight " ”"
-  :commands w/typo-cycle-quotation-marks
-  :config
-  (setq-default typo-language "prefer-single")
-  (add-to-list 'typo-quotation-marks '("prefer-single" "‘" "’" "“" "”"))
-  (define-typo-cycle w/typo-cycle-quotation-marks
-    "Cycle through various quotation marks."
-    ("'" "‘" "’" "“" "”" "\"")))
 
 (use-package text-mode
   :ensure nil
