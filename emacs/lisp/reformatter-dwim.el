@@ -11,7 +11,7 @@
 (require 'reformatter)
 
 (defgroup reformatter-dwim nil
-  "reformatter dwim helpers"
+  "Reformatter dwim helpers."
   :group 'reformatter
   :prefix "reformatter-dwim-")
 
@@ -19,8 +19,8 @@
   "The currently active reformatter.
 
 This should be a symbol, which is used to find the corresponding
-reformatting commands. For example, setting this variable to 'foo
-will cause the dwim function to use 'foo-region and 'foo-buffer.
+reformatting commands. For example, setting this variable to ‘'foo’
+will cause the dwim function to use ‘foo-region’ and ‘foo-buffer’.
 
 Typically, a major mode hook should set this buffer-local variable."
   :group 'reformatter-dwim
