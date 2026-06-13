@@ -330,6 +330,13 @@
   :config
   (evil-snipe-mode))
 
+(use-package evil-swap-keys
+  :demand t
+  :after (evil)
+  :delight " ⌨️"
+  :config
+  (global-evil-swap-keys-mode))
+
 (use-package gsettings
   :demand t
   :functions
@@ -1384,11 +1391,6 @@ defined as lowercase."
       (-let (((trigger left right) it))
         (push `(,trigger . (,left . ,right)) evil-surround-pairs-alist)))
     ))
-
-(use-package evil-swap-keys
-  :config
-  (global-evil-swap-keys-mode)
-  :delight " ⌨")
 
 (use-package evil-textobj-anyblock
   ;; todo perhaps replace with https://github.com/noctuid/targets.el
