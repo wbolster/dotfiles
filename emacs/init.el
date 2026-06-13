@@ -201,6 +201,12 @@
   :config
   (auto-dark-mode))
 
+(use-package colorful-mode
+  :defer t
+  :custom
+  (colorful-use-prefix t)
+  (colorful-prefix-string "⬤"))
+
 (use-package crux
   :defer t)
 
@@ -3362,12 +3368,6 @@ defined as lowercase."
     (colorful-mode)
     (modify-syntax-entry ?. ".")
     (modify-syntax-entry ?- "_")))
-
-(use-package colorful-mode
-  :defer t
-  :custom
-  (colorful-use-prefix t)
-  (colorful-prefix-string "⬤"))
 
 (use-package cus-edit
   :ensure nil
