@@ -35,6 +35,9 @@
 (use-package use-package
   :demand t
   :custom
+  ;; todo:enable ‘use-package-always-defer’ when everything that needs
+  ;; it has ‘:demand t’
+  ;; (use-package-always-defer t)
   (use-package-always-ensure t)
   (use-package-compute-statistics t)
   (use-package-enable-imenu-support t)
@@ -532,6 +535,7 @@
     ("'" "‘" "’" "“" "”" "\"")))
 
 (use-package which-func
+  :demand t
   :custom
   (which-func-unknown "")
   (which-func-modes nil)
@@ -1086,6 +1090,7 @@ defined as lowercase."
     (edit-indirect-region beg end t)))
 
 (use-package evil-easymotion
+  :defer t
   :general
   (:states 'motion
    "SPC" #'w/hydra-teleport/body)
@@ -1322,6 +1327,7 @@ defined as lowercase."
        :inherit (if on 'magit-diff-base 'highlight)))))
 
 (use-package evil-indent-plus
+  :defer t
   :general
   (:keymaps 'evil-inner-text-objects-map
    "i" #'evil-indent-plus-i-indent
@@ -1343,6 +1349,7 @@ defined as lowercase."
    "U" #'evil-mc-make-cursor-in-visual-selection-beg))
 
 (use-package evil-string-inflection
+  :defer t
   :general
   (:keymaps 'normal
    "g~" #'evil-operator-string-inflection
@@ -1350,6 +1357,7 @@ defined as lowercase."
 
 ;; todo: try out evil-embrace
 (use-package evil-surround
+  :defer t
   :general
   (:states 'operator
    "s" 'evil-surround-edit
@@ -1393,6 +1401,7 @@ defined as lowercase."
     ))
 
 (use-package evil-textobj-anyblock
+  :defer t
   ;; todo perhaps replace with https://github.com/noctuid/targets.el
   :general
   (:keymaps 'evil-inner-text-objects-map
@@ -1401,6 +1410,7 @@ defined as lowercase."
    "b" #'evil-textobj-anyblock-a-block))
 
 (use-package evil-visualstar
+  :defer t
   :general
   (:states 'visual
    "*" #'evil-visualstar/begin-search-forward
@@ -2730,6 +2740,8 @@ defined as lowercase."
     (magit-log-buffer-file t)))
 
 (use-package evil-collection
+  :demand t
+  :after (evil magit)
   :custom
   evil-collection-want-unimpaired-p nil
 
@@ -3488,12 +3500,14 @@ defined as lowercase."
   :after elisp-mode)
 
 (use-package lispy
+  :demand t
   :after elisp-mode
   :delight
   :config
   (lispy-set-key-theme '(lispy)))
 
 (use-package lispyville
+  :demand t
   :after elisp-mode
   :delight " 🎂"
   :custom
