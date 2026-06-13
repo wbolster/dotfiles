@@ -33,6 +33,7 @@
   (package-install 'use-package))
 
 (use-package use-package
+  :demand t
   :custom
   (use-package-always-ensure t)
   (use-package-compute-statistics t)
@@ -170,6 +171,7 @@
       (message "Showing defun only")))))
 
 (use-package emacs
+  :demand t
   :if (and (display-graphic-p) (eq system-type 'darwin)) ;; macOS
   :bind
   ("s-q" . nil)
