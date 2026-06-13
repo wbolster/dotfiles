@@ -207,6 +207,21 @@
   (colorful-use-prefix t)
   (colorful-prefix-string "⬤"))
 
+(use-package css-mode
+  :defer t
+  :hook
+  (css-mode-hook . w/css-mode-hook)
+  (scss-mode-hook . w/css-mode-hook)
+  :custom
+  (css-fontify-colors nil)
+  :config
+  (defun w/css-mode-hook ()
+    (lsp-deferred)
+    (reformatter-dwim-select 'prettier-format)
+    (colorful-mode)
+    (modify-syntax-entry ?. ".")
+    (modify-syntax-entry ?- "_")))
+
 (use-package crux
   :defer t)
 
@@ -3353,21 +3368,6 @@ defined as lowercase."
 
 (use-package xterm-color
   :defer t)
-
-(use-package css-mode
-  :defer t
-  :hook
-  (css-mode-hook . w/css-mode-hook)
-  (scss-mode-hook . w/css-mode-hook)
-  :custom
-  (css-fontify-colors nil)
-  :config
-  (defun w/css-mode-hook ()
-    (lsp-deferred)
-    (reformatter-dwim-select 'prettier-format)
-    (colorful-mode)
-    (modify-syntax-entry ?. ".")
-    (modify-syntax-entry ?- "_")))
 
 (use-package cus-edit
   :ensure nil
