@@ -3189,7 +3189,7 @@ defined as lowercase."
                     (label (format "%s: %s" name description))))))
            (cons (or label name) it))
          major-modes))
-       (choice (ivy-read "Switch major mode: " (mapcar #'car choices) :require-match t))
+       (choice (completing-read "Switch major mode: " (mapcar #'car choices) nil t))
        (fn (cdr (assoc choice choices))))
     (funcall fn)))
 
