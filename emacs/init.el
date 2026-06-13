@@ -309,8 +309,15 @@
    "-" #'evil-numbers/dec-at-pt))
 
 (use-package evil-snipe
-  :defer t
-  ;; note: no ‘evil-snipe-mode’ b/c ‘evil-colemak-basics’ binds keys
+  :demand t
+  :after evil
+  :delight evil-snipe-local-mode
+  :general
+  (:keymaps 'evil-snipe-local-mode-map
+   :states '(normal motion)
+   ;; note: ‘evil-colemak-basics’ binds keys
+   "s" nil
+   "S" nil)
   :custom
   (evil-snipe-override-evil-repeat-keys nil)
   (evil-snipe-repeat-scope 'line)
@@ -318,7 +325,10 @@
   (evil-snipe-smart-case t)
   (evil-snipe-tab-increment t)
   :custom-face
-  (evil-snipe-matches-face ((t (:inherit lazy-highlight)))))
+  (evil-snipe-first-match-face ((t (:inherit default))))
+  (evil-snipe-matches-face ((t (:inherit lazy-highlight))))
+  :config
+  (evil-snipe-mode))
 
 (use-package gsettings
   :demand t
