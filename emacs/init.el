@@ -308,6 +308,18 @@
    "+" #'evil-numbers/inc-at-pt
    "-" #'evil-numbers/dec-at-pt))
 
+(use-package evil-snipe
+  :defer t
+  ;; note: no ‘evil-snipe-mode’ b/c ‘evil-colemak-basics’ binds keys
+  :custom
+  (evil-snipe-override-evil-repeat-keys nil)
+  (evil-snipe-repeat-scope 'line)
+  (evil-snipe-scope 'line)
+  (evil-snipe-smart-case t)
+  (evil-snipe-tab-increment t)
+  :custom-face
+  (evil-snipe-matches-face ((t (:inherit lazy-highlight)))))
+
 (use-package gsettings
   :demand t
   :functions
@@ -1312,17 +1324,6 @@ defined as lowercase."
    :states 'visual
    "A" #'evil-mc-make-cursor-in-visual-selection-end
    "U" #'evil-mc-make-cursor-in-visual-selection-beg))
-
-(use-package evil-snipe
-  ;; evil-colemak-basics takes care of the basic key bindings.
-  :custom
-  (evil-snipe-override-evil-repeat-keys nil)
-  (evil-snipe-scope 'line)
-  (evil-snipe-repeat-scope 'line)
-  (evil-snipe-smart-case t)
-  (evil-snipe-tab-increment t)
-  :custom-face
-  (evil-snipe-matches-face ((t (:inherit lazy-highlight)))))
 
 (use-package evil-string-inflection
   :general
