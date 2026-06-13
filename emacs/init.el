@@ -4490,10 +4490,8 @@ defined as lowercase."
     (reformatter-dwim-select 'xml-format)))
 
 (use-package xml-format
-  :load-path "lisp/"
   :demand t
   :after nxml-mode)
-
 
 (use-package yaml-mode
   :defer t

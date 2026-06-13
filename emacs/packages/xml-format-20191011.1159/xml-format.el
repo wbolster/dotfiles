@@ -2,9 +2,10 @@
 
 ;; Author: wouter bolsterlee <wouter@bolsterl.ee>
 ;; Keywords: languages
-;; URL: https://github.com/wbolster
-;; Package-Requires: ((emacs "25") (reformatter "0.3"))
-;; Version: 0.1.0
+;; URL: https://github.com/wbolster/emacs-xml-format
+;; Package-Requires: ((emacs "25") (reformatter "0.4"))
+;; Package-Version: 20191011.1159
+;; Package-Revision: 2861c4e33e18
 
 ;; Copyright 2019 wouter bolsterlee. Licensed under the 3-Clause BSD License.
 
@@ -21,12 +22,12 @@
 
 (defcustom xml-format-xmllint-executable "xmllint"
   "Name of the xmllint executable."
-  :group 'xmllint
+  :group 'xml-format
   :type 'string)
 
-(defcustom xml-format-xmllint-args '("--format" "-")
+(defcustom xml-format-xmllint-args '("--nonet"  "--format" "-")
   "Arguments to pass to xmllint."
-  :group 'xmllint
+  :group 'xml-format
   :type '(repeat string))
 
 ;;;###autoload (autoload 'xml-format-buffer "xml-format" nil t)
@@ -36,7 +37,7 @@
   :group 'xml-format
   :program xml-format-xmllint-executable
   :args xml-format-xmllint-args
-  :mode "XMLFmt")
+  :lighter " XMLFmt")
 
 (provide 'xml-format)
 ;;; xml-format.el ends here
