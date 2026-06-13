@@ -55,6 +55,9 @@
   :config
   (exec-path-from-shell-initialize))
 
+(use-package general
+  :demand t)
+
 (use-package xdg
   :demand t
   :functions
@@ -250,9 +253,6 @@
   (direnv-mode)
   (defun w/direnv-envrc-mode-hook ()
     (add-hook 'after-save-hook #'direnv-allow)))
-
-(use-package general
-  :demand t)
 
 (use-package gsettings
   :demand t
