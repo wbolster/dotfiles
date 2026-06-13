@@ -633,7 +633,7 @@ defined as lowercase."
 (add-hook 'w/theme-changed-hook #'w/tweak-faces)
 
 (defun w/tweak-evil-cursor ()
-  "Tweak the appearance of the evil cursors"
+  "Tweak the appearance of the evil cursors."
   (setq
    evil-motion-state-cursor (list solarized-color-yellow 'box)
    evil-normal-state-cursor (list solarized-color-yellow 'box)
@@ -1858,11 +1858,13 @@ defined as lowercase."
     (visual-fill-column-mode -1)))
 
 (defun w/sensible-wrap-mode-1 ()
+  "Dubious attempt at sensible wrapping, mode 1."
   (interactive)
   (let ((mode (if (derived-mode-p 'text-mode) 'w/wrap-lines-mode 'toggle-truncate-lines)))
     (call-interactively mode)))
 
 (defun w/sensible-wrap-mode-2 ()
+  "Dubious attempt at sensible wrapping, mode 2."
   (interactive)
   (let ((mode (if (derived-mode-p 'text-mode) 'toggle-truncate-lines 'visual-line-mode)))
     (call-interactively mode)))
@@ -3522,7 +3524,7 @@ defined as lowercase."
     (call-interactively #'helpful-symbol)))
 
 (defgroup prettier nil
-  "Formatting using Prettier"
+  "Formatting using Prettier."
   :group 'languages)
 (reformatter-define prettier-format
   :program "prettier"
