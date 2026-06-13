@@ -280,6 +280,20 @@
    :map evil-outer-text-objects-map
    ("a" . evil-outer-arg)))
 
+(use-package evil-colemak-basics
+  :demand t
+  :after (evil evil-snipe)
+  :delight
+  :commands
+  w/evil-colemak-basics-disable
+  :init
+  (setq evil-colemak-basics-char-jump-commands 'evil-snipe)
+  :config
+  (global-evil-colemak-basics-mode)
+  (defun w/evil-colemak-basics-disable ()
+    "Disable ‘evil-colemak-basics-mode’; intended for hooks."
+    (evil-colemak-basics-mode -1)))
+
 (use-package evil-commentary
   :defer t
   :general
@@ -1034,19 +1048,6 @@ defined as lowercase."
   (evil-define-operator w/evil-edit-indirect (beg end _type)
     (interactive "<R>")
     (edit-indirect-region beg end t)))
-
-(use-package evil-colemak-basics
-  :after evil evil-snipe
-  :demand t
-  :delight
-  :init
-  (setq evil-colemak-basics-char-jump-commands 'evil-snipe)
-  :commands
-  w/evil-colemak-basics-disable
-  :config
-  (global-evil-colemak-basics-mode)
-  (defun w/evil-colemak-basics-disable ()
-    (evil-colemak-basics-mode -1)))
 
 (use-package evil-easymotion
   :general
