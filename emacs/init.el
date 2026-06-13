@@ -204,6 +204,11 @@
   :config
   (auto-dark-mode))
 
+(use-package balanced-windows
+  :demand t
+  :config
+  (balanced-windows-mode))
+
 (use-package colorful-mode
   :defer t
   :custom
@@ -2187,10 +2192,6 @@ defined as lowercase."
   (defun w/fit-bottom-error-window-to-buffer (window)
     "Size request for a small error window at the bottom."
     (fit-window-to-buffer window 10 5)))
-
-(use-package balanced-windows
-  :config
-  (balanced-windows-mode))
 
 (use-package winner
   :custom
