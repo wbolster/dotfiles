@@ -352,6 +352,18 @@
            (font-name-without-size (replace-regexp-in-string "\\(.*\\) [0-9.]+" "\\1" font-name)))
       (setq w/ui-font-family font-name-without-size))))
 
+(use-package python-black
+  :demand t
+  :after python
+  :delight
+  (python-black-on-save-mode " 🖤"))
+
+(use-package python-coverage
+  :demand t
+  :after python
+  :delight
+  (python-coverage-overlay-mode " 🚨"))
+
 (use-package ranger
   :demand t
   :after (dired evil)
@@ -4006,18 +4018,6 @@ defined as lowercase."
 
 (use-package lsp-python
   :disabled)
-
-(use-package python-black
-  :demand t
-  :after python
-  :delight
-  (python-black-on-save-mode " ❤"))
-
-(use-package python-coverage
-  :demand t
-  :after python
-  :delight
-  (python-coverage-overlay-mode " 🚨"))
 
 (use-package evil-text-object-python
   :demand t
