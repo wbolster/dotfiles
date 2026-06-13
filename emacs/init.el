@@ -1538,14 +1538,6 @@ defined as lowercase."
    "J" #'evil-indent-plus-a-indent-up-down
    "TAB" #'evil-indent-plus-a-indent-up))
 
-(use-package evil-mc
-  :disabled
-  :general
-  (:keymaps 'evil-colemak-basics-keymap
-   :states 'visual
-   "A" #'evil-mc-make-cursor-in-visual-selection-end
-   "U" #'evil-mc-make-cursor-in-visual-selection-beg))
-
 (use-package evil-string-inflection
   :defer t
   :general
@@ -4015,9 +4007,6 @@ defined as lowercase."
     ("T" python-pytest-repeat)
     "_v_ariable"
     ("v" w/python-refactor-make-variable)))
-
-(use-package lsp-python
-  :disabled)
 
 (use-package evil-text-object-python
   :demand t
