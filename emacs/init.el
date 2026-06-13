@@ -408,6 +408,25 @@
   (defvar solarized-color-yellow    "#b58900")
   (defvar solarized-color-yellow-l  "#deb542"))
 
+(use-package sql
+  :defer t
+  :mode
+  ((rx (? ".") "psqlrc" string-end) . sql-mode)
+  :hook (sql-mode-hook . w/sql-mode-hook)
+  :config
+  (require 'reformatter-dwim)
+  (require 'sqlformat)
+
+  (defun w/sql-mode-hook ()
+    (setq evil-shift-width 2)
+    (reformatter-dwim-select 'sqlformat)))
+
+(use-package sqlformat
+  :defer t
+  :after sql
+  :custom
+  (sqlformat-command 'pgformatter))
+
 (use-package sudo-edit
   :defer t)
 
@@ -4355,22 +4374,6 @@ defined as lowercase."
   (defun w/sh-mode-hook ()))
 
 (use-package shfmt :defer t)
-
-(use-package sql
-  :defer t
-  :mode
-  ((rx (? ".") "psqlrc" string-end) . sql-mode)
-  :hook (sql-mode-hook . w/sql-mode-hook)
-  :config
-  (defun w/sql-mode-hook ()
-    (setq evil-shift-width 2)
-    (reformatter-dwim-select 'sqlformat)))
-
-(use-package sqlformat
-  :demand t
-  :after sql
-  :custom
-  (sqlformat-command 'pgformatter))
 
 (use-package conf-mode
   :hook (conf-toml-mode-hook . w/conf-toml-mode-hook)
