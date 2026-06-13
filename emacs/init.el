@@ -9,20 +9,20 @@
 ;; Bootstrap initialization
 
 ;; Reduce garbage collection: faster startup, also recommended for lsp-mode.
-(setq gc-cons-threshold (* 100 1024 1024))
+(setopt gc-cons-threshold (* 100 1024 1024))
 
-(setq load-prefer-newer t)
+(setopt load-prefer-newer t)
 
 ;; Make everything relative to where this file actually lives.
-(setq user-emacs-directory
-      (concat "~/" (file-name-directory (file-symlink-p user-init-file))))
+(setopt user-emacs-directory
+    (concat "~/" (file-name-directory (file-symlink-p user-init-file))))
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 ;; Bootstrap packages
 
 (require 'package)
-(setq
+(setopt
  package-enable-at-startup nil
  package-user-dir (locate-user-emacs-file "packages"))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -70,7 +70,7 @@
   :demand t
   :init
   (require 'xdg)
-  (setq no-littering-var-directory (expand-file-name "emacs/" (xdg-state-home)))
+  (setopt no-littering-var-directory (expand-file-name "emacs/" (xdg-state-home)))
   (no-littering-theme-backups))
 
 ;; Regular config
@@ -153,7 +153,7 @@
   (visual-line-mode (:eval (unless w/wrap-lines-mode " ⇉")))
 
   :config
-  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (setopt custom-file (expand-file-name "custom.el" user-emacs-directory))
 
   (blink-cursor-mode)
   (menu-bar-mode -1)
@@ -290,7 +290,7 @@
   :commands
   w/evil-colemak-basics-disable
   :init
-  (setq evil-colemak-basics-char-jump-commands 'evil-snipe)
+  (setopt evil-colemak-basics-char-jump-commands 'evil-snipe)
   :config
   (global-evil-colemak-basics-mode)
   (defun w/evil-colemak-basics-disable ()
@@ -503,7 +503,7 @@
   (require 'sqlformat)
 
   (defun w/sql-mode-hook ()
-    (setq evil-shift-width 2)
+    (setopt evil-shift-width 2)
     (reformatter-dwim-select 'sqlformat)))
 
 (use-package sqlformat
@@ -521,9 +521,9 @@
   terminal-here-linux-terminal-command 'gnome-terminal
   :config
   (when (executable-find "ghostty")
-    (setq terminal-here-linux-terminal-command
-          (lambda (directory)
-            `("ghostty" ,(format "--working-directory=%s" directory) "+new-window")))))
+    (setopt terminal-here-linux-terminal-command
+            (lambda (directory)
+              `("ghostty" ,(format "--working-directory=%s" directory) "+new-window")))))
 
 (use-package transient
   :defer t
@@ -554,7 +554,7 @@
   :custom-face
   (which-func ((t (:foreground unspecified))))
   :config
-  (setq which-func-format (--remove (member it '("[" "]")) which-func-format))
+  (setopt which-func-format (--remove (member it '("[" "]")) which-func-format))
   (which-function-mode))
 
 (use-package which-key
