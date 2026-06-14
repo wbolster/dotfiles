@@ -463,6 +463,25 @@
   (unless (server-running-p)
     (server-start)))
 
+(use-package sh-script
+  :defer t
+  :mode
+  ((rx "bashrc" string-end) . sh-mode)
+  ((rx ".bashrc-" (* any) string-end) . sh-mode)
+  ((rx (* any) ".env" string-end) . sh-mode)
+  :general
+  (:keymaps 'sh-mode-map
+   :states 'normal
+   "<return> "'w/split-line-backslash
+   [remap evil-join] #'w/evil-join-smart-backslash-eol)
+  :custom
+  (sh-indent-after-continuation 'always)
+  :config
+  (reformatter-define w/shell-format-bash-pretty-print
+    :program "bash"
+    :args '("--pretty-print" "-")
+    :group 'sh-script))
+
 (use-package solarized-theme
   :demand t
   :if (display-graphic-p)
@@ -4351,27 +4370,6 @@ defined as lowercase."
     (evil--add-to-alist
      origami-parser-alist
      'rust-mode 'w/origami-parser-imenu-flat)))
-
-(use-package sh-script
-  :defer t
-  :mode
-  ((rx "bashrc" string-end) . sh-mode)
-  ((rx ".bashrc-" (* any) string-end) . sh-mode)
-  ((rx (* any) ".env" string-end) . sh-mode)
-  :hook (sh-mode-hook . w/sh-mode-hook)
-  :custom
-  (sh-indent-after-continuation 'always)
-  :general
-  (:keymaps 'sh-mode-map
-   :states 'normal
-   "<return> "'w/split-line-backslash
-   [remap evil-join] #'w/evil-join-smart-backslash-eol)
-  :config
-  (reformatter-define shell-format-bash-pretty-print
-    :program "bash"
-    :args '("--pretty-print" "-")
-    :group 'sh-script)
-  (defun w/sh-mode-hook ()))
 
 (use-package shfmt :defer t)
 
