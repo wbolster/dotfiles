@@ -233,6 +233,20 @@
     (modify-syntax-entry ?. ".")
     (modify-syntax-entry ?- "_")))
 
+(use-package conf-mode
+  :defer t
+  :hook (conf-toml-mode-hook . w/conf-toml-mode-hook)
+  :functions w/toml-format-taplo-region
+  :config
+  (defun w/conf-toml-mode-hook ()
+    (setopt
+     tab-width 2
+     evil-shift-width tab-width))
+  (reformatter-define w/toml-format-taplo
+    :group 'toml
+    :program "taplo"
+    :args '("format" "-")))
+
 (use-package crux
   :defer t)
 
@@ -4373,17 +4387,6 @@ defined as lowercase."
     (evil--add-to-alist
      origami-parser-alist
      'rust-mode 'w/origami-parser-imenu-flat)))
-
-(use-package conf-mode
-  :hook (conf-toml-mode-hook . w/conf-toml-mode-hook)
-  :config
-  (defun w/conf-toml-mode-hook ()
-    (setq
-     tab-width 2
-     evil-shift-width tab-width))
-  (reformatter-define toml-format-taplo
-    :program "taplo"
-    :args '("format" "-")))
 
 (use-package typescript-ts-mode
   ;; built-in
