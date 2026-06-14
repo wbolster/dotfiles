@@ -4076,10 +4076,8 @@ defined as lowercase."
     "_r_epeat"
     ("r" python-pytest-repeat nil)
     "_t_ pytest"
-    ("t" python-pytest-popup nil)
+    ("t" python-pytest-dispatch nil)
     ("T" python-pytest-repeat nil))
-  (magit-define-popup-option 'python-pytest-popup
-    ?n "count" "--count=")
 
   (defun w/python-pytest-mode-hook ()
     (setq-local company-backends '(company-dabbrev-code))
