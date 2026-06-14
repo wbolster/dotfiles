@@ -1022,7 +1022,8 @@ defined as lowercase."
     (default-text-scale-increment (- height (face-attribute 'default :height)))))
 
 (use-package unicode-fonts
-  :ensure t
+  ;; todo: is this still relevant?
+  :disabled
   :custom
   (unicode-fonts-skip-fonts '("Segoe UI Symbol"))
   :config
