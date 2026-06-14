@@ -300,6 +300,34 @@
   (defun w/direnv-envrc-mode-hook ()
     (add-hook 'after-save-hook #'direnv-allow)))
 
+(use-package evil
+  :demand t
+  :custom
+  (evil-cross-lines t)
+  (evil-emacs-state-tag "e ")
+  (evil-insert-state-message nil)
+  (evil-insert-state-tag "i ")
+  ;; small state tag before position info, which smart-mode-line put elsewhere
+  (evil-mode-line-format '(before . mode-line-front-space))
+  (evil-motion-state-tag "m ")
+  (evil-normal-state-tag "  ")
+  (evil-operator-state-tag "o ")
+  (evil-replace-state-tag "r ")
+  (evil-shift-round nil)
+  (evil-split-window-below t)
+  (evil-undo-system 'undo-redo)
+  (evil-visual-state-tag "v ")
+  (evil-vsplit-window-right t)
+  (evil-want-C-u-scroll t)
+  (evil-want-C-w-in-emacs-state t)
+  :init
+  (setopt
+   evil-respect-visual-line-mode t
+   evil-want-keybinding nil
+   evil-want-integration t)
+  :config
+  (evil-mode))
+
 (use-package evil-args
   :defer t
   :bind
@@ -1056,34 +1084,7 @@ defined as lowercase."
     (set-face-attribute 'sml/filename nil :foreground solarized-color-blue)))
 
 (use-package evil
-  :demand t
-
-  :init
-  (setq
-   evil-respect-visual-line-mode t
-   evil-want-C-u-scroll t
-   evil-want-C-w-in-emacs-state t
-   evil-want-keybinding nil
-   evil-want-integration t)
-
-  :custom
-  (evil-cross-lines t)
-  (evil-insert-state-message nil)
-  (evil-shift-round nil)
-  (evil-split-window-below t)
-  (evil-undo-system 'undo-redo)
-  (evil-vsplit-window-right t)
-
-  ;; small state tag before position info, which smart-mode-line put elsewhere
-  (evil-mode-line-format '(before . mode-line-front-space))
-  (evil-emacs-state-tag "e ")
-  (evil-insert-state-tag "i ")
-  (evil-motion-state-tag "m ")
-  (evil-normal-state-tag "  ")
-  (evil-operator-state-tag "o ")
-  (evil-replace-state-tag "r ")
-  (evil-visual-state-tag "v ")
-
+  ;; todo: clean up and merge with other use-package stanza
   :general
   (:states 'motion
    "<tab>" 'evil-toggle-fold
@@ -1143,7 +1144,6 @@ defined as lowercase."
    "C-g" #'evil-normal-state)
 
   :config
-  (evil-mode)
 
   ;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
   (evil-add-command-properties 'evil-yank-line :motion 'evil-end-of-line)
