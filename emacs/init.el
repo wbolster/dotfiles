@@ -126,6 +126,7 @@
   (frame-title-format "%b")
   (help-window-select t)
   (indicate-buffer-boundaries 'left)
+  (indent-tabs-mode nil)
   (inhibit-startup-screen t)
   (initial-major-mode 'text-mode)
   (initial-scratch-message nil)
