@@ -330,6 +330,7 @@
 
 (use-package evil-args
   :defer t
+  :after evil
   :bind
   (:map evil-inner-text-objects-map
    ("a" . evil-inner-arg)
@@ -338,7 +339,7 @@
 
 (use-package evil-colemak-basics
   :demand t
-  :after (evil evil-snipe)
+  :after evil evil-snipe
   :delight
   :commands
   w/evil-colemak-basics-disable
@@ -352,6 +353,7 @@
 
 (use-package evil-commentary
   :defer t
+  :after evil
   :general
   (:states 'normal
    "gc" #'evil-commentary
@@ -359,6 +361,7 @@
 
 (use-package evil-numbers
   :defer t
+  :after evil
   :general
   (:states 'normal
    "+" #'evil-numbers/inc-at-pt
@@ -388,7 +391,7 @@
 
 (use-package evil-swap-keys
   :demand t
-  :after (evil)
+  :after evil
   :delight " ⌨️"
   :config
   (global-evil-swap-keys-mode))
@@ -419,7 +422,7 @@
 
 (use-package ranger
   :demand t
-  :after (dired evil)
+  :after dired evil
   :bind
   (:map ranger-mode-map
    ("h" . ranger-up-directory)
@@ -2738,7 +2741,7 @@ defined as lowercase."
 (use-package ivy-hydra)
 
 (use-package ivy-rich
-  :after (ivy counsel)
+  :after ivy counsel
   :custom
   (ivy-rich-parse-remote-buffer nil)
   :config
@@ -2907,7 +2910,7 @@ defined as lowercase."
 
 (use-package evil-collection
   :demand t
-  :after (evil magit)
+  :after evil magit
   :custom
   evil-collection-want-unimpaired-p nil
 
@@ -3443,7 +3446,7 @@ defined as lowercase."
 
 (use-package flycheck-cython
   :demand t
-  :after (cython-mode flycheck))
+  :after cython-mode flycheck)
 
 (use-package docker
   :defer t
@@ -3555,7 +3558,7 @@ defined as lowercase."
 
 (use-package flycheck-package
   :demand t
-  :after (elisp-mode flycheck)
+  :after elisp-mode flycheck
   :config
   (flycheck-package-setup))
 
@@ -4048,7 +4051,7 @@ defined as lowercase."
 
 (use-package evil-text-object-python
   :demand t
-  :after (evil python)
+  :after evil python
   :general
   (:keymaps 'python-mode-map
    :states '(operator visual)
@@ -4072,7 +4075,7 @@ defined as lowercase."
 
 (use-package evil-python-movement
   :demand t
-  :after (evil python)
+  :after evil python
   :general
   (:keymaps 'python-mode-map
    :states 'normal
