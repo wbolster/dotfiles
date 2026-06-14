@@ -263,6 +263,9 @@
   :config
   (global-dash-fontify-mode))
 
+(use-package delight
+  :demand t)
+
 (use-package dired
   :demand t
   :ensure nil
@@ -1024,9 +1027,6 @@ defined as lowercase."
   (unicode-fonts-skip-fonts '("Segoe UI Symbol"))
   :config
   (unicode-fonts-setup))
-
-
-(use-package delight)
 
 (use-package nyan-mode
   :defer t)
