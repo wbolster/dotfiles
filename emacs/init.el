@@ -263,7 +263,7 @@
   (global-dash-fontify-mode))
 
 (use-package dired
-  :defer t
+  :demand t
   :ensure nil
   :general
   (:keymaps 'dired-mode-map
