@@ -1599,13 +1599,6 @@ defined as lowercase."
   (:keymaps 'evil-outer-text-objects-map
    "b" #'evil-textobj-anyblock-a-block))
 
-(use-package evil-visualstar
-  :defer t
-  :general
-  (:states 'visual
-   "*" #'evil-visualstar/begin-search-forward
-   "#" #'evil-visualstar/begin-search-backward))
-
 (use-package expand-region
   :defer t
   :custom
