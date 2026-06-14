@@ -482,6 +482,9 @@
     :args '("--pretty-print" "-")
     :group 'sh-script))
 
+(use-package shfmt
+  :defer t)
+
 (use-package solarized-theme
   :demand t
   :if (display-graphic-p)
@@ -4370,8 +4373,6 @@ defined as lowercase."
     (evil--add-to-alist
      origami-parser-alist
      'rust-mode 'w/origami-parser-imenu-flat)))
-
-(use-package shfmt :defer t)
 
 (use-package conf-mode
   :hook (conf-toml-mode-hook . w/conf-toml-mode-hook)
