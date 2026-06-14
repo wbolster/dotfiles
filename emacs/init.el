@@ -75,8 +75,15 @@
 
 ;; Regular config
 
-(defvar w/ui-font-family "Sans"
-  "Name of the font-family used by the desktop environment's user interface.")
+(defgroup w nil
+  "Personal configuration."
+  :group 'emacs
+  :prefix "w/")
+
+(defcustom w/ui-font-family "Sans"
+  "Name of the font-family used by the desktop environment's user interface."
+  :group 'w
+  :type 'string)
 
 (use-package emacs
   :demand t
@@ -364,7 +371,7 @@
     (gsettings-apply-gnome-settings)
     (let* ((font-name (gsettings-get "org.gnome.desktop.interface" "font-name"))
            (font-name-without-size (replace-regexp-in-string "\\(.*\\) [0-9.]+" "\\1" font-name)))
-      (setq w/ui-font-family font-name-without-size))))
+      (setopt w/ui-font-family font-name-without-size))))
 
 (use-package python-black
   :demand t
