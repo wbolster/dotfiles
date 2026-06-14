@@ -453,7 +453,7 @@
 (use-package reformatter-dwim
   :defer t
   :load-path "lisp/"
-  :functions
+  :autoload
   reformatter-dwim-select
   :general
   (:states '(normal visual)
