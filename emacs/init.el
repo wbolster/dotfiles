@@ -933,7 +933,7 @@ defined as lowercase."
            (not (buffer-file-name))
            (not (member major-mode '(dired-mode ranger-mode)))
            (w/buffer-worth-saving-p (buffer-name)))
-      (y-or-n-p
+      (yes-or-no-p
        (format
         "Buffer %s modified but not saved; kill anyway? "
         (buffer-name)))
