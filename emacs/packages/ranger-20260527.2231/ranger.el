@@ -2,8 +2,8 @@
 ;; Copyright (C) 2015-2024  Rich Alesi
 
 ;; Author : Rich Alesi <https://github.com/ralesi>
-;; Package-Version: 20260201.717
-;; Package-Revision: 61e7c840c520
+;; Package-Version: 20260527.2231
+;; Package-Revision: cfcab21cd21e
 ;; Keywords: files, convenience, dired
 ;; Homepage: https://github.com/ralesi/ranger
 ;; Package-Requires: ((emacs "27.1"))
@@ -350,6 +350,7 @@ toggles (z). Requires the hydra package to be installed."
 (defvar ranger-pre-hl-mode nil)
 (defvar ranger-pre-arev-mode nil)
 (defvar ranger-pre-dired-listing nil)
+(defvar ranger-pre-ls-lisp-use-insert-directory-program nil)
 
 (defvar ranger-preview-window nil)
 (defvar ranger-preview-buffers ()
@@ -968,6 +969,22 @@ to not replace existing value."
                 (when ranger-was-ranger
                   (ranger-mode)))
               '((name . ranger-wdired-abort)))
+
+  (advice-add 'wdired-finish-edit :before
+              (lambda (&rest _)
+                (when (and ranger-was-ranger
+                           (= (line-number-at-pos (point-min)) 1)
+                           (save-excursion
+                             (goto-char (point-min))
+                             (dired-move-to-filename)))
+                  ;; Insert an empty line at the top so wdired-finish-edit's
+                  ;; reverse loop doesn't skip changes made to line 1.
+                  (save-excursion
+                    (goto-char (point-min))
+                    (let ((inhibit-read-only t))
+                      (insert "
+")))))
+              '((name . ranger-fix-wdired-finish-edit-bobp)))
 
   (advice-add 'wdired-finish-edit :after
               (lambda (&rest _args)
@@ -2609,6 +2626,11 @@ fraction of the total frame size"
         ;; (setq ranger-mode nil)
         ;; hide details line at top
         (funcall 'remove-from-invisibility-spec 'dired-hide-details-information)
+        ;; Restore ls-lisp state
+        (if (eq ranger-pre-ls-lisp-use-insert-directory-program :unbound)
+            (makunbound 'ls-lisp-use-insert-directory-program)
+          (setq ls-lisp-use-insert-directory-program
+                ranger-pre-ls-lisp-use-insert-directory-program))
         ;; sort dired with previous listing options
         (dired-sort-other dired-listing-switches)
         ))))
@@ -3008,6 +3030,11 @@ properly provides the modeline in dired mode. "
 (defun ranger-disable ()
   "Interactively disable ranger-mode."
   (interactive)
+  ;; Restore global ls-lisp state so future dired buffers use system ls
+  (if (eq ranger-pre-ls-lisp-use-insert-directory-program :unbound)
+      (makunbound 'ls-lisp-use-insert-directory-program)
+    (setq ls-lisp-use-insert-directory-program
+          ranger-pre-ls-lisp-use-insert-directory-program))
   ;; don't kill ranger buffer if open somewhere else
   (if (> (length (get-buffer-window-list)) 1)
       (progn
@@ -3037,14 +3064,10 @@ properly provides the modeline in dired mode. "
   (setq ls-lisp-gid-s-fmt "%-8s")
   ;; don't mix dotfiles with directories
   (setq ls-lisp-UCA-like-collation nil)
-  ;; (setq ls-lisp-use-insert-directory-program nil)
 
   (setq ls-lisp-format-time-list
         '("%Y-%m-%d %H:%M"
           "%Y-%m-%d %H:%M"))
-
-  (setq ls-lisp-use-insert-directory-program nil)
-  (require 'ls-lisp)
 
   (unless (derived-mode-p 'dired-mode)
     (error "Run it from dired buffer"))
@@ -3067,7 +3090,14 @@ properly provides the modeline in dired mode. "
     (setq ranger-pre-hl-mode hl-line-mode)
     (setq ranger-pre-arev-mode auto-revert-mode)
     (setq ranger-pre-dired-listing dired-listing-switches)
+    (setq ranger-pre-ls-lisp-use-insert-directory-program
+          (if (boundp 'ls-lisp-use-insert-directory-program)
+              ls-lisp-use-insert-directory-program
+            :unbound))
     (setq ranger-pre-saved t))
+
+  (setq ls-lisp-use-insert-directory-program nil)
+  (require 'ls-lisp)
 
   ;; save window-config for frame unless already
   ;; specified from running `ranger'
