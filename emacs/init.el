@@ -657,6 +657,9 @@
 (use-package sudo-edit
   :defer t)
 
+(use-package systemd
+  :defer t)
+
 (use-package terminal-here
   :defer t
   :custom
@@ -4168,8 +4171,6 @@ defined as lowercase."
   (defun w/profiler-report-mode-hook ()
     (setq evil-lookup-func 'w/helpful-evil-lookup-func))
   (evil-set-initial-state 'profiler-report-mode 'motion))
-
-(use-package systemd :defer t)
 
 (use-package rst
   :defer t
