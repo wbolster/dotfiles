@@ -46,9 +46,7 @@
 
 (use-package benchmark-init
   :demand t
-  :hook (after-init-hook . benchmark-init/deactivate)
-  :config
-  (benchmark-init/activate))
+  :hook (after-init-hook . benchmark-init/deactivate))
 
 ;; Early packages
 
