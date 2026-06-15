@@ -3658,8 +3658,6 @@ defined as lowercase."
      js-indent-level tab-width)
     (reformatter-dwim-select 'prettier-format)))
 
-(use-package rjsx-mode :defer t)
-
 (use-package json-mode
   :defer t
   :hook (json-mode-hook . w/json-mode-hook)
