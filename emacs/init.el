@@ -878,10 +878,8 @@
   "2" #'w/goto-window-2
   "3" #'w/goto-window-3
   "4" #'w/goto-window-4
-  "!" #'w/set-as-window-1
-  "@" #'w/set-as-window-2
-  "#" #'w/set-as-window-3
-  "$" #'w/set-as-window-4
+  "5" #'w/goto-window-5
+  "6" #'w/goto-window-6
   "a" #'w/hydra-ag/body
   "b" w/buffer-map
   "c" w/flycheck-map
@@ -2470,53 +2468,14 @@ defined as lowercase."
   (w/evil-goto-window 4))
 
 (defun w/goto-window-5 ()
-  "Go to the fourth window."
+  "Go to the fifth window."
   (interactive)
   (w/evil-goto-window 5))
 
 (defun w/goto-window-6 ()
-  "Go to the fourth window."
+  "Go to the sixth window."
   (interactive)
   (w/evil-goto-window 6))
-
-(defun w/set-as-window-1 ()
-  "Make this the first window."
-  (interactive)
-  (evil-window-move-far-left))
-
-(defun w/set-as-window-2 ()
-  "Make this the second window."
-  (interactive)
-  (evil-window-move-far-left)
-  (buf-move-right))
-
-(defun w/set-as-window-3 ()
-  "Make this the third window."
-  (interactive)
-  (evil-window-move-far-left)
-  (--dotimes 2
-    (buf-move-right)))
-
-(defun w/set-as-window-4 ()
-  "Make this the fourth window."
-  (interactive)
-  (evil-window-move-far-left)
-  (--dotimes 3
-    (buf-move-right)))
-
-(defun w/set-as-window-5 ()
-  "Make this the fifth window."
-  (interactive)
-  (evil-window-move-far-left)
-  (--dotimes 4
-    (buf-move-right)))
-
-(defun w/set-as-window-6 ()
-  "Make this the sixth window."
-  (interactive)
-  (evil-window-move-far-left)
-  (--dotimes 5
-    (buf-move-right)))
 
 (w/declare-jump 'w/evil-window-next-or-vsplit)
 (w/declare-jump 'w/goto-window-1)
@@ -2557,13 +2516,7 @@ defined as lowercase."
     (kbd "C-3") 'w/goto-window-3
     (kbd "C-4") 'w/goto-window-4
     (kbd "C-5") 'w/goto-window-5
-    (kbd "C-6") 'w/goto-window-6
-    (kbd "C-!") 'w/set-as-window-1
-    (kbd "C-@") 'w/set-as-window-2
-    (kbd "C-#") 'w/set-as-window-3
-    (kbd "C-$") 'w/set-as-window-4
-    (kbd "C-%") 'w/set-as-window-5
-    (kbd "C-^") 'w/set-as-window-6)
+    (kbd "C-6") 'w/goto-window-6)
   (bind-keys
    ("C-SPC" . evil-window-next)
    ("C-S-SPC" . evil-window-prev)
@@ -2574,13 +2527,7 @@ defined as lowercase."
    ("C-3" . w/goto-window-3)
    ("C-4" . w/goto-window-4)
    ("C-5" . w/goto-window-5)
-   ("C-6" . w/goto-window-6)
-   ("C-!" . w/set-as-window-1)
-   ("C-@" . w/set-as-window-2)
-   ("C-#" . w/set-as-window-3)
-   ("C-$" . w/set-as-window-4)
-   ("C-%" . w/set-as-window-5)
-   ("C-^" . w/set-as-window-6))))
+   ("C-6" . w/goto-window-6))))
 
 (use-package buffer-move
   :defer t)
@@ -2615,12 +2562,6 @@ defined as lowercase."
   ("4" w/goto-window-4)
   ("5" w/goto-window-5)
   ("6" w/goto-window-6)
-  ("!" w/set-as-window-1)
-  ("@" w/set-as-window-2)
-  ("#" w/set-as-window-3)
-  ("$" w/set-as-window-4)
-  ("%" w/set-as-window-5)
-  ("^" w/set-as-window-6)
   "_b_alance"
   ("b" balance-windows)
   ("=" balance-windows)  ;; evil/vim style
