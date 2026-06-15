@@ -496,6 +496,55 @@
   :config
   (evil-snipe-mode))
 
+(use-package evil-surround
+  :defer t
+  ;; todo: consider evil-embrace + embrace
+  :general
+  (:states 'operator
+   "s" 'evil-surround-edit
+   "S" 'evil-Surround-edit)
+  (:states 'visual
+   "S" 'evil-surround-region
+   "gS" 'evil-Surround-region)
+  :autoload
+  w/evil-surround-define-surround-trigger-pairs
+  :config
+  (cl-defun w/evil-surround-define-surround-trigger-pairs (scope &rest args)
+    "Define :global or :local surround pairs as TRIGGER LEFT RIGHT (repeatable)."
+    (unless (member scope '(:global :local))
+      (error "Scope must be either :global or :local") )
+    (let ((new-evil-surround-pairs-alist
+           (copy-tree
+            (pcase scope
+              (:local evil-surround-pairs-alist)
+              (:global (default-value 'evil-surround-pairs-alist))))))
+      (pcase-dolist (`(,trigger ,left ,right) (seq-partition args 3))
+        (setf (alist-get (string-to-char trigger) new-evil-surround-pairs-alist)
+              (cons left right)))
+      (pcase scope
+        (:local (setq-local evil-surround-pairs-alist new-evil-surround-pairs-alist))
+        (:global (setq-default evil-surround-pairs-alist new-evil-surround-pairs-alist)))))
+
+  (w/evil-surround-define-surround-trigger-pairs
+   :global
+   ;; overwrite defaults to avoid spaces inside braces
+   "(" "(" ")"
+   "[" "[" "]"
+   "{" "{" "}"
+   ;; without shift key
+   "0" "(" ")"
+   "9" "(" ")"
+   ;; typographic quotation marks
+   "‘" "‘" "’"
+   "’" "‘" "’"
+   "q" "‘" "’"
+   "“" "“" "”"
+   "”" "“" "”"
+   "Q" "“" "”"
+   ;; ¿question? ¡answer!
+   "?" "¿" "?"
+   "!" "¡" "!"))
+
 (use-package evil-swap-keys
   :demand t
   :after evil
@@ -1771,51 +1820,6 @@ defined as lowercase."
   (:keymaps 'normal
    "g~" #'evil-operator-string-inflection
    "g`" #'evil-operator-string-inflection))
-
-;; todo: try out evil-embrace
-(use-package evil-surround
-  :defer t
-  :general
-  (:states 'operator
-   "s" 'evil-surround-edit
-   "S" 'evil-Surround-edit)
-  (:states 'normal
-   "S" 'evil-surround-region)
-  (:states 'visual
-   "S" 'evil-surround-region
-   "gS" 'evil-Surround-region)
-
-  :commands
-  w/add-evil-surround-pairs
-
-  :config
-  (evil--add-to-alist
-   evil-surround-pairs-alist
-   ;; overwrite defaults to not put spaces inside braces:
-   ?\( '("(" . ")")
-   ?\[ '("[" . "]")
-   ?\{ '("{" . "}")
-   ;; without shift key:
-   ?\0 '("(" . ")")
-   ?\9 '("(" . ")")
-   ;; nice quotation marks:
-   ?\‘ '("‘" . "’")
-   ?\’ '("‘" . "’")
-   ?\q '("‘" . "’")
-   ?\“ '("“" . "”")
-   ?\” '("“" . "”")
-   ?\Q '("“" . "”")
-   ;; ¿question? ¡answer!
-   ?\? '("¿" . "?")
-   ?\! '("¡" . "!"))
-  (setq-default evil-surround-pairs-alist evil-surround-pairs-alist)
-  (make-variable-buffer-local 'evil-surround-pairs-alist)
-
-  (defun w/add-evil-surround-pairs (&rest args)
-    (--each args
-      (-let (((trigger left right) it))
-        (push `(,trigger . (,left . ,right)) evil-surround-pairs-alist)))
-    ))
 
 (use-package evil-textobj-anyblock
   :defer t
@@ -3663,11 +3667,11 @@ defined as lowercase."
     (setq evil-shift-width 2)
     (w/set-major-mode-hydra #'w/hydra-markdown/body)
     (flyspell-mode)
-    (w/add-evil-surround-pairs
-     '(?b "**" "**") ;; strong emphasiss
-     '(?c "`" "`")   ;; inline code
-     '(?e "*" "*")))  ;; emphasis
-
+    (w/evil-surround-define-surround-trigger-pairs
+     :local
+     "b" "**" "**" ;; strong emphasiss
+     "c" "`" "`" ;; inline code
+     "e" "*" "*")) ;; emphasis
 
   (evil-declare-repeat 'markdown-promote)
   (evil-declare-repeat 'markdown-demote)
@@ -3801,8 +3805,9 @@ defined as lowercase."
     ;; (lispyville-mode)
     (origami-mode)
     ;; (python-docstring-mode)
-    (w/add-evil-surround-pairs
-     '(?` "``" "``")) ;; for reStructuredText literals in docstrings
+    (w/evil-surround-define-surround-trigger-pairs
+     :local
+     "`" "``" "``") ;; for reStructuredText literals in docstrings
     (evil--add-to-alist
      origami-parser-alist
      'python-mode 'w/origami-parser-imenu-flat))
@@ -4190,14 +4195,15 @@ defined as lowercase."
     (evil--add-to-alist
      origami-parser-alist
      'rst-mode 'w/origami-parser-imenu-flat)
-    (w/add-evil-surround-pairs
-     '(?b "**" "**")  ;; strong
-     '(?c "``" "``")  ;; inline code
-     '(?C ".. code-block::\n\n" "")  ;; code-block
-     '(?d ":doc:`" " <...>`")  ;; doc link
-     '(?e "*" "*")  ;; emphasis
-     '(?l "`" " <...>`_")  ;; hyperlink
-     '(?t ":term:`" "`"))  ;; glossary term
+    (w/evil-surround-define-surround-trigger-pairs
+     :local
+     "b" "**" "**" ;; strong
+     "c" "``" "``" ;; inline code
+     "C" ".. code-block::\n\n" "" ;; code-block
+     "d" ":doc:`" " <...>`" ;; doc link
+     "e" "*" "*" ;; emphasis
+     "l" "`" " <...>`_" ;; hyperlink
+     "t" ":term:`" "`") ;; glossary term
     (make-local-variable 'evil-inner-text-objects-map)
     (general-define-key
      :keymaps 'evil-inner-text-objects-map
