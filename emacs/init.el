@@ -50,6 +50,11 @@
 
 ;; Early packages
 
+(use-package dash
+  :demand t
+  :config
+  (global-dash-fontify-mode))
+
 (use-package exec-path-from-shell
   :demand t
   :custom
@@ -269,11 +274,6 @@
 
 (use-package crux
   :defer t)
-
-(use-package dash
-  :demand t
-  :config
-  (global-dash-fontify-mode))
 
 (use-package delight
   :demand t)
