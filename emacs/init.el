@@ -372,6 +372,15 @@
    "gc" #'evil-commentary
    "gy" #'evil-commentary-yank))
 
+(use-package evil-exchange
+  :defer t
+  :custom
+  (evil-exchange-highlight-face 'magit-diff-base)
+  :general
+  (:states '(normal visual)
+   "gx" 'evil-exchange
+   "gX" 'evil-exchange-cancel))
+
 (use-package evil-numbers
   :defer t
   :after evil
@@ -1543,14 +1552,6 @@ defined as lowercase."
     (interactive)
     (setq current-prefix-arg 4)
     (call-interactively 'avy-goto-line)))
-
-(use-package evil-exchange
-  :custom
-  (evil-exchange-highlight-face 'magit-diff-base)
-  :general
-  (:states '(normal visual)
-   "gx" 'evil-exchange
-   "gX" 'evil-exchange-cancel))
 
 (use-package evil-goggles
   :demand
