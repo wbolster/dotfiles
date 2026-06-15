@@ -356,6 +356,18 @@
   :after dired
   :ensure nil)
 
+(use-package display-line-numbers
+  :defer t
+  :commands
+  w/display-line-numbers-cycle
+  :config
+  (defun w/display-line-numbers-cycle ()
+    (interactive)
+    (unless display-line-numbers-mode
+      (display-line-numbers-mode))
+    (let ((new-value (w/set-cycle 'display-line-numbers '(t visual relative) 'set)))
+      (message "Line numbering style: %s" (if (equal new-value t) 'absolute new-value)))))
+
 (use-package desktop
   :demand t
   :custom
@@ -1842,21 +1854,6 @@ defined as lowercase."
               minibuffer-local-must-match-map
               minibuffer-local-ns-map)
    "<escape>" #'minibuffer-keyboard-quit))
-
-(use-package display-line-numbers
-  :defer t
-  :commands
-  w/display-line-numbers-cycle
-  :config
-  (defun w/display-line-numbers-cycle ()
-    (interactive)
-    (let* ((options '(t visual relative))
-           (new-index (mod (1+ (or (-elem-index display-line-numbers options) -1)) (length options)))
-           (new-value (nth new-index options)))
-      (unless display-line-numbers-mode
-        (display-line-numbers-mode))
-      (message "Line numbering style: %s" new-value)
-      (setq display-line-numbers new-value))))
 
 (use-package thingatpt
   :config
