@@ -3784,7 +3784,8 @@ defined as lowercase."
   (defun w/python-mode-hook ()
     (setq fill-column 79)
     (setq-local
-     comment-fill-column 72)
+     comment-fill-column 72
+     indent-bars-starting-column 12)
     (if-let* ((env-var-value (getenv "EMACS_PYTHON_ISORT_ENABLED"))
               (_ (string-equal env-var-value "0")))
         nil
@@ -3799,6 +3800,7 @@ defined as lowercase."
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-underscore-dash)
     (smartparens-mode) ;; todo
+    (indent-bars-mode)
     ;; (lispyville-mode)
     (origami-mode)
     ;; (python-docstring-mode)
