@@ -439,6 +439,9 @@
            (font-name-without-size (replace-regexp-in-string "\\(.*\\) [0-9.]+" "\\1" font-name)))
       (setopt w/ui-font-family font-name-without-size))))
 
+(use-package indent-bars
+  :defer t)
+
 (use-package jinja2-mode
   :defer t)
 
@@ -906,6 +909,7 @@
   "z" #'w/origami-mode-toggle
   "SPC" #'whitespace-mode
   "S-SPC" #'w/show-trailing-whitespace-mode
+  "TAB" #'indent-bars-mode
   "1" #'global-evil-swap-keys-mode
   "!" #'global-evil-swap-keys-mode
   "." #'indent-guide-mode
