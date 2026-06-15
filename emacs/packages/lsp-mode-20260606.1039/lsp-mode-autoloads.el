@@ -1009,6 +1009,19 @@ disabled.
 (register-definition-prefixes "lsp-svelte" '("lsp-svelte-plugin-"))
 
 
+;;; Generated autoloads from lsp-tailwindcss.el
+
+(autoload 'lsp-tailwindcss-rustywind "lsp-tailwindcss" "\
+[Experimental] Sort tailwindcss class name using rustywind." t)
+(autoload 'lsp-tailwindcss-rustywind-before-save "lsp-tailwindcss" "\
+[Experimental] Run rustywind when saving buffer.
+By adding this to `before-save-hook', it only runs when
+lsp-tailwindcss can be activated, see `lsp-tailwindcss--activate-p'.")
+(autoload 'lsp-tailwindcss-installed-server-version "lsp-tailwindcss" "\
+Get the installed version of tailwindcss language server." t)
+(register-definition-prefixes "lsp-tailwindcss" '("lsp-tailwindcss-"))
+
+
 ;;; Generated autoloads from lsp-terraform.el
 
 (register-definition-prefixes "lsp-terraform" '("construct-tf-package" "lsp-t"))
