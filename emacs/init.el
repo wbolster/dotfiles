@@ -41,7 +41,8 @@
   (use-package-always-ensure t)
   (use-package-compute-statistics t)
   (use-package-enable-imenu-support t)
-  (use-package-hook-name-suffix nil))
+  (use-package-hook-name-suffix nil)
+  (use-package-verbose t))
 
 (use-package benchmark-init
   :demand t
