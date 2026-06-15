@@ -89,6 +89,28 @@
   :group 'w
   :type 'string)
 
+(defcustom w/major-modes
+  '(c-mode
+    emacs-lisp-mode
+    fundamental-mode
+    jinja2-mode
+    js-mode
+    json-mode
+    lisp-interaction-mode
+    markdown-mode
+    nxml-mode
+    python-mode
+    rst-mode
+    sh-mode
+    sql-mode
+    text-mode
+    typescript-ts-mode
+    web-mode
+    yaml-mode)
+  "Commonly used major modes."
+  :group 'w
+  :type '(repeat symbol))
+
 (use-package emacs
   :demand t
   :bind
@@ -106,6 +128,7 @@
 
   :commands
   w/narrow-dwim
+  w/switch-major-mode
 
   :custom
   (auto-save-interval 100)
@@ -190,7 +213,36 @@
       (message "Showing everything"))
      (t
       (narrow-to-defun)
-      (message "Showing defun only")))))
+      (message "Showing defun only"))))
+
+  (defun w/switch-major-mode ()
+    "Switch major mode."
+    (interactive)
+    (require 'dash)
+    (when-let*
+        ((major-modes (cons 'normal-mode w/major-modes))
+         (choices
+          (--map
+           (let*
+               ((name (string-remove-suffix "-mode" (symbol-name it)))
+                (label
+                 (and-let*
+                     ((docstring (documentation it t))
+                      (noise
+                       (rx bos
+                           (| "Major mode" "Simple mode")
+                           (? (| " for editing" " for" " to edit"))))
+                      (description
+                       (->> (car (split-string docstring "\n" t))
+                            (replace-regexp-in-string noise "")
+                            (string-remove-suffix ".")
+                            (string-trim)))
+                      (label (format "%s: %s" name description))))))
+             (cons (or label name) it))
+           major-modes))
+         (choice (completing-read "Switch major mode: " (mapcar #'car choices) nil t))
+         (fn (cdr (assoc choice choices))))
+      (funcall fn))))
 
 (use-package emacs
   :demand t
@@ -3231,54 +3283,6 @@ defined as lowercase."
   :demand t
   :after flycheck
   :hook (flycheck-mode-hook . flycheck-color-mode-line-mode))
-
-(defvar w/major-modes
-  '(c-mode
-    emacs-lisp-mode
-    fundamental-mode
-    jinja2-mode
-    js-mode
-    json-mode
-    lisp-interaction-mode
-    markdown-mode
-    nxml-mode
-    python-mode
-    rst-mode
-    sh-mode
-    sql-mode
-    text-mode
-    typescript-ts-mode
-    web-mode
-    yaml-mode)
-  "Commonly used major modes.")
-
-(defun w/switch-major-mode ()
-  "Switch major mode."
-  (interactive)
-  (when-let*
-      ((major-modes (cons 'normal-mode w/major-modes))
-       (choices
-        (--map
-         (let*
-             ((name (string-remove-suffix "-mode" (symbol-name it)))
-              (label
-               (and-let*
-                   ((docstring (documentation it t))
-                    (noise
-                     (rx bos
-                         (| "Major mode" "Simple mode")
-                         (? (| " for editing" " for" " to edit"))))
-                    (description
-                     (->> (car (split-string docstring "\n" t))
-                          (replace-regexp-in-string noise "")
-                          (string-remove-suffix ".")
-                          (string-trim)))
-                    (label (format "%s: %s" name description))))))
-           (cons (or label name) it))
-         major-modes))
-       (choice (completing-read "Switch major mode: " (mapcar #'car choices) nil t))
-       (fn (cdr (assoc choice choices))))
-    (funcall fn)))
 
 (use-package fic-mode
   :defer t
