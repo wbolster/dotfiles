@@ -454,6 +454,18 @@
 (use-package nyan-mode
   :defer t)
 
+(use-package nxml-mode
+  :defer t
+  :ensure emacs
+  :hook (nxml-mode-hook . w/nxml-mode-hook)
+  :config
+  (defun w/nxml-mode-hook ()
+    (modify-syntax-entry ?< ".")
+    (modify-syntax-entry ?> ".")
+    (modify-syntax-entry ?/ ".")
+    (modify-syntax-entry ?: "_")
+    (reformatter-dwim-select 'xml-format)))
+
 (use-package python-black
   :demand t
   :after python
@@ -4407,18 +4419,6 @@ defined as lowercase."
   (add-to-list
    'warning-suppress-log-types
    '((defvaralias losing-value woman-topic-history))))
-
-(use-package nxml-mode
-  :ensure nil
-  :defer t
-  :hook (nxml-mode-hook . w/nxml-mode-hook)
-  :config
-  (defun w/nxml-mode-hook ()
-    (modify-syntax-entry ?< ".")
-    (modify-syntax-entry ?> ".")
-    (modify-syntax-entry ?/ ".")
-    (modify-syntax-entry ?: "_")
-    (reformatter-dwim-select 'xml-format)))
 
 (use-package xml-format
   :demand t
