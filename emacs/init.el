@@ -61,17 +61,17 @@
 (use-package general
   :demand t)
 
+(use-package no-littering
+  :demand t
+  :after xdg
+  :init
+  (setopt no-littering-var-directory (expand-file-name "emacs/" (xdg-state-home)))
+  (no-littering-theme-backups))
+
 (use-package xdg
   :demand t
   :functions
   xdg-state-home)
-
-(use-package no-littering
-  :demand t
-  :init
-  (require 'xdg)
-  (setopt no-littering-var-directory (expand-file-name "emacs/" (xdg-state-home)))
-  (no-littering-theme-backups))
 
 ;; Regular config
 
