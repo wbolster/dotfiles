@@ -153,10 +153,10 @@
   (switch-to-buffer-in-dedicated-window 'pop)
   (tab-width 4)
   (use-short-answers t)
+  (window-divider-default-bottom-width 2)
+  (window-divider-default-places t)
+  (window-divider-default-right-width 2)
   (window-resize-pixelwise t)
-
-  :custom-face
-  (internal-border ((t (:inherit highlight))))
 
   :delight
   (abbrev-mode " ⋯")
@@ -172,6 +172,7 @@
   (pixel-scroll-precision-mode)
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
+  (window-divider-mode)
 
   (defun w/narrow-dwim ()
     "Narrow (or widen) to defun or region."
