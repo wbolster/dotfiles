@@ -2773,7 +2773,6 @@ defined as lowercase."
   (global-auto-revert-mode))
 
 (use-package magit
-  :after evil-collection
   :defer t
   :delight
   (magit-wip-mode)
@@ -2818,7 +2817,6 @@ defined as lowercase."
   ;; custom bindings go on top of what evil-collection-init does
   ;; todo: make ,q use the various magit-*-bury-buffer functions, then
   ;; unbind q to force ,q usage.
-  (evil-collection-init 'magit)
   (general-def
     :keymaps 'magit-mode-map
     :states '(normal visual)
@@ -2941,7 +2939,7 @@ defined as lowercase."
 
 (use-package evil-collection
   :demand t
-  :after evil magit
+  :after evil
   :custom
   evil-collection-want-unimpaired-p nil
 
