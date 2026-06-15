@@ -502,6 +502,12 @@
   :config
   (global-evil-swap-keys-mode))
 
+(use-package git-modes
+  :defer t
+  :mode
+  ((rx ".gitconfig" (* any) string-end) . gitconfig-mode)
+  ((rx ".config/git/config" (* any) string-end) . gitconfig-mode))
+
 (use-package gsettings
   :demand t
   :functions
@@ -3557,12 +3563,6 @@ defined as lowercase."
   :after elisp-mode flycheck
   :config
   (flycheck-package-setup))
-
-(use-package git-modes
-  :defer t
-  :mode
-  ((rx ".gitconfig" (* any) string-end) . gitconfig-mode)
-  ((rx ".config/git/config" (* any) string-end) . gitconfig-mode))
 
 (use-package graphql-mode :defer t)
 
