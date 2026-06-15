@@ -281,6 +281,8 @@
 (use-package dired
   :demand t
   :ensure nil
+  :functions
+  dired-get-filename
   :general
   (:keymaps 'dired-mode-map
    :states '(motion normal)
@@ -320,6 +322,8 @@
 
 (use-package evil
   :demand t
+  :functions
+  evil-set-auxiliary-keymap
   :custom
   (evil-cross-lines t)
   (evil-emacs-state-tag "e ")
@@ -472,6 +476,7 @@
    ("/" . ranger-search))
   :commands
   deer-jump-other-window
+  ranger-find-file
   :custom
   (ranger-cleanup-eagerly t)
   (ranger-deer-show-details nil)
