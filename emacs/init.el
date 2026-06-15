@@ -439,6 +439,9 @@
            (font-name-without-size (replace-regexp-in-string "\\(.*\\) [0-9.]+" "\\1" font-name)))
       (setopt w/ui-font-family font-name-without-size))))
 
+(use-package jinja2-mode
+  :defer t)
+
 (use-package jq-format
   :demand t
   :after json-mode
@@ -3619,11 +3622,6 @@ defined as lowercase."
   (defun w/html-mode-hook ()
     (reformatter-dwim-select 'prettier-format)
     (setq evil-shift-width 2)))
-
-(use-package jinja2-mode
-  :defer t
-  :mode
-  (rx ".j2" string-end))
 
 (use-package js2-mode
   :defer t
