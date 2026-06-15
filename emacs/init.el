@@ -130,6 +130,9 @@
   w/narrow-dwim
   w/switch-major-mode
 
+  :functions
+  w/set-cycle
+
   :custom
   (auto-save-interval 100)
   (blink-cursor-blinks 1)
@@ -214,6 +217,14 @@
      (t
       (narrow-to-defun)
       (message "Showing defun only"))))
+
+  (defun w/set-cycle (symbol values &optional set-fn)
+    "Cycle the value of SYMBOL using the specified VALUES."
+    (-let* ((current-index (or (seq-position values (symbol-value symbol)) -1))
+            (new-index (mod (1+ current-index) (length values)))
+            (new-value (nth new-index values)))
+      (funcall (or set-fn 'customize-set-variable) symbol new-value)
+      new-value))
 
   (defun w/switch-major-mode ()
     "Switch major mode."
