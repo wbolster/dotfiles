@@ -197,6 +197,10 @@
   (ns-right-alternate-modifier 'none)
   (ns-use-native-fullscreen nil))
 
+(use-package aggressive-indent
+  :defer t
+  :delight " ⇤")
+
 (use-package auto-compile
   :demand t
   :custom
@@ -1290,10 +1294,6 @@ defined as lowercase."
     (if (memq this-command '(evil-delete lispyville-delete))
         (evil-a-symbol count beg end type)
       (evil-inner-symbol count beg end type))))
-
-(use-package aggressive-indent
-  :defer t
-  :delight " ⇤")
 
 (use-package drag-stuff
   :general
