@@ -170,6 +170,7 @@
   (lazy-highlight-max-at-a-time nil)
   (major-mode 'text-mode) ;; default for new buffers
   (native-comp-async-report-warnings-errors 'silent)
+  (read-process-output-max (* 1024 1024)) ;; recommended by lsp-mode
   (recenter-positions '(top middle bottom))
   (require-final-newline 'visit-save)
   (scroll-conservatively 101)
@@ -532,6 +533,37 @@
   :delight
   (jq-format-json-on-save-mode " ✒️")
   (jq-format-jsonlines-on-save-mode " ✒️"))
+
+(use-package lsp-mode
+  :defer t
+  :delight " 🛠️"
+  :hook ('lsp-after-open-hook . w/lsp-mode-after-open-hook)
+  :commands
+  lsp-describe-thing-at-point
+  lsp-execute-code-action
+  lsp-find-definition
+  lsp-find-implementation
+  lsp-find-type-definition
+  lsp-rename
+  lsp-ui-doc-show
+  lsp-workspace-restart
+  :custom
+  (lsp-auto-execute-action nil)
+  (lsp-enable-indentation nil)
+  (lsp-enable-on-type-formatting nil)
+  (lsp-headerline-breadcrumb-segments '(symbols))
+  (lsp-keymap-prefix "C-c l")
+  :config
+  (defun w/lsp-mode-after-open-hook ()
+    (lsp-origami-try-enable)))
+
+(use-package lsp-ui
+  :demand t
+  :after lsp-mode)
+
+(use-package lsp-origami
+  :demand t
+  :after lsp-mode)
 
 (use-package marginalia
   :demand t
@@ -3165,41 +3197,7 @@ defined as lowercase."
   (transient-suffix-put 'magit-dispatch "E" :command 'vdiff-magit)
   )
 
-(use-package lsp-mode
-  :defer t
-  :delight " 🚀"
-  :hook ('lsp-after-open-hook #'w/lsp-mode-after-open-hook)
-
-  :commands
-  lsp-describe-thing-at-point
-  lsp-execute-code-action
-  lsp-find-definition
-  lsp-find-implementation
-  lsp-find-type-definition
-  lsp-rename
-  lsp-ui-doc-show
-  lsp-workspace-restart
-
-  :custom
-  (lsp-auto-execute-action nil)
-  (lsp-enable-indentation nil)
-  (lsp-enable-on-type-formatting nil)
-  (lsp-headerline-breadcrumb-segments '(symbols))
-  (lsp-keymap-prefix "C-c l")
-  :config
-  (setq read-process-output-max (* 1024 1024)) ;; 1mb (recommended by docs)
-
-  (defun w/lsp-mode-after-open-hook ()
-    (lsp-origami-try-enable)))
-
-(use-package lsp-ui
-  :defer t)
-
 (use-package lsp-ivy
-  :defer t)
-
-(use-package
-  lsp-origami
   :defer t)
 
 (use-package flycheck
