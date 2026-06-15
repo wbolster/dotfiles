@@ -300,6 +300,12 @@
   (defun w/direnv-envrc-mode-hook ()
     (add-hook 'after-save-hook #'direnv-allow)))
 
+(use-package ediff
+  :defer t
+  :custom
+  (ediff-split-window-function 'split-window-horizontally)
+  (ediff-window-setup-function 'ediff-setup-windows-plain))
+
 (use-package evil
   :demand t
   :custom
@@ -3011,12 +3017,6 @@ defined as lowercase."
     (let ((vc-handled-backends '(Git)))
       (apply fn args)))
   (advice-add 'diff-hl-update :around #'w/diff-hl-update-around-advice))
-
-(use-package ediff
-  :defer t
-  :custom
-  (ediff-split-window-function 'split-window-horizontally)
-  (ediff-window-setup-function 'ediff-setup-windows-plain))
 
 (use-package smerge-mode
   :delight " 🔀"
