@@ -680,6 +680,15 @@
             (lambda (directory)
               `("ghostty" ,(format "--working-directory=%s" directory) "+new-window")))))
 
+(use-package text-mode
+  :defer t
+  :ensure emacs
+  :hook (text-mode-hook . w/text-mode-hook)
+  :config
+  (defun w/text-mode-hook ()
+    (w/show-trailing-whitespace-mode)
+    (guess-language-mode)))
+
 (use-package transient
   :defer t
   :custom
@@ -3270,15 +3279,6 @@ defined as lowercase."
        (choice (completing-read "Switch major mode: " (mapcar #'car choices) nil t))
        (fn (cdr (assoc choice choices))))
     (funcall fn)))
-
-(use-package text-mode
-  :ensure nil
-  :defer t
-  :hook (text-mode-hook . w/text-mode-hook)
-  :config
-  (defun w/text-mode-hook ()
-    (w/show-trailing-whitespace-mode)
-    (guess-language-mode)))
 
 (use-package fic-mode
   :defer t
