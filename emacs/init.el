@@ -446,6 +446,11 @@
   (jq-format-json-on-save-mode " ✒️")
   (jq-format-jsonlines-on-save-mode " ✒️"))
 
+(use-package marginalia
+  :demand t
+  :config
+  (marginalia-mode))
+
 (use-package nyan-mode
   :defer t)
 
