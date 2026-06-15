@@ -672,6 +672,13 @@
   :config
   (winner-mode))
 
+(use-package yasnippet
+  :delight (yas-minor-mode " 🐒")
+  :init
+  (setopt yas-alias-to-yas/prefix-p nil)
+  :config
+  (yas-global-mode))
+
 (defvar-keymap w/buffer-map
   :doc "Keymap for buffer commands."
   "b" #'ivy-switch-buffer
@@ -3313,11 +3320,6 @@ defined as lowercase."
     (indent-guide-mode)
     (symbol-overlay-mode)
     (w/show-trailing-whitespace-mode)))
-
-(use-package yasnippet
-  :config
-  (yas-global-mode))
-
 
 (use-package cc-mode
   :defer t
