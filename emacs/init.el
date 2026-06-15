@@ -100,6 +100,9 @@
 
   :hook (emacs-startup-hook . (lambda () (load custom-file 'noerror)))
 
+  :commands
+  w/narrow-dwim
+
   :custom
   (auto-save-interval 100)
   (blink-cursor-blinks 1)
