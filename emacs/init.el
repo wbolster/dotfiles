@@ -571,6 +571,8 @@
   (solarized-height-plus-2 1.0)
   (solarized-height-plus-3 1.0)
   (solarized-height-plus-4 1.0)
+  :custom-face
+  (vertical-border ((t (:foreground unspecified :inherit font-lock-comment-face))))
   :preface
   ;; todo: avoid these if possible. ones are used for useful things
   ;; and look up the values in ‘solarized-dark-color-palette-alist’
