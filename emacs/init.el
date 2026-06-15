@@ -1081,6 +1081,16 @@
   "q" #'query-replace
   "Q" #'query-replace-regexp)
 
+(defvar-keymap w/search-map
+  :doc "Keymap for search commands."
+  "a" #'ag-project
+  "f" #'ag-project-files
+  "F" #'ag-files
+  "g" #'ag-project
+  "G" #'ag
+  "r" #'ag-project-regexp
+  "R" #'ag-regexp)
+
 (defvar-keymap w/toggle-map
   :doc "Keymap for toggle commands."
   "b" #'auto-dark-toggle-appearance
@@ -1116,7 +1126,7 @@
   "4" #'w/goto-window-4
   "5" #'w/goto-window-5
   "6" #'w/goto-window-6
-  "a" #'w/hydra-ag/body
+  "a" w/search-map
   "b" w/buffer-map
   "c" w/flycheck-map
   "d" w/diff-map
@@ -1980,7 +1990,6 @@ defined as lowercase."
   (ag-reuse-buffers t)
   :hook (ag-mode-hook . w/ag-mode-hook)
   :commands
-  w/hydra-ag/body
   w/counsel-ag-project
   w/counsel-ag-project-all-files
   :general
@@ -1990,19 +1999,6 @@ defined as lowercase."
   :config
   (defun w/ag-mode-hook ()
     (toggle-truncate-lines t))
-  (w/make-hydra w/hydra-ag nil
-    "ag"
-    "_a_ project"
-    ("a" ag-project)
-    "_f_iles"
-    ("f" ag-project-files)
-    ("F" ag-files)
-    "_g_ project"
-    ("g" ag-project)
-    ("G" ag)
-    "_r_egex"
-    ("r" ag-project-regexp)
-    ("R" ag-regexp))
 
   (defun w/counsel-ag-project (&optional unrestricted)
     "Run ‘counsel-ag’ on the current project."
