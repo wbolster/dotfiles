@@ -638,6 +638,13 @@
   (defvar solarized-color-yellow    "#b58900")
   (defvar solarized-color-yellow-l  "#deb542"))
 
+(use-package sphinx-mode
+  :demand t
+  :after rst
+  :delight
+  :config
+  (setopt sphinx-mode-map (make-sparse-keymap)))
+
 (use-package sql
   :defer t
   :mode
@@ -4342,13 +4349,6 @@ defined as lowercase."
       (save-restriction
         (narrow-to-region beg end)
         (rst-adjust-section-title nil)))))
-
-(use-package sphinx-mode
-  :demand t
-  :delight sphinx-mode
-  :after rst
-  :config
-  (setq sphinx-mode-map (make-sparse-keymap)))
 
 (use-package rust-mode
   :defer t
