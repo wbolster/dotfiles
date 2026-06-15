@@ -233,6 +233,11 @@
   (colorful-use-prefix t)
   (colorful-prefix-string "⬤"))
 
+(use-package consult
+  :demand t
+  :custom
+  (consult-line-start-from-top))
+
 (use-package css-mode
   :defer t
   :hook
