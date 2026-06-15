@@ -423,6 +423,13 @@
            (font-name-without-size (replace-regexp-in-string "\\(.*\\) [0-9.]+" "\\1" font-name)))
       (setopt w/ui-font-family font-name-without-size))))
 
+(use-package jq-format
+  :demand t
+  :after json-mode
+  :delight
+  (jq-format-json-on-save-mode " ✒️")
+  (jq-format-jsonlines-on-save-mode " ✒️"))
+
 (use-package nyan-mode
   :defer t)
 
@@ -3670,13 +3677,6 @@ defined as lowercase."
     (reformatter-dwim-select 'jq-format-json)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-double-single-quotes)))
-
-(use-package jq-format
-  :demand t
-  :after json-mode
-  :delight
-  (jq-format-json-on-save-mode " ❤")
-  (jq-format-jsonlines-on-save-mode " ❤"))
 
 (use-package markdown-mode
   :defer t
