@@ -668,6 +668,12 @@
     "Cycle through various quotation marks."
     ("'" "‘" "’" "“" "”" "\"")))
 
+(use-package vertico
+  :demand t
+  ;; :config
+  ;; (vertico-mode)
+  )
+
 (use-package which-func
   :demand t
   :custom
