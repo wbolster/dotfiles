@@ -2779,11 +2779,13 @@ defined as lowercase."
   (magit-wip-mode)
 
   :hook
+  (git-commit-mode-hook . w/git-commit-mode-hook)
   (magit-log-mode-hook . w/evil-colemak-basics-disable)
   (magit-process-mode-hook . goto-address-mode)
   (magit-status-mode-hook . w/evil-colemak-basics-disable)
 
   :custom
+  (git-commit-fill-column 72)
   (magit-blame-heading-format "%C %-10a %s")
   (magit-blame-mode-lighter " annotate")
   (magit-blame-time-format "%Y%m%d")
@@ -2804,6 +2806,7 @@ defined as lowercase."
   :commands
   magit-toggle-buffer-lock
   w/git-web-browse
+  w/gitlab-insert-merge-request-template
   w/magit-log-buffer-file-follow
   w/magit-status-other-repository
 
@@ -2904,6 +2907,10 @@ defined as lowercase."
               magit-status-mode)
       (add-to-list 'direnv-non-file-modes it)))
 
+  (defun w/git-commit-mode-hook ()
+    (when git-commit-mode
+      (virtual-auto-fill-mode -1)))
+
   (defun w/magit-status-other-repository ()
     "Open git status for another repository."
     (interactive)
@@ -2921,7 +2928,16 @@ defined as lowercase."
 
   (defun w/magit-log-buffer-file-follow ()
     (interactive)
-    (magit-log-buffer-file t)))
+    (magit-log-buffer-file t))
+
+  (defun w/gitlab-insert-merge-request-template ()
+    (interactive)
+    (-if-let* ((template-dir ".gitlab/merge_request_templates/")
+               (dir (locate-dominating-file (or (buffer-file-name) default-directory) template-dir))
+               (template-file
+                (read-file-name "Template: " (concat dir template-dir)) nil t 'file-regular-p))
+        (insert-file-contents template-file)
+      (user-error "No merge request templates found"))))
 
 (use-package evil-collection
   :demand t
@@ -2981,26 +2997,6 @@ defined as lowercase."
   (with-demoted-errors "%S"
     (transient-suffix-put 'magit-dispatch "@" :key "h"))
   (transient-append-suffix 'forge-dispatch "f n" '("w" "web" git-link-homepage)))
-
-(use-package git-commit
-  :defer t
-  :ensure nil
-  :custom
-  (git-commit-fill-column 72)
-  :hook (git-commit-mode-hook . w/git-commit-mode-hook)
-  :config
-  (defun w/git-commit-mode-hook ()
-    (when git-commit-mode
-      (virtual-auto-fill-mode -1)))
-
-  (defun w/gitlab-insert-merge-request-template ()
-    (interactive)
-    (-if-let* ((template-dir ".gitlab/merge_request_templates/")
-               (dir (locate-dominating-file (or (buffer-file-name) default-directory) template-dir))
-               (template-file
-                (read-file-name "Template: " (concat dir template-dir)) nil t 'file-regular-p))
-        (insert-file-contents template-file)
-      (user-error "No merge request templates found"))))
 
 (use-package git-link
   :defer t
