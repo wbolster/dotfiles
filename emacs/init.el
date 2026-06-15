@@ -726,6 +726,10 @@
   :config
   (winner-mode))
 
+(use-package xml-format
+  :demand t
+  :after nxml-mode)
+
 (use-package yasnippet
   :delight (yas-minor-mode " 🐒")
   :init
@@ -4419,10 +4423,6 @@ defined as lowercase."
   (add-to-list
    'warning-suppress-log-types
    '((defvaralias losing-value woman-topic-history))))
-
-(use-package xml-format
-  :demand t
-  :after nxml-mode)
 
 (use-package yaml-mode
   :defer t
