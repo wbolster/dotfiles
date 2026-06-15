@@ -912,7 +912,6 @@
   "TAB" #'indent-bars-mode
   "1" #'global-evil-swap-keys-mode
   "!" #'global-evil-swap-keys-mode
-  "." #'indent-guide-mode
   "9" #'smartparens-mode
   "(" #'smartparens-mode
   "0" #'smartparens-mode
@@ -1751,19 +1750,6 @@ defined as lowercase."
   "Show or hide trailing whitespace."
   :lighter nil
   (setq show-trailing-whitespace w/show-trailing-whitespace-mode))
-
-(use-package indent-guide
-  :defer t
-  :delight " ⋮"
-  :custom
-  (indent-guide-char "·")
-  (indent-guide-delay 1)
-  (indent-guide-recursive t)
-  (indent-guide-threshold 7)
-  :custom-face
-  (indent-guide-face
-   ((t (:inherit font-lock-comment-face
-        :foreground unspecified)))))
 
 (use-package minibuffer
   :ensure nil
@@ -3308,7 +3294,6 @@ defined as lowercase."
     (fic-mode)
     (flyspell-prog-mode)
     (highlight-parentheses-mode)
-    (indent-guide-mode)
     (symbol-overlay-mode)
     (w/show-trailing-whitespace-mode)))
 
