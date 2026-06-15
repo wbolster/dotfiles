@@ -408,6 +408,9 @@
            (font-name-without-size (replace-regexp-in-string "\\(.*\\) [0-9.]+" "\\1" font-name)))
       (setopt w/ui-font-family font-name-without-size))))
 
+(use-package nyan-mode
+  :defer t)
+
 (use-package python-black
   :demand t
   :after python
@@ -1059,9 +1062,6 @@ defined as lowercase."
   (unicode-fonts-skip-fonts '("Segoe UI Symbol"))
   :config
   (unicode-fonts-setup))
-
-(use-package nyan-mode
-  :defer t)
 
 (use-package smart-mode-line
   :custom
