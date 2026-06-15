@@ -503,6 +503,18 @@
   :config
   (global-evil-swap-keys-mode))
 
+(use-package face-remap
+  :if (display-graphic-p)
+  :custom
+  (global-text-scale-adjust-limits '(60 . 500))
+  :general
+  (:states 'motion
+   "C-0" #'global-text-scale-adjust
+   "C--" #'global-text-scale-adjust
+   "C-=" #'global-text-scale-adjust
+   "C-<wheel-down>" #'mouse-wheel-global-text-scale
+   "C-<wheel-up>" #'mouse-wheel-global-text-scale))
+
 (use-package git-modes
   :defer t
   :mode
@@ -1233,38 +1245,6 @@ defined as lowercase."
    evil-operator-state-cursor (list solarized-color-magenta 'hollow)))
 
 (add-hook 'w/theme-changed-hook #'w/tweak-evil-cursor)
-
-(use-package default-text-scale
-  :demand t
-  :if (display-graphic-p)
-  :hook (after-init-hook . w/default-text-scale-reset)
-  :general
-  (:states 'motion
-   "C-0" 'w/default-text-scale-reset
-   "C--" 'default-text-scale-decrease
-   "C-=" 'default-text-scale-increase
-   "C-<wheel-down>" #'default-text-scale-decrease
-   "C-<wheel-up>" #'default-text-scale-increase)
-
-  :config
-  (defvar w/default-text-scale-height
-    (face-attribute 'default :height)  ;; inherit from startup environment
-    "The default text scale height.")
-
-  (if (<= w/default-text-scale-height 60)
-      ;; when started as an emacs daemon process, the default face's
-      ;; height attribute is bogus. use a sane default in that case.
-      (setq w/default-text-scale-height 100))
-
-  (defun w/default-text-scale-reset ()
-    "Reset default text scale."
-    (interactive)
-    (w/default-text-scale-set w/default-text-scale-height))
-
-  (defun w/default-text-scale-set (height)
-    "Set default text scale to HEIGHT."
-    (interactive "nHeight (e.g. 110) ")
-    (default-text-scale-increment (- height (face-attribute 'default :height)))))
 
 (use-package unicode-fonts
   ;; todo: is this still relevant?
