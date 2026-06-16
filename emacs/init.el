@@ -311,7 +311,8 @@
   (defun w/conf-toml-mode-hook ()
     (setopt
      tab-width 2
-     evil-shift-width tab-width))
+     evil-shift-width tab-width)
+    (reformatter-dwim-select 'w/toml-format-taplo))
   (reformatter-define w/toml-format-taplo
     :group 'toml
     :program "taplo"
