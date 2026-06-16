@@ -1012,13 +1012,13 @@
 
 (defvar-keymap w/buffer-map
   :doc "Keymap for buffer commands."
-  "B" #'ivy-switch-buffer-other-window
+  "B" #'consult-buffer-other-window
   "C" #'clone-indirect-buffer-other-window
   "E" #'rename-buffer
   "H" #'unbury-buffer
   "K" #'kill-buffer-and-window
   "N" #'w/evil-buffer-new-other-window
-  "b" #'ivy-switch-buffer
+  "b" #'consult-buffer
   "c" #'clone-indirect-buffer
   "e" #'crux-rename-file-and-buffer
   "h" #'bury-buffer
@@ -1059,11 +1059,11 @@
   "R" #'w/counsel-recentf-other-window
   "S" #'sudo-edit-find-file
   "d" #'deer
-  "f" #'counsel-find-file
+  "f" #'find-file
   "g" #'w/open-gui-file-browser
   "i" #'insert-file
   "n" #'evil-buffer-new
-  "r" #'counsel-recentf
+  "r" #'consult-recent-file
   "s" #'sudo-edit)
 
 (defvar-keymap w/flycheck-map
@@ -1261,7 +1261,7 @@
   "f" w/file-map
   "g" w/git-map
   "h" #'w/symbol-overlay-put-dwim
-  "j" #'counsel-imenu
+  "j" #'consult-imenu
   "l" w/lsp-map
   "m" w/merge-map
   "n" #'w/narrow-dwim
@@ -1273,7 +1273,7 @@
   "t" w/toggle-map
   "u" #'universal-argument
   "w" w/window-map
-  "x" #'counsel-M-x
+  "x" #'execute-extended-command
   "y" #'w/evil-copy-as-format)
 
 (general-define-key
