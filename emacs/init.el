@@ -699,6 +699,13 @@
 (use-package nyan-mode
   :defer t)
 
+(use-package pkgbuild-mode
+  :defer t
+  :custom
+  (pkgbuild-update-sums-on-save nil)
+  :custom-face
+  (pkgbuild-error-face ((t (:inherit error)))))
+
 (use-package python-black
   :demand t
   :after python
@@ -3711,13 +3718,6 @@ defined as lowercase."
      (up . "e")
      (right . "i")))
   (evil-org-set-key-theme))
-
-(use-package pkgbuild-mode
-  :defer t
-  :custom
-  (pkgbuild-update-sums-on-save nil)
-  :custom-face
-  (pkgbuild-error-face ((t (:inherit error)))))
 
 (use-package python
   :defer t
