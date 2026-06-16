@@ -888,8 +888,9 @@
 (use-package sqlformat
   :defer t
   :after sql
+  :delight ('sqlformat-on-save-mode " 💄")
   :custom
-  (sqlformat-command 'pgformatter))
+  (sqlformat-command 'sqlfluff))
 
 (use-package sudo-edit
   :defer t)
