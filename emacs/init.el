@@ -771,6 +771,8 @@
            (recentf-expand-file-name no-littering-var-directory))
     (add-to-list 'recentf-exclude it t))
 
+  (recentf-mode)
+
   (defun w/counsel-recentf-other-window ()
     "Like ‘counsel-recentf’, but opens the file in another window."
     (interactive)
