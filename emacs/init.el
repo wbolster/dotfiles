@@ -1124,6 +1124,54 @@
   ")" #'smartparens-mode
   "=" #'balanced-windows-mode)
 
+(defvar-keymap w/window-map
+  :doc "Keymap for window commands."
+  "+" #'evil-window-increase-width
+  "-" #'evil-window-decrease-width
+  "C-e" #'evil-window-increase-height
+  "C-h" #'evil-window-decrease-width
+  "C-i" #'evil-window-increase-width
+  "C-n" #'evil-window-decrease-height
+  "R" #'evil-window-rotate-upwards
+  "r" #'evil-window-rotate-downwards
+  "1" #'w/goto-window-1
+  "2" #'w/goto-window-2
+  "3" #'w/goto-window-3
+  "4" #'w/goto-window-4
+  "5" #'w/goto-window-5
+  "6" #'w/goto-window-6
+  "=" #'balance-windows
+  "C-w" #'w/evil-window-next-or-vsplit
+  "E" #'evil-window-up
+  "F" #'w/make-frame-new-buffer
+  "H" #'evil-window-left
+  "I" #'evil-window-right
+  "N" #'evil-window-down
+  "S" #'evil-window-new
+  "U" #'winner-redo
+  "V" #'evil-window-vnew
+  "b" #'balance-windows
+  "c" #'evil-window-delete
+  "e" #'buf-move-up
+  "f" #'w/make-frame
+  "h" #'buf-move-left
+  "i" #'buf-move-right
+  "n" #'buf-move-down
+  "o" #'delete-other-windows
+  "p" #'toggle-window-dedicated
+  "s" #'evil-window-split
+  "u" #'winner-undo
+  "v" #'evil-window-vsplit
+  "w" #'w/evil-window-next-or-vsplit)
+
+(dolist (command '(evil-window-rotate-downwards
+                   evil-window-rotate-upwards
+                   evil-window-increase-width
+                   evil-window-decrease-width
+                   evil-window-decrease-height
+                   evil-window-increase-height))
+  (put command 'repeat-map 'w/window-map))
+
 (defvar-keymap w/leader-map
   :doc "Leader keymap."
   "1" #'w/goto-window-1
@@ -1153,7 +1201,7 @@
   "S" #'save-some-buffers
   "t" w/toggle-map
   "u" #'universal-argument
-  "w" #'w/hydra-window/body
+  "w" w/window-map
   "x" #'counsel-M-x
   "y" #'w/evil-copy-as-format
   "SPC" #'whitespace-cleanup
@@ -2666,62 +2714,10 @@ defined as lowercase."
   (with-selected-frame (w/make-frame)
     (call-interactively #'evil-buffer-new)))
 
-(w/make-hydra w/hydra-window nil
-  "window"
-  "_h__n__e__i_ _1__2__3__4_ navigate"
-  ("h" buf-move-left)
-  ("n" buf-move-down)
-  ("e" buf-move-up)
-  ("i" buf-move-right)
-  ("H" evil-window-left)
-  ("N" evil-window-down)
-  ("E" evil-window-up)
-  ("I" evil-window-right)
-  ("1" w/goto-window-1)
-  ("2" w/goto-window-2)
-  ("3" w/goto-window-3)
-  ("4" w/goto-window-4)
-  ("5" w/goto-window-5)
-  ("6" w/goto-window-6)
-  "_b_alance"
-  ("b" balance-windows)
-  ("=" balance-windows)  ;; evil/vim style
-  "_c_lose"
-  ("c" evil-window-delete)
-  "_f_rame"
-  ("f" (w/make-frame))
-  ("F" (w/make-frame-new-buffer))
-  "_o_nly"
-  ("o" delete-other-windows)
-  "_p_in"
-  ("p" toggle-window-dedicated)
-  "_r_otate"
-  ("r" evil-window-rotate-downwards nil :exit nil)
-  ("R" evil-window-rotate-upwards nil :exit nil)
-  "_s_plit"
-  ("s" evil-window-split)
-  ("S" evil-window-new)
-  "_u_ndo"
-  ("u" winner-undo)
-  ("U" winner-redo)
-  "_v_split"
-  ("v" evil-window-vsplit)
-  ("V" evil-window-vnew)
-  "_w_ cycle"
-  ("w" w/evil-window-next-or-vsplit)
-  ("C-w" w/evil-window-next-or-vsplit)
-  "_+_/_-_/C-hnei width/height"
-  ("+" evil-window-increase-width nil :exit nil)
-  ("-" evil-window-decrease-width nil :exit nil)
-  ("C-h" evil-window-decrease-width nil :exit nil)
-  ("C-n" evil-window-decrease-height nil :exit nil)
-  ("C-e" evil-window-increase-height nil :exit nil)
-  ("C-i" evil-window-increase-width nil :exit nil))
-
 ;; replace evil-window-map completely
 (general-define-key
  :states '(emacs motion)
- (kbd "C-w") 'w/hydra-window/body)
+ (kbd "C-w") w/window-map)
 
 (use-package ispell
   :defer t
@@ -2896,7 +2892,7 @@ defined as lowercase."
     "C-p" #'magit-section-backward
     "<tab>" #'magit-section-cycle
     "C-<tab>" #'magit-section-toggle
-    "C-w" 'w/hydra-window/body
+    "C-w" w/window-map
     "/" 'swiper-isearch)
   (general-def
     :keymaps 'magit-blame-read-only-mode-map
