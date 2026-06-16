@@ -467,6 +467,52 @@
    "gx" 'evil-exchange
    "gX" 'evil-exchange-cancel))
 
+(use-package evil-goggles
+  :demand t
+  :after evil
+  :delight
+  :commands
+  w/shoulder-surf-mode
+  :functions
+  evil-goggles-use-magit-faces
+  :custom
+  (evil-goggles-duration 1)
+  (evil-goggles-blocking-duration .2)
+  (evil-goggles-pulse t)
+  :custom-face
+  (evil-goggles-default-face ((t (:inherit highlight))))
+  :init
+  (defvar w/shoulder-surf-mode)
+  :config
+  ;; see https://github.com/edkolev/evil-goggles/pull/26
+  (--each '((lispyville-yank                 :face evil-goggles-yank-face           :switch evil-goggles-enable-yank           :advice evil-goggles--generic-async-advice)
+            (lispyville-delete               :face evil-goggles-delete-face         :switch evil-goggles-enable-delete         :advice evil-goggles--generic-blocking-advice)
+            (lispyville-change               :face evil-goggles-change-face         :switch evil-goggles-enable-change         :advice evil-goggles--generic-blocking-advice)
+            (lispyville-yank-line            :face evil-goggles-yank-face           :switch evil-goggles-enable-yank           :advice evil-goggles--generic-async-advice)
+            (lispyville-delete-line          :face evil-goggles-delete-face         :switch evil-goggles-enable-delete         :advice evil-goggles--delete-line-advice)
+            (lispyville-change-line          :face evil-goggles-change-face         :switch evil-goggles-enable-change         :advice evil-goggles--generic-blocking-advice)
+            (lispyville-change-whole-line    :face evil-goggles-change-face         :switch evil-goggles-enable-change         :advice evil-goggles--generic-blocking-advice)
+            (lispyville-join                 :face evil-goggles-join-face           :switch evil-goggles-enable-join           :advice evil-goggles--join-advice)
+            (lispyville-comment-or-uncomment :face evil-goggles-nerd-commenter-face :switch evil-goggles-enable-nerd-commenter :advice evil-goggles--generic-async-advice)
+            (lispyville-prettify             :face evil-goggles-indent-face         :switch evil-goggles-enable-indent         :advice evil-goggles--generic-async-advice))
+    (add-to-list 'evil-goggles--commands it))
+
+  (evil-goggles-mode)
+  (evil-goggles-use-magit-faces)
+
+  (define-minor-mode w/shoulder-surf-mode
+    "Minor mode to make it easier for others to see what's happening on the screen."
+    :global t
+    :lighter " 👀"
+    (let ((enabled w/shoulder-surf-mode))
+      (global-hl-line-mode (if enabled 1 -1))
+      (setq
+       evil-goggles-duration (if enabled 5 1)
+       evil-goggles-blocking-duration (if enabled 1 .2))
+      (set-face-attribute
+       'evil-goggles-default-face nil
+       :inherit (if enabled 'magit-diff-base 'highlight)))))
+
 (use-package evil-numbers
   :defer t
   :after evil
@@ -1818,51 +1864,6 @@ defined as lowercase."
     (interactive)
     (setq current-prefix-arg 4)
     (call-interactively 'avy-goto-line)))
-
-(use-package evil-goggles
-  :demand
-  :after magit
-  :delight
-
-  :custom
-  (evil-goggles-duration 1)
-  (evil-goggles-blocking-duration .2)
-  (evil-goggles-pulse t)
-
-  :custom-face
-  (evil-goggles-default-face ((t (:inherit highlight))))
-
-  :config
-  (evil-goggles-mode)
-  (evil-goggles-use-magit-faces)
-
-  ;; See https://github.com/edkolev/evil-goggles/pull/26
-  (defvar w/evil-goggles-lispyville-extra
-    '((lispyville-yank                 :face evil-goggles-yank-face           :switch evil-goggles-enable-yank           :advice evil-goggles--generic-async-advice)
-      (lispyville-delete               :face evil-goggles-delete-face         :switch evil-goggles-enable-delete         :advice evil-goggles--generic-blocking-advice)
-      (lispyville-change               :face evil-goggles-change-face         :switch evil-goggles-enable-change         :advice evil-goggles--generic-blocking-advice)
-      (lispyville-yank-line            :face evil-goggles-yank-face           :switch evil-goggles-enable-yank           :advice evil-goggles--generic-async-advice)
-      (lispyville-delete-line          :face evil-goggles-delete-face         :switch evil-goggles-enable-delete         :advice evil-goggles--delete-line-advice)
-      (lispyville-change-line          :face evil-goggles-change-face         :switch evil-goggles-enable-change         :advice evil-goggles--generic-blocking-advice)
-      (lispyville-change-whole-line    :face evil-goggles-change-face         :switch evil-goggles-enable-change         :advice evil-goggles--generic-blocking-advice)
-      (lispyville-join                 :face evil-goggles-join-face           :switch evil-goggles-enable-join           :advice evil-goggles--join-advice)
-      (lispyville-comment-or-uncomment :face evil-goggles-nerd-commenter-face :switch evil-goggles-enable-nerd-commenter :advice evil-goggles--generic-async-advice)
-      (lispyville-prettify             :face evil-goggles-indent-face         :switch evil-goggles-enable-indent         :advice evil-goggles--generic-async-advice)))
-  (--each w/evil-goggles-lispyville-extra
-    (add-to-list 'evil-goggles--commands it))
-
-  (define-minor-mode w/shoulder-surf-mode
-    "Minor mode to make it easier for others to see what's happening on the screen."
-    :global t
-    :lighter " 👀"
-    (let ((on w/shoulder-surf-mode))
-      (global-hl-line-mode (if on 1 -1))
-      (setq
-       evil-goggles-duration (if on 5 1)
-       evil-goggles-blocking-duration (if on 1 .2))
-      (set-face-attribute
-       'evil-goggles-default-face nil
-       :inherit (if on 'magit-diff-base 'highlight)))))
 
 (use-package evil-indent-plus
   :defer t
