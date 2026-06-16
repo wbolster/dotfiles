@@ -3269,15 +3269,6 @@ defined as lowercase."
   :after flycheck
   :hook (flycheck-mode-hook . flycheck-color-mode-line-mode))
 
-(use-package fic-mode
-  :defer t
-  :custom
-  (fic-highlighted-words
-   '("FIXME" "fixme"
-     "TODO" "todo"
-     "BUG" "bug"
-     "XXX" "xxx")))
-
 (use-package prog-mode
   :ensure nil
   :defer t
@@ -3287,7 +3278,6 @@ defined as lowercase."
     (setq-local comment-auto-fill-only-comments t)
     (auto-fill-mode)
     (column-number-mode)
-    (fic-mode)
     (flyspell-prog-mode)
     (highlight-parentheses-mode)
     (symbol-overlay-mode)
