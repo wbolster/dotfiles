@@ -302,6 +302,20 @@
   (colorful-use-prefix t)
   (colorful-prefix-string "⬤"))
 
+(use-package conf-mode
+  :defer t
+  :hook (conf-toml-mode-hook . w/conf-toml-mode-hook)
+  :functions w/toml-format-taplo-region
+  :config
+  (defun w/conf-toml-mode-hook ()
+    (setopt
+     tab-width 2
+     evil-shift-width tab-width))
+  (reformatter-define w/toml-format-taplo
+    :group 'toml
+    :program "taplo"
+    :args '("format" "-")))
+
 (use-package consult
   :demand t
   :custom
@@ -322,25 +336,22 @@
     (modify-syntax-entry ?. ".")
     (modify-syntax-entry ?- "_")))
 
-(use-package conf-mode
-  :defer t
-  :hook (conf-toml-mode-hook . w/conf-toml-mode-hook)
-  :functions w/toml-format-taplo-region
-  :config
-  (defun w/conf-toml-mode-hook ()
-    (setopt
-     tab-width 2
-     evil-shift-width tab-width))
-  (reformatter-define w/toml-format-taplo
-    :group 'toml
-    :program "taplo"
-    :args '("format" "-")))
-
 (use-package crux
   :defer t)
 
 (use-package delight
   :demand t)
+
+(use-package desktop
+  :demand t
+  :custom
+  (desktop-auto-save-timeout 10)
+  (desktop-load-locked-desktop 'check-pid)
+  (desktop-restore-eager 5)
+  :config
+  (desktop-save-mode)
+  (add-to-list 'desktop-globals-to-save 'swiper-history)
+  (add-to-list 'desktop-globals-to-clear 'swiper-history))
 
 (use-package dired
   :demand t
@@ -357,6 +368,16 @@
   :after dired
   :ensure nil)
 
+(use-package direnv
+  :demand t
+  :after exec-path-from-shell
+  :if (executable-find "direnv")
+  :hook (direnv-envrc-mode-hook . w/direnv-envrc-mode-hook)
+  :config
+  (direnv-mode)
+  (defun w/direnv-envrc-mode-hook ()
+    (add-hook 'after-save-hook #'direnv-allow)))
+
 (use-package display-line-numbers
   :defer t
   :commands
@@ -368,27 +389,6 @@
       (display-line-numbers-mode))
     (let ((new-value (w/set-cycle 'display-line-numbers '(t visual relative) 'set)))
       (message "Line numbering style: %s" (if (equal new-value t) 'absolute new-value)))))
-
-(use-package desktop
-  :demand t
-  :custom
-  (desktop-auto-save-timeout 10)
-  (desktop-load-locked-desktop 'check-pid)
-  (desktop-restore-eager 5)
-  :config
-  (desktop-save-mode)
-  (add-to-list 'desktop-globals-to-save 'swiper-history)
-  (add-to-list 'desktop-globals-to-clear 'swiper-history))
-
-(use-package direnv
-  :demand t
-  :after exec-path-from-shell
-  :if (executable-find "direnv")
-  :hook (direnv-envrc-mode-hook . w/direnv-envrc-mode-hook)
-  :config
-  (direnv-mode)
-  (defun w/direnv-envrc-mode-hook ()
-    (add-hook 'after-save-hook #'direnv-allow)))
 
 (use-package ediff
   :defer t
@@ -618,11 +618,11 @@
   (defun w/lsp-mode-after-open-hook ()
     (lsp-origami-try-enable)))
 
-(use-package lsp-ui
+(use-package lsp-origami
   :demand t
   :after lsp-mode)
 
-(use-package lsp-origami
+(use-package lsp-ui
   :demand t
   :after lsp-mode)
 
@@ -630,9 +630,6 @@
   :demand t
   :config
   (marginalia-mode))
-
-(use-package nyan-mode
-  :defer t)
 
 (use-package nxml-mode
   :defer t
@@ -645,6 +642,9 @@
     (modify-syntax-entry ?/ ".")
     (modify-syntax-entry ?: "_")
     (reformatter-dwim-select 'xml-format)))
+
+(use-package nyan-mode
+  :defer t)
 
 (use-package python-black
   :demand t
