@@ -948,9 +948,11 @@
 
 (use-package vertico
   :demand t
-  ;; :config
-  ;; (vertico-mode)
-  )
+  :custom
+  (vertico-count 20)
+  (vertico-cycle t)
+  :config
+  (vertico-mode))
 
 (use-package which-func
   :demand t
