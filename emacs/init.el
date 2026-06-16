@@ -968,6 +968,8 @@
   (which-key-add-column-padding 4)
   (which-key-dont-use-unicode nil)
   (which-key-idle-secondary-delay 0.0)
+  (which-key-max-description-length 64)
+  (which-key-show-early-on-C-h t)
   :config
   (which-key-mode))
 
