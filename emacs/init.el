@@ -2829,6 +2829,8 @@ defined as lowercase."
   (ivy-height 20)
   (ivy-wrap t)
   :config
+  (setopt ivy-re-builders-alist '((t . orderless-ivy-re-builder)))
+  (add-to-list 'ivy-highlight-functions-alist '(orderless-ivy-re-builder . orderless-ivy-highlight))
   ;; (ivy-mode 1)
   (defun w/clamp-number (num low high)
     "Clamp NUM between LOW and HIGH."
