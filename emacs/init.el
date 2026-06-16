@@ -595,6 +595,11 @@
   (jq-format-json-on-save-mode " ✒️")
   (jq-format-jsonlines-on-save-mode " ✒️"))
 
+(use-package key-chord
+  :demand t
+  :config
+  (key-chord-mode))
+
 (use-package lsp-mode
   :defer t
   :delight " 🛠️"
@@ -1856,10 +1861,6 @@ defined as lowercase."
     ("u" (er/expand-region -1) :exit nil)
     "_r_eset"
     ("r" (er/expand-region 0) :exit t)))
-
-(use-package key-chord
-  :config
-  (key-chord-mode +1))
 
 (use-package keyfreq
   :config
