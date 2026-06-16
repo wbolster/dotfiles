@@ -2466,7 +2466,7 @@ defined as lowercase."
   :delight
 
   :custom
-  (projectile-completion-system 'ivy)
+  (projectile-completion-system 'default)
   (projectile-ignored-projects '("/usr/local/" "~/"))
   ;; (projectile-mode-line nil)  ;; causes eager loading, :delight has same effect
   (projectile-require-project-root nil)
