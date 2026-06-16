@@ -200,6 +200,7 @@
   (blink-cursor-mode)
   (menu-bar-mode -1)
   (pixel-scroll-precision-mode)
+  (repeat-mode)
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
   (window-divider-mode)
