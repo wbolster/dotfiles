@@ -69,6 +69,7 @@
   :demand t
   :after xdg
   :init
+  ;; no :custom + :config b/c the variable must be set before loading
   (setopt no-littering-var-directory (expand-file-name "emacs/" (xdg-state-home)))
   (no-littering-theme-backups))
 
