@@ -2755,7 +2755,7 @@ defined as lowercase."
   :after ivy
   :delight
   :config
-  (counsel-mode)
+  ;; (counsel-mode)
   (ivy-configure 'counsel-M-x :initial-input ""))
 
 (use-package company
@@ -2819,7 +2819,7 @@ defined as lowercase."
   (ivy-height 20)
   (ivy-wrap t)
   :config
-  (ivy-mode 1)
+  ;; (ivy-mode 1)
   (defun w/clamp-number (num low high)
     "Clamp NUM between LOW and HIGH."
     (min high (max num low)))
