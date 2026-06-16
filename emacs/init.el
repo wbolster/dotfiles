@@ -3688,12 +3688,6 @@ defined as lowercase."
          (line-beginning-position)
          (line-end-position))))))
 
-(use-package markdown-toc
-  :demand t
-  :after markdown-mode
-  :custom
-  (markdown-toc-header-toc-title ""))
-
 (use-package org
   :defer t
   :hook (org-mode-hook . w/org-mode-hook)
