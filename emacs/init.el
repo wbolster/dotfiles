@@ -990,88 +990,88 @@
 
 (defvar-keymap w/buffer-map
   :doc "Keymap for buffer commands."
-  "b" #'ivy-switch-buffer
   "B" #'ivy-switch-buffer-other-window
-  "n" #'evil-buffer-new
-  "N" #'w/evil-buffer-new-other-window
-  "c" #'clone-indirect-buffer
   "C" #'clone-indirect-buffer-other-window
-  "e" #'crux-rename-file-and-buffer
   "E" #'rename-buffer
-  "h" #'bury-buffer
   "H" #'unbury-buffer
-  "k" #'kill-current-buffer
   "K" #'kill-buffer-and-window
+  "N" #'w/evil-buffer-new-other-window
+  "b" #'ivy-switch-buffer
+  "c" #'clone-indirect-buffer
+  "e" #'crux-rename-file-and-buffer
+  "h" #'bury-buffer
+  "k" #'kill-current-buffer
   "m" #'w/switch-major-mode
+  "n" #'evil-buffer-new
   "r" #'revert-buffer)
 
 (defvar-keymap w/diff-map
   :doc "Keymap for vdiff commands."
-  "n" #'vdiff-next-hunk
-  "e" #'vdiff-previous-hunk
-  "p" #'vdiff-previous-hunk
-  "N" #'vdiff-next-fold
-  "E" #'vdiff-previous-fold
-  "P" #'vdiff-previous-fold
-  "c" #'vdiff-close-fold
   "C" #'vdiff-close-all-folds
-  "f" #'vdiff-refine-this-hunk
+  "E" #'vdiff-previous-fold
   "F" #'vdiff-refine-all-hunks
-  "x" #'vdiff-remove-refinements-in-hunk
-  "o" #'vdiff-open-fold
+  "N" #'vdiff-next-fold
   "O" #'vdiff-open-all-folds
-  "r" #'vdiff-receive-changes
+  "P" #'vdiff-previous-fold
   "R" #'vdiff-receive-changes-and-step
-  "s" #'vdiff-send-changes
   "S" #'vdiff-send-changes-and-step
+  "c" #'vdiff-close-fold
+  "d" #'vdiff-hydra/body
+  "e" #'vdiff-previous-hunk
+  "f" #'vdiff-refine-this-hunk
+  "n" #'vdiff-next-hunk
+  "o" #'vdiff-open-fold
+  "p" #'vdiff-previous-hunk
+  "r" #'vdiff-receive-changes
+  "s" #'vdiff-send-changes
   "u" #'vdiff-refresh
-  "d" #'vdiff-hydra/body)
+  "x" #'vdiff-remove-refinements-in-hunk)
 
 (defvar-keymap w/file-map
   :doc "Keymap for file commands."
-  "f" #'counsel-find-file
-  "F" #'find-file-other-window
-  "n" #'evil-buffer-new
-  "N" #'w/evil-buffer-new-other-window
-  "r" #'counsel-recentf
-  "R" #'w/counsel-recentf-other-window
-  "s" #'sudo-edit
-  "S" #'sudo-edit-find-file
-  "d" #'deer
-  "D" #'deer-jump-other-window
   "!" #'terminal-here
   "1" #'terminal-here
+  "D" #'deer-jump-other-window
+  "F" #'find-file-other-window
+  "N" #'w/evil-buffer-new-other-window
+  "R" #'w/counsel-recentf-other-window
+  "S" #'sudo-edit-find-file
+  "d" #'deer
+  "f" #'counsel-find-file
   "g" #'w/open-gui-file-browser
-  "i" #'insert-file)
+  "i" #'insert-file
+  "n" #'evil-buffer-new
+  "r" #'counsel-recentf
+  "s" #'sudo-edit)
 
 (defvar-keymap w/flycheck-map
-  :doc  "Keymap for Flycheck commands."
-  "b" #'flycheck-buffer
-  "m" #'w/flycheck-compile-current
-  "M" #'flycheck-compile
-  "c" #'w/flycheck-toggle-error-window
+  :doc "Keymap for Flycheck commands."
   "C" #'flycheck-mode
-  "o" #'w/flycheck-show-error-other-file-mode
-  "s" #'flycheck-select-checker
-  "v" #'flycheck-verify-setup
-  "n" #'flycheck-next-error
+  "M" #'flycheck-compile
+  "b" #'flycheck-buffer
+  "c" #'w/flycheck-toggle-error-window
   "e" #'flycheck-previous-error
-  "p" #'flycheck-previous-error)
+  "m" #'w/flycheck-compile-current
+  "n" #'flycheck-next-error
+  "o" #'w/flycheck-show-error-other-file-mode
+  "p" #'flycheck-previous-error
+  "s" #'flycheck-select-checker
+  "v" #'flycheck-verify-setup)
 
 (defvar-keymap w/git-map
   :doc "Keymap for Git commands."
-  "a" #'magit-blame-addition
+  "!" #'magit-git-command
   "A" #'w/magit-log-buffer-file-follow
+  "S" #'w/magit-status-other-repository
+  "a" #'magit-blame-addition
   "c" #'magit-commit-create
   "d" #'magit-diff-dwim
   "f" #'magit-file-dispatch
   "g" #'magit-dispatch
   "l" #'magit-log-current
   "s" #'magit-status
-  "S" #'w/magit-status-other-repository
   "t" #'magit-toggle-buffer-lock
-  "w" #'w/git-web-browse
-  "!" #'magit-git-command)
+  "w" #'w/git-web-browse)
 
 (defvar-keymap w/lsp-map
   :doc "Keymap for LSP commands."
@@ -1087,99 +1087,93 @@
 
 (defvar-keymap w/merge-map
   :doc "Keymap for merge conflict commands."
+  "a" #'smerge-keep-all
+  "b" #'smerge-keep-base
+  "c" #'smerge-keep-current
+  "e" #'smerge-prev
+  "l" #'smerge-keep-lower
   "m" #'smerge-mode
   "n" #'smerge-next
-  "e" #'smerge-prev
   "p" #'smerge-prev
-  "c" #'smerge-keep-current
-  "b" #'smerge-keep-base
-  "l" #'smerge-keep-lower
-  "u" #'smerge-keep-upper
-  "a" #'smerge-keep-all)
+  "u" #'smerge-keep-upper)
 
 (defvar-keymap w/project-map
   :doc "Keymap for project commands."
-  "p" #'projectile-switch-project
-  "P" #'projectile-switch-open-project
-  "b" #'projectile-switch-to-buffer
-  "B" #'projectile-switch-to-buffer-other-window
-  "k" #'projectile-kill-buffers
-  "q" #'w/projectile-project-bury-buffers
-  "s" #'projectile-save-project-buffers
-  "f" #'projectile-find-file
-  "F" #'projectile-find-file-other-window
-  "a" #'w/projectile-find-file-all
-  "d" #'projectile-find-dir
-  "D" #'projectile-find-dir-other-window
-  "-" #'projectile-dired
-  "t" #'projectile-toggle-between-implementation-and-test
-  "T" #'projectile-find-implementation-or-test-other-window
-  "g" #'w/projectile-open-gui-file-browser
-  "/" #'w/counsel-ag-project
-  "?" #'w/counsel-ag-project-all-files
-  "o" #'projectile-multi-occur
-  "r" #'projectile-replace
-  "R" #'projectile-replace-regexp
-  "c" #'projectile-compile-project
   "!" #'terminal-here-project-launch
-  "1" #'terminal-here-project-launch)
+  "-" #'projectile-dired
+  "/" #'w/counsel-ag-project
+  "1" #'terminal-here-project-launch
+  "?" #'w/counsel-ag-project-all-files
+  "B" #'projectile-switch-to-buffer-other-window
+  "D" #'projectile-find-dir-other-window
+  "F" #'projectile-find-file-other-window
+  "P" #'projectile-switch-open-project
+  "R" #'projectile-replace-regexp
+  "T" #'projectile-find-implementation-or-test-other-window
+  "a" #'w/projectile-find-file-all
+  "b" #'projectile-switch-to-buffer
+  "c" #'projectile-compile-project
+  "d" #'projectile-find-dir
+  "f" #'projectile-find-file
+  "g" #'w/projectile-open-gui-file-browser
+  "k" #'projectile-kill-buffers
+  "o" #'projectile-multi-occur
+  "p" #'projectile-switch-project
+  "q" #'w/projectile-project-bury-buffers
+  "r" #'projectile-replace
+  "s" #'projectile-save-project-buffers
+  "t" #'projectile-toggle-between-implementation-and-test)
 
 (defvar-keymap w/replace-map
   :doc "Keymap for replacement commands."
-  "r" #'w/query-replace-thing-at-point-dwim
-  "s" #'w/query-replace-thing-at-point-dwim
-  "p" #'projectile-replace
   "P" #'projectile-replace-regexp
+  "Q" #'query-replace-regexp
+  "p" #'projectile-replace
   "q" #'query-replace
-  "Q" #'query-replace-regexp)
+  "r" #'w/query-replace-thing-at-point-dwim
+  "s" #'w/query-replace-thing-at-point-dwim)
 
 (defvar-keymap w/search-map
   :doc "Keymap for search commands."
+  "F" #'ag-files
+  "G" #'ag
+  "R" #'ag-regexp
   "a" #'ag-project
   "f" #'ag-project-files
-  "F" #'ag-files
   "g" #'ag-project
-  "G" #'ag
-  "r" #'ag-project-regexp
-  "R" #'ag-regexp)
+  "r" #'ag-project-regexp)
 
 (defvar-keymap w/toggle-map
   :doc "Keymap for toggle commands."
+  "!" #'global-evil-swap-keys-mode
+  "(" #'smartparens-mode
+  ")" #'smartparens-mode
+  "0" #'smartparens-mode
+  "1" #'global-evil-swap-keys-mode
+  "9" #'smartparens-mode
+  "=" #'balanced-windows-mode
+  "F" #'display-fill-column-indicator-mode
+  "L" #'global-hl-line-mode
+  "N" #'w/display-line-numbers-cycle
+  "S-SPC" #'w/show-trailing-whitespace-mode
+  "SPC" #'whitespace-mode
+  "TAB" #'indent-bars-mode
+  "W" #'w/sensible-wrap-mode-2
   "b" #'auto-dark-toggle-appearance
   "c" #'flycheck-mode
   "d" #'diff-hl-mode
   "f" #'auto-fill-mode
-  "F" #'display-fill-column-indicator-mode
   "h" #'symbol-overlay-mode
   "l" #'hl-line-mode
-  "L" #'global-hl-line-mode
   "n" #'display-line-numbers-mode
-  "N" #'w/display-line-numbers-cycle
   "s" #'flyspell-mode
   "w" #'w/sensible-wrap-mode-1
-  "W" #'w/sensible-wrap-mode-2
-  "z" #'w/origami-mode-toggle
-  "SPC" #'whitespace-mode
-  "S-SPC" #'w/show-trailing-whitespace-mode
-  "TAB" #'indent-bars-mode
-  "1" #'global-evil-swap-keys-mode
-  "!" #'global-evil-swap-keys-mode
-  "9" #'smartparens-mode
-  "(" #'smartparens-mode
-  "0" #'smartparens-mode
-  ")" #'smartparens-mode
-  "=" #'balanced-windows-mode)
+  "z" #'w/origami-mode-toggle)
 
 (defvar-keymap w/window-map
   :doc "Keymap for window commands."
   "+" #'evil-window-increase-width
   "-" #'evil-window-decrease-width
-  "C-e" #'evil-window-increase-height
-  "C-h" #'evil-window-decrease-width
-  "C-i" #'evil-window-increase-width
-  "C-n" #'evil-window-decrease-height
-  "R" #'evil-window-rotate-upwards
-  "r" #'evil-window-rotate-downwards
   "1" #'w/goto-window-1
   "2" #'w/goto-window-2
   "3" #'w/goto-window-3
@@ -1187,12 +1181,17 @@
   "5" #'w/goto-window-5
   "6" #'w/goto-window-6
   "=" #'balance-windows
+  "C-e" #'evil-window-increase-height
+  "C-h" #'evil-window-decrease-width
+  "C-i" #'evil-window-increase-width
+  "C-n" #'evil-window-decrease-height
   "C-w" #'w/evil-window-next-or-vsplit
   "E" #'evil-window-up
   "F" #'w/make-frame-new-buffer
   "H" #'evil-window-left
   "I" #'evil-window-right
   "N" #'evil-window-down
+  "R" #'evil-window-rotate-upwards
   "S" #'evil-window-new
   "U" #'winner-redo
   "V" #'evil-window-vnew
@@ -1205,6 +1204,7 @@
   "n" #'buf-move-down
   "o" #'delete-other-windows
   "p" #'toggle-window-dedicated
+  "r" #'evil-window-rotate-downwards
   "s" #'evil-window-split
   "u" #'winner-undo
   "v" #'evil-window-vsplit
@@ -1220,12 +1220,18 @@
 
 (defvar-keymap w/leader-map
   :doc "Leader keymap."
+  "'" #'w/major-mode-hydra
+  "/" #'w/hydra-search/body
   "1" #'w/goto-window-1
   "2" #'w/goto-window-2
   "3" #'w/goto-window-3
   "4" #'w/goto-window-4
   "5" #'w/goto-window-5
   "6" #'w/goto-window-6
+  "H" #'symbol-overlay-remove-all
+  "Q" #'unbury-buffer
+  "S" #'save-some-buffers
+  "SPC" #'whitespace-cleanup
   "a" w/search-map
   "b" w/buffer-map
   "c" w/flycheck-map
@@ -1233,7 +1239,6 @@
   "f" w/file-map
   "g" w/git-map
   "h" #'w/symbol-overlay-put-dwim
-  "H" #'symbol-overlay-remove-all
   "j" #'counsel-imenu
   "l" w/lsp-map
   "m" w/merge-map
@@ -1241,23 +1246,18 @@
   "o" #'w/occur-dwim
   "p" w/project-map
   "q" #'bury-buffer
-  "Q" #'unbury-buffer
   "r" w/replace-map
   "s" #'save-buffer
-  "S" #'save-some-buffers
   "t" w/toggle-map
   "u" #'universal-argument
   "w" w/window-map
   "x" #'counsel-M-x
-  "y" #'w/evil-copy-as-format
-  "SPC" #'whitespace-cleanup
-  "/" #'w/hydra-search/body
-  "'" #'w/major-mode-hydra)
+  "y" #'w/evil-copy-as-format)
 
 (general-define-key
  :states 'motion
- "," w/leader-map
- "'" w/leader-map)
+ "'" w/leader-map
+ "," w/leader-map)
 
 ;;; todo: tidy up the messy stuff below ======================
 
