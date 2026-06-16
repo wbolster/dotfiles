@@ -1427,14 +1427,6 @@ defined as lowercase."
 
 (add-hook 'w/theme-changed-hook #'w/tweak-evil-cursor)
 
-(use-package unicode-fonts
-  ;; todo: is this still relevant?
-  :disabled
-  :custom
-  (unicode-fonts-skip-fonts '("Segoe UI Symbol"))
-  :config
-  (unicode-fonts-setup))
-
 (use-package smart-mode-line
   :custom
   (sml/line-number-format "%l")
