@@ -197,6 +197,7 @@
   (setopt custom-file (expand-file-name "custom.el" user-emacs-directory))
 
   (blink-cursor-mode)
+  (context-menu-mode)
   (menu-bar-mode -1)
   (pixel-scroll-precision-mode)
   (repeat-mode)
