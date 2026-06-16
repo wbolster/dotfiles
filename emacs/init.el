@@ -1862,14 +1862,6 @@ defined as lowercase."
     "_r_eset"
     ("r" (er/expand-region 0) :exit t)))
 
-(use-package keyfreq
-  :config
-  (setq  ;; https://github.com/emacscollective/no-littering/pull/74
-   keyfreq-file (no-littering-expand-var-file-name "keyfreq.el")
-   keyfreq-file-lock (no-littering-expand-var-file-name "keyfreq.lock"))
-  (keyfreq-mode)
-  (keyfreq-autosave-mode))
-
 (define-minor-mode w/show-trailing-whitespace-mode
   "Show or hide trailing whitespace."
   :lighter nil
