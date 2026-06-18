@@ -1323,6 +1323,7 @@
   "5" #'w/goto-window-5
   "6" #'w/goto-window-6
   "H" #'symbol-overlay-remove-all
+  "J" #'consult-imenu-multi
   "Q" #'unbury-buffer
   "S" #'save-some-buffers
   "X" #'execute-extended-command-for-buffer
