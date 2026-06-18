@@ -83,6 +83,12 @@
   :group 'emacs
   :prefix "w/")
 
+(defcustom w/read-extended-command-predicate-functions
+  '(command-completion-default-include-p)
+  "Predicates used by ‘read-extended-command-predicate’."
+  :group 'w
+  :type '(repeat symbol))
+
 (defcustom w/ui-font-family "Sans"
   "Name of the font-family used by the desktop environment's user interface."
   :group 'w
@@ -169,6 +175,9 @@
   (lazy-highlight-max-at-a-time nil)
   (major-mode 'text-mode) ;; default for new buffers
   (native-comp-async-report-warnings-errors 'silent)
+  (read-extended-command-predicate
+   (lambda (command buffer)
+     (run-hook-with-args-until-failure 'w/read-extended-command-predicate-functions command buffer)))
   (read-process-output-max (* 1024 1024)) ;; recommended by lsp-mode
   (recenter-positions '(top middle bottom))
   (require-final-newline 'visit-save)
@@ -940,7 +949,9 @@
   :bind
   (:map transient-map
    ("C-n" . transient-history-next)
-   ("C-p" . transient-history-prev)))
+   ("C-p" . transient-history-prev))
+  :config
+  (add-to-list 'w/read-extended-command-predicate-functions 'transient-command-completion-not-suffix-only-p))
 
 (use-package typo
   :defer t
