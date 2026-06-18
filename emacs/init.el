@@ -981,10 +981,51 @@
      (consult-imenu-multi buffer)
      (consult-line buffer)
      (consult-ripgrep buffer)))
+  :functions
+  vertico--candidate
+  vertico--metadata-get
   :config
   (vertico-mode)
   (vertico-mouse-mode)
   (vertico-multiform-mode))
+
+(use-package vertico-directory
+  :demand t
+  :ensure vertico
+  :after vertico
+  :bind
+  (:map vertico-directory-map
+   ("~" . #'w/vertico-directory-maybe-home)
+   ("`" . #'w/vertico-directory-maybe-home)
+   ("/" . #'w/vertico-directory-slash))
+  :commands
+  w/vertico-directory-maybe-home
+  w/vertico-directory-slash
+  :config
+  (defun w/vertico-directory-maybe-home ()
+    "Go to home dir when behind a slash, e.g. ‘~’ directly after ‘M-x find-file’."
+    (interactive)
+    (cond
+     ((and (eql vertico--index -1)
+           (looking-back "/" 1))
+      (delete-minibuffer-contents)
+      (insert "~/"))
+     (t (self-insert-command 1))))
+  (defun w/vertico-directory-slash ()
+    "Descend into selected directory, quickly go to /, or insert slash."
+    (interactive)
+    (let* ((file-category (eq 'file (vertico--metadata-get 'category)))
+           (selected (>= vertico--index 0))
+           (candidate-directory (string-suffix-p "/" (vertico--candidate)))
+           (after-slash (looking-back "/" 1)))
+      (cond
+       ((and file-category selected candidate-directory)
+        (vertico-directory-enter))
+       ((and file-category (not selected) after-slash)
+        (delete-minibuffer-contents)
+        (insert "/"))
+       (t
+        (self-insert-command 1))))))
 
 (use-package which-func
   :demand t
