@@ -1253,6 +1253,7 @@
   "H" #'symbol-overlay-remove-all
   "Q" #'unbury-buffer
   "S" #'save-some-buffers
+  "X" #'execute-extended-command-for-buffer
   "SPC" #'whitespace-cleanup
   "a" w/search-map
   "b" w/buffer-map
