@@ -3059,8 +3059,8 @@ defined as lowercase."
       (add-to-list 'direnv-non-file-modes it)))
 
   (defun w/git-commit-mode-hook ()
-    (when git-commit-mode
-      (virtual-auto-fill-mode -1)))
+    (when (and (bobp) (eolp))
+      (call-interactively #'evil-insert)))
 
   (defun w/magit-status-other-repository ()
     "Open git status for another repository."
