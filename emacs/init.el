@@ -3884,7 +3884,7 @@ defined as lowercase."
 
   (defun w/python-insert-breakpoint ()
     "Insert a pdb trace statement using PDB-MODULE before the current statement."
-    (interactive)
+    (interactive nil python-mode)
     (w/python-insert-statement 'before "breakpoint()  # FIXME"))
 
   (defun w/python-insert-ipython-repl (position)
@@ -3908,7 +3908,7 @@ defined as lowercase."
        (format "reveal_type(%s)" thing))))
 
   (defun w/python-kwargize ()
-    (interactive)
+    (interactive nil python-mode)
     (when-let ((thing (thing-at-point 'symbol)))
       (goto-char (beginning-of-thing 'symbol))
       (save-excursion
@@ -3926,7 +3926,7 @@ defined as lowercase."
 
   (defun w/python-insert-import-statement ()
     "Add an import statement for the thing at point."
-    (interactive)
+    (interactive nil python-mode)
     (let ((thing (w/thing-at-point-dwim)))
       (unless thing
         (user-error "No thing at point"))
