@@ -2591,8 +2591,6 @@ defined as lowercase."
   (w/declare-jump it))
 
 (use-package dumb-jump
-  :custom
-  (dumb-jump-selector 'ivy)
   :general
   (:states 'motion
    "gd" #'w/dumb-jump-go
@@ -2901,7 +2899,7 @@ defined as lowercase."
   (magit-branch-prefer-remote-upstream '("master"))
   (magit-branch-read-upstream-first 'fallback)
   (magit-bury-buffer-function 'magit-mode-quit-window)
-  (magit-completing-read-function 'ivy-completing-read)
+  (magit-completing-read-function 'magit-builtin-completing-read)
   (magit-diff-refine-hunk t)
   (magit-display-buffer-function 'display-buffer)
   (magit-list-refs-sortby '("-committerdate"))
