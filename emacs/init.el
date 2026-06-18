@@ -2333,9 +2333,6 @@ defined as lowercase."
     (when (derived-mode-p 'text-mode)
       (adaptive-wrap-prefix-mode (if visual-line-mode 1 -1)))))
 
-(use-package multi-line
-  :defer t)
-
 (use-package visual-fill-column
   :defer t)
 
@@ -3765,9 +3762,6 @@ defined as lowercase."
    [backspace] 'python-nav-backward-up-list
    "<return>" 'python-black-partial-dwim)
   (:keymaps 'python-mode-map
-   :states 'insert
-   "C-l" 'multi-line)
-  (:keymaps 'python-mode-map
    :states '(operator visual)
    "H" 'python-nav-backward-sexp-safe
    "I" 'python-nav-forward-sexp-safe
@@ -4002,9 +3996,6 @@ defined as lowercase."
     ("i" w/python-insert-import-statement)
     "_k_ kwarg"
     ("k" w/python-kwargize)
-    "_l_ multi-line"
-    ("l" multi-line)
-    ("L" multi-line-single-line)
     "_m_ mypy"
     ("m" w/python-reveal-type-expression)
     "_p_ print"
