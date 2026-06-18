@@ -693,6 +693,9 @@
   :config
   (marginalia-mode))
 
+(use-package modus-themes
+  :defer t)
+
 (use-package nxml-mode
   :defer t
   :ensure emacs
