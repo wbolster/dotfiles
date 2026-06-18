@@ -174,6 +174,8 @@
   (lazy-highlight-initial-delay 0.5)
   (lazy-highlight-max-at-a-time nil)
   (major-mode 'text-mode) ;; default for new buffers
+  (mode-line-compact 'long)
+  (mode-line-position-column-line-format '(" %l:%c"))
   (native-comp-async-report-warnings-errors 'silent)
   (read-extended-command-predicate
    (lambda (command buffer)
@@ -420,8 +422,6 @@
   (evil-emacs-state-tag "e ")
   (evil-insert-state-message nil)
   (evil-insert-state-tag "i ")
-  ;; small state tag before position info, which smart-mode-line put elsewhere
-  (evil-mode-line-format '(before . mode-line-front-space))
   (evil-motion-state-tag "m ")
   (evil-normal-state-tag "  ")
   (evil-operator-state-tag "o ")
@@ -1499,29 +1499,6 @@ defined as lowercase."
    evil-operator-state-cursor (list solarized-color-magenta 'hollow)))
 
 (add-hook 'w/theme-changed-hook #'w/tweak-evil-cursor)
-
-(use-package smart-mode-line
-  :custom
-  (sml/line-number-format "%l")
-  (sml/col-number-format "%c")
-  (sml/mode-width 0)
-  (sml/shorten-modes nil)
-  (sml/modified-char "‼")
-  (sml/name-width '(1 . 40))
-  (sml/projectile-replacement-format "%s:")
-  (sml/use-projectile-p 'before-prefixes)
-
-  :hook (w/theme-changed-hook . w/smart-mode-line-tweak-faces)
-
-  :config
-  (sml/setup)
-
-  (defun w/smart-mode-line-tweak-faces ()
-    (set-face-attribute 'mode-line nil :family w/ui-font-family :height 0.9)
-    (set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
-    (set-face-attribute 'header-line nil :background 'unspecified :inherit 'mode-line)
-    (set-face-attribute 'sml/modified nil :foreground solarized-color-red)
-    (set-face-attribute 'sml/filename nil :foreground solarized-color-blue)))
 
 (use-package evil
   ;; todo: clean up and merge with other use-package stanza
