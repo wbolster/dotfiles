@@ -329,6 +329,10 @@
 
 (use-package consult
   :demand t
+  :general
+  (:states 'motion
+   "/" #'consult-line
+   "?" #'consult-line-multi)
   :custom
   (consult-line-start-from-top))
 
@@ -2086,31 +2090,6 @@ defined as lowercase."
                   'regexp-history)))
       (occur thing nlines)
       (evil-normal-state))))
-
-(use-package swiper
-  :after ivy
-  :custom
-  (swiper-action-recenter t)
-  (swiper-goto-start-of-match t)
-  :general
-  (:states 'motion
-   "/" 'swiper-isearch
-   "?" 'swiper
-   "C-/" 'swiper-all)
-  (:states 'visual
-   "/" 'swiper-isearch
-   "C-/" 'swiper-all)
-  (:keymaps 'swiper-map
-   "C-s" 'swiper-isearch-toggle)
-  :config
-  (defun w/swiper-dwim ()
-    "Start `swiper` searching for the thing at point."
-    (interactive)
-    (let ((query (w/thing-at-point-dwim)))
-      (when evil-visual-state-minor-mode
-        ;; do not expand region in visual mode
-        (evil-normal-state))
-      (swiper query))))
 
 (use-package ag
   :defer t
