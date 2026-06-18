@@ -1933,7 +1933,10 @@ defined as lowercase."
   (setq show-trailing-whitespace w/show-trailing-whitespace-mode))
 
 (use-package minibuffer
-  :ensure nil
+  :ensure emacs
+  :custom
+  (enable-recursive-minibuffers t)
+  (minibuffer-follows-selected-frame nil)
   :general
   (:keymaps 'minibuffer-local-map
    "C-w" #'backward-kill-word
