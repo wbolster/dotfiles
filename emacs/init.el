@@ -3213,9 +3213,6 @@ defined as lowercase."
   (transient-suffix-put 'magit-dispatch "E" :command 'vdiff-magit)
   )
 
-(use-package lsp-ivy
-  :defer t)
-
 (use-package flycheck
   :demand t
   :after direnv
