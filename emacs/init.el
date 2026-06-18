@@ -697,6 +697,18 @@
   :config
   (marginalia-mode))
 
+(use-package minibuffer
+  :demand t
+  :ensure emacs
+  :custom
+  (enable-recursive-minibuffers t)
+  (minibuffer-follows-selected-frame nil)
+  :bind
+  (:map minibuffer-local-map
+   ("C-w" . backward-kill-word)
+   ("C-u" . kill-whole-line)
+   ("<escape>" . minibuffer-keyboard-quit)))
+
 (use-package modus-themes
   :defer t)
 
@@ -1981,22 +1993,6 @@ defined as lowercase."
   "Show or hide trailing whitespace."
   :lighter nil
   (setq show-trailing-whitespace w/show-trailing-whitespace-mode))
-
-(use-package minibuffer
-  :ensure emacs
-  :custom
-  (enable-recursive-minibuffers t)
-  (minibuffer-follows-selected-frame nil)
-  :general
-  (:keymaps 'minibuffer-local-map
-   "C-w" #'backward-kill-word
-   "C-u" #'kill-whole-line)
-  (:keymaps '(minibuffer-local-completion-map
-              minibuffer-local-isearch-map
-              minibuffer-local-map
-              minibuffer-local-must-match-map
-              minibuffer-local-ns-map)
-   "<escape>" #'minibuffer-keyboard-quit))
 
 (use-package thingatpt
   :config
