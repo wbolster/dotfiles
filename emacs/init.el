@@ -646,6 +646,10 @@
    ("C-o" . w/isearch-occur-and-exit)
    ("C-'" . avy-isearch)
    ("C-/" . 'swiper-isearch-toggle))
+  :general
+  (:states 'motion
+   "*" #'isearch-forward-thing-at-point
+   "#" #'isearch-forward-thing-at-point)
   :commands
   w/isearch-occur-and-exit
   :custom
