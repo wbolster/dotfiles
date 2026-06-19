@@ -2516,19 +2516,12 @@ defined as lowercase."
            (concat (file-name-extension buffer-file-name) "$")
          "")
        ".")))
-    (ivy-read
-     "Find file in complete project: "
-     (projectile-make-relative-to-root
-      (directory-files-recursively (projectile-project-root) pattern))
-     :action #'w/projectile-find-file-relative
-     :require-match t
-     :history 'file-name-history))
-
-  (defun w/projectile-find-file-relative (name)
-    (find-file
-     (concat
-      (file-name-as-directory (projectile-project-root))
-      name)))
+    (let* ((collection
+            (projectile-make-relative-to-root
+             (directory-files-recursively (projectile-project-root) pattern)))
+           (selection (completing-read "Find file in complete project: " collection nil t nil 'file-name-history))
+           (name (concat (file-name-as-directory (projectile-project-root)) selection)))
+      (find-file name)  ))
 
   (defun w/projectile-project-bury-buffers ()
     "Quit all windows and bury all buffers for the current project."
@@ -2578,7 +2571,6 @@ defined as lowercase."
           evil-window-bottom
           evil-window-middle
           evil-window-top
-          ivy-done
           recenter-top-bottom
           switch-to-buffer)
   (w/declare-jump it))
@@ -3394,7 +3386,7 @@ defined as lowercase."
    "C-n" #'comint-next-input
    "C-p" #'comint-previous-input
    "C-r" #'comint-history-isearch-backward
-   "C-/" #'w/comint-ivy-history)
+   "C-/" #'w/comint-insert-history)
 
   :hook
   (comint-mode-hook . w/compilation-mode-hook)
@@ -3410,12 +3402,11 @@ defined as lowercase."
        (goto-char (point-max))
        (evil-append-line 0))))
 
-  (defun w/comint-ivy-history ()
+  (defun w/comint-insert-history ()
     (interactive)
-    (insert (ivy-read
-             "Command history: "
-             (-uniq (ring-elements comint-input-ring))
-             :require-match t))))
+    (let* ((collection (-uniq (ring-elements comint-input-ring)))
+           (text (completing-read "Command history: " collection nil t)))
+      (insert text))))
 
 (use-package xterm-color
   :defer t)
