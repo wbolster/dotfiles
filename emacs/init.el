@@ -3465,9 +3465,8 @@ defined as lowercase."
     (modify-syntax-entry ?$ ".")))
 
 (use-package elisp-mode
-  :after lispy lispyville
   :defer t
-  :ensure nil
+  :ensure emacs
   :general
   (:keymaps '(emacs-lisp-mode-map lisp-interaction-mode-map)
    :states 'insert
