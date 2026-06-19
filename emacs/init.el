@@ -571,7 +571,7 @@
   :autoload
   w/evil-surround-define-surround-trigger-pairs
   :config
-  (cl-defun w/evil-surround-define-surround-trigger-pairs (scope &rest args)
+  (defun w/evil-surround-define-surround-trigger-pairs (scope &rest args)
     "Define :global or :local surround pairs as TRIGGER LEFT RIGHT (repeatable)."
     (unless (member scope '(:global :local))
       (error "Scope must be either :global or :local") )
