@@ -47,15 +47,30 @@ If called from Lisp, toggle the mode if ARG is `toggle'.
 Enable the mode if ARG is nil, omitted, or is a positive number.
 Disable the mode if ARG is a negative number.
 
-Evil-Colemak-Basics mode is enabled in all buffers where
-`turn-on-evil-colemak-basics-mode' would do it.
+Evil-Colemak-Basics mode is enabled in all buffers where `(lambda nil
+(evil-colemak-basics-mode t))' would do it.
 
 See `evil-colemak-basics-mode' for more information on
 Evil-Colemak-Basics mode.
 
+`global-evil-colemak-basics-modes' is used to control which modes this
+minor mode is used in.
+
 (fn &optional ARG)" t)
-(autoload 'turn-on-evil-colemak-basics-mode "evil-colemak-basics" "\
-Enable evil-colemak-basics-mode in the current buffer.")
+(defvar global-evil-colemak-basics-modes '(t) "\
+Which major modes `evil-colemak-basics-mode' is switched on in.
+This variable can be either t (all major modes), nil (no major modes),
+or a list of modes and (not modes) to switch use this minor mode or
+not.  For instance
+
+  (c-mode (not message-mode mail-mode) text-mode)
+
+means \"use this mode in all modes derived from `c-mode', don't use in
+modes derived from `message-mode' or `mail-mode', but do use in other
+modes derived from `text-mode'\".  An element with value t means \"use\"
+and nil means \"don't use\".  There's an implicit nil at the end of the
+list.")
+(custom-autoload 'global-evil-colemak-basics-modes "evil-colemak-basics" t)
 (register-definition-prefixes "evil-colemak-basics" '("evil-colemak-basics-"))
 
 ;;; End of scraped data

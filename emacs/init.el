@@ -814,7 +814,7 @@
   (ranger-show-hidden t)
 
   :config
-  (add-to-list 'evil-colemak-basics-disabled-modes 'ranger-mode)
+  (add-to-list 'global-evil-colemak-basics-modes '(not ranger-mode))
   (with-eval-after-load 'direnv
     (add-to-list 'direnv-non-file-modes 'ranger-mode))
 
@@ -3046,9 +3046,8 @@ defined as lowercase."
       (add-to-list 'direnv-non-file-modes it)))
 
   (with-eval-after-load 'evil-colemak-basics
-    (--each '(magit-log-mode
-              magit-status-mode)
-      (add-to-list 'evil-colemak-basics-disabled-modes it)))
+    (add-to-list 'global-evil-colemak-basics-modes
+                 '(not magit-log-mode magit-status-mode)))
 
   (defun w/git-commit-mode-hook ()
     (when (and (bobp) (eolp))
@@ -3125,7 +3124,7 @@ defined as lowercase."
    "ZQ" #'with-editor-cancel
    "ZZ" #'with-editor-finish)
   :config
-  (add-to-list 'evil-colemak-basics-disabled-modes 'git-rebase-mode))
+  (add-to-list 'global-evil-colemak-basics-modes '(not git-rebase-mode)))
 
 (use-package magit-imerge
   :after magit)
