@@ -183,6 +183,8 @@
   (split-width-threshold 120)
   (split-window-preferred-function 'visual-fill-column-split-window-sensibly)
   (switch-to-buffer-in-dedicated-window 'pop)
+  (tab-always-indent 'complete)
+  (tab-first-completion 'word)
   (tab-width 4)
   (use-short-answers t)
   (window-divider-default-bottom-width 2)
@@ -2856,8 +2858,6 @@ defined as lowercase."
   (company-require-match nil)
   (company-selection-wrap-around t)
   (company-transformers '(company-sort-by-occurrence))
-  (tab-always-indent 'complete)
-  (tab-first-completion 'word)
 
   :config
   (add-to-list 'company-auto-complete-chars ?\( )
