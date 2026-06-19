@@ -877,6 +877,18 @@
 (use-package shfmt
   :defer t)
 
+(use-package smerge-mode
+  :defer t
+  :delight " 🔀"
+  :commands
+  smerge-keep-all
+  smerge-keep-base
+  smerge-keep-current
+  smerge-keep-lower
+  smerge-keep-upper
+  smerge-next
+  smerge-prev)
+
 (use-package solarized-theme
   :demand t
   :if (display-graphic-p)
@@ -3119,21 +3131,9 @@ defined as lowercase."
       (apply fn args)))
   (advice-add 'diff-hl-update :around #'w/diff-hl-update-around-advice))
 
-(use-package smerge-mode
-  :delight " 🔀"
-  :defer t
-  :commands
-  smerge-keep-all
-  smerge-keep-base
-  smerge-keep-current
-  smerge-keep-lower
-  smerge-keep-upper
-  smerge-next
-  smerge-prev)
-
 (use-package vc
   :config
-  (setq vc-handled-backends nil))
+  (setq vc-handled-backends '(git)))
 
 (use-package vdiff
   :defer t
