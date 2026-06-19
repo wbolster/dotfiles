@@ -1,7 +1,8 @@
 ;;; evil-colemak-basics.el --- Basic Colemak key bindings for evil-mode  -*- lexical-binding: t; -*-
 
 ;; author: wouter bolsterlee <wouter@bolsterl.ee>
-;; Version: 3.0.0
+;; Package-Version: 20260619.1649
+;; Package-Revision: 70a08ff4c814
 ;; Package-Requires: ((emacs "28.1") (evil "1.15.0") (evil-snipe "2.1.3"))
 ;; Keywords: convenience emulations colemak evil
 ;; URL: https://github.com/wbolster/evil-colemak-basics

@@ -5,8 +5,8 @@
 ;; Author: Bozhidar Batsov <bozhidar@batsov.dev>
 ;; URL: https://github.com/bbatsov/projectile
 ;; Keywords: project, convenience
-;; Package-Version: 20260615.1421
-;; Package-Revision: c1786a0c983b
+;; Package-Version: 20260619.1705
+;; Package-Revision: b1b2a13cc27b
 ;; Package-Requires: ((emacs "27.1") (compat "30"))
 
 ;; This file is NOT part of GNU Emacs.
@@ -1604,7 +1604,10 @@ Special cases:
 - Remote files reached via TRAMP whose host is not currently connected
   return nil without caching, so reconnecting works without manual cache
   invalidation."
-  (let ((dir (or dir default-directory)))
+  ;; `default-directory' can be nil in some buffers; short-circuit to nil so
+  ;; callers get "no project" instead of a `(wrong-type-argument stringp nil)'
+  ;; from `file-remote-p' and friends below (#1829).
+  (when-let* ((dir (or dir default-directory)))
     ;; Back out of any archives, the project will live on the outside and
     ;; searching them is slow.
     (when (and (fboundp 'tramp-archive-file-name-p)
@@ -5204,6 +5207,17 @@ regular expression."
         (funcall ag-command search-term (projectile-acquire-root)))
     (error "Package 'ag' is not available")))
 
+(defun projectile--ripgrep-ignore-globs ()
+  "Return ripgrep `--glob' exclusions for the globally ignored files and dirs.
+
+Uses the `--glob=!PATTERN' form rather than `--glob \\='!PATTERN\\='', whose
+surrounding single quotes are only stripped by POSIX shells - on Windows
+`cmd' they become part of the pattern and the exclusion silently fails
+\(see #1946)."
+  (mapcar (lambda (val) (concat "--glob=!" val))
+          (append projectile-globally-ignored-files
+                  projectile-globally-ignored-directories)))
+
 ;;;###autoload
 (defun projectile-ripgrep (search-term &optional arg)
   "Run a ripgrep (rg) search with `SEARCH-TERM' at current project root.
@@ -5217,9 +5231,7 @@ installed to work."
    (list (projectile--read-search-string-with-default
           (format "Ripgrep %ssearch for" (if current-prefix-arg "regexp " "")))
          current-prefix-arg))
-  (let ((args (mapcar (lambda (val) (concat "--glob '!" val "'"))
-                      (append projectile-globally-ignored-files
-                              projectile-globally-ignored-directories))))
+  (let ((args (projectile--ripgrep-ignore-globs)))
     ;; we rely on the external packages ripgrep and rg for the actual search
     ;;
     ;; first we check if we can load ripgrep
@@ -5883,6 +5895,34 @@ Acts on the current project if not specified explicitly."
   (make-hash-table :test 'equal)
   "A mapping between projects and the last run command used on them.")
 
+;;;###autoload
+(defun projectile-discard-command-cache ()
+  "Discard the cached lifecycle commands for the current project.
+
+Projectile caches the last command used for each of the configure,
+compile, test, install, package, and run actions and prefers it over the
+value from `.dir-locals.el' or the project type's default.  After
+editing those, run this command so the next invocation re-reads them.
+Handy on `after-save-hook' for `.dir-locals.el' buffers.
+
+This only clears the cached commands, not the command history offered at
+the prompt.  See also `projectile-discard-root-cache'."
+  (interactive)
+  (let ((root (projectile-acquire-root)))
+    (dolist (command-map (list projectile-configure-cmd-map
+                               projectile-compilation-cmd-map
+                               projectile-install-cmd-map
+                               projectile-package-cmd-map
+                               projectile-test-cmd-map
+                               projectile-run-cmd-map))
+      (dolist (dir (hash-table-keys command-map))
+        (when (string-prefix-p root dir)
+          (remhash dir command-map))))
+    ;; Give feedback when invoked interactively; stay quiet when used
+    ;; programmatically (e.g. from `after-save-hook') unless verbose.
+    (when (or projectile-verbose (called-interactively-p 'interactive))
+      (message "Discarded Projectile command cache for %s" root))))
+
 (defvar projectile-project-enable-cmd-caching t
   "Enables command caching for the project.  Set to nil to disable.
 Should be set via .dir-locals.el.")
@@ -6099,11 +6139,15 @@ project of that type"
       projectile-project-run-cmd
       (projectile-default-run-command (projectile-project-type))))
 
-(defun projectile-read-command (prompt command)
-  "Adapted from the function `compilation-read-command'."
+(defun projectile-read-command (prompt command &optional command-type)
+  "Adapted from the function `compilation-read-command'.
+
+COMMAND-TYPE, when non-nil, selects the per-type command history
+\(see `projectile--get-command-history') as the minibuffer history."
   (let ((compile-history
          ;; fetch the command history for the current project
-         (ring-elements (projectile--get-command-history (projectile-acquire-root)))))
+         (ring-elements (projectile--get-command-history (projectile-acquire-root)
+                                                         command-type))))
     (read-shell-command prompt command
                         (if (equal (car compile-history) command)
                             '(compile-history . 1)
@@ -6119,11 +6163,13 @@ project of that type"
         (expand-file-name (file-name-as-directory comp-dir) project-root)
       project-root)))
 
-(defun projectile-maybe-read-command (arg default-cmd prompt)
-  "Prompt user for command unless DEFAULT-CMD is an Elisp function."
+(defun projectile-maybe-read-command (arg default-cmd prompt &optional command-type)
+  "Prompt user for command unless DEFAULT-CMD is an Elisp function.
+COMMAND-TYPE is forwarded to `projectile-read-command' to pick the
+per-type command history."
   (if (and (or (stringp default-cmd) (null default-cmd))
            (or compilation-read-command arg))
-      (projectile-read-command prompt default-cmd)
+      (projectile-read-command prompt default-cmd command-type)
     default-cmd))
 
 (defun projectile-run-compilation (cmd &optional use-comint-mode)
@@ -6137,17 +6183,45 @@ project of that type"
 
 Projects are indexed by their project-root value.")
 
-(defun projectile--get-command-history (project-root)
-  (or (gethash project-root projectile-project-command-history)
-      (puthash project-root
-               (make-ring 16)
-               projectile-project-command-history)))
+(defun projectile--get-command-history (project-root &optional command-type)
+  "Return the command history ring for PROJECT-ROOT.
+
+With COMMAND-TYPE non-nil (one of the lifecycle command type
+symbols, e.g. `compile' or `test') return the history specific to
+that command type, so histories of different types don't bleed into
+each other's prompts.  With COMMAND-TYPE nil return the combined
+per-project history, which is what `projectile-repeat-last-command'
+reads."
+  (let ((key (if command-type (cons project-root command-type) project-root)))
+    (or (gethash key projectile-project-command-history)
+        (puthash key
+                 (make-ring 16)
+                 projectile-project-command-history))))
+
+(defun projectile--command-history-insert (history command)
+  "Insert COMMAND into the ring HISTORY.
+Duplicates are handled according to `projectile-cmd-hist-ignoredups'."
+  (cond
+   ((eq projectile-cmd-hist-ignoredups t)
+    (unless (string= (car-safe (ring-elements history)) command)
+      (ring-insert history command)))
+   ((eq projectile-cmd-hist-ignoredups 'erase)
+    (let ((idx (ring-member history command)))
+      (while idx
+        (ring-remove history idx)
+        (setq idx (ring-member history command))))
+    (ring-insert history command))
+   (t (ring-insert history command))))
 
 (cl-defun projectile--run-project-cmd
-    (command command-map &key show-prompt prompt-prefix save-buffers use-comint-mode)
+    (command command-map &key command-type show-prompt prompt-prefix save-buffers use-comint-mode)
   "Run a project COMMAND, typically a test- or compile command.
 
 Cache the COMMAND for later use inside the hash-table COMMAND-MAP.
+
+COMMAND-TYPE, when non-nil, is the lifecycle command type symbol
+\(e.g. `compile' or `test') and is used to keep a per-type command
+history for the prompt, in addition to the combined per-project one.
 
 Normally you'll be prompted for a compilation command, unless
 variable `compilation-read-command'.  You can force the prompt
@@ -6161,23 +6235,20 @@ The command actually run is returned."
          (default-directory (projectile-compilation-dir))
          (command (projectile-maybe-read-command show-prompt
                                                  command
-                                                 prompt-prefix))
+                                                 prompt-prefix
+                                                 command-type))
          (compilation-buffer-name-function compilation-buffer-name-function)
          (compilation-save-buffers-predicate compilation-save-buffers-predicate))
     (when command-map
       (puthash default-directory command command-map)
-      (let ((hist (projectile--get-command-history project-root)))
-        (cond
-         ((eq projectile-cmd-hist-ignoredups t)
-          (unless (string= (car-safe (ring-elements hist)) command)
-            (ring-insert hist command)))
-         ((eq projectile-cmd-hist-ignoredups 'erase)
-          (let ((idx (ring-member hist command)))
-            (while idx
-              (ring-remove hist idx)
-              (setq idx (ring-member hist command))))
-          (ring-insert hist command))
-         (t (ring-insert hist command)))))
+      ;; Record into the combined per-project history (read by
+      ;; `projectile-repeat-last-command') and, when known, into the
+      ;; per-type history used for this command's prompt.
+      (projectile--command-history-insert
+       (projectile--get-command-history project-root) command)
+      (when command-type
+        (projectile--command-history-insert
+         (projectile--get-command-history project-root command-type) command)))
     (when save-buffers
       (save-some-buffers (not compilation-ask-about-save)
                          (lambda ()
@@ -6241,6 +6312,7 @@ with a prefix ARG."
   (let ((command (projectile-configure-command (projectile-compilation-dir)))
         (command-map (if (projectile--cache-project-commands-p) projectile-configure-cmd-map)))
     (projectile--run-project-cmd command command-map
+                                 :command-type 'configure
                                  :show-prompt arg
                                  :prompt-prefix "Configure command: "
                                  :save-buffers t
@@ -6258,6 +6330,7 @@ with a prefix ARG.  Per project default command can be set through
   (let ((command (projectile-compilation-command (projectile-compilation-dir)))
         (command-map (if (projectile--cache-project-commands-p) projectile-compilation-cmd-map)))
     (projectile--run-project-cmd command command-map
+                                 :command-type 'compile
                                  :show-prompt arg
                                  :prompt-prefix "Compile command: "
                                  :save-buffers t
@@ -6274,6 +6347,7 @@ with a prefix ARG."
   (let ((command (projectile-test-command (projectile-compilation-dir)))
         (command-map (if (projectile--cache-project-commands-p) projectile-test-cmd-map)))
     (projectile--run-project-cmd command command-map
+                                 :command-type 'test
                                  :show-prompt arg
                                  :prompt-prefix "Test command: "
                                  :save-buffers t
@@ -6290,6 +6364,7 @@ with a prefix ARG."
   (let ((command (projectile-install-command (projectile-compilation-dir)))
         (command-map (if (projectile--cache-project-commands-p) projectile-install-cmd-map)))
     (projectile--run-project-cmd command command-map
+                                 :command-type 'install
                                  :show-prompt arg
                                  :prompt-prefix "Install command: "
                                  :save-buffers t
@@ -6306,6 +6381,7 @@ with a prefix ARG."
   (let ((command (projectile-package-command (projectile-compilation-dir)))
         (command-map (if (projectile--cache-project-commands-p) projectile-package-cmd-map)))
     (projectile--run-project-cmd command command-map
+                                 :command-type 'package
                                  :show-prompt arg
                                  :prompt-prefix "Package command: "
                                  :save-buffers t
@@ -6322,6 +6398,7 @@ with a prefix ARG."
   (let ((command (projectile-run-command (projectile-compilation-dir)))
         (command-map (if (projectile--cache-project-commands-p) projectile-run-cmd-map)))
     (projectile--run-project-cmd command command-map
+                                 :command-type 'run
                                  :show-prompt arg
                                  :prompt-prefix "Run command: "
                                  :use-comint-mode projectile-run-use-comint-mode)))
@@ -6349,6 +6426,10 @@ If the prefix argument SHOW-PROMPT is non nil, the command can be edited."
                                        nil
                                        :save-buffers t
                                        :prompt-prefix "Execute command: "))
+    ;; `command-map' is nil above, so `projectile--run-project-cmd' doesn't
+    ;; record anything; we record here instead.  This command is
+    ;; type-agnostic (it repeats the last command of any type), so it only
+    ;; updates the combined history, not the per-type ones.
     (unless (string= command executed-command)
       (ring-insert command-history executed-command))))
 
@@ -6443,6 +6524,14 @@ It factors the value of `projectile-current-project-on-switch'."
       ('move-to-end (projectile--move-current-project-to-end open-projects))
       ('keep open-projects))))
 
+(defvar projectile-most-recent-project nil
+  "Root of the project that was current before the most recent project switch.
+
+Updated by `projectile-switch-project-by-name', so it only tracks
+switches made through Projectile's switch-project commands (not project
+changes that happen merely by visiting a file or buffer in another
+project).  Use `projectile-switch-to-most-recent-project' to jump to it.")
+
 ;;;###autoload
 (defun projectile-switch-project (&optional arg)
   "Switch to a project we have visited before.
@@ -6475,6 +6564,18 @@ With a prefix ARG invokes `projectile-commander' instead of
          :caller 'projectile-read-project)
       (user-error "There are no open projects"))))
 
+;;;###autoload
+(defun projectile-switch-to-most-recent-project (&optional arg)
+  "Switch to the project recorded in `projectile-most-recent-project'.
+That's the project that was current before the most recent project
+switch, so calling this from a buffer in the switched-to project takes
+you back where you came from.  With a prefix ARG invokes
+`projectile-commander' instead of `projectile-switch-project-action'."
+  (interactive "P")
+  (if projectile-most-recent-project
+      (projectile-switch-project-by-name projectile-most-recent-project arg)
+    (user-error "No most recent project recorded yet")))
+
 (defun projectile-switch-project-by-name (project-to-switch &optional arg)
   "Switch to project by project name PROJECT-TO-SWITCH.
 Invokes the command referenced by `projectile-switch-project-action' on switch.
@@ -6485,7 +6586,11 @@ With a prefix ARG invokes `projectile-commander' instead of
   (unless (or (file-remote-p project-to-switch) (projectile-project-p project-to-switch))
     (projectile-remove-known-project project-to-switch)
     (error "Directory %s is not a project" project-to-switch))
-  (let ((switch-project-action (if arg
+  ;; Record the project we're leaving so `projectile-most-recent-project'
+  ;; points at it after the switch (captured before `default-directory' is
+  ;; rebound below).
+  (let ((previous-project (projectile-project-root))
+        (switch-project-action (if arg
                                    'projectile-commander
                                  projectile-switch-project-action)))
     (run-hooks 'projectile-before-switch-project-hook)
@@ -6510,6 +6615,19 @@ With a prefix ARG invokes `projectile-commander' instead of
       ;; have lost that change, so switch back to the correct buffer.
       (when (buffer-live-p switched-buffer)
         (switch-to-buffer switched-buffer)))
+    ;; Don't record the project we just came from if it's the same one we
+    ;; switched to.  Compare with `file-equal-p' for local paths (handles
+    ;; symlinks/abbreviation), but fall back to a plain string compare when
+    ;; either side is remote, so we don't trigger a TRAMP round-trip (and
+    ;; possible hang) for an unconnected remote project - the very thing the
+    ;; remote skip above guards against.
+    (when (and previous-project
+               (not (if (or (file-remote-p previous-project)
+                            (file-remote-p project-to-switch))
+                        (string-equal (file-name-as-directory previous-project)
+                                      (file-name-as-directory project-to-switch))
+                      (file-equal-p previous-project project-to-switch))))
+      (setq projectile-most-recent-project previous-project))
     (run-hooks 'projectile-after-switch-project-hook)))
 
 ;;;###autoload

@@ -451,6 +451,17 @@ directory to open.
 (fn &optional PROJECT-ROOT)" t)
 (autoload 'projectile-recentf "projectile" "\
 Show a list of recently visited files in a project." t)
+(autoload 'projectile-discard-command-cache "projectile" "\
+Discard the cached lifecycle commands for the current project.
+
+Projectile caches the last command used for each of the configure,
+compile, test, install, package, and run actions and prefers it over the
+value from `.dir-locals.el' or the project type's default.  After
+editing those, run this command so the next invocation re-reads them.
+Handy on `after-save-hook' for `.dir-locals.el' buffers.
+
+This only clears the cached commands, not the command history offered at
+the prompt.  See also `projectile-discard-root-cache'." t)
 (autoload 'projectile-configure-project "projectile" "\
 Run project configure command.
 
@@ -523,6 +534,14 @@ Switch to a project we have currently opened.
 Invokes the command referenced by `projectile-switch-project-action' on switch.
 With a prefix ARG invokes `projectile-commander' instead of
 `projectile-switch-project-action.'
+
+(fn &optional ARG)" t)
+(autoload 'projectile-switch-to-most-recent-project "projectile" "\
+Switch to the project recorded in `projectile-most-recent-project'.
+That's the project that was current before the most recent project
+switch, so calling this from a buffer in the switched-to project takes
+you back where you came from.  With a prefix ARG invokes
+`projectile-commander' instead of `projectile-switch-project-action'.
 
 (fn &optional ARG)" t)
 (autoload 'projectile-find-file-in-directory "projectile" "\
