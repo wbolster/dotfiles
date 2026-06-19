@@ -330,9 +330,11 @@
   :commands
   w/consult-line-from-isearch
   w/consult-pulse-after-final-jump
+  w/consult-scroll-point-into-view
   :config
   (remove-hook 'consult-after-jump-hook #'recenter)
   (add-hook 'consult-after-jump-hook #'w/consult-pulse-after-final-jump)
+  (add-hook 'consult-after-jump-hook #'w/consult-scroll-point-into-view)
   (defun w/consult-line-from-isearch ()
     "Call ‘consult-line’ with the ‘isearch’ search string."
     (interactive)
@@ -340,7 +342,13 @@
   (defun w/consult-pulse-after-final-jump ()
     "Highlight the jump target, unless completion is still active."
     (unless (active-minibuffer-window)
-      (pulse-momentary-highlight-one-line))))
+      (pulse-momentary-highlight-one-line)))
+  (defun w/consult-scroll-point-into-view ()
+    "Scroll the jump target into view."
+    (unless (pos-visible-in-window-p)
+      (let ((screen-line
+             (if (< (point) (window-start)) scroll-margin (- -1 scroll-margin))))
+        (recenter screen-line)))))
 
 (use-package css-mode
   :defer t
