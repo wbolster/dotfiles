@@ -639,6 +639,11 @@
   ((rx ".gitconfig" (* any) string-end) . gitconfig-mode)
   ((rx ".config/git/config" (* any) string-end) . gitconfig-mode))
 
+(use-package git-link
+  :defer t
+  :custom
+  (git-link-open-in-browser t))
+
 (use-package gsettings
   :demand t
   :functions
@@ -3140,11 +3145,6 @@ defined as lowercase."
   (with-demoted-errors "%S"
     (transient-suffix-put 'magit-dispatch "@" :key "h"))
   (transient-append-suffix 'forge-dispatch "f n" '("w" "web" git-link-homepage)))
-
-(use-package git-link
-  :defer t
-  :custom
-  (git-link-open-in-browser t))
 
 (use-package diff-hl
   :hook
