@@ -352,6 +352,32 @@
              (if (< (point) (window-start)) scroll-margin (- -1 scroll-margin))))
         (recenter screen-line)))))
 
+(use-package corfu
+  :demand t
+  :bind
+  (:map corfu-map
+   ("<tab>" . corfu-next)
+   ("<backtab>" . corfu-previous)
+   ("C-/" . #'w/corfu-move-to-minibuffer))
+  :commands
+  w/corfu-move-to-minibuffer
+  :custom
+  (corfu-cycle t)
+  (corfu-preselect 'prompt)
+  :config
+  (global-corfu-mode)
+  (corfu-history-mode)
+  (corfu-echo-mode)
+  (defun w/corfu-move-to-minibuffer ()
+    ;; based on https://github.com/minad/corfu
+    (interactive)
+    (pcase completion-in-region--data
+      (`(,beg ,end ,table ,pred ,extras)
+       (let ((completion-extra-properties extras)
+             completion-cycle-threshold completion-cycling)
+         (consult-completion-in-region beg end table pred)))))
+  (add-to-list 'corfu-continue-commands #'w/corfu-move-to-minibuffer))
+
 (use-package css-mode
   :defer t
   :hook
@@ -708,7 +734,9 @@
 (use-package lsp-mode
   :defer t
   :delight " 🛠️"
-  :hook ('lsp-after-open-hook . w/lsp-mode-after-open-hook)
+  :hook
+  (lsp-after-open-hook . w/lsp-mode-after-open-hook)
+  (lsp-completion-mode-hook . w/lsp-completion-mode-hook)
   :commands
   lsp-describe-thing-at-point
   lsp-execute-code-action
@@ -719,6 +747,7 @@
   lsp-ui-doc-show
   lsp-workspace-restart
   :custom
+  (lsp-completion-provider :none) ;; use corfu
   (lsp-auto-execute-action nil)
   (lsp-enable-indentation nil)
   (lsp-enable-on-type-formatting nil)
@@ -726,7 +755,11 @@
   (lsp-keymap-prefix "C-c l")
   :config
   (defun w/lsp-mode-after-open-hook ()
-    (lsp-origami-try-enable)))
+    (lsp-origami-try-enable))
+  (defun w/lsp-completion-mode-hook ()
+    ;; see https://github.com/minad/corfu/wiki
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless))))
 
 (use-package lsp-origami
   :demand t
@@ -2862,7 +2895,7 @@ defined as lowercase."
   :config
   (add-to-list 'company-auto-complete-chars ?\( )
   (add-to-list 'company-backends 'company-files)
-  (global-company-mode)
+  ;; (global-company-mode)
 
   (defun w/company-tweak-faces ()
     (set-face-attribute 'company-tooltip-selection nil :inherit 'region))
