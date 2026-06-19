@@ -969,13 +969,20 @@
   :mode
   ((rx (? ".") "psqlrc" string-end) . sql-mode)
   :hook (sql-mode-hook . w/sql-mode-hook)
+  :commands
+  w/sql-tweak-syntax-table
   :config
   (require 'reformatter-dwim)
   (require 'sqlformat)
 
   (defun w/sql-mode-hook ()
     (setopt evil-shift-width 2)
-    (reformatter-dwim-select 'sqlformat)))
+    (w/sql-tweak-syntax-table)
+    (add-hook 'hack-local-variables-hook #'w/sql-tweak-syntax-table t t)
+    (reformatter-dwim-select 'sqlformat))
+
+  (defun w/sql-tweak-syntax-table ()
+    (modify-syntax-entry ?_ "w")))
 
 (use-package sqlformat
   :defer t
