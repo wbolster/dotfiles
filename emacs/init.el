@@ -1336,7 +1336,7 @@
   "b" #'balance-windows
   "c" #'evil-window-delete
   "e" #'buf-move-up
-  "f" #'w/make-frame
+  "f" #'make-frame
   "h" #'buf-move-left
   "i" #'buf-move-right
   "n" #'buf-move-down
@@ -2760,17 +2760,10 @@ defined as lowercase."
 (use-package buffer-move
   :defer t)
 
-(defun w/make-frame ()
-  "Make a new frame."
-  (interactive)
-  (let ((frame (make-frame)))
-    (select-frame-set-input-focus frame)
-    frame))
-
 (defun w/make-frame-new-buffer ()
   "Make a new frame with a new buffer."
   (interactive)
-  (with-selected-frame (w/make-frame)
+  (with-selected-frame (make-frame)
     (call-interactively #'evil-buffer-new)))
 
 ;; replace evil-window-map completely
