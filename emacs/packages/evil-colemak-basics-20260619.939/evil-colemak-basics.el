@@ -1,8 +1,8 @@
 ;;; evil-colemak-basics.el --- Basic Colemak key bindings for evil-mode  -*- lexical-binding: t; -*-
 
 ;; Author: Wouter Bolsterlee <wouter@bolsterl.ee>
-;; Package-Version: 20260614.1905
-;; Package-Revision: 995c309e4af5
+;; Package-Version: 20260619.939
+;; Package-Revision: ae4e24d7653b
 ;; Package-Requires: ((emacs "24.3") (evil "1.2.12") (evil-snipe "2.0.3"))
 ;; Keywords: convenience emulations colemak evil
 ;; URL: https://github.com/wbolster/evil-colemak-basics
@@ -69,6 +69,12 @@ rotated; see evil-colemak-basics-rotate-t-f-j."
   :group 'evil-colemak-basics
   :type '(choice (const :tag "default" nil)
                  (const :tag "evil-snipe" evil-snipe)))
+
+
+(defcustom evil-colemak-basics-disabled-modes nil
+  "Major modes where evil-colemak-basics should not activate."
+  :group 'evil-colemak-basics
+  :type  '(list symbol))
 
 (declare-function evil-colemak-basics-snipe-t "evil-colemak-basics")
 (declare-function evil-colemak-basics-snipe-T "evil-colemak-basics")
@@ -184,8 +190,14 @@ rotated; see evil-colemak-basics-rotate-t-f-j."
 ;;;###autoload
 (define-globalized-minor-mode global-evil-colemak-basics-mode
   evil-colemak-basics-mode
-  (lambda () (evil-colemak-basics-mode t))
+  turn-on-evil-colemak-basics-mode
   "Global minor mode with evil-mode enhancements for the Colemak keyboard layout.")
+
+;;;###autoload
+(defun turn-on-evil-colemak-basics-mode ()
+  "Enable evil-colemak-basics-mode in the current buffer."
+  (unless (apply #'derived-mode-p evil-colemak-basics-disabled-modes)
+    (evil-colemak-basics-mode +1)))
 
 (provide 'evil-colemak-basics)
 

@@ -47,13 +47,15 @@ If called from Lisp, toggle the mode if ARG is `toggle'.
 Enable the mode if ARG is nil, omitted, or is a positive number.
 Disable the mode if ARG is a negative number.
 
-Evil-Colemak-Basics mode is enabled in all buffers where `(lambda nil
-(evil-colemak-basics-mode t))' would do it.
+Evil-Colemak-Basics mode is enabled in all buffers where
+`turn-on-evil-colemak-basics-mode' would do it.
 
 See `evil-colemak-basics-mode' for more information on
 Evil-Colemak-Basics mode.
 
 (fn &optional ARG)" t)
+(autoload 'turn-on-evil-colemak-basics-mode "evil-colemak-basics" "\
+Enable evil-colemak-basics-mode in the current buffer.")
 (register-definition-prefixes "evil-colemak-basics" '("evil-colemak-basics-"))
 
 ;;; End of scraped data
