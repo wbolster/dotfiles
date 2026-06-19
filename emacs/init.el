@@ -996,6 +996,11 @@
     "Cycle through various quotation marks."
     ("'" "‘" "’" "“" "”" "\"")))
 
+(use-package vc
+  :demand t
+  :config
+  (setq vc-handled-backends '(git)))
+
 (use-package vertico
   :demand t
   :custom
@@ -3130,10 +3135,6 @@ defined as lowercase."
     (let ((vc-handled-backends '(Git)))
       (apply fn args)))
   (advice-add 'diff-hl-update :around #'w/diff-hl-update-around-advice))
-
-(use-package vc
-  :config
-  (setq vc-handled-backends '(git)))
 
 (use-package vdiff
   :defer t
