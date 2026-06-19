@@ -1002,7 +1002,7 @@
   :custom
   terminal-here-linux-terminal-command 'gnome-terminal
   :config
-  (when (executable-find "ghostty")
+  (when (and (eq system-type 'gnu/linux) (executable-find "ghostty"))
     (setopt terminal-here-linux-terminal-command
             (lambda (directory)
               `("ghostty" ,(format "--working-directory=%s" directory) "+new-window")))))
