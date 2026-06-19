@@ -403,6 +403,9 @@
     (let ((new-value (w/set-cycle 'display-line-numbers '(t visual relative) 'set)))
       (message "Line numbering style: %s" (if (equal new-value t) 'absolute new-value)))))
 
+(use-package docker
+  :defer t)
+
 (use-package ediff
   :defer t
   :custom
@@ -3445,15 +3448,6 @@ defined as lowercase."
 (use-package flycheck-cython
   :demand t
   :after cython-mode flycheck)
-
-(use-package docker
-  :defer t
-  :custom
-  (docker-compose-command "docker compose")
-  :custom-face
-  (docker-face-status-error ((t (:inherit error))))
-  (docker-face-status-success ((t (:inherit success))))
-  (docker-face-status-warning ((t (:inherit warning)))))
 
 (use-package dockerfile-mode
   :defer t
