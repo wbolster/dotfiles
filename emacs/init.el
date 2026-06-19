@@ -124,10 +124,7 @@
    ("C-c" . nil) ;; describe-copying
    ("C-m" . nil) ;; view-order-manuals
    ("C-o" . nil) ;; describe-distributions
-   ("C-w" . nil) ;; describe-no-warranty
-   :map isearch-mode-map
-   ("C-'" . avy-isearch)
-   ("C-/" . 'swiper-isearch-toggle))
+   ("C-w" . nil)) ;; describe-no-warranty
 
   :hook (emacs-startup-hook . (lambda () (load custom-file 'noerror)))
 
@@ -169,11 +166,6 @@
   (inhibit-startup-screen t)
   (initial-major-mode 'text-mode)
   (initial-scratch-message nil)
-  (isearch-allow-prefix nil)
-  (isearch-forward t)  ;; initial direction; useful after swiper
-  (lazy-highlight-cleanup nil)
-  (lazy-highlight-initial-delay 0.5)
-  (lazy-highlight-max-at-a-time nil)
   (major-mode 'text-mode) ;; default for new buffers
   (mode-line-compact 'long)
   (mode-line-position-column-line-format '(" %l:%c"))
@@ -186,7 +178,6 @@
   (require-final-newline 'visit-save)
   (scroll-conservatively 101)
   (scroll-margin 5)
-  (search-default-mode t)
   (sentence-end-double-space nil)
   (split-height-threshold nil)
   (split-width-threshold 120)
@@ -646,6 +637,21 @@
 
 (use-package indent-bars
   :defer t)
+
+(use-package isearch
+  :demand t
+  :ensure emacs
+  :bind
+  (:map isearch-mode-map
+   ("C-'" . avy-isearch)
+   ("C-/" . 'swiper-isearch-toggle))
+  :custom
+  (isearch-allow-prefix nil)
+  (isearch-forward t) ;; initial direction; useful after swiper
+  (lazy-highlight-cleanup nil)
+  (lazy-highlight-initial-delay 0.5)
+  (lazy-highlight-max-at-a-time nil)
+  (search-default-mode t))
 
 (use-package jinja2-mode
   :defer t)
