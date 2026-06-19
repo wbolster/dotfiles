@@ -648,6 +648,7 @@
   :custom
   (isearch-allow-prefix nil)
   (isearch-forward t) ;; initial direction; useful after swiper
+  (isearch-lazy-count t)
   (lazy-highlight-cleanup nil)
   (lazy-highlight-initial-delay 0.5)
   (lazy-highlight-max-at-a-time nil)
