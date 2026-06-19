@@ -528,7 +528,7 @@
     :lighter " 👀"
     (let ((enabled w/shoulder-surf-mode))
       (global-hl-line-mode (if enabled 1 -1))
-      (setq
+      (setopt
        evil-goggles-duration (if enabled 5 1)
        evil-goggles-blocking-duration (if enabled 1 .2))
       (set-face-attribute
@@ -1457,7 +1457,7 @@
   (defun w/hydra-evil-repeat-record-command ()
     "Record last command from the hydra in evil's repeat system."
     (evil-repeat-start)
-    (setq evil-repeat-info `((call-interactively ,real-this-command)))
+    (setopt evil-repeat-info `((call-interactively ,real-this-command)))
     (evil-repeat-stop))
 
   (defun w/hydra-make-docstring (args)
@@ -1564,7 +1564,7 @@ defined as lowercase."
 
 (defun w/tweak-evil-cursor ()
   "Tweak the appearance of the evil cursors."
-  (setq
+  (setopt
    evil-motion-state-cursor (list solarized-color-yellow 'box)
    evil-normal-state-cursor (list solarized-color-yellow 'box)
    evil-visual-state-cursor (list solarized-color-yellow 'hollow)
@@ -2053,7 +2053,7 @@ defined as lowercase."
 (define-minor-mode w/show-trailing-whitespace-mode
   "Show or hide trailing whitespace."
   :lighter nil
-  (setq show-trailing-whitespace w/show-trailing-whitespace-mode))
+  (setopt show-trailing-whitespace w/show-trailing-whitespace-mode))
 
 (use-package thingatpt
   :config
@@ -2410,7 +2410,7 @@ defined as lowercase."
         ;; (visual-line-mode)
         ;; (visual-fill-column-mode)
         (virtual-auto-fill-mode))
-    (setq fill-column w/wrap-lines-saved-fill-column
+    (setopt fill-column w/wrap-lines-saved-fill-column
           visual-fill-column-width nil)
     ;; (visual-line-mode -1)
     ;; (auto-fill-mode)
@@ -2443,7 +2443,7 @@ defined as lowercase."
 (defun w/use-very-long-lines ()
   "Use very long lines so that `fill-paragraph' and related functions do not add newlines."
   (interactive)
-  (setq fill-column most-positive-fixnum)
+  (setopt fill-column most-positive-fixnum)
   (auto-fill-mode -1))
 
 (use-package origami
@@ -2898,7 +2898,7 @@ defined as lowercase."
     (let* ((total-lines (frame-text-lines frame))
            (lines (truncate (* total-lines w/ivy-height-percentage 0.01)))
            (new-height (w/clamp-number lines 10 20)))
-      (setq ivy-height new-height))))
+      (setopt ivy-height new-height))))
 
 (use-package ivy-hydra)
 
@@ -3313,7 +3313,7 @@ defined as lowercase."
   (define-minor-mode w/flycheck-show-error-other-file-mode
     "Quickly toggle showing of errors from other files"
     :lighter nil
-    (setq flycheck-relevant-error-other-file-show w/flycheck-show-error-other-file-mode)
+    (setopt flycheck-relevant-error-other-file-show w/flycheck-show-error-other-file-mode)
     (when flycheck-mode
       (flycheck-buffer)))
 
@@ -3347,7 +3347,7 @@ defined as lowercase."
   :hook (c-mode-hook . w/c-mode-hook)
   :config
   (defun w/c-mode-hook ()
-    (setq evil-shift-width 2)
+    (setopt evil-shift-width 2)
     (evil-swap-keys-swap-double-single-quotes)
     (evil-swap-keys-swap-square-curly-brackets)
     (evil-swap-keys-swap-underscore-dash)))
@@ -3356,7 +3356,7 @@ defined as lowercase."
   :hook (caddyfile-mode-hook . w/caddyfile-mode-hook)
   :config
   (defun w/caddyfile-mode-hook ()
-    (setq tab-width 2))
+    (setopt tab-width 2))
   (reformatter-define caddyfile-format
     :program "caddy"
     :args '("fmt" "-")
@@ -3587,7 +3587,7 @@ defined as lowercase."
   :hook (help-mode-hook . w/help-mode-hook)
   :config
   (defun w/help-mode-hook ()
-    (setq evil-lookup-func 'w/helpful-evil-lookup-func)))
+    (setopt evil-lookup-func 'w/helpful-evil-lookup-func)))
 
 (use-package helpful
   :general
@@ -3606,7 +3606,7 @@ defined as lowercase."
   :hook (helpful-mode-hook . w/helpful-mode-hook)
   :config
   (defun w/helpful-mode-hook ()
-    (setq
+    (setopt
      evil-lookup-func 'w/helpful-evil-lookup-func
      evil-shift-width 2))
   (defun w/helpful-evil-lookup-func ()
@@ -3641,7 +3641,7 @@ defined as lowercase."
   :config
   (defun w/html-mode-hook ()
     (reformatter-dwim-select 'prettier-format)
-    (setq evil-shift-width 2)))
+    (setopt evil-shift-width 2)))
 
 (use-package js2-mode
   :defer t
@@ -3654,7 +3654,7 @@ defined as lowercase."
   :config
   (defun w/js-mode-hook ()
     (modify-syntax-entry ?_ "w")
-    (setq
+    (setopt
      tab-width 2
      evil-shift-width tab-width
      js-indent-level tab-width)
@@ -3665,7 +3665,7 @@ defined as lowercase."
   :hook (json-mode-hook . w/json-mode-hook)
   :config
   (defun w/json-mode-hook ()
-    (setq
+    (setopt
      tab-width 2
      evil-shift-width tab-width
      js-indent-level tab-width)
@@ -3691,7 +3691,7 @@ defined as lowercase."
 
   :config
   (defun w/markdown-mode-hook ()
-    (setq evil-shift-width 2)
+    (setopt evil-shift-width 2)
     (w/set-major-mode-hydra #'w/hydra-markdown/body)
     (flyspell-mode)
     (w/evil-surround-define-surround-trigger-pairs
@@ -3752,7 +3752,7 @@ defined as lowercase."
   :custom
   (evil-org-retain-visual-state-on-shift t)
   :config
-  (setq
+  (setopt
    evil-org-movement-bindings
    '((left . "h")
      (down . "n")
@@ -3794,7 +3794,7 @@ defined as lowercase."
      :unless '(sp-point-before-word-p)))
 
   (defun w/python-mode-hook ()
-    (setq fill-column 79)
+    (setopt fill-column 79)
     (setq-local
      comment-fill-column 72
      indent-bars-starting-column 12)
@@ -4170,7 +4170,7 @@ defined as lowercase."
   (profiler-report-mode-hook . w/profiler-report-mode-hook)
   :config
   (defun w/profiler-report-mode-hook ()
-    (setq evil-lookup-func 'w/helpful-evil-lookup-func))
+    (setopt evil-lookup-func 'w/helpful-evil-lookup-func))
   (evil-set-initial-state 'profiler-report-mode 'motion))
 
 (use-package rst
@@ -4193,7 +4193,7 @@ defined as lowercase."
 
   :config
   (defun w/rst-mode-hook ()
-    (setq
+    (setopt
      evil-shift-width 2
      rst-mode-abbrev-table nil)
     (w/set-major-mode-hydra #'w/hydra-rst/body)
@@ -4423,7 +4423,7 @@ defined as lowercase."
   :hook (yaml-mode-hook . w/yaml-mode-hook)
   :config
   (defun w/yaml-mode-hook ()
-    (setq evil-shift-width yaml-indent-offset)
+    (setopt evil-shift-width yaml-indent-offset)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-double-single-quotes)
     (origami-mode)
