@@ -302,6 +302,15 @@
   :config
   (balanced-windows-mode))
 
+(use-package cape
+  :demand t
+  :general
+  (:states 'insert
+   "C-<tab>" cape-prefix-map)
+  :config
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file))
+
 (use-package colorful-mode
   :defer t
   :custom
