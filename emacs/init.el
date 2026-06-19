@@ -622,6 +622,7 @@
   (global-evil-swap-keys-mode))
 
 (use-package face-remap
+  :defer t
   :if (display-graphic-p)
   :custom
   (global-text-scale-adjust-limits '(60 . 500))
@@ -1149,6 +1150,7 @@
   :after nxml-mode)
 
 (use-package yasnippet
+  :demand t
   :delight (yas-minor-mode " 🐒")
   :init
   (setopt yas-alias-to-yas/prefix-p nil)
