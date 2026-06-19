@@ -327,8 +327,13 @@
   (:states 'motion
    "/" #'consult-line
    "?" #'consult-line-multi)
-  :custom
-  (consult-line-start-from-top))
+  :commands
+  w/consult-line-from-isearch
+  :config
+  (defun w/consult-line-from-isearch ()
+    "Call ‘consult-line’ with the ‘isearch’ search string."
+    (interactive)
+    (consult-line isearch-string)))
 
 (use-package css-mode
   :defer t
@@ -640,7 +645,7 @@
   (:map isearch-mode-map
    ("C-o" . w/isearch-occur-and-exit)
    ("C-'" . avy-isearch)
-   ("C-/" . 'swiper-isearch-toggle))
+   ("C-/" . w/consult-line-from-isearch))
   :general
   (:states 'motion
    "*" #'isearch-forward-thing-at-point
