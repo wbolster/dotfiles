@@ -363,9 +363,7 @@
   (desktop-load-locked-desktop 'check-pid)
   (desktop-restore-eager 5)
   :config
-  (desktop-save-mode)
-  (add-to-list 'desktop-globals-to-save 'swiper-history)
-  (add-to-list 'desktop-globals-to-clear 'swiper-history))
+  (desktop-save-mode))
 
 (use-package dired
   :demand t
@@ -654,7 +652,6 @@
   w/isearch-occur-and-exit
   :custom
   (isearch-allow-prefix nil)
-  (isearch-forward t) ;; initial direction; useful after swiper
   (isearch-lazy-count t)
   (lazy-highlight-cleanup nil)
   (lazy-highlight-initial-delay 0.5)
