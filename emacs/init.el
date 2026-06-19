@@ -643,8 +643,11 @@
   :ensure emacs
   :bind
   (:map isearch-mode-map
+   ("C-o" . w/isearch-occur-and-exit)
    ("C-'" . avy-isearch)
    ("C-/" . 'swiper-isearch-toggle))
+  :commands
+  w/isearch-occur-and-exit
   :custom
   (isearch-allow-prefix nil)
   (isearch-forward t) ;; initial direction; useful after swiper
@@ -652,7 +655,13 @@
   (lazy-highlight-cleanup nil)
   (lazy-highlight-initial-delay 0.5)
   (lazy-highlight-max-at-a-time nil)
-  (search-default-mode t))
+  (search-default-mode t)
+  :config
+  (defun w/isearch-occur-and-exit ()
+    "Like ‘isearch-occur’ but also exits ‘isearch’."
+    (interactive)
+    (call-interactively #'isearch-occur)
+    (isearch-exit)))
 
 (use-package jinja2-mode
   :defer t)
