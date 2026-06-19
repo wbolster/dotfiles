@@ -1046,8 +1046,8 @@
 
 (use-package vc
   :demand t
-  :config
-  (setq vc-handled-backends '(git)))
+  :custom
+  (vc-handled-backends '(git)))
 
 (use-package vertico
   :demand t
