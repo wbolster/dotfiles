@@ -143,6 +143,7 @@
   (blink-cursor-blinks 1)
   (blink-cursor-delay .5)
   (blink-cursor-interval .5)
+  (create-lockfiles nil)
   (custom-safe-themes t)
   (default-frame-alist
     '((child-frame-border-width . 0)
