@@ -330,6 +330,7 @@
   :commands
   w/consult-line-from-isearch
   :config
+  (remove-hook 'consult-after-jump-hook #'recenter)
   (defun w/consult-line-from-isearch ()
     "Call ‘consult-line’ with the ‘isearch’ search string."
     (interactive)
