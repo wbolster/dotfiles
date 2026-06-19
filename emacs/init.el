@@ -4096,6 +4096,9 @@ defined as lowercase."
   (python-pytest-finished-hook . evil-force-normal-state)
 
   :config
+  (require 'company-dabbrev)
+  (require 'company-dabbrev-code)
+
   (w/make-hydra w/hydra-python-pytest nil
     "python-pytest"
     "_r_epeat"
