@@ -1023,16 +1023,12 @@
   (vertico-count 20)
   (vertico-cycle t)
   (vertico-multiform-categories
-   '((file (vertico-sort-function . vertico-sort-directories-first)
+   '((consult-grep buffer)
+     (consult-location buffer)
+     (file (vertico-sort-function . vertico-sort-directories-first)
            (:keymap . vertico-directory-map))
+     (imenu buffer)
      (symbol (vertico-sort-function . vertico-sort-alpha))))
-  (vertico-multiform-commands
-   '((consult-git-grep buffer)
-     (consult-grep buffer)
-     (consult-imenu buffer)
-     (consult-imenu-multi buffer)
-     (consult-line buffer)
-     (consult-ripgrep buffer)))
   :functions
   vertico--candidate
   vertico--metadata-get
