@@ -2954,7 +2954,7 @@ defined as lowercase."
     "<tab>" #'magit-section-cycle
     "C-<tab>" #'magit-section-toggle
     "C-w" w/window-map
-    "/" 'swiper-isearch)
+    "/" 'consult-line)
   (general-def
     :keymaps 'magit-blame-read-only-mode-map
     :states '(motion normal)
