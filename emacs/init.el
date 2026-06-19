@@ -329,12 +329,18 @@
    "?" #'consult-line-multi)
   :commands
   w/consult-line-from-isearch
+  w/consult-pulse-after-final-jump
   :config
   (remove-hook 'consult-after-jump-hook #'recenter)
+  (add-hook 'consult-after-jump-hook #'w/consult-pulse-after-final-jump)
   (defun w/consult-line-from-isearch ()
     "Call ‘consult-line’ with the ‘isearch’ search string."
     (interactive)
-    (consult-line isearch-string)))
+    (consult-line isearch-string))
+  (defun w/consult-pulse-after-final-jump ()
+    "Highlight the jump target, unless completion is still active."
+    (unless (active-minibuffer-window)
+      (pulse-momentary-highlight-one-line))))
 
 (use-package css-mode
   :defer t
