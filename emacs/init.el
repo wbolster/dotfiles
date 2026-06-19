@@ -446,15 +446,10 @@
   :demand t
   :after evil evil-snipe
   :delight
-  :commands
-  w/evil-colemak-basics-disable
   :init
   (setopt evil-colemak-basics-char-jump-commands 'evil-snipe)
   :config
-  (global-evil-colemak-basics-mode)
-  (defun w/evil-colemak-basics-disable ()
-    "Disable ‘evil-colemak-basics-mode’; intended for hooks."
-    (evil-colemak-basics-mode -1)))
+  (global-evil-colemak-basics-mode))
 
 (use-package evil-commentary
   :defer t
@@ -797,9 +792,9 @@
   (ranger-max-tabs 1)
   (ranger-override-dired 'deer)
   (ranger-show-hidden t)
-  :hook (ranger-mode-hook . w/evil-colemak-basics-disable)
 
   :config
+  (add-to-list 'evil-colemak-basics-disabled-modes 'ranger-mode)
   (with-eval-after-load 'direnv
     (add-to-list 'direnv-non-file-modes 'ranger-mode))
 
@@ -2910,9 +2905,7 @@ defined as lowercase."
 
   :hook
   (git-commit-mode-hook . w/git-commit-mode-hook)
-  (magit-log-mode-hook . w/evil-colemak-basics-disable)
   (magit-process-mode-hook . goto-address-mode)
-  (magit-status-mode-hook . w/evil-colemak-basics-disable)
 
   :custom
   (git-commit-fill-column 72)
@@ -3036,6 +3029,11 @@ defined as lowercase."
               magit-status-mode)
       (add-to-list 'direnv-non-file-modes it)))
 
+  (with-eval-after-load 'evil-colemak-basics
+    (--each '(magit-log-mode
+              magit-status-mode)
+      (add-to-list 'evil-colemak-basics-disabled-modes it)))
+
   (defun w/git-commit-mode-hook ()
     (when (and (bobp) (eolp))
       (call-interactively #'evil-insert)))
@@ -3092,7 +3090,6 @@ defined as lowercase."
   :demand t
   :ensure nil ;; included with magit
   :after magit evil-collection
-  :hook (git-rebase-mode-hook . w/evil-colemak-basics-disable)
   :general
   (:keymaps 'git-rebase-mode-map
    :states '(normal visual)
@@ -3110,7 +3107,9 @@ defined as lowercase."
    "C-p" #'git-rebase-move-line-up
    "C-n" #'git-rebase-move-line-down
    "ZQ" #'with-editor-cancel
-   "ZZ" #'with-editor-finish))
+   "ZZ" #'with-editor-finish)
+  :config
+  (add-to-list 'evil-colemak-basics-disabled-modes 'git-rebase-mode))
 
 (use-package magit-imerge
   :after magit)
