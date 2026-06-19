@@ -285,7 +285,7 @@
   :if (display-graphic-p)
   :after solarized-theme
   :custom
-  (auto-dark-themes '((solarized-selenized-dark) (solarized-selenized-light)))
+  (auto-dark-themes '((modus-vivendi-tinted) (modus-operandi-tinted)))
   :commands
   auto-dark-toggle-appearance
   :hook
