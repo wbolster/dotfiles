@@ -440,6 +440,20 @@
 (use-package docker
   :defer t)
 
+(use-package dockerfile-mode
+  :defer t
+  :mode
+  (rx "Dockerfile" (any "-_.") (* any) string-end)
+  :hook (dockerfile-mode-hook . w/dockerfile-mode-hook)
+  :general
+  (:keymaps 'dockerfile-mode-map
+   :states 'normal
+   "<return> "'w/split-line-backslash
+   "<remap> <evil-join>" #'w/evil-join-smart-backslash-eol)
+  :config
+  (defun w/dockerfile-mode-hook ()
+    (modify-syntax-entry ?$ ".")))
+
 (use-package ediff
   :defer t
   :custom
@@ -3521,21 +3535,6 @@ defined as lowercase."
 (use-package flycheck-cython
   :demand t
   :after cython-mode flycheck)
-
-(use-package dockerfile-mode
-  :defer t
-  :mode
-  (rx "Dockerfile" (any "-_.") (* any) string-end)
-  :hook
-  (dockerfile-mode-hook . w/dockerfile-mode-hook)
-  :general
-  (:keymaps 'dockerfile-mode-map
-   :states 'normal
-   "<return> "'w/split-line-backslash
-   [remap evil-join] #'w/evil-join-smart-backslash-eol)
-  :config
-  (defun w/dockerfile-mode-hook ()
-    (modify-syntax-entry ?$ ".")))
 
 (use-package elisp-mode
   :defer t
