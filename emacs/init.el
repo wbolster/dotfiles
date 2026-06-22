@@ -2598,12 +2598,6 @@ defined as lowercase."
   :defer t
   :delight)
 
-(use-package syntactic-close
-  :general
-  (:states 'insert
-   ;; this is a zero, i.e. C-) without shift
-   "C-0" #'syntactic-close))
-
 (use-package adaptive-wrap
   :hook (visual-line-mode-hook . w/maybe-activate-adaptive-wrap-prefix-mode)
   :config
