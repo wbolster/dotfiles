@@ -277,7 +277,7 @@
 (use-package auto-dark
   :demand t
   :if (display-graphic-p)
-  :after solarized-theme
+  :after modus-themes solarized-theme
   :custom
   (auto-dark-themes '((modus-vivendi-tinted) (modus-operandi-tinted)))
   :commands
@@ -1205,7 +1205,7 @@
    ("<escape>" . minibuffer-keyboard-quit)))
 
 (use-package modus-themes
-  :defer t)
+  :demand t)
 
 (use-package nxml-mode
   :defer t
