@@ -449,6 +449,10 @@
 (use-package el-patch
   :defer t)
 
+(use-package eldoc
+  :defer t
+  :delight)
+
 (use-package evil
   :demand t
   :hook (enable-theme-functions . w/tweak-evil-cursor)
@@ -3602,10 +3606,6 @@ defined as lowercase."
      commentary))
   :config
   (lispyville-set-key-theme))
-
-(use-package eldoc
-  :defer t
-  :delight)
 
 (use-package graphql-mode :defer t)
 
