@@ -61,7 +61,9 @@
   (exec-path-from-shell-initialize))
 
 (use-package general
-  :demand t)
+  :demand t
+  :functions
+  general-chord)
 
 (use-package no-littering
   :demand t
