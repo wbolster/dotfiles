@@ -3551,7 +3551,7 @@ defined as lowercase."
 
   :config
   (defun w/emacs-lisp-mode-hook ()
-    (setq
+    (setopt
      evil-lookup-func 'w/helpful-evil-lookup-func
      evil-shift-width 2)
     (w/set-major-mode-hydra #'w/hydra-emacs-lisp/body)
