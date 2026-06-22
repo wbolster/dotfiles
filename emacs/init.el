@@ -166,7 +166,7 @@
   (inhibit-startup-screen t)
   (initial-major-mode 'text-mode)
   (initial-scratch-message nil)
-  (major-mode 'text-mode) ;; default for new buffers
+  (major-mode 'text-mode) ;; default for new buffers; initial-major-mode is not sufficient
   (mode-line-compact 'long)
   (mode-line-position-column-line-format '(" %l:%c"))
   (native-comp-async-report-warnings-errors 'silent)
