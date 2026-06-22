@@ -455,8 +455,61 @@
 
 (use-package evil
   :demand t
-  :functions
-  evil-set-auxiliary-keymap
+  :general
+  (:states 'motion
+   "<tab>" 'evil-toggle-fold
+   "C-<tab>" 'evil-jump-forward
+   ";" #'evil-ex
+   "z e" #'evil-scroll-line-up
+   "z n" #'evil-scroll-line-down)
+  (:states '(motion normal)
+   [escape] #'w/evil-normal-state-cleanup)
+  (:states '(motion normal visual)
+   [remap evil-next-line] #'w/evil-next-line
+   [remap evil-previous-line] #'w/evil-previous-line
+   [remap evil-end-of-line] #'w/evil-end-of-line
+   [remap evil-first-non-blank] #'w/evil-first-non-blank)
+  (:states 'normal
+   ;; useful for keychron k7 keyboards that require a Fn modifier for
+   ;; tilde; use shift-tab (key below it) it as a workaround.
+   "<backtab>" #'evil-invert-char)
+  (:states 'visual
+   "x" #'evil-exchange)
+  (:states '(operator visual)
+   "o" #'w/evil-text-object-symbol-dwim)
+  (:states 'operator
+   ;; the empty text object is a trick to make it possible to
+   ;; quickly swap two text objects using evil-exchange "gx";
+   ;; "gxp" move previously marked text without moving anything
+   ;; back to the original location, or vice versa.
+   "p" #'w/evil-empty-text-object)
+  (:keymaps 'evil-outer-text-objects-map
+   "g" #'w/evil-text-object-whole-buffer)
+  (:states 'insert
+   "<return>" #'comment-indent-new-line
+   "C-a" #'w/evil-first-non-blank
+   "C-c" #'evil-normal-state
+   "C-d" #'delete-char
+   "C-e" #'end-of-visual-line
+   "C-h" [backspace]
+   "C-k" #'w/kill-line-dwim
+   "C-m" #'comment-indent-new-line
+   "C-n" #'next-line
+   "C-o" #'evil-normal-state
+   "C-p" #'previous-line
+   "C-t" #'w/evil-transpose-chars
+   "C-v" #'yank  ;; during typing, ctrl-v is "paste", like everywhere else
+   "C-SPC" #'cycle-spacing
+   "C-'" #'w/typo-cycle-quotation-marks
+   "C-," #'evil-shift-left-line  ;; shift line with < and > (same
+   "C-<" #'evil-shift-left-line  ;; chars as in normal mode);
+   "C-." #'evil-shift-right-line ;; used instead of standard vim
+   "C->" #'evil-shift-right-line ;; bindings C-d and C-t.
+   "C-=" (lambda () (interactive) (save-excursion (call-interactively #'evil-indent-line))))
+  (:states '(insert replace)
+   (general-chord "qw") #'evil-normal-state
+   (general-chord "wq") #'evil-normal-state
+   "C-g" #'evil-normal-state)
   :custom
   (evil-cross-lines t)
   (evil-emacs-state-tag "e ")
@@ -473,13 +526,201 @@
   (evil-vsplit-window-right t)
   (evil-want-C-u-scroll t)
   (evil-want-C-w-in-emacs-state t)
+  :commands
+  evil-a-symbol
+  evil-append-line
+  evil-avy-goto-char-timer
+  evil-avy-goto-line
+  evil-avy-goto-line-above
+  evil-avy-goto-line-below
+  evil-backward-WORD-begin
+  evil-buffer-new
+  evil-change-to-initial-state
+  evil-declare-repeat
+  evil-define-key*
+  evil-delete
+  evil-delete-whole-line
+  evil-end-of-line
+  evil-end-of-visual-line
+  evil-find-file-at-point-with-line
+  evil-first-non-blank
+  evil-first-non-blank-of-visual-line
+  evil-forward-WORD-begin
+  evil-forward-char
+  evil-forward-word
+  evil-indent-line
+  evil-inner-symbol
+  evil-insert
+  evil-insert-newline-above
+  evil-insert-newline-below
+  evil-join
+  evil-next-buffer
+  evil-next-visual-line
+  evil-org-set-key-theme
+  evil-paste-pop
+  evil-paste-pop-next
+  evil-prev-buffer
+  evil-previous-visual-line
+  evil-repeat-start
+  evil-repeat-stop
+  evil-set-initial-state
+  evil-set-jump
+  evil-window-decrease-height
+  evil-window-decrease-width
+  evil-window-delete
+  evil-window-down
+  evil-window-increase-height
+  evil-window-increase-width
+  evil-window-left
+  evil-window-new
+  evil-window-next
+  evil-window-prev
+  evil-window-right
+  evil-window-rotate-downwards
+  evil-window-rotate-upwards
+  evil-window-split
+  evil-window-top-left
+  evil-window-up
+  evil-window-vnew
+  evil-window-vsplit
+  :functions
+  evil-add-command-properties
+  evil-initial-state-for-buffer
+  evil-range
+  evil-set-auxiliary-keymap
   :init
   (setopt
    evil-respect-visual-line-mode t
    evil-want-keybinding nil
    evil-want-integration t)
   :config
-  (evil-mode))
+  (evil-mode)
+
+  ;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
+  (evil-add-command-properties 'evil-yank-line :motion 'evil-end-of-line)
+
+  ;; major modes may use a different lookup function
+  (make-variable-buffer-local 'evil-lookup-func)
+
+  ;; type numbers by holding alt using home row keys and by having a
+  ;; "numpad overlay" starting at the home position for my right hand.
+  (--each (-zip-pair (split-string "arstdhneio'luy7890km.," "" t)
+                     (split-string "87659012345456789000.," "" t))
+    (-let [(key . num) it]
+      (general-define-key
+       :states 'insert
+       (concat "M-" key)
+       (lambda () (interactive) (insert num)))))
+  (general-define-key
+   :states 'insert
+   "M-DEL" 'backward-delete-char-untabify)
+
+  (defun w/evil-normal-state-cleanup ()
+    "Like `evil-force-normal-state', with some extra cleanups."
+    (interactive)
+    (when (eq last-command 'w/evil-normal-state-cleanup)
+      ;; clean up some more when called twice in row
+      (lazy-highlight-cleanup t)
+      (remove-overlays nil nil 'category 'evil-snipe)
+      (symbol-overlay-remove-all)
+      (when (functionp 'flycheck-clear)
+        (flycheck-clear))
+      (when (functionp 'lsp-ui-doc-hide)
+        (lsp-ui-doc-hide))
+      (when (functionp 'evil-mc-undo-all-cursors)
+        (evil-mc-undo-all-cursors))
+      (let ((inhibit-message t))
+        (evil-exchange-cancel)))
+    (evil-force-normal-state)
+    (when (eq (evil-initial-state-for-buffer) 'motion)
+      (evil-change-to-initial-state)))
+
+  (defun w/evil-transpose-chars ()
+    "Invoke ‘transpose-chars’ on the right chars in insert state."
+    (interactive)
+    (backward-char)
+    (transpose-chars nil)
+    (unless (eolp) (forward-char)))
+
+  (defun w/kill-line-dwim ()
+    "Kill line, or join the next line when at eolp."
+    (interactive)
+    (let ((was-at-eol (eolp)))
+      (kill-line)
+      (when was-at-eol
+        (fixup-whitespace))))
+
+  (evil-define-motion w/evil-next-line (count)
+    (when (null count)
+      (setq count 1))
+    (if visual-line-mode
+        (progn
+          (setq evil-this-type 'exclusive)
+          (evil-next-visual-line count))
+      (setq evil-this-type 'line)
+      (evil-next-line count)))
+
+  (evil-define-motion w/evil-previous-line (count)
+    (when (null count)
+      (setq count 1))
+    (if visual-line-mode
+        (progn
+          (setq evil-this-type 'exclusive)
+          (evil-previous-visual-line count))
+      (setq evil-this-type 'line)
+      (evil-previous-line count)))
+
+  (evil-define-motion w/evil-end-of-line (count)
+    :type inclusive
+    (if visual-line-mode
+        (evil-end-of-visual-line count)
+      (evil-end-of-line count)))
+
+  (evil-define-motion w/evil-first-non-blank ()
+    :type exclusive
+    (if visual-line-mode
+        (evil-first-non-blank-of-visual-line)
+      (evil-first-non-blank)))
+
+  (evil-define-operator w/evil-join-smart-backslash-eol (beg end)
+    "Like ‘evil-join’, but handles continuation line endings in a smarter way."
+    :motion evil-line
+    (prog1 (evil-join beg end)
+      ;; delete ‘\’, and potentially one space before it
+      (when (looking-back "\\\\" nil)
+        (delete-char -1))
+      (when (looking-back " " nil)
+        (delete-char -1))))
+
+  (evil-define-command w/split-line-backslash ()
+    "Split line before the current word, using a continuation line ending."
+    (interactive)
+    (when (looking-at-p " ")
+      (evil-forward-WORD-begin))
+    (unless (looking-back " " 1)
+      (evil-backward-WORD-begin))
+    (fixup-whitespace)
+    (evil-forward-WORD-begin)
+    (insert "\\")
+    (newline-and-indent))
+
+  ;; todo: make "0" work visually in visual line mode. maybe using
+  ;; something like this:
+  ;; (evil-redirect-digit-argument evil-motion-state-map "0" 'evil-beginning-of-line)
+
+  (evil-define-text-object w/evil-text-object-whole-buffer (count &optional _beg _end _type)
+    "Text object for the whole buffer."
+    (evil-range (point-min) (point-max) 'line))
+
+  (evil-define-text-object w/evil-empty-text-object (count &optional _beg _end _type)
+    "Empty text object."
+    (evil-range (point) (point)))
+
+  (evil-define-text-object w/evil-text-object-symbol-dwim (count &optional beg end _type)
+    "Intelligently pick evil-inner-symbol or evil-a-symbol."
+    (if (memq this-command '(evil-delete lispyville-delete))
+        (evil-a-symbol count beg end type)
+      (evil-inner-symbol count beg end type))))
 
 (use-package evil-args
   :defer t
@@ -1741,7 +1982,7 @@ defined as lowercase."
 
 (add-hook 'enable-theme-functions #'w/tweak-faces)
 
-(defun w/tweak-evil-cursor (theme)
+(defun w/tweak-evil-cursor (_theme)
   "Tweak the appearance of the evil cursors."
   (setopt
    evil-motion-state-cursor (list solarized-color-yellow 'box)
@@ -1752,194 +1993,6 @@ defined as lowercase."
    evil-operator-state-cursor (list solarized-color-magenta 'hollow)))
 
 (add-hook 'enable-theme-functions #'w/tweak-evil-cursor)
-
-(use-package evil
-  ;; todo: clean up and merge with other use-package stanza
-  :general
-  (:states 'motion
-   "<tab>" 'evil-toggle-fold
-   "C-<tab>" 'evil-jump-forward
-   ";" #'evil-ex
-   "z e" #'evil-scroll-line-up
-   "z n" #'evil-scroll-line-down
-   "<mouse-6>" (lambda () (interactive "P") (evil-scroll-column-left (or arg 4)))
-   "<mouse-7>" (lambda () (interactive "P") (evil-scroll-column-right (or arg 4))))
-  (:states '(motion normal)
-   [escape] #'w/evil-normal-state-cleanup)
-  (:states '(motion normal visual)
-   [remap evil-next-line] #'w/evil-next-line
-   [remap evil-previous-line] #'w/evil-previous-line
-   [remap evil-end-of-line] #'w/evil-end-of-line
-   [remap evil-first-non-blank] #'w/evil-first-non-blank)
-  (:states 'normal
-   ;; useful for keychron k7 keyboards that require a Fn modifier for
-   ;; tilde; use shift-tab (key below it) it as a workaround.
-   "<backtab>" #'evil-invert-char)
-  (:states 'visual
-   "x" #'evil-exchange)
-  (:states '(operator visual)
-   "o" #'w/evil-text-object-symbol-dwim)
-  (:states 'operator
-   ;; the empty text object is a trick to make it possible to
-   ;; quickly swap two text objects using evil-exchange "gx";
-   ;; "gxp" move previously marked text without moving anything
-   ;; back to the original location, or vice versa.
-   "p" #'w/evil-empty-text-object)
-  (:keymaps 'evil-outer-text-objects-map
-   "g" #'w/evil-text-object-whole-buffer)
-  (:states 'insert
-   "<return>" #'comment-indent-new-line
-   "C-a" #'w/evil-first-non-blank
-   "C-c" #'evil-normal-state
-   "C-d" #'delete-char
-   "C-e" #'end-of-visual-line
-   "C-h" [backspace]
-   "C-k" #'w/kill-line-dwim
-   "C-m" #'comment-indent-new-line
-   "C-n" #'next-line
-   "C-o" #'evil-normal-state
-   "C-p" #'previous-line
-   "C-t" #'w/evil-transpose-chars
-   "C-v" #'yank  ;; during typing, ctrl-v is "paste", like everywhere else
-   "C-SPC" #'cycle-spacing
-   "C-'" #'w/typo-cycle-quotation-marks
-   "C-," #'evil-shift-left-line  ;; shift line with < and > (same
-   "C-<" #'evil-shift-left-line  ;; chars as in normal mode);
-   "C-." #'evil-shift-right-line ;; used instead of standard vim
-   "C->" #'evil-shift-right-line ;; bindings C-d and C-t.
-   "C-=" (lambda () (interactive) (save-excursion (call-interactively #'evil-indent-line))))
-  (:states '(insert replace)
-   (general-chord "qw") #'evil-normal-state
-   (general-chord "wq") #'evil-normal-state
-   "C-g" #'evil-normal-state)
-
-  :config
-
-  ;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
-  (evil-add-command-properties 'evil-yank-line :motion 'evil-end-of-line)
-
-  ;; major modes may use a different lookup function
-  (make-variable-buffer-local 'evil-lookup-func)
-
-  ;; type numbers by holding alt using home row keys and by having a
-  ;; "numpad overlay" starting at the home position for my right hand.
-  (--each (-zip-pair (split-string "arstdhneio'luy7890km.," "" t)
-                     (split-string "87659012345456789000.," "" t))
-    (-let [(key . num) it]
-      (general-define-key
-       :states 'insert
-       (concat "M-" key)
-       (lambda () (interactive) (insert num)))))
-  (general-define-key
-   :states 'insert
-   "M-DEL" 'backward-delete-char-untabify)
-
-  (defun w/evil-normal-state-cleanup ()
-    "Like `evil-force-normal-state', with some extra cleanups."
-    (interactive)
-    (when (eq last-command 'w/evil-normal-state-cleanup)
-      ;; clean up some more when called twice in row
-      (lazy-highlight-cleanup t)
-      (remove-overlays nil nil 'category 'evil-snipe)
-      (symbol-overlay-remove-all)
-      (when (functionp 'flycheck-clear)
-        (flycheck-clear))
-      (when (functionp 'lsp-ui-doc-hide)
-        (lsp-ui-doc-hide))
-      (when (functionp 'evil-mc-undo-all-cursors)
-        (evil-mc-undo-all-cursors))
-      (let ((inhibit-message t))
-        (evil-exchange-cancel)))
-    (evil-force-normal-state)
-    (when (eq (evil-initial-state-for-buffer) 'motion)
-      (evil-change-to-initial-state)))
-
-  (defun w/evil-transpose-chars ()
-    "Invoke ‘transpose-chars’ on the right chars in insert state."
-    (interactive)
-    (backward-char)
-    (transpose-chars nil)
-    (unless (eolp) (forward-char)))
-
-  (defun w/kill-line-dwim ()
-    "Kill line, or join the next line when at eolp."
-    (interactive)
-    (let ((was-at-eol (eolp)))
-      (kill-line)
-      (when was-at-eol
-        (fixup-whitespace))))
-
-  (evil-define-motion w/evil-next-line (count)
-    (when (null count)
-      (setq count 1))
-    (if visual-line-mode
-        (progn
-          (setq evil-this-type 'exclusive)
-          (evil-next-visual-line count))
-      (setq evil-this-type 'line)
-      (evil-next-line count)))
-
-  (evil-define-motion w/evil-previous-line (count)
-    (when (null count)
-      (setq count 1))
-    (if visual-line-mode
-        (progn
-          (setq evil-this-type 'exclusive)
-          (evil-previous-visual-line count))
-      (setq evil-this-type 'line)
-      (evil-previous-line count)))
-
-  (evil-define-motion w/evil-end-of-line (count)
-    :type inclusive
-    (if visual-line-mode
-        (evil-end-of-visual-line count)
-      (evil-end-of-line count)))
-
-  (evil-define-motion w/evil-first-non-blank ()
-    :type exclusive
-    (if visual-line-mode
-        (evil-first-non-blank-of-visual-line)
-      (evil-first-non-blank)))
-
-  (evil-define-operator w/evil-join-smart-backslash-eol (beg end)
-    "Like ‘evil-join’, but handles continuation line endings in a smarter way."
-    :motion evil-line
-    (prog1 (evil-join beg end)
-      ;; delete ‘\’, and potentially one space before it
-      (when (looking-back "\\\\" nil)
-        (delete-char -1))
-      (when (looking-back " " nil)
-        (delete-char -1))))
-
-  (evil-define-command w/split-line-backslash ()
-    "Split line before the current word, using a continuation line ending."
-    (interactive)
-    (when (looking-at-p " ")
-      (evil-forward-WORD-begin))
-    (unless (looking-back " " 1)
-      (evil-backward-WORD-begin))
-    (fixup-whitespace)
-    (evil-forward-WORD-begin)
-    (insert "\\")
-    (newline-and-indent))
-
-  ;; todo: make "0" work visually in visual line mode. maybe using
-  ;; something like this:
-  ;; (evil-redirect-digit-argument evil-motion-state-map "0" 'evil-beginning-of-line)
-
-  (evil-define-text-object w/evil-text-object-whole-buffer (count &optional _beg _end _type)
-    "Text object for the whole buffer."
-    (evil-range (point-min) (point-max) 'line))
-
-  (evil-define-text-object w/evil-empty-text-object (count &optional _beg _end _type)
-    "Empty text object."
-    (evil-range (point) (point)))
-
-  (evil-define-text-object w/evil-text-object-symbol-dwim (count &optional beg end type)
-    "Intelligently pick evil-inner-symbol or evil-a-symbol."
-    (if (memq this-command '(evil-delete lispyville-delete))
-        (evil-a-symbol count beg end type)
-      (evil-inner-symbol count beg end type))))
 
 (use-package edit-indirect
   :hook
