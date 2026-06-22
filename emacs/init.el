@@ -3509,8 +3509,7 @@ defined as lowercase."
    "C-r" #'comint-history-isearch-backward
    "C-/" #'w/comint-insert-history)
 
-  :hook
-  (comint-mode-hook . w/compilation-mode-hook)
+  :hook (comint-mode-hook . w/compilation-mode-hook)
 
   :config
   (evil-set-initial-state 'comint-mode 'normal)
@@ -3703,8 +3702,7 @@ defined as lowercase."
         :foreground unspecified
         :strike-through unspecified))))
 
-  :hook
-  (markdown-mode-hook . w/markdown-mode-hook)
+  :hook (markdown-mode-hook . w/markdown-mode-hook)
 
   :config
   (defun w/markdown-mode-hook ()
