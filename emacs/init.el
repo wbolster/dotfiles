@@ -1007,16 +1007,16 @@
    "C-<wheel-down>" #'mouse-wheel-global-text-scale
    "C-<wheel-up>" #'mouse-wheel-global-text-scale))
 
+(use-package git-link
+  :defer t
+  :custom
+  (git-link-open-in-browser t))
+
 (use-package git-modes
   :defer t
   :mode
   ((rx ".gitconfig" (* any) string-end) . gitconfig-mode)
   ((rx ".config/git/config" (* any) string-end) . gitconfig-mode))
-
-(use-package git-link
-  :defer t
-  :custom
-  (git-link-open-in-browser t))
 
 (use-package gsettings
   :demand t
