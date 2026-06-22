@@ -1259,6 +1259,24 @@
   :custom-face
   (pkgbuild-error-face ((t (:inherit error)))))
 
+(use-package profiler
+  :defer t
+  :hook (profiler-report-mode-hook . w/profiler-report-mode-hook)
+  :general
+  (:keymaps 'profiler-report-mode-map
+   :states 'motion
+   "<tab>" #'profiler-report-toggle-entry
+   "<return>" #'profiler-report-toggle-entry
+   "C-e" #'profiler-report-previous-entry
+   "C-n" #'profiler-report-next-entry
+   "C-p" #'profiler-report-previous-entry
+   "r" #'profiler-report-render-calltree
+   "R" #'profiler-report-render-reversed-calltree)
+  :config
+  (defun w/profiler-report-mode-hook ()
+    (setopt evil-lookup-func 'w/helpful-evil-lookup-func))
+  (evil-set-initial-state 'profiler-report-mode 'motion))
+
 (use-package python-black
   :demand t
   :after python
@@ -4146,24 +4164,6 @@ defined as lowercase."
   (evil--add-to-alist
    origami-parser-alist
    'python-pytest-mode 'w/python-pytest-origami-parser))
-
-(use-package profiler
-  :general
-  (:keymaps 'profiler-report-mode-map
-   :states 'motion
-   "<tab>" #'profiler-report-toggle-entry
-   "<return>" #'profiler-report-toggle-entry
-   "C-e" #'profiler-report-previous-entry
-   "C-n" #'profiler-report-next-entry
-   "C-p" #'profiler-report-previous-entry
-   "r" #'profiler-report-render-calltree
-   "R" #'profiler-report-render-reversed-calltree)
-  :hook
-  (profiler-report-mode-hook . w/profiler-report-mode-hook)
-  :config
-  (defun w/profiler-report-mode-hook ()
-    (setopt evil-lookup-func 'w/helpful-evil-lookup-func))
-  (evil-set-initial-state 'profiler-report-mode 'motion))
 
 (use-package rst
   :defer t
