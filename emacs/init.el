@@ -448,6 +448,9 @@
   (ediff-split-window-function 'split-window-horizontally)
   (ediff-window-setup-function 'ediff-setup-windows-plain))
 
+(use-package el-patch
+  :defer t)
+
 (use-package evil
   :demand t
   :functions
@@ -771,6 +774,11 @@
   :demand t
   :config
   (key-chord-mode))
+
+(use-package lisp-indent-patch
+  :demand t
+  :load-path "lisp/"
+  :after el-patch)
 
 (use-package lsp-mode
   :defer t
@@ -3575,15 +3583,6 @@ defined as lowercase."
     ("m" pp-macroexpand-last-sexp)
     "_r_ eval-region"
     ("r" eval-region)))
-
-(use-package el-patch
-  :demand t
-  :after elisp-mode)
-
-(use-package lisp-indent-patch
-  :load-path "lisp/"
-  :demand t
-  :after elisp-mode)
 
 (use-package lispy
   :demand t
