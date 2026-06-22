@@ -1229,6 +1229,11 @@
   (completion-category-overrides '((file (styles partial-completion))))
   (completion-pcm-leading-wildcard t)) ;; emacs 31: partial-completion behaves like substring
 
+(use-package outline
+  :defer t
+  :delight
+  (outline-minor-mode " ‣"))
+
 (use-package pkgbuild-mode
   :defer t
   :custom
@@ -2720,11 +2725,6 @@ defined as lowercase."
                      fold-node)
                    ranges)))
             fold-nodes))))))
-
-(use-package outline
-  :defer t
-  :delight
-  (outline-minor-mode " ‣"))
 
 ;; todo https://github.com/sshaw/copy-as-format/issues/2
 (use-package copy-as-format
