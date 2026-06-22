@@ -191,6 +191,7 @@
 
   (blink-cursor-mode)
   (context-menu-mode)
+  (electric-pair-mode)
   (menu-bar-mode -1)
   (pixel-scroll-precision-mode)
   (repeat-mode)
@@ -1390,11 +1391,11 @@
 (defvar-keymap w/toggle-map
   :doc "Keymap for toggle commands."
   "!" #'global-evil-swap-keys-mode
-  "(" #'smartparens-mode
-  ")" #'smartparens-mode
-  "0" #'smartparens-mode
+  "(" #'electric-pair-local-mode
+  ")" #'electric-pair-local-mode
+  "0" #'electric-pair-local-mode
   "1" #'global-evil-swap-keys-mode
-  "9" #'smartparens-mode
+  "9" #'electric-pair-local-mode
   "=" #'balanced-windows-mode
   "F" #'display-fill-column-indicator-mode
   "L" #'global-hl-line-mode
@@ -2413,13 +2414,6 @@ defined as lowercase."
   "_z_ folds"
   ("z" origami-backward-fold-same-level)
   ("Z" origami-backward-fold-same-level :exit nil))
-
-(use-package smartparens
-  :delight " ⸩"
-  :config
-  (require 'smartparens-config)
-  (smartparens-global-mode)
-  (show-smartparens-global-mode))
 
 (use-package rainbow-delimiters
   :defer t)
@@ -3440,7 +3434,7 @@ defined as lowercase."
     (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter t))
 
   (defun w/compilation-mode-hook ()
-    (smartparens-mode -1)
+    (electric-pair-local-mode -1)
     (w/set-major-mode-hydra #'w/hydra-compilation/body)
     (w/compilation-use-xterm-color-filter)
     (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom))
@@ -3556,7 +3550,7 @@ defined as lowercase."
      evil-lookup-func 'w/helpful-evil-lookup-func
      evil-shift-width 2)
     (w/set-major-mode-hydra #'w/hydra-emacs-lisp/body)
-    (smartparens-mode -1)
+    (electric-pair-local-mode -1)
     (lispy-mode)
     (lispyville-mode)
     (aggressive-indent-mode)
@@ -3803,10 +3797,6 @@ defined as lowercase."
 
   :config
   (add-to-list 'which-func-modes 'python-mode)
-  (dolist (open '("(" "{" "["))
-    (sp-local-pair
-     'python-mode open nil
-     :unless '(sp-point-before-word-p)))
 
   (defun w/python-mode-hook ()
     (setopt fill-column 79)
@@ -3826,7 +3816,6 @@ defined as lowercase."
     (w/set-major-mode-hydra #'w/hydra-python/body)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-underscore-dash)
-    (smartparens-mode) ;; todo
     (indent-bars-mode)
     ;; (lispyville-mode)
     (origami-mode)
