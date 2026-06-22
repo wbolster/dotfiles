@@ -278,10 +278,6 @@
   (auto-dark-themes '((modus-vivendi-tinted) (modus-operandi-tinted)))
   :commands
   auto-dark-toggle-appearance
-  :hook
-  (auto-dark-dark-mode-hook . (lambda () (run-hooks 'w/theme-changed-hook)))
-  (auto-dark-light-mode-hook . (lambda () (run-hooks 'w/theme-changed-hook)))
-  (emacs-startup-hook . (lambda () (run-hooks 'w/theme-changed-hook)))
   :config
   (auto-dark-mode))
 
@@ -1626,13 +1622,10 @@ defined as lowercase."
              (file-exists (file-exists-p directory-name)))
     (call-process "xdg-open" nil 0 nil directory-name)))
 
-(defvar w/theme-changed-hook nil
-  "Hook to run after the theme has changed. Useful for patching font faces.")
-
 (defvar w/faces-bold '(magit-popup-argument)
   "Faces that may retain their bold appearance.")
 
-(defun w/tweak-faces ()
+(defun w/tweak-faces (theme)
   "Tweak some font faces."
   (set-face-attribute
    'fixed-pitch nil
@@ -1641,9 +1634,9 @@ defined as lowercase."
     (unless (member face w/faces-bold)
       (set-face-attribute face nil :weight 'normal))))
 
-(add-hook 'w/theme-changed-hook #'w/tweak-faces)
+(add-hook 'enable-theme-functions #'w/tweak-faces)
 
-(defun w/tweak-evil-cursor ()
+(defun w/tweak-evil-cursor (theme)
   "Tweak the appearance of the evil cursors."
   (setopt
    evil-motion-state-cursor (list solarized-color-yellow 'box)
@@ -1653,7 +1646,7 @@ defined as lowercase."
    evil-replace-state-cursor (list solarized-color-magenta 'hbar)
    evil-operator-state-cursor (list solarized-color-magenta 'hollow)))
 
-(add-hook 'w/theme-changed-hook #'w/tweak-evil-cursor)
+(add-hook 'enable-theme-functions #'w/tweak-evil-cursor)
 
 (use-package evil
   ;; todo: clean up and merge with other use-package stanza
@@ -2267,7 +2260,7 @@ defined as lowercase."
 (use-package symbol-overlay
   :demand t
   :delight
-  :hook (w/theme-changed-hook . w/symbol-overlay-tweak-faces)
+  :hook (enable-theme-functions . w/symbol-overlay-tweak-faces)
   :custom
   (symbol-overlay-idle-time 1.0)
 
@@ -2285,7 +2278,7 @@ defined as lowercase."
   :config
   (setq symbol-overlay-map (make-sparse-keymap))
 
-  (defun w/symbol-overlay-tweak-faces ()
+  (defun w/symbol-overlay-tweak-faces (theme)
     (set-face-attribute
      'symbol-overlay-default-face nil
      :foreground solarized-color-magenta
@@ -2910,7 +2903,7 @@ defined as lowercase."
 (use-package company
   :delight
   :defer t
-  :hook (w/theme-changed-hook . w/company-tweak-faces)
+  :hook (enable-theme-functions . w/company-tweak-faces)
 
   :general
   (:keymaps 'company-mode-map
@@ -2941,7 +2934,7 @@ defined as lowercase."
   (add-to-list 'company-backends 'company-files)
   ;; (global-company-mode)
 
-  (defun w/company-tweak-faces ()
+  (defun w/company-tweak-faces (theme)
     (set-face-attribute 'company-tooltip-selection nil :inherit 'region))
 
   (defun w/company-switch-to-counsel-company ()
