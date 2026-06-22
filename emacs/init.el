@@ -646,6 +646,100 @@
   :config
   (global-evil-swap-keys-mode))
 
+(use-package flycheck
+  :demand t
+  :after direnv
+  :hook
+  (flycheck-mode-hook . w/flycheck-show-error-other-file-mode)
+  (flycheck-before-syntax-check-hook . direnv--maybe-update-environment)
+  (flycheck-error-list-after-refresh-hook . w/flycheck-hide-error-list-header)
+  :general
+  (:keymaps 'flycheck-error-list-mode-map
+   :states 'motion
+   "n" #'flycheck-error-list-next-error
+   "e" #'flycheck-error-list-previous-error
+   "p" #'flycheck-error-list-previous-error
+   "<return>" #'flycheck-error-list-goto-error)
+  :commands
+  flycheck-buffer
+  flycheck-compile
+  flycheck-next-error
+  flycheck-previous-error
+  flycheck-select-checker
+  flycheck-verify-setup
+  w/flycheck-compile-current
+  w/flycheck-show-error-other-file-mode
+  w/flycheck-toggle-error-window
+  :functions
+  flycheck-add-mode
+  flycheck-get-checker-for-buffer
+  flycheck-list-errors
+  :custom
+  (flycheck-checker-error-threshold 2000)
+  (flycheck-display-errors-delay 1.0)
+  (flycheck-idle-change-delay 3)
+  (flycheck-mode-line-prefix "🧐")
+  (flycheck-emacs-lisp-load-path 'inherit)
+  (flycheck-python-flake8-executable "flake8")
+  (flycheck-relevant-error-other-file-minimum-level nil)
+  :custom-face
+  (flycheck-error ((t (:underline nil :inherit error))))
+
+  :config
+  (global-flycheck-mode)
+  (flycheck-add-mode 'sh-shellcheck 'direnv-envrc-mode)
+  (add-to-list
+   'display-buffer-alist
+   '("\\*Flycheck errors\\*" .
+     (display-buffer-in-side-window
+      (side . bottom)
+      (slot . 0)
+      (preserve-size . (nil . t))
+      (window-height . w/fit-bottom-error-window-to-buffer)
+      (window-parameters . ((no-other-window . t)
+                            (no-delete-other-windows . t))))))
+
+  (defun w/flycheck-compile-current ()
+    "Run ‘flycheck-compile’ using the current checker."
+    (interactive)
+    (flycheck-compile (flycheck-get-checker-for-buffer)))
+
+  (defun w/flycheck-last-error ()
+    "Jump to the last flycheck error."
+    (interactive)
+    (goto-char (point-max))
+    (flycheck-previous-error))
+
+  (defun w/flycheck-toggle-error-window ()
+    "Show or hide the flycheck error list."
+    (interactive)
+    (if-let* ((buffer (get-buffer flycheck-error-list-buffer))
+              (window (get-buffer-window buffer)))
+        (progn
+          ;; for some reason this sometimes gets stuck when using
+          ;; the more specific (quit-windows-on buffer)
+          (delete-window window))
+      (flycheck-list-errors)))
+
+  (define-minor-mode w/flycheck-show-error-other-file-mode
+    "Quickly toggle showing of errors from other files"
+    :lighter nil
+    (setopt flycheck-relevant-error-other-file-show w/flycheck-show-error-other-file-mode)
+    (when flycheck-mode
+      (flycheck-buffer)))
+
+  (defun w/flycheck-hide-error-list-header ()
+    "Hide the error list header line."
+    (when-let ((buffer (get-buffer "*Flycheck errors*")))
+      (with-current-buffer buffer
+        (setq header-line-format nil)))))
+
+(use-package flycheck-package
+  :demand t
+  :after flycheck
+  :config
+  (flycheck-package-setup))
+
 (use-package face-remap
   :defer t
   :if (display-graphic-p)
@@ -3280,99 +3374,7 @@ defined as lowercase."
   (transient-suffix-put 'magit-dispatch "e" :description "vdiff (dwim)")
   (transient-suffix-put 'magit-dispatch "e" :command 'vdiff-magit-dwim)
   (transient-suffix-put 'magit-dispatch "E" :description "vdiff")
-  (transient-suffix-put 'magit-dispatch "E" :command 'vdiff-magit)
-  )
-
-(use-package flycheck
-  :demand t
-  :after direnv
-
-  :custom
-  (flycheck-checker-error-threshold 2000)
-  (flycheck-display-errors-delay 1.0)
-  (flycheck-idle-change-delay 3)
-  (flycheck-mode-line-prefix "🧐")
-  (flycheck-emacs-lisp-load-path 'inherit)
-  (flycheck-python-flake8-executable "flake8")
-  (flycheck-relevant-error-other-file-minimum-level nil)
-
-  :custom-face
-  (flycheck-error ((t (:underline nil :inherit error))))
-
-  :general
-  (:keymaps 'flycheck-error-list-mode-map
-   :states 'motion
-   "n" #'flycheck-error-list-next-error
-   "e" #'flycheck-error-list-previous-error
-   "p" #'flycheck-error-list-previous-error
-   "<return>" #'flycheck-error-list-goto-error)
-
-  :hook
-  (flycheck-mode-hook . w/flycheck-show-error-other-file-mode)
-  (flycheck-before-syntax-check-hook . direnv--maybe-update-environment)
-  (flycheck-error-list-after-refresh-hook . w/flycheck-hide-error-list-header)
-
-  :commands
-  flycheck-buffer
-  flycheck-compile
-  flycheck-next-error
-  flycheck-previous-error
-  flycheck-select-checker
-  flycheck-verify-setup
-  w/flycheck-compile-current
-  w/flycheck-show-error-other-file-mode
-  w/flycheck-toggle-error-window
-
-  :config
-  (global-flycheck-mode)
-
-  (flycheck-add-mode 'sh-shellcheck 'direnv-envrc-mode)
-
-  (add-to-list
-   'display-buffer-alist
-   '("\\*Flycheck errors\\*" .
-     (display-buffer-in-side-window
-      (side . bottom)
-      (slot . 0)
-      (preserve-size . (nil . t))
-      (window-height . w/fit-bottom-error-window-to-buffer)
-      (window-parameters . ((no-other-window . t)
-                            (no-delete-other-windows . t))))))
-
-  (defun w/flycheck-compile-current ()
-    "Run ‘flycheck-compile’ using the current checker."
-    (interactive)
-    (flycheck-compile (flycheck-get-checker-for-buffer)))
-
-  (defun w/flycheck-last-error ()
-    "Jump to the last flycheck error."
-    (interactive)
-    (goto-char (point-max))
-    (flycheck-previous-error))
-
-  (defun w/flycheck-toggle-error-window ()
-    "Show or hide the flycheck error list."
-    (interactive)
-    (if-let* ((buffer (get-buffer flycheck-error-list-buffer))
-              (window (get-buffer-window buffer)))
-        (progn
-          ;; for some reason this sometimes gets stuck when using
-          ;; the more specific (quit-windows-on buffer)
-          (delete-window window))
-      (flycheck-list-errors)))
-
-  (define-minor-mode w/flycheck-show-error-other-file-mode
-    "Quickly toggle showing of errors from other files"
-    :lighter nil
-    (setopt flycheck-relevant-error-other-file-show w/flycheck-show-error-other-file-mode)
-    (when flycheck-mode
-      (flycheck-buffer)))
-
-  (defun w/flycheck-hide-error-list-header ()
-    "Hide the error list header line."
-    (when-let ((buffer (get-buffer "*Flycheck errors*")))
-      (with-current-buffer buffer
-        (setq header-line-format nil)))))
+  (transient-suffix-put 'magit-dispatch "E" :command 'vdiff-magit))
 
 (use-package flycheck-color-mode-line
   :demand t
@@ -3608,12 +3610,6 @@ defined as lowercase."
 (use-package eldoc
   :defer t
   :delight)
-
-(use-package flycheck-package
-  :demand t
-  :after elisp-mode flycheck
-  :config
-  (flycheck-package-setup))
 
 (use-package graphql-mode :defer t)
 
