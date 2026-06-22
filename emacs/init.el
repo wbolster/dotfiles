@@ -1836,29 +1836,6 @@ defined as lowercase."
         (evil-a-symbol count beg end type)
       (evil-inner-symbol count beg end type))))
 
-(use-package drag-stuff
-  :general
-  (:states 'visual
-   "C-h" #'w/evil-visual-shift-left
-   "C-n" #'drag-stuff-down
-   "C-e" #'drag-stuff-up
-   "C-i" #'w/evil-visual-shift-right)
-  :config
-  (defun w/evil-visual-restore-line-wise ()
-    (evil-normal-state)
-    (evil-visual-restore)
-    (evil-visual-line))
-  (evil-define-operator w/evil-visual-shift-left (beg end &optional count)
-    :type line
-    (interactive "<r><vc>")
-    (evil-shift-left beg end count)
-    (w/evil-visual-restore-line-wise))
-  (evil-define-operator w/evil-visual-shift-right (beg end &optional count)
-    :type line
-    (interactive "<r><vc>")
-    (evil-shift-right beg end count)
-    (w/evil-visual-restore-line-wise)))
-
 (use-package edit-indirect
   :hook
   (edit-indirect-after-creation-hook . w/edit-indirect-dedent)
