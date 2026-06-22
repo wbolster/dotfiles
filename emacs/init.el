@@ -4056,6 +4056,7 @@ defined as lowercase."
 
   (defun w/python-pytest-mode-hook ()
     (origami-mode)
+    (w/show-trailing-whitespace-mode -1)
     (w/compilation-use-xterm-color-filter)
     (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom t)
     (w/set-major-mode-hydra #'w/hydra-python-pytest/body)
