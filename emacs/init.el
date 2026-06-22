@@ -1668,7 +1668,7 @@ defined as lowercase."
    "C-p" #'previous-line
    "C-t" #'w/evil-transpose-chars
    "C-v" #'yank  ;; during typing, ctrl-v is "paste", like everywhere else
-   "C-SPC" #'fixup-whitespace
+   "C-SPC" #'cycle-spacing
    "C-'" #'w/typo-cycle-quotation-marks
    "C-," #'evil-shift-left-line  ;; shift line with < and > (same
    "C-<" #'evil-shift-left-line  ;; chars as in normal mode);
