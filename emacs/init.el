@@ -4013,7 +4013,7 @@ defined as lowercase."
     "_s_ split"
     ("s" w/python-split-string)
     "_t_ pytest"
-    ("t" python-pytest-popup)
+    ("t" python-pytest-dispatch)
     ("T" python-pytest-repeat)
     "_v_ariable"
     ("v" w/python-refactor-make-variable)))
