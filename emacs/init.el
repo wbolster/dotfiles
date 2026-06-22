@@ -1018,6 +1018,31 @@
   ((rx ".gitconfig" (* any) string-end) . gitconfig-mode)
   ((rx ".config/git/config" (* any) string-end) . gitconfig-mode))
 
+(use-package git-rebase
+  :demand t
+  :ensure magit
+  :after magit
+  :general
+  (:keymaps 'git-rebase-mode-map
+   :states '(normal visual)
+   "g" nil
+   "n" #'evil-next-line
+   "e" #'evil-previous-line
+   "l" #'git-rebase-undo)
+  (:keymaps 'git-rebase-mode-map
+   :states 'normal
+   "c" #'git-rebase-edit
+   "d" #'git-rebase-kill-line
+   "i" #'git-rebase-insert
+   "p" #'git-rebase-pick
+   "C-e" #'git-rebase-move-line-up
+   "C-p" #'git-rebase-move-line-up
+   "C-n" #'git-rebase-move-line-down
+   "ZQ" #'with-editor-cancel
+   "ZZ" #'with-editor-finish)
+  :config
+  (add-to-list 'global-evil-colemak-basics-modes '(not git-rebase-mode)))
+
 (use-package gsettings
   :demand t
   :functions
@@ -3262,31 +3287,6 @@ defined as lowercase."
   ;; todo this messes up my own overrides somehow
   ;; (add-hook 'evil-collection-setup-hook #'w/colemak-hnei-rotation)
   (evil-collection-init))
-
-(use-package git-rebase
-  :demand t
-  :ensure nil ;; included with magit
-  :after magit evil-collection
-  :general
-  (:keymaps 'git-rebase-mode-map
-   :states '(normal visual)
-   "g" nil
-   "n" #'evil-next-line
-   "e" #'evil-previous-line
-   "l" #'git-rebase-undo)
-  (:keymaps 'git-rebase-mode-map
-   :states 'normal
-   "c" #'git-rebase-edit
-   "d" #'git-rebase-kill-line
-   "i" #'git-rebase-insert
-   "p" #'git-rebase-pick
-   "C-e" #'git-rebase-move-line-up
-   "C-p" #'git-rebase-move-line-up
-   "C-n" #'git-rebase-move-line-down
-   "ZQ" #'with-editor-cancel
-   "ZZ" #'with-editor-finish)
-  :config
-  (add-to-list 'global-evil-colemak-basics-modes '(not git-rebase-mode)))
 
 (use-package magit-imerge
   :after magit)
