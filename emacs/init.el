@@ -2973,48 +2973,6 @@ defined as lowercase."
   ;; (counsel-mode)
   (ivy-configure 'counsel-M-x :initial-input ""))
 
-(use-package company
-  :delight
-  :defer t
-  :hook (enable-theme-functions . w/company-tweak-faces)
-
-  :general
-  (:keymaps 'company-mode-map
-   :states 'insert
-   "C-<return>" #'company-manual-begin
-   [remap indent-for-tab-command] #'company-indent-or-complete-common)
-  (:keymaps 'company-active-map
-   "C-n" #'company-select-next
-   "C-p" #'company-select-previous
-   "C-<return>" #'company-select-next
-   "<tab>" #'company-complete-common-or-cycle
-   "/" #'w/company-switch-to-counsel-company)
-
-  :custom
-  (company-auto-complete 'company-explicit-action-p)
-  (company-dabbrev-code-everywhere t)
-  (company-dabbrev-code-other-buffers 'code)
-  (company-dabbrev-downcase nil)
-  (company-dabbrev-ignore-case t)
-  (company-idle-delay nil)
-  (company-occurrence-weight-function 'company-occurrence-prefer-any-closest)
-  (company-require-match nil)
-  (company-selection-wrap-around t)
-  (company-transformers '(company-sort-by-occurrence))
-
-  :config
-  (add-to-list 'company-auto-complete-chars ?\( )
-  (add-to-list 'company-backends 'company-files)
-  ;; (global-company-mode)
-
-  (defun w/company-tweak-faces (theme)
-    (set-face-attribute 'company-tooltip-selection nil :inherit 'region))
-
-  (defun w/company-switch-to-counsel-company ()
-    (interactive)
-    (company-abort)
-    (counsel-company)))
-
 (use-package ivy
   :demand t
   :delight
@@ -4071,7 +4029,7 @@ defined as lowercase."
 
 (use-package python-pytest
   :demand t
-  :after company python
+  :after python
   :custom
   (python-pytest-arguments
    '("--color"
@@ -4088,9 +4046,6 @@ defined as lowercase."
   (python-pytest-finished-hook . evil-force-normal-state)
 
   :config
-  (require 'company-dabbrev)
-  (require 'company-dabbrev-code)
-
   (w/make-hydra w/hydra-python-pytest nil
     "python-pytest"
     "_r_epeat"
@@ -4100,7 +4055,6 @@ defined as lowercase."
     ("T" python-pytest-repeat nil))
 
   (defun w/python-pytest-mode-hook ()
-    (setq-local company-backends '(company-dabbrev-code))
     (origami-mode)
     (w/compilation-use-xterm-color-filter)
     (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom t)
@@ -4111,8 +4065,6 @@ defined as lowercase."
     (when-let ((venv-path (getenv "VIRTUAL_ENV")))
       (add-to-list 'prettify-symbols-alist `(,venv-path . ?…)))
     (prettify-symbols-mode))
-
-  (add-to-list 'company-dabbrev-code-modes 'python-pytest-mode)
 
   (defun w/python-pytest-origami-parser (create)
     (lambda (content)
