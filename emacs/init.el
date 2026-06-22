@@ -177,6 +177,7 @@
   (tab-first-completion 'word)
   (tab-width 4)
   (use-short-answers t)
+  (window-combination-resize t)
   (window-divider-default-bottom-width 2)
   (window-divider-default-places t)
   (window-divider-default-right-width 2)
@@ -283,11 +284,6 @@
   auto-dark-toggle-appearance
   :config
   (auto-dark-mode))
-
-(use-package balanced-windows
-  :demand t
-  :config
-  (balanced-windows-mode))
 
 (use-package cape
   :demand t
@@ -1777,7 +1773,6 @@
   "0" #'electric-pair-local-mode
   "1" #'global-evil-swap-keys-mode
   "9" #'electric-pair-local-mode
-  "=" #'balanced-windows-mode
   "F" #'display-fill-column-indicator-mode
   "L" #'global-hl-line-mode
   "N" #'w/display-line-numbers-cycle
