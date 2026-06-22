@@ -1369,7 +1369,7 @@
   (:keymaps 'sh-mode-map
    :states 'normal
    "<return> "'w/split-line-backslash
-   [remap evil-join] #'w/evil-join-smart-backslash-eol)
+   "<remap> <evil-join>" #'w/evil-join-smart-backslash-eol)
   :custom
   (sh-indent-after-continuation 'always)
   :config
