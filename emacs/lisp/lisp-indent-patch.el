@@ -1,3 +1,4 @@
+(require 'el-patch)
 (el-patch-defun lisp-indent-function (indent-point state)
   "This function is the normal value of the variable `lisp-indent-function'.
 The function `calculate-lisp-indent' calls this to determine
