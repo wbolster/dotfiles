@@ -3376,11 +3376,6 @@ defined as lowercase."
   (transient-suffix-put 'magit-dispatch "E" :description "vdiff")
   (transient-suffix-put 'magit-dispatch "E" :command 'vdiff-magit))
 
-(use-package flycheck-color-mode-line
-  :demand t
-  :after flycheck
-  :hook (flycheck-mode-hook . flycheck-color-mode-line-mode))
-
 (use-package prog-mode
   :ensure nil
   :defer t
