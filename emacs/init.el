@@ -118,23 +118,12 @@
 
 (use-package emacs
   :demand t
-  :bind
-  (:map help-map ;; Unbind useless shortcuts to GPL, etc.
-   ("g" . nil)   ;; describe-gnu-project
-   ("C-c" . nil) ;; describe-copying
-   ("C-m" . nil) ;; view-order-manuals
-   ("C-o" . nil) ;; describe-distributions
-   ("C-w" . nil)) ;; describe-no-warranty
-
   :hook (emacs-startup-hook . (lambda () (load custom-file 'noerror)))
-
   :commands
   w/narrow-dwim
   w/switch-major-mode
-
   :functions
   w/set-cycle
-
   :custom
   (auto-save-interval 100)
   (blink-cursor-blinks 1)
@@ -160,7 +149,6 @@
   (fit-window-to-buffer-horizontally t)
   (frame-resize-pixelwise t)
   (frame-title-format "%b")
-  (help-window-select t)
   (indicate-buffer-boundaries 'left)
   (indent-tabs-mode nil)
   (inhibit-startup-screen t)
@@ -693,6 +681,53 @@
     (let* ((font-name (gsettings-get "org.gnome.desktop.interface" "font-name"))
            (font-name-without-size (replace-regexp-in-string "\\(.*\\) [0-9.]+" "\\1" font-name)))
       (setopt w/ui-font-family font-name-without-size))))
+
+(use-package help
+  :demand t
+  :ensure emacs
+  :bind
+  (:map help-map  ;; unbind useless shortcuts to gpl, etc.
+   ("g" . nil)    ;; describe-gnu-project
+   ("C-c" . nil)  ;; describe-copying
+   ("C-m" . nil)  ;; view-order-manuals
+   ("C-o" . nil)  ;; describe-distribution
+   ("C-w" . nil)) ;; describe-no-warranty
+  :custom
+  (help-window-select t))
+
+(use-package help-mode
+  :defer t
+  :ensure emacs
+  :hook (help-mode-hook . w/help-mode-hook)
+  :bind
+  (:map help-mode-map
+   ("q" . nil))
+  :config
+  (defun w/help-mode-hook ()
+    (setopt evil-lookup-func 'w/helpful-evil-lookup-func)))
+
+(use-package helpful
+  :defer t
+  :hook (helpful-mode-hook . w/helpful-mode-hook)
+  :bind
+  (("<remap> <describe-command>" . helpful-command)
+   ("<remap> <describe-function>" . helpful-callable)
+   ("<remap> <describe-key>" . helpful-key)
+   ("<remap> <describe-symbol>" . helpful-symbol)
+   ("<remap> <describe-variable>" . helpful-variable))
+  :general
+  (:keymaps 'helpful-mode-map
+   :states 'normal
+   "gr" #'helpful-update)
+  :commands
+  w/helpful-evil-lookup-func
+  :config
+  (defun w/helpful-mode-hook ()
+    (setopt
+     evil-lookup-func 'w/helpful-evil-lookup-func
+     evil-shift-width 2))
+  (defun w/helpful-evil-lookup-func ()
+    (call-interactively #'helpful-symbol)))
 
 (use-package indent-bars
   :defer t)
@@ -3621,40 +3656,6 @@ defined as lowercase."
 
 (use-package groovy-mode
   :defer t)
-
-(use-package help-mode
-  :defer t
-  :ensure nil
-  :general
-  (:keymaps 'help-mode-map
-   "q" nil)
-  :hook (help-mode-hook . w/help-mode-hook)
-  :config
-  (defun w/help-mode-hook ()
-    (setopt evil-lookup-func 'w/helpful-evil-lookup-func)))
-
-(use-package helpful
-  :general
-  (:prefix "C-h"
-   "f" #'helpful-callable
-   "v" #'helpful-variable
-   "k" #'helpful-key
-   "o" #'helpful-symbol)
-  (:keymaps 'helpful-mode-map
-   :states 'normal
-   "gr" #'helpful-update
-   "<tab>" #'forward-button
-   "S-<tab>" #'backward-button)
-  :commands
-  w/helpful-evil-lookup-func
-  :hook (helpful-mode-hook . w/helpful-mode-hook)
-  :config
-  (defun w/helpful-mode-hook ()
-    (setopt
-     evil-lookup-func 'w/helpful-evil-lookup-func
-     evil-shift-width 2))
-  (defun w/helpful-evil-lookup-func ()
-    (call-interactively #'helpful-symbol)))
 
 (defgroup prettier nil
   "Formatting using Prettier."
