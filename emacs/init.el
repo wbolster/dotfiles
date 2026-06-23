@@ -1274,7 +1274,10 @@
    ("<escape>" . minibuffer-keyboard-quit)))
 
 (use-package modus-themes
-  :demand t)
+  :demand t
+  :custom
+  (modus-themes-mixed-fonts t)
+  (modus-themes-variable-pitch-ui t))
 
 (use-package nxml-mode
   :defer t
