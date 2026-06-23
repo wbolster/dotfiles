@@ -1237,6 +1237,22 @@
   (jq-format-json-on-save-mode " ✒️")
   (jq-format-jsonlines-on-save-mode " ✒️"))
 
+(use-package js
+  :defer t
+  :mode
+  ((rx (or ".cjs" ".mjs") string-end) . js-ts-mode)
+  :hook
+  (js-base-mode-hook . w/js-mode-hook)
+  :custom
+  (js-indent-level 2)
+  :config
+  (defun w/js-mode-hook ()
+    (modify-syntax-entry ?_ "w")
+    (setq
+     evil-shift-width js-indent-level
+     tab-width js-indent-level)
+    (reformatter-dwim-select 'prettier-format)))
+
 (use-package key-chord
   :demand t
   :config
@@ -3764,23 +3780,6 @@ defined as lowercase."
   (defun w/html-mode-hook ()
     (reformatter-dwim-select 'prettier-format)
     (setopt evil-shift-width 2)))
-
-(use-package js2-mode
-  :defer t
-  :mode
-  (rx ".cjs" string-end)
-  (rx ".mjs" string-end)
-  :hook
-  (js-mode-hook . w/js-mode-hook)
-  (js-mode-hook . js2-minor-mode)
-  :config
-  (defun w/js-mode-hook ()
-    (modify-syntax-entry ?_ "w")
-    (setopt
-     tab-width 2
-     evil-shift-width tab-width
-     js-indent-level tab-width)
-    (reformatter-dwim-select 'prettier-format)))
 
 (use-package json-mode
   :defer t
