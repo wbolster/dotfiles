@@ -194,7 +194,6 @@
 
   (blink-cursor-mode)
   (context-menu-mode)
-  (electric-pair-mode)
   (menu-bar-mode -1)
   (pixel-scroll-precision-mode)
   (repeat-mode)
@@ -466,6 +465,19 @@
 (use-package eldoc
   :defer t
   :delight)
+
+(use-package elec-pair
+  :demand t
+  :functions
+  electric-pair-default-inhibit
+  :custom
+  (electric-pair-inhibit-predicate #'w/electric-pair-inhibit)
+  :config
+  (defun w/electric-pair-inhibit (char)
+    (or (minibufferp)
+        (memq (bound-and-true-p vertico-map) (current-active-maps))
+        (electric-pair-default-inhibit char)))
+  (electric-pair-mode))
 
 (use-package evil
   :demand t
