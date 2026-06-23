@@ -2813,6 +2813,7 @@ defined as lowercase."
 
   :custom
   (projectile-completion-system 'default)
+  (projectile-current-project-on-switch 'keep)
   (projectile-ignored-projects '("/usr/local/" "~/"))
   ;; (projectile-mode-line nil)  ;; causes eager loading, :delight has same effect
   (projectile-require-project-root nil)
