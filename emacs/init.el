@@ -95,7 +95,12 @@
   :type '(repeat symbol))
 
 (defcustom w/ui-font-family "Sans"
-  "Name of the font-family used by the desktop environment's user interface."
+  "Name of the font family used by the desktop environment's user interface."
+  :group 'w
+  :type 'string)
+
+(defcustom w/document-font-family "Sans"
+  "Name of the document font family used by the desktop environment."
   :group 'w
   :type 'string)
 
@@ -1077,12 +1082,17 @@
   :functions
   gsettings-get
   gsettings-gnome-running?
+  w/gsettings-get-font-family
   :config
+  (defun w/gsettings-get-font-family (font-name-with-size)
+    (replace-regexp-in-string "\\(.*\\) [0-9.]+" "\\1" font-name-with-size))
   (when (gsettings-gnome-running?)
     (gsettings-apply-gnome-settings)
-    (let* ((font-name (gsettings-get "org.gnome.desktop.interface" "font-name"))
-           (font-name-without-size (replace-regexp-in-string "\\(.*\\) [0-9.]+" "\\1" font-name)))
-      (setopt w/ui-font-family font-name-without-size))))
+    (setopt
+     w/ui-font-family
+     (w/gsettings-get-font-family (gsettings-get "org.gnome.desktop.interface" "font-name"))
+     w/document-font-family
+     (w/gsettings-get-font-family (gsettings-get "org.gnome.desktop.interface" "document-font-name")))))
 
 (use-package help
   :demand t
