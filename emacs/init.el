@@ -104,6 +104,27 @@
   :group 'w
   :type 'string)
 
+(defcustom w/faces-weight-allowed
+  '(bold
+    bold-italic
+    consult-key
+    dired-flagged
+    dired-marked
+    magit-header-line-key
+    marginalia-key
+    markdown-bold-face
+    modus-themes-bold
+    transient-key
+    transient-key-exit
+    transient-key-recurse
+    transient-key-return
+    transient-key-stack
+    transient-key-stay
+    web-mode-bold-face)
+  "Faces that may retain a custom weight, such as a bold appearance."
+  :group 'w
+  :type '(repeat symbol))
+
 (defcustom w/major-modes
   '(c-mode
     emacs-lisp-mode
@@ -933,6 +954,23 @@
   :delight " ⌨️"
   :config
   (global-evil-swap-keys-mode))
+
+(use-package faces
+  :demand t
+  :ensure emacs
+  :hook (enable-theme-functions . w/tweak-faces)
+  :functions
+  w/tweak-faces
+  :config
+  (defun w/tweak-faces (_theme)
+    "Tweak font faces."
+    (set-face-attribute 'variable-pitch nil :family w/ui-font-family)
+    (set-face-attribute 'variable-pitch-text nil :family w/document-font-family)
+    (set-face-attribute 'fixed-pitch nil :family (face-attribute 'default :family))
+    (dolist (face (face-list))
+      (unless (or (eq face 'default)
+                  (member face w/faces-weight-allowed))
+        (set-face-attribute face nil :weight 'unspecified)))))
 
 (use-package flycheck
   :demand t
@@ -2103,20 +2141,6 @@ defined as lowercase."
              (directory-name (file-name-directory file-name))
              (file-exists (file-exists-p directory-name)))
     (call-process "xdg-open" nil 0 nil directory-name)))
-
-(defvar w/faces-bold '(magit-popup-argument)
-  "Faces that may retain their bold appearance.")
-
-(defun w/tweak-faces (theme)
-  "Tweak some font faces."
-  (set-face-attribute
-   'fixed-pitch nil
-   :family (face-attribute 'default :family))
-  (dolist (face (face-list))
-    (unless (member face w/faces-bold)
-      (set-face-attribute face nil :weight 'normal))))
-
-(add-hook 'enable-theme-functions #'w/tweak-faces)
 
 (use-package edit-indirect
   :hook
