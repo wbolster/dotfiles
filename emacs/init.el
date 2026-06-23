@@ -1069,6 +1069,9 @@
 (use-package face-remap
   :defer t
   :if (display-graphic-p)
+  :functions
+  w/restore-global-text-scale-height
+  w/save-global-text-scale-height
   :custom
   (global-text-scale-adjust-limits '(60 . 500))
   :general
@@ -1077,7 +1080,21 @@
    "C--" #'global-text-scale-adjust
    "C-=" #'global-text-scale-adjust
    "C-<wheel-down>" #'mouse-wheel-global-text-scale
-   "C-<wheel-up>" #'mouse-wheel-global-text-scale))
+   "C-<wheel-up>" #'mouse-wheel-global-text-scale)
+  :config
+  (defvar w/global-text-scale-height nil)
+
+  (defun w/save-global-text-scale-height (&rest _)
+    "Save the current default face height."
+    (setq w/global-text-scale-height (face-attribute 'default :height)))
+
+  (defun w/restore-global-text-scale-height (_theme)
+    "Restore the saved default face height after theme changes."
+    (when w/global-text-scale-height
+      (set-face-attribute 'default nil :height w/global-text-scale-height)))
+
+  (advice-add 'global-text-scale-adjust :after #'w/save-global-text-scale-height)
+  (add-hook 'enable-theme-functions #'w/restore-global-text-scale-height t))
 
 (use-package git-link
   :defer t
