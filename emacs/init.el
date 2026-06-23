@@ -3746,18 +3746,10 @@ defined as lowercase."
 
 (use-package markdown-mode
   :defer t
+  :hook (markdown-mode-hook . w/markdown-mode-hook)
   :custom
   (markdown-asymmetric-header t)
   (markdown-fontify-code-blocks-natively t)
-
-  :custom-face
-  (markdown-code-face ((t (:inherit unspecified))))
-  (markdown-comment-face
-   ((t (:inherit font-lock-comment-face
-        :foreground unspecified
-        :strike-through unspecified))))
-
-  :hook (markdown-mode-hook . w/markdown-mode-hook)
 
   :config
   (defun w/markdown-mode-hook ()
