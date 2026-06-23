@@ -52,6 +52,9 @@
 
 (use-package dash
   :demand t
+  :functions
+  -contains-p -each -filter -first -flatten -last -map -map-when -partial
+  -remove -replace-at -separate -snoc -sort -uniq -zip-pair
   :config
   (global-dash-fontify-mode))
 
