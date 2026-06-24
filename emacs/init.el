@@ -1738,6 +1738,16 @@
   (unless (server-running-p)
     (server-start)))
 
+(use-package sgml-mode
+  :defer t
+  :hook
+  (html-mode-hook . w/html-mode-hook)
+  (mhtml-mode-hook . w/html-mode-hook)
+  :config
+  (defun w/html-mode-hook ()
+    (reformatter-dwim-select 'prettier-format)
+    (setopt evil-shift-width 2)))
+
 (use-package sh-script
   :defer t
   :mode
@@ -3778,16 +3788,6 @@ defined as lowercase."
   :args '("--parser=babel")
   :lighter " Prettier"
   :group 'prettier)
-
-(use-package sgml-mode
-  :defer t
-  :hook
-  (html-mode-hook . w/html-mode-hook)
-  (mhtml-mode-hook . w/html-mode-hook)
-  :config
-  (defun w/html-mode-hook ()
-    (reformatter-dwim-select 'prettier-format)
-    (setopt evil-shift-width 2)))
 
 (use-package markdown-mode
   :defer t
