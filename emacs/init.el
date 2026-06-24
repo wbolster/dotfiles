@@ -2116,6 +2116,18 @@
   :demand t
   :after nxml-mode)
 
+(use-package yaml-mode
+  :defer t
+  :hook (yaml-mode-hook . w/yaml-mode-hook)
+  :config
+  (defun w/yaml-mode-hook ()
+    (setf (alist-get 'yaml-mode origami-parser-alist)
+          'w/origami-parser-imenu-flat)
+    (setq-local evil-shift-width yaml-indent-offset)
+    (evil-swap-keys-swap-colon-semicolon)
+    (evil-swap-keys-swap-double-single-quotes)
+    (origami-mode)))
+
 (use-package yasnippet
   :demand t
   :delight (yas-minor-mode " 🐒")
@@ -4448,18 +4460,6 @@ defined as lowercase."
   (add-to-list
    'warning-suppress-log-types
    '((defvaralias losing-value woman-topic-history))))
-
-(use-package yaml-mode
-  :defer t
-  :hook (yaml-mode-hook . w/yaml-mode-hook)
-  :config
-  (defun w/yaml-mode-hook ()
-    (setq-local evil-shift-width yaml-indent-offset)
-    (evil-swap-keys-swap-colon-semicolon)
-    (evil-swap-keys-swap-double-single-quotes)
-    (origami-mode)
-    (setf (alist-get 'yaml-mode origami-parser-alist)
-          'w/origami-parser-imenu-flat)))
 
 (load (concat user-emacs-directory "init-local") t)
 
