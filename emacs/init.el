@@ -1446,6 +1446,20 @@
     (setopt evil-lookup-func 'w/helpful-evil-lookup-func))
   (evil-set-initial-state 'profiler-report-mode 'motion))
 
+(use-package prog-mode
+  :defer t
+  :ensure emacs
+  :hook (prog-mode-hook . w/prog-mode-hook)
+  :config
+  (defun w/prog-mode-hook ()
+    (setq-local comment-auto-fill-only-comments t)
+    (auto-fill-mode)
+    (column-number-mode)
+    (flyspell-prog-mode)
+    (highlight-parentheses-mode)
+    (symbol-overlay-mode)
+    (w/show-trailing-whitespace-mode)))
+
 (use-package python-black
   :demand t
   :after python
@@ -3510,20 +3524,6 @@ defined as lowercase."
   (transient-suffix-put 'magit-dispatch "e" :command 'vdiff-magit-dwim)
   (transient-suffix-put 'magit-dispatch "E" :description "vdiff")
   (transient-suffix-put 'magit-dispatch "E" :command 'vdiff-magit))
-
-(use-package prog-mode
-  :ensure nil
-  :defer t
-  :hook (prog-mode-hook . w/prog-mode-hook)
-  :config
-  (defun w/prog-mode-hook ()
-    (setq-local comment-auto-fill-only-comments t)
-    (auto-fill-mode)
-    (column-number-mode)
-    (flyspell-prog-mode)
-    (highlight-parentheses-mode)
-    (symbol-overlay-mode)
-    (w/show-trailing-whitespace-mode)))
 
 (use-package cc-mode
   :defer t
