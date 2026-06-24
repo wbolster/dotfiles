@@ -3717,8 +3717,6 @@ defined as lowercase."
   :config
   (lispyville-set-key-theme))
 
-(use-package graphql-mode :defer t)
-
 (use-package groovy-mode
   :defer t)
 
