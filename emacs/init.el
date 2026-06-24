@@ -3556,6 +3556,7 @@ defined as lowercase."
    "C-p" #'compilation-previous-error)
 
   :hook
+  (compilation-filter-hook . ansi-color-compilation-filter)
   (compilation-mode-hook . w/compilation-mode-hook)
   (compilation-finish-functions . w/compilation-finished)
 
@@ -3565,15 +3566,10 @@ defined as lowercase."
     "_r_ecompile"
     ("r" recompile))
 
-  (defun w/compilation-use-xterm-color-filter ()
-    (remove-hook 'comint-output-filter-functions 'ansi-color-process-output t)
-    (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter t))
-
   (defun w/compilation-mode-hook ()
     (electric-pair-local-mode -1)
     (w/show-trailing-whitespace-mode -1)
     (w/set-major-mode-hydra #'w/hydra-compilation/body)
-    (w/compilation-use-xterm-color-filter)
     (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom))
 
   (defun w/compilation-finished (buffer _status)
@@ -3622,9 +3618,6 @@ defined as lowercase."
     (let* ((collection (-uniq (ring-elements comint-input-ring)))
            (text (completing-read "Command history: " collection nil t)))
       (insert text))))
-
-(use-package xterm-color
-  :defer t)
 
 (use-package cus-edit
   :ensure nil
@@ -4167,7 +4160,6 @@ defined as lowercase."
   (defun w/python-pytest-mode-hook ()
     (origami-mode)
     (w/show-trailing-whitespace-mode -1)
-    (w/compilation-use-xterm-color-filter)
     (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom t)
     (w/set-major-mode-hydra #'w/hydra-python-pytest/body)
     (modify-syntax-entry ?/ ".")
