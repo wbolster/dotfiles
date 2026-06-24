@@ -3717,9 +3717,6 @@ defined as lowercase."
   :config
   (lispyville-set-key-theme))
 
-(use-package groovy-mode
-  :defer t)
-
 (defgroup prettier nil
   "Formatting using Prettier."
   :group 'languages)
