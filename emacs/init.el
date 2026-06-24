@@ -339,7 +339,7 @@
   :hook (c-mode-hook . w/c-mode-hook)
   :config
   (defun w/c-mode-hook ()
-    (setopt evil-shift-width 2)
+    (setq-local evil-shift-width 2)
     (evil-swap-keys-swap-double-single-quotes)
     (evil-swap-keys-swap-square-curly-brackets)
     (evil-swap-keys-swap-underscore-dash)))
@@ -427,7 +427,7 @@
   :functions w/toml-format-taplo-region
   :config
   (defun w/conf-toml-mode-hook ()
-    (setopt
+    (setq-local
      tab-width 2
      evil-shift-width tab-width)
     (reformatter-dwim-select 'w/toml-format-taplo))
@@ -1351,7 +1351,7 @@
    ("q" . nil))
   :config
   (defun w/help-mode-hook ()
-    (setopt evil-lookup-func 'w/helpful-evil-lookup-func)))
+    (setq-local evil-lookup-func 'w/helpful-evil-lookup-func)))
 
 (use-package helpful
   :defer t
@@ -1371,7 +1371,7 @@
   w/helpful-evil-lookup-func
   :config
   (defun w/helpful-mode-hook ()
-    (setopt
+    (setq-local
      evil-lookup-func 'w/helpful-evil-lookup-func
      evil-shift-width 2))
   (defun w/helpful-evil-lookup-func ()
@@ -1434,7 +1434,7 @@
   :config
   (defun w/js-mode-hook ()
     (modify-syntax-entry ?_ "w")
-    (setq
+    (setq-local
      evil-shift-width js-indent-level
      tab-width js-indent-level)
     (reformatter-dwim-select 'prettier-format)))
@@ -1446,7 +1446,7 @@
   (json-ts-mode-hook . w/json-mode-hook)
   :config
   (defun w/json-mode-hook ()
-    (setq
+    (setq-local
      evil-shift-width json-ts-mode-indent-offset
      tab-width json-ts-mode-indent-offset)
     (reformatter-dwim-select 'jq-format-json)
@@ -1626,7 +1626,7 @@
    "R" #'profiler-report-render-reversed-calltree)
   :config
   (defun w/profiler-report-mode-hook ()
-    (setopt evil-lookup-func 'w/helpful-evil-lookup-func))
+    (setq-local evil-lookup-func 'w/helpful-evil-lookup-func))
   (evil-set-initial-state 'profiler-report-mode 'motion))
 
 (use-package prog-mode
@@ -1784,7 +1784,7 @@
   :config
   (defun w/html-mode-hook ()
     (reformatter-dwim-select 'prettier-format)
-    (setopt evil-shift-width 2)))
+    (setq-local evil-shift-width 2)))
 
 (use-package sh-script
   :defer t
@@ -1871,7 +1871,7 @@
   (require 'sqlformat)
 
   (defun w/sql-mode-hook ()
-    (setopt evil-shift-width 2)
+    (setq-local evil-shift-width 2)
     (w/sql-tweak-syntax-table)
     (add-hook 'hack-local-variables-hook #'w/sql-tweak-syntax-table t t)
     (reformatter-dwim-select 'sqlformat))
@@ -1931,8 +1931,9 @@
   (typescript-ts-mode-indent-offset 2)
   :config
   (defun w/typescript-mode-hook ()
-    (setq evil-shift-width typescript-ts-mode-indent-offset
-          tab-width typescript-ts-mode-indent-offset)
+    (setq-local
+     evil-shift-width typescript-ts-mode-indent-offset
+     tab-width typescript-ts-mode-indent-offset)
     (reformatter-dwim-select 'prettier-format)
     (lsp-deferred)))
 
@@ -3722,7 +3723,7 @@ defined as lowercase."
   :hook (caddyfile-mode-hook . w/caddyfile-mode-hook)
   :config
   (defun w/caddyfile-mode-hook ()
-    (setopt tab-width 2))
+    (setq-local tab-width 2))
   (reformatter-define caddyfile-format
     :program "caddy"
     :args '("fmt" "-")
@@ -3770,7 +3771,7 @@ defined as lowercase."
 
   :config
   (defun w/emacs-lisp-mode-hook ()
-    (setopt
+    (setq-local
      evil-lookup-func 'w/helpful-evil-lookup-func
      evil-shift-width 2)
     (w/set-major-mode-hydra #'w/hydra-emacs-lisp/body)
@@ -3851,7 +3852,7 @@ defined as lowercase."
 
   :config
   (defun w/markdown-mode-hook ()
-    (setopt evil-shift-width 2)
+    (setq-local evil-shift-width 2)
     (w/set-major-mode-hydra #'w/hydra-markdown/body)
     (flyspell-mode)
     (w/evil-surround-define-surround-trigger-pairs
@@ -3926,7 +3927,7 @@ defined as lowercase."
   (add-to-list 'which-func-modes 'python-mode)
 
   (defun w/python-mode-hook ()
-    (setopt fill-column 79)
+    (setq-local fill-column 79)
     (setq-local
      comment-fill-column 72
      indent-bars-starting-column 12)
@@ -4252,7 +4253,7 @@ defined as lowercase."
 
   :config
   (defun w/rst-mode-hook ()
-    (setopt
+    (setq-local
      evil-shift-width 2
      rst-mode-abbrev-table nil)
     (w/set-major-mode-hydra #'w/hydra-rst/body)
@@ -4451,7 +4452,7 @@ defined as lowercase."
   :hook (yaml-mode-hook . w/yaml-mode-hook)
   :config
   (defun w/yaml-mode-hook ()
-    (setopt evil-shift-width yaml-indent-offset)
+    (setq-local evil-shift-width yaml-indent-offset)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-double-single-quotes)
     (origami-mode)
