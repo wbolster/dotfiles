@@ -3249,13 +3249,6 @@ defined as lowercase."
            (new-height (w/clamp-number lines 10 20)))
       (setopt ivy-height new-height))))
 
-(use-package ivy-rich
-  :after ivy counsel
-  :custom
-  (ivy-rich-parse-remote-buffer nil)
-  :config
-  (ivy-rich-mode 1))
-
 (use-package magit
   :defer t
   :delight
