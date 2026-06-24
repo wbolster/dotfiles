@@ -996,6 +996,17 @@
    "+" #'evil-numbers/inc-at-pt
    "-" #'evil-numbers/dec-at-pt))
 
+(use-package evil-python-movement
+  :defer t
+  :after evil python
+  :general
+  (:keymaps 'python-mode-map
+   :states 'normal
+   "[{" #'evil-python-movement-lsb-lsb
+   "]}" #'evil-python-movement-rsb-rsb
+   "[[" #'evil-python-movement-lsb-m
+   "]]" #'evil-python-movement-rsb-m))
+
 (use-package evil-snipe
   :demand t
   :after evil
@@ -4112,17 +4123,6 @@ defined as lowercase."
       (evil-text-object-python-outer-statement count))
      (t
       (evil-forward-char count)))))
-
-(use-package evil-python-movement
-  :demand t
-  :after evil python
-  :general
-  (:keymaps 'python-mode-map
-   :states 'normal
-   "[{" #'evil-python-movement-lsb-lsb
-   "]}" #'evil-python-movement-rsb-rsb
-   "[[" #'evil-python-movement-lsb-m
-   "]]" #'evil-python-movement-rsb-m))
 
 (use-package python-pytest
   :demand t
