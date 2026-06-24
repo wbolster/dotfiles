@@ -154,6 +154,7 @@
   w/narrow-dwim
   w/switch-major-mode
   :functions
+  ring-elements
   w/set-cycle
   :custom
   (auto-save-interval 100)
@@ -344,6 +345,77 @@
   :custom
   (colorful-use-prefix t)
   (colorful-prefix-string "⬤"))
+
+(use-package comint
+  :defer t
+  :ensure emacs
+  :hook (comint-mode-hook . w/comint-mode-hook)
+  :general
+  (:keymaps 'comint-mode-map
+   "<escape>" #'evil-normal-state)
+  (:keymaps 'comint-mode-map
+   :states 'normal
+   "C-e" #'comint-previous-prompt
+   "C-n" #'comint-next-prompt
+   "C-p" #'comint-previous-prompt
+   "<return>" #'w/comint-find-file-or-goto-end)
+  (:keymaps 'comint-mode-map
+   :states 'insert
+   "<return>" #'comint-send-input
+   "C-n" #'comint-next-input
+   "C-p" #'comint-previous-input
+   "C-r" #'comint-history-isearch-backward
+   "C-/" #'w/comint-insert-history)
+  :custom
+  (comint-move-point-for-output 'all)
+  :config
+  (with-eval-after-load 'evil
+    (evil-set-initial-state 'comint-mode 'normal))
+
+  (defun w/comint-mode-hook ()
+    (electric-pair-local-mode -1)
+    (w/show-trailing-whitespace-mode -1)
+    (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom t))
+
+  (defun w/comint-find-file-or-goto-end ()
+    (interactive)
+    (condition-case nil
+        (evil-find-file-at-point-with-line)
+      (user-error
+       (goto-char (point-max))
+       (evil-append-line 0))))
+
+  (defun w/comint-insert-history ()
+    (interactive)
+    (let* ((collection (-uniq (ring-elements comint-input-ring)))
+           (text (completing-read "Command history: " collection nil t)))
+      (insert text))))
+
+(use-package compile
+  :defer t
+  :hook
+  (compilation-filter-hook . ansi-color-compilation-filter)
+  (compilation-finish-functions . w/compilation-finished)
+  (compilation-mode-hook . w/compilation-mode-hook)
+  :general
+  (:keymaps 'compilation-mode-map
+   :states '(motion normal)
+   "g r" #'recompile
+   "C-e" #'compilation-previous-error
+   "C-n" #'compilation-next-error
+   "C-p" #'compilation-previous-error)
+  :custom
+  (compilation-always-kill t)
+  (compilation-scroll-output t)
+  :config
+
+  (defun w/compilation-mode-hook ()
+    (electric-pair-local-mode -1)
+    (w/show-trailing-whitespace-mode -1))
+
+  (defun w/compilation-finished (buffer _status)
+    (with-current-buffer buffer
+      (evil-normal-state))))
 
 (use-package conf-mode
   :defer t
@@ -3541,83 +3613,6 @@ defined as lowercase."
     :args '("fmt" "-")
     :lighter " caddyfmt"
     :group 'caddyfile-format))
-
-(use-package compile
-  :defer t
-  :custom
-  (compilation-always-kill t)
-  (compilation-scroll-output t)
-  :general
-  (:keymaps 'compilation-mode-map
-   :states '(motion normal)
-   "g r" #'recompile
-   "C-e" #'compilation-previous-error
-   "C-n" #'compilation-next-error
-   "C-p" #'compilation-previous-error)
-
-  :hook
-  (compilation-filter-hook . ansi-color-compilation-filter)
-  (compilation-mode-hook . w/compilation-mode-hook)
-  (compilation-finish-functions . w/compilation-finished)
-
-  :config
-  (w/make-hydra w/hydra-compilation nil
-    "compilation"
-    "_r_ecompile"
-    ("r" recompile))
-
-  (defun w/compilation-mode-hook ()
-    (electric-pair-local-mode -1)
-    (w/show-trailing-whitespace-mode -1)
-    (w/set-major-mode-hydra #'w/hydra-compilation/body)
-    (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom))
-
-  (defun w/compilation-finished (buffer _status)
-    (with-current-buffer buffer
-      (evil-normal-state))))
-
-(use-package comint
-  :defer t
-  :ensure nil
-
-  :custom
-  (comint-move-point-for-output 'all)
-
-  :general
-  (:keymaps 'comint-mode-map
-   "<escape>" #'evil-normal-state)
-  (:keymaps 'comint-mode-map
-   :states 'normal
-   "C-e" #'comint-previous-prompt
-   "C-n" #'comint-next-prompt
-   "C-p" #'comint-previous-prompt
-   "<return>" #'w/comint-find-file-or-goto-end)
-  (:keymaps 'comint-mode-map
-   :states 'insert
-   "<return>" #'comint-send-input
-   "C-n" #'comint-next-input
-   "C-p" #'comint-previous-input
-   "C-r" #'comint-history-isearch-backward
-   "C-/" #'w/comint-insert-history)
-
-  :hook (comint-mode-hook . w/compilation-mode-hook)
-
-  :config
-  (evil-set-initial-state 'comint-mode 'normal)
-
-  (defun w/comint-find-file-or-goto-end ()
-    (interactive)
-    (condition-case nil
-        (evil-find-file-at-point-with-line)
-      (user-error
-       (goto-char (point-max))
-       (evil-append-line 0))))
-
-  (defun w/comint-insert-history ()
-    (interactive)
-    (let* ((collection (-uniq (ring-elements comint-input-ring)))
-           (text (completing-read "Command history: " collection nil t)))
-      (insert text))))
 
 (use-package cus-edit
   :ensure nil
