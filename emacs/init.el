@@ -1089,7 +1089,8 @@
 (use-package evil-swap-keys
   :demand t
   :after evil
-  :delight " ⌨️"
+  :custom
+  (evil-swap-keys-mode-line-lighter " ⌨️") ;; no :delight
   :config
   (global-evil-swap-keys-mode))
 
