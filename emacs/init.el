@@ -131,7 +131,7 @@
     fundamental-mode
     jinja2-mode
     js-mode
-    json-mode
+    json-ts-mode
     lisp-interaction-mode
     markdown-mode
     nxml-mode
@@ -1233,10 +1233,10 @@
 
 (use-package jq-format
   :demand t
-  :after json-mode
+  :after json-ts-mode
   :delight
-  (jq-format-json-on-save-mode " ✒️")
-  (jq-format-jsonlines-on-save-mode " ✒️"))
+  jq-format-json-on-save-mode
+  jq-format-jsonlines-on-save-mode)
 
 (use-package js
   :defer t
@@ -1253,6 +1253,20 @@
      evil-shift-width js-indent-level
      tab-width js-indent-level)
     (reformatter-dwim-select 'prettier-format)))
+
+(use-package json-ts-mode
+  :defer t
+  :hook
+  (js-json-mode-hook . w/json-mode-hook)
+  (json-ts-mode-hook . w/json-mode-hook)
+  :config
+  (defun w/json-mode-hook ()
+    (setq
+     evil-shift-width json-ts-mode-indent-offset
+     tab-width json-ts-mode-indent-offset)
+    (reformatter-dwim-select 'jq-format-json)
+    (evil-swap-keys-swap-colon-semicolon)
+    (evil-swap-keys-swap-double-single-quotes)))
 
 (use-package key-chord
   :demand t
@@ -3748,19 +3762,6 @@ defined as lowercase."
   (defun w/html-mode-hook ()
     (reformatter-dwim-select 'prettier-format)
     (setopt evil-shift-width 2)))
-
-(use-package json-mode
-  :defer t
-  :hook (json-mode-hook . w/json-mode-hook)
-  :config
-  (defun w/json-mode-hook ()
-    (setopt
-     tab-width 2
-     evil-shift-width tab-width
-     js-indent-level tab-width)
-    (reformatter-dwim-select 'jq-format-json)
-    (evil-swap-keys-swap-colon-semicolon)
-    (evil-swap-keys-swap-double-single-quotes)))
 
 (use-package markdown-mode
   :defer t
