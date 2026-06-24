@@ -329,6 +329,16 @@
   (add-hook 'completion-at-point-functions #'cape-dabbrev)
   (add-hook 'completion-at-point-functions #'cape-file))
 
+(use-package cc-mode
+  :defer t
+  :hook (c-mode-hook . w/c-mode-hook)
+  :config
+  (defun w/c-mode-hook ()
+    (setopt evil-shift-width 2)
+    (evil-swap-keys-swap-double-single-quotes)
+    (evil-swap-keys-swap-square-curly-brackets)
+    (evil-swap-keys-swap-underscore-dash)))
+
 (use-package colorful-mode
   :defer t
   :custom
@@ -3524,16 +3534,6 @@ defined as lowercase."
   (transient-suffix-put 'magit-dispatch "e" :command 'vdiff-magit-dwim)
   (transient-suffix-put 'magit-dispatch "E" :description "vdiff")
   (transient-suffix-put 'magit-dispatch "E" :command 'vdiff-magit))
-
-(use-package cc-mode
-  :defer t
-  :hook (c-mode-hook . w/c-mode-hook)
-  :config
-  (defun w/c-mode-hook ()
-    (setopt evil-shift-width 2)
-    (evil-swap-keys-swap-double-single-quotes)
-    (evil-swap-keys-swap-square-curly-brackets)
-    (evil-swap-keys-swap-underscore-dash)))
 
 (use-package caddyfile-mode
   :hook (caddyfile-mode-hook . w/caddyfile-mode-hook)
