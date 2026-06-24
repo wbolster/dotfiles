@@ -66,8 +66,8 @@ then:
     systemctl enable --now dnsmasq
 
 however this approach suffers from some 🐔/🥚 issues because the
-[docker0]{.title-ref} interface is not always available, requiring
-manual restarts, etc.
+`docker0` interface is not always available, requiring manual
+restarts, etc.
 
 ## keyboard shortcut to detach
 
