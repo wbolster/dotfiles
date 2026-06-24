@@ -1092,6 +1092,30 @@
   :config
   (global-evil-swap-keys-mode))
 
+(use-package evil-text-object-python
+  :defer t
+  :after evil python
+  :general
+  (:keymaps 'python-mode-map
+   :states '(operator visual)
+   "ul" #'evil-text-object-python-inner-statement
+   "al" #'evil-text-object-python-outer-statement
+   "uf" #'evil-text-object-python-function)
+  (:keymaps 'python-mode-map
+   :states 'operator
+   "<remap> <evil-forward-char>" #'w/evil-forward-char-or-python-statement)
+  :config
+  (defun w/evil-forward-char-or-python-statement (count)
+    "Intelligently pick a statement or a character."
+    (interactive "p")
+    (cond
+     ((memq this-command '(evil-change lispyville-change))
+      (evil-text-object-python-inner-statement count))
+     ((memq this-command '(evil-delete evil-shift-left evil-shift-right lispyville-delete))
+      (evil-text-object-python-outer-statement count))
+     (t
+      (evil-forward-char count)))))
+
 (use-package face-remap
   :defer t
   :if (display-graphic-p)
@@ -4099,30 +4123,6 @@ defined as lowercase."
     ("T" python-pytest-repeat)
     "_v_ariable"
     ("v" w/python-refactor-make-variable)))
-
-(use-package evil-text-object-python
-  :demand t
-  :after evil python
-  :general
-  (:keymaps 'python-mode-map
-   :states '(operator visual)
-   "ul" #'evil-text-object-python-inner-statement
-   "al" #'evil-text-object-python-outer-statement
-   "uf" #'evil-text-object-python-function)
-  (:keymaps 'python-mode-map
-   :states 'operator
-   [remap evil-forward-char] #'w/evil-forward-char-or-python-statement)
-  :config
-  (defun w/evil-forward-char-or-python-statement (count)
-    "Intelligently pick a statement or a character."
-    (interactive "p")
-    (cond
-     ((memq this-command '(evil-change lispyville-change))
-      (evil-text-object-python-inner-statement count))
-     ((memq this-command '(evil-delete evil-shift-left evil-shift-right lispyville-delete))
-      (evil-text-object-python-outer-statement count))
-     (t
-      (evil-forward-char count)))))
 
 (use-package python-pytest
   :demand t
