@@ -1741,6 +1741,18 @@
   (:states 'normal
    "g +" #'reformatter-dwim-on-save-mode))
 
+(use-package rust-mode
+  :defer t
+  :hook (rust-mode-hook . w/rust-mode-hook)
+  :config
+  (defun w/rust-mode-hook ()
+    (evil-swap-keys-swap-double-single-quotes)
+    (evil-swap-keys-swap-square-curly-brackets)
+    (evil-swap-keys-swap-underscore-dash)
+    (origami-mode)
+    (setf (alist-get 'rust-mode origami-parser-alist)
+          'w/origami-parser-imenu-flat)))
+
 (use-package savehist
   :demand t
   :custom
@@ -4385,18 +4397,6 @@ defined as lowercase."
       (save-restriction
         (narrow-to-region beg end)
         (rst-adjust-section-title nil)))))
-
-(use-package rust-mode
-  :defer t
-  :hook (rust-mode-hook . w/rust-mode-hook)
-  :config
-  (defun w/rust-mode-hook ()
-    (evil-swap-keys-swap-underscore-dash)
-    (evil-swap-keys-swap-double-single-quotes)
-    (evil-swap-keys-swap-square-curly-brackets)
-    (origami-mode)
-    (setf (alist-get 'rust-mode origami-parser-alist)
-          'w/origami-parser-imenu-flat)))
 
 (use-package typescript-ts-mode
   ;; built-in
