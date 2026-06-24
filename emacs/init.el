@@ -3249,8 +3249,6 @@ defined as lowercase."
            (new-height (w/clamp-number lines 10 20)))
       (setopt ivy-height new-height))))
 
-(use-package ivy-hydra)
-
 (use-package ivy-rich
   :after ivy counsel
   :custom
