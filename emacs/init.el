@@ -1784,6 +1784,7 @@
 
 (use-package which-key
   :demand t
+  :ensure emacs
   :delight
   :custom
   (which-key-add-column-padding 4)
