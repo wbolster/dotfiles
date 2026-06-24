@@ -313,6 +313,13 @@
   :config
   (auto-dark-mode))
 
+(use-package autorevert
+  :delight auto-revert-mode
+  :custom
+  (auto-revert-check-vc-info t)
+  :config
+  (global-auto-revert-mode))
+
 (use-package cape
   :demand t
   :general
@@ -3249,14 +3256,6 @@ defined as lowercase."
   (ivy-rich-parse-remote-buffer nil)
   :config
   (ivy-rich-mode 1))
-
-(use-package autorevert
-  :delight auto-revert-mode
-  :custom
-  (auto-revert-check-vc-info t)
-  (auto-revert-interval 15)
-  :config
-  (global-auto-revert-mode))
 
 (use-package magit
   :defer t
