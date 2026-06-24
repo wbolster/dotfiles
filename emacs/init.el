@@ -1332,7 +1332,16 @@
 (use-package guess-language
   :defer t
   :custom
-  (guess-language-languages '(en nl)))
+  (guess-language-languages '(en nl))
+  :config
+  ;; flags are not languages 😩
+  ;; todo: setq → setopt; see https://github.com/tmalsburg/guess-language.el/pull/47
+  (setopt
+   guess-language-langcodes
+   (mapcar
+    (pcase-lambda (`(,code ,spell-dictionary ,typo-language _unused-mode-line-string ,display-name))
+      (cons code (list spell-dictionary typo-language (symbol-name code) display-name)))
+    guess-language-langcodes)))
 
 (use-package help
   :demand t
