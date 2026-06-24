@@ -1598,9 +1598,6 @@
 
 (use-package origami
   :defer t
-  :custom-face
-  (origami-fold-replacement-face ((t (:inherit magit-diff-context-highlight))))
-  (origami-fold-fringe-face ((t (:inherit magit-diff-context-highlight))))
   :commands
   w/origami-mode-toggle
   :functions
@@ -1610,8 +1607,6 @@
   :custom
   (origami-show-fold-header t)
   :config
-  (face-spec-reset-face 'origami-fold-header-face)
-
   (defun w/origami-mode-toggle ()
     (interactive)
     (origami-mode 'toggle)
