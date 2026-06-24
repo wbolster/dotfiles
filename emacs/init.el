@@ -213,6 +213,9 @@
   (window-divider-default-right-width 2)
   (window-resize-pixelwise t)
 
+  :custom-face
+  (read-multiple-choice-face ((t (:inverse-video unspecified :inherit transient-key))))
+
   :delight
   (abbrev-mode " ⋯")
   (auto-fill-function " ↲")
