@@ -520,8 +520,8 @@
   :hook (enable-theme-functions . w/tweak-evil-cursor)
   :general
   (:states 'motion
-   "<tab>" 'evil-toggle-fold
-   "C-<tab>" 'evil-jump-forward
+   "<tab>" #'evil-toggle-fold
+   "C-<tab>" #'evil-jump-forward
    ";" #'evil-ex
    "z e" #'evil-scroll-line-up
    "z n" #'evil-scroll-line-down)
@@ -676,7 +676,7 @@
        (lambda () (interactive) (insert num)))))
   (general-define-key
    :states 'insert
-   "M-DEL" 'backward-delete-char-untabify)
+   "M-DEL" #'backward-delete-char-untabify)
 
   (defun w/tweak-evil-cursor (_theme)
     "Tweak the appearance of the evil cursors."
@@ -779,7 +779,7 @@
 
   ;; todo: make "0" work visually in visual line mode. maybe using
   ;; something like this:
-  ;; (evil-redirect-digit-argument evil-motion-state-map "0" 'evil-beginning-of-line)
+  ;; (evil-redirect-digit-argument evil-motion-state-map "0" #'evil-beginning-of-line)
 
   (evil-define-text-object w/evil-text-object-whole-buffer (count &optional _beg _end _type)
     "Text object for the whole buffer."
@@ -827,8 +827,8 @@
   (evil-exchange-highlight-face 'magit-diff-base)
   :general
   (:states '(normal visual)
-   "gx" 'evil-exchange
-   "gX" 'evil-exchange-cancel))
+   "gx" #'evil-exchange
+   "gX" #'evil-exchange-cancel))
 
 (use-package evil-goggles
   :demand t
@@ -918,11 +918,11 @@
   ;; todo: consider evil-embrace + embrace
   :general
   (:states 'operator
-   "s" 'evil-surround-edit
-   "S" 'evil-Surround-edit)
+   "s" #'evil-surround-edit
+   "S" #'evil-Surround-edit)
   (:states 'visual
-   "S" 'evil-surround-region
-   "gS" 'evil-Surround-region)
+   "S" #'evil-surround-region
+   "gS" #'evil-Surround-region)
   :autoload
   w/evil-surround-define-surround-trigger-pairs
   :config
@@ -1533,9 +1533,9 @@
   reformatter-dwim-select
   :general
   (:states '(normal visual)
-   "g =" 'reformatter-dwim-evil)
+   "g =" #'reformatter-dwim-evil)
   (:states 'normal
-   "g +" 'reformatter-dwim-on-save-mode))
+   "g +" #'reformatter-dwim-on-save-mode))
 
 (use-package savehist
   :demand t
@@ -2585,11 +2585,11 @@ defined as lowercase."
   (:keymaps 'deadgrep-mode-map
    :states '(motion normal)
    "g" nil
-   "g r" 'deadgrep-restart
-   "C-n" 'deadgrep-forward
-   "C-e" 'deadgrep-backward
-   "C-p" 'deadgrep-backward
-   "<return>" 'deadgrep-visit-result-other-window
+   "g r" #'deadgrep-restart
+   "C-n" #'deadgrep-forward
+   "C-e" #'deadgrep-backward
+   "C-p" #'deadgrep-backward
+   "<return>" #'deadgrep-visit-result-other-window
    "<tab>" #'deadgrep-toggle-file-results
    )
   :config
@@ -2724,34 +2724,34 @@ defined as lowercase."
  :states '(motion normal)
  "[ SPC" (lambda () (interactive) (save-excursion (evil-insert-newline-above)))
  "] SPC" (lambda () (interactive) (save-excursion (evil-insert-newline-below)))
- "[b" 'evil-prev-buffer
- "]b" 'evil-next-buffer
- "[c" 'flycheck-previous-error
- "]c" 'flycheck-next-error
- "[C" 'flycheck-first-error
- "]C" 'w/flycheck-last-error
- "[e" 'previous-error
- "]e" 'next-error
- "[E" 'first-error
- "]E" 'w/last-error
- "[h" 'w/symbol-overlay-jump-previous-any
- "]h" 'w/symbol-overlay-jump-next-any
- "[H" 'w/symbol-overlay-jump-first
- "]H" 'w/symbol-overlay-jump-last
- "[m" 'smerge-prev
- "]m" 'smerge-next
- "[o" 'symbol-overlay-jump-prev
- "]o" 'symbol-overlay-jump-next
+ "[b" #'evil-prev-buffer
+ "]b" #'evil-next-buffer
+ "[c" #'flycheck-previous-error
+ "]c" #'flycheck-next-error
+ "[C" #'flycheck-first-error
+ "]C" #'w/flycheck-last-error
+ "[e" #'previous-error
+ "]e" #'next-error
+ "[E" #'first-error
+ "]E" #'w/last-error
+ "[h" #'w/symbol-overlay-jump-previous-any
+ "]h" #'w/symbol-overlay-jump-next-any
+ "[H" #'w/symbol-overlay-jump-first
+ "]H" #'w/symbol-overlay-jump-last
+ "[m" #'smerge-prev
+ "]m" #'smerge-next
+ "[o" #'symbol-overlay-jump-prev
+ "]o" #'symbol-overlay-jump-next
  "]s" (lambda () (interactive)
         (evil-forward-word)
         (call-interactively 'evil-next-flyspell-error))
- "[s" 'evil-prev-flyspell-error
- "[w" 'evil-window-prev
- "]w" 'evil-window-next
- "[z" 'origami-backward-fold-same-level
- "]z" 'origami-forward-fold
- "C-," 'evil-prev-buffer
- "C-." 'evil-next-buffer)
+ "[s" #'evil-prev-flyspell-error
+ "[w" #'evil-window-prev
+ "]w" #'evil-window-next
+ "[z" #'origami-backward-fold-same-level
+ "]z" #'origami-forward-fold
+ "C-," #'evil-prev-buffer
+ "C-." #'evil-next-buffer)
 
 ;; todo: this is not very useful currently
 (w/make-hydra w/hydra-navigation-forward nil
@@ -3224,12 +3224,12 @@ defined as lowercase."
   :hook (window-size-change-functions . w/adjust-ivy-height)
   :general
   (:keymaps 'ivy-minibuffer-map
-   "C-h" 'ivy-backward-delete-char
-   "C-w" 'ivy-backward-kill-word
-   "C-u" 'kill-whole-line
-   "C-<return>" 'ivy-immediate-done
-   "C-<tab>" 'ivy-insert-current
-   "<escape>" 'minibuffer-keyboard-quit)
+   "C-h" #'ivy-backward-delete-char
+   "C-w" #'ivy-backward-kill-word
+   "C-u" #'kill-whole-line
+   "C-<return>" #'ivy-immediate-done
+   "C-<tab>" #'ivy-insert-current
+   "<escape>" #'minibuffer-keyboard-quit)
   :custom
   (ivy-count-format "(%d/%d) ")
   (ivy-height 20)
@@ -3312,7 +3312,7 @@ defined as lowercase."
     "<tab>" #'magit-section-cycle
     "C-<tab>" #'magit-section-toggle
     "C-w" w/window-map
-    "/" 'consult-line)
+    "/" #'consult-line)
   (general-def
     :keymaps 'magit-blame-read-only-mode-map
     :states '(motion normal)
@@ -3322,7 +3322,7 @@ defined as lowercase."
     "C-e" #'magit-blame-previous-chunk
     "C-p" #'magit-blame-previous-chunk
     "<tab>" #'magit-blame-cycle-style
-    "<return>" 'magit-show-commit)
+    "<return>" #'magit-show-commit)
   (general-def
     :keymaps 'magit-diff-mode-map
     "SPC" nil
@@ -3453,7 +3453,7 @@ defined as lowercase."
   :general
   (:keymaps 'magit-mode-map
    "'" nil
-   "h" 'forge-dispatch)
+   "h" #'forge-dispatch)
   :config
   (with-demoted-errors "%S"
     (transient-suffix-put 'magit-dispatch "@" :key "h"))
@@ -3606,7 +3606,7 @@ defined as lowercase."
    "C-e" #'comint-previous-prompt
    "C-n" #'comint-next-prompt
    "C-p" #'comint-previous-prompt
-   "<return>" 'w/comint-find-file-or-goto-end)
+   "<return>" #'w/comint-find-file-or-goto-end)
   (:keymaps 'comint-mode-map
    :states 'insert
    "<return>" #'comint-send-input
@@ -3665,15 +3665,15 @@ defined as lowercase."
   :general
   (:keymaps '(emacs-lisp-mode-map lisp-interaction-mode-map)
    :states 'insert
-   "C-d" 'lispy-delete)
+   "C-d" #'lispy-delete)
   (:keymaps '(emacs-lisp-mode-map lisp-interaction-mode-map)
    :states '(motion normal visual)
-   "H" 'lispyville-backward-sexp
-   "I" 'lispyville-forward-sexp
-   "(" 'lispyville-left
-   ")" 'lispyville-right
-   ">" 'lispyville->
-   "<" 'lispyville-<)
+   "H" #'lispyville-backward-sexp
+   "I" #'lispyville-forward-sexp
+   "(" #'lispyville-left
+   ")" #'lispyville-right
+   ">" #'lispyville->
+   "<" #'lispyville-<)
   :hook (emacs-lisp-mode-hook . w/emacs-lisp-mode-hook)
 
   :config
@@ -3851,15 +3851,15 @@ defined as lowercase."
    :states 'normal
    [remap evil-join] #'w/evil-join-python
    [backspace] 'python-nav-backward-up-list
-   "<return>" 'python-black-partial-dwim)
+   "<return>" #'python-black-partial-dwim)
   (:keymaps 'python-mode-map
    :states '(operator visual)
-   "H" 'python-nav-backward-sexp-safe
-   "I" 'python-nav-forward-sexp-safe
-   "ae" 'evil-indent-plus-a-indent-up
-   "an" 'evil-indent-plus-a-indent-up-down
-   "ue" 'evil-indent-plus-i-indent-up
-   "un" 'evil-indent-plus-i-indent-up-down)
+   "H" #'python-nav-backward-sexp-safe
+   "I" #'python-nav-forward-sexp-safe
+   "ae" #'evil-indent-plus-a-indent-up
+   "an" #'evil-indent-plus-a-indent-up-down
+   "ue" #'evil-indent-plus-i-indent-up
+   "un" #'evil-indent-plus-i-indent-up-down)
   (:keymaps 'inferior-python-mode-map
    :states 'insert
    "<tab>" #'python-shell-completion-complete-or-indent)
@@ -4103,9 +4103,9 @@ defined as lowercase."
   :general
   (:keymaps 'python-mode-map
    :states '(operator visual)
-   "ul" 'evil-text-object-python-inner-statement
-   "al" 'evil-text-object-python-outer-statement
-   "uf" 'evil-text-object-python-function)
+   "ul" #'evil-text-object-python-inner-statement
+   "al" #'evil-text-object-python-outer-statement
+   "uf" #'evil-text-object-python-function)
   (:keymaps 'python-mode-map
    :states 'operator
    [remap evil-forward-char] #'w/evil-forward-char-or-python-statement)
@@ -4127,10 +4127,10 @@ defined as lowercase."
   :general
   (:keymaps 'python-mode-map
    :states 'normal
-   "[{" 'evil-python-movement-lsb-lsb
-   "]}" 'evil-python-movement-rsb-rsb
-   "[[" 'evil-python-movement-lsb-m
-   "]]" 'evil-python-movement-rsb-m))
+   "[{" #'evil-python-movement-lsb-lsb
+   "]}" #'evil-python-movement-rsb-rsb
+   "[[" #'evil-python-movement-lsb-m
+   "]]" #'evil-python-movement-rsb-m))
 
 (use-package pip-requirements
   :defer t
