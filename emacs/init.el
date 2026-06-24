@@ -1592,6 +1592,13 @@
   :delight
   (python-coverage-overlay-mode " 🚨"))
 
+(use-package python-docstring
+  :defer t
+  :delight
+  :custom
+  (python-fill-docstring-style 'symmetric)
+  (python-docstring-sentence-end-double-space nil))
+
 (use-package ranger
   :demand t
   :after dired evil
@@ -4116,13 +4123,6 @@ defined as lowercase."
    "]}" #'evil-python-movement-rsb-rsb
    "[[" #'evil-python-movement-lsb-m
    "]]" #'evil-python-movement-rsb-m))
-
-(use-package python-docstring
-  :defer t
-  :delight
-  :custom
-  (python-fill-docstring-style 'symmetric)
-  (python-docstring-sentence-end-double-space nil))
 
 (use-package python-pytest
   :demand t
