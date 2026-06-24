@@ -1329,6 +1329,11 @@
      w/document-font-family
      (w/gsettings-get-font-family (gsettings-get "org.gnome.desktop.interface" "document-font-name")))))
 
+(use-package guess-language
+  :defer t
+  :custom
+  (guess-language-languages '(en nl)))
+
 (use-package help
   :demand t
   :ensure emacs
@@ -3425,11 +3430,6 @@ defined as lowercase."
   :defer t
   :delight " ∼")
 ;; (use-package flyspell-correct-ivy)  ;; todo
-
-(use-package guess-language
-  :defer t
-  :custom
-  (guess-language-languages '(en nl)))
 
 (defvar w/ivy-height-percentage 30
   "Percentage of the screen height that ivy should use.")
