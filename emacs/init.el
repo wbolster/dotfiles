@@ -1958,7 +1958,6 @@
   "W" #'w/sensible-wrap-mode-2
   "b" #'auto-dark-toggle-appearance
   "c" #'flycheck-mode
-  "d" #'diff-hl-mode
   "f" #'auto-fill-mode
   "h" #'symbol-overlay-mode
   "l" #'hl-line-mode
@@ -2704,8 +2703,6 @@ defined as lowercase."
  "]c" 'flycheck-next-error
  "[C" 'flycheck-first-error
  "]C" 'w/flycheck-last-error
- "[d" 'w/diff-hl-previous-hunk
- "]d" 'w/diff-hl-next-hunk
  "[e" 'previous-error
  "]e" 'next-error
  "[E" 'first-error
@@ -3449,31 +3446,6 @@ defined as lowercase."
   (with-demoted-errors "%S"
     (transient-suffix-put 'magit-dispatch "@" :key "h"))
   (transient-append-suffix 'forge-dispatch "f n" '("w" "web" git-link-homepage)))
-
-(use-package diff-hl
-  :hook
-  (magit-post-refresh-hook . diff-hl-magit-post-refresh)
-  (diff-hl-mode-hook . diff-hl-update)
-  :commands
-  w/diff-hl-next-hunk
-  w/diff-hl-previous-hunk
-  :config
-  (w/declare-jump 'w/diff-hl-next-hunk)
-  (w/declare-jump 'w/diff-hl-previous-hunk)
-  (defun w/diff-hl-previous-hunk ()
-    "Jump to the previous hunk."
-    (interactive)
-    (diff-hl-mode)
-    (diff-hl-previous-hunk))
-  (defun w/diff-hl-next-hunk ()
-    "Jump to the next hunk."
-    (interactive)
-    (diff-hl-mode)
-    (diff-hl-next-hunk))
-  (defun w/diff-hl-update-around-advice (fn &rest args)
-    (let ((vc-handled-backends '(Git)))
-      (apply fn args)))
-  (advice-add 'diff-hl-update :around #'w/diff-hl-update-around-advice))
 
 (use-package vdiff
   :defer t
