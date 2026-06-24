@@ -2490,7 +2490,7 @@ defined as lowercase."
 (define-minor-mode w/show-trailing-whitespace-mode
   "Show or hide trailing whitespace."
   :lighter nil
-  (setopt show-trailing-whitespace w/show-trailing-whitespace-mode))
+  (setq-local show-trailing-whitespace w/show-trailing-whitespace-mode))
 
 (use-package thingatpt
   :config
