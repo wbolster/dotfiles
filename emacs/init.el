@@ -1377,6 +1377,11 @@
   (defun w/helpful-evil-lookup-func ()
     (call-interactively #'helpful-symbol)))
 
+(use-package imenu
+  :defer t
+  :autoload
+  imenu--make-index-alist)
+
 (use-package indent-bars
   :defer t)
 
