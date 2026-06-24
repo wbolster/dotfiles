@@ -4217,6 +4217,8 @@ defined as lowercase."
 (use-package rst
   :defer t
   :hook (rst-mode-hook . w/rst-mode-hook)
+  :autoload
+  rst-find-leftmost-column
   :custom
   (rst-default-indent 0)
   (rst-indent-comment 2)
