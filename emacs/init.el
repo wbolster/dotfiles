@@ -525,6 +525,36 @@
         (electric-pair-default-inhibit char)))
   (electric-pair-mode))
 
+(use-package edit-indirect
+  :defer t
+  :after evil
+  :hook
+  (edit-indirect-after-creation-hook . w/edit-indirect-dedent)
+  (edit-indirect-before-commit-hook . w/edit-indirect-reindent)
+  :general
+  (:states 'normal
+   "gb" #'w/evil-edit-indirect)
+  (:keymaps 'edit-indirect-mode-map
+   :states 'normal
+   "<remap> <evil-save-modified-and-close>" #'edit-indirect-commit
+   "<remap> <evil-quit>" #'edit-indirect-abort)
+  :preface
+  (defvar w/edit-indirect-original-indentation 0
+    "Original indentation of the edited region.")
+  (make-variable-buffer-local 'w/edit-indirect-original-indentation)
+  :config
+  (defun w/edit-indirect-dedent ()
+    (let ((indentation (rst-find-leftmost-column (point-min) (point-max))))
+      (setq w/edit-indirect-original-indentation indentation)
+      (indent-rigidly (point-min) (point-max) (- indentation))))
+
+  (defun w/edit-indirect-reindent ()
+    (indent-rigidly (point-min) (point-max) w/edit-indirect-original-indentation))
+
+  (evil-define-operator w/evil-edit-indirect (beg end _type)
+    (interactive "<R>")
+    (edit-indirect-region beg end t)))
+
 (use-package evil
   :demand t
   :hook (enable-theme-functions . w/tweak-evil-cursor)
@@ -2232,40 +2262,6 @@ defined as lowercase."
              (directory-name (file-name-directory file-name))
              (file-exists (file-exists-p directory-name)))
     (call-process "xdg-open" nil 0 nil directory-name)))
-
-(use-package edit-indirect
-  :hook
-  (edit-indirect-after-creation-hook . w/edit-indirect-dedent)
-  (edit-indirect-before-commit-hook . w/edit-indirect-reindent)
-
-  :general
-  (:states 'normal
-   "gb" #'w/evil-edit-indirect)
-  (:keymaps 'edit-indirect-mode-map
-   :states 'normal
-   [remap evil-save-modified-and-close] #'edit-indirect-commit
-   [remap evil-quit] #'edit-indirect-abort)
-
-  :preface
-  (defvar w/edit-indirect-original-indentation 0
-    "Original indentation of the edited region.")
-  (make-variable-buffer-local 'w/edit-indirect-original-indentation)
-
-  :config
-  (defun w/edit-indirect-dedent ()
-    (require 'rst)
-    (let ((indentation (rst-find-leftmost-column (point-min) (point-max))))
-      (setq w/edit-indirect-original-indentation indentation)
-      (when (> indentation 0)
-        (indent-rigidly (point-min) (point-max) (- indentation)))))
-
-  (defun w/edit-indirect-reindent ()
-    (when (> w/edit-indirect-original-indentation 0)
-      (indent-rigidly (point-min) (point-max) w/edit-indirect-original-indentation)))
-
-  (evil-define-operator w/evil-edit-indirect (beg end _type)
-    (interactive "<R>")
-    (edit-indirect-region beg end t)))
 
 (use-package evil-easymotion
   :defer t
