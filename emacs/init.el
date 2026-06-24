@@ -1922,6 +1922,20 @@
   :config
   (add-to-list 'w/read-extended-command-predicate-functions 'transient-command-completion-not-suffix-only-p))
 
+(use-package typescript-ts-mode
+  :defer t
+  :hook (typescript-ts-base-mode-hook . w/typescript-mode-hook)
+  :mode
+  (rx (or ".cts" ".mts") string-end)
+  :custom
+  (typescript-ts-mode-indent-offset 2)
+  :config
+  (defun w/typescript-mode-hook ()
+    (setq evil-shift-width typescript-ts-mode-indent-offset
+          tab-width typescript-ts-mode-indent-offset)
+    (reformatter-dwim-select 'prettier-format)
+    (lsp-deferred)))
+
 (use-package typo
   :defer t
   :delight " ”"
@@ -4397,23 +4411,6 @@ defined as lowercase."
       (save-restriction
         (narrow-to-region beg end)
         (rst-adjust-section-title nil)))))
-
-(use-package typescript-ts-mode
-  ;; built-in
-  :hook (typescript-ts-mode-hook . w/typescript-ts-mode-hook)
-  :mode
-  (rx (or ".ts" ".cts" ".mts") string-end)
-  :custom
-  (typescript-indent-level 2)
-  :general
-  (:keymaps 'typescript-ts-mode-map
-   :states 'insert
-   ;; "<return>" #'c-context-line-break
-   )
-  :config
-  (defun w/typescript-ts-mode-hook ()
-    (reformatter-dwim-select 'prettier-format)
-    (lsp-deferred)))
 
 (use-package web-mode
   :defer t
