@@ -1626,7 +1626,8 @@
       (let ((orig-major-mode major-mode))
         (with-temp-buffer
           (insert content)
-          (funcall orig-major-mode)
+          (delay-mode-hooks
+            (funcall orig-major-mode))
           (let* ((items
                   (-as-> (imenu--make-index-alist t) items
                          (-flatten items)
