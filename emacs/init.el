@@ -3571,6 +3571,7 @@ defined as lowercase."
 
   (defun w/compilation-mode-hook ()
     (electric-pair-local-mode -1)
+    (w/show-trailing-whitespace-mode -1)
     (w/set-major-mode-hydra #'w/hydra-compilation/body)
     (w/compilation-use-xterm-color-filter)
     (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom))
