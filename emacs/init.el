@@ -1185,7 +1185,8 @@
   :general
   (:keymaps 'helpful-mode-map
    :states 'normal
-   "gr" #'helpful-update)
+   "gr" #'helpful-update
+   "<return>" #'push-button)
   :commands
   w/helpful-evil-lookup-func
   :config
