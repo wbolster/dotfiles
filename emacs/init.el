@@ -1235,6 +1235,11 @@
     (call-interactively #'isearch-occur)
     (isearch-exit)))
 
+(use-package ispell
+  :defer t
+  :custom
+  (ispell-dictionary "english"))
+
 (use-package jinja2-mode
   :defer t)
 
@@ -3191,11 +3196,6 @@ defined as lowercase."
 (general-define-key
  :states '(emacs motion)
  (kbd "C-w") w/window-map)
-
-(use-package ispell
-  :defer t
-  :custom
-  (ispell-dictionary "english"))
 
 ;; todo https://github.com/d12frosted/flyspell-correct
 (use-package flyspell
