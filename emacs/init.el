@@ -906,6 +906,13 @@
   :config
   (evil-snipe-mode))
 
+(use-package evil-string-inflection
+  :defer t
+  :general
+  (:keymaps 'normal
+   "g~" #'evil-operator-string-inflection
+   "g`" #'evil-operator-string-inflection))
+
 (use-package evil-surround
   :defer t
   ;; todo: consider evil-embrace + embrace
@@ -2432,13 +2439,6 @@ defined as lowercase."
    "I" #'evil-indent-plus-a-indent-up
    "J" #'evil-indent-plus-a-indent-up-down
    "TAB" #'evil-indent-plus-a-indent-up))
-
-(use-package evil-string-inflection
-  :defer t
-  :general
-  (:keymaps 'normal
-   "g~" #'evil-operator-string-inflection
-   "g`" #'evil-operator-string-inflection))
 
 (use-package evil-textobj-anyblock
   :defer t
