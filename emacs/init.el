@@ -307,6 +307,7 @@
   :demand t
   :if (display-graphic-p)
   :after modus-themes solarized-theme
+  :delight
   :custom
   (auto-dark-themes '((modus-vivendi-tinted) (modus-operandi-tinted)))
   :commands
