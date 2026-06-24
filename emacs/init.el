@@ -3924,9 +3924,8 @@ defined as lowercase."
     (w/evil-surround-define-surround-trigger-pairs
      :local
      "`" "``" "``") ;; for reStructuredText literals in docstrings
-    (evil--add-to-alist
-     origami-parser-alist
-     'python-mode 'w/origami-parser-imenu-flat))
+    (setf (alist-get 'python-mode origami-parser-alist)
+          'w/origami-parser-imenu-flat))
 
   ;; todo: integrate this with the global easymotion hydra
   ;; (evilem-make-motion
@@ -4202,9 +4201,8 @@ defined as lowercase."
             (reverse nodes))))))
 
   (require 'origami)
-  (evil--add-to-alist
-   origami-parser-alist
-   'python-pytest-mode 'w/python-pytest-origami-parser))
+  (setf (alist-get 'python-pytest-mode origami-parser-alist)
+        'w/python-pytest-origami-parser))
 
 (use-package rst
   :defer t
@@ -4235,9 +4233,8 @@ defined as lowercase."
     (flyspell-mode)
     (origami-mode)
     (sphinx-mode)
-    (evil--add-to-alist
-     origami-parser-alist
-     'rst-mode 'w/origami-parser-imenu-flat)
+    (setf (alist-get 'rst-mode origami-parser-alist)
+          'w/origami-parser-imenu-flat)
     (w/evil-surround-define-surround-trigger-pairs
      :local
      "b" "**" "**" ;; strong
@@ -4398,9 +4395,8 @@ defined as lowercase."
     (evil-swap-keys-swap-double-single-quotes)
     (evil-swap-keys-swap-square-curly-brackets)
     (origami-mode)
-    (evil--add-to-alist
-     origami-parser-alist
-     'rust-mode 'w/origami-parser-imenu-flat)))
+    (setf (alist-get 'rust-mode origami-parser-alist)
+          'w/origami-parser-imenu-flat)))
 
 (use-package typescript-ts-mode
   ;; built-in
@@ -4462,9 +4458,8 @@ defined as lowercase."
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-double-single-quotes)
     (origami-mode)
-    (evil--add-to-alist
-     origami-parser-alist
-     'yaml-mode 'w/origami-parser-imenu-flat)))
+    (setf (alist-get 'yaml-mode origami-parser-alist)
+          'w/origami-parser-imenu-flat)))
 
 (load (concat user-emacs-directory "init-local") t)
 
