@@ -3250,8 +3250,6 @@ defined as lowercase."
   :config
   (ivy-rich-mode 1))
 
-(use-package smex)
-
 (use-package autorevert
   :delight auto-revert-mode
   :custom
