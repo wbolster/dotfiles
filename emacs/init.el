@@ -1533,6 +1533,14 @@
   :delight
   (outline-minor-mode " ‣"))
 
+(use-package pip-requirements
+  :defer t
+  :mode
+  ((rx "requirements-" (* any) ".in" string-end) . pip-requirements-mode)
+  :config
+  ;; avoid http request upon initial load
+  (setq pip-packages (string-split "this is a fake package listing")))
+
 (use-package pkgbuild-mode
   :defer t
   :custom
@@ -4108,15 +4116,6 @@ defined as lowercase."
    "]}" #'evil-python-movement-rsb-rsb
    "[[" #'evil-python-movement-lsb-m
    "]]" #'evil-python-movement-rsb-m))
-
-(use-package pip-requirements
-  :defer t
-  :mode
-  ((rx "requirements-" (* any) ".in" string-end) . pip-requirements-mode)
-
-  :config
-  ;; avoid network traffic when opening a requirements.txt file
-  (setq pip-packages '(this is a fake package listing)))
 
 (use-package python-docstring
   :defer t
