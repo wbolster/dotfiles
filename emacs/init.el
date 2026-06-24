@@ -997,6 +997,20 @@
    "+" #'evil-numbers/inc-at-pt
    "-" #'evil-numbers/dec-at-pt))
 
+(use-package evil-org
+  :demand t
+  :after evil org
+  :delight
+  :custom
+  (evil-org-movement-bindings ;; colemak
+   '((left . "h")
+     (down . "n")
+     (up . "e")
+     (right . "i")))
+  (evil-org-retain-visual-state-on-shift t)
+  :config
+  (evil-org-set-key-theme))
+
 (use-package evil-python-movement
   :defer t
   :after evil python
@@ -1564,6 +1578,15 @@
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles partial-completion))))
   (completion-pcm-leading-wildcard t)) ;; emacs 31: partial-completion behaves like substring
+
+(use-package org
+  :defer t
+  :hook (org-mode-hook . w/org-mode-hook)
+  :config
+  (defun w/org-mode-hook ()
+    (evil-org-mode))
+  :custom
+  (org-ellipsis " […]"))
 
 (use-package outline
   :defer t
@@ -3842,30 +3865,6 @@ defined as lowercase."
         (markdown-blockquote-region
          (line-beginning-position)
          (line-end-position))))))
-
-(use-package org
-  :defer t
-  :hook (org-mode-hook . w/org-mode-hook)
-  :config
-  (defun w/org-mode-hook ()
-    (evil-org-mode))
-  :custom
-  (org-ellipsis " [...]"))
-
-(use-package evil-org
-  :defer t
-  :after org
-  :delight
-  :custom
-  (evil-org-retain-visual-state-on-shift t)
-  :config
-  (setopt
-   evil-org-movement-bindings
-   '((left . "h")
-     (down . "n")
-     (up . "e")
-     (right . "i")))
-  (evil-org-set-key-theme))
 
 (use-package python
   :defer t
