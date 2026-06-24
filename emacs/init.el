@@ -2257,7 +2257,8 @@
                    evil-window-increase-width
                    evil-window-decrease-width
                    evil-window-decrease-height
-                   evil-window-increase-height))
+                   evil-window-increase-height
+                   w/evil-window-next-or-vsplit))
   (put command 'repeat-map 'w/window-map))
 
 (defvar-keymap w/leader-map
