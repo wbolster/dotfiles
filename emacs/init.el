@@ -837,7 +837,7 @@
   :commands
   w/shoulder-surf-mode
   :functions
-  evil-goggles-use-magit-faces
+  evil-goggles-use-diff-faces
   :custom
   (evil-goggles-duration 1)
   (evil-goggles-blocking-duration .2)
@@ -861,7 +861,7 @@
     (add-to-list 'evil-goggles--commands it))
 
   (evil-goggles-mode)
-  (evil-goggles-use-magit-faces)
+  (evil-goggles-use-diff-faces)
 
   (define-minor-mode w/shoulder-surf-mode
     "Minor mode to make it easier for others to see what's happening on the screen."
