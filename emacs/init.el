@@ -1752,6 +1752,9 @@
   (python-fill-docstring-style 'symmetric)
   (python-docstring-sentence-end-double-space nil))
 
+(use-package rainbow-delimiters
+  :defer t)
+
 (use-package ranger
   :demand t
   :after dired evil
@@ -3077,9 +3080,6 @@ defined as lowercase."
   "_z_ folds"
   ("z" origami-backward-fold-same-level)
   ("Z" origami-backward-fold-same-level :exit nil))
-
-(use-package rainbow-delimiters
-  :defer t)
 
 (use-package highlight-parentheses
   :defer t
