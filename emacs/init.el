@@ -2198,6 +2198,36 @@
        (t
         (self-insert-command 1))))))
 
+(use-package web-mode
+  :defer t
+  :mode (rx ".vue" string-end)
+  :hook (web-mode-hook . w/web-mode-hook)
+  :custom
+  (web-mode-code-indent-offset 2)
+  (web-mode-css-indent-offset 2)
+  (web-mode-enable-comment-interpolation t)
+  (web-mode-enable-current-column-highlight t)
+  (web-mode-enable-current-element-highlight t)
+  (web-mode-indent-style 2)
+  (web-mode-markup-comment-indent-offset 2)
+  (web-mode-markup-indent-offset 2)
+  (web-mode-part-padding 0)
+  (web-mode-script-padding 0)
+  (web-mode-style-padding 0)
+  :custom-face
+  (web-mode-current-column-highlight-face
+   ((t (:inherit hl-line
+        :background unspecified
+        :weight unspecified))))
+  :config
+  (setf (alist-get "vue" web-mode-engines-auto-pairs nil nil 'equal) nil)
+  (defun w/web-mode-hook ()
+    (setq-local
+     evil-shift-width web-mode-code-indent-offset
+     tab-width web-mode-code-indent-offset)
+    (reformatter-dwim-select 'prettier-format)
+    (lsp-deferred)))
+
 (use-package which-func
   :demand t
   :custom
@@ -4418,33 +4448,6 @@ defined as lowercase."
       (save-restriction
         (narrow-to-region beg end)
         (rst-adjust-section-title nil)))))
-
-(use-package web-mode
-  :defer t
-  :mode (rx ".vue" string-end)
-  :hook (web-mode-hook . w/web-mode-hook)
-  :custom
-  (web-mode-code-indent-offset 2)
-  (web-mode-css-indent-offset 2)
-  (web-mode-enable-comment-interpolation t)
-  (web-mode-enable-current-column-highlight t)
-  (web-mode-enable-current-element-highlight t)
-  (web-mode-indent-style 2)
-  (web-mode-markup-comment-indent-offset 2)
-  (web-mode-markup-indent-offset 2)
-  (web-mode-part-padding 0)
-  (web-mode-script-padding 0)
-  (web-mode-style-padding 0)
-  :custom-face
-  (web-mode-current-column-highlight-face
-   ((t (:inherit hl-line
-        :background unspecified
-        :weight unspecified))))
-  :config
-  (setf (alist-get "vue" web-mode-engines-auto-pairs nil nil 'equal) nil)
-  (defun w/web-mode-hook ()
-    (reformatter-dwim-select 'prettier-format)
-    (lsp-deferred)))
 
 (use-package woman
   :defer t
