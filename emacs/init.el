@@ -1915,6 +1915,51 @@
     (let ((ivy-inhibit-action t))
       (find-file-other-window (counsel-recentf)))))
 
+(use-package replace
+  :defer t
+  :ensure emacs
+  :hook (occur-mode-hook . w/occur-mode-hook)
+  :general
+  (:keymaps 'occur-mode-map
+   :states '(motion normal)
+   "RET" #'occur-mode-goto-occurrence
+   "C-e" #'occur-prev
+   "C-n" #'occur-next
+   "C-p" #'occur-prev
+   "g r" #'revert-buffer)
+  :commands
+  w/occur-dwim
+  w/query-replace-thing-at-point-dwim
+  :config
+  (evil-set-initial-state 'occur-mode 'motion)
+
+  (defun w/occur-mode-hook ()
+    (toggle-truncate-lines t))
+
+  (defun w/occur-dwim (&optional nlines)
+    "Call `occur' with a sane default."
+    (interactive "P")
+    (let ((thing (read-string
+                  "Open occur for regexp: "
+                  (regexp-quote (or (w/thing-at-point-dwim) ""))
+                  'regexp-history)))
+      (occur thing nlines)
+      (evil-normal-state)))
+
+  (defun w/query-replace-thing-at-point-dwim ()
+    "Return ‘query-replace’ for the active region or the symbol at point."
+    (interactive)
+    (let* ((use-boundaries (not (region-active-p)))
+           (thing (regexp-quote (w/thing-at-point-dwim t t)))
+           (replacement
+            (read-from-minibuffer
+             (format "Replace ‘%s’ with: " thing)
+             thing nil nil
+             query-replace-to-history-variable)))
+      (when use-boundaries
+        (setq thing (format "\\_<%s\\_>" thing)))
+      (query-replace-regexp thing replacement))))
+
 (use-package reformatter
   :defer t)
 
@@ -2901,59 +2946,6 @@ defined as lowercase."
       (when deactivate-selection
         (deactivate-mark))
       thing)))
-
-(use-package emacs  ;; replace
-  :commands w/query-replace-thing-at-point-dwim
-  :config
-  (defun w/query-replace-thing-at-point-dwim ()
-    "Return ‘query-replace’ for the active region or the symbol at point."
-    (interactive)
-    (let* ((use-boundaries (not (region-active-p)))
-           (thing (regexp-quote (w/thing-at-point-dwim t t)))
-           (replacement
-            (read-from-minibuffer
-             (format "Replace ‘%s’ with: " thing)
-             thing nil nil
-             query-replace-to-history-variable)))
-      (when use-boundaries
-        (setq thing (format "\\_<%s\\_>" thing)))
-      (query-replace-regexp thing replacement))))
-
-(use-package emacs  ;; occur
-  :hook (occur-mode-hook . w/occur-mode-hook)
-  :general
-  (:keymaps 'occur-mode-map
-   :states '(motion normal)
-   "RET" #'occur-mode-goto-occurrence
-   "C-e" #'occur-prev
-   "C-n" #'occur-next
-   "C-p" #'occur-prev
-   "g r" #'revert-buffer)
-  :commands
-  w/occur-dwim
-  :config
-  (evil-set-initial-state 'occur-mode 'motion)
-  (defun w/occur-mode-hook ()
-    (toggle-truncate-lines t)
-    (w/set-major-mode-hydra #'w/hydra-occur/body))
-
-  (w/make-hydra w/hydra-occur nil
-    "occur"
-    "_n__e_ nav"
-    ("n" occur-next :exit nil)
-    ("e" occur-prev :exit nil)
-    "_f_ollow"
-    ("f" next-error-follow-minor-mode))
-
-  (defun w/occur-dwim (&optional nlines)
-    "Call `occur' with a sane default."
-    (interactive "P")
-    (let ((thing (read-string
-                  "Open occur for regexp: "
-                  (regexp-quote (or (w/thing-at-point-dwim) ""))
-                  'regexp-history)))
-      (occur thing nlines)
-      (evil-normal-state))))
 
 (use-package ag
   :defer t
