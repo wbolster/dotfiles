@@ -531,6 +531,9 @@
   :custom
   (custom-file (expand-file-name "custom.el" user-emacs-directory)))
 
+(use-package cython-mode
+  :defer t)
+
 (use-package delight
   :demand t)
 
@@ -1299,6 +1302,10 @@
     (when-let ((buffer (get-buffer "*Flycheck errors*")))
       (with-current-buffer buffer
         (setq header-line-format nil)))))
+
+(use-package flycheck-cython
+  :demand t
+  :after cython-mode flycheck)
 
 (use-package flycheck-package
   :demand t
@@ -3807,13 +3814,6 @@ defined as lowercase."
     :args '("fmt" "-")
     :lighter " caddyfmt"
     :group 'caddyfile-format))
-
-(use-package cython-mode
-  :defer t)
-
-(use-package flycheck-cython
-  :demand t
-  :after cython-mode flycheck)
 
 (use-package elisp-mode
   :defer t
