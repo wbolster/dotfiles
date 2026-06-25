@@ -6,8 +6,8 @@
 ;; Maintainer: Titus von der Malsburg <malsburg@posteo.de>
 ;; Description: Robust automatic language detection
 ;; Keywords: wp
-;; Package-Version: 20260529.1228
-;; Package-Revision: 78508e91d600
+;; Package-Version: 20260625.628
+;; Package-Revision: f7f74d50b11e
 ;; Package-Requires: ((cl-lib "0.5") (emacs "24"))
 ;; URL: https://github.com/tmalsburg/guess-language.el
 
@@ -119,7 +119,11 @@ current language in the mode line.  This could be text or a
 Unicode flag symbol (displayed as color emoji starting from Emacs
 28.1).  The last element is the name of the language for display
 in the mini buffer."
-  :type '(alist :key-type symbol :value-type list))
+  :type '(alist :key-type symbol
+                :value-type (list string
+                                  (choice string (const nil))
+                                  string
+                                  string)))
 
 (defcustom guess-language-idle-delay 0.2
   "If non-nil, idle delay in seconds before guessing the language of the current paragraph."
