@@ -3024,7 +3024,6 @@ defined as lowercase."
 (use-package symbol-overlay
   :demand t
   :delight
-  :hook (enable-theme-functions . w/symbol-overlay-tweak-faces)
   :custom
   (symbol-overlay-idle-time 1.0)
 
@@ -3041,28 +3040,6 @@ defined as lowercase."
 
   :config
   (setq symbol-overlay-map (make-sparse-keymap))
-
-  (defun w/symbol-overlay-tweak-faces (theme)
-    (set-face-attribute
-     'symbol-overlay-default-face nil
-     :foreground solarized-color-magenta
-     :inherit 'unspecified)
-    (let ((solarized-colors
-           (list solarized-color-yellow-l
-                 solarized-color-orange-l
-                 solarized-color-red-l
-                 solarized-color-magenta-l
-                 solarized-color-violet-l
-                 solarized-color-blue-l
-                 solarized-color-cyan-l
-                 solarized-color-green-l)))
-      (--zip-with
-       (set-face-attribute
-        it nil
-        :foreground (face-attribute 'default :background)
-        :background other)
-       symbol-overlay-faces
-       solarized-colors)))
 
   (defun w/symbol-overlay-put-dwim ()
     "Toggle highlighting of the symbol at point (or the active region's content)."
