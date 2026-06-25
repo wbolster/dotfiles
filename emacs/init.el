@@ -655,7 +655,6 @@
 
 (use-package evil
   :demand t
-  :hook (enable-theme-functions . w/tweak-evil-cursor)
   :general
   (:states 'motion
    "<tab>" #'evil-toggle-fold
@@ -815,16 +814,6 @@
   (general-define-key
    :states 'insert
    "M-DEL" #'backward-delete-char-untabify)
-
-  (defun w/tweak-evil-cursor (_theme)
-    "Tweak the appearance of the evil cursors."
-    (setopt
-     evil-motion-state-cursor (list solarized-color-yellow 'box)
-     evil-normal-state-cursor (list solarized-color-yellow 'box)
-     evil-visual-state-cursor (list solarized-color-yellow 'hollow)
-     evil-insert-state-cursor  (list solarized-color-yellow 'bar)
-     evil-replace-state-cursor (list solarized-color-magenta 'hbar)
-     evil-operator-state-cursor (list solarized-color-magenta 'hollow)))
 
   (defun w/evil-normal-state-cleanup ()
     "Like `evil-force-normal-state', with some extra cleanups."
