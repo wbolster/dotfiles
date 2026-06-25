@@ -149,7 +149,6 @@
 
 (use-package emacs
   :demand t
-  :hook (emacs-startup-hook . (lambda () (load custom-file 'noerror)))
   :commands
   w/narrow-dwim
   w/switch-major-mode
@@ -223,8 +222,6 @@
   (visual-line-mode (:eval (unless w/wrap-lines-mode " ⇉")))
 
   :config
-  (setopt custom-file (expand-file-name "custom.el" user-emacs-directory))
-
   (blink-cursor-mode)
   (context-menu-mode)
   (menu-bar-mode -1)
@@ -518,6 +515,21 @@
     (colorful-mode)
     (modify-syntax-entry ?. ".")
     (modify-syntax-entry ?- "_")))
+
+(use-package custom
+  :defer t
+  :ensure emacs
+  :hook (emacs-startup-hook . (lambda () (load custom-file 'noerror)))
+  :general
+  (:keymaps 'custom-mode-map
+   :states 'normal
+   "C-e" #'widget-backward
+   "C-n" #'widget-forward
+   "C-p" #'widget-backward
+   "<down-mouse-1>" #'widget-button-click
+   "<down-mouse-2>" #'widget-button-click)
+  :custom
+  (custom-file (expand-file-name "custom.el" user-emacs-directory)))
 
 (use-package delight
   :demand t)
@@ -3750,21 +3762,6 @@ defined as lowercase."
     :args '("fmt" "-")
     :lighter " caddyfmt"
     :group 'caddyfile-format))
-
-(use-package cus-edit
-  :ensure nil
-  :general
-  (:keymaps 'custom-mode-map
-   :states 'normal
-   "<return>" #'Custom-newline
-   "C-e" #'widget-backward
-   "C-n" #'widget-forward
-   "C-p" #'widget-backward
-   "ZZ" #'Custom-buffer-done
-   "<down-mouse-1>" #'widget-button-click
-   "<down-mouse-2>" #'widget-button-click)
-  :config
-  (evil-set-initial-state 'Custom-mode 'normal))
 
 (use-package cython-mode
   :defer t)
