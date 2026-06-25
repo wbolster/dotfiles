@@ -1443,8 +1443,12 @@
 
 (use-package indent-bars
   :defer t
+  :hook (indent-bars-mode-hook . w/indent-bars-mode-hook)
   :custom
-  (indent-bars-treesit-support t))
+  (indent-bars-treesit-support t)
+  :config
+  (defun w/indent-bars-mode-hook ()
+    (font-lock-flush)))
 
 (use-package isearch
   :demand t
