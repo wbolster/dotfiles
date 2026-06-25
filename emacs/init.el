@@ -4400,13 +4400,6 @@ defined as lowercase."
         (narrow-to-region beg end)
         (rst-adjust-section-title nil)))))
 
-(use-package woman
-  :defer t
-  :init
-  (add-to-list
-   'warning-suppress-log-types
-   '((defvaralias losing-value woman-topic-history))))
-
 (load (concat user-emacs-directory "init-local") t)
 
 (provide 'init)
