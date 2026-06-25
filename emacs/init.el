@@ -2015,23 +2015,7 @@
   (solarized-height-plus-3 1.0)
   (solarized-height-plus-4 1.0)
   :custom-face
-  (vertical-border ((t (:foreground unspecified :inherit font-lock-comment-face))))
-  :preface
-  ;; todo: avoid these if possible. ones are used for useful things
-  ;; and look up the values in ‘solarized-dark-color-palette-alist’
-  ;; and ‘solarized-light-color-palette-alist’
-  (defvar solarized-color-blue      "#268bd2")
-  (defvar solarized-color-blue-l    "#69b7f0")
-  (defvar solarized-color-cyan-l    "#69cabf")
-  (defvar solarized-color-green-l   "#b4c342")
-  (defvar solarized-color-magenta   "#d33682")
-  (defvar solarized-color-magenta-l "#f771ac")
-  (defvar solarized-color-orange-l  "#f2804f")
-  (defvar solarized-color-red       "#dc322f")
-  (defvar solarized-color-red-l     "#ff6e64")
-  (defvar solarized-color-violet-l  "#9ea0e5")
-  (defvar solarized-color-yellow    "#b58900")
-  (defvar solarized-color-yellow-l  "#deb542"))
+  (vertical-border ((t (:foreground unspecified :inherit font-lock-comment-face)))))
 
 (use-package sphinx-mode
   :demand t
