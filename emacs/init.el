@@ -234,6 +234,11 @@
   (tool-bar-mode -1)
   (window-divider-mode)
 
+  (defun w/last-error ()
+    "Jump to the last error; similar to ‘first-error’."
+    (interactive)
+    (condition-case nil (while t (next-error)) (user-error nil)))
+
   (defun w/narrow-dwim ()
     "Narrow (or widen) to defun or region."
     (interactive)
@@ -284,7 +289,12 @@
            major-modes))
          (choice (completing-read "Switch major mode: " (mapcar #'car choices) nil t))
          (fn (cdr (assoc choice choices))))
-      (funcall fn))))
+      (funcall fn)))
+
+  (define-minor-mode w/show-trailing-whitespace-mode
+    "Show or hide trailing whitespace."
+    :lighter nil
+    (setq-local show-trailing-whitespace w/show-trailing-whitespace-mode)))
 
 (use-package emacs
   :demand t
@@ -2763,11 +2773,6 @@ defined as lowercase."
     "_r_eset"
     ("r" (er/expand-region 0) :exit t)))
 
-(define-minor-mode w/show-trailing-whitespace-mode
-  "Show or hide trailing whitespace."
-  :lighter nil
-  (setq-local show-trailing-whitespace w/show-trailing-whitespace-mode))
-
 (use-package thingatpt
   :config
   (defun w/thing-at-point-dwim (&optional deactivate-selection move-to-beginning)
@@ -3011,11 +3016,6 @@ defined as lowercase."
 
 ;; previous/next thing (inspired by vim unimpaired)
 ;; todo: this should become a fancy hydra
-
-(defun w/last-error ()
-  "Jump to the last error; similar to ‘first-error’."
-  (interactive)
-  (condition-case err (while t (next-error)) (user-error nil)))
 
 (general-define-key
  :states '(motion normal)
