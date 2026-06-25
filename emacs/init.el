@@ -548,7 +548,7 @@
 
 (use-package dired
   :demand t
-  :ensure nil
+  :ensure emacs
   :functions
   dired-get-filename
   :general
