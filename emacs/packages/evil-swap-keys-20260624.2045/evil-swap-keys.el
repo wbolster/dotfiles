@@ -1,8 +1,8 @@
 ;;; evil-swap-keys.el --- Intelligently swap keys on text input with evil -*- lexical-binding: t; -*-
 
-;; Author: Wouter Bolsterlee <wouter@bolsterl.ee>
-;; Package-Version: 20191105.1426
-;; Package-Revision: b5ef105499f9
+;; author: wouter bolsterlee <wouter@bolsterl.ee>
+;; Package-Version: 20260624.2045
+;; Package-Revision: 889672ad0d35
 ;; Package-Requires: ((emacs "24.4"))
 ;; Keywords: convenience data languages tools
 ;; URL: https://github.com/wbolster/evil-swap-keys
@@ -21,7 +21,7 @@
 ;;; Code:
 
 (defgroup evil-swap-keys nil
-  "Intelligently swap keys when entering text"
+  "Intelligently swap keys when entering text."
   :prefix "evil-swap-keys-"
   :group 'evil)
 
@@ -92,7 +92,7 @@ This should match the actual keyboard layout."
     counsel-describe-function
     counsel-describe-variable
     counsel-set-variable)
-  "Commands that read elisp identifiers.  A remapped hyphen (minus) will be ignored here."
+  "Commands that read elisp identifiers. This ignores a remapped hyphen (minus)."
   :group 'evil-swap-keys
   :type '(repeat function))
 
@@ -119,6 +119,11 @@ This should match the actual keyboard layout."
   "Commands that read file names.  A remapped slash will be ignored here."
   :group 'evil-swap-keys
   :type '(repeat function))
+
+(defcustom evil-swap-keys-mode-line-lighter " !1"
+  "The mode line lighter, only shown when there is at least one remapping."
+  :group 'evil-swap-keys
+  :type 'string)
 
 (defvar evil-swap-keys--elisp-input-active nil
   "Flag indicating whether command name input is active.")
@@ -169,12 +174,12 @@ This should match the actual keyboard layout."
        evil-swap-keys--file-input-active nil)))))
 
 (defun evil-swap-keys--elisp-input-around-advice (fn &rest args)
-  "Helper to call FN with ARGS, and set a 'reading elisp' flag."
+  "Helper to call FN with ARGS, and set a ‘reading elisp’ flag."
   (let ((evil-swap-keys--elisp-input-active t))
     (apply fn args)))
 
 (defun evil-swap-keys--file-input-around-advice (fn &rest args)
-  "Helper to call FN with ARGS, and set a 'reading file name' flag."
+  "Helper to call FN with ARGS, and set a ‘reading file name’ flag."
   (let ((evil-swap-keys--file-input-active t))
     (apply fn args)))
 
@@ -182,7 +187,7 @@ This should match the actual keyboard layout."
   "Maybe translate the current input.
 
 The PROMPT argument is ignored; it's only there for compatibility with
-the 'key-translation-map callback signature."
+the ‘key-translation-map’ callback signature."
   ;; This callback uses the local configuration to decide whether the
   ;; key should be translated, and if so, determine the replacement.
   ;; A nil return value implies no key translation takes place.
@@ -202,7 +207,7 @@ the 'key-translation-map callback signature."
     (when should-translate replacement)))
 
 (defun evil-swap-keys--add-bindings ()
-  "Add bindings to the global 'key-translation-map'."
+  "Add bindings to the global ‘key-translation-map’."
   ;; Note: key-translation-map is global. Enabling key swapping in a
   ;; buffer only adds bindings to this global map. Other buffers (with
   ;; possibly different configurations) may have added these bindings
@@ -213,7 +218,7 @@ the 'key-translation-map callback signature."
       #'evil-swap-keys--maybe-translate)))
 
 (defun evil-swap-keys--remove-bindings ()
-  "Remove bindings from the global 'key-translation-map'."
+  "Remove bindings from the global ‘key-translation-map’."
   (dolist (key (where-is-internal #'evil-swap-keys--maybe-translate
                                   key-translation-map))
     (define-key key-translation-map key nil)))
@@ -234,7 +239,7 @@ the 'key-translation-map callback signature."
 (define-minor-mode evil-swap-keys-mode
   "Minor mode to intelligently swap keyboard keys during text input."
   :group 'evil-swap-keys
-  :lighter " !1"
+  :lighter (:eval (when evil-swap-keys--mappings evil-swap-keys-mode-line-lighter))
   (when evil-swap-keys-mode
     (evil-swap-keys--add-bindings)
     (evil-swap-keys--add-advice)
