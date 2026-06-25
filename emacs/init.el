@@ -1430,8 +1430,7 @@
   :general
   (:keymaps 'helpful-mode-map
    :states 'normal
-   "gr" #'helpful-update
-   "<return>" #'push-button)
+   "gr" #'helpful-update)
   :commands
   w/helpful-evil-lookup-func
   :config
