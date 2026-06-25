@@ -1442,7 +1442,9 @@
   imenu--make-index-alist)
 
 (use-package indent-bars
-  :defer t)
+  :defer t
+  :custom
+  (indent-bars-treesit-support t))
 
 (use-package isearch
   :demand t
