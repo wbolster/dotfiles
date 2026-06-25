@@ -660,8 +660,8 @@
   :demand t
   :general
   (:states 'motion
-   "<tab>" #'evil-toggle-fold
-   "C-<tab>" #'evil-jump-forward
+   "TAB" #'evil-toggle-fold
+   "C-TAB" #'evil-jump-forward
    ";" #'evil-ex
    "z e" #'evil-scroll-line-up
    "z n" #'evil-scroll-line-down)
@@ -1167,6 +1167,16 @@
       (evil-text-object-python-outer-statement count))
      (t
       (evil-forward-char count)))))
+
+(use-package expreg
+  :defer t
+  :general
+  (:states 'visual
+   "TAB" #'expreg-expand
+   "S-TAB" #'expreg-contract
+   "<backtab>" #'expreg-contract
+   "+" #'expreg-expand
+   "-" #'expreg-contract))
 
 (use-package face-remap
   :defer t
