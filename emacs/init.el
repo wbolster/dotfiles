@@ -1783,6 +1783,82 @@
   (python-fill-docstring-style 'symmetric)
   (python-docstring-sentence-end-double-space nil))
 
+(use-package python-pytest
+  :demand t
+  :after python
+  :custom
+  (python-pytest-arguments
+   '("--color"
+     "--failed-first"
+     "--maxfail=10"
+     "--verbose --verbose"))
+  :general
+  (:keymaps 'python-pytest-mode-map
+   :states 'motion
+   "g r" #'python-pytest-repeat)
+
+  :hook
+  (python-pytest-mode-hook . w/python-pytest-mode-hook)
+  (python-pytest-finished-hook . evil-force-normal-state)
+
+  :config
+  (w/make-hydra w/hydra-python-pytest nil
+    "python-pytest"
+    "_r_epeat"
+    ("r" python-pytest-repeat nil)
+    "_t_ pytest"
+    ("t" python-pytest-dispatch nil)
+    ("T" python-pytest-repeat nil))
+
+  (defun w/python-pytest-mode-hook ()
+    (origami-mode)
+    (w/show-trailing-whitespace-mode -1)
+    (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom t)
+    (w/set-major-mode-hydra #'w/hydra-python-pytest/body)
+    (modify-syntax-entry ?/ ".")
+    (when-let ((project-root (projectile-project-root)))
+      (add-to-list 'prettify-symbols-alist `(,(string-remove-suffix "/" project-root) . ?…)))
+    (when-let ((venv-path (getenv "VIRTUAL_ENV")))
+      (add-to-list 'prettify-symbols-alist `(,venv-path . ?…)))
+    (prettify-symbols-mode))
+
+  (defun w/python-pytest-origami-parser (create)
+    (lambda (content)
+      (let ((orig-major-mode major-mode))
+        (with-temp-buffer
+          (insert content)
+          (goto-char (point-min))
+          (let ((nodes nil)
+                (node nil)
+                (pos (point-min)))
+            (while (search-forward-regexp "^===" nil t)
+              (beginning-of-line)
+              (setq node (funcall
+                          create
+                          pos
+                          (1- (point))
+                          (save-excursion
+                            (goto-char pos)
+                            (- (line-end-position) (line-beginning-position)))
+                          nil)
+                    nodes (cons node nodes)
+                    pos (point))
+              (forward-char))
+            (setq node (funcall
+                        create
+                        (1- (point))
+                        (point-max)
+                        (progn
+                          (end-of-line)
+                          (current-column))
+                        nil)
+                  nodes (cons node nodes))
+            (reverse nodes))))))
+
+  (require 'origami)
+  (setf (alist-get 'python-pytest-mode origami-parser-alist)
+        'w/python-pytest-origami-parser))
+
 (use-package rainbow-delimiters
   :defer t)
 
@@ -4171,82 +4247,6 @@ defined as lowercase."
     ("T" python-pytest-repeat)
     "_v_ariable"
     ("v" w/python-refactor-make-variable)))
-
-(use-package python-pytest
-  :demand t
-  :after python
-  :custom
-  (python-pytest-arguments
-   '("--color"
-     "--failed-first"
-     "--maxfail=10"
-     "--verbose --verbose"))
-  :general
-  (:keymaps 'python-pytest-mode-map
-   :states 'motion
-   "g r" #'python-pytest-repeat)
-
-  :hook
-  (python-pytest-mode-hook . w/python-pytest-mode-hook)
-  (python-pytest-finished-hook . evil-force-normal-state)
-
-  :config
-  (w/make-hydra w/hydra-python-pytest nil
-    "python-pytest"
-    "_r_epeat"
-    ("r" python-pytest-repeat nil)
-    "_t_ pytest"
-    ("t" python-pytest-dispatch nil)
-    ("T" python-pytest-repeat nil))
-
-  (defun w/python-pytest-mode-hook ()
-    (origami-mode)
-    (w/show-trailing-whitespace-mode -1)
-    (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom t)
-    (w/set-major-mode-hydra #'w/hydra-python-pytest/body)
-    (modify-syntax-entry ?/ ".")
-    (when-let ((project-root (projectile-project-root)))
-      (add-to-list 'prettify-symbols-alist `(,(string-remove-suffix "/" project-root) . ?…)))
-    (when-let ((venv-path (getenv "VIRTUAL_ENV")))
-      (add-to-list 'prettify-symbols-alist `(,venv-path . ?…)))
-    (prettify-symbols-mode))
-
-  (defun w/python-pytest-origami-parser (create)
-    (lambda (content)
-      (let ((orig-major-mode major-mode))
-        (with-temp-buffer
-          (insert content)
-          (goto-char (point-min))
-          (let ((nodes nil)
-                (node nil)
-                (pos (point-min)))
-            (while (search-forward-regexp "^===" nil t)
-              (beginning-of-line)
-              (setq node (funcall
-                          create
-                          pos
-                          (1- (point))
-                          (save-excursion
-                            (goto-char pos)
-                            (- (line-end-position) (line-beginning-position)))
-                          nil)
-                    nodes (cons node nodes)
-                    pos (point))
-              (forward-char))
-            (setq node (funcall
-                        create
-                        (1- (point))
-                        (point-max)
-                        (progn
-                          (end-of-line)
-                          (current-column))
-                        nil)
-                  nodes (cons node nodes))
-            (reverse nodes))))))
-
-  (require 'origami)
-  (setf (alist-get 'python-pytest-mode origami-parser-alist)
-        'w/python-pytest-origami-parser))
 
 (use-package rst
   :defer t
