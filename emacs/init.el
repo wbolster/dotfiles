@@ -951,6 +951,25 @@
   :config
   (global-evil-colemak-basics-mode))
 
+(use-package evil-collection
+  :demand t
+  :after evil
+  ;; fixme: this hook used to mess up my own overrides. still relevant?
+  :hook
+  (evil-collection-setup-hook . w/colemak-hnei-rotation)
+  :custom
+  evil-collection-want-unimpaired-p nil
+  :config
+  (defun w/colemak-hnei-rotation (_mode mode-keymaps &rest _rest)
+    (evil-collection-translate-key 'normal mode-keymaps
+      "n" "j"
+      "e" "k"
+      "i" "l"
+      "j" "e"
+      "k" "n"
+      "l" "i"))
+  (evil-collection-init))
+
 (use-package evil-commentary
   :defer t
   :after evil
@@ -3656,26 +3675,6 @@ defined as lowercase."
                 (read-file-name "Template: " (concat dir template-dir)) nil t 'file-regular-p))
         (insert-file-contents template-file)
       (user-error "No merge request templates found"))))
-
-(use-package evil-collection
-  :demand t
-  :after evil
-  :custom
-  evil-collection-want-unimpaired-p nil
-
-  :config
-  (defun w/colemak-hnei-rotation (_mode mode-keymaps &rest _rest)
-    (evil-collection-translate-key 'normal mode-keymaps
-      "n" "j"
-      "e" "k"
-      "i" "l"
-      "j" "e"
-      "k" "n"
-      "l" "i"))
-
-  ;; todo this messes up my own overrides somehow
-  ;; (add-hook 'evil-collection-setup-hook #'w/colemak-hnei-rotation)
-  (evil-collection-init))
 
 (use-package magit-imerge
   :after magit)
