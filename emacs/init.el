@@ -950,7 +950,7 @@
   :hook
   (evil-collection-setup-hook . w/colemak-hnei-rotation)
   :custom
-  evil-collection-want-unimpaired-p nil
+  (evil-collection-want-unimpaired-p nil)
   :config
   (defun w/colemak-hnei-rotation (_mode mode-keymaps &rest _rest)
     (evil-collection-translate-key 'normal mode-keymaps
