@@ -2912,23 +2912,6 @@ defined as lowercase."
   (:keymaps 'evil-outer-text-objects-map
    "b" #'evil-textobj-anyblock-a-block))
 
-(use-package expand-region
-  :defer t
-  :custom
-  (expand-region-fast-keys-enabled nil)
-  :general
-  (:states 'visual
-   "<tab>" #'w/hydra-expand-region/er/expand-region)
-  :config
-  (w/make-hydra w/hydra-expand-region (:foreign-keys run)
-    "expand-region"
-    "_<tab>_ expand"
-    ("<tab>" er/expand-region :exit nil)
-    "_u_ndo"
-    ("u" (er/expand-region -1) :exit nil)
-    "_r_eset"
-    ("r" (er/expand-region 0) :exit t)))
-
 (use-package thingatpt
   :config
   (defun w/thing-at-point-dwim (&optional deactivate-selection move-to-beginning)
