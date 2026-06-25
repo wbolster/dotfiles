@@ -3292,6 +3292,9 @@ defined as lowercase."
   w/projectile-open-gui-file-browser
   w/projectile-project-bury-buffers
 
+  :functions
+  projectile-project-root
+
   :init
   (add-hook 'find-file-hook (lambda () (require 'projectile)))
 
