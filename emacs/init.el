@@ -1286,6 +1286,10 @@
   :config
   (flycheck-package-setup))
 
+(use-package flyspell
+  :defer t
+  :delight " ∼")
+
 (use-package git-link
   :defer t
   :custom
@@ -3433,12 +3437,6 @@ defined as lowercase."
 (general-define-key
  :states '(emacs motion)
  (kbd "C-w") w/window-map)
-
-;; todo https://github.com/d12frosted/flyspell-correct
-(use-package flyspell
-  :defer t
-  :delight " ∼")
-;; (use-package flyspell-correct-ivy)  ;; todo
 
 (defvar w/ivy-height-percentage 30
   "Percentage of the screen height that ivy should use.")
