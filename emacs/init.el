@@ -2126,7 +2126,7 @@
 (use-package sqlformat
   :defer t
   :after sql
-  :delight ('sqlformat-on-save-mode " 💄")
+  :delight sqlformat-on-save-mode
   :custom
   (sqlformat-command 'sqlfluff))
 
