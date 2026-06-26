@@ -66,6 +66,22 @@ discover projects there.
 (autoload 'projectile-discover-projects-in-search-path "projectile" "\
 Discover projects in `projectile-project-search-path'.
 Invoked automatically when `projectile-mode' is enabled." t)
+(autoload 'projectile-index-project-async "projectile" "\
+Index PROJECT-ROOT in the background and populate the files cache.
+
+This warms `projectile-projects-cache' without blocking Emacs, so a
+later `projectile-find-file' (or any command that lists project files)
+finds the cache already populated instead of indexing synchronously.
+
+Only the external-command indexing methods (`alien' and `hybrid') can be
+warmed this way; under `native' indexing this is a no-op with a message,
+since the Elisp directory walk cannot run off the main thread.  Warming
+also requires caching to be enabled.
+
+When PROJECT-ROOT is omitted the current project is used.  Returns the
+indexing process, or nil when nothing was started.
+
+(fn &optional PROJECT-ROOT)" t)
 (autoload 'projectile-switch-to-buffer "projectile" "\
 Switch to a project buffer." t)
 (autoload 'projectile-switch-to-buffer-other-window "projectile" "\

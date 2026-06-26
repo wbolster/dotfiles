@@ -6,8 +6,8 @@
 ;; Homepage: https://github.com/magit/with-editor
 ;; Keywords: processes terminals
 
-;; Package-Version: 20260623.1348
-;; Package-Revision: c319ef4d3a9d
+;; Package-Version: 20260625.855
+;; Package-Revision: 36c34610b6b7
 ;; Package-Requires: (
 ;;     (emacs   "28.1")
 ;;     (compat  "31.0")
@@ -552,7 +552,10 @@ at run-time.
             process-environment))
     ;; As last resort fallback to the sleeping editor.
     (push (concat "ALTERNATE_EDITOR=" with-editor-sleeping-editor)
-          process-environment)))
+          process-environment)
+    ;; Work around bug in server.el of Emacs < 31.1.  #139
+    (when (member (getenv "TERM") '(nil ""))
+      (setenv "TERM" "dumb"))))
 
 (defun with-editor-server-window ()
   (or (and buffer-file-name
