@@ -2109,7 +2109,9 @@
   (require 'sqlformat)
 
   (defun w/sql-mode-hook ()
-    (setq-local evil-shift-width 2)
+    (setq-local
+     evil-shift-width 2
+     tab-width 2)
     (w/sql-tweak-syntax-table)
     (add-hook 'hack-local-variables-hook #'w/sql-tweak-syntax-table t t)
     (reformatter-dwim-select 'sqlformat))
