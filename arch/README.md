@@ -73,7 +73,7 @@ create a new gpt layout using discoverable partition types:
     wipefs $disk
     cat << EOF | sfdisk $disk
     label: gpt
-    size=1GiB, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B, name="EFI"
+    size=4GiB, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B, name="EFI"
     type=4F68BCE3-E8CD-4DB1-96E7-FBCAF984B709, name="encrypted-system"
     EOF
 
