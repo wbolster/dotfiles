@@ -156,6 +156,10 @@
   :functions
   ring-elements
   w/set-cycle
+  :bind
+  (:map indent-rigidly-map
+   ("i" . indent-rigidly-right)
+   ("I" . indent-rigidly-right-to-tab-stop))
   :custom
   (auto-save-interval 100)
   (blink-cursor-blinks 1)
