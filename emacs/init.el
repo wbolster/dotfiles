@@ -2114,10 +2114,14 @@
      tab-width 2)
     (w/sql-tweak-syntax-table)
     (add-hook 'hack-local-variables-hook #'w/sql-tweak-syntax-table t t)
-    (reformatter-dwim-select 'sqlformat))
+    (reformatter-dwim-select 'sqlformat)
+    (sqlind-minor-mode))
 
   (defun w/sql-tweak-syntax-table ()
     (modify-syntax-entry ?_ "w")))
+
+(use-package sql-indent
+  :defer t)
 
 (use-package sqlformat
   :defer t
