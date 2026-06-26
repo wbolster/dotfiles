@@ -2115,6 +2115,8 @@
   :commands
   w/sql-tweak-syntax-table
   :config
+  (clear-abbrev-table sql-mode-abbrev-table)
+
   (defun w/sql-mode-hook ()
     (setq-local
      evil-shift-width 2
