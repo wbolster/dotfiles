@@ -2559,7 +2559,7 @@
   "I" #'evil-window-right
   "N" #'evil-window-down
   "R" #'evil-window-rotate-upwards
-  "S" #'evil-window-new
+  "S" #'evil-window-split
   "U" #'winner-redo
   "V" #'evil-window-vnew
   "b" #'balance-windows
@@ -2568,13 +2568,13 @@
   "f" #'make-frame
   "h" #'buf-move-left
   "i" #'buf-move-right
+  "k" #'evil-window-delete
   "n" #'buf-move-down
   "o" #'delete-other-windows
   "p" #'toggle-window-dedicated
   "r" #'evil-window-rotate-downwards
-  "s" #'evil-window-split
+  "s" #'evil-window-vsplit
   "u" #'winner-undo
-  "v" #'evil-window-vsplit
   "w" #'w/evil-window-next-or-vsplit)
 
 (dolist (command '(evil-window-rotate-downwards
