@@ -3492,9 +3492,6 @@ defined as lowercase."
    ("C-5" . w/goto-window-5)
    ("C-6" . w/goto-window-6))))
 
-(use-package buffer-move
-  :defer t)
-
 (defun w/make-frame-new-buffer ()
   "Make a new frame with a new buffer."
   (interactive)
