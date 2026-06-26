@@ -150,6 +150,7 @@
 (use-package emacs
   :demand t
   :commands
+  w/copy-filename-to-clipboard
   w/narrow-dwim
   w/switch-major-mode
   :functions
@@ -230,6 +231,13 @@
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
   (window-divider-mode)
+
+  (defun w/copy-filename-to-clipboard ()
+    "Copy the current buffer's file name to the (system) clipboard."
+    (interactive)
+    (unless buffer-file-name
+      (user-error "Buffer is not visiting a file"))
+    (kill-new  buffer-file-name))
 
   (defun w/last-error ()
     "Jump to the last error; similar to ‘first-error’."
@@ -2383,7 +2391,8 @@
   "i" #'insert-file
   "n" #'evil-buffer-new
   "r" #'consult-recent-file
-  "s" #'sudo-edit)
+  "s" #'sudo-edit
+  "y" #'w/copy-filename-to-clipboard)
 
 (defvar-keymap w/flycheck-map
   :doc "Keymap for Flycheck commands."
