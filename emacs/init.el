@@ -1188,6 +1188,7 @@
   w/restore-global-text-scale-height
   w/save-global-text-scale-height
   :custom
+  (buffer-face-mode-face 'variable-pitch-text)
   (global-text-scale-adjust-limits '(60 . 500))
   :general
   (:states 'motion
