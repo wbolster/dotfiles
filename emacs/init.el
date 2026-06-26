@@ -310,6 +310,16 @@
   (ns-right-alternate-modifier 'none)
   (ns-use-native-fullscreen nil))
 
+(use-package abbrev
+  :demand t
+  :ensure emacs
+  :custom
+  (abbrev-mode t)
+  (abbrev-suggest t)
+  (save-abbrevs nil)
+  :config
+  (define-abbrev global-abbrev-table "emcas" "emacs"))
+
 (use-package aggressive-indent
   :defer t
   :delight " ⇤")
