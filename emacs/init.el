@@ -2115,9 +2115,6 @@
   :commands
   w/sql-tweak-syntax-table
   :config
-  (require 'reformatter-dwim)
-  (require 'sqlformat)
-
   (defun w/sql-mode-hook ()
     (setq-local
      evil-shift-width 2
