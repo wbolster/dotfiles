@@ -1206,19 +1206,18 @@
 (use-package face-remap
   :defer t
   :if (display-graphic-p)
+  :bind
+  (("C-0" . global-text-scale-adjust)
+   ("C--" . global-text-scale-adjust)
+   ("C-=" . global-text-scale-adjust)
+   ("C-<wheel-down>" . mouse-wheel-global-text-scale)
+   ("C-<wheel-up>" . mouse-wheel-global-text-scale))
   :functions
   w/restore-global-text-scale-height
   w/save-global-text-scale-height
   :custom
   (buffer-face-mode-face 'variable-pitch-text)
   (global-text-scale-adjust-limits '(60 . 500))
-  :general
-  (:states 'motion
-   "C-0" #'global-text-scale-adjust
-   "C--" #'global-text-scale-adjust
-   "C-=" #'global-text-scale-adjust
-   "C-<wheel-down>" #'mouse-wheel-global-text-scale
-   "C-<wheel-up>" #'mouse-wheel-global-text-scale)
   :config
   (defvar w/global-text-scale-height nil)
 
