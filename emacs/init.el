@@ -799,6 +799,7 @@
   evil-initial-state-for-buffer
   evil-range
   evil-set-auxiliary-keymap
+  w/evil-declare-jump
   :init
   (setopt
    evil-respect-visual-line-mode t
@@ -825,6 +826,10 @@
   (general-define-key
    :states 'insert
    "M-DEL" #'backward-delete-char-untabify)
+
+  (defun w/evil-declare-jump (command)
+    "Declare COMMAND as an Evil jump command."
+    (evil-add-command-properties command :jump t))
 
   (defun w/evil-normal-state-cleanup ()
     "Like `evil-force-normal-state', with some extra cleanups."
@@ -2358,7 +2363,6 @@
     (if (one-window-p)
         (w/split-window-right)
       (other-window 1)))
-  (w/declare-jump 'w/other-window-or-split-right)
 
   (defun w/select-nth-window (&optional n)
     "Select nth window in absolute frame order.
@@ -2384,7 +2388,6 @@ treating 9 as ‘last window’."
               (window (nth index windows)))
         (select-window window)
       (user-error "No window %s" n)))
-  (w/declare-jump 'w/select-nth-window)
 
   (defun w/split-window-below ()
     (interactive)
@@ -3442,31 +3445,6 @@ defined as lowercase."
   :commands
   avy-with) ;; used by evil-easymotion helpers
 
-(defun w/declare-jump (command)
-  "Declare COMMAND to be nonrepeatable."
-  (evil-add-command-properties command :jump t))
-
-(--each '(evil-backward-paragraph
-          evil-backward-section-begin
-          evil-backward-section-end
-          evil-forward-paragraph
-          evil-forward-section-begin
-          evil-forward-section-end
-          evil-goto-first-line
-          evil-goto-line
-          evil-goto-mark
-          evil-goto-mark-line
-          evil-scroll-down
-          evil-scroll-page-down
-          evil-scroll-page-up
-          evil-scroll-up
-          evil-window-bottom
-          evil-window-middle
-          evil-window-top
-          recenter-top-bottom
-          switch-to-buffer)
-  (w/declare-jump it))
-
 (use-package dumb-jump
   :general
   (:states 'motion
@@ -3489,8 +3467,8 @@ defined as lowercase."
     (let ((dumb-jump-window 'other))
       (w/dumb-jump-go)))
 
-  (w/declare-jump 'w/dumb-jump-go)
-  (w/declare-jump 'w/dumb-jump-go-other-window)
+  (w/evil-declare-jump 'w/dumb-jump-go)
+  (w/evil-declare-jump 'w/dumb-jump-go-other-window)
 
   (defun w/jump-around-advice (fn &rest args)
     ;; TODO: figure out whether the buffer changed. if the jump was in
