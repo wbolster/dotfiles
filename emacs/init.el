@@ -2357,11 +2357,18 @@
 
 (use-package yasnippet
   :demand t
-  :delight (yas-minor-mode " 🐒")
+  :delight
+  (yas-minor-mode (:eval (when (w/yas-snippets-available-p) " 🐒")))
+  :functions
+  yas--all-templates
+  yas--get-snippet-tables
   :init
   (setopt yas-alias-to-yas/prefix-p nil)
   :config
-  (yas-global-mode))
+  (yas-global-mode)
+  (defun w/yas-snippets-available-p ()
+    ;; logic based on yas-insert-snippet
+    (yas--all-templates (yas--get-snippet-tables))))
 
 (defvar-keymap w/buffer-map
   :doc "Keymap for buffer commands."
