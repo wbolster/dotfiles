@@ -42,9 +42,7 @@
   (use-package-hook-name-suffix nil)
   (use-package-verbose t))
 
-(use-package benchmark-init
-  :demand t
-  :hook (after-init-hook . benchmark-init/deactivate))
+(add-hook 'after-init-hook (lambda () (message "after init hook!")))
 
 ;; Early packages
 
