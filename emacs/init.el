@@ -35,9 +35,7 @@
 (use-package use-package
   :demand t
   :custom
-  ;; todo:enable ‘use-package-always-defer’ when everything that needs
-  ;; it has ‘:demand t’
-  ;; (use-package-always-defer t)
+  (use-package-always-defer t)
   (use-package-always-ensure t)
   (use-package-compute-statistics t)
   (use-package-enable-imenu-support t)
