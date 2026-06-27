@@ -1,0 +1,2 @@
+;; Generated package description from midi-kbd.el  -*- no-byte-compile: t -*-
+(define-package "midi-kbd" "0.2" "Create keyboard events from Midi input" '((emacs "25")) :commit "d23eea421486cf94e0282ac0cc43fd9700174c77" :url "https://elpa.gnu.org/packages/midi-kbd.html" :authors '(("David Kastrup" . "dak@gnu.org")) :maintainer '("David Kastrup" . "dak@gnu.org") :keywords '("convenience" "hardware" "multimedia"))
