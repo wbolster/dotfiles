@@ -2068,6 +2068,9 @@
     (setf (alist-get 'rust-mode origami-parser-alist)
           'w/origami-parser-imenu-flat)))
 
+(use-package rx
+  :defer t)
+
 (use-package savehist
   :demand t
   :custom

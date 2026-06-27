@@ -1,0 +1,2 @@
+;; Generated package description from xr.el  -*- no-byte-compile: t -*-
+(define-package "xr" "2.2" "Convert string regexp to rx notation" '((emacs "27.1")) :commit "694defa220113d0acaa78fd646dcff9f1a08fad9" :authors '(("Mattias Engdegård" . "mattias.engdegard@gmail.com")) :maintainer '("Mattias Engdegård" . "mattias.engdegard@gmail.com") :keywords '("lisp" "regexps") :url "https://github.com/mattiase/xr")
