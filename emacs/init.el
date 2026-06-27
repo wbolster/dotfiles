@@ -1439,7 +1439,9 @@
   w/gsettings-get-font-family
   :config
   (defun w/gsettings-get-font-family (font-name-with-size)
-    (replace-regexp-in-string "\\(.*\\) [0-9.]+" "\\1" font-name-with-size))
+    (replace-regexp-in-string
+     (rx " " (+ (in "0-9")) (? "." (+ (in "0-9"))) string-end)
+     "" font-name-with-size))
   (when (gsettings-gnome-running?)
     (gsettings-apply-gnome-settings)
     (setopt
