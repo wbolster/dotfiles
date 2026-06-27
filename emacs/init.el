@@ -1846,7 +1846,7 @@
     (auto-fill-mode)
     (column-number-mode)
     (flyspell-prog-mode)
-    (highlight-parentheses-mode)
+    (show-paren-mode)
     (symbol-overlay-mode)
     (w/show-trailing-whitespace-mode)))
 
@@ -3290,10 +3290,6 @@ defined as lowercase."
  "C-," #'evil-prev-buffer
  "C-." #'evil-next-buffer)
 
-(use-package highlight-parentheses
-  :defer t
-  :delight)
-
 (use-package adaptive-wrap
   :hook (visual-line-mode-hook . w/maybe-activate-adaptive-wrap-prefix-mode)
   :config
@@ -3831,7 +3827,6 @@ defined as lowercase."
     (lispy-mode)
     (lispyville-mode)
     (aggressive-indent-mode)
-    (highlight-parentheses-mode -1)
     (rainbow-delimiters-mode))
 
   (require 'which-func)
