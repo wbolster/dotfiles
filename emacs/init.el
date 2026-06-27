@@ -765,7 +765,6 @@
   evil-buffer-new
   evil-change-to-initial-state
   evil-declare-repeat
-  evil-define-key*
   evil-delete
   evil-delete-whole-line
   evil-end-of-line
@@ -793,24 +792,8 @@
   evil-repeat-stop
   evil-set-initial-state
   evil-set-jump
-  evil-window-decrease-height
-  evil-window-decrease-width
-  evil-window-delete
-  evil-window-down
-  evil-window-increase-height
-  evil-window-increase-width
-  evil-window-left
-  evil-window-new
-  evil-window-next
-  evil-window-prev
-  evil-window-right
   evil-window-rotate-downwards
   evil-window-rotate-upwards
-  evil-window-split
-  evil-window-top-left
-  evil-window-up
-  evil-window-vnew
-  evil-window-vsplit
   :functions
   evil-add-command-properties
   evil-initial-state-for-buffer
@@ -2329,6 +2312,88 @@
   :config
   (global-whitespace-cleanup-mode))
 
+(use-package windmove
+  :defer t
+  :custom
+  (windmove-wrap-around t))
+
+(use-package window
+  :demand t
+  :ensure emacs
+  :after evil
+  :general
+  ("C-SPC" #'other-window
+   "C-S-SPC" #'w/other-window-backward)
+  (:states '(emacs motion)
+   "C-w" '(:keymap w/window-map) ;; replace evil-window-map completely
+   "C-SPC" #'other-window
+   "C-S-SPC" #'w/other-window-backward)
+  :commands
+  w/other-window-backward
+  w/other-window-or-split-right
+  w/select-nth-window
+  w/split-window-below
+  w/split-window-right
+  :functions
+  w/fit-bottom-error-window-to-buffer
+  :config
+  (dolist (map (list evil-emacs-state-map evil-motion-state-map global-map))
+    (dolist (n (number-sequence 1 9))
+      (let* ((modifier (if (eq system-type 'darwin) "s" "C"))
+             (key (format "%s-%s" modifier n)))
+        (keymap-set map key #'w/select-nth-window))))
+
+  (defun w/fit-bottom-error-window-to-buffer (window)
+    "Size request for a small error window at the bottom."
+    (fit-window-to-buffer window 10 5))
+
+  (defun w/other-window-backward (count)
+    "Select another window in backward direction."
+    (interactive "p")
+    (other-window (- count)))
+
+  (defun w/other-window-or-split-right ()
+    "Select another window or split right if there is only one window."
+    (interactive)
+    (if (one-window-p)
+        (w/split-window-right)
+      (other-window 1)))
+  (w/declare-jump 'w/other-window-or-split-right)
+
+  (defun w/select-nth-window (&optional n)
+    "Select nth window in absolute frame order.
+
+Negative numbers count backwards. Interactively, detects pressed
+number key when bound to a numerical key (ignoring modifiers),
+treating 9 as ‘last window’."
+    (interactive
+     (list
+      (or (and current-prefix-arg (prefix-numeric-value current-prefix-arg))
+          (and-let* ((keys (this-single-command-keys))
+                     ((not (seq-empty-p keys)))
+                     (final-key (event-basic-type (aref keys (1- (length keys)))))
+                     ((characterp final-key))
+                     ((<= ?1 final-key ?9))
+                     (raw-digit (- final-key ?0))
+                     (digit (if (= raw-digit 9) -1 raw-digit)))))))
+    (if-let* ((n (or n 1))
+              (windows (window-list nil 'no-minibuf (frame-first-window)))
+              (index (cond
+                      ((natnump n) (1- n))
+                      ((and (integerp n) (< n 0)) (+ (length windows) n))))
+              (window (nth index windows)))
+        (select-window window)
+      (user-error "No window %s" n)))
+  (w/declare-jump 'w/select-nth-window)
+
+  (defun w/split-window-below ()
+    (interactive)
+    (select-window (split-window-below)))
+
+  (defun w/split-window-right ()
+    (interactive)
+    (select-window (split-window-right))))
+
 (use-package winner
   :demand t
   :commands
@@ -2553,63 +2618,77 @@
 
 (defvar-keymap w/window-map
   :doc "Keymap for window commands."
-  "+" #'evil-window-increase-width
-  "-" #'evil-window-decrease-width
-  "1" #'w/goto-window-1
-  "2" #'w/goto-window-2
-  "3" #'w/goto-window-3
-  "4" #'w/goto-window-4
-  "5" #'w/goto-window-5
-  "6" #'w/goto-window-6
+  "+" #'enlarge-window-horizontally
+  "-" #'shrink-window-horizontally
+  "1" #'w/select-nth-window
+  "2" #'w/select-nth-window
+  "3" #'w/select-nth-window
+  "4" #'w/select-nth-window
+  "5" #'w/select-nth-window
+  "6" #'w/select-nth-window
+  "7" #'w/select-nth-window
+  "8" #'w/select-nth-window
+  "9" #'w/select-nth-window
   "=" #'balance-windows
-  "C-e" #'evil-window-increase-height
-  "C-h" #'evil-window-decrease-width
-  "C-i" #'evil-window-increase-width
-  "C-n" #'evil-window-decrease-height
-  "C-w" #'w/evil-window-next-or-vsplit
-  "E" #'evil-window-up
+  "C-e" #'windmove-up
+  "C-h" #'windmove-left
+  "C-i" #'windmove-right
+  "C-n" #'windmove-down
+  "C-w" #'w/other-window-or-split-right
+  "E" #'enlarge-window
   "F" #'w/make-frame-new-buffer
-  "H" #'evil-window-left
-  "I" #'evil-window-right
-  "N" #'evil-window-down
-  "R" #'evil-window-rotate-upwards
-  "S" #'evil-window-split
+  "H" #'shrink-window-horizontally
+  "I" #'enlarge-window-horizontally
+  "N" #'shrink-window
+  "R" #'evil-window-rotate-upwards ;; ‎todo: rotate-windows-back‎ (emacs 31)
+  "S" #'w/split-window-below
   "U" #'winner-redo
-  "V" #'evil-window-vnew
   "b" #'balance-windows
-  "c" #'evil-window-delete
-  "e" #'buf-move-up
+  "c" #'delete-window
+  "e" #'windmove-swap-states-up
   "f" #'make-frame
-  "h" #'buf-move-left
-  "i" #'buf-move-right
-  "k" #'evil-window-delete
-  "n" #'buf-move-down
+  "h" #'windmove-swap-states-left
+  "i" #'windmove-swap-states-right
+  "k" #'delete-window
+  "n" #'windmove-swap-states-down
   "o" #'delete-other-windows
   "p" #'toggle-window-dedicated
-  "r" #'evil-window-rotate-downwards
-  "s" #'evil-window-vsplit
+  "r" #'evil-window-rotate-downwards ;; ‎todo: rotate-windows‎ (emacs 31)
+  "s" #'w/split-window-right
   "u" #'winner-undo
-  "w" #'w/evil-window-next-or-vsplit)
+  "w" #'w/other-window-or-split-right)
 
 (dolist (command '(evil-window-rotate-downwards
+                   enlarge-window
+                   enlarge-window-horizontally
                    evil-window-rotate-upwards
-                   evil-window-increase-width
-                   evil-window-decrease-width
-                   evil-window-decrease-height
-                   evil-window-increase-height
-                   w/evil-window-next-or-vsplit))
+                   shrink-window
+                   shrink-window-horizontally
+                   windmove-down
+                   windmove-left
+                   windmove-right
+                   windmove-swap-states-down
+                   windmove-swap-states-left
+                   windmove-swap-states-right
+                   windmove-swap-states-up
+                   windmove-up
+                   w/other-window-or-split-right))
   (put command 'repeat-map 'w/window-map))
 
 (defvar-keymap w/leader-map
   :doc "Leader keymap."
   "'" #'w/major-mode-hydra
   "/" #'w/hydra-search/body
-  "1" #'w/goto-window-1
-  "2" #'w/goto-window-2
-  "3" #'w/goto-window-3
-  "4" #'w/goto-window-4
-  "5" #'w/goto-window-5
-  "6" #'w/goto-window-6
+  "1" #'w/select-nth-window
+  "2" #'w/select-nth-window
+  "3" #'w/select-nth-window
+  "4" #'w/select-nth-window
+  "5" #'w/select-nth-window
+  "6" #'w/select-nth-window
+  "7" #'w/select-nth-window
+  "8" #'w/select-nth-window
+  "9" #'w/select-nth-window
+  "`" #'other-window
   "H" #'symbol-overlay-remove-all
   "J" #'consult-imenu-multi
   "Q" #'unbury-buffer
@@ -2749,7 +2828,7 @@ defined as lowercase."
 (defun w/evil-buffer-new-other-window ()
   "Open a new window in another window."
   (interactive)
-  (w/evil-window-next-or-vsplit)
+  (w/other-window-or-split-right)
   (call-interactively #'evil-buffer-new))
 
 (defun w/open-gui-file-browser ()
@@ -3432,122 +3511,11 @@ defined as lowercase."
   (advice-add 'dumb-jump-go :around #'w/jump-around-advice))
 
 
-;;;; frames and windows
-
-;; my preferred window layout is multiple full-height windows,
-;; next to each other in a horizontal fashion, i.e. screen
-;; divided into columns.
-
-(use-package emacs
-  :config
-  (defun w/fit-bottom-error-window-to-buffer (window)
-    "Size request for a small error window at the bottom."
-    (fit-window-to-buffer window 10 5)))
-
-(defun w/evil-window-next-or-vsplit ()
-  "Focus next window, or vsplit if it is the only window in this frame."
-  (interactive)
-  (if (> (count-windows) 1)
-      (evil-window-next nil)
-    (evil-window-vsplit)))
-
-(defun w/evil-goto-window (n)
-  "Go to window N."
-  (evil-window-top-left)
-  (evil-window-next n))
-
-(defun w/goto-window-1 ()
-  "Go to the first window."
-  (interactive)
-  (w/evil-goto-window 1))
-
-(defun w/goto-window-2 ()
-  "Go to the second window."
-  (interactive)
-  (w/evil-goto-window 2))
-
-(defun w/goto-window-3 ()
-  "Go to the third window."
-  (interactive)
-  (w/evil-goto-window 3))
-
-(defun w/goto-window-4 ()
-  "Go to the fourth window."
-  (interactive)
-  (w/evil-goto-window 4))
-
-(defun w/goto-window-5 ()
-  "Go to the fifth window."
-  (interactive)
-  (w/evil-goto-window 5))
-
-(defun w/goto-window-6 ()
-  "Go to the sixth window."
-  (interactive)
-  (w/evil-goto-window 6))
-
-(w/declare-jump 'w/evil-window-next-or-vsplit)
-(w/declare-jump 'w/goto-window-1)
-(w/declare-jump 'w/goto-window-2)
-(w/declare-jump 'w/goto-window-3)
-(w/declare-jump 'w/goto-window-4)
-(w/declare-jump 'w/goto-window-5)
-(w/declare-jump 'w/goto-window-6)
-
-;; todo: write these bindings in a more concise way
-(cond
- ((eq system-type 'darwin)  ;; osx: command key
-  (evil-define-key*
-    'motion global-map
-    (kbd "s-1") 'w/goto-window-1
-    (kbd "s-2") 'w/goto-window-2
-    (kbd "s-3") 'w/goto-window-3
-    (kbd "s-4") 'w/goto-window-4
-    (kbd "s-5") 'w/goto-window-5
-    (kbd "s-6") 'w/goto-window-6)
-  (bind-keys
-   ("s-1" . w/goto-window-1)
-   ("s-2" . w/goto-window-2)
-   ("s-3" . w/goto-window-3)
-   ("s-4" . w/goto-window-4)
-   ("s-5" . w/goto-window-5)
-   ("s-6" . w/goto-window-6)
-   ))
- (t  ;; others: control key
-  (evil-define-key*
-    'motion global-map
-    (kbd "C-SPC") 'evil-window-next
-    (kbd "C-S-SPC") 'evil-window-next
-    (kbd "C-`") 'evil-window-next
-    (kbd "C-~") 'evil-window-prev
-    (kbd "C-1") 'w/goto-window-1
-    (kbd "C-2") 'w/goto-window-2
-    (kbd "C-3") 'w/goto-window-3
-    (kbd "C-4") 'w/goto-window-4
-    (kbd "C-5") 'w/goto-window-5
-    (kbd "C-6") 'w/goto-window-6)
-  (bind-keys
-   ("C-SPC" . evil-window-next)
-   ("C-S-SPC" . evil-window-prev)
-   ("C-`" . evil-window-next)
-   ("C-~" . evil-window-prev)
-   ("C-1" . w/goto-window-1)
-   ("C-2" . w/goto-window-2)
-   ("C-3" . w/goto-window-3)
-   ("C-4" . w/goto-window-4)
-   ("C-5" . w/goto-window-5)
-   ("C-6" . w/goto-window-6))))
-
 (defun w/make-frame-new-buffer ()
   "Make a new frame with a new buffer."
   (interactive)
   (with-selected-frame (make-frame)
     (call-interactively #'evil-buffer-new)))
-
-;; replace evil-window-map completely
-(general-define-key
- :states '(emacs motion)
- (kbd "C-w") w/window-map)
 
 (defvar w/ivy-height-percentage 30
   "Percentage of the screen height that ivy should use.")
