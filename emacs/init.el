@@ -354,6 +354,11 @@
   :config
   (global-auto-revert-mode))
 
+(use-package autorevert-tail-truncate
+  :defer t
+  :custom
+  (auto-revert-tail-truncate-max-lines 10000))
+
 (use-package cape
   :demand t
   :general
