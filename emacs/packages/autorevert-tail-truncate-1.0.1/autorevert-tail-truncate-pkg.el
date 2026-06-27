@@ -1,0 +1,2 @@
+;; Generated package description from autorevert-tail-truncate.el  -*- no-byte-compile: t -*-
+(define-package "autorevert-tail-truncate" "1.0.1" "auto-revert-tail your files with RAM control" '((emacs "29.1")) :commit "b54df5838159abf760a48de2fd33b21cabd12e66" :authors '(("Stephane Marks" . "shipmints@gmail.com")) :maintainer '("Stephane Marks" . "shipmints@gmail.com") :keywords '("convenience" "tools" "log files" "autorevert") :url "https://github.com/shipmints/autorevert-tail-truncate.el")
