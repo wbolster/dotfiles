@@ -2806,8 +2806,8 @@ defined as lowercase."
 (defun w/buffer-worth-saving-p (name)
   "Does the buffer NAME indicate it may be worth saving?"
   (cond
-   ((string-equal "*scratch*" name) t)
-   ((string-prefix-p "*new*" name) t)  ;; evil-mode template
+   ((string-prefix-p "*scratch*" name) t) ;; crux-create-scratch-buffer
+   ((string-prefix-p "*new*" name) t) ;; evil-mode template
    ((string-match-p "\*" name) nil) ;; e.g. magit, help
    ((string-match-p "^ " name) nil) ;; hidden buffers
    (t t)))
