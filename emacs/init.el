@@ -1642,6 +1642,11 @@
   :config
   (marginalia-mode))
 
+(use-package midi-kbd
+  :defer t
+  :bind
+  (("<Ch1> <F_4>" . (lambda () (interactive) (message "it works!")))))
+
 (use-package minibuffer
   :demand t
   :ensure emacs
