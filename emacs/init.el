@@ -2331,6 +2331,9 @@
 
 (use-package winner
   :demand t
+  :commands
+  winner-redo
+  winner-undo
   :custom
   (winner-dont-bind-my-keys t)
   :config
