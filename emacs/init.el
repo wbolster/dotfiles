@@ -1259,7 +1259,7 @@
     "Return whether the current buffer may be killed. May ask confirmation."
     (or (buffer-file-name) ;; handled by emacs
         (not (buffer-modified-p))
-        (member major-mode '(dired-mode ranger-mode))
+        (member major-mode '(dired-mode magit-process-mode ranger-mode))
         (not (w/buffer-worth-saving-p (buffer-name)))
         (progn
           (pop-to-buffer (current-buffer))
