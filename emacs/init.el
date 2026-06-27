@@ -4324,7 +4324,7 @@ defined as lowercase."
       (when (string-empty-p language)
         (setq language nil))
       (forward-line)
-      (while (and (looking-at-p "$") (not (eobp)))
+      (while (and (eolp) (not (eobp)))
         (forward-line))
       language))
 
