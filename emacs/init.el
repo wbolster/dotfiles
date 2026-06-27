@@ -576,6 +576,12 @@
   :config
   (desktop-save-mode))
 
+(use-package devdocs
+  :defer t
+  :general
+  (:states 'normal
+   "g ?" #'devdocs-lookup))
+
 (use-package dired
   :demand t
   :ensure emacs
