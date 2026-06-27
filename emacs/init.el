@@ -1252,23 +1252,33 @@
   :demand t
   :ensure emacs
   :hook
-  (kill-buffer-query-functions . w/ask-confirmation-for-unsaved-buffers)
+  (kill-buffer-query-functions . w/may-kill-buffer)
+  (kill-emacs-query-functions . w/may-kill-emacs)
   :commands
   w/buffer-worth-saving-p
   w/open-gui-file-browser
   :config
 
-  (defun w/ask-confirmation-for-unsaved-buffers ()
-    "Ask for confirmation for modified but unsaved buffers."
-    (if (and (buffer-modified-p)
-             (not (buffer-file-name))
-             (not (member major-mode '(dired-mode ranger-mode)))
-             (w/buffer-worth-saving-p (buffer-name)))
-        (yes-or-no-p
-         (format
-          "Buffer %s modified but not saved; kill anyway? "
-          (buffer-name)))
-      t))
+  (defun w/may-kill-buffer ()
+    "Return whether the current buffer may be killed. May ask confirmation."
+    (or (buffer-file-name) ;; handled by emacs
+        (not (buffer-modified-p))
+        (member major-mode '(dired-mode ranger-mode))
+        (not (w/buffer-worth-saving-p (buffer-name)))
+        (progn
+          (pop-to-buffer (current-buffer))
+          (yes-or-no-p
+           (format
+            "Buffer %s modified but not saved; kill anyway? "
+            (buffer-name))))))
+
+  (defun w/may-kill-emacs ()
+    "Return whether Emacs may be killed by checking unsaved buffers."
+    (seq-every-p
+     (lambda (buffer)
+       (with-current-buffer buffer
+         (w/may-kill-buffer)))
+     (buffer-list)))
 
   (defun w/buffer-worth-saving-p (name)
     "Does the buffer NAME indicate it may be worth saving?"
