@@ -1242,6 +1242,45 @@
                   (member face w/faces-weight-allowed))
         (set-face-attribute face nil :weight 'unspecified)))))
 
+(use-package files
+  :demand t
+  :ensure emacs
+  :hook
+  (kill-buffer-query-functions . w/ask-confirmation-for-unsaved-buffers)
+  :commands
+  w/buffer-worth-saving-p
+  w/open-gui-file-browser
+  :config
+
+  (defun w/ask-confirmation-for-unsaved-buffers ()
+    "Ask for confirmation for modified but unsaved buffers."
+    (if (and (buffer-modified-p)
+             (not (buffer-file-name))
+             (not (member major-mode '(dired-mode ranger-mode)))
+             (w/buffer-worth-saving-p (buffer-name)))
+        (yes-or-no-p
+         (format
+          "Buffer %s modified but not saved; kill anyway? "
+          (buffer-name)))
+      t))
+
+  (defun w/buffer-worth-saving-p (name)
+    "Does the buffer NAME indicate it may be worth saving?"
+    (cond
+     ((string-prefix-p "*scratch*" name) t) ;; crux-create-scratch-buffer
+     ((string-prefix-p "*new*" name) t)     ;; evil-mode template
+     ((string-match-p "\*" name) nil)       ;; e.g. magit, help
+     ((string-match-p "^ " name) nil)       ;; hidden buffers
+     (t t)))
+
+  (defun w/open-gui-file-browser ()
+    "Open a GUI browser for the directory containing the current file."
+    (interactive)
+    (when-let ((file-name (buffer-file-name))
+               (directory-name (file-name-directory file-name))
+               (file-exists (file-exists-p directory-name)))
+      (call-process "xdg-open" nil 0 nil directory-name))))
+
 (use-package flycheck
   :demand t
   :after direnv
@@ -2825,39 +2864,6 @@ defined as lowercase."
          ,@heads
          ("C-g" nil :exit t)
          ("<escape>" nil :exit t)))))
-
-(defun w/buffer-worth-saving-p (name)
-  "Does the buffer NAME indicate it may be worth saving?"
-  (cond
-   ((string-prefix-p "*scratch*" name) t) ;; crux-create-scratch-buffer
-   ((string-prefix-p "*new*" name) t) ;; evil-mode template
-   ((string-match-p "\*" name) nil) ;; e.g. magit, help
-   ((string-match-p "^ " name) nil) ;; hidden buffers
-   (t t)))
-
-(defun w/ask-confirmation-for-unsaved-buffers ()
-  "Ask for confirmation for modified but unsaved buffers."
-  (if (and (buffer-modified-p)
-           (not (buffer-file-name))
-           (not (member major-mode '(dired-mode ranger-mode)))
-           (w/buffer-worth-saving-p (buffer-name)))
-      (yes-or-no-p
-       (format
-        "Buffer %s modified but not saved; kill anyway? "
-        (buffer-name)))
-    t))
-
-(add-hook
- 'kill-buffer-query-functions
- #'w/ask-confirmation-for-unsaved-buffers)
-
-(defun w/open-gui-file-browser ()
-  "Open a GUI browser for the directory containing the current file."
-  (interactive)
-  (when-let ((file-name (buffer-file-name))
-             (directory-name (file-name-directory file-name))
-             (file-exists (file-exists-p directory-name)))
-    (call-process "xdg-open" nil 0 nil directory-name)))
 
 (use-package evil-easymotion
   :defer t
