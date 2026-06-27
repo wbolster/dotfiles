@@ -767,7 +767,6 @@
   evil-avy-goto-line-above
   evil-avy-goto-line-below
   evil-backward-WORD-begin
-  evil-buffer-new
   evil-change-to-initial-state
   evil-declare-repeat
   evil-delete
@@ -2339,12 +2338,15 @@
    "C-SPC" #'other-window
    "C-S-SPC" #'w/other-window-backward)
   :commands
+  w/buffer-new
+  w/buffer-new-other-window
   w/other-window-backward
   w/other-window-or-split-right
   w/select-nth-window
   w/split-window-below
   w/split-window-right
   :functions
+  w/buffer-new-internal
   w/fit-bottom-error-window-to-buffer
   :config
   (dolist (map (list evil-emacs-state-map evil-motion-state-map global-map))
@@ -2356,6 +2358,22 @@
   (defun w/fit-bottom-error-window-to-buffer (window)
     "Size request for a small error window at the bottom."
     (fit-window-to-buffer window 10 5))
+
+  (defun w/buffer-new-internal ()
+    "Internal helper to create a new buffer."
+    (let ((buffer (generate-new-buffer "*new*")))
+      (set-buffer-major-mode buffer)
+      buffer))
+
+  (defun w/buffer-new ()
+    "Create and switch to a new buffer."
+    (interactive)
+    (pop-to-buffer-same-window (w/buffer-new-internal)))
+
+  (defun w/buffer-new-other-window ()
+    "Create and switch to a new buffer in another window."
+    (interactive)
+    (switch-to-buffer-other-window (w/buffer-new-internal)))
 
   (defun w/other-window-backward (count)
     "Select another window in backward direction."
@@ -2450,14 +2468,14 @@ treating 9 as ‘last window’."
   "E" #'rename-buffer
   "H" #'unbury-buffer
   "K" #'kill-buffer-and-window
-  "N" #'w/evil-buffer-new-other-window
+  "N" #'w/buffer-new-other-window
   "b" #'consult-buffer
   "c" #'clone-indirect-buffer
   "e" #'crux-rename-file-and-buffer
   "h" #'bury-buffer
   "k" #'kill-current-buffer
   "m" #'w/switch-major-mode
-  "n" #'evil-buffer-new
+  "n" #'w/buffer-new
   "r" #'revert-buffer)
 
 (defvar-keymap w/diff-map
@@ -2488,14 +2506,14 @@ treating 9 as ‘last window’."
   "1" #'terminal-here
   "D" #'deer-jump-other-window
   "F" #'find-file-other-window
-  "N" #'w/evil-buffer-new-other-window
+  "N" #'w/buffer-new-other-window
   "R" #'w/counsel-recentf-other-window
   "S" #'sudo-edit-find-file
   "d" #'deer
   "f" #'find-file
   "g" #'w/open-gui-file-browser
   "i" #'insert-file
-  "n" #'evil-buffer-new
+  "n" #'w/buffer-new
   "r" #'consult-recent-file
   "s" #'sudo-edit
   "y" #'w/copy-filename-to-clipboard)
@@ -2832,12 +2850,6 @@ defined as lowercase."
 (add-hook
  'kill-buffer-query-functions
  #'w/ask-confirmation-for-unsaved-buffers)
-
-(defun w/evil-buffer-new-other-window ()
-  "Open a new window in another window."
-  (interactive)
-  (w/other-window-or-split-right)
-  (call-interactively #'evil-buffer-new))
 
 (defun w/open-gui-file-browser ()
   "Open a GUI browser for the directory containing the current file."
