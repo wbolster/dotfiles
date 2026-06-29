@@ -20,9 +20,9 @@ whoami = "!f() { printf '%s <%s>\n' \"$(git config --get user.name)\" \"$(git co
 praise = blame
 
 # Committing
-ci = commit
 amend = commit --amend
 cav = commit --all --verbose
+ci = commit
 cv = commit --verbose
 cvp = commit --verbose --patch
 fixup = commit --amend --no-edit
@@ -35,27 +35,27 @@ au = add --update :/
 touch = "!f() { touch -- \"$@\"; git add -- \"$@\";  }; f"
 
 # Diff
-di = diff
-dif = diff
 cdiff = diff --cached --find-renames
 cwdiff = diff --cached --word-diff
+di = diff
+dif = diff
 sdiff = diff --ignore-all-space --find-renames
 wdiff = diff --word-diff
 
 # Inspecting
+log-merge-request = log-pull-request
+log-merge-request-long=log-pull-request-long
+log-pull-request = log --reverse --format=markdown "@{upstream}.."
+log-pull-request-long = log --reverse --format=markdown-long "@{upstream}.."
+log-since-tag = "!f() { git log $(git describe --tags --abbrev=0 @^)..@ \"$@\"; }; f"
+log-since-tag-only-authors = "!f() { git log-since-tag --format=tformat:%aN%n%cN | sort -u; }; f"
+log-since-tag-only-merges = "!f() { git log-since-tag --merges --oneline --no-decorate \"$@\"; }; f"
+log-since-tag-only-merges-markdown = "!f() { git log-since-tag-only-merges \"$@\" | sed -E 's/^([a-f0-9]+) (merge: )?(.*) \\(([^)]+)\\)/- \\3 (\\4, g\\1)/'; }; f"
 ls = ls-files
+message-log = log --pretty=message
 mylog = "!f() { git log --all --author=\"$(git config user.email)\" --date-order --graph --format='%C(yellow)[%h] %ai (%ar)%C(auto)%d%n%n%C(reset)%s %n%+b' \"$@\"; }; f"
 review-branch = "!f() { [ -z \"$@\" ] && set - "@{upstream}.."; git -c core.pager='less -+F +/^commit' log --reverse --patch \"$@\"; }; f"
 sl = log --oneline --graph --pretty=longline --date=short
-message-log = log --pretty=message
-log-merge-request-long=log-pull-request-long
-log-merge-request = log-pull-request
-log-pull-request-long = log --reverse --format=markdown-long "@{upstream}.."
-log-pull-request = log --reverse --format=markdown "@{upstream}.."
-log-since-tag = "!f() { git log $(git describe --tags --abbrev=0 @^)..@ \"$@\"; }; f"
-log-since-tag-only-merges = "!f() { git log-since-tag --merges --oneline --no-decorate \"$@\"; }; f"
-log-since-tag-only-merges-markdown = "!f() { git log-since-tag-only-merges \"$@\" | sed -E 's/^([a-f0-9]+) (merge: )?(.*) \\(([^)]+)\\)/- \\3 (\\4, g\\1)/'; }; f"
-log-since-tag-only-authors = "!f() { git log-since-tag --format=tformat:%aN%n%cN | sort -u; }; f"
 slf = sl --first-parent
 st = status --short --branch
 today = log --all --graph --since=0am
@@ -73,9 +73,9 @@ delete-merged-branches = "!f() { git branch --merged | grep --invert-match '*' |
 delete-unused-branches = "!f() { git branch | grep --invert-match '*' | xargs --no-run-if-empty git branch --delete; }; f"
 ff = merge --ff-only
 merge-feature = merge --no-ff --edit
-merge-issue = merge --no-ff --edit
 # https://stackoverflow.com/questions/8475448/find-merge-commit-which-include-a-specific-commit
 merge-find = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
+merge-issue = merge --no-ff --edit
 merge-show = "!sh -c 'merge=$(git merge-find $0 $1) && [ -n \"$merge\" ] && git show $merge'"
 missing = "!f() { (echo \"Only in $1:\"; git --no-pager sl ..$1; echo; echo 'Only in HEAD:'; git --no-pager sl $1..;) | less -FRSX; }; f"
 
@@ -85,8 +85,8 @@ fpush = push --force-with-lease
 poes = push
 pshu = push
 psuh = push
-puhs = push
 publish = "!f() { git push --verbose --set-upstream origin $(git branch-name); }; f"
+puhs = push
 unpublish = "!f() { git push --verbose origin --delete $(git branch-name) ; }; f"
 unpush1 = "!f() { git push --verbose --force-with-lease origin HEAD^:$(git branch-name); }; f"
 up = "!f() { git fetch --prune && git merge --ff-only @{u}; }; f"
@@ -102,11 +102,11 @@ rbiom = rebase --interactive @{upstream}
 rbom = rebase @{upstream}
 
 # Grep
-igrep = grep --ignore-case
-fgrep = grep --fixed-strings
-figrep = grep --fixed-strings --ignore-case
 cgrep = grep --context 5
 cigrep = grep --context 5 --ignore-case
+fgrep = grep --fixed-strings
+figrep = grep --fixed-strings --ignore-case
+igrep = grep --ignore-case
 
 # Paths
 relpath = rev-parse --show-prefix
