@@ -2497,9 +2497,10 @@ treating 9 as ‘last window’."
   :defer t
   :hook (yaml-mode-hook . w/yaml-mode-hook)
   :config
-  (defun w/yaml-mode-hook ()
+  (with-eval-after-load 'origami
     (setf (alist-get 'yaml-mode origami-parser-alist)
-          'w/origami-parser-imenu-flat)
+          'w/origami-parser-imenu-flat))
+  (defun w/yaml-mode-hook ()
     (setq-local evil-shift-width yaml-indent-offset)
     (evil-swap-keys-swap-colon-semicolon)
     (evil-swap-keys-swap-double-single-quotes)
