@@ -3583,11 +3583,16 @@ defined as lowercase."
   (magit-mode-line-process ((t (:inherit magit-mode-line-process-error))))
 
   :commands
+  magit-process-buffer
   magit-toggle-buffer-lock
   w/git-web-browse
   w/gitlab-insert-merge-request-template
   w/magit-log-buffer-file-follow
   w/magit-status-other-repository
+
+  :functions
+  magit-git-insert
+  magit-read-range
 
   :init
   (add-hook 'find-file-hook (lambda () (require 'magit)))
@@ -3673,6 +3678,8 @@ defined as lowercase."
     "-n" '("/c" "Skip Gitlab CI" "--push-option=ci.skip"))
   (transient-append-suffix 'magit-push
     "/c" '("/m" "Create Gitlab merge request" "--push-option=merge_request.create"))
+  (transient-append-suffix 'magit-log
+    "s" '("p" "merge/pull request" w/magit-log-merge-request))
 
   ;; hide author names from magit-blame annotations;
   ;; it's usually about why/what/when, not who.
@@ -3707,6 +3714,25 @@ defined as lowercase."
       (put-text-property (match-beginning 1)
                          (match-end 1)
                          'font-lock-face 'magit-diff-added-indicator)))
+
+  (defun w/magit-log-merge-request (range)
+    "Show a new buffer with draft body text for a merge request / pull request."
+    (interactive
+     (list (when current-prefix-arg (magit-read-range "Range"))))
+    (let ((buffer (generate-new-buffer "*merge request log*")))
+      (pop-to-buffer buffer)
+      (let ((magit-git-debug t))
+        (if-let* ((exit-code (apply #'magit-git-insert "log-merge-request" (when range (list range))))
+                  ((zerop exit-code)))
+            (progn
+              (whitespace-cleanup)
+              (goto-char (point-min))
+              (save-excursion
+                (while (re-search-forward (rx (>= 2 "\n")) nil t)
+                  (replace-match "\n\n" nil t)))
+              (markdown-mode))
+          (kill-buffer)
+          (magit-process-buffer)))))
 
   (defun w/magit-status-other-repository ()
     "Open git status for another repository."
