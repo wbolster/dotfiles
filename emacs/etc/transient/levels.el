@@ -7,6 +7,8 @@
   (transient:magit-log-infix-arguments:--first-parent . 1)
   (transient:magit-log-infix-arguments:--no-merges . 1)
   (magit-log-merged . 1))
+ (magit-merge
+  (magit-merge:--strategy-option . 2))
  (magit-rebase
   (magit-merge:--strategy-option . 2)
   (magit-merge:--strategy . 2)))
