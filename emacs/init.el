@@ -3718,9 +3718,6 @@ defined as lowercase."
         (insert-file-contents template-file)
       (user-error "No merge request templates found"))))
 
-(use-package magit-imerge
-  :after magit)
-
 (use-package forge
   :after magit
   :demand t
