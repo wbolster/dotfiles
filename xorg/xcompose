@@ -8,6 +8,11 @@ include "%L"
 <Multi_key> <F> <S> <I> : "⁨" U2068 # FIRST STRONG ISOLATE
 <Multi_key> <P> <D> <I> : "⁩" U2069 # POP DIRECTIONAL ISOLATE
 
+## symbols
+## =======
+
+# addition to ‘->’ for ‘→’ and ‘<-’ for ‘→’
+<Multi_key> <less> <greater> : "↔" U2194 # LEFT RIGHT ARROW
 
 ## emoji
 ## =====
