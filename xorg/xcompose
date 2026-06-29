@@ -5,7 +5,7 @@ include "%L"
 ## ====
 
 # bidi markers to prevent ltr/rtl directionality leaks
-<Multi_key> <F> <S> <I>	: "⁨" U2068 # FIRST STRONG ISOLATE
+<Multi_key> <F> <S> <I> : "⁨" U2068 # FIRST STRONG ISOLATE
 <Multi_key> <P> <D> <I> : "⁩" U2069 # POP DIRECTIONAL ISOLATE
 
 
