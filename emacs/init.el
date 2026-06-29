@@ -3559,6 +3559,7 @@ defined as lowercase."
 
   :hook
   (git-commit-mode-hook . w/git-commit-mode-hook)
+  (magit-log-mode-hook . w/magit-log-mode-hook)
   (magit-process-mode-hook . goto-address-mode)
 
   :custom
@@ -3690,6 +3691,12 @@ defined as lowercase."
   (defun w/git-commit-mode-hook ()
     (when (and (bobp) (eolp))
       (call-interactively #'evil-insert)))
+
+  (defun w/magit-log-mode-hook ()
+    (dolist (element '(("*  " . "🔀") ;; merge
+                       ("*-." . "🐙"))) ;; octopus merge
+      (add-to-list 'prettify-symbols-alist element))
+    (prettify-symbols-mode))
 
   (defun w/magit-status-other-repository ()
     "Open git status for another repository."
