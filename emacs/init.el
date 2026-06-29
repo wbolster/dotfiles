@@ -50,7 +50,7 @@
   :demand t
   :functions
   -contains-p -each -filter -first -flatten -last -map -map-when -partial
-  -remove -replace-at -separate -snoc -sort -uniq -zip-pair
+  -remove -replace -replace-at -separate -snoc -sort -uniq -zip-pair
   :config
   (global-dash-fontify-mode))
 
@@ -3661,6 +3661,9 @@ defined as lowercase."
             ("~/Sync/" . 3))
     (-let [(dir . depth) it]
       (add-to-list 'magit-repository-directories (cons dir depth) t)))
+
+  (setopt magit-log-margin
+          (-replace 'age 'age-abbreviated magit-log-margin))
 
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
 
