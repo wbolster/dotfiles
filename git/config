@@ -45,8 +45,8 @@ wdiff = diff --word-diff
 # Inspecting
 log-merge-request = log-pull-request
 log-merge-request-long=log-pull-request-long
-log-pull-request = log --reverse --format=markdown "@{upstream}.."
-log-pull-request-long = log --reverse --format=markdown-long "@{upstream}.."
+log-pull-request = "!f() { [ -z \"$@\" ] && set - \"@{upstream}..\"; git log --reverse --format=markdown \"$1\"; }; f"
+log-pull-request-long = "!f() { [ -z \"$@\" ] && set - \"@{upstream}..\"; git log --reverse --format=markdown-long \"$1\"; }; f"
 log-since-tag = "!f() { git log $(git describe --tags --abbrev=0 @^)..@ \"$@\"; }; f"
 log-since-tag-only-authors = "!f() { git log-since-tag --format=tformat:%aN%n%cN | sort -u; }; f"
 log-since-tag-only-merges = "!f() { git log-since-tag --merges --oneline --no-decorate \"$@\"; }; f"
