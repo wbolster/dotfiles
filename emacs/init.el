@@ -1728,9 +1728,12 @@
 (use-package orderless
   :demand t
   :custom
-  (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles partial-completion))))
-  (completion-pcm-leading-wildcard t)) ;; emacs 31: partial-completion behaves like substring
+  (completion-ignore-case t)
+  (completion-styles '(orderless basic))
+  (completion-pcm-leading-wildcard t) ;; emacs 31: partial-completion behaves like substring
+  (read-buffer-completion-ignore-case t)
+  (read-file-name-completion-ignore-case t))
 
 (use-package org
   :defer t
