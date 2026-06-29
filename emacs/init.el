@@ -199,10 +199,6 @@
   (scroll-conservatively 101)
   (scroll-margin 5)
   (sentence-end-double-space nil)
-  (split-height-threshold nil)
-  (split-width-threshold 120)
-  (split-window-preferred-function 'visual-fill-column-split-window-sensibly)
-  (switch-to-buffer-in-dedicated-window 'pop)
   (tab-always-indent 'complete)
   (tab-first-completion 'word)
   (tab-width 4)
@@ -2407,6 +2403,11 @@
   :functions
   w/buffer-new-internal
   w/fit-bottom-error-window-to-buffer
+  :custom
+  (split-height-threshold nil)
+  (split-width-threshold 120)
+  (split-window-preferred-function 'visual-fill-column-split-window-sensibly)
+  (switch-to-buffer-in-dedicated-window 'pop)
   :config
   (dolist (map (list evil-emacs-state-map evil-motion-state-map global-map))
     (dolist (n (number-sequence 1 9))
