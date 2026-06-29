@@ -35,3 +35,11 @@ include "%L"
 <Multi_key> <p> <l> <s> : "🙏🏼" U1F64F # PERSON WITH FOLDED HANDS
 <Multi_key> <s> <h> <r> : "🤷🏼" U1F937 # SHRUG
 <Multi_key> <w> <a> <v> : "👋🏼" U1F44B # WAVING HAND SIGN
+
+# skin tone; mnemonic ‘st’
+<Multi_key> <s> <t> <1> : "🏻" U1F3FB # EMOJI MODIFIER FITZPATRICK TYPE-1-2
+<Multi_key> <s> <t> <2> : "🏻" U1F3FB # EMOJI MODIFIER FITZPATRICK TYPE-1-2
+<Multi_key> <s> <t> <3> : "🏼" U1F3FC # EMOJI MODIFIER FITZPATRICK TYPE-3
+<Multi_key> <s> <t> <4> : "🏽" U1F3FD # EMOJI MODIFIER FITZPATRICK TYPE-4
+<Multi_key> <s> <t> <5> : "🏾" U1F3FE # EMOJI MODIFIER FITZPATRICK TYPE-5
+<Multi_key> <s> <t> <6> : "🏿" U1F3FF # EMOJI MODIFIER FITZPATRICK TYPE-6
