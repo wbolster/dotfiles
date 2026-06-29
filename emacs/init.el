@@ -1678,6 +1678,205 @@
   :demand t
   :after lsp-mode)
 
+(use-package magit
+  :defer t
+  :hook
+  (git-commit-mode-hook . w/git-commit-mode-hook)
+  (magit-log-mode-hook . w/magit-log-mode-hook)
+  (magit-log-wash-summary-hook w/magit-log-highlight-merge-prefix)
+  (magit-process-mode-hook . goto-address-mode)
+  :commands
+  magit-process-buffer
+  magit-toggle-buffer-lock
+  w/git-web-browse
+  w/gitlab-insert-merge-request-template
+  w/magit-log-buffer-file-follow
+  w/magit-status-other-repository
+  :functions
+  magit-git-insert
+  magit-read-range
+  :init
+  (add-hook 'find-file-hook (lambda () (require 'magit)))
+  :custom
+  (git-commit-fill-column 72)
+  (magit-blame-heading-format "%C %-10a %s")
+  (magit-blame-mode-lighter " annotate")
+  (magit-blame-time-format "%Y%m%d")
+  (magit-branch-prefer-remote-upstream '("master"))
+  (magit-branch-read-upstream-first 'fallback)
+  (magit-bury-buffer-function 'magit-mode-quit-window)
+  (magit-completing-read-function 'magit-builtin-completing-read)
+  (magit-diff-refine-hunk t)
+  (magit-display-buffer-function 'display-buffer)
+  (magit-list-refs-sortby '("-committerdate"))
+  (magit-prefer-remote-upstream t)
+  (magit-process-popup-time 10)
+  (magit-status-goto-file-position t)
+  :custom-face
+  (magit-mode-line-process ((t (:inherit magit-mode-line-process-error))))
+  :config
+  ;; note: a :general stanza won't work because of execution order:
+  ;; custom bindings go on top of what evil-collection-init does
+  ;; todo: make ,q use the various magit-*-bury-buffer functions, then
+  ;; unbind q to force ,q usage.
+  (general-def
+    :keymaps 'magit-mode-map
+    :states '(normal visual)
+    [escape] nil
+    "n" #'evil-next-visual-line
+    "e" #'evil-previous-visual-line
+    "C-n" #'magit-section-forward
+    "C-e" #'magit-section-backward
+    "C-p" #'magit-section-backward
+    "<tab>" #'magit-section-cycle
+    "C-<tab>" #'magit-section-toggle
+    "C-w" w/window-map
+    "/" #'consult-line)
+  (general-def
+    :keymaps 'magit-blame-read-only-mode-map
+    :states '(motion normal)
+    "n" nil
+    "e" nil
+    "C-n" #'magit-blame-next-chunk
+    "C-e" #'magit-blame-previous-chunk
+    "C-p" #'magit-blame-previous-chunk
+    "<tab>" #'magit-blame-cycle-style
+    "<return>" #'magit-show-commit)
+  (general-def
+    :keymaps 'magit-diff-mode-map
+    "SPC" nil
+    "DEL" nil)
+  (general-def
+    :keymaps 'magit-hunk-section-map
+    "<return>" #'magit-diff-visit-file-other-window
+    "C-<return>" #'magit-diff-visit-worktree-file-other-window)
+  (general-def
+    :keymaps '(magit-diff-mode-map
+               magit-log-mode-map
+               magit-mode-map
+               magit-process-mode-map
+               magit-refs-mode
+               magit-revision-mode-map
+               magit-status-mode-map)
+    :states 'normal
+    "q" nil
+    "'" nil)
+  (general-def
+    :keymaps '(magit-diff-mode-map
+               magit-log-mode-map
+               magit-mode-map
+               magit-process-mode-map
+               magit-refs-mode
+               magit-revision-mode-map
+               magit-status-mode-map)
+    "q" nil
+    "'" nil)
+
+  ;; no special behaviour for magit windows
+  (remove-hook 'magit-post-display-buffer-hook 'magit-maybe-set-dedicated)
+
+  (--each '(("~" . 2)
+            ("~/Projects/" . 2)
+            ("~/Documents/" . 3)
+            ("~/Sync/" . 3))
+    (-let [(dir . depth) it]
+      (add-to-list 'magit-repository-directories (cons dir depth) t)))
+
+  (setopt magit-log-margin
+          (-replace 'age 'age-abbreviated magit-log-margin))
+
+  (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
+
+  (transient-replace-suffix 'magit-commit 'magit-commit-autofixup
+    '(6 "x" "Absorb changes" magit-commit-absorb))
+  (transient-append-suffix 'magit-push
+    "-n" '("/c" "Skip Gitlab CI" "--push-option=ci.skip"))
+  (transient-append-suffix 'magit-push
+    "/c" '("/m" "Create Gitlab merge request" "--push-option=merge_request.create"))
+  (transient-append-suffix 'magit-log
+    "s" '("p" "merge/pull request" w/magit-log-merge-request))
+
+  ;; hide author names from magit-blame annotations;
+  ;; it's usually about why/what/when, not who.
+  (setf (->> magit-blame-styles
+             (alist-get 'headings)
+             (alist-get 'heading-format))
+        "%C %s\n")
+
+  (with-eval-after-load 'direnv
+    (--each '(magit-blob-mode
+              magit-diff-mode
+              magit-log-mode
+              magit-status-mode)
+      (add-to-list 'direnv-non-file-modes it)))
+
+  (with-eval-after-load 'evil-colemak-basics
+    (add-to-list 'global-evil-colemak-basics-modes
+                 '(not magit-log-mode magit-status-mode)))
+
+  (defun w/git-commit-mode-hook ()
+    (when (and (bobp) (eolp))
+      (call-interactively #'evil-insert)))
+
+  (defun w/magit-log-mode-hook ()
+    (dolist (element '(("*  " . "🔀") ;; merge
+                       ("*-." . "🐙"))) ;; octopus merge
+      (add-to-list 'prettify-symbols-alist element))
+    (prettify-symbols-mode))
+
+  (defun w/magit-log-highlight-merge-prefix ()
+    (when (looking-at (rx (group "merge:") " "))
+      (put-text-property (match-beginning 1)
+                         (match-end 1)
+                         'font-lock-face 'magit-diff-added-indicator)))
+
+  (defun w/magit-log-merge-request (range)
+    "Show a new buffer with draft body text for a merge request / pull request."
+    (interactive
+     (list (when current-prefix-arg (magit-read-range "Range"))))
+    (let ((buffer (generate-new-buffer "*merge request log*")))
+      (pop-to-buffer buffer)
+      (let ((magit-git-debug t))
+        (if-let* ((exit-code (apply #'magit-git-insert "log-merge-request" (when range (list range))))
+                  ((zerop exit-code)))
+            (progn
+              (whitespace-cleanup)
+              (goto-char (point-min))
+              (save-excursion
+                (while (re-search-forward (rx (>= 2 "\n")) nil t)
+                  (replace-match "\n\n" nil t)))
+              (markdown-mode))
+          (kill-buffer)
+          (magit-process-buffer)))))
+
+  (defun w/magit-status-other-repository ()
+    "Open git status for another repository."
+    (interactive)
+    (setq current-prefix-arg t)
+    (call-interactively 'magit-status))
+
+  (defun w/git-web-browse ()
+    "Open a web browser for the current git repo or file."
+    (interactive)
+    (if (region-active-p)
+        (let ((git-link-open-in-browser t))
+          (call-interactively #'git-link)
+          (setq kill-ring (cdr kill-ring)))
+      (call-interactively #'git-link)))
+
+  (defun w/magit-log-buffer-file-follow ()
+    (interactive)
+    (magit-log-buffer-file t))
+
+  (defun w/gitlab-insert-merge-request-template ()
+    (interactive)
+    (-if-let* ((template-dir ".gitlab/merge_request_templates/")
+               (dir (locate-dominating-file (or (buffer-file-name) default-directory) template-dir))
+               (template-file
+                (read-file-name "Template: " (concat dir template-dir)) nil t 'file-regular-p))
+        (insert-file-contents template-file)
+      (user-error "No merge request templates found"))))
+
 (use-package marginalia
   :demand t
   :config
@@ -3551,216 +3750,6 @@ defined as lowercase."
            (lines (truncate (* total-lines w/ivy-height-percentage 0.01)))
            (new-height (w/clamp-number lines 10 20)))
       (setopt ivy-height new-height))))
-
-(use-package magit
-  :defer t
-  :delight
-  (magit-wip-mode)
-
-  :hook
-  (git-commit-mode-hook . w/git-commit-mode-hook)
-  (magit-log-mode-hook . w/magit-log-mode-hook)
-  (magit-log-wash-summary-hook w/magit-log-highlight-merge-prefix)
-  (magit-process-mode-hook . goto-address-mode)
-
-  :custom
-  (git-commit-fill-column 72)
-  (magit-blame-heading-format "%C %-10a %s")
-  (magit-blame-mode-lighter " annotate")
-  (magit-blame-time-format "%Y%m%d")
-  (magit-branch-prefer-remote-upstream '("master"))
-  (magit-branch-read-upstream-first 'fallback)
-  (magit-bury-buffer-function 'magit-mode-quit-window)
-  (magit-completing-read-function 'magit-builtin-completing-read)
-  (magit-diff-refine-hunk t)
-  (magit-display-buffer-function 'display-buffer)
-  (magit-list-refs-sortby '("-committerdate"))
-  (magit-prefer-remote-upstream t)
-  (magit-process-popup-time 10)
-  (magit-status-goto-file-position t)
-
-  :custom-face
-  (magit-mode-line-process ((t (:inherit magit-mode-line-process-error))))
-
-  :commands
-  magit-process-buffer
-  magit-toggle-buffer-lock
-  w/git-web-browse
-  w/gitlab-insert-merge-request-template
-  w/magit-log-buffer-file-follow
-  w/magit-status-other-repository
-
-  :functions
-  magit-git-insert
-  magit-read-range
-
-  :init
-  (add-hook 'find-file-hook (lambda () (require 'magit)))
-
-  :config
-  ;; note: a :general stanza won't work because of execution order:
-  ;; custom bindings go on top of what evil-collection-init does
-  ;; todo: make ,q use the various magit-*-bury-buffer functions, then
-  ;; unbind q to force ,q usage.
-  (general-def
-    :keymaps 'magit-mode-map
-    :states '(normal visual)
-    [escape] nil
-    "n" #'evil-next-visual-line
-    "e" #'evil-previous-visual-line
-    "C-n" #'magit-section-forward
-    "C-e" #'magit-section-backward
-    "C-p" #'magit-section-backward
-    "<tab>" #'magit-section-cycle
-    "C-<tab>" #'magit-section-toggle
-    "C-w" w/window-map
-    "/" #'consult-line)
-  (general-def
-    :keymaps 'magit-blame-read-only-mode-map
-    :states '(motion normal)
-    "n" nil
-    "e" nil
-    "C-n" #'magit-blame-next-chunk
-    "C-e" #'magit-blame-previous-chunk
-    "C-p" #'magit-blame-previous-chunk
-    "<tab>" #'magit-blame-cycle-style
-    "<return>" #'magit-show-commit)
-  (general-def
-    :keymaps 'magit-diff-mode-map
-    "SPC" nil
-    "DEL" nil)
-  (general-def
-    :keymaps 'magit-hunk-section-map
-    "<return>" #'magit-diff-visit-file-other-window
-    "C-<return>" #'magit-diff-visit-worktree-file-other-window)
-  (general-def
-    :keymaps '(magit-diff-mode-map
-               magit-log-mode-map
-               magit-mode-map
-               magit-process-mode-map
-               magit-refs-mode
-               magit-revision-mode-map
-               magit-status-mode-map)
-    :states 'normal
-    "q" nil
-    "'" nil)
-  (general-def
-    :keymaps '(magit-diff-mode-map
-               magit-log-mode-map
-               magit-mode-map
-               magit-process-mode-map
-               magit-refs-mode
-               magit-revision-mode-map
-               magit-status-mode-map)
-    "q" nil
-    "'" nil)
-
-  ;; no special behaviour for magit windows
-  (remove-hook 'magit-post-display-buffer-hook 'magit-maybe-set-dedicated)
-
-  ;; (magit-wip-mode)
-
-  (--each '(("~" . 2)
-            ("~/Projects/" . 2)
-            ("~/Documents/" . 3)
-            ("~/Sync/" . 3))
-    (-let [(dir . depth) it]
-      (add-to-list 'magit-repository-directories (cons dir depth) t)))
-
-  (setopt magit-log-margin
-          (-replace 'age 'age-abbreviated magit-log-margin))
-
-  (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
-
-  (transient-replace-suffix 'magit-commit 'magit-commit-autofixup
-    '(6 "x" "Absorb changes" magit-commit-absorb))
-  (transient-append-suffix 'magit-push
-    "-n" '("/c" "Skip Gitlab CI" "--push-option=ci.skip"))
-  (transient-append-suffix 'magit-push
-    "/c" '("/m" "Create Gitlab merge request" "--push-option=merge_request.create"))
-  (transient-append-suffix 'magit-log
-    "s" '("p" "merge/pull request" w/magit-log-merge-request))
-
-  ;; hide author names from magit-blame annotations;
-  ;; it's usually about why/what/when, not who.
-  (setf (->> magit-blame-styles
-             (alist-get 'headings)
-             (alist-get 'heading-format))
-        "%C %s\n")
-
-  (with-eval-after-load 'direnv
-    (--each '(magit-blob-mode
-              magit-diff-mode
-              magit-log-mode
-              magit-status-mode)
-      (add-to-list 'direnv-non-file-modes it)))
-
-  (with-eval-after-load 'evil-colemak-basics
-    (add-to-list 'global-evil-colemak-basics-modes
-                 '(not magit-log-mode magit-status-mode)))
-
-  (defun w/git-commit-mode-hook ()
-    (when (and (bobp) (eolp))
-      (call-interactively #'evil-insert)))
-
-  (defun w/magit-log-mode-hook ()
-    (dolist (element '(("*  " . "🔀") ;; merge
-                       ("*-." . "🐙"))) ;; octopus merge
-      (add-to-list 'prettify-symbols-alist element))
-    (prettify-symbols-mode))
-
-  (defun w/magit-log-highlight-merge-prefix ()
-    (when (looking-at (rx (group "merge:") " "))
-      (put-text-property (match-beginning 1)
-                         (match-end 1)
-                         'font-lock-face 'magit-diff-added-indicator)))
-
-  (defun w/magit-log-merge-request (range)
-    "Show a new buffer with draft body text for a merge request / pull request."
-    (interactive
-     (list (when current-prefix-arg (magit-read-range "Range"))))
-    (let ((buffer (generate-new-buffer "*merge request log*")))
-      (pop-to-buffer buffer)
-      (let ((magit-git-debug t))
-        (if-let* ((exit-code (apply #'magit-git-insert "log-merge-request" (when range (list range))))
-                  ((zerop exit-code)))
-            (progn
-              (whitespace-cleanup)
-              (goto-char (point-min))
-              (save-excursion
-                (while (re-search-forward (rx (>= 2 "\n")) nil t)
-                  (replace-match "\n\n" nil t)))
-              (markdown-mode))
-          (kill-buffer)
-          (magit-process-buffer)))))
-
-  (defun w/magit-status-other-repository ()
-    "Open git status for another repository."
-    (interactive)
-    (setq current-prefix-arg t)
-    (call-interactively 'magit-status))
-
-  (defun w/git-web-browse ()
-    "Open a web browser for the current git repo or file."
-    (interactive)
-    (if (region-active-p)
-        (let ((git-link-open-in-browser t))
-          (call-interactively #'git-link)
-          (setq kill-ring (cdr kill-ring)))
-      (call-interactively #'git-link)))
-
-  (defun w/magit-log-buffer-file-follow ()
-    (interactive)
-    (magit-log-buffer-file t))
-
-  (defun w/gitlab-insert-merge-request-template ()
-    (interactive)
-    (-if-let* ((template-dir ".gitlab/merge_request_templates/")
-               (dir (locate-dominating-file (or (buffer-file-name) default-directory) template-dir))
-               (template-file
-                (read-file-name "Template: " (concat dir template-dir)) nil t 'file-regular-p))
-        (insert-file-contents template-file)
-      (user-error "No merge request templates found"))))
 
 (use-package forge
   :after magit
