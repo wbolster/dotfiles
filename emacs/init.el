@@ -972,7 +972,7 @@
   (evil-collection-want-unimpaired-p nil)
   :config
   (defun w/colemak-hnei-rotation (_mode mode-keymaps &rest _rest)
-    (evil-collection-translate-key 'normal mode-keymaps
+    (evil-collection-translate-key '(motion normal operator visual) mode-keymaps
       "n" "j"
       "e" "k"
       "i" "l"
