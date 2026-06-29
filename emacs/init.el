@@ -354,6 +354,19 @@
   :custom
   (auto-revert-tail-truncate-max-lines 10000))
 
+(use-package caddyfile-mode
+  :hook (caddyfile-mode-hook . w/caddyfile-mode-hook)
+  :config
+  (reformatter-define caddyfile-format
+    :program "caddy"
+    :args '("fmt" "-")
+    :group 'caddyfile-format)
+
+  (defun w/caddyfile-mode-hook ()
+    (setq-local tab-width 4)
+    (reformatter-dwim-select 'caddyfile-format)
+    (reformatter-dwim-on-save-mode)))
+
 (use-package cape
   :demand t
   :general
@@ -3822,17 +3835,6 @@ defined as lowercase."
   (transient-suffix-put 'magit-dispatch "e" :command 'vdiff-magit-dwim)
   (transient-suffix-put 'magit-dispatch "E" :description "vdiff")
   (transient-suffix-put 'magit-dispatch "E" :command 'vdiff-magit))
-
-(use-package caddyfile-mode
-  :hook (caddyfile-mode-hook . w/caddyfile-mode-hook)
-  :config
-  (defun w/caddyfile-mode-hook ()
-    (setq-local tab-width 2))
-  (reformatter-define caddyfile-format
-    :program "caddy"
-    :args '("fmt" "-")
-    :lighter " caddyfmt"
-    :group 'caddyfile-format))
 
 (use-package elisp-mode
   :defer t
