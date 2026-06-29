@@ -2474,6 +2474,49 @@
   :custom
   (vc-handled-backends '(git)))
 
+(use-package vdiff
+  :defer t
+  :general
+  (:keymaps 'vdiff-mode-map
+   :states 'normal
+   "<remap> <evil-save-modified-and-close>" 'vdiff-quit)
+  :commands
+  vdiff-close-all-folds
+  vdiff-close-fold
+  vdiff-hydra/body
+  vdiff-next-fold
+  vdiff-next-hunk
+  vdiff-open-all-folds
+  vdiff-open-fold
+  vdiff-previous-fold
+  vdiff-previous-hunk
+  vdiff-receive-changes
+  vdiff-receive-changes-and-step
+  vdiff-refine-all-hunks
+  vdiff-refine-this-hunk
+  vdiff-refresh
+  vdiff-remove-refinements-in-hunk
+  vdiff-send-changes
+  vdiff-send-changes-and-step
+  :custom
+  (vdiff-3way-layout-function 'w/vdiff-3way-layout-3-columns)
+  (vdiff-subtraction-fill-char ?·)
+  (vdiff-subtraction-style 'single)
+  :custom-face
+  (vdiff-addition-face ((t (:inherit magit-diff-added))))
+  (vdiff-change-face ((t (:inherit magit-diff-base))))
+  (vdiff-subtraction-face ((t (:inherit magit-diff-removed))))
+  (vdiff-refine-added ((t (:inherit magit-diff-added-highlight))))
+  (vdiff-refine-changed ((t (:inherit magit-diff-base-highlight))))
+  (vdiff-open-fold-face ((t (:inherit magit-diff-context))))
+  (vdiff-closed-fold-face ((t (:inherit magit-diff-context-highlight))))
+  :config
+  (defun w/vdiff-3way-layout-3-columns (buffer-a buffer-b buffer-c)
+    (delete-other-windows)
+    (switch-to-buffer buffer-a)
+    (set-window-buffer (split-window-horizontally) buffer-c)
+    (set-window-buffer (split-window-horizontally) buffer-b)))
+
 (use-package vertico
   :demand t
   :custom
@@ -3775,51 +3818,6 @@ defined as lowercase."
   (with-demoted-errors "%S"
     (transient-suffix-put 'magit-dispatch "@" :key "h"))
   (transient-append-suffix 'forge-dispatch "f n" '("w" "web" git-link-homepage)))
-
-(use-package vdiff
-  :defer t
-  :custom
-  (vdiff-subtraction-style 'single)
-  (vdiff-subtraction-fill-char ?·)
-  (vdiff-3way-layout-function 'w/vdiff-3way-layout-function-vertical)
-  :general
-  (:keymaps 'vdiff-mode-map
-   :states 'normal
-   [remap evil-save-modified-and-close] 'vdiff-quit)
-  :custom-face
-  (vdiff-addition-face ((t (:inherit magit-diff-added))))
-  (vdiff-change-face ((t (:inherit magit-diff-base))))
-  (vdiff-subtraction-face ((t (:inherit magit-diff-removed))))
-  (vdiff-refine-added ((t (:inherit magit-diff-added-highlight))))
-  (vdiff-refine-changed ((t (:inherit magit-diff-base-highlight))))
-  (vdiff-open-fold-face ((t (:inherit magit-diff-context))))
-  (vdiff-closed-fold-face ((t (:inherit magit-diff-context-highlight))))
-
-  :commands
-  vdiff-close-all-folds
-  vdiff-close-fold
-  vdiff-hydra/body
-  vdiff-next-fold
-  vdiff-next-hunk
-  vdiff-open-all-folds
-  vdiff-open-fold
-  vdiff-previous-fold
-  vdiff-previous-hunk
-  vdiff-receive-changes
-  vdiff-receive-changes-and-step
-  vdiff-refine-all-hunks
-  vdiff-refine-this-hunk
-  vdiff-refresh
-  vdiff-remove-refinements-in-hunk
-  vdiff-send-changes
-  vdiff-send-changes-and-step
-
-  :config
-  (defun w/vdiff-3way-layout-function-vertical (buffer-a buffer-b buffer-c)
-    (delete-other-windows)
-    (switch-to-buffer buffer-a)
-    (set-window-buffer (split-window-horizontally) buffer-c)
-    (set-window-buffer (split-window-horizontally) buffer-b)))
 
 (use-package vdiff-magit
   :demand t
