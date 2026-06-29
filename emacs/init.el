@@ -2502,14 +2502,6 @@
   (vdiff-3way-layout-function 'w/vdiff-3way-layout-3-columns)
   (vdiff-subtraction-fill-char ?·)
   (vdiff-subtraction-style 'single)
-  :custom-face
-  (vdiff-addition-face ((t (:inherit magit-diff-added))))
-  (vdiff-change-face ((t (:inherit magit-diff-base))))
-  (vdiff-subtraction-face ((t (:inherit magit-diff-removed))))
-  (vdiff-refine-added ((t (:inherit magit-diff-added-highlight))))
-  (vdiff-refine-changed ((t (:inherit magit-diff-base-highlight))))
-  (vdiff-open-fold-face ((t (:inherit magit-diff-context))))
-  (vdiff-closed-fold-face ((t (:inherit magit-diff-context-highlight))))
   :config
   (defun w/vdiff-3way-layout-3-columns (buffer-a buffer-b buffer-c)
     (delete-other-windows)
