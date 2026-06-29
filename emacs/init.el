@@ -72,6 +72,9 @@
   (setopt no-littering-var-directory (expand-file-name "emacs/" (xdg-state-home)))
   (no-littering-theme-backups))
 
+(use-package reformatter
+  :demand t) ;; for ‘reformatter-define’ macro
+
 (use-package xdg
   :demand t
   :functions
@@ -2241,9 +2244,6 @@
       (when use-boundaries
         (setq thing (format "\\_<%s\\_>" thing)))
       (query-replace-regexp thing replacement))))
-
-(use-package reformatter
-  :defer t)
 
 (use-package reformatter-dwim
   :defer t
