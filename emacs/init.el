@@ -3560,6 +3560,7 @@ defined as lowercase."
   :hook
   (git-commit-mode-hook . w/git-commit-mode-hook)
   (magit-log-mode-hook . w/magit-log-mode-hook)
+  (magit-log-wash-summary-hook w/magit-log-highlight-merge-prefix)
   (magit-process-mode-hook . goto-address-mode)
 
   :custom
@@ -3697,6 +3698,12 @@ defined as lowercase."
                        ("*-." . "🐙"))) ;; octopus merge
       (add-to-list 'prettify-symbols-alist element))
     (prettify-symbols-mode))
+
+  (defun w/magit-log-highlight-merge-prefix ()
+    (when (looking-at (rx (group "merge:") " "))
+      (put-text-property (match-beginning 1)
+                         (match-end 1)
+                         'font-lock-face 'magit-diff-added-indicator)))
 
   (defun w/magit-status-other-repository ()
     "Open git status for another repository."
