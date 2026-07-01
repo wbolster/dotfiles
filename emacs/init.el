@@ -395,7 +395,9 @@
 (use-package comint
   :defer t
   :ensure emacs
-  :hook (comint-mode-hook . w/comint-mode-hook)
+  :hook
+  (comint-mode-hook . w/comint-mode-hook)
+  (comint-output-filter-functions . comint-osc-process-output)
   :general
   (:keymaps 'comint-mode-map
    "<escape>" #'evil-normal-state)
@@ -415,9 +417,6 @@
   :custom
   (comint-move-point-for-output 'all)
   :config
-  (add-hook 'comint-output-filter-functions
-            'comint-osc-process-output)
-
   (with-eval-after-load 'evil
     (evil-set-initial-state 'comint-mode 'normal))
 
