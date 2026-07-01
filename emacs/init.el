@@ -407,7 +407,6 @@
    "<return>" #'w/comint-find-file-or-goto-end)
   (:keymaps 'comint-mode-map
    :states 'insert
-   "<return>" #'comint-send-input
    "C-n" #'comint-next-input
    "C-p" #'comint-previous-input
    "C-r" #'comint-history-isearch-backward
@@ -978,6 +977,9 @@
   :hook
   (evil-collection-setup-hook . w/colemak-hnei-rotation)
   :custom
+  (evil-collection-binding-overrides
+   '((repl-submit :state insert)
+     (repl-newline :enabled nil)))
   (evil-collection-want-unimpaired-p nil)
   :config
   (defun w/colemak-hnei-rotation (_mode mode-keymaps &rest _rest)
