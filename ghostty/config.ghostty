@@ -8,7 +8,7 @@ copy-on-select = clipboard
 cursor-opacity = .8
 cursor-style-blink = false
 faint-opacity = .67
-font-family = "Iosevka Term Slab Light"
+font-family = "Iosevka Fixed Slab Light"
 gtk-titlebar-style = tabs
 keybind = ctrl+,=move_tab:-1
 keybind = ctrl+.=move_tab:1
