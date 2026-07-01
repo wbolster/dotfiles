@@ -400,8 +400,6 @@
   (comint-output-filter-functions . comint-osc-process-output)
   :general
   (:keymaps 'comint-mode-map
-   "<escape>" #'evil-normal-state)
-  (:keymaps 'comint-mode-map
    :states 'normal
    "C-e" #'comint-previous-prompt
    "C-n" #'comint-next-prompt
