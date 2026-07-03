@@ -3108,7 +3108,7 @@ treating 9 as ‘last window’."
   "n" #'w/narrow-dwim
   "o" #'w/occur-dwim
   "p" w/project-map
-  "q" #'bury-buffer
+  "q" #'quit-window
   "r" w/replace-map
   "s" #'save-buffer
   "t" w/toggle-map
