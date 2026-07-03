@@ -2372,6 +2372,9 @@
   (:states 'normal
    "g +" #'reformatter-dwim-on-save-mode))
 
+(use-package rg
+  :defer t)
+
 (use-package rust-mode
   :defer t
   :hook (rust-mode-hook . w/rust-mode-hook)
