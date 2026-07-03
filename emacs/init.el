@@ -2976,7 +2976,6 @@ treating 9 as ‘last window’."
   "R" #'evil-window-rotate-upwards ;; ‎todo: rotate-windows-back‎ (emacs 31)
   "S" #'w/split-window-below
   "U" #'winner-redo
-  "b" #'balance-windows
   "c" #'delete-window
   "e" #'windmove-swap-states-up
   "f" #'make-frame
