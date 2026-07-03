@@ -1330,6 +1330,7 @@
   w/flycheck-toggle-error-window
   :functions
   flycheck-add-mode
+  flycheck-define-generic-checker
   flycheck-get-checker-for-buffer
   flycheck-list-errors
   :custom
