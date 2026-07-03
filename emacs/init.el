@@ -1670,6 +1670,11 @@
   lsp-rename
   lsp-ui-doc-show
   lsp-workspace-restart
+  :functions
+  lsp-activate-on
+  lsp-register-client
+  lsp-stdio-connection
+  make-lsp-client
   :custom
   (lsp-completion-provider :none) ;; use corfu
   (lsp-auto-execute-action nil)
@@ -3922,6 +3927,14 @@ defined as lowercase."
   (markdown-fontify-code-blocks-natively t)
 
   :config
+  (with-eval-after-load 'lsp-mode
+    (when (executable-find "markdown-oxide")
+      (lsp-register-client
+       (make-lsp-client
+        :new-connection (lsp-stdio-connection "markdown-oxide")
+        :activation-fn (lsp-activate-on "markdown")
+        :server-id 'markdown-oxide))))
+
   (defun w/markdown-mode-hook ()
     (setq-local evil-shift-width 2)
     (w/set-major-mode-hydra #'w/hydra-markdown/body)
