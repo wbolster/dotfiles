@@ -2096,6 +2096,66 @@
   :custom-face
   (pkgbuild-error-face ((t (:inherit error)))))
 
+(use-package projectile
+  :defer t
+  :delight
+
+  :custom
+  (projectile-completion-system 'default)
+  (projectile-current-project-on-switch 'keep)
+  (projectile-ignored-projects '("/usr/local/" "~/"))
+  ;; (projectile-mode-line nil)  ;; causes eager loading, :delight has same effect
+  (projectile-require-project-root nil)
+  (projectile-sort-order 'recently-active)
+  (projectile-switch-project-action 'projectile-vc)
+
+  :commands
+  w/projectile-find-file-all
+  w/projectile-open-gui-file-browser
+  w/projectile-project-bury-buffers
+
+  :functions
+  projectile-project-root
+
+  :init
+  (add-hook 'find-file-hook (lambda () (require 'projectile)))
+
+  :config
+  (projectile-mode)
+
+  (defun w/projectile-find-file-all (&optional pattern)
+    "Find any file in the current project, including ignored files."
+    (interactive
+     (list
+      (read-string
+       "file name pattern (empty means all): "
+       (if buffer-file-name
+           (concat (file-name-extension buffer-file-name) "$")
+         "")
+       ".")))
+    (let* ((collection
+            (projectile-make-relative-to-root
+             (directory-files-recursively (projectile-project-root) pattern)))
+           (selection (completing-read "Find file in complete project: " collection nil t nil 'file-name-history))
+           (name (concat (file-name-as-directory (projectile-project-root)) selection)))
+      (find-file name)  ))
+
+  (defun w/projectile-project-bury-buffers ()
+    "Quit all windows and bury all buffers for the current project."
+    (interactive)
+    (-each (projectile-project-buffers)
+      (lambda (buffer)
+        (-each (get-buffer-window-list buffer)
+          (lambda (window)
+            (quit-window nil window)))
+        (bury-buffer buffer))))
+
+  (defun w/projectile-open-gui-file-browser ()
+    "Open a GUI browser for the directory containing the current file."
+    (interactive)
+    (when-let ((directory-name (projectile-project-root)))
+      (call-process "xdg-open" nil 0 nil directory-name))))
+
 (use-package profiler
   :defer t
   :hook (profiler-report-mode-hook . w/profiler-report-mode-hook)
@@ -3707,68 +3767,6 @@ defined as lowercase."
       (let ((current-prefix-arg t))
         (copy-as-format))
       (pop-mark))))
-
-
-(use-package projectile
-  :defer t
-  :delight
-
-  :custom
-  (projectile-completion-system 'default)
-  (projectile-current-project-on-switch 'keep)
-  (projectile-ignored-projects '("/usr/local/" "~/"))
-  ;; (projectile-mode-line nil)  ;; causes eager loading, :delight has same effect
-  (projectile-require-project-root nil)
-  (projectile-sort-order 'recently-active)
-  (projectile-switch-project-action 'projectile-vc)
-
-  :commands
-  w/projectile-find-file-all
-  w/projectile-open-gui-file-browser
-  w/projectile-project-bury-buffers
-
-  :functions
-  projectile-project-root
-
-  :init
-  (add-hook 'find-file-hook (lambda () (require 'projectile)))
-
-  :config
-  (projectile-mode)
-
-  (defun w/projectile-find-file-all (&optional pattern)
-    "Find any file in the current project, including ignored files."
-    (interactive
-     (list
-      (read-string
-       "file name pattern (empty means all): "
-       (if buffer-file-name
-           (concat (file-name-extension buffer-file-name) "$")
-         "")
-       ".")))
-    (let* ((collection
-            (projectile-make-relative-to-root
-             (directory-files-recursively (projectile-project-root) pattern)))
-           (selection (completing-read "Find file in complete project: " collection nil t nil 'file-name-history))
-           (name (concat (file-name-as-directory (projectile-project-root)) selection)))
-      (find-file name)  ))
-
-  (defun w/projectile-project-bury-buffers ()
-    "Quit all windows and bury all buffers for the current project."
-    (interactive)
-    (-each (projectile-project-buffers)
-      (lambda (buffer)
-        (-each (get-buffer-window-list buffer)
-          (lambda (window)
-            (quit-window nil window)))
-        (bury-buffer buffer))))
-
-  (defun w/projectile-open-gui-file-browser ()
-    "Open a GUI browser for the directory containing the current file."
-    (interactive)
-    (when-let ((directory-name (projectile-project-root)))
-      (call-process "xdg-open" nil 0 nil directory-name)))
-  )
 
 (use-package avy
   :custom
