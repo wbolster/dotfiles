@@ -2127,12 +2127,10 @@
   (defun w/projectile-project-bury-buffers ()
     "Quit all windows and bury all buffers for the current project."
     (interactive)
-    (-each (projectile-project-buffers)
-      (lambda (buffer)
-        (-each (get-buffer-window-list buffer)
-          (lambda (window)
-            (quit-window nil window)))
-        (bury-buffer buffer))))
+    (dolist (buffer (projectile-project-buffers))
+      (dolist (window (get-buffer-window-list buffer))
+        (quit-window nil window))
+      (bury-buffer buffer)))
 
   (defun w/projectile-open-gui-file-browser ()
     "Open a GUI browser for the directory containing the current file."
