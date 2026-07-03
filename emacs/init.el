@@ -1683,6 +1683,10 @@
   (lsp-headerline-breadcrumb-segments '(symbols))
   (lsp-keymap-prefix "C-c l")
   :config
+  (let ((client-packages-to-disable
+         '(lsp-terraform))) ;; triggers error on load even when unused 🤷🏼
+    (setopt lsp-client-packages
+            (seq-difference lsp-client-packages client-packages-to-disable)))
   (defun w/lsp-mode-after-open-hook ()
     (lsp-origami-try-enable))
   (defun w/lsp-completion-mode-hook ()
