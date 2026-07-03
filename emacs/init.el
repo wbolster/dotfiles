@@ -2523,8 +2523,7 @@
      (consult-location buffer)
      (file (vertico-sort-function . vertico-sort-directories-first)
            (:keymap . vertico-directory-map))
-     (imenu buffer)
-     (symbol (vertico-sort-function . vertico-sort-alpha))))
+     (imenu buffer)))
   :functions
   vertico--candidate
   vertico--metadata-get
