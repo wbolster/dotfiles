@@ -2097,9 +2097,16 @@
   (pkgbuild-error-face ((t (:inherit error)))))
 
 (use-package projectile
-  :defer t
+  :demand t
   :delight
-
+  :commands
+  w/projectile-find-file-all
+  w/projectile-open-gui-file-browser
+  w/projectile-project-bury-buffers
+  :functions
+  projectile-make-relative-to-root
+  projectile-project-buffers
+  projectile-project-root
   :custom
   (projectile-completion-system 'default)
   (projectile-current-project-on-switch 'keep)
@@ -2108,18 +2115,6 @@
   (projectile-require-project-root nil)
   (projectile-sort-order 'recently-active)
   (projectile-switch-project-action 'projectile-vc)
-
-  :commands
-  w/projectile-find-file-all
-  w/projectile-open-gui-file-browser
-  w/projectile-project-bury-buffers
-
-  :functions
-  projectile-project-root
-
-  :init
-  (add-hook 'find-file-hook (lambda () (require 'projectile)))
-
   :config
   (projectile-mode)
 
