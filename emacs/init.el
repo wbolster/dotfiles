@@ -516,10 +516,11 @@
   (corfu-preselect 'prompt)
   :config
   (global-corfu-mode)
-  (corfu-history-mode)
   (corfu-echo-mode)
+  (corfu-history-mode)
   (defun w/corfu-move-to-minibuffer ()
-    ;; based on https://github.com/minad/corfu
+    ;; based on
+    ;; https://github.com/minad/corfu#transfer-completion-to-the-minibuffer
     (interactive)
     (pcase completion-in-region--data
       (`(,beg ,end ,table ,pred ,extras)
