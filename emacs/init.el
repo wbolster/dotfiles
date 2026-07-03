@@ -1407,6 +1407,61 @@
   :defer t
   :delight " ∼")
 
+(use-package fontaine
+  :demand t
+  :commands
+  w/fontaine-cycle-preset
+  :functions
+  fontaine--get-preset-symbols
+  :bind
+  ("C-)" . w/fontaine-cycle-preset) ;; ctrl+shift+0 (similar to zoom)
+  :custom
+  (fontaine-presets
+   `((t
+      :default-height 130
+      :default-weight normal
+      :default-width normal)
+     (system
+      :default-family
+      ,(replace-regexp-in-string
+        (rx (+ " " (| "Extended" "Extralight" "Light" "Medium" (+ (in "0-9")))) eos)
+        "" (font-get-system-font)))
+     (monospace
+      :default-family "Monospace")
+     ,(when (member "Adwaita Mono" (font-family-list))
+        '(adwaita-mono
+          :default-family "Adwaita Mono"))
+     ,(when (member "Iosevka Slab" (font-family-list))
+        '(iosevka-regular
+          :default-family "Iosevka Slab"
+          :default-weight light
+          :default-width normal))
+     ,@(when (member "Iosevka Slab Full" (font-family-list))
+         ;; custom build with all widths and weights included
+         '((iosevka-semi-condensed
+            :default-family "Iosevka Slab Full"
+            :inherit iosevka-regular
+            :default-width semi-condensed)
+           (iosevka-condensed
+            :default-family "Iosevka Slab Full"
+            :inherit iosevka-regular
+            :default-width condensed)))))
+  :config
+  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'iosevka-regular))
+  (fontaine-mode)
+
+  (defun w/fontaine-cycle-preset (&optional with-height)
+    (interactive "P")
+    (unless with-height
+      (w/save-global-text-scale-height))
+    (w/set-cycle
+     'fontaine-current-preset
+     (fontaine--get-preset-symbols)
+     (lambda (_sym val) (fontaine-set-preset val)))
+    (unless with-height
+      (w/restore-global-text-scale-height))
+    (message "Fontaine preset: %s" fontaine-current-preset)))
+
 (use-package git-link
   :defer t
   :custom
