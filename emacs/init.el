@@ -513,11 +513,13 @@
   w/corfu-move-to-minibuffer
   :custom
   (corfu-cycle t)
+  (corfu-popupinfo-hide t)
   (corfu-preselect 'prompt)
   :config
   (global-corfu-mode)
   (corfu-echo-mode)
   (corfu-history-mode)
+  (corfu-popupinfo-mode)
   (defun w/corfu-move-to-minibuffer ()
     ;; based on
     ;; https://github.com/minad/corfu#transfer-completion-to-the-minibuffer
