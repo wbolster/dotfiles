@@ -579,6 +579,12 @@
   (:states 'normal
    "g ?" #'devdocs-lookup))
 
+(use-package difftastic
+  :demand t
+  :if (executable-find "difft")
+  :config
+  (difftastic-bindings-mode))
+
 (use-package dired
   :demand t
   :ensure emacs
