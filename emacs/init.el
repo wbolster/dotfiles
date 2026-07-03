@@ -2006,12 +2006,20 @@
 (use-package orderless
   :demand t
   :custom
-  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-category-overrides
+   '((file (styles partial-completion))
+     (symbol (styles orderless+initialism))))
   (completion-ignore-case t)
   (completion-styles '(orderless basic))
   (completion-pcm-leading-wildcard t) ;; emacs 31: partial-completion behaves like substring
   (read-buffer-completion-ignore-case t)
-  (read-file-name-completion-ignore-case t))
+  (read-file-name-completion-ignore-case t)
+  :config
+  (orderless-define-completion-style orderless+initialism
+    (orderless-matching-styles
+     '(orderless-initialism
+       orderless-literal
+       orderless-regexp))))
 
 (use-package org
   :defer t
