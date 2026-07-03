@@ -2137,9 +2137,7 @@
   (defun w/projectile-open-gui-file-browser ()
     "Open a GUI browser for the directory containing the current file."
     (interactive)
-    (when-let ((directory-name (projectile-project-root)))
-      (call-process "xdg-open" nil 0 nil directory-name))))
-
+    (browse-url-xdg-open (projectile-project-root))))
 (use-package profiler
   :defer t
   :hook (profiler-report-mode-hook . w/profiler-report-mode-hook)
