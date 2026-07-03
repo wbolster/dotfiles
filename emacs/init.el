@@ -1814,7 +1814,6 @@
     "C-p" #'magit-section-backward
     "<tab>" #'magit-section-cycle
     "C-<tab>" #'magit-section-toggle
-    "C-w" w/window-map
     "/" #'consult-line)
   (general-def
     :keymaps 'magit-blame-read-only-mode-map
