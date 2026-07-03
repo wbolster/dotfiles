@@ -2307,8 +2307,6 @@
   :custom
   (recentf-auto-cleanup 300)
   (recentf-max-saved-items 500)
-  :commands
-  w/counsel-recentf-other-window
   :functions
   recentf-expand-file-name
   :config
@@ -2316,17 +2314,7 @@
            (recentf-expand-file-name no-littering-etc-directory)
            (recentf-expand-file-name no-littering-var-directory))
     (add-to-list 'recentf-exclude it t))
-
-  (recentf-mode)
-
-  (defun w/counsel-recentf-other-window ()
-    "Like ‘counsel-recentf’, but opens the file in another window."
-    (interactive)
-    (require 'counsel)
-    (require 'ivy)
-    (defvar ivy-inhibit-action)
-    (let ((ivy-inhibit-action t))
-      (find-file-other-window (counsel-recentf)))))
+  (recentf-mode))
 
 (use-package replace
   :defer t
@@ -2937,7 +2925,6 @@ treating 9 as ‘last window’."
   "D" #'deer-jump-other-window
   "F" #'find-file-other-window
   "N" #'w/buffer-new-other-window
-  "R" #'w/counsel-recentf-other-window
   "S" #'sudo-edit-find-file
   "d" #'deer
   "f" #'find-file
