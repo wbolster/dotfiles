@@ -1230,7 +1230,7 @@
     "Save the current default face height."
     (setq w/global-text-scale-height (face-attribute 'default :height)))
 
-  (defun w/restore-global-text-scale-height (_theme)
+  (defun w/restore-global-text-scale-height (&rest _)
     "Restore the saved default face height after theme changes."
     (when w/global-text-scale-height
       (set-face-attribute 'default nil :height w/global-text-scale-height)))
