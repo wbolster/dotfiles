@@ -4015,9 +4015,9 @@ defined as lowercase."
   (add-to-list 'which-func-modes 'python-mode)
 
   (defun w/python-mode-hook ()
-    (setq-local fill-column 79)
     (setq-local
      comment-fill-column 72
+     fill-column 79
      indent-bars-starting-column 12)
     (if-let* ((env-var-value (getenv "EMACS_PYTHON_ISORT_ENABLED"))
               (_ (string-equal env-var-value "0")))
