@@ -1299,10 +1299,11 @@
   (defun w/open-gui-file-browser ()
     "Open a GUI browser for the directory containing the current file."
     (interactive)
-    (when-let ((file-name (buffer-file-name))
-               (directory-name (file-name-directory file-name))
-               (file-exists (file-exists-p directory-name)))
-      (call-process "xdg-open" nil 0 nil directory-name))))
+    (let* ((file-name (buffer-file-name))
+           (directory-name
+            (or (and file-name (file-name-directory file-name))
+                default-directory)))
+      (browse-url-xdg-open directory-name))))
 
 (use-package flycheck
   :demand t
