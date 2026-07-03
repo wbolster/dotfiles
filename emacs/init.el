@@ -310,7 +310,8 @@
   (abbrev-suggest t)
   (save-abbrevs nil)
   :config
-  (define-abbrev global-abbrev-table "emcas" "emacs"))
+  (define-abbrev global-abbrev-table "emcas" "emacs")
+  (define-abbrev global-abbrev-table "eamcs" "emacs"))
 
 (use-package aggressive-indent
   :defer t
