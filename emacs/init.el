@@ -2694,6 +2694,9 @@
     (indent-bars-mode)
     (lsp-deferred)))
 
+(use-package wgrep
+  :defer t)
+
 (use-package which-func
   :demand t
   :custom
