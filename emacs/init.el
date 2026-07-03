@@ -403,7 +403,7 @@
    "C-n" #'comint-next-input
    "C-p" #'comint-previous-input
    "C-r" #'comint-history-isearch-backward
-   "C-/" #'w/comint-insert-history)
+   "C-/" #'consult-history)
   :custom
   (comint-move-point-for-output 'all)
   :config
@@ -421,13 +421,7 @@
         (evil-find-file-at-point-with-line)
       (user-error
        (goto-char (point-max))
-       (evil-append-line 0))))
-
-  (defun w/comint-insert-history ()
-    (interactive)
-    (let* ((collection (-uniq (ring-elements comint-input-ring)))
-           (text (completing-read "Command history: " collection nil t)))
-      (insert text))))
+       (evil-append-line 0)))))
 
 (use-package compile
   :defer t
