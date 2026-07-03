@@ -182,8 +182,6 @@
   (echo-keystrokes 0.5)
   (find-file-visit-truename t)
   (fit-window-to-buffer-horizontally t)
-  (frame-resize-pixelwise t)
-  (frame-title-format "%b")
   (indicate-buffer-boundaries 'left)
   (indent-tabs-mode nil)
   (inhibit-startup-screen t)
@@ -206,11 +204,6 @@
   (tab-first-completion 'word)
   (tab-width 4)
   (use-short-answers t)
-  (window-combination-resize t)
-  (window-divider-default-bottom-width 2)
-  (window-divider-default-places t)
-  (window-divider-default-right-width 2)
-  (window-resize-pixelwise t)
 
   :custom-face
   (read-multiple-choice-face ((t (:inverse-video unspecified :inherit transient-key))))
@@ -2717,10 +2710,17 @@
   w/buffer-new-internal
   w/fit-bottom-error-window-to-buffer
   :custom
+  (frame-resize-pixelwise t)
+  (frame-title-format "%b")
   (split-height-threshold nil)
   (split-width-threshold 120)
   (split-window-preferred-function 'visual-fill-column-split-window-sensibly)
   (switch-to-buffer-in-dedicated-window 'pop)
+  (window-combination-resize t)
+  (window-divider-default-bottom-width 2)
+  (window-divider-default-places t)
+  (window-divider-default-right-width 2)
+  (window-resize-pixelwise t)
   :config
   (dolist (map (list evil-emacs-state-map evil-motion-state-map global-map))
     (dolist (n (number-sequence 1 9))
