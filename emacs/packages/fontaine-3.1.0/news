@@ -1,0 +1,102 @@
+                      ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                       CHANGE LOG OF FONTAINE.EL
+                      ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+This document contains the release notes for each tagged commit on the
+project's main git repository:
+<https://github.com/protesilaos/fontaine>.
+
+The newest release is at the top.  For further details, please consult
+the manual: <https://protesilaos.com/emacs/fontaine>.
+
+Table of Contents
+─────────────────
+
+Version 3.1.0 on 2026-06-29
+Version 3.0.0 on 2025-02-20
+
+
+Version 3.1.0 on 2026-06-29
+═══════════════════════════
+
+  This is a small release that includes internal refinements as well as
+  two user-facing changes:
+
+  1. The user option `fontaine-presets' accepts an optional
+     `:line-spacing' entry, which corresponds to the `line-spacing'
+     variable. As of Emacs version 31, `line-spacing' can be bound to a
+     cons cell to set the space above and below. Fontaine now handles
+     this as intended.
+
+  2. By default, changing the font size has the effect of resizing the
+     frame. This is because of the original value of the variable
+     `frame-inhibit-implied-resize'. Fontaine is now designed to always
+     inhibit frame resizing, regardless of
+     `frame-inhibit-implied-resize'.
+
+
+Version 3.0.0 on 2025-02-20
+═══════════════════════════
+
+  This version changes the underlying implementation of Fontaine's font
+  configuration presets. In principle, this should not have any effect
+  on how users experience the package, though there are some important
+  details that are different.
+
+
+Fontaine is now a "theme"
+─────────────────────────
+
+  Fontaine has always modified typography-related faces, such as
+  `default', `fixed-pitch', and `variable-pitch', to apply the font
+  family, height, and weight specified by the user. In the past, this
+  was done in a way that could get overridden under certain conditions,
+  such as by loading a theme after setting a Fontaine preset
+  configuration.
+
+  By making Fontaine a theme, we guarantee that its settings are not
+  undone. In practice, this means that users do not have to re-apply the
+  current preset after loading a theme. The function
+  `fontaine-apply-current-preset' is thus obsolete.
+
+  In Emacs, a "theme" is a bundle of configurations. Those typically
+  cover colours (such as with my `modus-themes'), but a theme can focus
+  on other settings as well. For example, the popular `use-package' is
+  internally done as a theme (check the value of `custom-known-themes').
+
+  Fontaine is a theme in the same way `use-package' is, meaning that it
+  will (i) persist its effects, (ii) not show up in the
+  `custom-enabled-themes' and so not be affected by something like
+  `(mapc #'disable-theme custom-enabled-themes)', and (iii) not be an
+  option among those presented by `load-theme'.
+
+  There are no known bugs, though please contact me if you encounter a
+  scenario where Fontaine does not do the right thing. Thanks, in this
+  regard, to Haruko and Emily Hyland for reporting a couple of bugs:
+
+  • <https://github.com/protesilaos/fontaine/issues/14>.
+  • <https://github.com/protesilaos/fontaine/issues/15>.
+
+
+Fontaine no longer has frame-specific effects
+─────────────────────────────────────────────
+
+  In the past, users could apply a Fontaine preset to the current frame
+  without affecting other frames. While this could be useful in certain
+  situations, it was ultimately making the code more complex for
+  marginal gains. As part of the transition to a theme, which is anyway
+  global, I am removing everything related to frame-specific
+  functionality.
+
+
+Quality-of-life refinements
+───────────────────────────
+
+  • The `fontaine-generic-face-families' are used when necessary to
+    guard against `nil' values. Those font families are symbolic
+    references to whatever the operating system is configured to use
+    (e.g. on Linux this is handled by fontconfig).
+
+  • If Fontaine is instructed to load an invalid preset, it displays a
+  …  …
