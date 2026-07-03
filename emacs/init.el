@@ -506,6 +506,9 @@
              (if (< (point) (window-start)) scroll-margin (- -1 scroll-margin))))
         (recenter screen-line)))))
 
+(use-package consult-flycheck
+  :defer t)
+
 (use-package corfu
   :demand t
   :bind
@@ -2896,6 +2899,7 @@ treating 9 as ‘last window’."
   "b" #'flycheck-buffer
   "c" #'w/flycheck-toggle-error-window
   "e" #'flycheck-previous-error
+  "g" #'consult-flycheck
   "m" #'w/flycheck-compile-current
   "n" #'flycheck-next-error
   "o" #'w/flycheck-show-error-other-file-mode
