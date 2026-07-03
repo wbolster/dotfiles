@@ -2118,22 +2118,11 @@
   :config
   (projectile-mode)
 
-  (defun w/projectile-find-file-all (&optional pattern)
+  (defun w/projectile-find-file-all ()
     "Find any file in the current project, including ignored files."
-    (interactive
-     (list
-      (read-string
-       "file name pattern (empty means all): "
-       (if buffer-file-name
-           (concat (file-name-extension buffer-file-name) "$")
-         "")
-       ".")))
-    (let* ((collection
-            (projectile-make-relative-to-root
-             (directory-files-recursively (projectile-project-root) pattern)))
-           (selection (completing-read "Find file in complete project: " collection nil t nil 'file-name-history))
-           (name (concat (file-name-as-directory (projectile-project-root)) selection)))
-      (find-file name)  ))
+    (interactive)
+    (let ((consult-find-args "find ."))
+      (call-interactively #'consult-find)))
 
   (defun w/projectile-project-bury-buffers ()
     "Quit all windows and bury all buffers for the current project."
