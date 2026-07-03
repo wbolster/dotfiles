@@ -502,7 +502,7 @@
   (:map corfu-map
    ("<tab>" . corfu-next)
    ("<backtab>" . corfu-previous)
-   ("C-/" . #'w/corfu-move-to-minibuffer))
+   ("C-/" . w/corfu-move-to-minibuffer))
   :commands
   w/corfu-move-to-minibuffer
   :custom
