@@ -2999,7 +2999,7 @@ treating 9 as ‘last window’."
   :doc "Keymap for project commands."
   "!" #'terminal-here-project-launch
   "-" #'projectile-dired
-  "/" #'w/counsel-ag-project
+  "/" #'consult-ripgrep
   "1" #'terminal-here-project-launch
   "?" #'w/counsel-ag-project-all-files
   "B" #'projectile-switch-to-buffer-other-window
@@ -3036,9 +3036,8 @@ treating 9 as ‘last window’."
   "F" #'ag-files
   "G" #'ag
   "R" #'ag-regexp
-  "a" #'ag-project
   "f" #'ag-project-files
-  "g" #'ag-project
+  "g" #'projectile-ripgrep
   "r" #'ag-project-regexp)
 
 (defvar-keymap w/toggle-map
