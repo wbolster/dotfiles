@@ -2710,6 +2710,7 @@
   w/buffer-new-internal
   w/fit-bottom-error-window-to-buffer
   :custom
+  (frame-inhibit-implied-resize t)
   (frame-resize-pixelwise t)
   (frame-title-format "%b")
   (split-height-threshold nil)
