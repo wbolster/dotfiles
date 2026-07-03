@@ -1307,6 +1307,8 @@
 (use-package flycheck
   :demand t
   :after direnv
+  :delight
+  (flycheck-mode (:eval (when (flycheck-get-checker-for-buffer) (flycheck-mode-line-status-text))))
   :hook
   (flycheck-mode-hook . w/flycheck-show-error-other-file-mode)
   (flycheck-before-syntax-check-hook . direnv--maybe-update-environment)
@@ -1338,6 +1340,7 @@
   (flycheck-display-errors-delay 1.0)
   (flycheck-idle-change-delay 3)
   (flycheck-mode-line-prefix "🧐")
+  (flycheck-mode-success-indicator "")
   (flycheck-emacs-lisp-load-path 'inherit)
   (flycheck-python-flake8-executable "flake8")
   (flycheck-relevant-error-other-file-minimum-level nil)
