@@ -3470,38 +3470,6 @@ defined as lowercase."
         (deactivate-mark))
       thing)))
 
-(use-package ag
-  :defer t
-  :custom
-  (ag-project-root-function 'projectile-project-root)
-  (ag-reuse-buffers t)
-  :hook (ag-mode-hook . w/ag-mode-hook)
-  :commands
-  w/counsel-ag-project
-  w/counsel-ag-project-all-files
-  :general
-  (:keymaps 'ag-mode-map
-   :states 'motion
-   "gr" #'recompile)
-  :config
-  (defun w/ag-mode-hook ()
-    (toggle-truncate-lines t))
-
-  (defun w/counsel-ag-project (&optional unrestricted)
-    "Run ‘counsel-ag’ on the current project."
-    (interactive)
-    (let ((extra-args (if unrestricted "--unrestricted" ""))
-          (prompt (if unrestricted "search all project files: " "search project files: ")))
-      (counsel-ag nil (projectile-project-root) extra-args prompt)))
-
-  (defun w/counsel-ag-project-all-files ()
-    "Run counsel-ag on all files within the project root."
-    (interactive)
-    (w/counsel-ag-project t)))
-
-;; todo: switch to rg/ripgrep
-;; (use-package rg)
-
 ;; todo: switch to deadgrep
 ;; perhaps use ,/ for hydra?
 (use-package deadgrep
