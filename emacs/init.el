@@ -2007,8 +2007,10 @@
   :demand t
   :custom
   (completion-category-overrides
-   '((file (styles partial-completion))
-     (symbol (styles orderless+initialism))))
+   '((command (styles orderless+initialism))
+     (file (styles partial-completion))
+     (symbol (styles orderless+initialism))
+     (variable (styles orderless+initialism))))
   (completion-ignore-case t)
   (completion-styles '(orderless basic))
   (completion-pcm-leading-wildcard t) ;; emacs 31: partial-completion behaves like substring
