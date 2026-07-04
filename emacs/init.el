@@ -3006,9 +3006,9 @@ treating 9 as ‘last window’."
   :doc "Keymap for project commands."
   "!" #'terminal-here-project-launch
   "-" #'projectile-dired
-  "/" #'consult-ripgrep
+  "/" #'projectile-ripgrep
   "1" #'terminal-here-project-launch
-  "?" #'w/counsel-ag-project-all-files
+  "?" #'consult-ripgrep
   "B" #'projectile-switch-to-buffer-other-window
   "D" #'projectile-find-dir-other-window
   "F" #'projectile-find-file-other-window
