@@ -1424,6 +1424,7 @@
 
 (use-package fontaine
   :demand t
+  :if (display-graphic-p)
   :commands
   w/fontaine-cycle-preset
   :functions
