@@ -59,7 +59,7 @@ encryption_passcommand: cat /etc/borgmatic.d/repo.key
 #
 #   ssh_command: "sudo -u ... env SSH_AUTH_SOCK=/run/user/1000/keyring/ssh ssh"
 #
-ssh_command: "sh -c 'sudo -u $SUDO_USER env SSH_AUTH_SOCK=/run/user/$SUDO_UID/keyring/ssh ssh \"$0\" \"$@\"'"
+ssh_command: "sh -c 'sudo -u $SUDO_USER env SSH_AUTH_SOCK=/run/user/$SUDO_UID/gcr/ssh ssh \"$0\" \"$@\"'"
 
 keep_daily: 7
 keep_weekly: 4
