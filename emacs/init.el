@@ -3039,10 +3039,8 @@ treating 9 as ‘last window’."
 
 (defvar-keymap w/search-map
   :doc "Keymap for search commands."
-  "F" #'ag-files
   "G" #'ag
   "R" #'ag-regexp
-  "f" #'ag-project-files
   "g" #'projectile-ripgrep
   "r" #'ag-project-regexp)
 
