@@ -2670,13 +2670,15 @@
     (let* ((file-category (eq 'file (vertico--metadata-get 'category)))
            (selected (>= vertico--index 0))
            (candidate-directory (string-suffix-p "/" (vertico--candidate)))
+           (in-home-dir (string-equal (minibuffer-contents) "~/"))
            (after-slash (looking-back "/" 1)))
       (cond
        ((and file-category selected candidate-directory)
         (vertico-directory-enter))
        ((and file-category (not selected) after-slash)
-        (delete-minibuffer-contents)
-        (insert "/"))
+        (unless in-home-dir ;; allows typing ‘~/something’
+          (delete-minibuffer-contents)
+          (insert "/")))
        (t
         (self-insert-command 1))))))
 
