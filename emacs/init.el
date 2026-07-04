@@ -1538,7 +1538,6 @@
   (guess-language-languages '(en nl))
   :config
   ;; flags are not languages 😩
-  ;; todo: setq → setopt; see https://github.com/tmalsburg/guess-language.el/pull/47
   (setopt
    guess-language-langcodes
    (mapcar
