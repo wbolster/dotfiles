@@ -702,7 +702,8 @@
   (:states 'motion
    "TAB" #'evil-toggle-fold
    "C-TAB" #'evil-jump-forward
-   ";" #'evil-ex
+   ":" #'eval-expression
+   ";" #'execute-extended-command
    "z e" #'evil-scroll-line-up
    "z n" #'evil-scroll-line-down)
   (:states '(motion normal)
