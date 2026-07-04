@@ -1791,8 +1791,6 @@
   :functions
   magit-git-insert
   magit-read-range
-  :init
-  (add-hook 'find-file-hook (lambda () (require 'magit)))
   :custom
   (git-commit-fill-column 72)
   (magit-blame-heading-format "%C %-10a %s")
