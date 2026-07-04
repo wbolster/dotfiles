@@ -335,6 +335,7 @@
   (auto-dark-mode))
 
 (use-package autorevert
+  :demand t
   :delight auto-revert-mode
   :custom
   (auto-revert-check-vc-info t)
@@ -347,6 +348,7 @@
   (auto-revert-tail-truncate-max-lines 10000))
 
 (use-package caddyfile-mode
+  :defer t
   :hook (caddyfile-mode-hook . w/caddyfile-mode-hook)
   :config
   (reformatter-define caddyfile-format
@@ -2150,6 +2152,7 @@
     "Open a GUI browser for the directory containing the current file."
     (interactive)
     (browse-url-xdg-open (projectile-project-root))))
+
 (use-package profiler
   :defer t
   :hook (profiler-report-mode-hook . w/profiler-report-mode-hook)
@@ -2196,6 +2199,7 @@
 
 (use-package python-docstring
   :defer t
+  :after python
   :delight
   :custom
   (python-fill-docstring-style 'symmetric)
