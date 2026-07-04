@@ -1793,6 +1793,7 @@
   magit-read-range
   :custom
   (git-commit-fill-column 72)
+  (git-commit-cd-to-toplevel t)
   (magit-blame-heading-format "%C %-10a %s")
   (magit-blame-mode-lighter " annotate")
   (magit-blame-time-format "%Y%m%d")
