@@ -3170,7 +3170,6 @@ treating 9 as ‘last window’."
 ;;; todo: tidy up the messy stuff below ======================
 
 (use-package hydra
-  :after ivy
   :demand t
   :preface
   (defvar w/hydra-hint-delay 1
@@ -3775,39 +3774,6 @@ defined as lowercase."
   (interactive)
   (with-selected-frame (make-frame)
     (call-interactively #'evil-buffer-new)))
-
-(defvar w/ivy-height-percentage 30
-  "Percentage of the screen height that ivy should use.")
-
-(use-package ivy
-  :demand t
-  :delight
-  :hook (window-size-change-functions . w/adjust-ivy-height)
-  :general
-  (:keymaps 'ivy-minibuffer-map
-   "C-h" #'ivy-backward-delete-char
-   "C-w" #'ivy-backward-kill-word
-   "C-u" #'kill-whole-line
-   "C-<return>" #'ivy-immediate-done
-   "C-<tab>" #'ivy-insert-current
-   "<escape>" #'minibuffer-keyboard-quit)
-  :custom
-  (ivy-count-format "(%d/%d) ")
-  (ivy-height 20)
-  (ivy-wrap t)
-  :config
-  (setopt ivy-re-builders-alist '((t . orderless-ivy-re-builder)))
-  (add-to-list 'ivy-highlight-functions-alist '(orderless-ivy-re-builder . orderless-ivy-highlight))
-  ;; (ivy-mode 1)
-  (defun w/clamp-number (num low high)
-    "Clamp NUM between LOW and HIGH."
-    (min high (max num low)))
-  (defun w/adjust-ivy-height (frame)
-    "Adjust ivy-height based on the current FRAME height."
-    (let* ((total-lines (frame-text-lines frame))
-           (lines (truncate (* total-lines w/ivy-height-percentage 0.01)))
-           (new-height (w/clamp-number lines 10 20)))
-      (setopt ivy-height new-height))))
 
 (use-package forge
   :after magit
