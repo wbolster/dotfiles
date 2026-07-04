@@ -472,6 +472,7 @@
    "/" #'consult-line
    "?" #'consult-line-multi)
   :commands
+  w/consult-find-all
   w/consult-line-from-isearch
   w/consult-pulse-after-final-jump
   w/consult-scroll-point-into-view
@@ -479,14 +480,23 @@
   (remove-hook 'consult-after-jump-hook #'recenter)
   (add-hook 'consult-after-jump-hook #'w/consult-pulse-after-final-jump)
   (add-hook 'consult-after-jump-hook #'w/consult-scroll-point-into-view)
+
+  (defun w/consult-find-all ()
+    "Find any file in the current project, including ignored files."
+    (interactive)
+    (let ((consult-find-args "find ."))
+      (call-interactively #'consult-find)))
+
   (defun w/consult-line-from-isearch ()
     "Call ‘consult-line’ with the ‘isearch’ search string."
     (interactive)
     (consult-line isearch-string))
+
   (defun w/consult-pulse-after-final-jump ()
     "Highlight the jump target, unless completion is still active."
     (unless (active-minibuffer-window)
       (pulse-momentary-highlight-one-line)))
+
   (defun w/consult-scroll-point-into-view ()
     "Scroll the jump target into view."
     (unless (pos-visible-in-window-p)
@@ -2114,7 +2124,6 @@
   :demand t
   :delight
   :commands
-  w/projectile-find-file-all
   w/projectile-open-gui-file-browser
   w/projectile-project-bury-buffers
   :functions
@@ -2131,12 +2140,6 @@
   (projectile-switch-project-action 'projectile-vc)
   :config
   (projectile-mode)
-
-  (defun w/projectile-find-file-all ()
-    "Find any file in the current project, including ignored files."
-    (interactive)
-    (let ((consult-find-args "find ."))
-      (call-interactively #'consult-find)))
 
   (defun w/projectile-project-bury-buffers ()
     "Quit all windows and bury all buffers for the current project."
@@ -3011,7 +3014,7 @@ treating 9 as ‘last window’."
   "P" #'projectile-switch-open-project
   "R" #'projectile-replace-regexp
   "T" #'projectile-find-implementation-or-test-other-window
-  "a" #'w/projectile-find-file-all
+  "a" #'w/consult-find-all
   "b" #'projectile-switch-to-buffer
   "c" #'projectile-compile-project
   "d" #'projectile-find-dir
