@@ -2675,7 +2675,7 @@
       (cond
        ((and file-category selected candidate-directory)
         (vertico-directory-enter))
-       ((and file-category (not selected) after-slash)
+       ((and file-category (not selected) after-slash (eolp))
         (unless in-home-dir ;; allows typing ‘~/something’
           (delete-minibuffer-contents)
           (insert "/")))
