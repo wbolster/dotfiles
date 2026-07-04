@@ -591,6 +591,7 @@
 (use-package difftastic
   :demand t
   :if (executable-find "difft")
+  :after magit
   :config
   (difftastic-bindings-mode))
 
