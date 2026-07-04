@@ -42,8 +42,6 @@
   (use-package-hook-name-suffix nil)
   (use-package-verbose t))
 
-(add-hook 'after-init-hook (lambda () (message "after init hook!")))
-
 ;; Early packages
 
 (use-package dash
