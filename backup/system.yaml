@@ -5,6 +5,8 @@ source_directories:
   - /srv
   - /var/log
 
+# https://torsion.org/borgmatic/docs/how-to/snapshot-your-filesystems/
+btrfs:
 one_file_system: true
 
 repositories:
