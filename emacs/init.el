@@ -3038,13 +3038,6 @@ treating 9 as ‘last window’."
   "r" #'w/query-replace-thing-at-point-dwim
   "s" #'w/query-replace-thing-at-point-dwim)
 
-(defvar-keymap w/search-map
-  :doc "Keymap for search commands."
-  "G" #'ag
-  "R" #'ag-regexp
-  "g" #'projectile-ripgrep
-  "r" #'ag-project-regexp)
-
 (defvar-keymap w/toggle-map
   :doc "Keymap for toggle commands."
   "!" #'global-evil-swap-keys-mode
@@ -3148,7 +3141,6 @@ treating 9 as ‘last window’."
   "S" #'save-some-buffers
   "X" #'execute-extended-command-for-buffer
   "SPC" #'whitespace-cleanup
-  "a" w/search-map
   "b" w/buffer-map
   "c" w/flycheck-map
   "d" w/diff-map
