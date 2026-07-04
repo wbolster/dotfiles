@@ -3779,13 +3779,6 @@ defined as lowercase."
 (defvar w/ivy-height-percentage 30
   "Percentage of the screen height that ivy should use.")
 
-(use-package counsel
-  :after ivy
-  :delight
-  :config
-  ;; (counsel-mode)
-  (ivy-configure 'counsel-M-x :initial-input ""))
-
 (use-package ivy
   :demand t
   :delight
