@@ -1800,6 +1800,7 @@
   (magit-branch-read-upstream-first 'fallback)
   (magit-bury-buffer-function 'magit-mode-quit-window)
   (magit-completing-read-function 'magit-builtin-completing-read)
+  (magit-diff-fontify-hunk t)
   (magit-diff-refine-hunk t)
   (magit-display-buffer-function 'display-buffer)
   (magit-list-refs-sortby '("-committerdate"))
