@@ -3127,7 +3127,6 @@ treating 9 as ‘last window’."
 (defvar-keymap w/leader-map
   :doc "Leader keymap."
   "'" #'w/major-mode-hydra
-  "/" #'w/hydra-search/body
   "1" #'w/select-nth-window
   "2" #'w/select-nth-window
   "3" #'w/select-nth-window
@@ -3471,31 +3470,6 @@ defined as lowercase."
       (when deactivate-selection
         (deactivate-mark))
       thing)))
-
-;; todo: switch to deadgrep
-;; perhaps use ,/ for hydra?
-(use-package deadgrep
-  :custom
-  (deadgrep-display-buffer-function 'display-buffer)
-  :commands
-  w/hydra-search/body
-  :general
-  (:keymaps 'deadgrep-mode-map
-   :states '(motion normal)
-   "g" nil
-   "g r" #'deadgrep-restart
-   "C-n" #'deadgrep-forward
-   "C-e" #'deadgrep-backward
-   "C-p" #'deadgrep-backward
-   "<return>" #'deadgrep-visit-result-other-window
-   "<tab>" #'deadgrep-toggle-file-results
-   )
-  :config
-  (evil-collection-init 'deadgrep)
-  (w/make-hydra w/hydra-search nil
-    "search"
-    "_/_ search"
-    ("/" deadgrep)))
 
 (use-package symbol-overlay
   :demand t
