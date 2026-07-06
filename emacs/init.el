@@ -2140,6 +2140,11 @@
   :custom-face
   (pkgbuild-error-face ((t (:inherit error)))))
 
+(use-package project
+  :demand t
+  :functions
+  project-root)
+
 (use-package projectile
   :demand t
   :delight
