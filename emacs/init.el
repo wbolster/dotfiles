@@ -238,7 +238,7 @@
     "Narrow (or widen) to defun or region."
     (interactive)
     (cond
-     ((region-active-p)
+     ((use-region-p)
       (narrow-to-region (region-beginning) (region-end))
       (deactivate-mark)
       (message "Showing region only"))
@@ -1953,7 +1953,7 @@
   (defun w/git-web-browse ()
     "Open a web browser for the current git repo or file."
     (interactive)
-    (if (region-active-p)
+    (if (use-region-p)
         (let ((git-link-open-in-browser t))
           (call-interactively #'git-link)
           (setq kill-ring (cdr kill-ring)))
@@ -2358,7 +2358,7 @@
   (defun w/query-replace-thing-at-point-dwim ()
     "Return ‘query-replace’ for the active region or the symbol at point."
     (interactive)
-    (let* ((use-boundaries (not (region-active-p)))
+    (let* ((use-boundaries (not (use-region-p)))
            (thing (regexp-quote (w/thing-at-point-dwim t t)))
            (replacement
             (read-from-minibuffer
@@ -3459,7 +3459,7 @@ defined as lowercase."
     "Return the active region or the symbol at point."
     (let ((thing))
       (cond
-       ((region-active-p)
+       ((use-region-p)
         (setq thing (buffer-substring-no-properties (region-beginning) (region-end)))
         (when move-to-beginning
           (goto-char (region-beginning))))
@@ -3496,7 +3496,7 @@ defined as lowercase."
     (interactive)
     (setq deactivate-mark t)
     (let* ((regexp
-            (if (region-active-p)
+            (if (use-region-p)
                 (regexp-quote (buffer-substring (region-beginning) (region-end)))
               (symbol-overlay-get-symbol)))
            (keyword (symbol-overlay-assoc regexp)))
@@ -3924,7 +3924,7 @@ defined as lowercase."
 
   (defun w/markdown-blockquote-dwim ()
     (interactive)
-    (if (region-active-p)
+    (if (use-region-p)
         (call-interactively #'markdown-blockquote-region)
       (save-excursion
         (markdown-blockquote-region
