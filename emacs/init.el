@@ -207,7 +207,7 @@
   (read-multiple-choice-face ((t (:inverse-video unspecified :inherit transient-key))))
 
   :delight
-  (abbrev-mode " ⋯")
+  (abbrev-mode (:eval (unless (abbrev-table-empty-p local-abbrev-table) " ⋯")))
   (auto-fill-function " ↲")
   (indent-tabs-mode " ⇥")
   (visual-line-mode (:eval (unless w/wrap-lines-mode " ⇉")))
