@@ -1777,7 +1777,7 @@
 (use-package magit
   :defer t
   :hook
-  (git-commit-mode-hook . w/git-commit-mode-hook)
+  (git-commit-setup-hook . w/git-commit-setup-hook)
   (magit-log-mode-hook . w/magit-log-mode-hook)
   (magit-log-wash-summary-hook w/magit-log-highlight-merge-prefix)
   (magit-process-mode-hook . goto-address-mode)
@@ -1792,7 +1792,6 @@
   magit-git-insert
   magit-read-range
   :custom
-  (git-commit-fill-column 72)
   (git-commit-cd-to-toplevel t)
   (magit-blame-heading-format "%C %-10a %s")
   (magit-blame-mode-lighter " annotate")
@@ -1909,7 +1908,8 @@
     (add-to-list 'global-evil-colemak-basics-modes
                  '(not magit-log-mode magit-status-mode)))
 
-  (defun w/git-commit-mode-hook ()
+  (defun w/git-commit-setup-hook ()
+    (setq-local fill-column 72)
     (when (and (bobp) (eolp))
       (call-interactively #'evil-insert)))
 
