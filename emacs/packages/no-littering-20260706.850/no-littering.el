@@ -6,8 +6,8 @@
 ;; Homepage: https://github.com/emacscollective/no-littering
 ;; Keywords: convenience
 
-;; Package-Version: 20260701.1241
-;; Package-Revision: 719c2a377341
+;; Package-Version: 20260706.850
+;; Package-Revision: fa0801e5a113
 ;; Package-Requires: (
 ;;     (emacs  "28.1")
 ;;     (compat "31.0"))
@@ -347,6 +347,7 @@ This variable has to be set before `no-littering' is loaded.")
     (setq pomm-third-time-state-file-location (var "pomm/third-time-state"))
     (setq prescient-save-file              (var "prescient-save.el"))
     (setq projectile-cache-file            (var "projectile/cache.el"))
+    (setq projectile-frecency-file         (var "projectile/frecency.eld"))
     (setq projectile-known-projects-file   (var "projectile/known-projects.el"))
     (setq psession-elisp-objects-default-directory (var "psession/"))
     (setq purpose-default-layout-file      (etc "window-purpose/default-layout.el"))

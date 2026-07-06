@@ -356,6 +356,35 @@ With a prefix argument ARG prompts you for a directory on which
 to run the replacement.
 
 (fn &optional ARG)" t)
+(autoload 'projectile-replace-review "projectile" "\
+Review and apply a literal project-wide replacement.
+
+Prompts for a literal search string and a replacement, gathers every
+match across the project into a `*projectile-replace*' buffer, and lets
+you toggle which matches to apply before committing them.  This is a
+non-blocking, previewable alternative to `projectile-replace'." t)
+(autoload 'projectile-replace-regexp-review "projectile" "\
+Review and apply a project-wide regexp replacement.
+
+Like `projectile-replace-review', but the search term is an Emacs
+regexp and the replacement may reference capture groups (\\1, \\&).
+This is a non-blocking, previewable alternative to
+`projectile-replace-regexp'." t)
+(autoload 'projectile-search-review "projectile" "\
+Search the project for a literal string and review the matches read-only.
+
+Prompts for a literal search string (defaulting to the symbol or region
+at point), gathers every match across the project into a read-only
+`*projectile-search*' buffer grouped by file, and lets you navigate,
+filter and reshape the search.  Use \\<projectile-search-mode-map>\\[projectile-search--to-replace] to turn it into a
+reviewable replacement.  This is the read-only sibling of
+`projectile-replace-review'." t)
+(autoload 'projectile-search-regexp-review "projectile" "\
+Search the project for an Emacs regexp and review the matches read-only.
+
+Like `projectile-search-review', but the search term is an Emacs regexp,
+so full Emacs regexp syntax (e.g. symbol boundaries like `\\_<foo\\_>')
+is honored." t)
 (autoload 'projectile-kill-buffers "projectile" "\
 Kill project buffers.
 
@@ -653,6 +682,49 @@ Switch to a buffer belonging to the current tab's project.
 Complete over just the buffers of the project bound to the current tab.
 When the current tab holds no project, fall back to the plain
 `switch-to-buffer'." t)
+(autoload 'projectile-session-save "projectile" "\
+Save the current window layout and buffers as PROJECT's session.
+PROJECT defaults to the current project's root.  The layout is captured
+from the selected frame, so this saves whichever project's tab is
+current.  Buffers are recorded via `projectile-session-buffer-serializers';
+a layout with no serializable buffer is not saved.  Return non-nil on a
+successful save.
+
+(fn &optional PROJECT)" t)
+(autoload 'projectile-session-restore "projectile" "\
+Restore PROJECT's saved session into the selected frame.
+PROJECT defaults to the current project's root.  Buffers are recreated
+first, then the saved window layout is put back; windows whose buffer
+can't be recreated fall back to a placeholder.  Return non-nil when a
+session was restored.
+
+(fn &optional PROJECT)" t)
+(autoload 'projectile-session-forget "projectile" "\
+Delete PROJECT's saved session file.
+PROJECT defaults to the current project's root.
+
+(fn &optional PROJECT)" t)
+(autoload 'projectile-session-save-all "projectile" "\
+Save the session of every open project in one go.
+Every open project tab's window layout and buffers are saved (see
+`projectile-session-save'); a tab whose layout has no serializable buffer
+is skipped.  Unlike autosave, this runs regardless of
+`projectile-session-autosave'.  When called interactively, report how many
+sessions were saved." t)
+(autoload 'projectile-session-restore-all "projectile" "\
+Reopen every saved project's session into its own tab.
+For each project with a session saved on disk (see
+`projectile-session--saved-roots'): when a tab for it is already open,
+leave it be rather than duplicating it; otherwise create a fresh project
+tab and restore the saved session into it.  A session whose files are all
+gone recreates nothing, so its just-created empty tab is closed again and
+it is not counted, keeping restore-all from littering the frame with empty
+tabs.  Tabs are re-resolved by root, never by a cons captured before a
+selection, since `tab-bar-select-tab' rebuilds cons cells as it switches.
+End on the first successfully restored project's tab (falling back to the
+starting tab when nothing was restored) rather than wherever the iteration
+left off.  When called interactively, report how many sessions were
+restored.  Return that count." t)
 (defvar projectile-session-mode nil "\
 Non-nil if Projectile-Session mode is enabled.
 See the `projectile-session-mode' command

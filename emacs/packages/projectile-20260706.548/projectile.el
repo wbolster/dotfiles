@@ -5,8 +5,8 @@
 ;; Author: Bozhidar Batsov <bozhidar@batsov.dev>
 ;; URL: https://github.com/bbatsov/projectile
 ;; Keywords: project, convenience
-;; Package-Version: 20260704.1649
-;; Package-Revision: d29c016f702e
+;; Package-Version: 20260706.548
+;; Package-Revision: fe578beeca12
 ;; Package-Requires: ((emacs "28.1") (compat "30"))
 
 ;; This file is NOT part of GNU Emacs.
@@ -2261,9 +2261,8 @@ every file visit otherwise)."
                                     projectile-frecency-file))
                     (let ((files (make-hash-table :test 'equal)))
                       (dolist (entry (cdr project))
-                        (puthash (nth 0 entry)
-                                 (cons (nth 1 entry) (nth 2 entry))
-                                 files))
+                        (pcase-let ((`(,file ,count ,time) entry))
+                          (puthash file (cons count time) files)))
                       (puthash (car project) files table)))
                   table)
               (error
@@ -3194,34 +3193,36 @@ drops the cached listing."
                    (file-attributes gitmodules)))
            (command (projectile-get-sub-projects-command 'git))
            (cached (gethash path projectile--git-submodules-cache)))
-      (if (and cached
-               (equal (nth 0 cached) gitmodules)
-               (equal (nth 1 cached) mtime)
-               (equal (nth 2 cached) command))
-          (nth 3 cached)
-        (let ((submodules
-               (cond
-                ;; nil disables submodule listing altogether.
-                ((null command) nil)
-                ;; The stock command is never actually run: list the
-                ;; submodules shell-free instead (issue #1600).
-                ((equal command projectile--default-git-submodule-command)
-                 (let ((dir (file-name-as-directory
-                             (expand-file-name gitmodules-dir)))
-                       (paths (projectile--git-submodule-paths gitmodules-dir)))
-                   (if (equal dir (file-name-as-directory (expand-file-name path)))
-                       paths
-                     ;; PATH is below the `.gitmodules' dir: rebase the
-                     ;; listing so it stays relative to PATH.
-                     (mapcar (lambda (submodule)
-                               (file-relative-name
-                                (expand-file-name submodule dir) path))
-                             paths))))
-                ;; A customized command is still run through the shell.
-                (t (projectile-files-via-ext-command path command)))))
-          (puthash path (list gitmodules mtime command submodules)
-                   projectile--git-submodules-cache)
-          submodules)))))
+      (pcase-let ((`(,cached-gitmodules ,cached-mtime ,cached-command ,cached-result)
+                   cached))
+        (if (and cached
+                 (equal cached-gitmodules gitmodules)
+                 (equal cached-mtime mtime)
+                 (equal cached-command command))
+            cached-result
+          (let ((submodules
+                 (cond
+                  ;; nil disables submodule listing altogether.
+                  ((null command) nil)
+                  ;; The stock command is never actually run: list the
+                  ;; submodules shell-free instead (issue #1600).
+                  ((equal command projectile--default-git-submodule-command)
+                   (let ((dir (file-name-as-directory
+                               (expand-file-name gitmodules-dir)))
+                         (paths (projectile--git-submodule-paths gitmodules-dir)))
+                     (if (equal dir (file-name-as-directory (expand-file-name path)))
+                         paths
+                       ;; PATH is below the `.gitmodules' dir: rebase the
+                       ;; listing so it stays relative to PATH.
+                       (mapcar (lambda (submodule)
+                                 (file-relative-name
+                                  (expand-file-name submodule dir) path))
+                               paths))))
+                  ;; A customized command is still run through the shell.
+                  (t (projectile-files-via-ext-command path command)))))
+            (puthash path (list gitmodules mtime command submodules)
+                     projectile--git-submodules-cache)
+            submodules))))))
 
 (defun projectile-get-sub-projects-files (project-root vcs)
   "Get files from sub-projects for PROJECT-ROOT recursively.
@@ -4300,16 +4301,17 @@ dirconfig file's modification time changes."
          (cached (gethash project-root projectile--dirconfig-cache))
          (attrs (file-attributes dirconfig))
          (mtime (when attrs (file-attribute-modification-time attrs)))
-         (result (if (and cached mtime
-                          (equal (nth 0 cached) dirconfig)
-                          (equal (nth 1 cached) mtime))
-                     (nth 2 cached)
-                   (let ((parsed (projectile--parse-dirconfig-file-uncached)))
-                     (when mtime
-                       (puthash project-root
-                                (list dirconfig mtime parsed)
-                                projectile--dirconfig-cache))
-                     parsed))))
+         (result (pcase-let ((`(,cached-dirconfig ,cached-mtime ,cached-result) cached))
+                   (if (and cached mtime
+                            (equal cached-dirconfig dirconfig)
+                            (equal cached-mtime mtime))
+                       cached-result
+                     (let ((parsed (projectile--parse-dirconfig-file-uncached)))
+                       (when mtime
+                         (puthash project-root
+                                  (list dirconfig mtime parsed)
+                                  projectile--dirconfig-cache))
+                       parsed)))))
     (projectile--maybe-warn-prefixless-entries project-root result)
     (projectile--maybe-warn-glob-keep-entries project-root result)
     result))
@@ -5434,7 +5436,7 @@ arg INVALIDATE-CACHE invalidates the cache first."
          (choice (projectile-completing-read
                   "Related file kind: " names
                   :caller 'projectile-toggle-related-file)))
-    (cdr (assq (intern (concat ":" choice)) candidates))))
+    (alist-get (intern (concat ":" choice)) candidates)))
 
 ;;;###autoload
 (defun projectile-toggle-related-file ()
@@ -7931,6 +7933,1364 @@ to run the replacement."
                    (projectile-dir-files directory)))))
     (projectile--replace-in-files old-text new-text files)))
 
+;;; Reviewable project-wide find-and-replace
+;;
+;; `projectile-replace' and `projectile-replace-regexp' above drive a
+;; blocking, sequential query-replace walk with no preview.  The commands
+;; below add a results-buffer flow instead: gather every match up front,
+;; render them in a read-only buffer where each match can be toggled on or
+;; off, and apply only the enabled ones (in any order).  Answers #1924.
+;;
+;; Matches are gathered in pure Emacs Lisp (not via grep) so that Emacs
+;; regexp semantics are preserved for the regexp command and so the preview
+;; reflects the exact text that will be edited, including unsaved changes in
+;; already-open buffers.
+;;
+;; The write-back and buffer-refresh structure borrows from the GPL-3
+;; packages wgrep (`wgrep-commit-file') and color-rg (`color-rg-apply-changed'):
+;; edits are applied from the highest buffer position downwards so earlier
+;; edits don't invalidate later match offsets, live buffers are edited in
+;; place under a single `atomic-change-group', and buffers modified since the
+;; scan are skipped rather than corrupted.
+
+(defcustom projectile-replace-max-matches 5000
+  "Upper bound on how many matches `projectile-replace-review' collects.
+When a search would exceed this, only the first that many matches are
+shown and a note is displayed."
+  :group 'projectile
+  :type 'integer
+  :package-version '(projectile . "3.2.0"))
+
+(defcustom projectile-replace-async t
+  "Whether the reviewable search/replace commands scan asynchronously.
+When non-nil (the default) `projectile-replace-review',
+`projectile-search-review' and their in-buffer re-scan commands (`g',
+`c', `x') scan candidate files in timer-yielded chunks: the results
+buffer is shown right away, matches stream in as they are found, Emacs
+stays responsive, and the scan can be canceled (`q', \\`C-g', or by
+killing the buffer).  While a scan is still running, applying (`!') and
+exporting (`e') refuse until it finishes so the write-back never runs
+against a partial match set.  When nil the scan runs synchronously in one
+blocking pass instead.
+
+Regardless of this setting, in batch mode (`noninteractive') the scan is
+always synchronous so scripted runs stay deterministic.  The final match
+set is identical whether scanning runs asynchronously or synchronously;
+async only changes when and how matches are delivered."
+  :group 'projectile
+  :type 'boolean
+  :package-version '(projectile . "3.2.0"))
+
+(defvar projectile-replace--scan-chunk-size 24
+  "Number of candidate files scanned per async chunk before yielding.
+Each chunk scans this many files, delivers the matches into the results
+buffer and re-renders, then yields to redisplay via a zero-delay timer
+before the next chunk.  Larger values scan faster but redisplay less
+often; smaller values keep Emacs more responsive.")
+
+(defface projectile-replace-file
+  '((t :inherit font-lock-function-name-face :weight bold))
+  "Face for the per-file header lines in the replace results buffer."
+  :group 'projectile
+  :package-version '(projectile . "3.2.0"))
+
+(defface projectile-replace-match
+  '((t :inherit match))
+  "Face for a matched span shown without a pending replacement."
+  :group 'projectile
+  :package-version '(projectile . "3.2.0"))
+
+(defface projectile-replace-old
+  '((t :inherit diff-removed :strike-through t))
+  "Face for the old text of a match with a pending replacement."
+  :group 'projectile
+  :package-version '(projectile . "3.2.0"))
+
+(defface projectile-replace-new
+  '((t :inherit diff-added))
+  "Face for the new text of a match with a pending replacement."
+  :group 'projectile
+  :package-version '(projectile . "3.2.0"))
+
+(defface projectile-replace-line-number
+  '((t :inherit shadow))
+  "Face for the LINE:COL locator of each match."
+  :group 'projectile
+  :package-version '(projectile . "3.2.0"))
+
+(defface projectile-replace-header
+  '((t :inherit font-lock-keyword-face :weight bold))
+  "Face for the status header line of the replace results buffer."
+  :group 'projectile
+  :package-version '(projectile . "3.2.0"))
+
+(defvar projectile-replace-buffer-name "*projectile-replace*"
+  "Name of the buffer used by `projectile-replace-review'.")
+
+(cl-defstruct (projectile-replace--match
+               (:constructor projectile-replace--match-create)
+               (:copier nil))
+  "A single match collected for the reviewable replace UI."
+  file        ; absolute file name
+  buffer      ; live buffer visiting FILE, or nil when scanned from disk
+  tick        ; `buffer-chars-modified-tick' of BUFFER at scan time (or nil)
+  line        ; 1-based line number of the match
+  column      ; 0-based character offset of the match within its line
+  beg         ; buffer position of the match start (in BUFFER or a disk re-read)
+  end         ; buffer position of the match end
+  string      ; the matched text
+  match-data  ; copy of `(match-data t)' for the match (positions only)
+  groups      ; list of matched-group strings, index 0 = whole match
+  context     ; the whole line the match sits on
+  enabled)    ; non-nil when the match will be applied
+
+;; Buffer-local state of a `*projectile-replace*' buffer.
+(defvar-local projectile-replace--root nil
+  "Project root the current results buffer was gathered from.")
+(defvar-local projectile-replace--term nil
+  "Raw search term the current results buffer was gathered with.")
+(defvar-local projectile-replace--search nil
+  "Emacs regexp actually searched for (the term, `regexp-quote'd if literal).")
+(defvar-local projectile-replace--replacement nil
+  "Pending replacement string for the current results buffer.")
+(defvar-local projectile-replace--literal nil
+  "Non-nil when the current results buffer is a literal (not regexp) replace.")
+(defvar-local projectile-replace--case-fold nil
+  "Non-nil when the current search ignores case.
+Initialized from `case-fold-search' at the first search and bound
+around every (re-)gather so it drives which matches are collected.")
+(defvar-local projectile-replace--matches nil
+  "List of `projectile-replace--match' structs shown in the results buffer.")
+(defvar-local projectile-replace--truncated nil
+  "Non-nil when the match list was capped at `projectile-replace-max-matches'.")
+(defvar-local projectile-replace--filtered nil
+  "Non-nil when the shown match list was pruned by a filter command.
+Re-searching (\\<projectile-replace-mode-map>\\[projectile-replace--refresh]) gathers from scratch and clears this.")
+(defvar-local projectile-replace--scanning nil
+  "Non-nil while an asynchronous scan is still filling this results buffer.
+While set, matches are streaming in, the header shows a progress note,
+and applying and exporting refuse (the write-back must never run against
+a partial match set).  Cleared when the scan finishes or is canceled.")
+(defvar-local projectile-replace--scan-timer nil
+  "The in-flight async scan timer for this results buffer, or nil.
+Held so a re-scan, a quit, or killing the buffer can cancel a scan that
+is still running.")
+(defvar-local projectile-replace--render-function #'projectile-replace--render
+  "Function that redraws the current results buffer from its state.
+The scanning, navigation, filter and toggle machinery is shared
+between the replace reviewer and the read-only search reviewer
+(`projectile-search-mode'); this buffer-local seam lets those shared
+commands redraw with the current mode's renderer.  It defaults to the
+replace renderer and search mode rebinds it to its own.")
+
+(defun projectile-replace--expand (replacement groups literal)
+  "Expand REPLACEMENT for a match whose group strings are GROUPS.
+GROUPS is a list of matched substrings, index 0 being the whole match.
+When LITERAL is non-nil REPLACEMENT is returned verbatim; otherwise
+\\N and \\& references are expanded from GROUPS (\\\\ yields a
+backslash).  The same expansion drives both the preview and the actual
+write-back so the two can never diverge."
+  (if literal
+      replacement
+    (let ((result "")
+          (i 0)
+          (len (length replacement)))
+      (while (< i len)
+        (let ((ch (aref replacement i)))
+          (if (and (eq ch ?\\) (< (1+ i) len))
+              (let ((next (aref replacement (1+ i))))
+                (cond
+                 ((eq next ?&)
+                  (setq result (concat result (or (nth 0 groups) ""))))
+                 ((and (>= next ?0) (<= next ?9))
+                  (setq result (concat result (or (nth (- next ?0) groups) ""))))
+                 ((eq next ?\\)
+                  (setq result (concat result "\\")))
+                 (t (setq result (concat result (char-to-string next)))))
+                (setq i (+ i 2)))
+            (setq result (concat result (char-to-string ch)))
+            (setq i (1+ i)))))
+      result)))
+
+(defun projectile-replace--capture-groups ()
+  "Return the matched-group strings for the last search in this buffer.
+Index 0 is the whole match; unmatched optional groups are nil."
+  (let ((n (/ (length (match-data)) 2))
+        (groups nil))
+    (dotimes (i n)
+      (push (match-string i) groups))
+    (nreverse groups)))
+
+(defun projectile-replace--binary-p ()
+  "Return non-nil when the current buffer looks like binary content.
+Only the leading portion is inspected, which is enough to skip files
+whose NUL bytes would make an in-buffer replacement meaningless."
+  (save-excursion
+    (goto-char (point-min))
+    (search-forward "\0" (min (point-max) (+ (point-min) 8000)) t)))
+
+(defun projectile-replace--scan-region (file buffer regexp budget)
+  "Collect up to BUDGET matches of REGEXP in the current buffer.
+Each match is recorded as a `projectile-replace--match' tagged with
+FILE and BUFFER (nil when scanning a disk re-read)."
+  (let ((matches nil)
+        (count 0)
+        (done nil)
+        (tick (and buffer (buffer-chars-modified-tick buffer))))
+    (save-excursion
+      (goto-char (point-min))
+      (while (and (not done)
+                  (< count budget)
+                  (re-search-forward regexp nil t))
+        (if (= (match-beginning 0) (match-end 0))
+            ;; A regexp that can match the empty string (e.g. `^', `a*')
+            ;; leaves point put; advance past it, but at end-of-buffer there
+            ;; is nowhere to advance, so stop rather than spin forever.
+            (if (eobp)
+                (setq done t)
+              (forward-char 1))
+          (let ((beg (match-beginning 0))
+                (end (match-end 0))
+                (md (match-data t))
+                (groups (projectile-replace--capture-groups))
+                line lstart col context)
+            (save-excursion
+              (goto-char beg)
+              (setq line (line-number-at-pos)
+                    lstart (line-beginning-position)
+                    col (- beg lstart)
+                    context (buffer-substring-no-properties
+                             lstart (line-end-position))))
+            (push (projectile-replace--match-create
+                   :file file :buffer buffer :tick tick
+                   :line line :column col :beg beg :end end
+                   :string (buffer-substring-no-properties beg end)
+                   :match-data md :groups groups
+                   :context context :enabled t)
+                  matches)
+            (cl-incf count)))))
+    (nreverse matches)))
+
+(defun projectile-replace--scan-file (file regexp budget)
+  "Return up to BUDGET matches of REGEXP in FILE.
+A file visited in a live buffer is scanned from that buffer's current
+text (so the preview matches what will be edited, even when the buffer
+has unsaved changes); otherwise it is read from disk into a temp buffer.
+Binary-looking and unreadable files are skipped."
+  ;; Capture the intended `case-fold-search' (bound dynamically around the
+  ;; gather) before entering a live buffer, then re-establish it there: some
+  ;; major modes make `case-fold-search' buffer-local, which would otherwise
+  ;; shadow the dynamic binding and make the case toggle a no-op for that file.
+  (let ((buffer (get-file-buffer file))
+        (fold case-fold-search))
+    (if buffer
+        (with-current-buffer buffer
+          (let ((case-fold-search fold))
+            (projectile-replace--scan-region file buffer regexp budget)))
+      (condition-case nil
+          (with-temp-buffer
+            (insert-file-contents file)
+            (unless (projectile-replace--binary-p)
+              (let ((case-fold-search fold))
+                (projectile-replace--scan-region file nil regexp budget))))
+        (error nil)))))
+
+(defun projectile-replace--gather (candidates regexp)
+  "Scan CANDIDATES for REGEXP, capped at `projectile-replace-max-matches'.
+Return a plist with `:matches' (the collected structs, in file order)
+and `:truncated' (non-nil when the cap was hit)."
+  (let ((all nil)
+        (budget projectile-replace-max-matches)
+        (truncated nil))
+    (dolist (file candidates)
+      (if (> budget 0)
+          (let ((ms (projectile-replace--scan-file file regexp budget)))
+            (setq all (append all ms)
+                  budget (- budget (length ms))))
+        ;; a candidate was left unscanned because the cap was already hit
+        (setq truncated t)))
+    (list :matches all :truncated truncated)))
+
+;;; Asynchronous, cancelable scanning
+;;
+;; The synchronous `projectile-replace--gather' above stays the primitive that
+;; batch runs and the tests drive.  The async driver below reuses the very same
+;; per-file `projectile-replace--scan-file', so the structs it produces are
+;; identical to what `--gather' would produce over the same candidate list and
+;; regexp -- only the DELIVERY changes: files are scanned in timer-yielded
+;; chunks, matches stream into the results buffer as they are found, and the
+;; scan can be canceled.  The `case-fold-search' that `--scan-file' reads is
+;; re-established from the buffer's `projectile-replace--case-fold' inside each
+;; chunk (the dynamic binding used by the sync path is gone once we run from a
+;; timer).
+
+(defun projectile-replace--async-p ()
+  "Return non-nil when scanning should run asynchronously.
+True when `projectile-replace-async' is set and we are interactive;
+batch (`noninteractive') always scans synchronously so scripted runs stay
+deterministic."
+  (and projectile-replace-async (not noninteractive)))
+
+(defun projectile-replace--cancel-scan ()
+  "Cancel any in-flight async scan in the current results buffer.
+Kills the pending chunk timer (if any) and clears the scanning flag, so
+no timer is left dangling.  Safe to call when nothing is scanning; used
+on re-scan, on quit, and from `kill-buffer-hook'."
+  (when projectile-replace--scan-timer
+    (cancel-timer projectile-replace--scan-timer))
+  (setq projectile-replace--scan-timer nil
+        projectile-replace--scanning nil))
+
+(defun projectile-replace--gather-async (candidates regexp buffer on-done)
+  "Scan CANDIDATES for REGEXP into BUFFER incrementally, then call ON-DONE.
+Resets BUFFER's match list and scanning state, then processes CANDIDATES
+in `projectile-replace--scan-chunk-size' batches, each batch delivering
+its matches and re-rendering before yielding to redisplay via a
+zero-delay timer.  Matches accumulate in file order, so the final list is
+identical to `projectile-replace--gather' over the same CANDIDATES and
+REGEXP; `projectile-replace-max-matches' and the `:truncated' note are
+honored the same way.  ON-DONE (or nil) is called in BUFFER once the scan
+finishes.  A scan already running in BUFFER should be canceled first (see
+`projectile-replace--cancel-scan')."
+  (with-current-buffer buffer
+    (setq projectile-replace--matches nil
+          projectile-replace--truncated nil
+          projectile-replace--filtered nil
+          projectile-replace--scanning t
+          projectile-replace--scan-timer nil))
+  (projectile-replace--scan-step
+   buffer candidates regexp projectile-replace-max-matches on-done))
+
+(defun projectile-replace--scan-step (buffer remaining regexp budget on-done)
+  "Scan one chunk of REMAINING candidates for REGEXP into BUFFER.
+BUDGET is the remaining match allowance.  Delivers this chunk's matches
+into BUFFER and re-renders; while candidates and budget remain it
+schedules itself for the next chunk via a zero-delay timer, otherwise it
+finishes: clears the scanning state, does a final render and calls
+ON-DONE.  Guarded against a killed BUFFER (leaving no work behind) and
+against \\`C-g' during a chunk (which cancels the scan cleanly)."
+  (when (buffer-live-p buffer)
+    (condition-case nil
+        (let ((fold (buffer-local-value 'projectile-replace--case-fold buffer))
+              (count 0)
+              (new nil)
+              (truncated nil)
+              (stop nil))
+          ;; scan up to a chunk of files, mirroring the sync `--gather' loop:
+          ;; a file is scanned while budget remains; the first file reached
+          ;; with the budget exhausted marks the list truncated and stops.
+          (while (and remaining (not stop)
+                      (< count projectile-replace--scan-chunk-size))
+            (if (> budget 0)
+                (let ((ms (let ((case-fold-search fold))
+                            (projectile-replace--scan-file
+                             (car remaining) regexp budget))))
+                  (setq new (append new ms)
+                        budget (- budget (length ms))
+                        remaining (cdr remaining)))
+              (setq truncated t stop t))
+            (cl-incf count))
+          (with-current-buffer buffer
+            (when new
+              (setq projectile-replace--matches
+                    (append projectile-replace--matches new)))
+            (when truncated
+              (setq projectile-replace--truncated t)))
+          (if (and remaining (not stop))
+              ;; more to do: show progress and yield to redisplay
+              (with-current-buffer buffer
+                ;; schedule the next chunk BEFORE rendering, so a render error
+                ;; can't strand the scan with the flag set and no pending timer
+                (setq projectile-replace--scan-timer
+                      (run-with-timer 0 nil
+                                      #'projectile-replace--scan-step
+                                      buffer remaining regexp budget on-done))
+                (funcall projectile-replace--render-function))
+            ;; finished (or budget-truncated): settle and hand off
+            (with-current-buffer buffer
+              (setq projectile-replace--scanning nil
+                    projectile-replace--scan-timer nil)
+              (funcall projectile-replace--render-function)
+              (when on-done (funcall on-done buffer)))))
+      (quit
+       (when (buffer-live-p buffer)
+         (with-current-buffer buffer
+           (projectile-replace--cancel-scan)
+           (funcall projectile-replace--render-function)))))))
+
+(defun projectile-replace--ensure-not-scanning ()
+  "Refuse with a `user-error' when the results buffer is still scanning.
+The write-back and export must never run against a partial match set."
+  (when projectile-replace--scanning
+    (user-error "Still searching; wait for the scan to finish")))
+
+(defun projectile-replace--candidates (term literal case-fold directory)
+  "Return the files under DIRECTORY worth scanning for TERM.
+For a case-sensitive LITERAL search this narrows to files containing
+TERM (via `projectile-files-with-string') intersected with the
+project's ignore-aware file list.  For a regexp search, or a
+case-insensitive literal search (where the case-sensitive grep tools
+would miss case-variant occurrences), it is the whole ignore-aware file
+list, since those searches can't be narrowed by an external grep."
+  (let ((project-files (mapcar (lambda (f) (expand-file-name f directory))
+                               (projectile-dir-files directory))))
+    (if (and literal (not case-fold))
+        (seq-filter (lambda (f) (member f project-files))
+                    (projectile-files-with-string term directory))
+      (seq-remove (lambda (f) (or (file-directory-p f) (not (file-exists-p f))))
+                  project-files))))
+
+;;; Results buffer rendering
+
+(defun projectile-replace--file-header (file root count)
+  "Return a propertized header line for FILE relative to ROOT with COUNT matches."
+  (propertize
+   (concat (propertize (file-relative-name file root)
+                       'face 'projectile-replace-file)
+           (format " (%d)\n" count))
+   'projectile-replace-file file))
+
+(defun projectile-replace--render-line (m replacement literal)
+  "Return the propertized results line for match M.
+When REPLACEMENT is non-empty and M is enabled the matched text is
+shown struck out followed by the expanded replacement; LITERAL selects
+verbatim vs. capture-group expansion.  The whole line carries the match
+struct under the `projectile-replace-match' text property."
+  (let* ((enabled (projectile-replace--match-enabled m))
+         (col (projectile-replace--match-column m))
+         (ctx (projectile-replace--match-context m))
+         (mstr (projectile-replace--match-string m))
+         (before (substring ctx 0 (min col (length ctx))))
+         (after (if (<= (+ col (length mstr)) (length ctx))
+                    (substring ctx (+ col (length mstr)))
+                  ""))
+         (has-repl (and replacement (not (string-empty-p replacement))))
+         (highlight
+          (if (and enabled has-repl)
+              (concat (propertize mstr 'face 'projectile-replace-old)
+                      (propertize (projectile-replace--expand
+                                   replacement
+                                   (projectile-replace--match-groups m)
+                                   literal)
+                                  'face 'projectile-replace-new))
+            (propertize mstr 'face 'projectile-replace-match)))
+         (indicator (if enabled "  [X] " "  [ ] "))
+         (locator (propertize (format "%d:%d: "
+                                      (projectile-replace--match-line m)
+                                      (1+ col))
+                              'face 'projectile-replace-line-number))
+         (line (concat indicator locator before highlight after "\n")))
+    (propertize line 'projectile-replace-match m)))
+
+(defun projectile-replace--header-string ()
+  "Return the propertized status header for the results buffer.
+Shows the term, the replacement (or \"(none)\"), the match and file
+counts, the mode flags (regexp/literal and case), and a note when the
+list has been filtered.  The header carries no `projectile-replace-match'
+property, so match navigation skips it."
+  (let* ((matches projectile-replace--matches)
+         (nmatches (length matches))
+         (seen (make-hash-table :test 'equal))
+         (repl (if (and projectile-replace--replacement
+                        (not (string-empty-p projectile-replace--replacement)))
+                   (format "%S" projectile-replace--replacement)
+                 "(none)"))
+         nfiles flags)
+    (dolist (m matches)
+      (puthash (projectile-replace--match-file m) t seen))
+    (setq nfiles (hash-table-count seen)
+          flags (concat
+                 (if projectile-replace--literal "[literal]" "[regexp]")
+                 " "
+                 (if projectile-replace--case-fold
+                     "[ignore-case]" "[case-sensitive]")
+                 (if projectile-replace--filtered "  filtered" "")
+                 (projectile-replace--scanning-note nmatches)))
+    (propertize
+     (format "Replace %S with %s\n%d match%s in %d file%s  %s\n"
+             projectile-replace--term repl
+             nmatches (if (= nmatches 1) "" "es")
+             nfiles (if (= nfiles 1) "" "s")
+             flags)
+     'face 'projectile-replace-header)))
+
+(defun projectile-replace--scanning-note (nmatches)
+  "Return a progress note for a results buffer still scanning, else \"\".
+NMATCHES is the count found so far.  Shown in the status header while an
+async scan streams matches in."
+  (if projectile-replace--scanning
+      (format "  Searching... %d match%s so far"
+              nmatches (if (= nmatches 1) "" "es"))
+    ""))
+
+(defun projectile-replace--render ()
+  "Redraw the current results buffer from its buffer-local state."
+  (let ((inhibit-read-only t)
+        (root projectile-replace--root)
+        (replacement projectile-replace--replacement)
+        (literal projectile-replace--literal)
+        (matches projectile-replace--matches)
+        (counts (make-hash-table :test 'equal))
+        (prev-file nil))
+    (dolist (m matches)
+      (cl-incf (gethash (projectile-replace--match-file m) counts 0)))
+    (erase-buffer)
+    (insert (projectile-replace--header-string))
+    (insert (substitute-command-keys
+             (concat "\\<projectile-replace-mode-map>"
+                     "\\[projectile-replace--toggle] toggle  "
+                     "\\[projectile-replace--toggle-file] toggle file  "
+                     "\\[projectile-replace--set-replacement] set replacement  "
+                     "\\[projectile-replace--apply] apply  "
+                     "\\[projectile-replace--export] export  "
+                     "\\[projectile-replace--refresh] re-search  "
+                     "\\[projectile-replace--visit] visit  "
+                     "\\[quit-window] quit\n"
+                     "\\[projectile-replace--toggle-case] case  "
+                     "\\[projectile-replace--toggle-regexp] regexp/literal  "
+                     "\\[projectile-replace--keep-matches]/\\[projectile-replace--flush-matches] keep/flush line  "
+                     "\\[projectile-replace--keep-files]/\\[projectile-replace--flush-files] keep/flush file\n\n")))
+    (if (null matches)
+        (insert "No matches.\n")
+      (dolist (m matches)
+        (let ((file (projectile-replace--match-file m)))
+          (unless (equal prev-file file)
+            (when prev-file (insert "\n"))
+            (setq prev-file file)
+            (insert (projectile-replace--file-header
+                     file root (gethash file counts))))
+          (insert (projectile-replace--render-line m replacement literal)))))
+    (when projectile-replace--truncated
+      (insert (format "\n(showing the first %d matches)\n"
+                      projectile-replace-max-matches)))
+    (goto-char (point-min))))
+
+(defun projectile-replace--render-preserve ()
+  "Redraw the results buffer, keeping point on the same line."
+  (let ((line (line-number-at-pos)))
+    (projectile-replace--render)
+    (goto-char (point-min))
+    (forward-line (1- line))))
+
+;;; Results buffer commands
+
+(defun projectile-replace--match-at-point ()
+  "Return the match struct on the current line, or nil."
+  (get-text-property (line-beginning-position) 'projectile-replace-match))
+
+(defun projectile-replace--goto-next-match ()
+  "Move point to the next match line."
+  (interactive)
+  (let ((start (point)))
+    (forward-line 1)
+    (while (and (not (eobp)) (not (projectile-replace--match-at-point)))
+      (forward-line 1))
+    (if (projectile-replace--match-at-point)
+        (beginning-of-line)
+      (goto-char start)
+      (message "No more matches"))))
+
+(defun projectile-replace--goto-prev-match ()
+  "Move point to the previous match line."
+  (interactive)
+  (let ((start (point)))
+    (forward-line -1)
+    (while (and (not (bobp)) (not (projectile-replace--match-at-point)))
+      (forward-line -1))
+    (if (projectile-replace--match-at-point)
+        (beginning-of-line)
+      (goto-char start)
+      (message "No previous matches"))))
+
+(defun projectile-replace--goto-next-file ()
+  "Move point to the next file header."
+  (interactive)
+  (let ((start (point)))
+    (forward-line 1)
+    (while (and (not (eobp))
+                (not (get-text-property (line-beginning-position)
+                                        'projectile-replace-file)))
+      (forward-line 1))
+    (if (get-text-property (line-beginning-position) 'projectile-replace-file)
+        (beginning-of-line)
+      (goto-char start)
+      (message "No more files"))))
+
+(defun projectile-replace--goto-prev-file ()
+  "Move point to the previous file header."
+  (interactive)
+  (let ((start (point)))
+    (forward-line -1)
+    (while (and (not (bobp))
+                (not (get-text-property (line-beginning-position)
+                                        'projectile-replace-file)))
+      (forward-line -1))
+    (if (get-text-property (line-beginning-position) 'projectile-replace-file)
+        (beginning-of-line)
+      (goto-char start)
+      (message "No previous files"))))
+
+(defun projectile-replace--visit ()
+  "Visit the match on the current line in another window."
+  (interactive)
+  (let ((m (projectile-replace--match-at-point)))
+    (unless m (user-error "No match on this line"))
+    (let ((buf (or (projectile-replace--match-buffer m)
+                   (find-file-noselect (projectile-replace--match-file m))))
+          (line (projectile-replace--match-line m))
+          (col (projectile-replace--match-column m)))
+      (switch-to-buffer-other-window buf)
+      (goto-char (point-min))
+      (forward-line (1- line))
+      (forward-char (min col (- (line-end-position) (point)))))))
+
+(defun projectile-replace--toggle ()
+  "Toggle whether the match on the current line will be applied."
+  (interactive)
+  (let ((m (projectile-replace--match-at-point)))
+    (unless m (user-error "No match on this line"))
+    (setf (projectile-replace--match-enabled m)
+          (not (projectile-replace--match-enabled m)))
+    (projectile-replace--render-preserve)))
+
+(defun projectile-replace--toggle-file ()
+  "Toggle all matches in the file of the match on the current line.
+If any of the file's matches are enabled they are all disabled;
+otherwise they are all enabled."
+  (interactive)
+  (let ((m (projectile-replace--match-at-point)))
+    (unless m (user-error "No match on this line"))
+    (let* ((file (projectile-replace--match-file m))
+           (fmatches (cl-remove-if-not
+                      (lambda (x) (equal (projectile-replace--match-file x) file))
+                      projectile-replace--matches))
+           (target (not (cl-every #'projectile-replace--match-enabled fmatches))))
+      (dolist (x fmatches)
+        (setf (projectile-replace--match-enabled x) target)))
+    (projectile-replace--render-preserve)))
+
+(defun projectile-replace--set-replacement ()
+  "Re-read the replacement string and re-render the previews."
+  (interactive)
+  (setq projectile-replace--replacement
+        (read-string (format "Replace %s with: " projectile-replace--term)
+                     projectile-replace--replacement))
+  (projectile-replace--render-preserve))
+
+(defun projectile-replace--regather ()
+  "Re-run the search from scratch into the buffer-local match list.
+Cancels any in-flight scan first, then re-scans (asynchronously when
+`projectile-replace--async-p' holds, else synchronously) with
+`case-fold-search' honoring `projectile-replace--case-fold', clearing any
+active filter because the list is rebuilt from every match in the
+project.  Because the match list is rebuilt, every match comes back
+enabled: re-scanning (via `g', the case toggle, or the regexp toggle)
+resets any per-match include or exclude toggles you had set.  Use the
+filter commands instead to prune the list while preserving the survivors'
+state.  The re-render happens from the (streaming) scan, so callers need
+not render again."
+  (let ((candidates (projectile-replace--candidates
+                     projectile-replace--term projectile-replace--literal
+                     projectile-replace--case-fold projectile-replace--root)))
+    (setq projectile-replace--filtered nil)
+    (projectile-replace--start (current-buffer) candidates
+                               projectile-replace--search nil)))
+
+(defun projectile-replace--refresh ()
+  "Re-run the search and redraw the results buffer.
+This gathers from scratch, so any filtering is undone and matches
+removed by a filter command reappear."
+  (interactive)
+  (projectile-replace--regather))
+
+(defun projectile-replace--toggle-case ()
+  "Toggle case sensitivity of the search, re-scan, and re-render."
+  (interactive)
+  (setq projectile-replace--case-fold (not projectile-replace--case-fold))
+  (projectile-replace--regather)
+  (message "%s"
+           (projectile-prepend-project-name
+            (if projectile-replace--case-fold
+                "search now ignores case" "search now case-sensitive"))))
+
+(defun projectile-replace--valid-regexp-p (regexp)
+  "Return non-nil when REGEXP is a valid Emacs regexp."
+  (condition-case nil
+      (progn (string-match-p regexp "") t)
+    (error nil)))
+
+(defun projectile-replace--toggle-regexp ()
+  "Toggle between literal and regexp search, re-scan, and re-render.
+Switching to regexp mode with a term that is not a valid regexp is
+refused with a message so the buffer stays usable rather than erroring."
+  (interactive)
+  (let ((new-literal (not projectile-replace--literal)))
+    (if (and (not new-literal)
+             (not (projectile-replace--valid-regexp-p projectile-replace--term)))
+        (message "%s"
+                 (projectile-prepend-project-name
+                  (format "%S is not a valid regexp; staying literal"
+                          projectile-replace--term)))
+      (setq projectile-replace--literal new-literal
+            projectile-replace--search (if new-literal
+                                           (regexp-quote projectile-replace--term)
+                                         projectile-replace--term))
+      (projectile-replace--regather)
+      (message "%s"
+               (projectile-prepend-project-name
+                (if new-literal "literal search" "regexp search"))))))
+
+(defun projectile-replace--filter-by (predicate)
+  "Keep only matches satisfying PREDICATE, mark the list filtered, re-render.
+The removed matches are recoverable by re-searching (\\<projectile-replace-mode-map>\\[projectile-replace--refresh]), which
+gathers from scratch.  Refused while a scan is still streaming in, since a
+later chunk would append past the filter and leave an incoherent list."
+  (projectile-replace--ensure-not-scanning)
+  (setq projectile-replace--matches
+        (cl-remove-if-not predicate projectile-replace--matches)
+        projectile-replace--filtered t)
+  (funcall projectile-replace--render-function))
+
+(defun projectile-replace--line-matches-p (m regexp)
+  "Return non-nil when match M's context line matches REGEXP.
+Honors the buffer's case setting."
+  (let ((case-fold-search projectile-replace--case-fold))
+    (string-match-p regexp (projectile-replace--match-context m))))
+
+(defun projectile-replace--file-matches-p (m regexp)
+  "Return non-nil when match M's project-relative file matches REGEXP.
+Honors the buffer's case setting."
+  (let ((case-fold-search projectile-replace--case-fold))
+    (string-match-p regexp
+                    (file-relative-name (projectile-replace--match-file m)
+                                        projectile-replace--root))))
+
+(defun projectile-replace--keep-matches (regexp)
+  "Keep only matches whose context line matches REGEXP."
+  (interactive (list (read-regexp "Keep matches whose line matches regexp")))
+  (projectile-replace--filter-by
+   (lambda (m) (projectile-replace--line-matches-p m regexp))))
+
+(defun projectile-replace--flush-matches (regexp)
+  "Remove matches whose context line matches REGEXP."
+  (interactive (list (read-regexp "Flush matches whose line matches regexp")))
+  (projectile-replace--filter-by
+   (lambda (m) (not (projectile-replace--line-matches-p m regexp)))))
+
+(defun projectile-replace--keep-files (regexp)
+  "Keep only matches whose project-relative file matches REGEXP."
+  (interactive (list (read-regexp "Keep matches whose file matches regexp")))
+  (projectile-replace--filter-by
+   (lambda (m) (projectile-replace--file-matches-p m regexp))))
+
+(defun projectile-replace--flush-files (regexp)
+  "Remove matches whose project-relative file matches REGEXP."
+  (interactive (list (read-regexp "Flush matches whose file matches regexp")))
+  (projectile-replace--filter-by
+   (lambda (m) (not (projectile-replace--file-matches-p m regexp)))))
+
+;;; Applying the enabled matches
+
+(defun projectile-replace--do-one (m replacement literal)
+  "Replace match M in the current buffer with the expansion of REPLACEMENT.
+LITERAL selects verbatim vs. capture-group expansion.  M's stored
+`match-data' must still be valid for the current buffer."
+  (set-match-data (projectile-replace--match-match-data m))
+  (replace-match (projectile-replace--expand
+                  replacement (projectile-replace--match-groups m) literal)
+                 t t))
+
+(defun projectile-replace--positions-valid-p (matches)
+  "Return non-nil when every match in MATCHES still spans its recorded text.
+Checked against the current buffer.  This is the authoritative guard
+against stale positions: if the file changed on disk, or the live buffer
+was edited, since the scan, the recorded spans no longer hold the matched
+text and applying them would corrupt unrelated bytes."
+  (cl-every (lambda (m)
+              (let ((beg (projectile-replace--match-beg m))
+                    (end (projectile-replace--match-end m)))
+                (and (integerp beg) (integerp end)
+                     (<= (point-min) beg end (point-max))
+                     (string= (buffer-substring-no-properties beg end)
+                              (projectile-replace--match-string m)))))
+            matches))
+
+(defun projectile-replace--skip (name reason)
+  "Warn that NAME is skipped for REASON and return the symbol `skipped'."
+  (message "%s"
+           (projectile-prepend-project-name
+            (format "skipping %s (%s)" name reason)))
+  'skipped)
+
+(defun projectile-replace--apply-file (file matches replacement literal)
+  "Apply MATCHES in FILE and return the count, or the symbol `skipped'.
+Edits run from the highest buffer position downwards so earlier edits
+don't shift later matches.  The live buffer visiting FILE (if any) is
+re-resolved now rather than trusted from scan time, so a file opened
+since the scan is edited in its buffer instead of being clobbered on
+disk, and a scan-time buffer that has since been killed is handled.  In
+either case the recorded positions are verified to still span the matched
+text; if not (the file or buffer changed since the scan) the file is
+skipped rather than corrupted.  A clean buffer is saved; a buffer with
+unsaved changes is edited but left for the user to save."
+  (let* ((descending (sort (copy-sequence matches)
+                           (lambda (a b)
+                             (> (projectile-replace--match-beg a)
+                                (projectile-replace--match-beg b)))))
+         (buffer (get-file-buffer file)))
+    (if (buffer-live-p buffer)
+        (with-current-buffer buffer
+          (if (not (projectile-replace--positions-valid-p descending))
+              (projectile-replace--skip (buffer-name buffer) "changed since scan")
+            (let ((was-modified (buffer-modified-p)))
+              (save-excursion
+                (save-restriction
+                  (widen)
+                  (atomic-change-group
+                    (dolist (m descending)
+                      (projectile-replace--do-one m replacement literal)))))
+              ;; don't silently save a buffer that already had unsaved edits
+              (unless was-modified
+                (let ((require-final-newline nil))
+                  (save-buffer)))
+              (length matches))))
+      (with-temp-buffer
+        (insert-file-contents file)
+        (let ((coding last-coding-system-used))
+          (if (not (projectile-replace--positions-valid-p descending))
+              (projectile-replace--skip (file-name-nondirectory file)
+                                        "changed on disk since scan")
+            (dolist (m descending)
+              (projectile-replace--do-one m replacement literal))
+            (let ((coding-system-for-write coding))
+              (write-region (point-min) (point-max) file nil 'no-message))
+            (length matches)))))))
+
+(defun projectile-replace--apply ()
+  "Apply every enabled match, grouped by file, then re-run the search."
+  (interactive)
+  (projectile-replace--ensure-not-scanning)
+  (let ((enabled (cl-remove-if-not #'projectile-replace--match-enabled
+                                   projectile-replace--matches))
+        (replacement projectile-replace--replacement)
+        (literal projectile-replace--literal)
+        (groups (make-hash-table :test 'equal))
+        (order nil)
+        (nfiles 0)
+        (nrepl 0)
+        (skipped 0))
+    (when (null enabled)
+      (user-error "No matches are enabled"))
+    ;; group the enabled matches by file, preserving first-seen order
+    (dolist (m enabled)
+      (let ((file (projectile-replace--match-file m)))
+        (unless (gethash file groups)
+          (push file order))
+        (push m (gethash file groups))))
+    (dolist (file (nreverse order))
+      ;; isolate each file: a read-only file or a write error must not abort
+      ;; the batch (leaving earlier files edited and no summary shown)
+      (let ((result (condition-case err
+                        (projectile-replace--apply-file
+                         file (gethash file groups) replacement literal)
+                      (error
+                       (projectile-replace--skip
+                        (file-name-nondirectory file)
+                        (error-message-string err))))))
+        (if (eq result 'skipped)
+            (cl-incf skipped)
+          (cl-incf nfiles)
+          (cl-incf nrepl result))))
+    (message "%s"
+             (projectile-prepend-project-name
+              (format "Replaced %d occurrence%s in %d file%s%s"
+                      nrepl (if (= nrepl 1) "" "s")
+                      nfiles (if (= nfiles 1) "" "s")
+                      (if (> skipped 0)
+                          (format " (skipped %d file%s)"
+                                  skipped (if (= skipped 1) "" "s"))
+                        ""))))
+    (projectile-replace--refresh)))
+
+;;; Exporting to a grep-mode buffer for wgrep / grep-edit-mode
+
+(defvar projectile--grep-export-buffer-name "*projectile-grep*"
+  "Name of the `grep-mode' buffer produced by `projectile-replace--export'.
+Shared by the replace and search reviewers, hence the neutral name.")
+
+(defun projectile-replace--grep-line (m root)
+  "Format match M as a RELPATH:LINE:CONTEXT grep hit relative to ROOT."
+  (format "%s:%d:%s"
+          (file-relative-name (projectile-replace--match-file m) root)
+          (projectile-replace--match-line m)
+          (projectile-replace--match-context m)))
+
+(defun projectile-replace--export-guidance ()
+  "Message how to make the exported grep buffer editable.
+The wording adapts to what's installed: wgrep, Emacs 31's
+`grep-edit-mode', or neither.  Returns the message string."
+  (let ((msg (projectile-prepend-project-name
+              (cond
+               ((fboundp 'wgrep-change-to-wgrep-mode)
+                "exported to grep buffer; press C-c C-p to edit with wgrep, then C-c C-c to write back")
+               ((fboundp 'grep-edit-mode)
+                "exported to grep buffer; run M-x grep-edit-mode to edit, then C-c C-c to write back")
+               (t
+                "exported to a read-only grep buffer for navigation; install wgrep from MELPA to edit and write back")))))
+    (message "%s" msg)
+    msg))
+
+(defun projectile-replace--export ()
+  "Export the enabled matches to a `grep-mode' buffer for editing with wgrep.
+Renders the matches Projectile's own apply command would act on (the
+enabled matches from the reviewed and filtered list; ones toggled off are
+excluded, just as they are by apply) as standard RELPATH:LINE:CONTEXT grep
+hits in a `*projectile-grep*' buffer whose `default-directory' is
+the project root, so the relative paths resolve.  The buffer is a real
+`grep-mode' buffer navigable with `next-error' and RET, so wgrep
+(`wgrep-change-to-wgrep-mode', bound to \\`C-c C-p') or Emacs 31's
+`grep-edit-mode' can turn it editable and write your edits back to the
+files.  This is the bridge for people who prefer the grep/wgrep workflow;
+Projectile's own apply command
+(\\<projectile-replace-mode-map>\\[projectile-replace--apply]) is the no-dependency path and needs no external package."
+  (interactive)
+  (projectile-replace--ensure-not-scanning)
+  (require 'grep)
+  (let ((matches (cl-remove-if-not #'projectile-replace--match-enabled
+                                   projectile-replace--matches))
+        (root projectile-replace--root)
+        ;; label the export by which reviewer it came from (read here, before
+        ;; switching to the grep buffer, so `major-mode' is the source buffer's)
+        (kind (if (derived-mode-p 'projectile-search-mode) "search" "replace"))
+        (buf (get-buffer-create projectile--grep-export-buffer-name)))
+    (when (null matches)
+      (user-error "No enabled matches to export"))
+    (with-current-buffer buf
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (setq default-directory root)
+        (insert (format "-*- mode: grep; default-directory: %S -*-\n\n" root))
+        ;; No colon before a value here: the search term could be `10:30' and
+        ;; would otherwise parse as a phantom `file:line:' grep hit.
+        (insert (format "Projectile %s  (%d match%s)\n\n"
+                        kind (length matches)
+                        (if (= (length matches) 1) "" "es")))
+        (dolist (m matches)
+          (insert (projectile-replace--grep-line m root) "\n"))
+        (insert (format "\nProjectile %s export finished\n" kind)))
+      (grep-mode)
+      ;; keep the root as default-directory so the relative hits resolve
+      (setq default-directory root)
+      ;; let wgrep hook up its keys if the user has it; strictly optional
+      (when (fboundp 'wgrep-setup) (wgrep-setup))
+      (goto-char (point-min)))
+    (pop-to-buffer buf)
+    (projectile-replace--export-guidance)
+    buf))
+
+(defvar projectile-replace-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "RET") #'projectile-replace--visit)
+    (define-key map (kbd "n") #'projectile-replace--goto-next-match)
+    (define-key map (kbd "p") #'projectile-replace--goto-prev-match)
+    (define-key map (kbd "M-n") #'projectile-replace--goto-next-file)
+    (define-key map (kbd "M-p") #'projectile-replace--goto-prev-file)
+    (define-key map (kbd "t") #'projectile-replace--toggle)
+    (define-key map (kbd "SPC") #'projectile-replace--toggle)
+    (define-key map (kbd "f") #'projectile-replace--toggle-file)
+    (define-key map (kbd "r") #'projectile-replace--set-replacement)
+    (define-key map (kbd "c") #'projectile-replace--toggle-case)
+    (define-key map (kbd "x") #'projectile-replace--toggle-regexp)
+    (define-key map (kbd "k") #'projectile-replace--keep-matches)
+    (define-key map (kbd "d") #'projectile-replace--flush-matches)
+    (define-key map (kbd "K") #'projectile-replace--keep-files)
+    (define-key map (kbd "D") #'projectile-replace--flush-files)
+    (define-key map (kbd "e") #'projectile-replace--export)
+    (define-key map (kbd "!") #'projectile-replace--apply)
+    (define-key map (kbd "C-c C-c") #'projectile-replace--apply)
+    (define-key map (kbd "g") #'projectile-replace--refresh)
+    (define-key map (kbd "q") #'projectile-replace--quit)
+    map)
+  "Keymap for `projectile-replace-mode'.")
+
+(define-derived-mode projectile-replace-mode special-mode "Projectile-Replace"
+  "Major mode for reviewing and applying a project-wide replacement.
+
+Each match starts enabled and can be toggled on or off; only the
+enabled matches are applied.  Besides toggling and applying, the search
+itself can be reshaped without leaving the buffer: toggle case
+sensitivity (\\<projectile-replace-mode-map>\\[projectile-replace--toggle-case]) or literal/regexp matching (\\[projectile-replace--toggle-regexp]) to re-scan, and
+narrow the shown matches by keeping or flushing them against a regexp
+matched on the context line (\\[projectile-replace--keep-matches] / \\[projectile-replace--flush-matches]) or the file name
+(\\[projectile-replace--keep-files] / \\[projectile-replace--flush-files]).  Re-searching (\\[projectile-replace--refresh]) rebuilds the list from scratch,
+undoing any filtering.
+
+Applying with \\[projectile-replace--apply] needs no external package.  If you prefer the
+grep/wgrep workflow, \\[projectile-replace--export] exports the shown matches to a `grep-mode'
+buffer that wgrep or Emacs 31's `grep-edit-mode' can turn editable and
+write back to the files.
+
+\\{projectile-replace-mode-map}"
+  (setq-local truncate-lines t)
+  ;; killing the buffer mid-scan must not leave a dangling chunk timer
+  (add-hook 'kill-buffer-hook #'projectile-replace--cancel-scan nil t)
+  (buffer-disable-undo))
+
+(defun projectile-replace--seed (buf mode root term regexp replacement
+                                     literal case-fold)
+  "Put BUF in MODE and seed its results-buffer state, with no matches yet.
+ROOT, TERM, REGEXP, REPLACEMENT, LITERAL and CASE-FOLD seed the search
+parameters; the match list starts empty, ready for a (sync or async)
+scan to fill it."
+  (with-current-buffer buf
+    (funcall mode)
+    (setq projectile-replace--root root
+          projectile-replace--term term
+          projectile-replace--search regexp
+          projectile-replace--replacement replacement
+          projectile-replace--literal literal
+          projectile-replace--case-fold case-fold
+          projectile-replace--matches nil
+          projectile-replace--truncated nil
+          projectile-replace--filtered nil
+          projectile-replace--scanning nil
+          projectile-replace--scan-timer nil)))
+
+(defun projectile-replace--start (buffer candidates regexp on-done)
+  "Fill BUFFER's match list by scanning CANDIDATES for REGEXP.
+Cancels any in-flight scan in BUFFER first, then scans with the async
+chunked driver when `projectile-replace--async-p' holds and otherwise
+synchronously (always in batch), so the final match list is identical
+either way -- only delivery differs.  BUFFER is re-rendered when done and
+ON-DONE (or nil) is called in it."
+  (with-current-buffer buffer
+    (projectile-replace--cancel-scan))
+  (if (projectile-replace--async-p)
+      (projectile-replace--gather-async candidates regexp buffer on-done)
+    (with-current-buffer buffer
+      (let* ((case-fold-search projectile-replace--case-fold)
+             (result (projectile-replace--gather candidates regexp)))
+        (setq projectile-replace--matches (plist-get result :matches)
+              projectile-replace--truncated (plist-get result :truncated)
+              projectile-replace--scanning nil
+              projectile-replace--scan-timer nil))
+      (funcall projectile-replace--render-function)
+      (when on-done (funcall on-done buffer)))))
+
+(defun projectile-replace--open-finish (buffer)
+  "Announce truncation once the scan filling BUFFER has finished."
+  (with-current-buffer buffer
+    (when projectile-replace--truncated
+      (message "%s"
+               (projectile-prepend-project-name
+                (format "showing the first %d matches"
+                        projectile-replace-max-matches))))))
+
+(defun projectile-replace--open (mode buf-name root term regexp replacement
+                                      literal case-fold candidates no-match-msg)
+  "Open BUF-NAME in MODE and scan CANDIDATES for REGEXP into it.
+When scanning is asynchronous the buffer is shown immediately and matches
+stream in; when synchronous (always in batch) the scan completes first
+and, to preserve the pre-async behavior, no buffer is shown when nothing
+matched -- NO-MATCH-MSG is issued instead.  Returns the results buffer,
+or nil on the synchronous no-match path.  ROOT, TERM, REGEXP,
+REPLACEMENT, LITERAL and CASE-FOLD seed the buffer state."
+  ;; re-running the command must not orphan a scan still filling an earlier
+  ;; instance of the buffer (re-seeding resets its buffer-locals)
+  (when-let* ((existing (get-buffer buf-name)))
+    (with-current-buffer existing (projectile-replace--cancel-scan)))
+  (if (projectile-replace--async-p)
+      (let ((buf (get-buffer-create buf-name)))
+        (projectile-replace--seed buf mode root term regexp replacement
+                                  literal case-fold)
+        (with-current-buffer buf
+          (setq projectile-replace--scanning t)
+          (funcall projectile-replace--render-function))
+        (pop-to-buffer buf)
+        (projectile-replace--start buf candidates regexp
+                                   #'projectile-replace--open-finish)
+        buf)
+    (let* ((case-fold-search case-fold)
+           (result (projectile-replace--gather candidates regexp))
+           (matches (plist-get result :matches))
+           (truncated (plist-get result :truncated)))
+      (if (null matches)
+          (progn (when no-match-msg (message "%s" no-match-msg)) nil)
+        (let ((buf (get-buffer-create buf-name)))
+          (projectile-replace--seed buf mode root term regexp replacement
+                                    literal case-fold)
+          (with-current-buffer buf
+            (setq projectile-replace--matches matches
+                  projectile-replace--truncated truncated)
+            (funcall projectile-replace--render-function))
+          (when truncated
+            (message "%s"
+                     (projectile-prepend-project-name
+                      (format "showing the first %d matches"
+                              projectile-replace-max-matches))))
+          (pop-to-buffer buf)
+          buf)))))
+
+(defun projectile-replace--quit ()
+  "Cancel any in-flight scan and quit the results window."
+  (interactive)
+  (projectile-replace--cancel-scan)
+  (quit-window))
+
+(defun projectile-replace--review (literal)
+  "Gather matches for a project-wide replacement and pop the results buffer.
+LITERAL non-nil runs a literal replace; otherwise the search term is an
+Emacs regexp and the replacement may reference capture groups."
+  (let* ((root (projectile-acquire-root))
+         (term (read-string
+                (projectile-prepend-project-name
+                 (if literal "Replace: " "Replace regexp: "))
+                (projectile-symbol-or-selection-at-point)))
+         (replacement (read-string
+                       (projectile-prepend-project-name
+                        (format "Replace %s with: " term))))
+         (regexp (if literal (regexp-quote term) term))
+         (case-fold case-fold-search)
+         (candidates (projectile-replace--candidates term literal case-fold root)))
+    (projectile-replace--open
+     #'projectile-replace-mode projectile-replace-buffer-name
+     root term regexp replacement literal case-fold candidates
+     (projectile-prepend-project-name (format "No matches for %s" term)))))
+
+;;;###autoload
+(defun projectile-replace-review ()
+  "Review and apply a literal project-wide replacement.
+
+Prompts for a literal search string and a replacement, gathers every
+match across the project into a `*projectile-replace*' buffer, and lets
+you toggle which matches to apply before committing them.  This is a
+non-blocking, previewable alternative to `projectile-replace'."
+  (interactive)
+  (projectile-replace--review t))
+
+;;;###autoload
+(defun projectile-replace-regexp-review ()
+  "Review and apply a project-wide regexp replacement.
+
+Like `projectile-replace-review', but the search term is an Emacs
+regexp and the replacement may reference capture groups (\\1, \\&).
+This is a non-blocking, previewable alternative to
+`projectile-replace-regexp'."
+  (interactive)
+  (projectile-replace--review nil))
+
+;;; Reviewable read-only project-content search
+;;
+;; A search-only sibling of the reviewable replace UI above.  It reuses the
+;; same pure "find matches" machinery (`projectile-replace--candidates',
+;; `--gather', `--scan-file', the match struct and its accessors) and the
+;; same navigation, filter, case/regexp-toggle, visit and grep-export
+;; commands, but renders the matches into a read-only `*projectile-search*'
+;; buffer with no before->after preview, no per-match enable/disable toggle,
+;; and no apply.  It is a distinct major mode (`projectile-search-mode', a
+;; sibling of `projectile-replace-mode', not a shared base) so its keymap can
+;; simply omit every write-back key rather than disable it; the shared code
+;; lives under the `projectile-replace--' prefix (where it already was) and
+;; the two modes share the results-buffer buffer-locals.  A `replace these'
+;; bridge hands the current search off to the replace reviewer.
+
+(defvar projectile-search-buffer-name "*projectile-search*"
+  "Name of the buffer used by `projectile-search-review'.")
+
+(defun projectile-search--header-string ()
+  "Return the propertized status header for the search results buffer.
+Shows the term, the match and file counts, the mode flags
+\(regexp/literal and case), and a note when the list has been filtered.
+Carries no `projectile-replace-match' property, so match navigation
+skips it."
+  (let* ((matches projectile-replace--matches)
+         (nmatches (length matches))
+         (seen (make-hash-table :test 'equal))
+         nfiles flags)
+    (dolist (m matches)
+      (puthash (projectile-replace--match-file m) t seen))
+    (setq nfiles (hash-table-count seen)
+          flags (concat
+                 (if projectile-replace--literal "[literal]" "[regexp]")
+                 " "
+                 (if projectile-replace--case-fold
+                     "[ignore-case]" "[case-sensitive]")
+                 (if projectile-replace--filtered "  filtered" "")
+                 (projectile-replace--scanning-note nmatches)))
+    (propertize
+     (format "Search %S\n%d match%s in %d file%s  %s\n"
+             projectile-replace--term
+             nmatches (if (= nmatches 1) "" "es")
+             nfiles (if (= nfiles 1) "" "s")
+             flags)
+     'face 'projectile-replace-header)))
+
+(defun projectile-search--render-line (m)
+  "Return the propertized results line for match M.
+The line is `LINE:COL: CONTEXT' with the matched span highlighted; there
+is no replacement preview and no enable/disable indicator.  The whole
+line carries the match struct under the `projectile-replace-match' text
+property so the shared navigation, visit and filter commands find it."
+  (let* ((col (projectile-replace--match-column m))
+         (ctx (projectile-replace--match-context m))
+         (mstr (projectile-replace--match-string m))
+         (before (substring ctx 0 (min col (length ctx))))
+         (after (if (<= (+ col (length mstr)) (length ctx))
+                    (substring ctx (+ col (length mstr)))
+                  ""))
+         (highlight (propertize mstr 'face 'projectile-replace-match))
+         (locator (propertize (format "%d:%d: "
+                                      (projectile-replace--match-line m)
+                                      (1+ col))
+                              'face 'projectile-replace-line-number))
+         (line (concat locator before highlight after "\n")))
+    (propertize line 'projectile-replace-match m)))
+
+(defun projectile-search--render ()
+  "Redraw the current search results buffer from its buffer-local state."
+  (let ((inhibit-read-only t)
+        (root projectile-replace--root)
+        (matches projectile-replace--matches)
+        (counts (make-hash-table :test 'equal))
+        (prev-file nil))
+    (dolist (m matches)
+      (cl-incf (gethash (projectile-replace--match-file m) counts 0)))
+    (erase-buffer)
+    (insert (projectile-search--header-string))
+    (insert (substitute-command-keys
+             (concat "\\<projectile-search-mode-map>"
+                     "\\[projectile-replace--visit] visit  "
+                     "\\[projectile-replace--refresh] re-search  "
+                     "\\[projectile-search--to-replace] replace these  "
+                     "\\[projectile-replace--export] export  "
+                     "\\[quit-window] quit\n"
+                     "\\[projectile-replace--toggle-case] case  "
+                     "\\[projectile-replace--toggle-regexp] regexp/literal  "
+                     "\\[projectile-replace--keep-matches]/\\[projectile-replace--flush-matches] keep/flush line  "
+                     "\\[projectile-replace--keep-files]/\\[projectile-replace--flush-files] keep/flush file\n\n")))
+    (if (null matches)
+        (insert "No matches.\n")
+      (dolist (m matches)
+        (let ((file (projectile-replace--match-file m)))
+          (unless (equal prev-file file)
+            (when prev-file (insert "\n"))
+            (setq prev-file file)
+            (insert (projectile-replace--file-header
+                     file root (gethash file counts))))
+          (insert (projectile-search--render-line m)))))
+    (when projectile-replace--truncated
+      (insert (format "\n(showing the first %d matches)\n"
+                      projectile-replace-max-matches)))
+    (goto-char (point-min))))
+
+(defun projectile-search--to-replace ()
+  "Hand the current search to the reviewable replace UI.
+Carries over the same term, literal-ness and case setting and prompts
+only for the replacement.  The project is re-scanned from scratch (so
+any filtering is undone and every match comes back enabled), mirroring
+`projectile-replace-review'."
+  (interactive)
+  (let* ((root projectile-replace--root)
+         (term projectile-replace--term)
+         (literal projectile-replace--literal)
+         (case-fold projectile-replace--case-fold)
+         (regexp projectile-replace--search)
+         (replacement (read-string
+                       (projectile-prepend-project-name
+                        (format "Replace %s with: " term))))
+         (candidates (projectile-replace--candidates term literal case-fold root)))
+    (projectile-replace--open
+     #'projectile-replace-mode projectile-replace-buffer-name
+     root term regexp replacement literal case-fold candidates
+     (projectile-prepend-project-name (format "No matches for %s" term)))))
+
+(defvar projectile-search-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "RET") #'projectile-replace--visit)
+    (define-key map (kbd "n") #'projectile-replace--goto-next-match)
+    (define-key map (kbd "p") #'projectile-replace--goto-prev-match)
+    (define-key map (kbd "M-n") #'projectile-replace--goto-next-file)
+    (define-key map (kbd "M-p") #'projectile-replace--goto-prev-file)
+    (define-key map (kbd "c") #'projectile-replace--toggle-case)
+    (define-key map (kbd "x") #'projectile-replace--toggle-regexp)
+    (define-key map (kbd "k") #'projectile-replace--keep-matches)
+    (define-key map (kbd "d") #'projectile-replace--flush-matches)
+    (define-key map (kbd "K") #'projectile-replace--keep-files)
+    (define-key map (kbd "D") #'projectile-replace--flush-files)
+    (define-key map (kbd "e") #'projectile-replace--export)
+    (define-key map (kbd "r") #'projectile-search--to-replace)
+    (define-key map (kbd "g") #'projectile-replace--refresh)
+    (define-key map (kbd "q") #'projectile-replace--quit)
+    map)
+  "Keymap for `projectile-search-mode'.")
+
+(define-derived-mode projectile-search-mode special-mode "Projectile-Search"
+  "Major mode for reviewing project-wide search matches, read-only.
+
+A search-only sibling of `projectile-replace-mode': the buffer is a
+read-only listing of every match, grouped by file, with no replacement
+preview and no way to edit the files from here.  Navigate with
+\\<projectile-search-mode-map>\\[projectile-replace--goto-next-match] / \\[projectile-replace--goto-prev-match] (match) and \\[projectile-replace--goto-next-file] / \\[projectile-replace--goto-prev-file] (file), and \\[projectile-replace--visit]
+visits the match under point.  The search can be reshaped in place:
+\\[projectile-replace--toggle-case] toggles case sensitivity and \\[projectile-replace--toggle-regexp] toggles literal/regexp matching,
+each re-scanning; \\[projectile-replace--keep-matches] / \\[projectile-replace--flush-matches] keep or flush matches by line and
+\\[projectile-replace--keep-files] / \\[projectile-replace--flush-files] by file; \\[projectile-replace--refresh] re-runs the search, undoing any filtering.
+
+\\[projectile-search--to-replace] hands the current search off to the reviewable replace UI
+\(prompting only for the replacement), and \\[projectile-replace--export] exports the shown
+matches to a `grep-mode' buffer for wgrep or Emacs 31's `grep-edit-mode'.
+
+\\{projectile-search-mode-map}"
+  (setq-local truncate-lines t)
+  (setq-local projectile-replace--render-function #'projectile-search--render)
+  ;; killing the buffer mid-scan must not leave a dangling chunk timer
+  (add-hook 'kill-buffer-hook #'projectile-replace--cancel-scan nil t)
+  (buffer-disable-undo))
+
+(defun projectile-search--review (literal)
+  "Gather matches for a project-wide search and pop the read-only results buffer.
+LITERAL non-nil searches for a literal string; otherwise the term is an
+Emacs regexp.  There is no replacement prompt."
+  (let* ((root (projectile-acquire-root))
+         (term (read-string
+                (projectile-prepend-project-name
+                 (if literal "Search: " "Search regexp: "))
+                (projectile-symbol-or-selection-at-point)))
+         (regexp (if literal (regexp-quote term) term))
+         (case-fold case-fold-search)
+         (candidates (projectile-replace--candidates term literal case-fold root)))
+    ;; SEAM: everything above computes the candidate file list; the shared
+    ;; opener below seeds the buffer and scans -- synchronously in batch,
+    ;; asynchronously (streaming) when interactive -- then renders whatever
+    ;; matches come back.
+    (projectile-replace--open
+     #'projectile-search-mode projectile-search-buffer-name
+     root term regexp nil literal case-fold candidates
+     (projectile-prepend-project-name (format "No matches for %s" term)))))
+
+;;;###autoload
+(defun projectile-search-review ()
+  "Search the project for a literal string and review the matches read-only.
+
+Prompts for a literal search string (defaulting to the symbol or region
+at point), gathers every match across the project into a read-only
+`*projectile-search*' buffer grouped by file, and lets you navigate,
+filter and reshape the search.  Use \\<projectile-search-mode-map>\\[projectile-search--to-replace] to turn it into a
+reviewable replacement.  This is the read-only sibling of
+`projectile-replace-review'."
+  (interactive)
+  (projectile-search--review t))
+
+;;;###autoload
+(defun projectile-search-regexp-review ()
+  "Search the project for an Emacs regexp and review the matches read-only.
+
+Like `projectile-search-review', but the search term is an Emacs regexp,
+so full Emacs regexp syntax (e.g. symbol boundaries like `\\_<foo\\_>')
+is honored."
+  (interactive)
+  (projectile-search--review nil))
+
 (defun projectile--buffer-matches-conditions (buffer conditions)
   "Return non-nil if BUFFER satisfies any condition in CONDITIONS.
 
@@ -9798,15 +11158,25 @@ Magit that don't trigger `find-file-hook'."
     (define-key map (kbd "p") #'projectile-switch-project)
     (define-key map (kbd "q") #'projectile-switch-open-project)
     (define-key map (kbd "r") #'projectile-replace)
+    (define-key map (kbd "R") #'projectile-replace-review)
     (define-key map (kbd "s s") #'projectile-search)
     (define-key map (kbd "s g") #'projectile-grep)
     (define-key map (kbd "s r") #'projectile-ripgrep)
     (define-key map (kbd "s a") #'projectile-ag)
     (define-key map (kbd "s x") #'projectile-find-references)
+    (define-key map (kbd "s R") #'projectile-search-review)
+    (define-key map (kbd "s X") #'projectile-search-regexp-review)
     (define-key map (kbd "S") #'projectile-save-project-buffers)
     (define-key map (kbd "t") #'projectile-toggle-between-implementation-and-test)
     (define-key map (kbd "T") #'projectile-find-test-file)
     (define-key map (kbd "v") #'projectile-vc)
+    ;; per-project sessions (see `projectile-session-mode')
+    (define-key map (kbd "w s") #'projectile-session-save)
+    (define-key map (kbd "w S") #'projectile-session-save-all)
+    (define-key map (kbd "w r") #'projectile-session-restore)
+    (define-key map (kbd "w R") #'projectile-session-restore-all)
+    (define-key map (kbd "w f") #'projectile-session-forget)
+    (define-key map (kbd "w b") #'projectile-session-switch-to-buffer)
     ;; project lifecycle external commands
     (define-key map (kbd "c o") #'projectile-configure-project)
     (define-key map (kbd "c c") #'projectile-compile-project)
@@ -10077,8 +11447,11 @@ window or frame (file/buffer/project commands)."
       ("sr" "ripgrep" projectile-dispatch-ripgrep)
       ("sa" "ag" projectile-dispatch-ag)
       ("sx" "references" projectile-find-references)
+      ("sR" "search (review)" projectile-search-review)
+      ("sX" "search regexp (review)" projectile-search-regexp-review)
       ("o" "multi-occur" projectile-multi-occur)
-      ("r" "replace" projectile-replace)]]
+      ("r" "replace" projectile-replace)
+      ("R" "replace (review)" projectile-replace-review)]]
     [["Project"
       ("p" "switch project" projectile-dispatch-switch-project)
       ("q" "switch open project" projectile-switch-open-project)
@@ -10106,6 +11479,13 @@ window or frame (file/buffer/project commands)."
       ("xG" "ghostel" projectile-dispatch-run-ghostel)
       ("!" "shell command" projectile-run-shell-command-in-root)
       ("&" "async shell command" projectile-run-async-shell-command-in-root)]
+     ["Session"
+      ("ws" "save session" projectile-session-save)
+      ("wS" "save all sessions" projectile-session-save-all)
+      ("wr" "restore session" projectile-session-restore)
+      ("wR" "restore all sessions" projectile-session-restore-all)
+      ("wf" "forget session" projectile-session-forget)
+      ("wb" "switch project buffer" projectile-session-switch-to-buffer)]
      ["Cache"
       ("i" "invalidate cache" projectile-invalidate-cache)
       ("z" "cache current file" projectile-cache-current-file)]]))
@@ -10184,6 +11564,8 @@ window or frame (file/buffer/project commands)."
          ["Search with ripgrep" projectile-ripgrep]
          ["Search with ag" projectile-ag]
          ["Replace in project" projectile-replace]
+         ["Replace in project (review)" projectile-replace-review]
+         ["Replace regexp in project (review)" projectile-replace-regexp-review]
          ["Multi-occur in project" projectile-multi-occur]
          ["Find references in project" projectile-find-references])
         ("Run..."
@@ -10211,6 +11593,14 @@ window or frame (file/buffer/project commands)."
          ["Repeat last task" projectile-repeat-last-task]
          "--"
          ["Repeat last build command" projectile-repeat-last-command])
+        ("Session"
+         ["Save session" projectile-session-save]
+         ["Save all sessions" projectile-session-save-all]
+         ["Restore session" projectile-session-restore]
+         ["Restore all sessions" projectile-session-restore-all]
+         ["Forget session" projectile-session-forget]
+         "--"
+         ["Switch to project buffer" projectile-session-switch-to-buffer])
         "--"
         ["About" projectile-version]))
     map)
@@ -10407,9 +11797,104 @@ component."
   :type 'function
   :package-version '(projectile . "3.2.0"))
 
+(defcustom projectile-session-directory
+  (expand-file-name "projectile-sessions/" user-emacs-directory)
+  "Directory under which per-project session files are stored.
+Each project's saved layout and buffers live in a single file here, named
+after the project (see `projectile-session--file')."
+  :group 'projectile
+  :type 'directory
+  :package-version '(projectile . "3.2.0"))
+
+(defcustom projectile-session-restore-on-switch t
+  "Whether switching to a project restores its saved session.
+When non-nil and the project being switched to has no open tab but does
+have a session saved on disk, `projectile-session-switch-project-action'
+restores that session (recreating its buffers and layout) instead of
+running `projectile-session-default-action'."
+  :group 'projectile
+  :type 'boolean
+  :package-version '(projectile . "3.2.0"))
+
+(defcustom projectile-session-restore-on-startup nil
+  "Whether to reopen every saved project session when Emacs starts.
+When non-nil and `projectile-session-mode' is enabled, a handler added to
+`emacs-startup-hook' runs `projectile-session-restore-all' once, reopening
+each saved project into its own tab after your init files have finished
+loading.  Because that hook is installed on mode enable and
+`emacs-startup-hook' fires only once, right after startup, enabling the
+mode *after* Emacs has finished starting never triggers a restore."
+  :group 'projectile
+  :type 'boolean
+  :package-version '(projectile . "3.2.0"))
+
+(defcustom projectile-session-autosave nil
+  "Whether `projectile-session-mode' saves sessions automatically.
+When non-nil, the outgoing project's session is saved when you switch
+away from it, and every open project's session is saved when Emacs exits.
+Degenerate layouts with no serializable buffer are skipped."
+  :group 'projectile
+  :type 'boolean
+  :package-version '(projectile . "3.2.0"))
+
+(defcustom projectile-session-buffer-serializers
+  '((dired-mode
+     . (projectile-session--serialize-dired
+        . projectile-session--deserialize-dired))
+    (t
+     . (projectile-session--serialize-file
+        . projectile-session--deserialize-file)))
+  "How buffers are turned into readable records and back.
+
+An alist whose entries have the shape (KEY SERIALIZE . DESERIALIZE),
+i.e. KEY mapped to a (SERIALIZE . DESERIALIZE) pair:
+
+KEY selects which buffers an entry handles.  It is one of:
+- a major-mode symbol - matches buffers whose mode is (derived from) it;
+- the symbol t - matches any buffer visiting a file (keep it last, so
+  mode-specific handlers win);
+- a predicate function of one argument (the buffer).
+
+SERIALIZE is called with the buffer current and returns a readable record
+\(any `read'-able sexp), or nil to decline the buffer.  DESERIALIZE is
+called with such a record and must recreate and return the live buffer,
+or nil when it cannot (e.g. the file is gone), in which case the buffer's
+window is dropped on restore rather than erroring.
+
+The first entry whose KEY matches and whose SERIALIZE returns non-nil wins.
+Buffers no entry handles are skipped, not saved.
+
+Handlers keyed by a major-mode symbol or by t round-trip cleanly: restore
+dispatches on that key.  A record produced by a predicate-keyed handler is
+stored under the buffer's major mode and, on restore, is handled by the
+first predicate-keyed entry that has a DESERIALIZE; so if you register
+several predicate handlers, give them distinct major-mode keys instead when
+they must restore differently.  To persist e.g. Magit or eshell buffers,
+add an entry keyed by their major mode, for instance:
+
+  (add-to-list \\='projectile-session-buffer-serializers
+               \\='(magit-status-mode
+                 . (my-serialize-magit . my-deserialize-magit)))"
+  :group 'projectile
+  :type '(alist :key-type sexp :value-type sexp)
+  :package-version '(projectile . "3.2.0"))
+
+(defconst projectile-session--format-version 1
+  "Format version stamped into session files written on disk.
+Session files whose version does not match are ignored on restore.")
+
 (defvar projectile-session--saved-switch-action nil
   "The `projectile-switch-project-action' saved when the mode was enabled.
 Restored when `projectile-session-mode' is disabled.")
+
+(defvar projectile-session--closing-tab nil
+  "A project tab currently being closed, or nil.
+Bound while re-simplifying survivor names from
+`projectile-session--on-tab-close' (the pre-close hook, where the closing
+tab is still present in the tab list) so `projectile-session--project-tabs'
+omits it and its name no longer counts as a clash.")
+
+(declare-function dired-noselect "dired")
 
 (defun projectile-session--current-tab ()
   "Return the current tab of the selected frame."
@@ -10447,8 +11932,14 @@ TRAMP round-trip."
                   (file-equal-p a b))))))
 
 (defun projectile-session--project-tabs ()
-  "Return the open tabs that are bound to a project."
-  (seq-filter #'projectile-session--tab-root (tab-bar-tabs)))
+  "Return the open tabs that are bound to a project.
+The tab held in `projectile-session--closing-tab' (one being closed) is
+omitted, so survivor names recomputed from the pre-close hook don't still
+treat the closing tab as an open clash."
+  (seq-filter (lambda (tab)
+                (and (not (eq tab projectile-session--closing-tab))
+                     (projectile-session--tab-root tab)))
+              (tab-bar-tabs)))
 
 (defun projectile-session--project-tab (root)
   "Return the open tab bound to project ROOT, or nil when there is none."
@@ -10529,6 +12020,25 @@ parameter), which a manual `tab-bar-rename-tab' breaks."
                       (projectile-session--tab-root tab))))))
   (force-mode-line-update t))
 
+(defun projectile-session--on-tab-close (tab &optional _last)
+  "Re-simplify survivor tab names after project TAB is closed.
+Wired onto `tab-bar-tab-pre-close-functions', so a project tab that was
+disambiguated only because of TAB (e.g. \"work/foo\" beside TAB's
+\"home/foo\") reverts to its plain name once TAB goes away.
+
+That hook fires while TAB is still in the tab list, so TAB is bound as
+`projectile-session--closing-tab' to exclude it from the recomputation.
+It is used rather than a post-close hook because Emacs has no post-close
+tab hook at Projectile's 28.1 floor (`tab-bar-tab-pre-close-functions'
+dates to 27.1; `tab-bar-tab-post-close-functions' does not exist), which
+keeps this 28.1-safe."
+  (when (projectile-session--tab-root tab)
+    (let ((projectile-session--closing-tab tab))
+      ;; never let a naming error (e.g. a custom `projectile-session-tab-name-function'
+      ;; that signals) escape this pre-close hook and abort the tab close
+      (ignore-errors
+        (projectile-session--refresh-tab-names)))))
+
 (defun projectile-session--make-project-tab (root)
   "Create and select a fresh tab bound to project ROOT.
 The new tab is stamped with ROOT and named; populating it is left to the
@@ -10537,10 +12047,34 @@ caller."
   (projectile-session--set-tab-root (projectile-session--current-tab) root)
   (projectile-session--refresh-tab-names))
 
+(defun projectile-session--current-tab-index ()
+  "Return the 1-based index of the selected frame's current tab."
+  (1+ (or (cl-position 'current-tab (tab-bar-tabs) :key #'car :test #'eq) 0)))
+
+(defun projectile-session--select-tab-by-root (root)
+  "Select the open project tab bound to ROOT, if any.
+Returns non-nil when a tab was selected.  Resolves the tab to a 1-based
+index in a single pass and selects by index, so it is robust to
+`tab-bar-select-tab' rebuilding tab cons cells as it switches away from
+the current tab (a captured cons would go stale mid-loop)."
+  (let ((index 0) (target nil))
+    (dolist (tab (tab-bar-tabs))
+      (setq index (1+ index))
+      (when (and (not target)
+                 (projectile-session--same-root-p
+                  (projectile-session--tab-root tab) root))
+        (setq target index)))
+    (when target
+      (tab-bar-select-tab target)
+      t)))
+
 (defun projectile-session--select-tab (tab)
-  "Select TAB, restoring the project layout it holds."
-  (when-let* ((index (cl-position tab (tab-bar-tabs) :test #'eq)))
-    (tab-bar-select-tab (1+ index))))
+  "Select TAB, restoring the project layout it holds.
+Selection goes through the tab's project root, so it stays correct even
+after other tabs' cons cells have been rebuilt."
+  (let ((root (projectile-session--tab-root tab)))
+    (when root
+      (projectile-session--select-tab-by-root root))))
 
 (defun projectile-session--adopt-current-tab ()
   "Bind the current tab to the current project, when there is one.
@@ -10556,8 +12090,9 @@ rather than left unowned."
   "Tab-aware switch action installed by `projectile-session-mode'.
 When the target project already has a tab, select it and restore its
 live window layout instead of re-running the switch action.  Otherwise
-create a new tab for the project, stamp and name it, and populate it by
-calling `projectile-session-default-action'."
+create a new tab for the project and either restore its saved session (see
+`projectile-session-restore-on-switch') or populate it by calling
+`projectile-session-default-action'."
   (let* ((root (projectile-project-root))
          (tab (and root (projectile-session--project-tab root))))
     (cond
@@ -10568,7 +12103,10 @@ calling `projectile-session-default-action'."
       ;; project regardless of what buffer `tab-bar-new-tab' left current
       ;; (e.g. a non-default `tab-bar-new-tab-choice').
       (let ((default-directory root))
-        (funcall projectile-session-default-action)))
+        (unless (and projectile-session-restore-on-switch
+                     (projectile-session--saved-p root)
+                     (projectile-session-restore root))
+          (funcall projectile-session-default-action))))
      (t (funcall projectile-session-default-action)))))
 
 ;;;###autoload
@@ -10585,6 +12123,397 @@ When the current tab holds no project, fall back to the plain
           "Switch to project buffer: "
           (mapcar #'buffer-name (projectile-project-buffers root))))
       (call-interactively #'switch-to-buffer))))
+
+;;; Session persistence
+;;
+;; A project's live layout is a native tab, but tabs don't survive an Emacs
+;; restart.  To persist one we write a small readable sexp per project: the
+;; window layout as `window-state-get' with the WRITABLE flag (so it stays a
+;; plain, re-readable sexp) plus a manifest of the buffers it shows, each
+;; turned into a record by `projectile-session-buffer-serializers'.  Restoring
+;; recreates the buffers first (window-state only references them by name and
+;; won't recreate them) and then puts the layout back, replacing any buffer it
+;; couldn't recreate with a placeholder so the restore never errors.
+
+(defun projectile-session--buffer-matches-p (key buffer)
+  "Return non-nil when serializer KEY applies to BUFFER.
+KEY is a major-mode symbol, the symbol t (any file-visiting buffer), or a
+predicate function of one argument."
+  (cond
+   ((eq key t) (and (buffer-file-name buffer) t))
+   ((symbolp key) (with-current-buffer buffer (derived-mode-p key)))
+   (t (funcall key buffer))))
+
+(defun projectile-session--buffer-kind (key buffer)
+  "Return the symbol under which BUFFER's record is stored for serializer KEY.
+A symbol KEY (a mode or t) is its own kind and restore dispatches on it; a
+predicate KEY falls back to BUFFER's major mode."
+  (if (symbolp key)
+      key
+    (buffer-local-value 'major-mode buffer)))
+
+(defun projectile-session--readable-p (object)
+  "Return non-nil when OBJECT survives a `prin1'/`read' round-trip.
+Guards against a custom serializer returning a record that embeds a live
+object (buffer, marker, window) which can't be read back.  Binds
+`print-circle' so shared or circular structure prints, and reads, finitely
+rather than hanging."
+  (ignore-errors
+    (let ((print-circle t))
+      (read (prin1-to-string object))
+      t)))
+
+(defun projectile-session--serialize-buffer (buffer)
+  "Serialize BUFFER via the first matching entry of the serializer registry.
+Return a cons (KIND . RECORD), or nil when no entry handles BUFFER.
+Each registry entry is tried in isolation: a matcher or serializer that
+errors, or that yields a non-readable record, is skipped rather than
+aborting the whole session save."
+  (catch 'done
+    (dolist (entry projectile-session-buffer-serializers)
+      (ignore-errors
+        (let ((key (car entry))
+              (serialize (cadr entry)))
+          (when (projectile-session--buffer-matches-p key buffer)
+            (let ((record (with-current-buffer buffer (funcall serialize buffer))))
+              (when (and record (projectile-session--readable-p record))
+                (throw 'done
+                       (cons (projectile-session--buffer-kind key buffer)
+                             record))))))))
+    nil))
+
+(defun projectile-session--deserializer (kind)
+  "Return the deserialize function able to restore a record of KIND.
+Prefer an entry whose key is exactly KIND (a mode symbol or t).  Records
+produced by a predicate-keyed serializer are stored under the buffer's
+major mode, which no `assq' can match, so fall back to the first
+predicate-keyed entry that carries a deserializer."
+  (let ((exact (assq kind projectile-session-buffer-serializers)))
+    (if exact
+        (cddr exact)
+      (catch 'found
+        (dolist (entry projectile-session-buffer-serializers)
+          (when (and (functionp (car entry)) (cddr entry))
+            (throw 'found (cddr entry))))
+        nil))))
+
+(defun projectile-session--recreate-buffer (saved)
+  "Recreate the buffer described by SAVED, a (KIND . RECORD) cons.
+Return the live buffer, or nil when no deserializer handles KIND or the
+deserializer declines (e.g. the underlying file is gone)."
+  (let ((deserialize (projectile-session--deserializer (car saved))))
+    (when deserialize
+      (funcall deserialize (cdr saved)))))
+
+(defun projectile-session--serialize-file (buffer)
+  "Serialize file-visiting BUFFER as a (:file PATH :point N) record."
+  (when (buffer-file-name buffer)
+    (list :file (buffer-file-name buffer) :point (point))))
+
+(defun projectile-session--deserialize-file (record)
+  "Recreate the file buffer described by RECORD, or nil when the file is gone."
+  (let ((file (plist-get record :file)))
+    (when (and file (file-exists-p file))
+      (let ((buffer (find-file-noselect file)))
+        (when (buffer-live-p buffer)
+          (let ((point (plist-get record :point)))
+            (when (integerp point)
+              (with-current-buffer buffer
+                (goto-char (min point (point-max))))))
+          buffer)))))
+
+(defun projectile-session--serialize-dired (buffer)
+  "Serialize dired BUFFER as a (:dir DIRECTORY) record."
+  (with-current-buffer buffer
+    (when (derived-mode-p 'dired-mode)
+      (list :dir (expand-file-name default-directory)))))
+
+(defun projectile-session--deserialize-dired (record)
+  "Recreate the dired buffer described by RECORD, or nil when it's gone."
+  (let ((dir (plist-get record :dir)))
+    (when (and dir (file-directory-p dir))
+      (dired-noselect dir))))
+
+(defun projectile-session--placeholder-buffer ()
+  "Return a live placeholder buffer for windows whose buffer is missing."
+  (get-buffer-create " *projectile-session-placeholder*"))
+
+(defun projectile-session--sanitize-window-state (state)
+  "Return a copy of window STATE with missing buffers replaced.
+Any window referencing a buffer that isn't live is pointed at a
+placeholder buffer instead, so `window-state-put' can't error out.  This
+is the Emacs 28 substitute for `window-restore-killed-buffer-windows'
+\(added in Emacs 30)."
+  (cond
+   ((and (consp state)
+         (eq (car state) 'buffer)
+         (stringp (cadr state))
+         (not (get-buffer (cadr state))))
+    (cons 'buffer
+          (cons (buffer-name (projectile-session--placeholder-buffer))
+                (cddr state))))
+   ((consp state)
+    (cons (projectile-session--sanitize-window-state (car state))
+          (projectile-session--sanitize-window-state (cdr state))))
+   (t state)))
+
+(defun projectile-session--file (root)
+  "Return the absolute session file name for project ROOT.
+The name pairs a readable, filesystem-safe project name with a hash of
+ROOT's canonical path, so distinct roots never collide and the same root
+maps to the same file across restarts."
+  (let* ((canonical (directory-file-name
+                     ;; Canonicalize with `file-truename' so a symlinked root
+                     ;; and its target map to the same file, matching M1's
+                     ;; `projectile-session--same-root-p'.  Skip it for remote
+                     ;; roots to avoid a TRAMP round-trip.
+                     (if (file-remote-p root)
+                         (expand-file-name root)
+                       (file-truename root))))
+         (name (projectile-session--project-name root))
+         (safe (replace-regexp-in-string "[^A-Za-z0-9_.-]" "_" (or name "project")))
+         (hash (md5 canonical)))
+    (expand-file-name (concat safe "-" hash ".eld")
+                      projectile-session-directory)))
+
+(defun projectile-session--saved-p (root)
+  "Return non-nil when project ROOT has a session saved on disk."
+  (file-exists-p (projectile-session--file root)))
+
+(defun projectile-session--write (root data)
+  "Write session DATA for project ROOT, creating the session directory.
+Return non-nil only when the file was actually written, so callers don't
+report success for an unwritable session directory.  Binds `print-circle'
+so shared or circular structure in a record can't hang the write."
+  (let ((file (projectile-session--file root)))
+    (ignore-errors (make-directory (file-name-directory file) t))
+    (and (file-writable-p file)
+         (progn
+           (let ((print-circle t))
+             (projectile-serialize data file))
+           (file-exists-p file)))))
+
+(defun projectile-session--read-file (file)
+  "Read and return the session data stored in FILE, or nil.
+Data that isn't a well-formed session plist of the current version is
+ignored, so an unreadable or stale file is skipped rather than erroring."
+  (let ((data (projectile-unserialize file)))
+    (and (consp data)
+         (equal (plist-get data :projectile-session-version)
+                projectile-session--format-version)
+         data)))
+
+(defun projectile-session--read (root)
+  "Read and return project ROOT's session data, or nil.
+Data whose format version doesn't match is ignored."
+  (projectile-session--read-file (projectile-session--file root)))
+
+(defun projectile-session--saved-roots ()
+  "Return the roots of every project with a session saved on disk.
+Scan `projectile-session-directory' for session files, read each (skipping
+any that is unreadable or of a mismatched version, via
+`projectile-session--read-file'), and collect the `:root' it stores.  The
+result is sorted so `projectile-session-restore-all' reopens tabs in a
+stable order across calls and restarts."
+  (let ((dir projectile-session-directory)
+        (roots '()))
+    (when (file-directory-p dir)
+      (dolist (file (directory-files dir t "\\.eld\\'"))
+        (let ((data (ignore-errors (projectile-session--read-file file))))
+          ;; require a string root: a corrupt/hand-edited file with a
+          ;; non-string `:root' would otherwise crash the `sort' below and
+          ;; (via the startup handler's guard) silently disable all restore
+          (when-let* ((root (plist-get data :root))
+                      ((stringp root)))
+            (push root roots)))))
+    (sort roots #'string-lessp)))
+
+(defun projectile-session--frame-buffers ()
+  "Return the distinct buffers shown in the selected frame's windows."
+  (delete-dups (mapcar #'window-buffer (window-list nil 'nomini))))
+
+;;;###autoload
+(defun projectile-session-save (&optional project)
+  "Save the current window layout and buffers as PROJECT's session.
+PROJECT defaults to the current project's root.  The layout is captured
+from the selected frame, so this saves whichever project's tab is
+current.  Buffers are recorded via `projectile-session-buffer-serializers';
+a layout with no serializable buffer is not saved.  Return non-nil on a
+successful save."
+  (interactive)
+  (let ((root (or project (projectile-project-root))))
+    (unless root
+      (user-error "Not in a project"))
+    (let* ((buffers (projectile-session--frame-buffers))
+           (records (delq nil (mapcar #'projectile-session--serialize-buffer
+                                      buffers))))
+      (cond
+       ((null records)
+        (when (called-interactively-p 'any)
+          (message "No serializable buffers to save for %s" root))
+        nil)
+       ((projectile-session--write
+         root
+         (list :projectile-session-version projectile-session--format-version
+               :root root
+               :buffers records
+               :window-state (window-state-get (frame-root-window) t)))
+        (when (called-interactively-p 'any)
+          (message "Saved session for %s" root))
+        t)
+       (t
+        (when (called-interactively-p 'any)
+          (message "Could not write session for %s" root))
+        nil)))))
+
+;;;###autoload
+(defun projectile-session-restore (&optional project)
+  "Restore PROJECT's saved session into the selected frame.
+PROJECT defaults to the current project's root.  Buffers are recreated
+first, then the saved window layout is put back; windows whose buffer
+can't be recreated fall back to a placeholder.  Return non-nil when a
+session was restored."
+  (interactive)
+  (let* ((root (or project (projectile-project-root)))
+         (data (and root (projectile-session--read root))))
+    (cond
+     (data
+      (let ((recreated nil))
+        (dolist (saved (plist-get data :buffers))
+          (when (ignore-errors (buffer-live-p (projectile-session--recreate-buffer saved)))
+            (setq recreated t)))
+        (cond
+         (recreated
+          (let ((state (plist-get data :window-state)))
+            (when state
+              (window-state-put (projectile-session--sanitize-window-state state)
+                                (frame-root-window) 'safe)))
+          t)
+         ;; Nothing could be recreated (every saved file is gone, say);
+         ;; return nil so `restore-on-switch' falls back to populating the
+         ;; tab instead of leaving the user in an all-placeholder frame.
+         (t
+          (when (called-interactively-p 'any)
+            (message "No buffers could be restored for %s" (or root "current project")))
+          nil))))
+     ((called-interactively-p 'any)
+      (user-error "No saved session for %s" (or root "current project"))))))
+
+;;;###autoload
+(defun projectile-session-forget (&optional project)
+  "Delete PROJECT's saved session file.
+PROJECT defaults to the current project's root."
+  (interactive)
+  (let ((root (or project (projectile-project-root))))
+    (unless root
+      (user-error "Not in a project"))
+    (let ((file (projectile-session--file root)))
+      (when (file-exists-p file)
+        (delete-file file)
+        (when (called-interactively-p 'any)
+          (message "Forgot session for %s" root))))))
+
+(defun projectile-session--maybe-autosave ()
+  "Save the current project's session when autosave is enabled.
+Wired onto `projectile-before-switch-project-hook', where the current
+project is still the one being switched away from."
+  (when projectile-session-autosave
+    (ignore-errors (projectile-session-save))))
+
+(defun projectile-session--save-all-tabs ()
+  "Save the session of every open project tab, selecting each in turn.
+Each project tab is selected so its own window layout is what gets saved,
+then the originally-selected tab is restored.  Tabs are re-resolved by
+root on each iteration rather than by a cons captured up front, because
+`tab-bar-select-tab' rebuilds cons cells as it switches tabs (a stale cons
+would save the wrong layout under a project's root).  The per-tab body is
+guarded so a tab that can't be selected or saved (its root gone, say)
+neither abandons the remaining projects nor lets an error escape (this
+also matters on `kill-emacs-hook').  Return the number of tabs whose
+session was actually written."
+  (let ((origin (projectile-session--current-tab-index))
+        (roots (delq nil (mapcar #'projectile-session--tab-root
+                                 (projectile-session--project-tabs))))
+        (saved 0))
+    (dolist (root roots)
+      (ignore-errors
+        (when (and (projectile-session--select-tab-by-root root)
+                   (projectile-session-save root))
+          (setq saved (1+ saved)))))
+    (ignore-errors (tab-bar-select-tab origin))
+    saved))
+
+;;;###autoload
+(defun projectile-session-save-all ()
+  "Save the session of every open project in one go.
+Every open project tab's window layout and buffers are saved (see
+`projectile-session-save'); a tab whose layout has no serializable buffer
+is skipped.  Unlike autosave, this runs regardless of
+`projectile-session-autosave'.  When called interactively, report how many
+sessions were saved."
+  (interactive)
+  ;; `--save-all-tabs' selects each project tab in turn and restores the
+  ;; originally-selected one afterwards.
+  (let ((saved (projectile-session--save-all-tabs)))
+    (when (called-interactively-p 'any)
+      (message "Saved %d project session%s" saved (if (= saved 1) "" "s")))
+    saved))
+
+;;;###autoload
+(defun projectile-session-restore-all ()
+  "Reopen every saved project's session into its own tab.
+For each project with a session saved on disk (see
+`projectile-session--saved-roots'): when a tab for it is already open,
+leave it be rather than duplicating it; otherwise create a fresh project
+tab and restore the saved session into it.  A session whose files are all
+gone recreates nothing, so its just-created empty tab is closed again and
+it is not counted, keeping restore-all from littering the frame with empty
+tabs.  Tabs are re-resolved by root, never by a cons captured before a
+selection, since `tab-bar-select-tab' rebuilds cons cells as it switches.
+End on the first successfully restored project's tab (falling back to the
+starting tab when nothing was restored) rather than wherever the iteration
+left off.  When called interactively, report how many sessions were
+restored.  Return that count."
+  (interactive)
+  (let ((origin (projectile-session--current-tab-index))
+        (first-root nil)
+        (restored 0))
+    (dolist (root (projectile-session--saved-roots))
+      (unless (projectile-session--project-tab root)
+        (projectile-session--make-project-tab root)
+        (if (ignore-errors (projectile-session-restore root))
+            (progn
+              (setq restored (1+ restored))
+              (unless first-root (setq first-root root)))
+          ;; nothing recreated (the project's files are gone): drop the
+          ;; empty tab `--make-project-tab' just created and selected
+          (ignore-errors (tab-bar-close-tab)))))
+    ;; Land the user somewhere deterministic.  When we restored something,
+    ;; go to the first restored project; otherwise return to where we
+    ;; started (any tabs we made for stale sessions were closed again, so
+    ;; the starting index still points at the same tab).
+    (if first-root
+        (projectile-session--select-tab-by-root first-root)
+      (ignore-errors (tab-bar-select-tab origin)))
+    (when (called-interactively-p 'any)
+      (message "Restored %d project session%s" restored
+               (if (= restored 1) "" "s")))
+    restored))
+
+(defun projectile-session--autosave-on-kill ()
+  "Save every open project's session when autosave is enabled.
+Wired onto `kill-emacs-hook'; the frame is going away, so the tab left
+selected by `projectile-session--save-all-tabs' does not matter."
+  (when projectile-session-autosave
+    (projectile-session--save-all-tabs)))
+
+(defun projectile-session--maybe-restore-on-startup ()
+  "Reopen all saved sessions at startup when configured to.
+Wired onto `emacs-startup-hook' while `projectile-session-mode' is on; the
+restore is gated on `projectile-session-restore-on-startup'.  Errors are
+swallowed so a restore problem can't abort the rest of Emacs startup."
+  (when projectile-session-restore-on-startup
+    (ignore-errors (projectile-session-restore-all))))
 
 ;;;###autoload
 (define-minor-mode projectile-session-mode
@@ -10618,13 +12547,38 @@ existing tabs untouched."
                 #'projectile-session-switch-project-action)
       (setq projectile-session--saved-switch-action projectile-switch-project-action))
     (setq projectile-switch-project-action #'projectile-session-switch-project-action)
+    ;; Autosave wiring.  `add-hook' is idempotent for an `eq' function, so a
+    ;; double enable can't stack duplicates; the actual saving is gated on
+    ;; `projectile-session-autosave' inside the hook functions.
+    (add-hook 'projectile-before-switch-project-hook
+              #'projectile-session--maybe-autosave)
+    (add-hook 'kill-emacs-hook #'projectile-session--autosave-on-kill)
+    ;; Restore-on-startup wiring.  The handler is gated on
+    ;; `projectile-session-restore-on-startup' and `emacs-startup-hook' fires
+    ;; once, right after init, so setting the mode plus the defcustom in init
+    ;; restores after startup; enabling the mode later simply never fires it.
+    ;; `add-hook' is idempotent for an `eq' function, so a double enable can't
+    ;; stack duplicates.
+    (add-hook 'emacs-startup-hook #'projectile-session--maybe-restore-on-startup)
+    ;; Re-simplify a survivor's name when its same-named sibling tab is
+    ;; closed.  `add-hook' is idempotent for an `eq' function, so a double
+    ;; enable can't stack duplicates.
+    (add-hook 'tab-bar-tab-pre-close-functions
+              #'projectile-session--on-tab-close)
     (projectile-session--adopt-current-tab))
    (t
     (when (eq projectile-switch-project-action
               #'projectile-session-switch-project-action)
       (setq projectile-switch-project-action
             projectile-session--saved-switch-action))
-    (setq projectile-session--saved-switch-action nil))))
+    (setq projectile-session--saved-switch-action nil)
+    (remove-hook 'projectile-before-switch-project-hook
+                 #'projectile-session--maybe-autosave)
+    (remove-hook 'kill-emacs-hook #'projectile-session--autosave-on-kill)
+    (remove-hook 'emacs-startup-hook
+                 #'projectile-session--maybe-restore-on-startup)
+    (remove-hook 'tab-bar-tab-pre-close-functions
+                 #'projectile-session--on-tab-close))))
 
 (provide 'projectile)
 
