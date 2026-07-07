@@ -1467,6 +1467,11 @@
      ,(when (member "Adwaita Mono" (font-family-list))
         '(adwaita-mono
           :default-family "Adwaita Mono"))
+     ,(when (member "Iosevka" (font-family-list))
+        '(iosevka-regular
+          :default-family "Iosevka"
+          :default-weight light
+          :default-width normal))
      ,(when (member "Iosevka Slab" (font-family-list))
         '(iosevka-slab-regular
           :default-family "Iosevka Slab"
