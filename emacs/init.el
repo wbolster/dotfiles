@@ -1468,22 +1468,22 @@
         '(adwaita-mono
           :default-family "Adwaita Mono"))
      ,(when (member "Iosevka Slab" (font-family-list))
-        '(iosevka-regular
+        '(iosevka-slab-regular
           :default-family "Iosevka Slab"
           :default-weight light
           :default-width normal))
      ,@(when (member "Iosevka Slab Full" (font-family-list))
          ;; custom build with all widths and weights included
-         '((iosevka-semi-condensed
+         '((iosevka-slab-semi-condensed
             :default-family "Iosevka Slab Full"
-            :inherit iosevka-regular
+            :inherit iosevka-slab-regular
             :default-width semi-condensed)
-           (iosevka-condensed
+           (iosevka-slab-condensed
             :default-family "Iosevka Slab Full"
-            :inherit iosevka-regular
+            :inherit iosevka-slab-regular
             :default-width condensed)))))
   :config
-  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'iosevka-regular))
+  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'iosevka-slab-regular))
   (fontaine-mode)
 
   (defun w/fontaine-cycle-preset (&optional with-height)
