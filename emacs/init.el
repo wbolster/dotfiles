@@ -207,29 +207,32 @@
   (tool-bar-mode -1)
   (window-divider-mode)
 
-  (defun w/copy-filename-to-clipboard (&optional full-path with-line-number)
-    "Copy the current buffer's file name to the (system) clipboard."
-    (interactive
-     (if current-prefix-arg
-         (list
-          (y-or-n-p "Full path? ")
-          (y-or-n-p (if (use-region-p) "With line numbers? " "With line number? ")))
-       '(nil nil)))
+  (defun w/copy-filename-to-clipboard (&optional arg)
+    "Copy the current buffer's file name to the (system) clipboard.
+
+With a prefix arg, choose from variations: full path, line numbers, etc."
+    (interactive "P")
     (unless buffer-file-name
       (user-error "Buffer is not visiting a file"))
-    (let* ((project-dir (when-let ((project (project-current)))
-                          (project-root project)))
-           (file (if (and (not full-path) project-dir (file-in-directory-p buffer-file-name project-dir))
-                     (file-relative-name buffer-file-name project-dir)
-                   buffer-file-name))
+    (let* ((relative-file-name
+            (and-let* ((project (project-current))
+                       (project-root (and project (project-root project)))
+                       ((file-in-directory-p buffer-file-name project-root))
+                       ((file-relative-name buffer-file-name project-root)))))
+           (start-line (line-number-at-pos (if (use-region-p) (region-beginning) (point))))
+           (end-line (line-number-at-pos (if (use-region-p) (region-end) (point))))
            (line-suffix
-            (when with-line-number
-              (if (use-region-p)
-                  (format ":%d-%d"
-                          (line-number-at-pos (region-beginning))
-                          (line-number-at-pos (region-end)))
-                (format ":%d" (line-number-at-pos)))))
-           (result (concat file line-suffix)))
+            (if (= start-line end-line)
+                (format ":%d" start-line)
+              (format ":%d-%d" start-line end-line)))
+           (choices (append
+                     (when relative-file-name
+                       (list relative-file-name (concat relative-file-name line-suffix)))
+                     (list buffer-file-name (concat buffer-file-name line-suffix))))
+           (default-choice (car choices))
+           (result (if arg
+                       (completing-read "Copy file name as: " choices nil t nil t)
+                     default-choice)))
       (kill-new result)
       (message "Copied: %s" result)))
 
