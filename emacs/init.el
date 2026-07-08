@@ -998,7 +998,9 @@
   :custom
   (evil-collection-binding-overrides
    '((repl-submit :state insert)
-     (repl-newline :enabled nil)))
+     (repl-newline :enabled nil)
+     (next-section-2 :state normal :key "C-n")
+     (prev-section-2 :state normal :key ("C-e" "C-p"))))
   (evil-collection-want-unimpaired-p nil)
   :config
   (defun w/colemak-hnei-rotation (_mode mode-keymaps &rest _rest)
