@@ -2399,7 +2399,9 @@
    "g +" #'reformatter-dwim-on-save-mode))
 
 (use-package rg
-  :defer t)
+  :defer t
+  :custom
+  (rg-hide-command nil))
 
 (use-package rust-mode
   :defer t
