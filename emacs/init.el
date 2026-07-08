@@ -609,7 +609,10 @@
   :general
   (:keymaps 'dired-mode-map
    :states '(motion normal)
-   "-" #'dired-jump))
+   "-" #'dired-jump)
+  :custom
+  (dired-auto-revert-buffer t)
+  (dired-kill-when-opening-new-dired-buffer t))
 
 (use-package dired-x
   :demand t
