@@ -1831,8 +1831,6 @@
     :keymaps 'magit-mode-map
     :states '(normal visual)
     [escape] nil
-    "n" #'evil-next-visual-line
-    "e" #'evil-previous-visual-line
     "C-n" #'magit-section-forward
     "C-e" #'magit-section-backward
     "C-p" #'magit-section-backward
