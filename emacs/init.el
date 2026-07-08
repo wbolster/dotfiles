@@ -1794,7 +1794,7 @@
   :after lsp-mode)
 
 (use-package magit
-  :defer t
+  :defer 5
   :hook
   (git-commit-setup-hook . w/git-commit-setup-hook)
   (magit-log-mode-hook . w/magit-log-mode-hook)
