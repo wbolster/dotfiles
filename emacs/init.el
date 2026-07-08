@@ -2582,7 +2582,7 @@
   :defer t
   :hook (typescript-ts-base-mode-hook . w/typescript-mode-hook)
   :mode
-  (rx (or ".cts" ".mts") string-end)
+  (rx (or ".ts" ".cts" ".mts") string-end)
   :custom
   (typescript-ts-mode-indent-offset 2)
   :config
