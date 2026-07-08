@@ -174,6 +174,7 @@
   (mode-line-compact 'long)
   (mode-line-position-column-line-format '(" %l:%c"))
   (native-comp-async-report-warnings-errors 'silent)
+  (next-error-message-highlight t)
   (read-extended-command-predicate
    (lambda (command buffer)
      (run-hook-with-args-until-failure 'w/read-extended-command-predicate-functions command buffer)))
