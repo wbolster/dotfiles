@@ -361,6 +361,12 @@ if [[ $PS1 ]]; then
             prompt_sign_style=${style[fg=red]}
         fi
 
+        # toolbx, https://containertoolbx.org/ (not isolation)
+        local prompt_toolbx=""
+        if [[ -n ${TOOLBOX_PATH:-} ]]; then
+            prompt_toolbx="${style[secondary]}{${style[primary]}toolbx${style[secondary]}}"
+        fi
+
         # nodejs
         local prompt_node=""
         if [[ -n ${MISE_NODE_VERSION:-} ]]; then
@@ -450,6 +456,7 @@ if [[ $PS1 ]]; then
         [[ -n $prompt_hostname ]]  && parts+=("$prompt_hostname")
         [[ -n $prompt_wd ]]        && parts+=("$prompt_wd")
         [[ -n $prompt_isolation ]] && parts+=("$prompt_isolation")
+        [[ -n $prompt_toolbx ]]    && parts+=("$prompt_toolbx")
         [[ -n $prompt_git ]]       && parts+=("$prompt_git")
         [[ -n $prompt_node ]]      && parts+=("$prompt_node")
         [[ -n $prompt_python ]]    && parts+=("$prompt_python")
