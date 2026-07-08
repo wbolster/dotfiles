@@ -158,27 +158,12 @@
    ("i" . indent-rigidly-right)
    ("I" . indent-rigidly-right-to-tab-stop))
   :custom
-  (auto-save-interval 100)
   (blink-cursor-blinks 1)
   (blink-cursor-delay .5)
   (blink-cursor-interval .5)
-  (create-lockfiles nil)
   (custom-safe-themes t)
-  (default-frame-alist
-    '((child-frame-border-width . 0)
-      (drag-internal-border . 2)
-      (height . 48)
-      (internal-border-width . 1)
-      (undecorated . t)
-      (width . 160)))
-  (delete-by-moving-to-trash t)
   (disabled-command-function nil)
-  (display-buffer-base-action
-   '((display-buffer-reuse-window
-      display-buffer-pop-up-window
-      display-buffer-use-some-window)))
   (echo-keystrokes 0.5)
-  (find-file-visit-truename t)
   (fit-window-to-buffer-horizontally t)
   (indicate-buffer-boundaries 'left)
   (indent-tabs-mode nil)
@@ -194,7 +179,6 @@
      (run-hook-with-args-until-failure 'w/read-extended-command-predicate-functions command buffer)))
   (read-process-output-max (* 1024 1024)) ;; recommended by lsp-mode
   (recenter-positions '(top middle bottom))
-  (require-final-newline 'visit-save)
   (scroll-conservatively 101)
   (scroll-margin 5)
   (sentence-end-double-space nil)
@@ -1295,8 +1279,13 @@
   :commands
   w/buffer-worth-saving-p
   w/open-gui-file-browser
+  :custom
+  (auto-save-interval 100)
+  (create-lockfiles nil)
+  (delete-by-moving-to-trash t)
+  (find-file-visit-truename t)
+  (require-final-newline 'visit-save)
   :config
-
   (defun w/may-kill-buffer ()
     "Return whether the current buffer may be killed. May ask confirmation."
     (or (buffer-file-name) ;; handled by emacs
@@ -2798,6 +2787,17 @@
   w/buffer-new-internal
   w/fit-bottom-error-window-to-buffer
   :custom
+  (default-frame-alist
+    '((child-frame-border-width . 0)
+      (drag-internal-border . 2)
+      (height . 48)
+      (internal-border-width . 1)
+      (undecorated . t)
+      (width . 160)))
+  (display-buffer-base-action
+   '((display-buffer-reuse-window
+      display-buffer-pop-up-window
+      display-buffer-use-some-window)))
   (frame-inhibit-implied-resize t)
   (frame-resize-pixelwise t)
   (frame-title-format "%b")
