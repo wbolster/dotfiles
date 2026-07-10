@@ -1931,11 +1931,18 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
     (when (and (bobp) (eolp))
       (call-interactively #'evil-insert)))
 
-  (defun w/magit-log-mode-hook ()
-    (dolist (element '(("*  " . "🔀") ;; merge
-                       ("*-." . "🐙"))) ;; octopus merge
-      (add-to-list 'prettify-symbols-alist element))
-    (prettify-symbols-mode))
+  (defun w/gitlab-insert-merge-request-template ()
+    (interactive)
+    (-if-let* ((template-dir ".gitlab/merge_request_templates/")
+               (dir (locate-dominating-file (or (buffer-file-name) default-directory) template-dir))
+               (template-file
+                (read-file-name "Template: " (concat dir template-dir)) nil t 'file-regular-p))
+        (insert-file-contents template-file)
+      (user-error "No merge request templates found")))
+
+  (defun w/magit-log-buffer-file-follow ()
+    (interactive)
+    (magit-log-buffer-file t))
 
   (defun w/magit-log-highlight-merge-prefix ()
     (when (looking-at (rx (group "merge:") " "))
@@ -1962,24 +1969,17 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
           (kill-buffer)
           (magit-process-buffer)))))
 
+  (defun w/magit-log-mode-hook ()
+    (dolist (element '(("*  " . "🔀") ;; merge
+                       ("*-." . "🐙"))) ;; octopus merge
+      (add-to-list 'prettify-symbols-alist element))
+    (prettify-symbols-mode))
+
   (defun w/magit-status-other-repository ()
     "Open git status for another repository."
     (interactive)
     (setq current-prefix-arg t)
-    (call-interactively 'magit-status))
-
-  (defun w/magit-log-buffer-file-follow ()
-    (interactive)
-    (magit-log-buffer-file t))
-
-  (defun w/gitlab-insert-merge-request-template ()
-    (interactive)
-    (-if-let* ((template-dir ".gitlab/merge_request_templates/")
-               (dir (locate-dominating-file (or (buffer-file-name) default-directory) template-dir))
-               (template-file
-                (read-file-name "Template: " (concat dir template-dir)) nil t 'file-regular-p))
-        (insert-file-contents template-file)
-      (user-error "No merge request templates found"))))
+    (call-interactively 'magit-status)))
 
 (use-package marginalia
   :demand t
