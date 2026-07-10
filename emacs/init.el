@@ -783,11 +783,6 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
    "z n" #'evil-scroll-line-down)
   (:states '(motion normal)
    [escape] #'w/evil-normal-state-cleanup)
-  (:states '(motion normal visual)
-   [remap evil-next-line] #'w/evil-next-line
-   [remap evil-previous-line] #'w/evil-previous-line
-   [remap evil-end-of-line] #'w/evil-end-of-line
-   [remap evil-first-non-blank] #'w/evil-first-non-blank)
   (:states 'normal
    ;; useful for keychron k7 keyboards that require a Fn modifier for
    ;; tilde; use shift-tab (key below it) it as a workaround.
@@ -806,7 +801,7 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
    "g" #'w/evil-text-object-whole-buffer)
   (:states 'insert
    "<return>" #'comment-indent-new-line
-   "C-a" #'w/evil-first-non-blank
+   "C-a" #'crux-move-beginning-of-line
    "C-c" #'evil-normal-state
    "C-d" #'delete-char
    "C-e" #'end-of-visual-line
@@ -816,7 +811,7 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
    "C-n" #'next-line
    "C-o" #'evil-normal-state
    "C-p" #'previous-line
-   "C-t" #'w/evil-transpose-chars
+   "C-t" #'transpose-chars
    "C-v" #'yank  ;; during typing, ctrl-v is "paste", like everywhere else
    "C-SPC" #'cycle-spacing
    "C-'" #'w/typo-cycle-quotation-marks
@@ -941,13 +936,6 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
     (when (eq (evil-initial-state-for-buffer) 'motion)
       (evil-change-to-initial-state)))
 
-  (defun w/evil-transpose-chars ()
-    "Invoke ‘transpose-chars’ on the right chars in insert state."
-    (interactive)
-    (backward-char)
-    (transpose-chars nil)
-    (unless (eolp) (forward-char)))
-
   (defun w/kill-line-dwim ()
     "Kill line, or join the next line when at eolp."
     (interactive)
@@ -955,38 +943,6 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
       (kill-line)
       (when was-at-eol
         (fixup-whitespace))))
-
-  (evil-define-motion w/evil-next-line (count)
-    (when (null count)
-      (setq count 1))
-    (if visual-line-mode
-        (progn
-          (setq evil-this-type 'exclusive)
-          (evil-next-visual-line count))
-      (setq evil-this-type 'line)
-      (evil-next-line count)))
-
-  (evil-define-motion w/evil-previous-line (count)
-    (when (null count)
-      (setq count 1))
-    (if visual-line-mode
-        (progn
-          (setq evil-this-type 'exclusive)
-          (evil-previous-visual-line count))
-      (setq evil-this-type 'line)
-      (evil-previous-line count)))
-
-  (evil-define-motion w/evil-end-of-line (count)
-    :type inclusive
-    (if visual-line-mode
-        (evil-end-of-visual-line count)
-      (evil-end-of-line count)))
-
-  (evil-define-motion w/evil-first-non-blank ()
-    :type exclusive
-    (if visual-line-mode
-        (evil-first-non-blank-of-visual-line)
-      (evil-first-non-blank)))
 
   (evil-define-operator w/evil-join-smart-backslash-eol (beg end)
     "Like ‘evil-join’, but handles continuation line endings in a smarter way."
