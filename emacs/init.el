@@ -1890,6 +1890,7 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
    :states '(normal visual)
    "<tab>" #'magit-section-cycle
    "C-<tab>" #'magit-section-toggle
+   "C-w" '(:keymap w/window-map)
    "/" #'consult-line)
   (:keymaps 'magit-blame-read-only-mode-map
    :states '(motion normal)
