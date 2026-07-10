@@ -2425,9 +2425,7 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
    "g +" #'reformatter-dwim-on-save-mode))
 
 (use-package rg
-  :defer t
-  :custom
-  (rg-hide-command nil))
+  :defer t)
 
 (use-package rust-mode
   :defer t
