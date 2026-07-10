@@ -1866,9 +1866,6 @@ With a prefix arg, choose from variations: full path, line numbers, etc."
    "'" nil)
 
   :config
-  ;; no special behaviour for magit windows
-  (remove-hook 'magit-post-display-buffer-hook 'magit-maybe-set-dedicated)
-
   (dolist (item '(("~" . 2)
                   ("~/Projects/" . 2)
                   ("~/Documents/" . 3)
