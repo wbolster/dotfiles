@@ -613,6 +613,35 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
   (:states 'normal
    "g ?" #'devdocs-lookup))
 
+(use-package diff-hl
+  :hook
+  (magit-post-refresh-hook . diff-hl-magit-post-refresh)
+  (diff-hl-mode-hook . diff-hl-update)
+  :commands
+  diff-hl-next-hunk
+  diff-hl-previous-hunk
+  w/diff-hl-next-hunk
+  w/diff-hl-previous-hunk
+  :functions
+  diff-hl-update
+  :custom
+  (diff-hl-draw-borders nil)
+  (diff-hl-side 'left)
+  (diff-hl-update-async t)
+  :config
+  (w/evil-declare-jump 'w/diff-hl-next-hunk)
+  (w/evil-declare-jump 'w/diff-hl-previous-hunk)
+  (defun w/diff-hl-previous-hunk ()
+    "Jump to the previous hunk."
+    (interactive)
+    (diff-hl-mode)
+    (diff-hl-previous-hunk))
+  (defun w/diff-hl-next-hunk ()
+    "Jump to the next hunk."
+    (interactive)
+    (diff-hl-mode)
+    (diff-hl-next-hunk)))
+
 (use-package difftastic
   :demand t
   :if (executable-find "difft")
@@ -3085,6 +3114,7 @@ treating 9 as ‘last window’."
   "W" #'w/sensible-wrap-mode-2
   "b" #'auto-dark-toggle-appearance
   "c" #'flycheck-mode
+  "d" #'diff-hl-mode
   "f" #'auto-fill-mode
   "h" #'symbol-overlay-mode
   "l" #'hl-line-mode
@@ -3603,6 +3633,8 @@ defined as lowercase."
  "]c" #'flycheck-next-error
  "[C" #'flycheck-first-error
  "]C" #'w/flycheck-last-error
+ "[d" #'w/diff-hl-previous-hunk
+ "]d" #'w/diff-hl-next-hunk
  "[e" #'previous-error
  "]e" #'next-error
  "[E" #'first-error
