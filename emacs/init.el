@@ -1869,12 +1869,11 @@ With a prefix arg, choose from variations: full path, line numbers, etc."
   ;; no special behaviour for magit windows
   (remove-hook 'magit-post-display-buffer-hook 'magit-maybe-set-dedicated)
 
-  (--each '(("~" . 2)
-            ("~/Projects/" . 2)
-            ("~/Documents/" . 3)
-            ("~/Sync/" . 3))
-    (-let [(dir . depth) it]
-      (add-to-list 'magit-repository-directories (cons dir depth) t)))
+  (dolist (item '(("~" . 2)
+                  ("~/Projects/" . 2)
+                  ("~/Documents/" . 3)
+                  ("~/Sync/" . 3)))
+    (add-to-list 'magit-repository-directories item t))
 
   (setopt magit-log-margin
           (-replace 'age 'age-abbreviated magit-log-margin))
