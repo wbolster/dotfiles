@@ -57,7 +57,7 @@ wipe disk using nvme sanitize:
     nvme sanitize $disk --sanact=0x02
     watch --interval 1 nvme sanitize-log $disk
 
-‼ wait until completed. status should _not_ be `0x102`, e.g.
+‼️ wait until completed. status should _not_ be `0x102`, e.g.
 
     Sanitize Progress                      (SPROG) :  65535
     Sanitize Status                        (SSTAT) :  0x101
