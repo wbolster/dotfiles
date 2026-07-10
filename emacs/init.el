@@ -1946,15 +1946,6 @@ With a prefix arg, choose from variations: full path, line numbers, etc."
     (setq current-prefix-arg t)
     (call-interactively 'magit-status))
 
-  (defun w/git-web-browse ()
-    "Open a web browser for the current git repo or file."
-    (interactive)
-    (if (use-region-p)
-        (let ((git-link-open-in-browser t))
-          (call-interactively #'git-link)
-          (setq kill-ring (cdr kill-ring)))
-      (call-interactively #'git-link)))
-
   (defun w/magit-log-buffer-file-follow ()
     (interactive)
     (magit-log-buffer-file t))
@@ -2993,7 +2984,7 @@ treating 9 as ‘last window’."
   "l" #'magit-log-current
   "s" #'magit-status
   "t" #'magit-toggle-buffer-lock
-  "w" #'w/git-web-browse)
+  "w" #'git-link)
 
 (defvar-keymap w/lsp-map
   :doc "Keymap for LSP commands."
