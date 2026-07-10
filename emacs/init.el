@@ -733,6 +733,15 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
     (interactive "<R>")
     (edit-indirect-region beg end t)))
 
+(use-package embark
+  :defer t
+  :bind
+  (("C-'" . embark-act)))
+
+(use-package embark-consult
+  :demand t
+  :after embark)
+
 (use-package evil
   :demand t
   :general
@@ -3158,12 +3167,14 @@ treating 9 as ‘last window’."
   "8" #'w/select-nth-window
   "9" #'w/select-nth-window
   "`" #'other-window
+  "A" #'embark-act-all
   "H" #'symbol-overlay-remove-all
   "J" #'consult-imenu-multi
   "Q" #'unbury-buffer
   "S" #'save-some-buffers
   "X" #'execute-extended-command-for-buffer
   "SPC" #'whitespace-cleanup
+  "a" #'embark-act
   "b" w/buffer-map
   "c" w/flycheck-map
   "d" w/diff-map
