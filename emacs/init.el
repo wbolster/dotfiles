@@ -1891,14 +1891,18 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
    "'" nil)
 
   :config
+  ;; hide author names from magit-blame annotations; why/what/when are
+  ;; more important than who
+  (setf (thread-last magit-blame-styles
+                     (alist-get 'headings)
+                     (alist-get 'heading-format))
+        "%C %s\n")
+  (setopt magit-log-margin (cl-substitute 'age-abbreviated 'age magit-log-margin))
   (dolist (item '(("~" . 2)
                   ("~/Projects/" . 2)
                   ("~/Documents/" . 3)
                   ("~/Sync/" . 3)))
     (add-to-list 'magit-repository-directories item t))
-
-  (setopt magit-log-margin
-          (-replace 'age 'age-abbreviated magit-log-margin))
 
   (add-to-list 'evil-overriding-maps '(magit-blame-mode-map . nil))
 
@@ -1911,19 +1915,12 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
   (transient-append-suffix 'magit-log
     "s" '("p" "merge/pull request" w/magit-log-merge-request))
 
-  ;; hide author names from magit-blame annotations;
-  ;; it's usually about why/what/when, not who.
-  (setf (->> magit-blame-styles
-             (alist-get 'headings)
-             (alist-get 'heading-format))
-        "%C %s\n")
-
   (with-eval-after-load 'direnv
-    (--each '(magit-blob-mode
-              magit-diff-mode
-              magit-log-mode
-              magit-status-mode)
-      (add-to-list 'direnv-non-file-modes it)))
+    (dolist (mode '(magit-blob-mode
+                    magit-diff-mode
+                    magit-log-mode
+                    magit-status-mode))
+      (add-to-list 'direnv-non-file-modes mode)))
 
   (with-eval-after-load 'evil-colemak-basics
     (add-to-list 'global-evil-colemak-basics-modes
