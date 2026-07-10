@@ -210,25 +210,41 @@
   (defun w/copy-filename-to-clipboard (&optional arg)
     "Copy the current buffer's file name to the (system) clipboard.
 
-With a prefix arg, choose from variations: full path, line numbers, etc."
+With a prefix arg, choose from variations: full path, line numbers, urls, etc."
     (interactive "P")
     (unless buffer-file-name
       (user-error "Buffer is not visiting a file"))
+    (require 'git-link)
     (let* ((relative-file-name
             (and-let* ((project (project-current))
                        (project-root (and project (project-root project)))
                        ((file-in-directory-p buffer-file-name project-root))
                        ((file-relative-name buffer-file-name project-root)))))
            (start-line (line-number-at-pos (if (use-region-p) (region-beginning) (point))))
-           (end-line (line-number-at-pos (if (use-region-p) (region-end) (point))))
-           (line-suffix
-            (if (= start-line end-line)
-                (format ":%d" start-line)
-              (format ":%d-%d" start-line end-line)))
+           (end-line (line-number-at-pos (save-excursion
+                                           (when (use-region-p)
+                                             (goto-char (region-end))
+                                             (when (bolp)
+                                               (forward-char -1)))
+                                           (point))))
+           (line-suffix (if (= start-line end-line)
+                            (format ":%d" start-line)
+                          (format ":%d-%d" start-line end-line)))
+           (git-link-urls
+            (ignore-errors
+              (let ((git-link-add-to-kill-ring nil)
+                    (git-link-open-in-browser nil))
+                (ignore git-link-add-to-kill-ring git-link-open-in-browser)
+                (list
+                 (let ((current-prefix-arg '-))
+                   (call-interactively #'git-link))
+                 (let ((current-prefix-arg nil))
+                   (call-interactively #'git-link))))))
            (choices (append
                      (when relative-file-name
                        (list relative-file-name (concat relative-file-name line-suffix)))
-                     (list buffer-file-name (concat buffer-file-name line-suffix))))
+                     (list buffer-file-name (concat buffer-file-name line-suffix))
+                     git-link-urls))
            (default-choice (car choices))
            (result (if arg
                        (completing-read "Copy file name as: " choices nil t nil t)
