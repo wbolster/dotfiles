@@ -1831,61 +1831,41 @@ With a prefix arg, choose from variations: full path, line numbers, etc."
   (magit-status-goto-file-position t)
   :custom-face
   (magit-mode-line-process ((t (:inherit magit-mode-line-process-error))))
-  :config
-  ;; note: a :general stanza won't work because of execution order:
-  ;; custom bindings go on top of what evil-collection-init does
-  ;; todo: make ,q use the various magit-*-bury-buffer functions, then
-  ;; unbind q to force ,q usage.
-  (general-def
-    :keymaps 'magit-mode-map
-    :states '(normal visual)
-    [escape] nil
-    "C-n" #'magit-section-forward
-    "C-e" #'magit-section-backward
-    "C-p" #'magit-section-backward
-    "<tab>" #'magit-section-cycle
-    "C-<tab>" #'magit-section-toggle
-    "/" #'consult-line)
-  (general-def
-    :keymaps 'magit-blame-read-only-mode-map
-    :states '(motion normal)
-    "n" nil
-    "e" nil
-    "C-n" #'magit-blame-next-chunk
-    "C-e" #'magit-blame-previous-chunk
-    "C-p" #'magit-blame-previous-chunk
-    "<tab>" #'magit-blame-cycle-style
-    "<return>" #'magit-show-commit)
-  (general-def
-    :keymaps 'magit-diff-mode-map
-    "SPC" nil
-    "DEL" nil)
-  (general-def
-    :keymaps 'magit-hunk-section-map
-    "<return>" #'magit-diff-visit-file-other-window
-    "C-<return>" #'magit-diff-visit-worktree-file-other-window)
-  (general-def
-    :keymaps '(magit-diff-mode-map
-               magit-log-mode-map
-               magit-mode-map
-               magit-process-mode-map
-               magit-refs-mode
-               magit-revision-mode-map
-               magit-status-mode-map)
-    :states 'normal
-    "q" nil
-    "'" nil)
-  (general-def
-    :keymaps '(magit-diff-mode-map
-               magit-log-mode-map
-               magit-mode-map
-               magit-process-mode-map
-               magit-refs-mode
-               magit-revision-mode-map
-               magit-status-mode-map)
-    "q" nil
-    "'" nil)
+  :general
+  (:keymaps 'magit-mode-map
+   :states '(normal visual)
+   "<tab>" #'magit-section-cycle
+   "C-<tab>" #'magit-section-toggle
+   "/" #'consult-line)
+  (:keymaps 'magit-blame-read-only-mode-map
+   :states '(motion normal)
+   "C-n" #'magit-blame-next-chunk
+   "C-e" #'magit-blame-previous-chunk
+   "C-p" #'magit-blame-previous-chunk
+   "<tab>" #'magit-blame-cycle-style
+   "<return>" #'magit-show-commit)
+  (:keymaps 'magit-hunk-section-map
+   "<return>" #'magit-diff-visit-file-other-window
+   "C-<return>" #'magit-diff-visit-worktree-file-other-window)
+  (:keymaps '(magit-diff-mode-map
+              magit-log-mode-map
+              magit-mode-map
+              magit-process-mode-map
+              magit-refs-mode
+              magit-revision-mode-map
+              magit-status-mode-map)
+   :states 'normal
+   "'" nil)
+  (:keymaps '(magit-diff-mode-map
+              magit-log-mode-map
+              magit-mode-map
+              magit-process-mode-map
+              magit-refs-mode
+              magit-revision-mode-map
+              magit-status-mode-map)
+   "'" nil)
 
+  :config
   ;; no special behaviour for magit windows
   (remove-hook 'magit-post-display-buffer-hook 'magit-maybe-set-dedicated)
 
