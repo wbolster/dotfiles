@@ -2318,10 +2318,10 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
   :functions
   recentf-expand-file-name
   :config
-  (--each (list
-           (recentf-expand-file-name no-littering-etc-directory)
-           (recentf-expand-file-name no-littering-var-directory))
-    (add-to-list 'recentf-exclude it t))
+  (dolist (item (list
+                 (recentf-expand-file-name no-littering-etc-directory)
+                 (recentf-expand-file-name no-littering-var-directory)))
+    (add-to-list 'recentf-exclude item t))
   (recentf-mode))
 
 (use-package replace
