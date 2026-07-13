@@ -2403,13 +2403,13 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
   :custom
   (savehist-autosave-interval 60)
   :config
-  (--each '(kill-ring
-            kmacro-ring
-            last-kbd-macro
-            regexp-search-ring
-            search-ring
-            shell-command-history)
-    (add-to-list 'savehist-additional-variables it))
+  (dolist (variable '(kill-ring
+                      kmacro-ring
+                      last-kbd-macro
+                      regexp-search-ring
+                      search-ring
+                      shell-command-history))
+    (add-to-list 'savehist-additional-variables variable))
   (savehist-mode))
 
 (use-package server
