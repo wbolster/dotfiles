@@ -204,7 +204,6 @@
   (repeat-mode)
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
-  (window-divider-mode)
 
   (defun w/copy-filename-to-clipboard (&optional arg)
     "Copy the current buffer's file name to the (system) clipboard.
@@ -2794,6 +2793,8 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
   (window-divider-default-right-width 2)
   (window-resize-pixelwise t)
   :config
+  (window-divider-mode)
+
   (dolist (map (list evil-emacs-state-map evil-motion-state-map global-map))
     (dolist (n (number-sequence 1 9))
       (let* ((modifier (if (eq system-type 'darwin) "s" "C"))
