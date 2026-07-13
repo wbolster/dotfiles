@@ -1813,6 +1813,7 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
   (magit-log-mode-hook . w/magit-log-mode-hook)
   (magit-log-wash-summary-hook w/magit-log-highlight-merge-prefix)
   (magit-process-mode-hook . goto-address-mode)
+  :delight magit-wip-mode
   :commands
   magit-process-buffer
   magit-toggle-buffer-lock
@@ -1911,6 +1912,8 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
   (with-eval-after-load 'evil-colemak-basics
     (add-to-list 'global-evil-colemak-basics-modes
                  '(not magit-log-mode magit-status-mode)))
+
+  (magit-wip-mode)
 
   (defun w/git-commit-setup-hook ()
     (setq-local fill-column 72)
