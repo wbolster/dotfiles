@@ -192,7 +192,6 @@
   (read-multiple-choice-face ((t (:inverse-video unspecified :inherit transient-key))))
 
   :delight
-  (abbrev-mode (:eval (unless (abbrev-table-empty-p local-abbrev-table) " ⋯")))
   (auto-fill-function " ↲")
   (indent-tabs-mode " ⇥")
   (visual-line-mode (:eval (unless w/wrap-lines-mode " ⇉")))
@@ -326,6 +325,8 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
 (use-package abbrev
   :demand t
   :ensure emacs
+  :delight
+  (abbrev-mode (:eval (unless (abbrev-table-empty-p local-abbrev-table) " ⋯")))
   :custom
   (abbrev-mode t)
   (abbrev-suggest t)
