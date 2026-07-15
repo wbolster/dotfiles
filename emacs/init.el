@@ -871,19 +871,19 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
   w/evil-declare-jump
   :custom
   (evil-cross-lines t)
-  (evil-insert-state-message nil)
   (evil-shift-round nil)
   (evil-split-window-below t)
   (evil-undo-system 'undo-redo)
   (evil-vsplit-window-right t)
   (evil-want-C-u-scroll t)
   (evil-want-C-w-in-emacs-state t)
-  (evil-want-Y-yank-to-eol t)
   :init
   (setopt
+   evil-insert-state-message nil
    evil-respect-visual-line-mode t
-   evil-want-keybinding nil
-   evil-want-integration t)
+   evil-want-Y-yank-to-eol t
+   evil-want-integration t
+   evil-want-keybinding nil)
   :config
   (evil-mode)
 
