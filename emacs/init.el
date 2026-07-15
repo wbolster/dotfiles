@@ -2309,7 +2309,6 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
 (use-package recentf
   :demand t
   :custom
-  (recentf-auto-cleanup 300)
   (recentf-max-saved-items 500)
   :functions
   recentf-expand-file-name
