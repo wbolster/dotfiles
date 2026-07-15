@@ -476,17 +476,17 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
 (use-package conf-mode
   :defer t
   :hook (conf-toml-mode-hook . w/conf-toml-mode-hook)
-  :functions w/toml-format-taplo-region
   :config
+  (reformatter-define w/toml-format-taplo
+    :group 'toml
+    :program "taplo"
+    :args '("format" "-"))
+
   (defun w/conf-toml-mode-hook ()
     (setq-local
      tab-width 2
      evil-shift-width tab-width)
-    (reformatter-dwim-select 'w/toml-format-taplo))
-  (reformatter-define w/toml-format-taplo
-    :group 'toml
-    :program "taplo"
-    :args '("format" "-")))
+    (reformatter-dwim-select 'w/toml-format-taplo)))
 
 (use-package consult
   :demand t
