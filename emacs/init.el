@@ -833,6 +833,7 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
   (evil-vsplit-window-right t)
   (evil-want-C-u-scroll t)
   (evil-want-C-w-in-emacs-state t)
+  (evil-want-Y-yank-to-eol t)
   :commands
   evil-a-symbol
   evil-append-line
@@ -885,9 +886,6 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
    evil-want-integration t)
   :config
   (evil-mode)
-
-  ;; use Y to copy to the end of the line; see evil-want-Y-yank-to-eol
-  (evil-add-command-properties 'evil-yank-line :motion 'evil-end-of-line)
 
   ;; major modes may use a different lookup function
   (make-variable-buffer-local 'evil-lookup-func)
