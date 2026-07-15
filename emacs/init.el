@@ -1296,6 +1296,8 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
   (find-file-visit-truename t)
   (require-final-newline 'visit-save)
   :config
+  (ffap-bindings)
+
   (defun w/may-kill-buffer ()
     "Return whether the current buffer may be killed. May ask confirmation."
     (or (buffer-file-name) ;; handled by emacs
