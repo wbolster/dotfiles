@@ -530,6 +530,40 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
 (use-package consult-flycheck
   :defer t)
 
+(use-package copy-as-format
+  :defer t
+  :after evil
+  :general
+  (:states 'visual
+   "Y" #'w/evil-copy-as-format)
+  :custom
+  (copy-as-format-default "slack")
+  :config
+  ;; only keep relevant formats
+  (setopt copy-as-format-format-alist
+          (let ((to-keep '("github" "markdown" "rst" "slack")))
+            (seq-filter
+             (pcase-lambda (`(,name ,_fn)) (member name to-keep))
+             copy-as-format-format-alist)))
+  ;; todo https://github.com/sshaw/copy-as-format/issues/2
+  (require 'evil)
+  (evil-define-operator w/evil-copy-as-format (beg end type)
+    "Evil operator for ‘copy-as-format’."
+    :move-point nil
+    :repeat nil
+    (interactive "<R>")
+    (save-mark-and-excursion
+      (goto-char beg)
+      (when (eq type 'line)
+        (beginning-of-line))
+      (push-mark (point) t t)
+      (goto-char end)
+      (when (eq type 'line)
+        (forward-line -1)
+        (end-of-line))
+      (let ((current-prefix-arg t))
+        (copy-as-format)))))
+
 (use-package corfu
   :demand t
   :bind
@@ -3672,38 +3706,6 @@ defined as lowercase."
   (interactive)
   (setopt fill-column most-positive-fixnum)
   (auto-fill-mode -1))
-
-;; todo https://github.com/sshaw/copy-as-format/issues/2
-(use-package copy-as-format
-  :general
-  (:states 'visual
-   "Y" #'w/evil-copy-as-format)
-  :custom
-  (copy-as-format-default "slack")
-  (copy-as-format-format-alist  ;; only retain formats i use
-   '(("github" copy-as-format--github)
-     ("jira" copy-as-format--jira)
-     ("markdown" copy-as-format--markdown)
-     ("rst" copy-as-format--rst)
-     ("slack" copy-as-format--slack)))
-  :config
-  (evil-define-operator w/evil-copy-as-format (beg end type)
-    "Evilified version of copy-as-format"
-    :move-point nil
-    :repeat nil
-    (interactive "<R>")
-    (save-excursion
-      (goto-char beg)
-      (when (eq type 'line)
-        (beginning-of-line))
-      (push-mark (point) t t)
-      (goto-char end)
-      (when (eq type 'line)
-        (forward-line -1)
-        (end-of-line))
-      (let ((current-prefix-arg t))
-        (copy-as-format))
-      (pop-mark))))
 
 (use-package avy
   :custom
