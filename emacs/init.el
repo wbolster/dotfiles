@@ -430,6 +430,7 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
    "C-/" #'consult-history)
   :custom
   (comint-move-point-for-output 'all)
+  (comint-prompt-read-only t)
   :config
   (with-eval-after-load 'evil
     (evil-set-initial-state 'comint-mode 'normal))
