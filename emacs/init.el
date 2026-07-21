@@ -799,7 +799,10 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
 (use-package embark
   :defer t
   :bind
-  (("C-'" . embark-act)))
+  (("C-'" . embark-act))
+  :custom
+  (embark-cycle-key "C-'")
+  (embark-mixed-indicator-delay 1))
 
 (use-package embark-consult
   :demand t
