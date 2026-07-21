@@ -1499,19 +1499,19 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
         "" (font-get-system-font)))
      (monospace
       :default-family "Monospace")
-     ,(when (member "Adwaita Mono" (font-family-list))
-        '(adwaita-mono
-          :default-family "Adwaita Mono"))
-     ,(when (member "Iosevka" (font-family-list))
-        '(iosevka-regular
-          :default-family "Iosevka"
-          :default-weight light
-          :default-width normal))
-     ,(when (member "Iosevka Slab" (font-family-list))
-        '(iosevka-slab-regular
-          :default-family "Iosevka Slab"
-          :default-weight light
-          :default-width normal))
+     ,@(when (member "Adwaita Mono" (font-family-list))
+         '((adwaita-mono
+            :default-family "Adwaita Mono")))
+     ,@(when (member "Iosevka" (font-family-list))
+         '((iosevka-regular
+            :default-family "Iosevka"
+            :default-weight light
+            :default-width normal)))
+     ,@(when (member "Iosevka Slab" (font-family-list))
+         '((iosevka-slab-regular
+            :default-family "Iosevka Slab"
+            :default-weight light
+            :default-width normal)))
      ,@(when (member "Iosevka Slab Full" (font-family-list))
          ;; custom build with all widths and weights included
          '((iosevka-slab-semi-condensed
