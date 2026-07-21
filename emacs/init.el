@@ -1523,7 +1523,10 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
             :inherit iosevka-slab-regular
             :default-width condensed)))))
   :config
-  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'iosevka-slab-regular))
+  (fontaine-set-preset
+   (or (fontaine-restore-latest-preset)
+       (car (assq 'iosevka-slab-regular fontaine-presets))
+       'system))
   (fontaine-mode)
 
   (defun w/fontaine-cycle-preset (&optional with-height)
