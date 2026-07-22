@@ -2770,6 +2770,10 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
   :config
   (which-key-mode))
 
+(use-package whitespace
+  :defer t
+  :delight " ◻️")
+
 (use-package whitespace-cleanup-mode
   :demand t
   :delight
