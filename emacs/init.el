@@ -1806,7 +1806,6 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
   lsp-find-implementation
   lsp-find-type-definition
   lsp-rename
-  lsp-ui-doc-show
   lsp-workspace-restart
   :functions
   lsp-activate-on
