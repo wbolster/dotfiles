@@ -192,7 +192,7 @@
   (read-multiple-choice-face ((t (:inverse-video unspecified :inherit transient-key))))
 
   :delight
-  (auto-fill-function " ↲")
+  (auto-fill-function " ↩️")
   (indent-tabs-mode " ⇥")
   (visual-line-mode (:eval (unless w/wrap-lines-mode " ⇉")))
 
