@@ -336,7 +336,7 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
 
 (use-package aggressive-indent
   :defer t
-  :delight " ⇤")
+  :delight " ↔️")
 
 (use-package auto-compile
   :demand t
