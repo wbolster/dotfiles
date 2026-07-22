@@ -1795,7 +1795,9 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
 
 (use-package lsp-mode
   :defer t
-  :delight " 🛠️"
+  :delight
+  (lsp-mode " 🛠️")
+  (lsp-lens-mode " 🔎")
   :hook
   (lsp-after-open-hook . w/lsp-mode-after-open-hook)
   (lsp-completion-mode-hook . w/lsp-completion-mode-hook)
