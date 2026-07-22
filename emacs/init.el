@@ -1111,6 +1111,7 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
     :lighter " 👀"
     (let ((enabled w/shoulder-surf-mode))
       (global-hl-line-mode (if enabled 1 -1))
+      (display-line-numbers-mode (if enabled 1 -1))
       (setopt
        evil-goggles-duration (if enabled 5 1)
        evil-goggles-blocking-duration (if enabled 1 .2))
