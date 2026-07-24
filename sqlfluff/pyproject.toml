@@ -1,2 +1,6 @@
+[tool.sqlfluff.core]
+dialect = "postgres"
+
 [tool.sqlfluff.indentation]
 indented_joins = true
+tab_space_size = 2
