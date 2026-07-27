@@ -14,7 +14,7 @@
 
 -- completion and history
 \set COMP_KEYWORD_CASE upper
-\set HISTCONTROL ignoredups
+\set HISTCONTROL ignoreboth
 
 -- display options
 \pset columns 100000
