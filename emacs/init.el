@@ -2418,6 +2418,11 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
   (:states 'normal
    "g +" #'reformatter-dwim-on-save-mode))
 
+(use-package rfc-mode
+  :defer t
+  :custom
+  (rfc-mode-directory "/usr/share/doc/rfc/txt"))
+
 (use-package rg
   :defer t)
 
