@@ -680,7 +680,7 @@ if [[ $PS1 ]]; then
     if ___has vim; then
         export EDITOR=vim
         alias vi=vim
-    else
+    elif ___has vi; then
         export EDITOR=vi
     fi
     alias ni=vi
