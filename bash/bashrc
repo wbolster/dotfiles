@@ -126,7 +126,7 @@ if [[ $PS1 ]]; then
         dir=${1##"$HOME"/}
         tail=$(printf '%s\n' "$dir" | rev | cut -d/ -f"-${n}" | rev)
         head=${dir%%"$tail"}
-        if [[ -n $head ]]; then
+        if [[ -n $head && $head != / ]]; then
             # shellcheck disable=SC2001
             head=$(printf '%s\n' "$head" | sed -e 's#\(\(\.\?[^/]\{1\}\)[^/]\+/\?\)#\2/#g')
             head=${head%%/}…/
