@@ -112,26 +112,30 @@ if [[ $PS1 ]]; then
     fi
 
     _shorten_path() {
-        # shorten a directory name. keep last n components intact and
-        # truncate the components in front of it (with special
-        # handling of .hidden components). add an ellipsis when the
-        # value has been truncated.
+        # shorten a directory name if over a certain length. keep last
+        # n components intact and truncate the components in front of
+        # it (with special handling of .hidden components). add an
+        # ellipsis when the value has been truncated.
         local dir n
         dir=$1
         n=$2
         if [[ $dir == "$HOME" ]]; then
             printf '%s\n' '~'
             return
+        elif [[ ${#dir} -lt 40 ]]; then
+            printf "%s\n" "$dir"
+            return
+        else
+            dir=${1##"$HOME"/}
+            tail=$(printf '%s\n' "$dir" | rev | cut -d/ -f"-${n}" | rev)
+            head=${dir%%"$tail"}
+            if [[ -n $head && $head != / ]]; then
+                # shellcheck disable=SC2001
+                head=$(printf '%s\n' "$head" | sed -e 's#\(\(\.\?[^/]\{1\}\)[^/]\+/\?\)#\2/#g')
+                head=${head%%/}…/
+            fi
+            printf '%s\n' "${head}${tail}"
         fi
-        dir=${1##"$HOME"/}
-        tail=$(printf '%s\n' "$dir" | rev | cut -d/ -f"-${n}" | rev)
-        head=${dir%%"$tail"}
-        if [[ -n $head && $head != / ]]; then
-            # shellcheck disable=SC2001
-            head=$(printf '%s\n' "$head" | sed -e 's#\(\(\.\?[^/]\{1\}\)[^/]\+/\?\)#\2/#g')
-            head=${head%%/}…/
-        fi
-        printf '%s\n' "${head}${tail}"
     }
 
     # libvte uses a helper script to echo the current directory in an
