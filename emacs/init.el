@@ -531,6 +531,9 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
 (use-package consult-flycheck
   :defer t)
 
+(use-package consult-lsp
+  :defer t)
+
 (use-package copy-as-format
   :defer t
   :after evil
