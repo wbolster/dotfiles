@@ -528,6 +528,9 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
              (if (< (point) (window-start)) scroll-margin (- -1 scroll-margin))))
         (recenter screen-line)))))
 
+(use-package consult-dir
+  :defer t)
+
 (use-package consult-flycheck
   :defer t)
 
@@ -2671,6 +2674,10 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
 
 (use-package vertico
   :demand t
+  :bind
+  (:map vertico-map
+   ("C-x C-d" . consult-dir)
+   ("C-x C-j" . consult-dir-jump-file))
   :custom
   (vertico-count 20)
   (vertico-cycle t)
