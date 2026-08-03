@@ -15,11 +15,9 @@ alias pd pp [s for s in dir(%*) if not s.startswith('__')]
 alias pda pp dir(%*)  # ‘print dir all’
 
 # pretty-print sqlalchemy queries
-alias pq print((%*).compile(compile_kwargs=dict(literal_binds=True)))
-alias pqq print((%*).statement.compile(compile_kwargs=dict(literal_binds=True)))
+alias pq print((%*).compile(compile_kwargs=dict(literal_binds=True), dialect=__import__('sqlalchemy.dialects.postgresql').dialects.postgresql.dialect()))
 alias ppsql print(__import__('sqlparse').format(str(%*), reindent=True))
-alias ppq ppsql ((%*).compile(compile_kwargs=dict(literal_binds=True)))
-alias ppqq ppsql ((%*).statement.compile(compile_kwargs=dict(literal_binds=True)))
+alias ppq ppsql ((%*).compile(compile_kwargs=dict(literal_binds=True), dialect=__import__('sqlalchemy.dialects.postgresql').dialects.postgresql.dialect()))
 
 # pretty-print lxml elements
 alias ppx __import__('lxml.etree').etree.dump((%*))
