@@ -1414,6 +1414,7 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
   flycheck-get-checker-for-buffer
   flycheck-list-errors
   :custom
+  (flycheck-annotate-other-lines-style 'sideline)
   (flycheck-checker-error-threshold 2000)
   (flycheck-display-errors-delay 1.0)
   (flycheck-emacs-lisp-load-path 'inherit)
