@@ -29,7 +29,7 @@ alias ipython __import__('IPython').embed()
 
 # tracebacks that omit third-party code
 # fixme: this is not perfect
-alias pt print(''.join(y for y in __import__('traceback').format_stack() if '/site-packages/' not in y and '/usr/lib/' not in y))
+alias pt print(''.join(entry for entry in __import__('traceback').format_stack() if '/site-packages/' not in entry and '/lib/python' not in entry))
 
 # Pressing ‘enter’ after spawning the interactive prompt repeats the
 # last expression, so clear it explicitly.
