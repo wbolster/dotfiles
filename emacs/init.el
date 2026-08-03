@@ -1416,10 +1416,10 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
   :custom
   (flycheck-checker-error-threshold 2000)
   (flycheck-display-errors-delay 1.0)
+  (flycheck-emacs-lisp-load-path 'inherit)
   (flycheck-idle-change-delay 3)
   (flycheck-mode-line-prefix "🧐")
   (flycheck-mode-success-indicator "")
-  (flycheck-emacs-lisp-load-path 'inherit)
   (flycheck-python-flake8-executable "flake8")
   (flycheck-relevant-error-other-file-minimum-level nil)
   :custom-face
