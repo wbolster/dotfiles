@@ -116,11 +116,9 @@ prepare final system layout:
     swap_size=8G
     sw=/mnt/swap/swapfile
 
-    truncate -s 0 $sw
-    chattr +C $sw  # disable cow
-    chmod 600 $sw
-    fallocate --length $swap_size $sw
+    btrfs filesystem mkswapfile --size=$swap_size $sw
     mkswap $sw
+    sync
     swapon $sw
     swapon --show
 
