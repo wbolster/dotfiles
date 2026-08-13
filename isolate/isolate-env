@@ -394,17 +394,17 @@ def parse_args() -> argparse.Namespace:
         help=f"propagate Emacs server socket {security_note}",
     )
     parser.add_argument(
-        "--gpg",
-        choices=["rw", "ro", "no"],
-        default="no",
-        help=f"propagate GnuPG as ro (default) or rw, or not at all {security_note}",
-    )
-    parser.add_argument(
         "--env",
         action="append",
         default=[],
         metavar="NAME=value",
         help="propagate env var, e.g. NAME, NAME=value, NAME_* (glob)",
+    )
+    parser.add_argument(
+        "--gpg",
+        choices=["rw", "ro", "no"],
+        default="no",
+        help=f"propagate GnuPG as ro (default) or rw, or not at all {security_note}",
     )
     parser.add_argument(
         "--mask",
