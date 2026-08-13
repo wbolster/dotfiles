@@ -2836,6 +2836,7 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
       (width . 160)))
   (display-buffer-base-action
    '((display-buffer-reuse-window
+      display-buffer-in-previous-window
       display-buffer-pop-up-window
       display-buffer-use-some-window)))
   (frame-inhibit-implied-resize t)
