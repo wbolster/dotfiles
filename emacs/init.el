@@ -1431,14 +1431,14 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
   (flycheck-add-mode 'sh-shellcheck 'direnv-envrc-mode)
   (add-to-list
    'display-buffer-alist
-   '("\\*Flycheck errors\\*" .
-     (display-buffer-in-side-window
-      (side . bottom)
-      (slot . 0)
-      (preserve-size . (nil . t))
-      (window-height . w/fit-bottom-error-window-to-buffer)
-      (window-parameters . ((no-other-window . t)
-                            (no-delete-other-windows . t))))))
+   `(,(rx bos "*Flycheck errors*" eos)
+     (display-buffer-reuse-window
+      display-buffer-in-side-window)
+     (side . bottom)
+     (preserve-size . (nil . t))
+     (window-height . w/fit-bottom-error-window-to-buffer)
+     (window-parameters . ((no-other-window . t)
+                           (no-delete-other-windows . t)))))
 
   (defun w/flycheck-compile-current ()
     "Run ‘flycheck-compile’ using the current checker."
