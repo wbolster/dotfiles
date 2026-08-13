@@ -189,7 +189,7 @@ if [[ $PS1 ]]; then
     # Use a DEBUG trap to store timer information before a command is executed.
     # The _timer_start variable is cleared in the prompt command function.
     _timer_start=''
-    trap '[[ -z "${_timer_start:-}" ]] && _timer_start=${SECONDS}' DEBUG
+    trap '[[ -z "${_timer_start:-}" && $BASH_COMMAND != __ghostty_hook ]] && _timer_start=${SECONDS}' DEBUG
 
     _set_prompt_command() {
         # Save exit code from previous command
