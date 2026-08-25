@@ -2013,6 +2013,14 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
     (setq current-prefix-arg t)
     (call-interactively 'magit-status)))
 
+(use-package magit-difftastic
+  :demand t
+  :after difftastic magit
+  :load-path "lisp/"
+  :custom
+  (magit-difftastic-align-columns nil)
+  (magit-difftastic-line-numbers nil))
+
 (use-package marginalia
   :demand t
   :config
