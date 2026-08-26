@@ -3171,7 +3171,7 @@ treating 9 as ‘last window’."
   "H" #'shrink-window-horizontally
   "I" #'enlarge-window-horizontally
   "N" #'shrink-window
-  "R" #'evil-window-rotate-upwards ;; ‎todo: rotate-windows-back‎ (emacs 31)
+  "R" #'rotate-windows-back
   "S" #'w/split-window-below
   "U" #'winner-redo
   "c" #'delete-window
@@ -3183,7 +3183,7 @@ treating 9 as ‘last window’."
   "n" #'windmove-swap-states-down
   "o" #'delete-other-windows
   "p" #'toggle-window-dedicated
-  "r" #'evil-window-rotate-downwards ;; ‎todo: rotate-windows‎ (emacs 31)
+  "r" #'rotate-windows
   "s" #'w/split-window-right
   "u" #'winner-undo
   "w" #'w/other-window-or-split-right)
