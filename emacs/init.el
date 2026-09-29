@@ -1439,6 +1439,11 @@ With a prefix arg, choose from variations: full path, line numbers, urls, etc."
      (window-height . w/fit-bottom-error-window-to-buffer)
      (window-parameters . ((no-other-window . t)
                            (no-delete-other-windows . t)))))
+  (add-to-list
+   'display-buffer-alist
+   `(,(rx bos "*Warnings*" eos)
+     display-buffer-in-side-window
+     (side . bottom)))
 
   (defun w/flycheck-compile-current ()
     "Run ‘flycheck-compile’ using the current checker."
